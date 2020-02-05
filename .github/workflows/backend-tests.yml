@@ -1,4 +1,4 @@
-name: Backend - Continuos Integration (Automatically Run Node.js Tests)
+name: Backend - Automatically Run Node.js Tests
 
 # Trigger on push or pull request
 on: 
@@ -21,7 +21,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        #node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x] # build for current LTS Node.JS version, 12.x
 
     # setup node, build, and run tests
     steps:
