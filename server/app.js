@@ -7,6 +7,7 @@ require('dotenv/config')
 const usersRoute = require('./routes/users');
 //Midleware
 app.use(express.json())
+
 app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);
 
