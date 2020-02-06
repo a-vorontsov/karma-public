@@ -16,6 +16,7 @@ on:
       - dev           # dev
 
 jobs:
+  # build and run tests  
   build:
     runs-on: ubuntu-latest
 
@@ -32,16 +33,21 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     
-    # Show MOTD:
     - run: base64 -d <<<"H4sIAA1RO14AA1NQAINH0zpAaOp0ZCaUBUdYhNBFQQYo4NUBFOJSQLV0Ipw15dHUuUjsCSAE00ZAHLuFUyfi0obmCIQOkBuw+RPZNAwNCDaaFB6NYHH0sJiC7EZUUYQETk8hFEydhc15uDRiOGMiUjrAIjYRvxjIdpD5c/FrgFsKV45gkiGmQEAp0DpbWwWnxOTs1LwUhZDU4pJiBV0FZ0+F4pLEvJRihbT8IgV15/z8HAXPvJLU9KLEksz8PHWQHi4AZpk6ziYDAAA=" | gunzip
-    
     - run: npm install
     - run: npm run build --if-present
     - run: npm test
       env:
         CI: true
     
-    - run: echo Backend CI Workflow Complete
+  # validate code style with eslint
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: stefanoeb/eslint-action@1.0.2
+        with:
+          files: server/ # run eslint on backend files only
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
