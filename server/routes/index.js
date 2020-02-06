@@ -10,12 +10,11 @@ const generateOutput = ()=>{
     var x = 1;
     var output = "";
     while (x <= 100) {
-        output += "TeamTeam"
-        if(x%10===0){
-            output+="<br>"
-        }
+        output += "TeamTeam";
+        if(x%10===0) output+="<br>";
         x++;
     }
     return output
 }
+
 module.exports = router;
