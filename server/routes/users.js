@@ -1,9 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../database/connection');
+
 
 router.get('/', (req, res) => {
-    res.send("All users should be displayed here")
-})
-router.get('/:id', (req, res) => res.status(200).send(`User with id ${req.params.id} should be displayed`))
+    db.query('SELECT * FROM users', [], (err, result) => {
+        if (err) {
+            return err;
+        }
+        res.status(200).send({users: result.rows})
+    })
+});
+
+router.get('/:id', (req, res) => {
+    db.query('SELECT * FROM users WHERE id = $1', [req.params.id], (err, result) => {
+        const user = result.rows[0];
+        if (err) {
+            return err;
+        } else if (!user) {
+            res.status(404).send({message:`There is no user with id ${req.params.id}`});
+            return;
+        }
+        res.send(user)
+    })
+});
 
 module.exports = router;
