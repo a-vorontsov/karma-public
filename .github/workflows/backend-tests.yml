@@ -19,8 +19,6 @@ jobs:
   # build and run tests
   build:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./server
     strategy:
       matrix:
         #node-version: [8.x, 10.x, 12.x]
@@ -32,12 +30,11 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          working-directory: ${{ env.working-directory }}
           node-version: ${{ matrix.node-version }}
       - run: base64 -d <<<"H4sIAA1RO14AA1NQAINH0zpAaOp0ZCaUBUdYhNBFQQYo4NUBFOJSQLV0Ipw15dHUuUjsCSAE00ZAHLuFUyfi0obmCIQOkBuw+RPZNAwNCDaaFB6NYHH0sJiC7EZUUYQETk8hFEydhc15uDRiOGMiUjrAIjYRvxjIdpD5c/FrgFsKV45gkiGmQEAp0DpbWwWnxOTs1LwUhZDU4pJiBV0FZ0+F4pLEvJRihbT8IgV15/z8HAXPvJLU9KLEksz8PHWQHi4AZpk6ziYDAAA=" | gunzip
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm test
+      - run: npm install --prefix server
+      - run: npm run build --if-present --prefix server
+      - run: npm test --prefix server
         env:
           CI: true
 
