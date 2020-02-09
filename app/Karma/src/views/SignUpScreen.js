@@ -9,8 +9,9 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Dimensions,
+    Platform,
 } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from '../components/CheckBox';
 import { ScrollView } from "react-native-gesture-handler";
 
 
@@ -44,6 +45,7 @@ class SignUpScreen extends React.Component {
 
     signUserUp = async () => {
         const { fname, lname, email, username, password, conf_password } = this.state;
+        
     }
 
     render() {
@@ -71,6 +73,7 @@ class SignUpScreen extends React.Component {
                             returnKeyType="next"
                         />
                         <TextInput
+                            
                             ref={ref => {
                                 this.secondInput = ref;
                             }}
@@ -140,7 +143,11 @@ class SignUpScreen extends React.Component {
                                 <Text style={{ color: textColor }}>Show</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{ flexDirection: 'row', width: 300 }}>
+                        
+                    </View>
+
+                    <View style={styles.footer}>
+                    <View style={{ flexDirection: 'row', width: 300, paddingBottom:20 }}>
                             <CheckBox
                                 style={styles.checkBox}
                                 value={this.state.terms_checked}
@@ -154,9 +161,6 @@ class SignUpScreen extends React.Component {
                                     onPress={() => Linking.openURL("http://google.com")}>Privacy</Text>
                             </Text>
                         </View>
-                    </View>
-
-                    <View style={styles.footer}>
                         <TouchableOpacity
                             style={styles.submitButton}
                         >
@@ -198,7 +202,10 @@ const styles = StyleSheet.create({
         color: '#3bbfb2'
 
     },
-    container: {
+    checkBox: {
+        paddingRight:20
+    },
+        container: {
         // alignItems: 'center',
         // flexDirection: 'column',
         // height: '100%',
