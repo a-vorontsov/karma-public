@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React,  {Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LIGHT_GREY = "#d7dadb";
-const BLACK = "#000";
+const TICK = "✓";
 
 class CheckBox extends Component {
 
     state = {
-        isChecked: false
+        isChecked: false 
     }
-
-    clicked = async() => {
-        
-    }
-
+    
     render() {
+
+        var text = this.state.isChecked ? TICK : "";
         return (
-            <TouchableOpacity onPress={() => this.setState({ isChecked: !this.state.isChecked })} style={this.props.style}>
+            <TouchableOpacity onPress={() => this.setState({isChecked : !this.state.isChecked})} style={this.props.style}>
                 <View style={styles.checkBox}>
-                    <View style={[styles.checked, { backgroundColor: this.state.isChecked ? BLACK : LIGHT_GREY}]}/>
+                    <Text>{text}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -40,9 +38,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     checked: {
-        height:15, 
-        width:15,
-        borderRadius:3
+        height: 15,
+        width: 15,
+        borderRadius: 3
     }
 })
 

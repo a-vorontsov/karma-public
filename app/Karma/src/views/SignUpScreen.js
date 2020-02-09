@@ -20,7 +20,10 @@ import { ScrollView } from "react-native-gesture-handler";
  * header view, content view (text input boxes), footer view
  */
 
-const textColor = '#3bbfb2';
+const linkColour = '#3bbfb2';
+const { width, height } = Dimensions.get("window")
+const formWidth = 0.8 * width;
+const textColour = "#7F7F7F";
 
 class SignUpScreen extends React.Component {
     static navigationOptions = {
@@ -45,26 +48,27 @@ class SignUpScreen extends React.Component {
 
     signUserUp = async () => {
         const { fname, lname, email, username, password, conf_password } = this.state;
-        
+
     }
 
     render() {
         return (
-                <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+                <ScrollView showsVerticalScrollIndicator={false}>
 
-
-                    <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: 'flex-start', width: 0.80 * width, paddingBottom: 50 }}>
+                    {/** Header **/}
+                    <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: 'flex-start', width: formWidth }}>
                         <View style={styles.header}>
                             <TouchableOpacity>
-                                <Text>🤛🏾</Text>
+                                <Text>🔙</Text>
                             </TouchableOpacity>
                             <Text style={styles.headerText}>Sign Up</Text>
                         </View>
                         <Text style={styles.subheaderText}>Create a new account</Text>
                     </View>
 
-
-                    <View style={{ flex: 8, justifyContent: 'space-evenly' }}>
+                    {/** form content **/}
+                    <View style={{  justifyContent: 'space-evenly', alignItems: 'center', height:0.60 * height }}>
                         <TextInput
                             style={styles.textInput}
                             placeholder='First Name'
@@ -73,7 +77,7 @@ class SignUpScreen extends React.Component {
                             returnKeyType="next"
                         />
                         <TextInput
-                            
+
                             ref={ref => {
                                 this.secondInput = ref;
                             }}
@@ -123,7 +127,7 @@ class SignUpScreen extends React.Component {
                                 returnKeyType="next"
                             />
                             <TouchableOpacity onPress={() => this.setState({ hide_password: !this.state.hide_password })} style={{ position: 'absolute', top: 15, right: 0 }}>
-                                <Text style={{ color: textColor }}>Show</Text>
+                                <Text style={{ color: linkColour }}>Show</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
@@ -140,24 +144,24 @@ class SignUpScreen extends React.Component {
                                 onChangeText={val => this.onChangeText('conf_password', val)}
                             />
                             <TouchableOpacity onPress={() => this.setState({ hide_password: !this.state.hide_password })} style={{ position: 'absolute', top: 15, right: 0 }}>
-                                <Text style={{ color: textColor }}>Show</Text>
+                                <Text style={{ color: linkColour }}>Show</Text>
                             </TouchableOpacity>
                         </View>
-                        
-                    </View>
 
+                    </View>
+                    {/** Footers **/}
                     <View style={styles.footer}>
-                    <View style={{ flexDirection: 'row', width: 300, paddingBottom:20 }}>
+                        <View style={{ flexDirection: 'row', width: formWidth, paddingBottom: 20 }}>
                             <CheckBox
                                 style={styles.checkBox}
                                 value={this.state.terms_checked}
                                 onValueChange={() => this.setState({ terms_checked: !this.state.terms_checked })}
                             /><Text>
-                                <Text>By creating an account, you agree to all the legal stuff: </Text>
-                                <Text style={{ color: textColor, textDecorationLine: 'underline' }}
+                                <Text style={{ color: textColour }}>By creating an account, you agree to all the legal stuff: </Text>
+                                <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
                                     onPress={() => Linking.openURL('http://google.com')}>Terms of Use</Text>
                                 <Text> {'&'} </Text>
-                                <Text style={{ color: textColor, textDecorationLine: 'underline' }}
+                                <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
                                     onPress={() => Linking.openURL("http://google.com")}>Privacy</Text>
                             </Text>
                         </View>
@@ -167,13 +171,12 @@ class SignUpScreen extends React.Component {
                             <Text style={{ color: 'white', textAlign: 'center' }}>Next</Text>
                         </TouchableOpacity>
                     </View>
-                </KeyboardAvoidingView>
+                </ScrollView>
+
+            </KeyboardAvoidingView>
         )
     }
 }
-
-const { width, height } = Dimensions.get("window")
-
 
 
 const styles = StyleSheet.create({
@@ -203,26 +206,17 @@ const styles = StyleSheet.create({
 
     },
     checkBox: {
-        paddingRight:20
+        paddingRight: 20
     },
-        container: {
-        // alignItems: 'center',
-        // flexDirection: 'column',
-        // height: '100%',
-        // margin: 0,
-        // justifyContent: 'center',
-        // backgroundColor: 'white'
-        // height: '100%',
+
+    container: {
         flex: 1,
         alignItems: 'center',
-        // justifyContent: 'center',
-        // margin: 0
-
 
 
     },
     textInput: {
-        width: 0.75 * width,
+        width: formWidth,
         height: 45,
         borderColor: 'transparent',
         borderBottomColor: '#D3D3D3',
@@ -235,7 +229,9 @@ const styles = StyleSheet.create({
         fontFamily: "Arial"
     },
     footer: {
-        flex: 1, justifyContent: 'flex-end', marginBottom: 30
+        flex:1,
+        justifyContent:'flex-end',
+    
     },
     submitButton: {
         backgroundColor: '#3bbfb2',
@@ -243,7 +239,6 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         marginTop: 15,
         borderRadius: 30,
-        width: 0.75 * width,
     }
 })
 
