@@ -72,6 +72,7 @@ app.post(
 );
 
 app.post("/register", checkNotAuthenticated, async (req, res) => {
+    // TODO: be salty
   try {
     const hashedPassword = await crypto
       .createHash("sha256")
