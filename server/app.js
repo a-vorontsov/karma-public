@@ -11,11 +11,18 @@ require('dotenv/config')
 // Import Routes
 const usersRoute = require('./routes/users');
 
-// Set view engine (for demoing views)
-app.set('view-engine', 'ejs')
+const initializePassport = require("./passport-config");
+initializePassport(
+  passport,
+  email => users.find(user => user.email === email),
+  id => users.find(user => user.id === id)
+);
 
 // Temporary. Since we don't yet have a DB connection
 const users = [];
+
+// Set view engine (for demoing views)
+app.set('view-engine', 'ejs')
 
 // -- app use -- //
 app.use(express.json())
@@ -67,13 +74,19 @@ app.post(
 
 
 // Status definition function
-function checkAuthenticated(req, res) {
-  return false;
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // TODO:
+  res.redirect("/login");
 }
 
-function checkNotAuthenticated(req, res) {
-  return false;
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  next();
 }
-
 
 app.listen(PORT, console.log(`Listening on port ${PORT} ...`));
