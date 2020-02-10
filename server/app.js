@@ -8,11 +8,14 @@ const PORT = process.env.PORT || 8000
 
 require('dotenv/config')
 
-//Import Routes
+// Import Routes
 const usersRoute = require('./routes/users');
 
-//Set view engine (for demoing views)
+// Set view engine (for demoing views)
 app.set('view-engine', 'ejs')
+
+// Temporary. Since we don't yet have a DB connection
+const users = [];
 
 // -- app use -- //
 app.use(express.json())
@@ -30,7 +33,8 @@ app.use(passport.session());
 app.use(methodOverride("_method"));
 app.use('/users', usersRoute);
 
-//Connect to DB
+// Connect to DB
+// TODO:
 
 // -- GET REQUESTS -- //
 
