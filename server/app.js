@@ -5,11 +5,13 @@ require('dotenv/config')
 
 //Import Routes
 const usersRoute = require('./routes/users');
+const forgotRoute = require('./routes/forgot');
 //Midleware
-app.use(express.json())
+app.use(express.json());
 
 app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);
+app.use('/login/forgot',forgotRoute);
 
 //Connect to DB
 
