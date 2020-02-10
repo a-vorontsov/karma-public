@@ -4,6 +4,7 @@ const flash = require("express-flash");
 const session = require('express-session')
 const passport = require("passport");
 const crypto = require("crypto");
+const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8000
 
 require('dotenv/config')
