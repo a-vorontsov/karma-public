@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bcrypt": "^3.0.6",
     "crypto": "^1.0.1",
     "db-migrate": "^0.11.6",
     "db-migrate-pg": "^1.0.0",
@@ -22,6 +23,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.17.0",
     "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "pg": "^7.18.1"
   },
   "devDependencies": {

@@ -71,7 +71,30 @@ app.post(
   })
 );
 
+app.post("/register", checkNotAuthenticated, async (req, res) => {
+  try {
+    const hashedPassword = await crypto
+      .createHash("sha256")
+      .update(req.body.password)
+      .digest("base64");
+    users.push({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    });
+    res.redirect("/login");
+  } catch {
+    res.redirect("/register");
+  }
+});
 
+
+// -- CLOSE REQUESTS -- //
+app.delete("/logout", (req, res) => {
+  req.logOut();
+  res.redirect("/login");
+});
 
 // Status definition function
 function checkAuthenticated(req, res, next) {
