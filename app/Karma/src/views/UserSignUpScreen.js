@@ -1,13 +1,13 @@
 import React from "react";
-import { 
-    View, 
-    Text 
+import {
+    View,
+    Text
 } from 'react-native';
 
-class SignUpScreen extends React.Component {
+export default class UserSignUpScreen extends React.Component {
 
     render(){
-        
+
         return(
             <View>
                 <Text>Hello</Text>
@@ -17,6 +17,3 @@ class SignUpScreen extends React.Component {
 
 
 }
-
-
-export default SignUpScreen;

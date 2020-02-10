@@ -1,13 +1,24 @@
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import SignUpScreen from './src/views/SignUpScreen';
-import WelcomeScreen from './src/views/WelcomeScreen';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import HomeScreen from "./src/routes/HomeScreen";
+import InitSignupScreen from "./src/routes/InitSignupScreen";
+import UserSignUpScreen from './src/views/UserSignUpScreen';
 
-
-const MainNavigator = createStackNavigator({
-  Welcome: { screen: WelcomeScreen },
-  SignUp: { screen: SignUpScreen },
-});
+const MainNavigator = createStackNavigator(
+    {
+        Home: { screen: HomeScreen },
+        InitSignup: { screen: InitSignupScreen },
+        UserSignUp: { screen: UserSignUpScreen },
+    },
+    {
+        headerMode: "none",
+        defaultNavigationOptions: {
+            cardStyle: {
+                backgroundColor: "#f8f8f8"
+            },
+        },
+    }
+);
 
 const App = createAppContainer(MainNavigator);
 
