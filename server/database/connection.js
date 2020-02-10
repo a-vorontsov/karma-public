@@ -2,10 +2,10 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: 'postgres',
+    user: process.env.DB_USER,
     host: 'localhost',
     database: 'karma-db',
-    password: 'asd123',
+    password: process.env.DB_PASS,
     port: 5432
 });
 
