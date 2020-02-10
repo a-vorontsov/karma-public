@@ -23,14 +23,14 @@ router.post('/',(req,res)=>{
     db.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
         const user = result.rows[0];
         if (err) return err;
-        else if (!user) {
+        else if (!user){
             res.status(404).send({message:`There is no user with email ${email}`});
             return res.redirect('/');
         }
         //generate 6 digit code
         const token = randomize('0',6);
         //store it in the user
-        db.query(`Update users set resetPasswordToken = ${token},resetPasswordExpires = ${Date.now()+360000}  where email <= ${email}`,(err,result)=>{
+        db.query(`Update users set resetpasswordtoken = ${token},resetPasswordExpires = ${Date.now()+360000} where email = \'${email}\'`,(err,result)=>{
             if(err) res.send(err);
             else{
                 console.log("updated successfuly");
@@ -40,8 +40,8 @@ router.post('/',(req,res)=>{
         const transporter = nodemailer.createTransport({
             service:'gmail',
             auth: {
-                user:'teamteam.karma@gmail.com',
-                pass:'harDforcharity69',
+                user:`${process.env.EMAIL_ADDRESS}`,
+                pass:`${process.env.EMAIL_PASSWORD}`,
             },
         });
         const mailOptions = {
@@ -59,7 +59,7 @@ router.post('/',(req,res)=>{
             else{
                 console.log("this is the response" + res);
                 res.status(200).send("code sent");
-                res.redirect()
+                res.redirect('/');
             }
         });
     });
