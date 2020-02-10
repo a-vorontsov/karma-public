@@ -1,13 +1,13 @@
-require('dotenv/config')
+require('dotenv/config');
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8000;
 
-//Import Routes
+// Import Routes
 const usersRoute = require('./routes/users');
 const verificationRoute = require('./routes/verification');
-//Midleware
-app.use(express.json())
+// Midleware
+app.use(express.json());
 
 app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);

@@ -1,2 +1,2 @@
-//configuration files
-//db variables, username password
+// configuration files
+// db variables, username password
