@@ -79,6 +79,10 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
       .createHash("sha256")
       .update(req.body.password)
       .digest("base64");
+    // const hashedPassword = await crypto
+    //   .createHash("sha256")
+    //   .update("password")
+    //   .digest("hex");
     users.push({
       id: Date.now().toString(),
       name: req.body.name,
@@ -89,6 +93,7 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
   } catch {
     res.redirect("/register");
   }
+  console.log(users);
 });
 
 
