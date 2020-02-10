@@ -1,6 +1,11 @@
-const express = require('express');
+const express = require("express");
 const app = express();
+const flash = require("express-flash");
+const session = require("express-session");
+const passport = require("passport");
+const crypto = require("crypto");
 const PORT = process.env.PORT || 8000
+
 require('dotenv/config')
 
 //Import Routes
@@ -17,6 +22,7 @@ app.use('/users', usersRoute);
 
 //Connect to DB
 
+// -- GET REQUESTS -- //
 
 // Render and direct to view based on user auth status
 app.get("/", checkAuthenticated, (req, res) => {
@@ -30,6 +36,20 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
 app.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
 });
+
+
+// -- POST REQUESTS -- //
+
+app.post(
+  "/login",
+  checkNotAuthenticated,
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true
+  })
+);
+
 
 
 // Status definition function
