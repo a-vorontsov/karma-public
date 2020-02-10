@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon",
-    "db-migrate": "node node_modules/db-migrate/bin/db-migrate"
+    "db-migrate": "node node_modules/db-migrate/bin/db-migrate",
+    "dev-start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,11 +16,12 @@
     "bcryptjs": "^2.4.3",
     "db-migrate": "^0.11.6",
     "db-migrate-pg": "^1.0.0",
-    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "pg": "^7.18.1"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.2"
   }
 }
