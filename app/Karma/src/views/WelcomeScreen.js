@@ -5,7 +5,9 @@ import { RegularText } from "../components/text";
 
 class WelcomeScreen extends Component {
     static navigationOptions = { headerShown: false }
+
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
 
@@ -15,8 +17,13 @@ class WelcomeScreen extends Component {
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 40 }}>
+<<<<<<< HEAD
                     <TouchableOpacity style={[styles.button, { marginBottom: 20 }]} onPress={this._onPressButton}>
                         <RegularText style={[styles.text, { fontSize: 20 }]}>Sign Up</RegularText>
+=======
+                    <TouchableOpacity style={[styles.button, { marginBottom: 20 }]} onPress={() => navigate("InitSignup")}>
+                        <Text style={[styles.text, { fontSize: 20 }]}>Sign Up</Text>
+>>>>>>> Update routing between new welcome page and initial signup
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._onPressButton}>
