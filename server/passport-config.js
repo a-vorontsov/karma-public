@@ -9,7 +9,7 @@ function initialize(passport, getUserByEmail, getUserById) {
     }
 
     try {
-      if (await crypto.createHash("sha256").update(password).digest("base64") === user.password) {
+      if (await crypto.createHash("sha256").update(password + user.salt).digest("base64") === user.password) {
         return done(null, user);
       } else {
         return done(null, false, { message: "Incorrect password" });
