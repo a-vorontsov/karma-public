@@ -1,9 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Dimensions, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-// import { Dropdown } from 'react-native-material-dropdown';
+import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import DatePicker from '../components/DatePicker';
-import MainButton from '../components/MainButton';
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
@@ -23,8 +21,6 @@ class AboutScreen extends React.Component {
 
     }
 
-    changeGender
-
     handleGenderChange = (gender) => {
         this.props.changeGender(gender);
       }
@@ -38,6 +34,8 @@ class AboutScreen extends React.Component {
         return(
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
             <ScrollView showsVerticalScrollIndicator={false}>
+
+            {/* HEADER */}
             <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: 'flex-start', width: formWidth }}>
                 <View style={styles.header}>
                     <TouchableOpacity>
@@ -48,6 +46,8 @@ class AboutScreen extends React.Component {
                 <Text style={styles.subheaderText}>Tell us about yourself</Text>
                 <Text style={styles.subText}>Charities need to know this information about volunteers.</Text>
             </View>
+
+            {/* PHOTO UPLOAD */}
             <View style={styles.header}>
                 <TouchableOpacity>
                     <Text style={{color:'gray', paddingRight: 110}}>pic</Text>
@@ -56,14 +56,16 @@ class AboutScreen extends React.Component {
                     <Text style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.smallHeaderText}>When is your birthday?</Text>
 
+            {/* BIRTHDAY SELECTION */}
+            <Text style={styles.smallHeaderText}>When is your birthday?</Text>
             <DatePicker
                 onYearValueChange={(year,i) => console.log("Year was changed to: ", year)}
                 onMonthValueChange={(month,i) => console.log("Month was changed to: ", month)}
                 onDayValueChange={(day,i) => console.log("Day was changed to: ", day)}
             />
 
+            {/* GENDER SELECTION */}
             <Text style={styles.smallHeaderText}>
                 Choose your gender
             </Text>
@@ -95,11 +97,14 @@ class AboutScreen extends React.Component {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {/* FORM SUBMISSION */}
             <TouchableOpacity
                 style={styles.nextButton}
                 onPress={() => {}}  >
                 <Text style={styles.buttonText, {color: 'white', fontSize: 20}}>Next</Text>
             </TouchableOpacity>
+
         </ScrollView>
         </KeyboardAvoidingView>
         )
