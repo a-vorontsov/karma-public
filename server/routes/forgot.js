@@ -16,8 +16,8 @@ router.get('/', (req, res) => {
     res.send('forgot password screen');
 });
 
+//gets called when the person submits the forgot password button
 router.post('/', (req, res) => {
-    //gets called when the person submits the forgot password button
     let email = '';
     try {
         email = req.body.email;
@@ -71,6 +71,7 @@ router.post('/', (req, res) => {
     });
 });
 
+//gets called when user writes in the token they recieved and click submit
 router.post('/confirm', (req, res) => {
     let email = '';
     let tokenRecieved;
