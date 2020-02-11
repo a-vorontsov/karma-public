@@ -8,9 +8,7 @@ router.get('/', (req, res) => {
         if (err) {
             return err;
         }
-        res.send({
-            users: result.rows
-        })
+        res.status(200).send({users: result.rows})
     })
 });
 
