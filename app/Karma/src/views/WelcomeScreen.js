@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { RegularText } from "../components/text";
 
 
 class WelcomeScreen extends Component {
@@ -9,17 +10,17 @@ class WelcomeScreen extends Component {
             <View style={styles.container}>
 
                 <View style={{ flex: 2, justifyContent: 'center' }}>
-                    <Text style={[styles.text, { fontSize: 70 }]}>KARMA</Text>
-                    <Text style={[styles.text, { fontSize: 40 }]}>lorem ipsum</Text>
+                    <RegularText style={[styles.text, { fontSize: 70 }]}>KARMA</RegularText>
+                    <RegularText style={[styles.text, { fontSize: 40 }]}>lorem ipsum</RegularText>
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 40 }}>
                     <TouchableOpacity style={[styles.button, { marginBottom: 20 }]} onPress={this._onPressButton}>
-                        <Text style={[styles.text, { fontSize: 20 }]}>Sign Up</Text>
+                        <RegularText style={[styles.text, { fontSize: 20 }]}>Sign Up</RegularText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._onPressButton}>
-                        <Text style={[styles.text, { fontSize: 15, fontWeight: '200' }]}>Already have an account? Login</Text>
+                        <RegularText style={[styles.text, { fontSize: 15, fontWeight: '200' }]}>Already have an account? Login</RegularText>
                     </TouchableOpacity>
                 </View>
 
