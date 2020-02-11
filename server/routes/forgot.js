@@ -17,53 +17,83 @@ const db = require('../database/connection');
 router.get('/', (req, res) => {
     res.send('forgot')
 })
-router.post('/',(req,res)=>{
+router.post('/', (req, res) => {
     //gets called when the person submits the forgot password button
-    const email =  req.body.email;
+    let email = '';
+    try {
+        email = req.body.email;
+    } catch (err) {
+        return res.status(400).send(err);
+    }
+    console.log(email);
     db.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
         const user = result.rows[0];
         if (err) return err;
-        else if (!user){
-            res.status(404).send({message:`There is no user with email ${email}`});
-            return res.redirect('/');
+        else if (!user) {
+            return res.status(404).send({
+                message: `There is no user with email ${email}`
+            });
         }
         //generate 6 digit code
-        const token = randomize('0',6);
+        const token = randomize('0', 6);
         //store it in the user
-        db.query(`Update users set resetpasswordtoken = ${token},resetPasswordExpires = ${Date.now()+360000} where email = \'${email}\'`,(err,result)=>{
-            if(err) res.send(err);
-            else{
-                console.log("updated successfuly");
+        const updateUserQuery = `Update users 
+        set resetpasswordtoken = ${token},
+        resetPasswordExpires = ${Date.now()+360000}
+        where email = \'${email}\'`;
+
+        db.query(updateUserQuery, (err, result) => {
+            if (err) return res.status(500).send(err);
+            else {
+                console.log("User updated successfuly");
             }
-        })
+        });
         //send the email
         const transporter = nodemailer.createTransport({
-            service:'gmail',
+            service: 'gmail',
             auth: {
-                user:`${process.env.EMAIL_ADDRESS}`,
-                pass:`${process.env.EMAIL_PASSWORD}`,
+                user: `${process.env.EMAIL_ADDRESS}`,
+                pass: `${process.env.EMAIL_PASSWORD}`,
             },
         });
         const mailOptions = {
-            from:'teamteam.karma@gmail.com',
-            to:`${email}`,
+            from: `${process.env.EMAIL_ADDRESS}`,
+            to: `${email}`,
             subject: 'Reset Password Verification Code',
             text: `K-${token} is your karma verification code`
         };
 
         console.log("Sending mail");
-        transporter.sendMail(mailOptions,(err,response)=>{
-            if(err){
-                console.log("there was an error in sending the email");
-            }
-            else{
-                console.log("this is the response" + res);
-                res.status(200).send("code sent");
-                res.redirect('/');
+        transporter.sendMail(mailOptions, (err, response) => {
+            if (err) {
+                return res.status(500).send(err);
+            } else {
+                res.status(200).send("Code sent successfully to " + email);
             }
         });
     });
 
 })
+router.post('/confirm', (req, res) => {
+    let email = '';
+    let token;
+    try {
+        token = req.body.token;    
+        email = req.body.email;
+    } catch (err) {
+        return res.status(400).send(err);
+    }
+    db.query('SELECT resetpasswordtoken FROM users WHERE email = $1', [email], (err, result) => {
+        if (err) return err;
+        const tokenRecieved = result.rows[0].resetpasswordtoken;
+        if(token === tokenRecieved){
+            res.status(200).send("Tokens matched");
+        }
+        else{
+            res.status(401).send("Tokens did not match");
+        }
+    });
+
+});
 
 module.exports = router;
