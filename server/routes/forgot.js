@@ -9,14 +9,13 @@ const db = require('../database/connection');
 /**
  * db needs to have the email set as unique
  * user should also store resetPasswordToken as a string and resetPasswordExpires as a date 
- * 
- * psql -U postgres karma-db
  * */
 
 
 router.get('/', (req, res) => {
-    res.send('forgot')
-})
+    res.send('forgot password screen');
+});
+
 router.post('/', (req, res) => {
     //gets called when the person submits the forgot password button
     let email = '';
@@ -25,7 +24,6 @@ router.post('/', (req, res) => {
     } catch (err) {
         return res.status(400).send(err);
     }
-    console.log(email);
     db.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
         const user = result.rows[0];
         if (err) return err;
@@ -62,7 +60,6 @@ router.post('/', (req, res) => {
             subject: 'Reset Password Verification Code',
             text: `K-${token} is your karma verification code`
         };
-
         console.log("Sending mail");
         transporter.sendMail(mailOptions, (err, response) => {
             if (err) {
@@ -72,25 +69,28 @@ router.post('/', (req, res) => {
             }
         });
     });
+});
 
-})
 router.post('/confirm', (req, res) => {
     let email = '';
-    let token;
+    let tokenRecieved;
     try {
-        token = req.body.token;    
+        tokenRecieved = req.body.token;
         email = req.body.email;
     } catch (err) {
         return res.status(400).send(err);
     }
-    db.query('SELECT resetpasswordtoken FROM users WHERE email = $1', [email], (err, result) => {
+    db.query('SELECT resetpasswordtoken,resetpasswordexpires FROM users WHERE email = $1', [email], (err, result) => {
         if (err) return err;
-        const tokenRecieved = result.rows[0].resetpasswordtoken;
-        if(token === tokenRecieved){
-            res.status(200).send("Tokens matched");
+        const tokenSent = result.rows[0].resetpasswordtoken;
+        const expiryTime = result.rows[0].resetpasswordexpires;
+        if (tokenSent === tokenRecieved && Date.now()<=expiryTime) {
+            res.status(200).send("Token is accepted");
+        } else if(tokenSent != tokenRecieved) {
+            res.status(401).send("Tokens did not match");
         }
         else{
-            res.status(401).send("Tokens did not match");
+            res.status(401).send("Token expired");
         }
     });
 

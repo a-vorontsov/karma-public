@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);
-app.use('/login/forgot',forgotRoute);
+app.use('/login/forgot', forgotRoute);
 
 //Connect to DB
 
