@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Alert, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { View, Text, Image, Alert, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import DatePicker from '../components/DatePicker';
+import PhotoUpload from 'react-native-photo-upload';
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
@@ -106,9 +107,37 @@ class AboutScreen extends React.Component {
 
             {/* PHOTO UPLOAD */}
             <View style={styles.header}>
-                <TouchableOpacity>
-                    <Text style={{color:'gray', paddingRight: 110}}>pic</Text>
-                </TouchableOpacity>
+            <PhotoUpload
+                onPhotoSelect={avatar => {
+                    if (avatar) {
+                        console.log('Image base64 string: ', avatar)
+                        var photo = {
+                            uri: avatar,
+                            type: 'image/jpeg',
+                            name: 'profile.jpg',
+                        };
+                        
+                        var body = new FormData();
+                        body.append('authToken', 'secret');
+                        body.append('photo', photo);
+                        
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', serverURL);
+                        xhr.send(body);
+                    }
+                }}
+                >
+                <Image
+                    style={{
+                    paddingVertical: 10,
+                    width: 50,
+                    height: 50,
+                    borderRadius: 75
+                    }}
+                    resizeMode='cover'
+                    source={require('../assets/color.png')}
+                />
+            </PhotoUpload>
                 <TouchableOpacity style={styles.uploadButton}>
                     <Text style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</Text>
                 </TouchableOpacity>
