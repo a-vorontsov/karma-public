@@ -53,7 +53,7 @@ app.use("/users", require("./routes/users"));
 // -- GET REQUESTS -- //
 
 // Render and direct to view based on user auth status
-// app.all("*", auth.requireAuthentication);
+app.all("*", auth.requireAuthentication);
 
 // -- POST REQUESTS -- //
 
