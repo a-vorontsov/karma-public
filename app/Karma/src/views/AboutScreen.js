@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { View, Text, Alert, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import DatePicker from '../components/DatePicker';
 
@@ -17,13 +17,15 @@ class AboutScreen extends React.Component {
             gender: null,
             genderSelected: false,
             birthYearSelected: false,
-            birthYearError: false,
-            genderError: false
         };
     }
 
     static navigationOptions = {
         headerShown: false
+    }
+
+    goToPrevious(){
+        this.props.navigation.navigate('SignUpScreen')
     }
 
     goToNext() {
@@ -37,26 +39,31 @@ class AboutScreen extends React.Component {
         } else if (this.state.genderSelected && !this.state.birthYearSelected) {
           this.setState({
             birthYearSelected: false,
-            birthYearError: true,
           });
         } else if (!this.state.genderSelected && this.state.birthYearSelected) {
           this.setState({
             genderSelected: false,
-            genderError: true,
           });
         } else {
           this.setState({
             genderSelected: false,
-            genderError: true,
-            birthYearSelected: false,
-            birthYearError: true,
+            birthYearSelected: false
           });
         }
+
+        {!this.state.genderSelected && (
+            Alert.alert('Error','Please select a gender.')
+          )}
+    
+        {!this.state.birthYearSelected && (
+            alert('Please select a valid birthday.')
+        )}
       }
 
     setGender(selectedGender) {
         this.setState ({
-            gender: selectedGender
+            gender: selectedGender,
+            genderSelected: true
         });
     }
 
@@ -87,7 +94,8 @@ class AboutScreen extends React.Component {
             {/* HEADER */}
             <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: 'flex-start', width: formWidth }}>
                 <View style={styles.header}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => this.goToPrevious()}>
                         {/* arrow button */}
                     </TouchableOpacity>
                     <Text style={styles.headerText}>About</Text>
@@ -153,7 +161,6 @@ class AboutScreen extends React.Component {
                 onPress={() => this.goToNext()}  >
                 <Text style={styles.buttonText, {color: 'white', fontSize: 20}}>Next</Text>
             </TouchableOpacity>
-
         </ScrollView>
         </KeyboardAvoidingView>
         )
