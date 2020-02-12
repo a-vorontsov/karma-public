@@ -20,20 +20,26 @@ jobs:
     runs-on: ubuntu-latest
     # setup node, build, and run tests
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: checkout Github repo
+        uses: actions/checkout@v2
+
+      - name: set up Node.js 12.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Initialize app
+          node-version: '12.x'
+
+      - name: initialize app
         run: base64 -d <<<"H4sIAA1RO14AA1NQAINH0zpAaOp0ZCaUBUdYhNBFQQYo4NUBFOJSQLV0Ipw15dHUuUjsCSAE00ZAHLuFUyfi0obmCIQOkBuw+RPZNAwNCDaaFB6NYHH0sJiC7EZUUYQETk8hFEydhc15uDRiOGMiUjrAIjYRvxjIdpD5c/FrgFsKV45gkiGmQEAp0DpbWwWnxOTs1LwUhZDU4pJiBV0FZ0+F4pLEvJRihbT8IgV15/z8HAXPvJLU9KLEksz8PHWQHi4AZpk6ziYDAAA=" | gunzip
 
       - name: npm install
         working-directory: ./server
         run: npm i --ignore-scripts
 
-      - run: npm run build --if-present --prefix server
-      - name: Run ESLint
+      - name: npm build
+        working-directory: ./server
+        run: npm run build --if-present
+
+      - name: run ESLint
         uses: ninosaurus/eslint-check@v5
         with:
           eslint-config-path: "./server/.eslintrc.js"
@@ -44,20 +50,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: checkout Github repo
+        uses: actions/checkout@v2
+
+      - name: set up Node.js 12.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Initialize app
+          node-version: '12.x'
+
+      - name: initialize app
         run: base64 -d <<<"H4sIAA1RO14AA1NQAINH0zpAaOp0ZCaUBUdYhNBFQQYo4NUBFOJSQLV0Ipw15dHUuUjsCSAE00ZAHLuFUyfi0obmCIQOkBuw+RPZNAwNCDaaFB6NYHH0sJiC7EZUUYQETk8hFEydhc15uDRiOGMiUjrAIjYRvxjIdpD5c/FrgFsKV45gkiGmQEAp0DpbWwWnxOTs1LwUhZDU4pJiBV0FZ0+F4pLEvJRihbT8IgV15/z8HAXPvJLU9KLEksz8PHWQHi4AZpk6ziYDAAA=" | gunzip
 
       - name: npm install
-        working-directory: ./application
+        working-directory: ./server
         run: npm i --ignore-scripts
 
-      - run: npm run build --if-present --prefix server
-      - run: npm test --prefix server
+      - name: npm test
+        run: npm test
+        working-directory: ./server
         env:
           CI: true
 
