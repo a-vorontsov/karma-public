@@ -23,10 +23,18 @@ router.get('/:id',(req,res)=>{
             return res.status(500).send(err);
         }
         else if(result.rows.length == 0){
-            return res.status(400).send("There is no cause with that id")
+            return res.status(400).send("There is no cause with that id");
         }
         res.status(200).json(result.rows);
     });
+});
+//gets called when user selects causes
+router.post('/',(req,res)=>{
+    let causes = req.body.causes;
+    if(!id){
+        return res.status(400).send("No causes were specified in the body");
+    }
+    //update the db
 });
 
 module.exports = router;
