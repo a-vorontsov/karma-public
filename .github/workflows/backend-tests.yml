@@ -4,16 +4,15 @@ name: Backend - Automatically Run Node.js Tests
 on:
   push:
     branches: # == run tests only on push to following branches: ==
-      - master # master
-      - dev # dev
-      - "be**" # any branch prefixed 'be', e.g. 'be-my-feature'
-      - "backend**" # any branch prefix 'backend', e.g. 'backend/my-feature'
+      - master # master (rerun tests after merging a PR)
     paths:
       - "server/**" # limit workflow tests only to changes in backend folder
   pull_request:
-    branches: # == run tests only on pull requests to: ==
-      - master # master
+    branches: # == run tests only on pull request opens/updates to: ==
+      - master
       - dev # dev
+    paths:
+      - "server/**"
 
 jobs:
   # build and run tests
