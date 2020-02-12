@@ -120,28 +120,28 @@ class AboutScreen extends React.Component {
             </Text>
             <View style={styles.genderContainer}>
               <TouchableOpacity
-                style={[styles.genderButton]}
+                style={[this.state.gender == "Male" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Male")}
               >
-                <Text style={styles.buttonText}
+                <Text style={[this.state.gender == "Male" ? styles.buttonTextSelected : styles.buttonText]}
                 >Male
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.genderButton]}
+                style={[this.state.gender == "Female" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Female")}
               >
-                <Text style={styles.buttonText}
+                <Text style={[this.state.gender == "Female" ? styles.buttonTextSelected : styles.buttonText]}
                 >Female
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.genderContainer}>
               <TouchableOpacity
-                style={[styles.genderButton]}
+                style={[this.state.gender == "Non-Binary" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Non-Binary")}
               >
-                <Text style={styles.buttonText}
+                <Text style={[this.state.gender == "Non-Binary" ? styles.buttonTextSelected : styles.buttonText]}
                 >Non-Binary
                 </Text>
               </TouchableOpacity>
@@ -229,6 +229,11 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: 'gray',
     },
+    buttonTextSelected: {
+        fontSize: 15,
+        fontWeight: '400',
+        color: 'white',
+    },
     genderContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -238,6 +243,20 @@ const styles = StyleSheet.create({
         height: 40,
         width: 150,
         backgroundColor: "transparent",
+        borderWidth: 2,
+        borderColor: '#D3D3D3',
+        marginRight: 20,
+        marginTop: 15,
+        marginBottom: 10,
+        borderRadius: 30,
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    genderButtonSelected: {
+        height: 40,
+        width: 150,
+        backgroundColor: "#00A8A6",
         borderWidth: 2,
         borderColor: '#D3D3D3',
         marginRight: 20,
