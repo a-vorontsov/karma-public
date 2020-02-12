@@ -1,6 +1,13 @@
 const LocalStrategy = require("passport-local").Strategy;
 const digest = require("./digest");
 
+/**
+ * Passport's boilerplate.
+ * Initialise the passport module for use.
+ * @param {} passport 
+ * @param {function} getUserByEmail 
+ * @param {function} getUserById 
+ */
 function initialise(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
     const user = getUserByEmail(email);
