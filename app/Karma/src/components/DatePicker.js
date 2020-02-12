@@ -3,7 +3,7 @@ import { StyleSheet, View, Picker } from 'react-native';
 
 export default class DatePicker extends React.Component {
   static defaultProps= {
-    selectedYear:   (new Date()).getFullYear(),     // Year to initialize the picker to (set to 0 to not have a year)
+    selectedYear:   (new Date()).getFullYear(),     // Year to initialize the picker to
     selectedMonth:  (new Date()).getMonth(),        // Month to initialize the picker to
     selectedDay:    (new Date()).getDate(),         // Day to initailize the picker to
     yearsBack:      123,                            // How many years backwards (from starting year) you want to show

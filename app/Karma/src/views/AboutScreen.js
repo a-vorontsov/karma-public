@@ -7,27 +7,76 @@ const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
 
 class AboutScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            photo: null,
+            birthDay: (new Date()).getDate(),
+            birthMonth: (new Date()).getMonth(),
+            birthYear: null,
+            gender: null,
+            genderSelected: false,
+            birthYearSelected: false,
+            birthYearError: false,
+            genderError: false
+        };
+    }
+
     static navigationOptions = {
         headerShown: false
     }
 
-    state = {
-        photo: null,
-        birthday: null,
-        gender: null,
-    };
+    goToNext() {
+        if (this.state.genderSelected && this.state.birthYearSelected) {
+          this.props.navigation.navigate('ContactInfoScreen', {
+            gender: this.state.gender,
+            birthDay: this.state.birthDay,
+            birthMonth: this.state.birthMonth,
+            birthYear: this.state.birthYear
+          });
+        } else if (this.state.genderSelected && !this.state.birthYearSelected) {
+          this.setState({
+            birthYearSelected: false,
+            birthYearError: true,
+          });
+        } else if (!this.state.genderSelected && this.state.birthYearSelected) {
+          this.setState({
+            genderSelected: false,
+            genderError: true,
+          });
+        } else {
+          this.setState({
+            genderSelected: false,
+            genderError: true,
+            birthYearSelected: false,
+            birthYearError: true,
+          });
+        }
+      }
 
-    goToNext(){
-
+    setGender(selectedGender) {
+        this.setState ({
+            gender: selectedGender
+        });
     }
 
-    handleGenderChange = (gender) => {
-        this.props.changeGender(gender);
-      }
+    setBirthDay(selectedDay) {
+        this.setState ({
+            birthDay: selectedDay
+        });
+    }
     
-    submitAbout = async () => {
-        const { photo, birthday, gender } = this.state;
+    setBirthMonth(selectedMonth) {
+        this.setState ({
+            birthMonth: selectedMonth
+        });
+    }
 
+    setBirthYear(selectedYear) {
+        this.setState ({
+            birthMonth: selectedYear,
+            birthYearSelected: true
+        });
     }
 
     render() {
@@ -60,9 +109,9 @@ class AboutScreen extends React.Component {
             {/* BIRTHDAY SELECTION */}
             <Text style={styles.smallHeaderText}>When is your birthday?</Text>
             <DatePicker
-                onYearValueChange={(year,i) => console.log("Year was changed to: ", year)}
-                onMonthValueChange={(month,i) => console.log("Month was changed to: ", month)}
-                onDayValueChange={(day,i) => console.log("Day was changed to: ", day)}
+                onYearValueChange={(year,i) => this.setBirthYear(year)}
+                onMonthValueChange={(month,i) => this.setBirthMonth(month)}
+                onDayValueChange={(day,i) => this.setBirthDay(day)}
             />
 
             {/* GENDER SELECTION */}
@@ -72,7 +121,7 @@ class AboutScreen extends React.Component {
             <View style={styles.genderContainer}>
               <TouchableOpacity
                 style={[styles.genderButton]}
-                onPress={() => this.handleChangeGender(Male)}
+                onPress={() => this.setGender("Male")}
               >
                 <Text style={styles.buttonText}
                 >Male
@@ -80,7 +129,7 @@ class AboutScreen extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.genderButton]}
-                onPress={() => {backgroundColor: '#00A8A6'}}
+                onPress={() => this.setGender("Female")}
               >
                 <Text style={styles.buttonText}
                 >Female
@@ -90,7 +139,7 @@ class AboutScreen extends React.Component {
             <View style={styles.genderContainer}>
               <TouchableOpacity
                 style={[styles.genderButton]}
-                onPress={() => this.handleChangeGender(Nonbinary)}
+                onPress={() => this.setGender("Non-Binary")}
               >
                 <Text style={styles.buttonText}
                 >Non-Binary
@@ -101,7 +150,7 @@ class AboutScreen extends React.Component {
             {/* FORM SUBMISSION */}
             <TouchableOpacity
                 style={styles.nextButton}
-                onPress={() => {}}  >
+                onPress={() => this.goToNext()}  >
                 <Text style={styles.buttonText, {color: 'white', fontSize: 20}}>Next</Text>
             </TouchableOpacity>
 
