@@ -11,17 +11,17 @@ const app = express();
 const flash = require("express-flash");
 const session = require("express-session");
 const passport = require("passport");
-const auth = require("./auth");
-const users = require("./user-agent");
+const auth = require("./authentication/auth");
+const userAgent = require("./authentication/user-agent");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8000;
 
 // -- Passport config -- //
-const initialisePassport = require("./passport-config");
+const initialisePassport = require("./authentication/passport-config");
 initialisePassport(
   passport,
-  email => users.findByEmail(email),
-  id => users.findById(id)
+  email => userAgent.findByEmail(email),
+  id => userAgent.findById(id)
 );
 
 // @temporary Set view engine (for demoing views)

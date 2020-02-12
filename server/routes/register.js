@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const users = require("../user-agent");
-const auth = require("../auth");
+const users = require("../authentication/user-agent");
+const auth = require("../authentication/auth");
 
 router.get("/", auth.checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const auth = require("../auth");
+const auth = require("../authentication/auth");
 
 router.get("/", auth.checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
