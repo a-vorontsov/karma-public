@@ -1,9 +1,14 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const express = require("express");
 const app = express();
 const flash = require("express-flash");
 const session = require('express-session')
 const passport = require("passport");
-const crypto = require("crypto");
+// const crypto = require("crypto");
+const digest = require("./digest");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8000
 
@@ -75,15 +80,8 @@ app.post(
 
 app.post("/register", checkNotAuthenticated, async (req, res) => {
   try {
-    const randomSalt = crypto.randomBytes(256).toString("base64");
-    const hashedPassword = await crypto
-      .createHash("sha256")
-      .update(req.body.password + randomSalt)
-      .digest("base64");
-    // const hashedPassword = await crypto
-    //   .createHash("sha256")
-    //   .update("password")
-    //   .digest("hex");
+    const randomSalt = digest.getSecureSaltInHex();
+    const hashedPassword = digest.hashPassWithSaltInHex(req.body.password, randomSalt)
     users.push({
       id: Date.now().toString(),
       name: req.body.name,
@@ -98,14 +96,16 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
   console.log(users);
 });
 
-
-// -- CLOSE REQUESTS -- //
+/**
+ * 
+ */
 app.delete("/logout", (req, res) => {
   req.logOut();
   res.redirect("/login");
 });
 
-// Status definition function
+
+// Status definition functions
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();

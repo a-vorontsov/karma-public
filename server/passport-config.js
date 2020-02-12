@@ -1,5 +1,6 @@
 const LocalStrategy = require("passport-local").Strategy;
-const crypto = require("crypto");
+// const crypto = require("crypto");
+const digest = require("./digest");
 
 function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
@@ -9,7 +10,7 @@ function initialize(passport, getUserByEmail, getUserById) {
     }
 
     try {
-      if (await crypto.createHash("sha256").update(password + user.salt).digest("base64") === user.password) {
+      if (digest.hashPassWithSaltInHex(password, user.salt) === user.password) {
         return done(null, user);
       } else {
         return done(null, false, { message: "Incorrect password" });

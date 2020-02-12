@@ -8,7 +8,8 @@
     "start": "node app.js",
     "dev": "nodemon",
     "db-migrate": "node node_modules/db-migrate/bin/db-migrate",
-    "dev-start": "nodemon app.js"
+    "dev-start": "nodemon ./app",
+    "prod-start": "NODE_ENV=production nodemon ./app"
   },
   "author": "",
   "license": "ISC",
