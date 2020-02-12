@@ -1,38 +1,35 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+/**
+ * If in development, import the local environment
+ * configuration file.
+ */
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 const express = require("express");
 const app = express();
 const flash = require("express-flash");
-const session = require('express-session')
+const session = require("express-session");
 const passport = require("passport");
-// const crypto = require("crypto");
 const digest = require("./digest");
+const auth = require("./auth");
+const users = require("./user-agent");
 const methodOverride = require("method-override");
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8000;
+const usersRoute = require("./routes/users");
 
-require('dotenv/config')
-
-// Import Routes
-const usersRoute = require('./routes/users');
-
-const initializePassport = require("./passport-config");
-initializePassport(
+const initialisePassport = require("./passport-config");
+initialisePassport(
   passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id),
-  salt => users.find(user => user.salt === salt)
+  email => users.findByEmail(email),
+  id => users.findById(id)
 );
 
-// Temporary. Since we don't yet have a DB connection
-const users = [];
-
-// Set view engine (for demoing views)
-app.set('view-engine', 'ejs')
+// @temporary Set view engine (for demoing views)
+app.set("view-engine", "ejs");
 
 // -- app use -- //
-app.use(express.json())
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 app.use(
@@ -45,7 +42,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
-app.use('/users', usersRoute);
+app.use("/users", usersRoute);
 
 // Connect to DB
 // TODO:
@@ -53,24 +50,23 @@ app.use('/users', usersRoute);
 // -- GET REQUESTS -- //
 
 // Render and direct to view based on user auth status
-app.get("/", checkAuthenticated, (req, res) => {
+app.get("/", auth.checkAuthenticated, (req, res) => {
   res.render("index.ejs", { name: req.user.name });
 });
 
-app.get("/login", checkNotAuthenticated, (req, res) => {
+app.get("/login", auth.checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/register", checkNotAuthenticated, (req, res) => {
+app.get("/register", auth.checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
 });
-
 
 // -- POST REQUESTS -- //
 
 app.post(
   "/login",
-  checkNotAuthenticated,
+  auth.checkNotAuthenticated,
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
@@ -78,46 +74,23 @@ app.post(
   })
 );
 
-app.post("/register", checkNotAuthenticated, async (req, res) => {
+app.post("/register", auth.checkNotAuthenticated, async (req, res) => {
   try {
-    const randomSalt = digest.getSecureSaltInHex();
-    const hashedPassword = digest.hashPassWithSaltInHex(req.body.password, randomSalt)
-    users.push({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      salt: randomSalt,
-      password: hashedPassword
-    });
+    const secureSalt = digest.getSecureSaltInHex();
+    const hashedPassword = digest.hashPassWithSaltInHex(
+      req.body.password,
+      secureSalt
+    );
+    users.pushNewUser(req, secureSalt, hashedPassword);
     res.redirect("/login");
   } catch {
     res.redirect("/register");
   }
-  console.log(users);
 });
 
-/**
- * 
- */
 app.delete("/logout", (req, res) => {
   req.logOut();
   res.redirect("/login");
 });
-
-
-// Status definition functions
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/");
-  }
-  next();
-}
 
 app.listen(PORT, console.log(`Listening on port ${PORT} ...`));

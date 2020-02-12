@@ -21,24 +21,28 @@ function getSecureSaltInBase64() {
 /**
  * Hashes the given password and salt concatenated with the
  * SHA-256 crypto standard hash function and returns the value in hex.
+ * @param password
+ * @param secureSalt
  * @returns 32-byte hash in hex
  */
-function hashPassWithSaltInHex(password, randomSalt) {
+function hashPassWithSaltInHex(password, secureSalt) {
   return crypto
     .createHash("sha256")
-    .update(password + randomSalt)
+    .update(password + secureSalt)
     .digest("hex");
 }
 
 /**
  * Hashes the given password and salt concatenated with the
  * SHA-256 crypto standard hash function and returns the value in Base64.
+ * @param password
+ * @param secureSalt
  * @returns 32-byte hash in Base64
  */
-function hashPassWithSaltInBase64(password, randomSalt) {
+function hashPassWithSaltInBase64(password, secureSalt) {
   return crypto
     .createHash("sha256")
-    .update(password + randomSalt)
+    .update(password + secureSalt)
     .digest("base64");
 }
 
