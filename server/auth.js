@@ -28,7 +28,19 @@ function checkNotAuthenticated(req, res, next) {
   next();
 }
 
+function requireAuthentication(req, res, next) {
+  if (
+    !req.isAuthenticated() &&
+    req.originalUrl !== "/login" &&
+    req.originalUrl !== "/register"
+  ) {
+    res.redirect("/login");
+  }
+  return next();
+}
+
 module.exports = {
   checkAuthenticated: checkAuthenticated,
-  checkNotAuthenticated: checkNotAuthenticated
+  checkNotAuthenticated: checkNotAuthenticated,
+  requireAuthentication: requireAuthentication
 };

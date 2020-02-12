@@ -16,7 +16,7 @@ const auth = require("./auth");
 const users = require("./user-agent");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8000;
-const usersRoute = require("./routes/users");
+
 
 const initialisePassport = require("./passport-config");
 initialisePassport(
@@ -42,7 +42,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
-app.use("/users", usersRoute);
+app.use("/", require("./routes/index"));
+app.use("/login", require("./routes/login"));
+app.use("/register", require("./routes/register"));
+app.use("/users", require("./routes/users"));
 
 // Connect to DB
 // TODO:
@@ -50,17 +53,7 @@ app.use("/users", usersRoute);
 // -- GET REQUESTS -- //
 
 // Render and direct to view based on user auth status
-app.get("/", auth.checkAuthenticated, (req, res) => {
-  res.render("index.ejs", { name: req.user.name });
-});
-
-app.get("/login", auth.checkNotAuthenticated, (req, res) => {
-  res.render("login.ejs");
-});
-
-app.get("/register", auth.checkNotAuthenticated, (req, res) => {
-  res.render("register.ejs");
-});
+// app.all("*", auth.requireAuthentication);
 
 // -- POST REQUESTS -- //
 
