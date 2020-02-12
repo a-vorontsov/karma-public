@@ -2,11 +2,11 @@ import React from "react";
 
 import {
     TouchableOpacity,
-    Text
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import Styles from "../../styles/Styles";
+import { RegularText } from "../text";
 
 export default class GradientButton extends React.Component {
     render() {
@@ -16,7 +16,7 @@ export default class GradientButton extends React.Component {
                 <TouchableOpacity
                     onPress={onPress}
                     activeOpacity={0.9}>
-                    <Text style={{fontSize: 20, color: "white"}}>{title}</Text>
+                    <RegularText style={{fontSize: 20, color: "white"}}>{title}</RegularText>
                 </TouchableOpacity>
             </LinearGradient>
         );

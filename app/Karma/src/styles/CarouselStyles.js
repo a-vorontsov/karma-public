@@ -13,11 +13,11 @@ const itemHorizontalMargin = wp(2);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-export const itemHeight = itemWidth * 1.1;
+export const itemHeight = itemWidth * 1.2;
 
 const CarouselStyles = StyleSheet.create({
     slider: {
-        marginTop: 16,
+        marginTop: 0,
         overflow: "visible",
     },
     itemContainer: {
@@ -27,7 +27,6 @@ const CarouselStyles = StyleSheet.create({
         overflow: "visible",
     },
     item: {
-        padding: 16,
         backgroundColor: "white",
         position: "absolute",
         top: 8,
@@ -37,6 +36,7 @@ const CarouselStyles = StyleSheet.create({
         borderRadius: 6,
         borderBottomWidth: 16,
         borderBottomColor: "#00bab9",
+        paddingTop: 16
     },
     shadow: {
         shadowColor: "#000",

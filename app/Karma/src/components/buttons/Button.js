@@ -6,6 +6,7 @@ import {
 } from "react-native";
 
 import Styles from "../../styles/Styles";
+import { RegularText } from "../text";
 
 export default class Button extends React.Component {
     render() {
@@ -15,7 +16,7 @@ export default class Button extends React.Component {
                 style={Styles.roundButton}
                 onPress={onPress}
                 activeOpacity={0.9}>
-                <Text style={{fontSize: 20, color: "white"}}>{title}</Text>
+                <RegularText style={{fontSize: 20, color: "white"}}>{title}</RegularText>
             </TouchableOpacity>
         );
     }

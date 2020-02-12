@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { RegularText } from "../components/text";
+import { View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
+import { RegularText, LogoText } from "../components/text";
 
 
 class WelcomeScreen extends Component {
@@ -12,18 +12,13 @@ class WelcomeScreen extends Component {
             <View style={styles.container}>
 
                 <View style={{ flex: 2, justifyContent: 'center' }}>
-                    <RegularText style={[styles.text, { fontSize: 70 }]}>KARMA</RegularText>
+                    <LogoText style={[styles.text, { fontSize: 70 }]}>KARMA</LogoText>
                     <RegularText style={[styles.text, { fontSize: 40 }]}>lorem ipsum</RegularText>
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 40 }}>
-<<<<<<< HEAD
-                    <TouchableOpacity style={[styles.button, { marginBottom: 20 }]} onPress={this._onPressButton}>
-                        <RegularText style={[styles.text, { fontSize: 20 }]}>Sign Up</RegularText>
-=======
                     <TouchableOpacity style={[styles.button, { marginBottom: 20 }]} onPress={() => navigate("InitSignup")}>
-                        <Text style={[styles.text, { fontSize: 20 }]}>Sign Up</Text>
->>>>>>> Update routing between new welcome page and initial signup
+                        <RegularText style={[styles.text, { fontSize: 20 }]}>Sign Up</RegularText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this._onPressButton}>
