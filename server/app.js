@@ -76,12 +76,7 @@ app.post(
 
 app.post("/register", auth.checkNotAuthenticated, async (req, res) => {
   try {
-    const secureSalt = digest.getSecureSaltInHex();
-    const hashedPassword = digest.hashPassWithSaltInHex(
-      req.body.password,
-      secureSalt
-    );
-    users.pushNewUser(req, secureSalt, hashedPassword);
+    users.register(req);
     res.redirect("/login");
   } catch {
     res.redirect("/register");
