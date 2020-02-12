@@ -4,15 +4,23 @@ const twilioVerification = require('../verification');
 
 
 router.post('/phone/create', (req, res) => {
-    twilioVerification.startPhoneVerification(req.body.number)
-        .then(verification => res.send(verification))
-        .then(verification => console.log("Created phone verification ID " + verification.sid));
+    try {
+        twilioVerification.startPhoneVerification(req.body.number)
+            .then(verification => res.send(verification))
+            .then(verification => console.log("Created phone verification ID " + verification.sid));
+    } catch (e) {
+        res.send(e);
+    }
 });
 
 router.post('/phone/check', (req, res) => {
-    twilioVerification.checkPhoneVerification(req.body.number, req.body.code)
-        .then(verification => res.send(verification))
-        .then(verification => console.log("Checked phone verification ID " + verification.sid + " - status: " + verification.status));
+    try {
+        twilioVerification.checkPhoneVerification(req.body.number, req.body.code)
+            .then(verification => res.send(verification))
+            .then(verification => console.log("Checked phone verification ID " + verification.sid + " - status: " + verification.status));
+    } catch (e) {
+        res.send(e);
+    }
 });
 
 module.exports = router;

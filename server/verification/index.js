@@ -5,16 +5,34 @@ const serviceSid = process.env.TWILIO_SERVICE_SID;
 
 const client = require('twilio')(accountSid, authToken);
 
+const isPhoneNumberValid = (number) => {
+    const re = /^\+[1-9]\d{1,14}$/;
+    return re.test(number);
+};
+
+const InvalidPhoneNumberException = {
+    code: 400,
+    message: "Invalid phone number",
+};
+
 module.exports = {
     startPhoneVerification: (number) => { // number in E.164 format (https://www.twilio.com/docs/glossary/what-e164)
-        return client.verify.services(serviceSid)
-            .verifications
+        if (!isPhoneNumberValid(number)) {
+            throw InvalidPhoneNumberException;
+        }
+        return client.verify.services(serviceSid).verifications
             .create({to: number, channel: 'sms'});
     },
 
     checkPhoneVerification: (number, code) => {
+        if (!isPhoneNumberValid(number)) {
+            throw InvalidPhoneNumberException;
+        }
+
         return client.verify.services(serviceSid)
             .verificationChecks
             .create({to: number, code: code});
     },
+
+    isPhoneNumberValid: isPhoneNumberValid,
 };
