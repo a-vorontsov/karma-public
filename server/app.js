@@ -14,6 +14,7 @@ const passport = require("passport");
 const auth = require("./authentication/auth");
 const userAgent = require("./authentication/user-agent");
 const methodOverride = require("method-override");
+const helmet = require("helmet");
 const PORT = process.env.PORT || 8000;
 
 // -- Passport config -- //
@@ -28,6 +29,7 @@ initialisePassport(
 app.set("view-engine", "ejs");
 
 // -- MIDDLEWARE -- //
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
