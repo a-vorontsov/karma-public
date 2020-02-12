@@ -41,11 +41,25 @@ jobs:
   # validate code style with eslint
   eslint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        #node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x] # build for current LTS Node.JS version, 12.x
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          files: server/ # run eslint on backend files only
+          node-version: ${{ matrix.node-version }}
+      - run: npm install --prefix server
+
+      - name: Run ESLint
+        uses: ninosaurus/eslint-check@v5
+        with:
+          eslint-config-path: "./server/.eslintrc.js"
+          custom-directory: "./server"
+          repo-token: ${{secrets.GITHUB_TOKEN}}
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
