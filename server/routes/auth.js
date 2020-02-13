@@ -45,4 +45,27 @@ router.get("/google/fail", (req, res) => {
   res.status(400).send({ message: "Failed to authenticate with Google" });
 });
 
+// -- OAUTH - Linkedin -- //
+
+router.get(
+  "/linkedin",
+  passport.authenticate("linkedin", { state: "SOME STATE" })
+);
+
+router.get(
+  "/linkedin/callback",
+  passport.authenticate("google", {
+    successRedirect: "/auth/linkedin/success",
+    failureRedirect: "/auth/linkedin/fail"
+  })
+);
+
+router.get("/linkedin/success", (req, res) => {
+  res.status(200).send({ message: "Successful authentication with Linkedin" });
+});
+
+router.get("/linkedin/fail", (req, res) => {
+  res.status(400).send({ message: "Failed to authenticate with Linkedin" });
+});
+
 module.exports = router;

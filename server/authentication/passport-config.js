@@ -1,6 +1,7 @@
 const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const digest = require("./digest");
 const users = require("../authentication/user-agent");
 
@@ -12,9 +13,8 @@ const users = require("../authentication/user-agent");
  * @param {function} getUserById
  */
 function initialise(passport, getUserByEmail, getUserById) {
-  
   // -- LOCAL -- //
-  
+
   const authenticateUser = async (email, password, done) => {
     const user = getUserByEmail(email);
     if (user == null) {
@@ -41,30 +41,32 @@ function initialise(passport, getUserByEmail, getUserById) {
 
   // -- OAUTH - Facebook -- //
 
-  passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: process.env.FACEBOOK_CALLBACK_URL
-  },
- function(accessToken, refreshToken, profile, done) {
-    const user = users.findByEmail(profile.email);
-    if (user !== null) {
-      return done(null, user);
-    }
-    else {
-      return done(null, false, { message: "Email / user does not exist" });
-    }
-  }
-));
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: "http://127.0.0.1:8000/auth/facebook/callback"
+      },
+      function(accessToken, refreshToken, profile, done) {
+        const user = users.findByEmail(profile.email);
+        if (user !== null) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Email / user does not exist" });
+        }
+      }
+    )
+  );
 
   // -- OAUTH - Google -- //
 
   passport.use(
     new GoogleStrategy(
       {
-        consumerKey: process.env.GOOGLE_CLIENT_ID,
-        consumerSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK_URL
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "http://127.0.0.1:8000/auth/google/callback"
       },
       function(token, tokenSecret, profile, done) {
         const user = users.findByEmail(profile.email);
@@ -77,7 +79,26 @@ function initialise(passport, getUserByEmail, getUserById) {
     )
   );
 
+  // -- OAUTH - Linkedin -- //
 
+  passport.use(
+    new LinkedInStrategy(
+      {
+        clientID: process.env.LINKEDIN_KEY,
+        clientSecret: process.env.LINKEDIN_SECRET,
+        callbackURL: "http://127.0.0.1:8000/auth/linkedin/callback",
+        scope: ["r_emailaddress", "r_basicprofile"]
+      },
+      function(accessToken, refreshToken, profile, done) {
+        const user = users.findByEmail(profile.email);
+        if (user !== null) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Email / user does not exist" });
+        }
+      }
+    )
+  );
 }
 
 module.exports = initialise;
