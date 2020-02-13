@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
 
 
-class ContactInfoInputScreen extends React.Component {
+class ContactInfoScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default ContactInfoInputScreen
+export default ContactInfoScreen
