@@ -4,6 +4,15 @@ const digest = require("./digest");
 const users = [];
 var nextId = users.length;
 
+users.push({
+  id: "admin0",
+  username: "admin",
+  name: "admin",
+  email: "dan@dan.com",
+  salt: "d7895ef4ceb93b9808818dd1246026cef2a50a2351b447b29e08319d41b86713",
+  password: "bf6d74ab2d96afe33cd66ad1e9dc8eeb2c5e4a1d9d8001a2cb501708a02f1dc4"
+});
+
 /**
  * Register a new user based on the HTTP request.
  * @param req 
@@ -44,9 +53,22 @@ function pushNewUser(req, secureSalt, hashedPassword) {
  * @param secureSalt 
  * @param hashedPassword 
  */
-function updatePassword(user, secureSalt, hashedPassword) {
+function resetPassword(user, secureSalt, hashedPassword) {
   user.salt = secureSalt;
   user.password = hashedPassword;
+}
+
+/**
+ * Update password for an already existing, logged-in
+ * user.
+ * @param req 
+ */
+function updatePassword(req) {
+  console.log("update password called");
+}
+
+function isCorrectPassword(user, password) {
+  return user.password === digest.hashPassWithSaltInHex(password, user.salt);
 }
 
 /**
@@ -77,5 +99,7 @@ module.exports = {
   register: register,
   findByEmail: findByEmail,
   findByUsername: findByUsername,
-  findById: findById
+  findById: findById,
+  isCorrectPassword: isCorrectPassword,
+  updatePassword: updatePassword
 };

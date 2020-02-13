@@ -50,6 +50,7 @@ app.use("/login", require("./routes/login"));
 app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
+app.use("/edit/password", require("./routes/change-password"));
 
 // Connect to DB
 // TODO:
