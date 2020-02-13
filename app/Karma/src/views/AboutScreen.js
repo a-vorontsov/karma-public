@@ -111,19 +111,19 @@ class AboutScreen extends React.Component {
                 onPhotoSelect={avatar => {
                     if (avatar) {
                         console.log('Image base64 string: ', avatar)
-                        var photo = {
-                            uri: avatar,
-                            type: 'image/jpeg',
-                            name: 'profile.jpg',
-                        };
+                    //     var photo = {
+                    //         uri: avatar,
+                    //         type: 'image/jpeg',
+                    //         name: 'profile.jpg',
+                    //     };
                         
-                        var body = new FormData();
-                        body.append('authToken', 'secret');
-                        body.append('photo', photo);
+                    //     var body = new FormData();
+                    //     body.append('authToken', 'secret');
+                    //     body.append('photo', photo);
                         
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('POST', serverURL);
-                        xhr.send(body);
+                    //     var xhr = new XMLHttpRequest();
+                    //     xhr.open('POST', serverURL);
+                    //     xhr.send(body);
                     }
                 }}
                 >
