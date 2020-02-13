@@ -24,7 +24,10 @@ router.get("/facebook/fail", (req, res) => {
 
 // -- OAUTH - Google -- //
 
-router.get('/auth/google', passport.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }));
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
 
 router.get(
   "/google/callback",

@@ -1,6 +1,6 @@
 const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-const GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const digest = require("./digest");
 const users = require("../authentication/user-agent");
 
@@ -62,16 +62,15 @@ function initialise(passport, getUserByEmail, getUserById) {
   passport.use(
     new GoogleStrategy(
       {
-        consumerKey: process.env.GOOGLE_CONSUMER_KEY,
-        consumerSecret: process.env.GOOGLE_CONSUMER_SECRET,
+        consumerKey: process.env.GOOGLE_CLIENT_ID,
+        consumerSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL
       },
       function(token, tokenSecret, profile, done) {
         const user = users.findByEmail(profile.email);
         if (user !== null) {
           return done(null, user);
-        }
-        else {
+        } else {
           return done(null, false, { message: "Email / user does not exist" });
         }
       }
