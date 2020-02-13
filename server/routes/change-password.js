@@ -14,13 +14,13 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
     // To send it as json array
     res.send(passStrengthTest.errors);
   } else if (req.body.newpassword !== req.body.confirmpassword) {
-    res.send("Passwords do not match.");
+    res.status(400).send({ message: "Passwords do not match." });
   } else if (!users.isCorrectPassword(req.user, req.body.oldpassword)) {
-    res.send("Incorrect old password.");
+    res.status(400).send({ message: "Incorrect old password." });
   } else {
     try {
       users.updatePassword(req);
-      res.send("Success.");
+      res.status(200).send({ message: "Success" });
     } catch {
       res.redirect("/edit/password");
     }

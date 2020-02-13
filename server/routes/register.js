@@ -22,13 +22,16 @@ router.post("/", auth.checkNotAuthenticated, async (req, res) => {
     try {
       users.register(req);
       res.redirect("/login");
-    } catch {
-      res.redirect("/register");
+      // res.status(200).send({ message: "Successful registration." });
+    } catch (e) {
+      // res.redirect("/register");
+      res.status(400).send({ message: e.message });
     }
   } else {
     // To send it as json array
     // res.send(passStrengthTest.errors);
-    res.redirect("/register");
+    // res.redirect("/register");
+    res.status(400).send({ message: passStrengthTest.errors });
   }
 });
 
