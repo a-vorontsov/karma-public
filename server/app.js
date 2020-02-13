@@ -10,20 +10,12 @@ const express = require("express");
 const app = express();
 const flash = require("express-flash");
 const session = require("express-session");
-const passport = require("passport");
 const auth = require("./authentication/check-auth");
-const userAgent = require("./authentication/user-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 const PORT = process.env.PORT || 8000;
-
-// -- Passport config -- //
-const initialisePassport = require("./authentication/passport-config");
-initialisePassport(
-  passport,
-  email => userAgent.findByEmail(email),
-  id => userAgent.findById(id)
-);
+const passport = require("passport");
+require("./authentication/passport-config");
 
 // @temporary Set view engine (for demoing views)
 app.set("view-engine", "ejs");
