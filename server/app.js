@@ -15,5 +15,4 @@ app.use('/users', usersRoute);
 app.use('/login/forgotPassword', forgotPasswordRoute);
 app.use('/verify', verificationRoute);
 
-
 app.listen(PORT, console.log(`Listening on port ${PORT} ...`));

@@ -17,7 +17,7 @@ const updateUserToken = (email, token)=>{
             console.log(`User with email ${email} updated successfuly`);
         }
     });
-}
+};
 
 router.get('/', (req, res) => {
     res.send('forgot password screen');
