@@ -8,8 +8,8 @@ router.get('/', (req, res) => {
         if (err) {
             return err;
         }
-        res.status(200).send({users: result.rows})
-    })
+        res.status(200).send({users: result.rows});
+    });
 });
 
 router.get('/:id', (req, res) => {
@@ -18,11 +18,11 @@ router.get('/:id', (req, res) => {
         if (err) {
             return err;
         } else if (!user) {
-            res.status(404).send({message:`There is no user with id ${req.params.id}`});
+            res.status(404).send({message: `There is no user with id ${req.params.id}`});
             return;
         }
-        res.send(user)
-    })
+        res.send(user);
+    });
 });
 
 module.exports = router;
