@@ -8,12 +8,12 @@ const transporter = nodemailer.createTransport({
     },
 });
 module.exports = {
-    sendToken : (email,token)=>{
+    sendToken: (email, token)=>{
         const mailOptions = {
             from: `${process.env.EMAIL_ADDRESS}`,
             to: `${email}`,
             subject: 'Reset Password Verification Code',
-            text: `K-${token} is your karma verification code`
+            text: `K-${token} is your karma verification code`,
         };
         console.log(`Sending mail to ${email}`);
         transporter.sendMail(mailOptions, (err, response) => {
@@ -23,5 +23,5 @@ module.exports = {
                 console.log(`Email with token sent to ${email}`);
             }
         });
-    }
-}
+    },
+};
