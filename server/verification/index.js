@@ -10,15 +10,10 @@ const isPhoneNumberValid = (number) => {
     return re.test(number);
 };
 
-const InvalidPhoneNumberException = {
-    code: 400,
-    message: "Invalid phone number",
-};
-
 module.exports = {
     startPhoneVerification: (number) => { // number in E.164 format (https://www.twilio.com/docs/glossary/what-e164)
         if (!isPhoneNumberValid(number)) {
-            throw InvalidPhoneNumberException;
+            throw new Error("Invalid phone number: '" + number + "'");
         }
         return client.verify.services(serviceSid).verifications
             .create({to: number, channel: 'sms'});
@@ -26,7 +21,7 @@ module.exports = {
 
     checkPhoneVerification: (number, code) => {
         if (!isPhoneNumberValid(number)) {
-            throw InvalidPhoneNumberException;
+            throw new Error("Invalid phone number: '" + number + "'");
         }
 
         return client.verify.services(serviceSid)

@@ -9,7 +9,7 @@ router.post('/phone/create', (req, res) => {
             .then(verification => res.send(verification))
             .then(verification => console.log("Created phone verification ID " + verification.sid));
     } catch (e) {
-        res.send(e);
+        res.status(400).send({message: e.message});
     }
 });
 
@@ -19,7 +19,7 @@ router.post('/phone/check', (req, res) => {
             .then(verification => res.send(verification))
             .then(verification => console.log("Checked phone verification ID " + verification.sid + " - status: " + verification.status));
     } catch (e) {
-        res.send(e);
+        res.status(400).send({message: e.message});
     }
 });
 
