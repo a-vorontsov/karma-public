@@ -51,7 +51,9 @@ app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
 app.use("/edit/password", require("./routes/change-password"));
-app.use("/auth", require("./routes/auth"));
+app.use("/auth/facebook", require("./routes/facebook"));
+app.use("/auth/google", require("./routes/google"));
+app.use("/auth/linkedin", require("./routes/linkedin"));
 
 // Connect to DB
 // TODO:
