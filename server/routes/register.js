@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const users = require("../authentication/user-agent");
-const auth = require("../authentication/auth");
+const auth = require("../authentication/check-auth");
 var owasp = require("owasp-password-strength-test");
 
 owasp.config({

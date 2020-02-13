@@ -11,7 +11,7 @@ const app = express();
 const flash = require("express-flash");
 const session = require("express-session");
 const passport = require("passport");
-const auth = require("./authentication/auth");
+const auth = require("./authentication/check-auth");
 const userAgent = require("./authentication/user-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
@@ -51,6 +51,7 @@ app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
 app.use("/edit/password", require("./routes/change-password"));
+app.use("/auth", require("./routes/auth"));
 
 // Connect to DB
 // TODO:

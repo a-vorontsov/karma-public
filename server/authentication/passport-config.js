@@ -1,5 +1,7 @@
 const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 const digest = require("./digest");
+const users = require("../authentication/user-agent");
 
 /**
  * Passport's boilerplate.
@@ -9,6 +11,9 @@ const digest = require("./digest");
  * @param {function} getUserById
  */
 function initialise(passport, getUserByEmail, getUserById) {
+  
+  // -- LOCAL -- //
+  
   const authenticateUser = async (email, password, done) => {
     const user = getUserByEmail(email);
     if (user == null) {
@@ -32,6 +37,24 @@ function initialise(passport, getUserByEmail, getUserById) {
   passport.deserializeUser((id, done) => {
     return done(null, getUserById(id));
   });
+
+  // -- OAUTH -- //
+
+  passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL
+  },
+ function(accessToken, refreshToken, profile, done) {
+    const user = users.findByEmail(profile.email);
+    if (user !== null) {
+      return done(null, user);
+    }
+    else {
+      return done(null, false, { message: "Email / user does not exist" });
+    }
+  }
+));
 }
 
 module.exports = initialise;
