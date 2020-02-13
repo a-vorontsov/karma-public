@@ -15,7 +15,7 @@ users.push({
 
 /**
  * Register a new user based on the HTTP request.
- * @param req 
+ * @param req
  */
 function register(req) {
   const secureSalt = digest.getSecureSaltInHex();
@@ -30,9 +30,9 @@ function register(req) {
  * Push a new user to the database.
  * This function should only be accessible from
  * withing this module.
- * @param req 
- * @param secureSalt 
- * @param hashedPassword 
+ * @param req
+ * @param secureSalt
+ * @param hashedPassword
  */
 function pushNewUser(req, secureSalt, hashedPassword) {
   users.push({
@@ -48,10 +48,10 @@ function pushNewUser(req, secureSalt, hashedPassword) {
 }
 
 /**
- * 
- * @param {Object} user 
- * @param secureSalt 
- * @param hashedPassword 
+ *
+ * @param {Object} user
+ * @param secureSalt
+ * @param hashedPassword
  */
 function resetPassword(user, secureSalt, hashedPassword) {
   user.salt = secureSalt;
@@ -61,7 +61,7 @@ function resetPassword(user, secureSalt, hashedPassword) {
 /**
  * Update password for an already existing, logged-in
  * user.
- * @param req 
+ * @param req
  */
 function updatePassword(req) {
   console.log("update password called");
@@ -73,7 +73,7 @@ function isCorrectPassword(user, password) {
 
 /**
  * Return user with that email
- * @param email 
+ * @param email
  */
 function findByEmail(email) {
   return users.find(user => user.email === email);
@@ -81,7 +81,7 @@ function findByEmail(email) {
 
 /**
  * Return user with that username
- * @param username 
+ * @param username
  */
 function findByUsername(username) {
   return users.find(user => user.username === username);
@@ -89,7 +89,7 @@ function findByUsername(username) {
 
 /**
  * Return user with that id
- * @param id 
+ * @param id
  */
 function findById(id) {
   return users.find(user => user.id === id);
