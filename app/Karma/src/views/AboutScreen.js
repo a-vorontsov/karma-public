@@ -3,6 +3,7 @@ import { View, Text, Image, Alert, StyleSheet, Dimensions, KeyboardAvoidingView,
 import { ScrollView } from "react-native-gesture-handler";
 import DatePicker from '../components/DatePicker';
 import PhotoUpload from 'react-native-photo-upload';
+import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
@@ -32,6 +33,7 @@ class AboutScreen extends React.Component {
     goToNext() {
         if (this.state.genderSelected && this.state.birthYearSelected) {
           this.props.navigation.navigate('ContactInfoScreen', {
+            photo: this.state.photo,
             gender: this.state.gender,
             birthDay: this.state.birthDay,
             birthMonth: this.state.birthMonth,
@@ -87,6 +89,20 @@ class AboutScreen extends React.Component {
         });
     }
 
+    setPhoto(selectedPhoto) {
+        this.setState ({
+            photo: selectedPhoto,
+        });
+    }
+
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null){
+            Alert.alert('Success!','Your new photo has been uploaded.')
+        } else (
+            Alert.alert('Error','Please upload a photo.')
+        )
+    }
+
     render() {
         return(
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
@@ -99,10 +115,10 @@ class AboutScreen extends React.Component {
                     onPress={() => this.goToPrevious()}>
                         {/* arrow button */}
                     </TouchableOpacity>
-                    <Text style={styles.headerText}>About</Text>
+                    <RegularText style={styles.headerText}>About</RegularText>
                 </View>
-                <Text style={styles.subheaderText}>Tell us about yourself</Text>
-                <Text style={styles.subText}>Charities need to know this information about volunteers.</Text>
+                <RegularText style={styles.subheaderText}>Tell us about yourself</RegularText>
+                <RegularText style={styles.subText}>Charities need to know this information about volunteers.</RegularText>
             </View>
 
             {/* PHOTO UPLOAD */}
@@ -110,20 +126,8 @@ class AboutScreen extends React.Component {
             <PhotoUpload
                 onPhotoSelect={avatar => {
                     if (avatar) {
-                        console.log('Image base64 string: ', avatar)
-                    //     var photo = {
-                    //         uri: avatar,
-                    //         type: 'image/jpeg',
-                    //         name: 'profile.jpg',
-                    //     };
-                        
-                    //     var body = new FormData();
-                    //     body.append('authToken', 'secret');
-                    //     body.append('photo', photo);
-                        
-                    //     var xhr = new XMLHttpRequest();
-                    //     xhr.open('POST', serverURL);
-                    //     xhr.send(body);
+                        console.log('Image base64 string: ', avatar),
+                        this.setPhoto(avatar)
                     }
                 }}
                 >
@@ -138,13 +142,16 @@ class AboutScreen extends React.Component {
                     source={require('../assets/color.png')}
                 />
             </PhotoUpload>
-                <TouchableOpacity style={styles.uploadButton}>
-                    <Text style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</Text>
+                <TouchableOpacity
+                    style={styles.uploadButton}
+                    onPress={() => this.uploadPhoto(this.state.photo)}
+                    >
+                    <RegularText style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</RegularText>
                 </TouchableOpacity>
             </View>
 
             {/* BIRTHDAY SELECTION */}
-            <Text style={styles.smallHeaderText}>When is your birthday?</Text>
+            <RegularText style={styles.smallHeaderText}>When is your birthday?</RegularText>
             <DatePicker
                 onYearValueChange={(year,i) => this.setBirthYear(year)}
                 onMonthValueChange={(month,i) => this.setBirthMonth(month)}
@@ -152,25 +159,25 @@ class AboutScreen extends React.Component {
             />
 
             {/* GENDER SELECTION */}
-            <Text style={styles.smallHeaderText}>
+            <RegularText style={styles.smallHeaderText}>
                 Choose your gender
-            </Text>
+            </RegularText>
             <View style={styles.genderContainer}>
               <TouchableOpacity
                 style={[this.state.gender == "Male" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Male")}
               >
-                <Text style={[this.state.gender == "Male" ? styles.buttonTextSelected : styles.buttonText]}
+                <RegularText style={[this.state.gender == "Male" ? styles.buttonTextSelected : styles.buttonText]}
                 >Male
-                </Text>
+                </RegularText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[this.state.gender == "Female" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Female")}
               >
-                <Text style={[this.state.gender == "Female" ? styles.buttonTextSelected : styles.buttonText]}
+                <RegularText style={[this.state.gender == "Female" ? styles.buttonTextSelected : styles.buttonText]}
                 >Female
-                </Text>
+                </RegularText>
               </TouchableOpacity>
             </View>
             <View style={styles.genderContainer}>
@@ -178,9 +185,9 @@ class AboutScreen extends React.Component {
                 style={[this.state.gender == "Non-Binary" ? styles.genderButtonSelected : styles.genderButton]}
                 onPress={() => this.setGender("Non-Binary")}
               >
-                <Text style={[this.state.gender == "Non-Binary" ? styles.buttonTextSelected : styles.buttonText]}
+                <RegularText style={[this.state.gender == "Non-Binary" ? styles.buttonTextSelected : styles.buttonText]}
                 >Non-Binary
-                </Text>
+                </RegularText>
               </TouchableOpacity>
             </View>
 
@@ -188,7 +195,7 @@ class AboutScreen extends React.Component {
             <TouchableOpacity
                 style={styles.nextButton}
                 onPress={() => this.goToNext()}  >
-                <Text style={styles.buttonText, {color: 'white', fontSize: 20}}>Next</Text>
+                <RegularText style={styles.buttonText, {color: 'white', fontSize: 20}}>Next</RegularText>
             </TouchableOpacity>
         </ScrollView>
         </KeyboardAvoidingView>
@@ -212,7 +219,6 @@ const styles = StyleSheet.create({
     },
     subheaderText: {
         fontSize: 30,
-        fontFamily: 'Arial',
         textAlignVertical: 'top',
         textAlign: 'left',
         paddingTop: 20,
@@ -221,7 +227,6 @@ const styles = StyleSheet.create({
     },
     smallHeaderText: {
         fontSize: 20,
-        fontFamily: 'Arial',
         textAlignVertical: 'top',
         textAlign: 'left',
         paddingTop: 20,
@@ -230,7 +235,6 @@ const styles = StyleSheet.create({
     },
     subText: {
         fontSize: 15,
-        fontFamily: 'Arial',
         textAlignVertical: 'top',
         textAlign: 'left',
         paddingTop: 0,
@@ -241,7 +245,6 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#00A8A6',
         paddingHorizontal: 30,
-        paddingVertical: 15,
         marginTop: 40,
         borderRadius: 30,
         flexDirection: 'row', 
