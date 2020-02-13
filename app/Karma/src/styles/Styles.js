@@ -1,8 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, StatusBar } from "react-native";
 
 const Styles = StyleSheet.create({
     center: {
         marginHorizontal: "auto"
+    },
+    safeAreaContainer: {
+        flex: 1,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     container: {
         flex: 1,

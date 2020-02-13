@@ -37,7 +37,7 @@ export default class InitSignupScreen extends React.Component {
     }
     render() {
         return (
-            <SafeAreaView style={Styles.container}>
+            <SafeAreaView style={Styles.safeAreaContainer}>
                 <View style={[Styles.pv8, Styles.ph24]}>
                     <TitleText>Welcome to <LogoText style={{fontSize: 36}}>Karma</LogoText></TitleText>
                     <RegularText style={Styles.pv8}>Lorem ipsum dolor sit amet, consectetur adip isicing elit, sed do eiusmod.</RegularText>
