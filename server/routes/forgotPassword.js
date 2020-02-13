@@ -37,14 +37,10 @@ router.post('/', (req, res) => {
         }
         //generate 6 digit code
         const token = randomize('0', 6);
-        //update the db
         try {
+            //update the db
             updateUserToken(email,token);    
-        } catch (error) {
-            return res.status(500).send(err);
-        }
-        //send the email
-        try {
+            //send the email
             mailSender.sendToken(email,token);
         } catch (error) {
             return res.status(500).send(err);
@@ -79,7 +75,6 @@ router.post('/confirm', (req, res) => {
             res.status(401).send("Token expired");
         }
     });
-
 });
 
 module.exports = router;
