@@ -2,7 +2,7 @@ import React from "react";
 
 import {
     View,
-    StatusBar,
+    SafeAreaView
 } from "react-native";
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -37,7 +37,7 @@ export default class InitSignupScreen extends React.Component {
     }
     render() {
         return (
-            <View style={Styles.container}>
+            <SafeAreaView style={Styles.container}>
                 <View style={[Styles.pv8, Styles.ph24]}>
                     <TitleText>Welcome to <LogoText style={{fontSize: 36}}>Karma</LogoText></TitleText>
                     <RegularText style={Styles.pv8}>Lorem ipsum dolor sit amet, consectetur adip isicing elit, sed do eiusmod.</RegularText>
@@ -46,6 +46,7 @@ export default class InitSignupScreen extends React.Component {
                     <Carousel
                         ref={c => { this._carousel = c;}}
                         data={carouselEntries}
+                        removeClippedSubviews={false}
                         renderItem={this._renderItem}
                         sliderWidth={sliderWidth}
                         itemWidth={itemWidth}
@@ -75,10 +76,10 @@ export default class InitSignupScreen extends React.Component {
                         inactiveDotScale={0.8} />
                 </View>
                 <View style={[Styles.bottom, Styles.ph24, {backgroundColor: "white"}]}>
-                        <SemiBoldText style={Styles.pv8}>Already on Karma?</SemiBoldText>
-                        <TransparentButton title="Log in"/>
+                    <SemiBoldText style={Styles.pv8}>Already on Karma?</SemiBoldText>
+                    <TransparentButton title="Log in"/>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 };

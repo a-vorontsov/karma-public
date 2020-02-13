@@ -41,10 +41,10 @@ const Styles = StyleSheet.create({
         backgroundColor: "#01a7a6",
     },
     roundButtonTransparent: {
-        marginVertical: 8,
         borderColor: "#01a7a6",
         borderWidth: 2,
         backgroundColor: "transparent",
+        padding: 10
     },
     roundButtonTransparentText: {
         color: "#01a7a6"

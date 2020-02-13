@@ -12,13 +12,13 @@ export default class GradientButton extends React.Component {
     render() {
         const { onPress, title } = this.props;
         return (
-            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={["#01a7a6", "#00c5c4"]} style={Styles.roundButton}>
-                <TouchableOpacity
-                    onPress={onPress}
-                    activeOpacity={0.9}>
-                    <RegularText style={{fontSize: 20, color: "white"}}>{title}</RegularText>
-                </TouchableOpacity>
-            </LinearGradient>
+            <TouchableOpacity
+                onPress={onPress}
+                activeOpacity={0.9}>
+                <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={["#01a7a6", "#00c5c4"]} style={Styles.roundButton}>
+                    <RegularText style={{fontSize: 20, justifyContent: "center", textAlign: "center", color: "white"}}>{title}</RegularText>
+                </LinearGradient>
+            </TouchableOpacity>
         );
     }
 }
