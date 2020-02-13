@@ -16,8 +16,7 @@ router.get('/:id', (req, res) => {
         if (err) {
             return res.status(500).send(err);
         } else if (!user) {
-            res.status(404).send(`There is no user with id ${req.params.id}`);
-            return;
+            return res.status(404).send(`There is no user with id ${req.params.id}`);
         }
         res.status(200).send(user);
     });
