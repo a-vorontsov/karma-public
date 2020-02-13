@@ -28,6 +28,18 @@ class ContactInfoScreen extends React.Component {
         this.props.navigation.navigate('AboutScreen')
     }
 
+    goToNext(){
+
+    }
+
+    render() {
+        return(
+            <Text>
+                Contact Info Screen
+            </Text>
+        )
+    };
+
 
 }
 
