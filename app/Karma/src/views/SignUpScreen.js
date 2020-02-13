@@ -3,22 +3,19 @@ import {
     View,
     Text,
     StyleSheet,
-    TextInput,
     Keyboard,
     Linking,
     TouchableOpacity,
     KeyboardAvoidingView,
     Dimensions,
-    Platform,
+    Animated,
+    Easing
 } from 'react-native';
 import CheckBox from '../components/CheckBox';
 import { ScrollView } from "react-native-gesture-handler";
+import Tooltip from 'react-native-walkthrough-tooltip';
+import TextInput from '../components/TextInput';
 
-
-/**
- * TODO:
- * header view, content view (text input boxes), footer view
- */
 
 const linkColour = '#3bbfb2';
 const { width, height } = Dimensions.get("window")
@@ -30,52 +27,94 @@ class SignUpScreen extends React.Component {
         headerShown: false
     }
 
-    state = {
-        fname: null,
-        lname: null,
-        email: null,
-        username: null,
-        password: null,
-        conf_password: null,
-        hide_password: true,
-        terms_checked: false,
+    constructor(props) {
+        super(props)
+        this.animatedValue = new Animated.Value(0)
+        this.state = {
+            fname: "",
+            lname: "",
+            email: "",
+            username: "",
+            password: "",
+            conf_password: "",
+            hide_password: true,
+            terms_checked: false,
+            toolTipVisible: true,
+            firstOpen: true
+        }
+       
     }
 
-    onChangeText = (key, val) => {
+    
+
+    
+
+    modifyState = (key, val) => {
+        console.log([key])
         this.setState({ [key]: val })
     }
 
+    shakeInputs = () => {
+        Animated.loop(
+            // Animation consists of a sequence of steps
+            Animated.sequence([
+                // start rotation in one direction (only half the time is needed)
+                Animated.timing(this.animatedValue, { toValue: 1.0, duration: 30, easing: Easing.linear, useNativeDriver: true }),
+                // rotate in other direction, to minimum value (= twice the duration of above)
+                Animated.timing(this.animatedValue, { toValue: -1.0, duration: 60, easing: Easing.linear, useNativeDriver: true }),
+                // return to begin position
+                Animated.timing(this.animatedValue, { toValue: 0.0, duration: 30, easing: Easing.linear, useNativeDriver: true })
+            ])
+            , { iterations: 2 }).start();
 
-    signUserUp = async () => {
+
+
+    }
+
+
+    signUserUp = () => {
         const { fname, lname, email, username, password, conf_password } = this.state;
+        this.setState({ firstOpen: false })
 
     }
 
     render() {
+        console.log(this.state.fname)
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <ScrollView showsVerticalScrollIndicator={false}>
 
-                    {/** Header **/}
-                    <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: 'flex-start', width: formWidth }}>
-                        <View style={styles.header}>
-                            <TouchableOpacity>
-                                <Text>🔙</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.headerText}>Sign Up</Text>
+                    <View style={{ alignItems: "center" }}>
+                        {/** Header **/}
+                        <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: "flex-start", width: formWidth }}>
+                            <View style={styles.header}>
+                                <TouchableOpacity>
+
+                                    <Text style={{ color: linkColour, fontSize: 30 }}>←</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.headerText}>Sign Up</Text>
+                            </View>
+                            <Text style={styles.subheaderText}>Create a new account</Text>
                         </View>
-                        <Text style={styles.subheaderText}>Create a new account</Text>
                     </View>
 
                     {/** form content **/}
-                    <View style={{  justifyContent: 'space-evenly', alignItems: 'center', height:0.60 * height }}>
+                    <View style={{ justifyContent: 'space-evenly', alignItems: 'center', height: 0.60 * height, width: width }}>
+
+
                         <TextInput
                             style={styles.textInput}
+
                             placeholder='First Name'
-                            onChangeText={text => this.onChangeText('fname', text)}
+                            onChangeText={(text) => this.setState({ fname: text})}
+
                             onSubmitEditing={() => this.secondInput.focus()}
+                            showError={this.state.firstOpen ? false : this.state.fname}
                             returnKeyType="next"
                         />
+                        <Text>{this.state.fname}</Text>
+
+
                         <TextInput
 
                             ref={ref => {
@@ -89,6 +128,8 @@ class SignUpScreen extends React.Component {
                             returnKeyType="next"
 
                         />
+
+
                         <TextInput
                             ref={ref => {
                                 this.thirdInput = ref;
@@ -100,6 +141,8 @@ class SignUpScreen extends React.Component {
                             onSubmitEditing={() => this.fourthInput.focus()}
                             returnKeyType="next"
                         />
+
+
                         <TextInput
                             ref={ref => {
                                 this.fourthInput = ref;
@@ -111,7 +154,11 @@ class SignUpScreen extends React.Component {
                             onSubmitEditing={() => this.fifthInput.focus()}
                             returnKeyType="next"
                         />
+
+
+
                         <View style={{ flexDirection: 'row' }}>
+
                             <TextInput
                                 ref={ref => {
                                     this.fifthInput = ref;
@@ -121,7 +168,6 @@ class SignUpScreen extends React.Component {
                                 autoCapitalize="none"
                                 secureTextEntry={this.state.hide_password}
                                 blurOnSubmit={false}
-                                // onSubmitEditing={() => this.passwordFocus}
                                 onChangeText={val => this.onChangeText('password', val)}
                                 onSubmitEditing={() => this.sixthInput.focus()}
                                 returnKeyType="next"
@@ -130,6 +176,7 @@ class SignUpScreen extends React.Component {
                                 <Text style={{ color: linkColour }}>Show</Text>
                             </TouchableOpacity>
                         </View>
+
                         <View style={{ flexDirection: 'row' }}>
                             <TextInput
                                 ref={ref => {
@@ -149,27 +196,31 @@ class SignUpScreen extends React.Component {
                         </View>
 
                     </View>
-                    {/** Footers **/}
-                    <View style={styles.footer}>
-                        <View style={{ flexDirection: 'row', width: formWidth, paddingBottom: 20 }}>
-                            <CheckBox
-                                style={styles.checkBox}
-                                value={this.state.terms_checked}
-                                onValueChange={() => this.setState({ terms_checked: !this.state.terms_checked })}
-                            /><Text>
-                                <Text style={{ color: textColour }}>By creating an account, you agree to all the legal stuff: </Text>
-                                <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
-                                    onPress={() => Linking.openURL('http://google.com')}>Terms of Use</Text>
-                                <Text> {'&'} </Text>
-                                <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
-                                    onPress={() => Linking.openURL("http://google.com")}>Privacy</Text>
-                            </Text>
+                    {/** Footer **/}
+                    <View style={{ alignItems: "center", flex: 1, justifyContent: "flex-end", }}>
+                        <View style={styles.footer}>
+                            <View style={{ flexDirection: 'row', paddingBottom: 10 }}>
+                                <CheckBox
+                                    style={styles.checkBox}
+                                    value={this.state.terms_checked}
+                                    onValueChange={() => this.setState({ terms_checked: !this.state.terms_checked })}
+                                /><Text style={{ flexShrink: 1, color: textColour }}>
+                                    <Text>By creating an account,
+                                you agree to all the legal stuff: </Text>
+                                    <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
+                                        onPress={() => Linking.openURL('http://google.com')}>Terms of Use</Text>
+                                    <Text> {'&'} </Text>
+                                    <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
+                                        onPress={() => Linking.openURL("http://google.com")}>Privacy</Text>
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                style={styles.submitButton}
+                                onPress={this.signUserUp}
+                            >
+                                <Text style={{ color: 'white', textAlign: 'center' }}>Next</Text>
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity
-                            style={styles.submitButton}
-                        >
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Next</Text>
-                        </TouchableOpacity>
                     </View>
                 </ScrollView>
 
@@ -184,7 +235,7 @@ const styles = StyleSheet.create({
 
     header: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     headerText: {
@@ -213,7 +264,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
 
-
     },
     textInput: {
         width: formWidth,
@@ -229,9 +279,8 @@ const styles = StyleSheet.create({
         fontFamily: "Arial"
     },
     footer: {
-        flex:1,
-        justifyContent:'flex-end',
-    
+        width: formWidth,
+        justifyContent: "flex-end"
     },
     submitButton: {
         backgroundColor: '#3bbfb2',
@@ -239,6 +288,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         marginTop: 15,
         borderRadius: 30,
+        width: formWidth
     }
 })
 
