@@ -310,3 +310,4 @@ export default AboutScreen
 
 // RESOURCES:
 // https://facebook.github.io/react-native/docs/cameraroll.html
+// https://www.npmjs.com/package/react-native-photo-upload
