@@ -5,13 +5,14 @@ const PORT = process.env.PORT || 8000;
 
 // Import Routes
 const usersRoute = require('./routes/users');
+const forgotPasswordRoute = require('./routes/forgotPassword');
 const verificationRoute = require('./routes/verification');
 // Midleware
 app.use(express.json());
 
 app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);
+app.use('/login/forgotPassword', forgotPasswordRoute);
 app.use('/verify', verificationRoute);
-
 
 app.listen(PORT, console.log(`Listening on port ${PORT} ...`));
