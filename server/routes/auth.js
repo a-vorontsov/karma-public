@@ -49,7 +49,7 @@ router.get("/google/fail", (req, res) => {
 
 router.get(
   "/linkedin",
-  passport.authenticate("linkedin", { state: "SOME STATE" })
+  passport.authenticate("linkedin")
 );
 
 router.get(

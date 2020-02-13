@@ -87,7 +87,8 @@ function initialise(passport, getUserByEmail, getUserById) {
         clientID: process.env.LINKEDIN_KEY,
         clientSecret: process.env.LINKEDIN_SECRET,
         callbackURL: "http://127.0.0.1:8000/auth/linkedin/callback",
-        scope: ["r_emailaddress", "r_basicprofile"]
+        scope: ["r_emailaddress", "r_basicprofile"],
+        state: true
       },
       function(accessToken, refreshToken, profile, done) {
         const user = users.findByEmail(profile.email);
