@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const email = req.body.email;
     if(!email){
-        return res.status(400).send("No email was specified");
+        return res.status(400).send("No email was defined");
     }
     db.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
         const user = result.rows[0];
