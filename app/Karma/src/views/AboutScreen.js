@@ -113,7 +113,14 @@ class AboutScreen extends React.Component {
                 <View style={styles.header}>
                     <TouchableOpacity
                     onPress={() => this.goToPrevious()}>
-                        {/* arrow button */}
+                        <Image 
+                            style={{
+                                flex: 1,
+                                width: 30,
+                                height: 30,
+                                resizeMode: 'contain'
+                            }}
+                            source = {require('../assets/images/general-logos/back-arrow.png')}/>
                     </TouchableOpacity>
                     <RegularText style={styles.headerText}>About</RegularText>
                 </View>
@@ -139,7 +146,7 @@ class AboutScreen extends React.Component {
                     borderRadius: 75
                     }}
                     resizeMode='cover'
-                    source={require('../assets/color.png')}
+                    source={require('../assets/images/general-logos/photo-logo.png')}
                 />
             </PhotoUpload>
                 <TouchableOpacity
@@ -213,12 +220,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     headerText: {
-        fontSize: 35,
+        fontSize: 25,
         color: 'black',
-        paddingLeft: 10
+        paddingLeft: 20
     },
     subheaderText: {
-        fontSize: 30,
+        fontSize: 25,
         textAlignVertical: 'top',
         textAlign: 'left',
         paddingTop: 20,
@@ -257,7 +264,6 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         borderWidth: 2,
         borderColor: '#D3D3D3',
-        marginTop: 15,
         borderRadius: 30,
         flexDirection: 'row', 
         alignItems: 'center', 
