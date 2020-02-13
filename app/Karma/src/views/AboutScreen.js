@@ -59,7 +59,7 @@ class AboutScreen extends React.Component {
           )}
     
         {!this.state.birthYearSelected && (
-            alert('Please select a valid birthday.')
+            Alert.alert('Error','Please select a valid birthday. You must be 18 years or older to use Karma.')
         )}
       }
 
@@ -84,9 +84,17 @@ class AboutScreen extends React.Component {
 
     setBirthYear(selectedYear) {
         this.setState ({
-            birthMonth: selectedYear,
-            birthYearSelected: true
+            birthMonth: selectedYear
         });
+        if (selectedYear <= (new Date()).getFullYear()-18){
+            this.setState ({
+                birthYearSelected: true
+            });
+        } else {
+            this.setState ({
+                birthYearSelected: false
+            });
+        }
     }
 
     setPhoto(selectedPhoto) {

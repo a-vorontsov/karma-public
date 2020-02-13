@@ -70,7 +70,6 @@ export default class DatePicker extends React.Component {
     for (var i = startYear; i <= endYear; i++) {
       years.push(<Picker.Item label={i.toString()} value={i} key={i} />);
     }
-    years.push(<Picker.Item label="----" value={0} key={0} />);
     return years;
   }
 
