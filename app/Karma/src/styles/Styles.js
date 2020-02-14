@@ -1,5 +1,21 @@
-import { StyleSheet, Platform, StatusBar } from "react-native";
+import { StyleSheet, StatusBar, Dimensions, Platform, PixelRatio } from "react-native";
 import { hasNotch } from "react-native-device-info";
+
+const {
+    width: SCREEN_WIDTH,
+} = Dimensions.get('window');
+
+// based on iphone 5s's scale
+const scale = SCREEN_WIDTH / 375;
+
+export function normalise(size) {
+    const newSize = size * scale;
+    if (Platform.OS === 'ios') {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize));
+    } else {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+    }
+}
 
 const Styles = StyleSheet.create({
     center: {
@@ -56,6 +72,27 @@ const Styles = StyleSheet.create({
     },
     pb24: {
         paddingBottom: 24
+    },
+    mini: {
+        fontSize: normalise(8),
+    },
+    small: {
+        fontSize: normalise(14),
+    },
+    medium: {
+        fontSize: normalise(16),
+    },
+    large: {
+        fontSize: normalise(20),
+    },
+    xlarge: {
+        fontSize: normalise(24),
+    },
+    xxlarge: {
+        fontSize: normalise(32),
+    },
+    xxxlarge: {
+        fontSize: normalise(36),
     },
     roundButton: {
         padding: 12,

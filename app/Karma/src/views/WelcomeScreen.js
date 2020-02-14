@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
+import { View, StyleSheet, TouchableOpacity, StatusBar, Platform } from "react-native";
 import { RegularText, LogoText } from "../components/text";
 
 
@@ -8,6 +8,10 @@ class WelcomeScreen extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
+        StatusBar.setBarStyle("dark-content");
+        if (Platform.OS === "android") {
+            StatusBar.setBackgroundColor("#f8f8f8");
+        }
         return (
             <View style={styles.container}>
 

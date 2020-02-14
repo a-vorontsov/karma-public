@@ -38,9 +38,9 @@ export default class InitSignupScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={Styles.safeAreaContainer}>
-                <View style={[Styles.pv8, Styles.ph24]}>
-                    <TitleText>Welcome to <LogoText style={{fontSize: 36}}>Karma</LogoText></TitleText>
-                    <RegularText style={Styles.pv8}>Lorem ipsum dolor sit amet, consectetur adip isicing elit, sed do eiusmod.</RegularText>
+                <View style={[Styles.pt8, Styles.ph24]}>
+                    <TitleText>Welcome to <LogoText style={Styles.xxlarge}>Karma</LogoText></TitleText>
+                    <RegularText style={[Styles.pv16, Styles.small]}>Lorem ipsum dolor sit amet, consectetur adip isicing elit, sed do eiusmod.</RegularText>
                 </View>
                 <View>
                     <Carousel
@@ -56,7 +56,7 @@ export default class InitSignupScreen extends React.Component {
                         onSnapToItem={(index) => this.setState({ activeSlide: index }) } />
                     <Pagination
                         dotsLength={carouselEntries.length}
-                        containerStyle={{paddingVertical: 16}}
+                        containerStyle={Styles.pv8}
                         activeDotIndex={this.state.activeSlide}
                         dotStyle={{
                             width: 20,
@@ -77,7 +77,7 @@ export default class InitSignupScreen extends React.Component {
                 </View>
                 <View style={[Styles.bottom]}>
                     <View style={[Styles.ph24, Styles.pb24, Styles.pt8, {backgroundColor: "white"}]}>
-                        <SemiBoldText style={Styles.pv8}>Already on Karma?</SemiBoldText>
+                        <SemiBoldText style={[Styles.pv16, Styles.medium]}>Already on Karma?</SemiBoldText>
                         <TransparentButton title="Log in"/>
                     </View>
                 </View>
