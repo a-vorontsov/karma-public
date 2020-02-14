@@ -1,4 +1,4 @@
-name: Backend - Automatically Run Node.js Tests
+name: Backend - Automatically Run Node.js Linting and Tests
 
 # Trigger on push or pull request
 on:
@@ -75,7 +75,7 @@ jobs:
 
       - name: npm install
         working-directory: ./server
-        run: npm i --ignore-scripts
+        run: npm ci
 
       - name: npm test
         run: npm test
