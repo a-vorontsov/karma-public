@@ -46,7 +46,6 @@ jobs:
           custom-directory: "./server"
           repo-token: ${{secrets.GITHUB_TOKEN}}
 
-  # validate code style with eslint
   test:
     services:
       postgres:
@@ -76,7 +75,9 @@ jobs:
       - name: npm install
         working-directory: ./server
         run: npm ci
-
+      - name: run database migrations
+        working-directory: ./server
+        run: npm run db-migrate up
       - name: npm test
         run: npm test
         working-directory: ./server
@@ -84,6 +85,9 @@ jobs:
           CI: true
           DB_USER: postgres
           DB_PASS: asd123
+          TWILIO_ACCOUND_SID: fake1
+          TWILIO_AUTH_TOKEN: fake2
+          TWILIO_SERVICE_SID: fake3
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
