@@ -82,6 +82,8 @@ jobs:
         working-directory: ./server
         env:
           CI: true
+          DB_USER: postgres
+          DB_PASS: asd123
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
