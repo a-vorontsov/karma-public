@@ -24,12 +24,17 @@
     "twilio": "^3.39.4"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "jest": "^25.1.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "jest": {
-    "setupFiles": ["./test/setUpTestEnvironment"]
+    "setupFiles": [
+      "./test/setUpTestEnvironment"
+    ]
   }
 }
