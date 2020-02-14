@@ -19,7 +19,8 @@
     "react-native-screens": "^2.0.0-beta.2",
     "react-native-walkthrough-tooltip": "^1.1.7",
     "react-navigation": "^4.1.1",
-    "react-navigation-stack": "^2.1.1"
+    "react-navigation-stack": "^2.1.1",
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

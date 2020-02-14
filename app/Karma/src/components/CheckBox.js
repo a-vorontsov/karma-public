@@ -16,7 +16,7 @@ class CheckBox extends Component {
         var text = this.state.isChecked ? TICK : "";
         return (
             
-            <TouchableOpacity onPress={() => this.setState({isChecked : !this.state.isChecked})} style={this.props.style}>
+            <TouchableOpacity onPress={() => this.setState({isChecked : !this.state.isChecked})} style={this.props.style} onPressIn={() =>this.props.onPressIn()}>
                 <View style={styles.checkBox}>
                     <Text>{text}</Text>
                 </View>

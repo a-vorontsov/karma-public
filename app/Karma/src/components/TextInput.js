@@ -6,26 +6,35 @@ const formWidth = 0.8 * width;
 
 class TInput extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
+
     }
 
+    getInnerRef = () => this.ref;
     render() {
-        const {onChangeText} = this.props;    
-return (
-    <View>
-    <TextInput
-        style={this.props.showError ? [styles.textInput, styles.emptyInput] : styles.textInput }
-        placeholder={this.props.placeholder}
-        returnKeyType={this.props.keyType ? this.props.keyType : "default"}
-        onChangeText={() => onChangeText()}
-        // onPress={() => onPress()}
-        ref={this.ref}
-        // onSubmitEditing={() => onSubmitEditing()}
-        ></TextInput>
-    {this.props.showError ? <Text style={styles.errorText}>This field is required</Text> : <Text></Text>}
-    </View>
-)
+        const { name, text, onChange } = this.props;
+        const defaultError = "This field is required";
+        const inputStyle = this.props.showError || this.props.incorrectPassword ? [styles.textInput, styles.emptyInput] : styles.textInput
+        return (
+            <View>
+                <TextInput
+                    style={inputStyle}
+                    placeholder={this.props.placeholder}
+                    autoCapitalize={this.props.autoCapitalize}
+                    returnKeyType={this.props.returnKeyType ? this.props.returnKeyType : "next"}
+                    onChangeText={text => onChange({ name, text })}
+                    ref={this.props.inputRef}
+                    onSubmitEditing={this.props.onSubmitEditing}
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    secureTextEntry={this.props.secureTextEntry}
+                    editable={this.props.editable}
+
+                ></TextInput>
+                {this.props.showError ? <Text style={styles.errorText}>{this.props.errorText ? this.props.errorText : defaultError}</Text> : null}
+            </View>
+        )
     }
 }
 
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: "#e81f10"
-    }
+    },
 
 })
 
