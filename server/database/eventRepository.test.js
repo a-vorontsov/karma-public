@@ -1,6 +1,11 @@
 const db = require("./connection");
 const eventRepository = require("./eventRepository");
 
+beforeEach(() => {
+    db.query("DELETE FROM event");
+    db.query("DELETE FROM address");
+});
+
 afterEach(() => {
     db.query("DELETE FROM event");
     db.query("DELETE FROM address");
