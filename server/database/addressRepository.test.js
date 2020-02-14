@@ -1,6 +1,10 @@
 const db = require("./connection");
 const addressRepository = require("./addressRepository");
 
+beforeEach(() => {
+    db.query("DELETE FROM address");
+});
+
 afterEach(() => {
     db.query("DELETE FROM address");
 });
