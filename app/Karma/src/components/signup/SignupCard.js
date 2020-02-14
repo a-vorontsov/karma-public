@@ -19,9 +19,9 @@ const SignupCard = (props) => {
                 <Image
                     source={
                         (props.individual) ?
-                            require("../../assets/images/heart-hands.png")
+                            require("../../assets/images/general-logos/hands-heart.png")
                             :
-                            require("../../assets/images/global-people.png")}
+                            require("../../assets/images/general-logos/globe.png")}
                     style={{ flex:1, width: null, height: null }}
                     resizeMode="contain"/>
                 <View style={Styles.pv16}>

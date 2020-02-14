@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import WelcomeScreen from "./src/views/WelcomeScreen";
 import InitSignUpScreen from "./src/routes/InitSignupScreen";
 import UserSignUpScreen from './src/views/UserSignUpScreen';
+import OrgSignUpScreen from "./src/views/OrgSignUpScreen";
 
 const MainNavigator = createStackNavigator(
     {
