@@ -16,6 +16,7 @@ beforeEach(() => {
 afterEach(() => {
     db.query("DELETE FROM event");
     db.query("DELETE FROM address");
+    jest.clearAllMocks();
 });
 
 const address = {
