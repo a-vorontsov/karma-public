@@ -1,7 +1,4 @@
-const client = require('twilio');
 const verification = require("./");
-
-jest.mock("twilio"); // to avoid actually setting up Twilio client
 
 test("invalid numbers rejected", () => {
     expect(verification.isPhoneNumberValid("123")).toBe(false);
