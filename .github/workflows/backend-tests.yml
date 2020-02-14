@@ -48,6 +48,18 @@ jobs:
 
   # validate code style with eslint
   test:
+    services:
+      postgres:
+        image: postgres:12.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: asd123
+          POSTGRES_DB: karma-db
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repo
