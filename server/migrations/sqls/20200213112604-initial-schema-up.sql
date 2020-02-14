@@ -307,5 +307,4 @@ ALTER TABLE setting ADD CONSTRAINT user_settings
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
-
 -- End of file.
