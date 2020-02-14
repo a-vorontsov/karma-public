@@ -9,8 +9,8 @@ CREATE TABLE address (
     postcode varchar(32)  NOT NULL,
     city varchar(32)  NOT NULL,
     region varchar(32)  NOT NULL,
-    lat decimal(10,10)  NOT NULL,
-    long decimal(10,10)  NOT NULL,
+    lat decimal(7,10)  NOT NULL,
+    long decimal(7,10)  NOT NULL,
     CONSTRAINT address_pk PRIMARY KEY (id)
 );
 
