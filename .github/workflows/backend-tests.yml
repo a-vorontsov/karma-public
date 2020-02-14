@@ -1,4 +1,4 @@
-name: Backend - Automatically Run Node.js Tests
+name: Backend - Automatically Run Node.js Linting and Tests
 
 # Trigger on push or pull request
 on:
@@ -46,8 +46,19 @@ jobs:
           custom-directory: "./server"
           repo-token: ${{secrets.GITHUB_TOKEN}}
 
-  # validate code style with eslint
   test:
+    services:
+      postgres:
+        image: postgres:12.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: asd123
+          POSTGRES_DB: karma-db
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repo
@@ -63,13 +74,20 @@ jobs:
 
       - name: npm install
         working-directory: ./server
-        run: npm i --ignore-scripts
-
+        run: npm ci
+      - name: run database migrations
+        working-directory: ./server
+        run: npm run db-migrate up
       - name: npm test
         run: npm test
         working-directory: ./server
         env:
           CI: true
+          DB_USER: postgres
+          DB_PASS: asd123
+          TWILIO_ACCOUND_SID: fake1
+          TWILIO_AUTH_TOKEN: fake2
+          TWILIO_SERVICE_SID: fake3
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on

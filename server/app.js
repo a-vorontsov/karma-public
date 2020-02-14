@@ -1,12 +1,12 @@
 require('dotenv/config');
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 8000;
 
 // Import Routes
 const usersRoute = require('./routes/users');
 const forgotPasswordRoute = require('./routes/forgotPassword');
 const verificationRoute = require('./routes/verification');
+const eventsRoute = require('./routes/events');
 // Midleware
 app.use(express.json());
 
@@ -14,5 +14,6 @@ app.use('/', require('./routes/index'));
 app.use('/users', usersRoute);
 app.use('/login/forgotPassword', forgotPasswordRoute);
 app.use('/verify', verificationRoute);
+app.use('/events', eventsRoute);
 
-app.listen(PORT, console.log(`Listening on port ${PORT} ...`));
+module.exports = app;
