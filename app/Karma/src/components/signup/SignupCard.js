@@ -15,7 +15,7 @@ const SignupCard = (props) => {
     const navigation = useNavigation();
     return (
         <View style={[Styles.container, Styles.ph24]}>
-            <View style={Styles.bottom}>
+            <View style={[Styles.pb24, Styles.bottom]}>
                 <Image
                     source={
                         (props.individual) ?

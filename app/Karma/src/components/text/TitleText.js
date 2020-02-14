@@ -17,6 +17,5 @@ export default class TitleText extends React.Component {
 const styles = StyleSheet.create({
     title: {
         fontSize: 24,
-        fontWeight: "600",
     }
 });

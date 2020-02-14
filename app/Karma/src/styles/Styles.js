@@ -1,4 +1,5 @@
 import { StyleSheet, Platform, StatusBar } from "react-native";
+import { hasNotch } from "react-native-device-info";
 
 const Styles = StyleSheet.create({
     center: {
@@ -6,7 +7,7 @@ const Styles = StyleSheet.create({
     },
     safeAreaContainer: {
         flex: 1,
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingTop: hasNotch() ? StatusBar.currentHeight : 0,
     },
     container: {
         flex: 1,
@@ -38,6 +39,24 @@ const Styles = StyleSheet.create({
     pv24: {
         paddingVertical: 24
     },
+    pt8: {
+        paddingTop: 8
+    },
+    pt16: {
+        paddingTop: 16
+    },
+    pt24: {
+        paddingTop: 24
+    },
+    pb8: {
+        paddingBottom: 8
+    },
+    pb16: {
+        paddingBottom: 16
+    },
+    pb24: {
+        paddingBottom: 24
+    },
     roundButton: {
         padding: 12,
         alignItems: "center",
@@ -56,7 +75,6 @@ const Styles = StyleSheet.create({
     bottom: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingBottom: 24
     }
 });
 

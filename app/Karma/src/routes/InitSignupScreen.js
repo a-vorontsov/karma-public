@@ -75,9 +75,11 @@ export default class InitSignupScreen extends React.Component {
                         inactiveDotOpacity={1}
                         inactiveDotScale={0.8} />
                 </View>
-                <View style={[Styles.bottom, Styles.ph24, {backgroundColor: "white"}]}>
-                    <SemiBoldText style={Styles.pv8}>Already on Karma?</SemiBoldText>
-                    <TransparentButton title="Log in"/>
+                <View style={[Styles.bottom]}>
+                    <View style={[Styles.ph24, Styles.pb24, Styles.pt8, {backgroundColor: "white"}]}>
+                        <SemiBoldText style={Styles.pv8}>Already on Karma?</SemiBoldText>
+                        <TransparentButton title="Log in"/>
+                    </View>
                 </View>
             </SafeAreaView>
         );
