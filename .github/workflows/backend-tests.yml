@@ -46,7 +46,6 @@ jobs:
           custom-directory: "./server"
           repo-token: ${{secrets.GITHUB_TOKEN}}
 
-  # validate code style with eslint
   test:
     services:
       postgres:
