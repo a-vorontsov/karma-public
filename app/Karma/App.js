@@ -5,10 +5,9 @@ import WelcomeScreen from './src/views/WelcomeScreen';
 import AboutScreen from './src/views/AboutScreen';
 
 const MainNavigator = createStackNavigator({
-    About: {screen: AboutScreen},
+  About: {screen: AboutScreen},
   Welcome: { screen: WelcomeScreen },
   SignUp: { screen: SignUpScreen },
-//   About: {screen: AboutScreen},
 });
 
 const App = createAppContainer(MainNavigator);
