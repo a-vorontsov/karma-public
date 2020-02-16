@@ -1,16 +1,20 @@
-import { StyleSheet, StatusBar, Dimensions, Platform, PixelRatio } from "react-native";
-import { hasNotch } from "react-native-device-info";
+import {
+    StyleSheet,
+    StatusBar,
+    Dimensions,
+    Platform,
+    PixelRatio,
+} from "react-native";
+import {hasNotch} from "react-native-device-info";
 
-const {
-    width: SCREEN_WIDTH,
-} = Dimensions.get('window');
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 
 // based on iphone 5s's scale
 const scale = SCREEN_WIDTH / 375;
 
 export function normalise(size) {
     const newSize = size * scale;
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
         return Math.round(PixelRatio.roundToNearestPixel(newSize));
     } else {
         return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
@@ -19,7 +23,7 @@ export function normalise(size) {
 
 const Styles = StyleSheet.create({
     center: {
-        marginHorizontal: "auto"
+        marginHorizontal: "auto",
     },
     safeAreaContainer: {
         flex: 1,
@@ -29,49 +33,49 @@ const Styles = StyleSheet.create({
         flex: 1,
     },
     p8: {
-        padding: 8
+        padding: 8,
     },
     p16: {
-        padding: 16
+        padding: 16,
     },
     p24: {
-        padding: 24
+        padding: 24,
     },
     ph8: {
-        paddingHorizontal: 8
+        paddingHorizontal: 8,
     },
     ph16: {
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
     },
     ph24: {
-        paddingHorizontal: 24
+        paddingHorizontal: 24,
     },
     pv8: {
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     pv16: {
-        paddingVertical: 16
+        paddingVertical: 16,
     },
     pv24: {
-        paddingVertical: 24
+        paddingVertical: 24,
     },
     pt8: {
-        paddingTop: 8
+        paddingTop: 8,
     },
     pt16: {
-        paddingTop: 16
+        paddingTop: 16,
     },
     pt24: {
-        paddingTop: 24
+        paddingTop: 24,
     },
     pb8: {
-        paddingBottom: 8
+        paddingBottom: 8,
     },
     pb16: {
-        paddingBottom: 16
+        paddingBottom: 16,
     },
     pb24: {
-        paddingBottom: 24
+        paddingBottom: 24,
     },
     mini: {
         fontSize: normalise(8),
@@ -104,15 +108,15 @@ const Styles = StyleSheet.create({
         borderColor: "#01a7a6",
         borderWidth: 2,
         backgroundColor: "transparent",
-        padding: 10
+        padding: 10,
     },
     roundButtonTransparentText: {
-        color: "#01a7a6"
+        color: "#01a7a6",
     },
     bottom: {
         flex: 1,
-        justifyContent: 'flex-end',
-    }
+        justifyContent: "flex-end",
+    },
 });
 
 export default Styles;

@@ -1,5 +1,3 @@
 import SignupCard from "./SignupCard";
 
-export {
-    SignupCard,
-};
+export {SignupCard};

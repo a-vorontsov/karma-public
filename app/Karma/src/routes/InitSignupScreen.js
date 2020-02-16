@@ -1,50 +1,57 @@
 import React from "react";
 
+import {View, SafeAreaView} from "react-native";
+
+import Carousel, {Pagination} from "react-native-snap-carousel";
+
+import {SignupCard} from "../components/signup";
+import {TransparentButton} from "../components/buttons";
 import {
-    View,
-    SafeAreaView
-} from "react-native";
-
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-
-import { SignupCard } from "../components/signup";
-import { TransparentButton } from "../components/buttons";
-import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
+    RegularText,
+    TitleText,
+    SemiBoldText,
+    LogoText,
+} from "../components/text";
 
 import Styles from "../styles/Styles";
-import CarouselStyles, { itemWidth, sliderWidth } from "../styles/CarouselStyles";
+import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";
 
-const carouselEntries = [
-    { individual: true },
-    { individual: false },
-]
+const carouselEntries = [{individual: true}, {individual: false}];
 
 export default class InitSignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeSlide: 0
+            activeSlide: 0,
         };
     }
-    _renderItem = ({ item }) => {
+    _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer}>
                 <View style={[CarouselStyles.item, CarouselStyles.shadow]}>
-                        <SignupCard individual={item.individual}/>
+                    <SignupCard individual={item.individual} />
                 </View>
             </View>
         );
-    }
+    };
     render() {
         return (
             <SafeAreaView style={Styles.safeAreaContainer}>
                 <View style={[Styles.pt8, Styles.ph24]}>
-                    <TitleText>Welcome to <LogoText style={Styles.xxlarge}>Karma</LogoText></TitleText>
-                    <RegularText style={[Styles.pv16, Styles.small]}>Lorem ipsum dolor sit amet, consectetur adip isicing elit, sed do eiusmod.</RegularText>
+                    <TitleText>
+                        Welcome to{" "}
+                        <LogoText style={Styles.xxlarge}>Karma</LogoText>
+                    </TitleText>
+                    <RegularText style={[Styles.pv16, Styles.small]}>
+                        Lorem ipsum dolor sit amet, consectetur adip isicing
+                        elit, sed do eiusmod.
+                    </RegularText>
                 </View>
                 <View>
                     <Carousel
-                        ref={c => { this._carousel = c;}}
+                        ref={c => {
+                            this._carousel = c;
+                        }}
                         data={carouselEntries}
                         removeClippedSubviews={false}
                         renderItem={this._renderItem}
@@ -53,7 +60,10 @@ export default class InitSignupScreen extends React.Component {
                         inactiveSlideOpacity={1}
                         inactiveSlideScale={1}
                         containerCustomStyle={CarouselStyles.slider}
-                        onSnapToItem={(index) => this.setState({ activeSlide: index }) } />
+                        onSnapToItem={index =>
+                            this.setState({activeSlide: index})
+                        }
+                    />
                     <Pagination
                         dotsLength={carouselEntries.length}
                         containerStyle={Styles.pv8}
@@ -70,18 +80,27 @@ export default class InitSignupScreen extends React.Component {
                             borderRadius: 10,
                             borderColor: "#01a7a6",
                             borderWidth: 2,
-                            backgroundColor: 'rgba(0, 0, 0, 0)'
+                            backgroundColor: "rgba(0, 0, 0, 0)",
                         }}
                         inactiveDotOpacity={1}
-                        inactiveDotScale={0.8} />
+                        inactiveDotScale={0.8}
+                    />
                 </View>
                 <View style={[Styles.bottom]}>
-                    <View style={[Styles.ph24, Styles.pb24, Styles.pt8, {backgroundColor: "white"}]}>
-                        <SemiBoldText style={[Styles.pv16, Styles.medium]}>Already on Karma?</SemiBoldText>
-                        <TransparentButton title="Log in"/>
+                    <View
+                        style={[
+                            Styles.ph24,
+                            Styles.pb24,
+                            Styles.pt8,
+                            {backgroundColor: "white"},
+                        ]}>
+                        <SemiBoldText style={[Styles.pv16, Styles.medium]}>
+                            Already on Karma?
+                        </SemiBoldText>
+                        <TransparentButton title="Log in" />
                     </View>
                 </View>
             </SafeAreaView>
         );
     }
-};
+}

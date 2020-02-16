@@ -1,9 +1,9 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import {StyleSheet, Dimensions, Platform} from "react-native";
 
-const IS_IOS = Platform.OS === 'ios';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const IS_IOS = Platform.OS === "ios";
+const {width: viewportWidth} = Dimensions.get("window");
 
-function wp (percentage) {
+function wp(percentage) {
     const value = (percentage * viewportWidth) / 100;
     return Math.round(value);
 }
@@ -36,7 +36,7 @@ const CarouselStyles = StyleSheet.create({
         borderRadius: 6,
         borderBottomWidth: 16,
         borderBottomColor: "#00bab9",
-        paddingTop: 16
+        paddingTop: 16,
     },
     shadow: {
         shadowColor: "#000",
@@ -47,7 +47,7 @@ const CarouselStyles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
-    }
+    },
 });
 
 export default CarouselStyles;
