@@ -7,17 +7,21 @@ import {
     Linking,
     TouchableOpacity,
     KeyboardAvoidingView,
+    StatusBar,
     Dimensions,
+    Platform,
 } from 'react-native';
 import CheckBox from '../components/CheckBox';
 import { ScrollView } from "react-native-gesture-handler";
 import Tooltip from 'react-native-walkthrough-tooltip';
 import TextInput from '../components/TextInput';
+import {hasNotch} from 'react-native-device-info';
 
 const linkColour = '#3bbfb2';
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
 const textColour = "#7F7F7F";
+const PASSWORD_REGEX= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
     static navigationOptions = {
@@ -45,8 +49,12 @@ class SignUpScreen extends React.Component {
 
     onChangeText = (event) => {
         const { name, text } = event;
-
         this.setState({ [name]: text })
+
+    }
+
+    isValidPassword = () => {
+       return PASSWORD_REGEX.test(this.state.password);
     }
 
 
@@ -54,18 +62,19 @@ class SignUpScreen extends React.Component {
         const { fname, lname, email, username, password, confPassword } = this.state;
         this.setState({ firstOpen: false })
 
+
     }
 
     render() {
-        const showPasswordError = !this.state.password || this.state.password !== this.state.confPassword
-
+        const showPasswordError = !this.state.password || this.state.password !== this.state.confPassword || !this.isValidPassword()
+        const {navigate} = this.props.navigation;
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS == "ios" ? "padding" : undefined} enabled>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ minHeight: height }}>
                         <View style={{ alignItems: "center" }}>
                             {/** Header **/}
-                            <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 70, alignItems: "flex-start", width: formWidth }}>
+                            <View style={{ flex: 1, justifyContent: 'flex-start',marginTop: hasNotch() ? 60 : StatusBar.currentHeight,alignItems: "flex-start", width: formWidth }}>
                                 <View style={styles.header}>
                                     <TouchableOpacity>
 
@@ -110,7 +119,7 @@ class SignUpScreen extends React.Component {
 
                                     onChange={this.onChangeText}
 
-                                    showError={this.state.firstOpen ? false : !this.state.email}
+                                    showError={false}
                                     editable={false}
                                 />
                                 <Text style={{ position: 'absolute', top: 15, right: 10 }}>✔️</Text>
@@ -164,7 +173,7 @@ class SignUpScreen extends React.Component {
                                     returnKeyType="default"
                                     onChange={this.onChangeText}
                                     showError={this.state.firstOpen ? false : showPasswordError}
-                                    errorText={this.state.password !== this.state.confPassword ? "Passwords must match" : null}
+                                    errorText={showPasswordError ? "Passwords must match" : null}
                                 />
                                 <TouchableOpacity onPress={() => this.setState({ hidePassword: !this.state.hidePassword })} style={{ position: 'absolute', top: 15, right: 0 }}>
                                     <Text style={{ color: linkColour }}>Show</Text>
@@ -183,12 +192,12 @@ class SignUpScreen extends React.Component {
                                         onPressIn={() => this.setState({ termsChecked: !this.state.termsChecked })}
                                     /><Text style={{ flexShrink: 1, color: textColour }}>
                                         <Text>By creating an account,
-                                you agree to all the legal stuff: </Text>
+                                                    you agree to all the legal stuff: </Text>
                                         <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
-                                            onPress={() => Linking.openURL('http://google.com')}>Terms of Use</Text>
+                                            onPress={() => navigate("Terms")}>Terms of Use</Text>
                                         <Text> {'&'} </Text>
                                         <Text style={{ color: linkColour, textDecorationLine: 'underline' }}
-                                            onPress={() => Linking.openURL("http://google.com")}>Privacy</Text>
+                                            onPress={() => navigate("Privacy")}>Privacy</Text>
                                     </Text>
                                 </View>
                                 {(!this.state.firstOpen && !this.state.termsChecked) ? <Text style={{ color: "#e81f10" }}>You must agree to the terms and conditions</Text> : null}
@@ -261,6 +270,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         marginBottom: 40
     },
+   
     submitButton: {
         backgroundColor: '#3bbfb2',
         paddingHorizontal: 30,
