@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, Alert, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { View, Text, Image, Alert, StyleSheet, Dimensions, Platform, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import DatePicker from '../components/DatePicker';
+import DatePicker from 'react-native-date-picker'
 import PhotoUpload from 'react-native-photo-upload';
 import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
 
@@ -13,12 +13,11 @@ class AboutScreen extends React.Component {
         super(props);
         this.state = {
             photo: null,
-            birthDay: (new Date()).getDate(),
-            birthMonth: (new Date()).getMonth(),
-            birthYear: null,
             gender: null,
             genderSelected: false,
-            birthYearSelected: false,
+            dateSelected: false,
+            date: new Date(),
+            minYear: new Date().getFullYear()-18
         };
     }
 
@@ -31,26 +30,24 @@ class AboutScreen extends React.Component {
     }
 
     goToNext() {
-        if (this.state.genderSelected && this.state.birthYearSelected) {
+        if (this.state.genderSelected && this.state.dateSelected) {
           this.props.navigation.navigate('ContactInfoScreen', {
             photo: this.state.photo,
             gender: this.state.gender,
-            birthDay: this.state.birthDay,
-            birthMonth: this.state.birthMonth,
-            birthYear: this.state.birthYear
+            date: this.state.date
           });
-        } else if (this.state.genderSelected && !this.state.birthYearSelected) {
+        } else if (this.state.genderSelected && !this.state.dateSelected) {
           this.setState({
-            birthYearSelected: false,
+            dateSelected: false,
           });
-        } else if (!this.state.genderSelected && this.state.birthYearSelected) {
+        } else if (!this.state.genderSelected && this.state.dateSelected) {
           this.setState({
             genderSelected: false,
           });
         } else {
           this.setState({
             genderSelected: false,
-            birthYearSelected: false
+            dateSelected: false
           });
         }
 
@@ -58,7 +55,7 @@ class AboutScreen extends React.Component {
             Alert.alert('Error','Please select a gender.')
           )}
     
-        {!this.state.birthYearSelected && (
+        {!this.state.dateSelected && (
             Alert.alert('Error','Please select a valid birthday. You must be 18 years or older to use Karma.')
         )}
       }
@@ -68,33 +65,6 @@ class AboutScreen extends React.Component {
             gender: selectedGender,
             genderSelected: true
         });
-    }
-
-    setBirthDay(selectedDay) {
-        this.setState ({
-            birthDay: selectedDay
-        });
-    }
-    
-    setBirthMonth(selectedMonth) {
-        this.setState ({
-            birthMonth: selectedMonth
-        });
-    }
-
-    setBirthYear(selectedYear) {
-        this.setState ({
-            birthMonth: selectedYear
-        });
-        if (selectedYear <= (new Date()).getFullYear()-18){
-            this.setState ({
-                birthYearSelected: true
-            });
-        } else {
-            this.setState ({
-                birthYearSelected: false
-            });
-        }
     }
 
     setPhoto(selectedPhoto) {
@@ -109,6 +79,19 @@ class AboutScreen extends React.Component {
         } else (
             Alert.alert('Error','Please upload a photo.')
         )
+    }
+
+    setDate(selectedDate) {
+        this.setState({ date: selectedDate });
+        if (selectedDate.getFullYear() <= this.state.minYear){
+            this.setState ({
+                dateSelected: true
+            });
+        } else {
+            this.setState ({
+                dateSelected: false
+            });
+        }
     }
 
     render() {
@@ -162,15 +145,15 @@ class AboutScreen extends React.Component {
                     onPress={() => this.uploadPhoto(this.state.photo)}
                     >
                     <RegularText style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</RegularText>
-                </TouchableOpacity>
+                </TouchableOpacity> 
             </View>
-
             {/* BIRTHDAY SELECTION */}
             <RegularText style={styles.smallHeaderText}>When is your birthday?</RegularText>
             <DatePicker
-                onYearValueChange={(year,i) => this.setBirthYear(year)}
-                onMonthValueChange={(month,i) => this.setBirthMonth(month)}
-                onDayValueChange={(day,i) => this.setBirthDay(day)}
+                fadeToColor = 'none'
+                mode='date'
+                date={this.state.date}
+                onDateChange={date => this.setDate(date)}
             />
 
             {/* GENDER SELECTION */}
