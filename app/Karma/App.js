@@ -7,8 +7,7 @@ import PrivacyScreen from './src/views/PrivacyScreen';
 const MainNavigator = createStackNavigator({
   SignUp: {screen: SignUpScreen},
   Terms: {screen: TermsScreen},
-  Privacy: {screen: PrivacyScreen}
-
+  Privacy: {screen: PrivacyScreen},
 });
 
 const App = createAppContainer(MainNavigator);
