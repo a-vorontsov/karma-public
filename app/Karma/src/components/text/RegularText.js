@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    Text,
-    StyleSheet
-} from "react-native";
+import {Text, StyleSheet} from "react-native";
 
 export default class RegularText extends React.Component {
     render() {
@@ -17,5 +14,5 @@ export default class RegularText extends React.Component {
 const styles = StyleSheet.create({
     text: {
         fontFamily: "OpenSans-Regular",
-    }
+    },
 });

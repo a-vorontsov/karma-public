@@ -8,7 +8,7 @@
     "start": "react-native start",
     "link": "react-native link",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
