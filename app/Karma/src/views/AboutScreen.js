@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, Alert, StyleSheet, Dimensions, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { View, Text, Image, Alert, StyleSheet, Dimensions, Platform, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import DatePicker from '../components/DatePicker';
+import DatePicker from 'react-native-date-picker'
 import PhotoUpload from 'react-native-photo-upload';
 import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
 
@@ -13,12 +13,11 @@ class AboutScreen extends React.Component {
         super(props);
         this.state = {
             photo: null,
-            birthDay: (new Date()).getDate(),
-            birthMonth: (new Date()).getMonth(),
-            birthYear: null,
             gender: null,
             genderSelected: false,
-            birthYearSelected: false,
+            dateSelected: false,
+            date: new Date(),
+            minYear: new Date().getFullYear()-18
         };
     }
 
@@ -31,26 +30,24 @@ class AboutScreen extends React.Component {
     }
 
     goToNext() {
-        if (this.state.genderSelected && this.state.birthYearSelected) {
+        if (this.state.genderSelected && this.state.dateSelected) {
           this.props.navigation.navigate('ContactInfoScreen', {
             photo: this.state.photo,
             gender: this.state.gender,
-            birthDay: this.state.birthDay,
-            birthMonth: this.state.birthMonth,
-            birthYear: this.state.birthYear
+            date: this.state.date
           });
-        } else if (this.state.genderSelected && !this.state.birthYearSelected) {
+        } else if (this.state.genderSelected && !this.state.dateSelected) {
           this.setState({
-            birthYearSelected: false,
+            dateSelected: false,
           });
-        } else if (!this.state.genderSelected && this.state.birthYearSelected) {
+        } else if (!this.state.genderSelected && this.state.dateSelected) {
           this.setState({
             genderSelected: false,
           });
         } else {
           this.setState({
             genderSelected: false,
-            birthYearSelected: false
+            dateSelected: false
           });
         }
 
@@ -58,8 +55,8 @@ class AboutScreen extends React.Component {
             Alert.alert('Error','Please select a gender.')
           )}
     
-        {!this.state.birthYearSelected && (
-            alert('Please select a valid birthday.')
+        {!this.state.dateSelected && (
+            Alert.alert('Error','Please select a valid birthday. You must be 18 years or older to use Karma.')
         )}
       }
 
@@ -70,23 +67,31 @@ class AboutScreen extends React.Component {
         });
     }
 
-    setBirthDay(selectedDay) {
+    setPhoto(selectedPhoto) {
         this.setState ({
-            birthDay: selectedDay
-        });
-    }
-    
-    setBirthMonth(selectedMonth) {
-        this.setState ({
-            birthMonth: selectedMonth
+            photo: selectedPhoto,
         });
     }
 
-    setBirthYear(selectedYear) {
-        this.setState ({
-            birthMonth: selectedYear,
-            birthYearSelected: true
-        });
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null){
+            Alert.alert('Success!','Your new photo has been uploaded.')
+        } else (
+            Alert.alert('Error','Please upload a photo.')
+        )
+    }
+
+    setDate(selectedDate) {
+        this.setState({ date: selectedDate });
+        if (selectedDate.getFullYear() <= this.state.minYear){
+            this.setState ({
+                dateSelected: true
+            });
+        } else {
+            this.setState ({
+                dateSelected: false
+            });
+        }
     }
 
     setPhoto(selectedPhoto) {
@@ -113,7 +118,14 @@ class AboutScreen extends React.Component {
                 <View style={styles.header}>
                     <TouchableOpacity
                     onPress={() => this.goToPrevious()}>
-                        {/* arrow button */}
+                        <Image 
+                            style={{
+                                flex: 1,
+                                width: 30,
+                                height: 30,
+                                resizeMode: 'contain'
+                            }}
+                            source = {require('../assets/images/general-logos/back-arrow.png')}/>
                     </TouchableOpacity>
                     <RegularText style={styles.headerText}>About</RegularText>
                 </View>
@@ -139,7 +151,7 @@ class AboutScreen extends React.Component {
                     borderRadius: 75
                     }}
                     resizeMode='cover'
-                    source={require('../assets/color.png')}
+                    source={require('../assets/images/general-logos/photo-logo.png')}
                 />
             </PhotoUpload>
                 <TouchableOpacity
@@ -147,15 +159,15 @@ class AboutScreen extends React.Component {
                     onPress={() => this.uploadPhoto(this.state.photo)}
                     >
                     <RegularText style={styles.buttonText, {fontSize: 20, color: 'gray'}}>Upload Photo</RegularText>
-                </TouchableOpacity>
+                </TouchableOpacity> 
             </View>
-
             {/* BIRTHDAY SELECTION */}
             <RegularText style={styles.smallHeaderText}>When is your birthday?</RegularText>
             <DatePicker
-                onYearValueChange={(year,i) => this.setBirthYear(year)}
-                onMonthValueChange={(month,i) => this.setBirthMonth(month)}
-                onDayValueChange={(day,i) => this.setBirthDay(day)}
+                fadeToColor = 'none'
+                mode='date'
+                date={this.state.date}
+                onDateChange={date => this.setDate(date)}
             />
 
             {/* GENDER SELECTION */}
@@ -213,12 +225,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     headerText: {
-        fontSize: 35,
+        fontSize: 25,
         color: 'black',
-        paddingLeft: 10
+        paddingLeft: 20
     },
     subheaderText: {
-        fontSize: 30,
+        fontSize: 25,
         textAlignVertical: 'top',
         textAlign: 'left',
         paddingTop: 20,
@@ -257,7 +269,6 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         borderWidth: 2,
         borderColor: '#D3D3D3',
-        marginTop: 15,
         borderRadius: 30,
         flexDirection: 'row', 
         alignItems: 'center', 

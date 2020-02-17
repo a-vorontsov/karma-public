@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, StyleSheet} from "react-native";
 
-export default class BoldText extends React.Component {
+export default class SemiBoldText extends React.Component {
     render() {
         return (
             <Text style={[styles.text, this.props.style]}>
@@ -13,6 +13,6 @@ export default class BoldText extends React.Component {
 
 const styles = StyleSheet.create({
     text: {
-        fontFamily: "OpenSans-Bold",
+        fontFamily: "OpenSans-SemiBold",
     },
 });
