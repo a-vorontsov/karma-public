@@ -1,4 +1,4 @@
-const db = require("./connection");
+const db = require("../database/connection");
 
 const insert = (address) => {
     const query = "INSERT INTO address(address_1, address_2, postcode, city, region, lat, long) VALUES ($1, $2, $3, $4, $5, $6, $7) " +
