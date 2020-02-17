@@ -5,6 +5,8 @@ import InitSignUpScreen from "./src/routes/InitSignupScreen";
 import UserSignUpScreen from "./src/views/UserSignUpScreen";
 import OrgSignUpScreen from "./src/views/OrgSignUpScreen";
 import AboutScreen from './src/views/AboutScreen';
+import ContactInfoScreen from './src/views/ContactInfoScreen';
+
 
 const MainNavigator = createStackNavigator(
     {

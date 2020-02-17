@@ -94,6 +94,20 @@ class AboutScreen extends React.Component {
         }
     }
 
+    setPhoto(selectedPhoto) {
+        this.setState ({
+            photo: selectedPhoto,
+        });
+    }
+
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null){
+            Alert.alert('Success!','Your new photo has been uploaded.')
+        } else (
+            Alert.alert('Error','Please upload a photo.')
+        )
+    }
+
     render() {
         return(
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
