@@ -66,7 +66,6 @@ class SignUpScreen extends React.Component {
     };
 
     render() {
-
         const showPasswordError =
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
@@ -92,7 +91,8 @@ class SignUpScreen extends React.Component {
                                     width: formWidth,
                                 }}>
                                 <View style={styles.header}>
-                                    <TouchableOpacity onPress={() => navigate("Welcome")}>
+                                    <TouchableOpacity
+                                        onPress={() => navigate("Welcome")}>
                                         <Text
                                             style={{
                                                 color: linkColour,
@@ -191,12 +191,15 @@ class SignUpScreen extends React.Component {
                                     showError={
                                         this.state.firstOpen
                                             ? false
-                                            : !this.state.password
+                                            : !this.state.password ||
+                                              this.state.password !==
+                                                  this.state.confPassword
                                     }
-                                    incorrectPassword={
-                                        this.state.firstOpen
-                                            ? false
-                                            : showPasswordError
+                                    errorText={
+                                        this.state.password !==
+                                        this.state.confPassword
+                                            ? ""
+                                            : undefined
                                     }
                                     inputRef={ref => (this.password = ref)}
                                     onSubmitEditing={() =>
