@@ -27,6 +27,7 @@ router.get('/:id', (req, res) => {
         res.status(200).json(result.rows);
     });
 });
+
 // gets called when user selects causes
 router.post('/', (req, res) => {
     const causes = req.body.causes; // this should contain the id of the causes selected by the user
@@ -37,21 +38,17 @@ router.post('/', (req, res) => {
     if (!user.id) {
         return res.status(400).send("No user id was specified in the body");
     }
-    console.log(user);
     for (let i = 0; i < causes.length; i++) {
-        console.log(causes[i]);
         const query = `insert into selected_cause values(${user.id},${causes[i].id})`;
         db.query(query, (err, result) => {
-            if (err) console.log(err);
+            if (err) return res.status(500).send(err);
         });
     };
     const query = `select * from selected_cause where user_id = \'${user.id}\'`;
     db.query(query, (err, result) => {
         if (err) return res.status(500).send(err);
-        res.status(200).send(result.rows);
+        res.status(200).send(result.rows); // return updated selected causes for that user
     });
-
-    // update the db
 });
 
 module.exports = router;
