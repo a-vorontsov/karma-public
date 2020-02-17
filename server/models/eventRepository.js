@@ -15,7 +15,17 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
+const update = (event) => {
+    const query = "UPDATE event SET name = $1, women_only = $2, spots = $3, address_visible = $4, minimum_age = $5, " +
+        "photo_id = $6, physical = $7, add_info = $8, content = $9, date = $10, time = $11 WHERE id = $12" +
+        "RETURNING *"; // returns passed event with it's id set to corresponding id in database
+    const params = [event.name, event.women_only, event.spots, event.address_visible, event.minimum_age, event.photo_id,
+        event.physical, event.add_info, event.content, event.date, event.time, event.id];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
+    update: update,
 };

@@ -5,8 +5,8 @@ const testHelpers = require("../test/testHelpers");
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
 
-jest.mock("../database/eventRepository");
-jest.mock("../database/addressRepository");
+jest.mock("../models/eventRepository");
+jest.mock("../models/addressRepository");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
@@ -29,6 +29,19 @@ test('creating event with known address works', async () => {
 
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);
+    expect(response.body).toMatchObject({...event, id: 1});
+    expect(response.statusCode).toBe(200);
+});
+
+test('updating events works', async () => {
+    const mockAddress = {...address, id: 1};
+    addressRepository.update.mockResolvedValue({rows: [mockAddress]});
+    eventRepository.update.mockResolvedValue({rows: [{...event, id: 1}]});
+
+    const response = await request(app).post("/events/update").send(event);
+
+    expect(eventRepository.update).toHaveBeenCalledTimes(1);
+    expect(addressRepository.update).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({...event, id: 1});
     expect(response.statusCode).toBe(200);
 });
