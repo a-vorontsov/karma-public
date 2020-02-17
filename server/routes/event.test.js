@@ -2,8 +2,8 @@ const request = require('supertest');
 const app = require('../app');
 const testHelpers = require("../test/testHelpers");
 
-const addressRepository = require("../database/addressRepository");
-const eventRepository = require("../database/eventRepository");
+const addressRepository = require("../models/addressRepository");
+const eventRepository = require("../models/eventRepository");
 
 jest.mock("../database/eventRepository");
 jest.mock("../database/addressRepository");
