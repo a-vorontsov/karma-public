@@ -1,11 +1,21 @@
 import React, {Component} from "react";
-import {View, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    StatusBar,
+    Platform,
+} from "react-native";
 import {RegularText} from "../components/text";
 
 class WelcomeScreen extends Component {
     static navigationOptions = {headerShown: false};
     render() {
         const {navigate} = this.props.navigation;
+        StatusBar.setBarStyle("dark-content");
+        if (Platform.OS === "android") {
+            StatusBar.setBackgroundColor("#f8f8f8");
+        }
         return (
             <View style={styles.container}>
                 <View style={{flex: 2, justifyContent: "center"}}>
@@ -26,7 +36,7 @@ class WelcomeScreen extends Component {
                     }}>
                     <TouchableOpacity
                         style={[styles.button, {marginBottom: 20}]}
-                        onPress={() => navigate("SignUp")}>
+                        onPress={() => navigate("InitSignup")}>
                         <RegularText style={[styles.text, {fontSize: 20}]}>
                             Sign Up
                         </RegularText>

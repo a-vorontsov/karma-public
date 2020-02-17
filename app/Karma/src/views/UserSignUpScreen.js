@@ -92,7 +92,7 @@ class SignUpScreen extends React.Component {
                                 }}>
                                 <View style={styles.header}>
                                     <TouchableOpacity
-                                        onPress={() => navigate("Welcome")}>
+                                        onPress={() => navigate("InitSignup")}>
                                         <Text
                                             style={{
                                                 color: linkColour,
