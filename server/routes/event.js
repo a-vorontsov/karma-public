@@ -16,7 +16,8 @@ router.post('/', (req, res) => {
     } else {
         eventPromise = eventRepository.insert(req.body);
     }
-    eventPromise.then(eventResult => res.status(200).send(eventResult.rows[0]));
+    eventPromise.then(eventResult => res.status(200).send(eventResult.rows[0]))
+        .catch(err => res.status(500).send(err));
 });
 
 router.post('/update', (req, res) => {
@@ -24,7 +25,8 @@ router.post('/update', (req, res) => {
     const event = req.body;
     addressRepository.update(address)
         .then(addressResult => eventRepository.update(event))
-        .then(eventResult => res.status(200).send(eventResult.rows[0]));
+        .then(eventResult => res.status(200).send(eventResult.rows[0]))
+        .catch(err => res.status(500).send(err));
 });
 
 /**
