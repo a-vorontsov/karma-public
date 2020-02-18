@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
-
+const causeRepository = require("../models/causeRepository");
 
 router.post('/', (req, res) => {
     const address = req.body.address;
@@ -25,6 +25,24 @@ router.post('/update', (req, res) => {
     addressRepository.update(address)
         .then(addressResult => eventRepository.update(event))
         .then(eventResult => res.status(200).send(eventResult.rows[0]));
+});
+
+/**
+ * get called when causes tab is pressed in main page
+ * returns all causes selected by user
+ * url example: http://localhost:8000/event/causes?id=2
+ */
+router.get('/causes', (req, res) => {
+    const id = req.query.id;
+    if (!id) {
+        return res.status(400).send("No user id was specified in the query");
+    }
+    causeRepository.getAllSelectedByUser(id)
+        .then(result => {
+            if (result.rows.length == 0) return res.status(404).send("No causes selected by user");
+            res.status(200).json(result.rows);
+        })
+        .catch(err => res.status(500).send(err));
 });
 
 
