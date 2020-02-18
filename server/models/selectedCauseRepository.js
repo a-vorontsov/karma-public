@@ -9,14 +9,14 @@ const insert = (userID, causeID) => {
 
 const insertMultiple = (userID, causes) => {
     const query = "INSERT INTO selected_cause SELECT $1 id, x FROM unnest($2::int[]) x "+
-    "RETURNING *";
+    "RETURNING *"; // returns inserted selected causes
     const params = [userID, causes];
     return db.query(query, params);
 };
 
 const deleteMultiple = (userID, causes) =>{
     const query = "delete from selected_cause where cause_id NOT IN (select * FROM unnest($2::int[])) and user_id = $1"+
-    "RETURNING *";
+    "RETURNING *"; // returns deleted selected causes
     const params = [userID, causes];
     return db.query(query, params);
 };
@@ -37,6 +37,6 @@ const deleteMultiple = (userID, causes) =>{
 
 module.exports = {
     insertSingle: insert,
-    insertMultiple: insertMultiple,
-    deleteMultiple: deleteMultiple,
+    insertSelected: insertMultiple,
+    deleteUnselected: deleteMultiple,
 };

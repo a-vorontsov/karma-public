@@ -43,9 +43,16 @@ router.post('/select', (req, res) => {
     for (let i = 0; i < causes.length; i++) {
         ids.push(causes[i].id);
     }
-    selectedCauseRepository.insertMultiple(user.id, ids)
-        .then(result => selectedCauseRepository.deleteMultiple(user.id, ids))
-        .then(deleteResult =>res.status(200).send(deleteResult.rows))
+    const resultObject = {};
+    selectedCauseRepository.insertSelected(user.id, ids)
+        .then(result => {
+            resultObject.inserted = result.rows;
+            return selectedCauseRepository.deleteUnselected(user.id, ids);
+        })
+        .then(deleteResult =>{
+            resultObject.deleted = deleteResult.rows;
+            return res.status(200).send(resultObject);
+        })
         .catch(err => res.status(500).send(err));
 });
 
