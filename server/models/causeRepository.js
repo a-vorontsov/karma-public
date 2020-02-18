@@ -25,7 +25,7 @@ const getAllSelectedByUser = (id) =>{
 };
 
 module.exports = {
-    insertSingle: insert,
+    insert: insert,
     findById: findById,
     findByName: findByName,
     getAll: getAll,

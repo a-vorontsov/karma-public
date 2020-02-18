@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     if (!id) return res.status(400).send("No id was specified");
+    if (!id.isInteger) return res.status(400).send("ID specified is in wrong format");
     causeRepository.findById(id)
         .then(result => {
             if (result.rows.length == 0) return res.status(404).send("No cause with specified id");
