@@ -7,8 +7,12 @@ import {
     Dimensions,
     StatusBar,
     Picker,
+    Image,
     Keyboard,
+    Alert,
+    StyleSheet,
 } from "react-native";
+import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
@@ -24,14 +28,17 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
+
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const LINK_COLOUR = "#3bbfb2";
 const TEXT_COLOUR = "#7F7F7F";
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             orgType: "",
             orgName: "",
@@ -39,10 +46,33 @@ export default class OrgSignUpScreen extends React.Component {
             regDate: "",
             isLowIncome: false,
             isExempt: false,
+            photo: null,
         };
     }
 
+    setPhoto(selectedPhoto) {
+        this.setState({
+            photo: selectedPhoto,
+        });
+    }
+
+    isValidPassword = () => {
+        return PASSWORD_REGEX.test(this.state.password);
+    };
+
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null) {
+            Alert.alert("Success!", "Your new photo has been uploaded.");
+        } else {
+            Alert.alert("Error", "Please upload a photo.");
+        }
+    }
+
     render() {
+        const showPasswordError =
+            !this.state.password ||
+            this.state.password !== this.state.confPassword ||
+            !this.isValidPassword();
         const {navigate} = this.props.navigation;
         const data = [
             {value: "NGO (Non-Government Organisation"},
@@ -93,10 +123,10 @@ export default class OrgSignUpScreen extends React.Component {
                                 Create a new account
                             </Text>
                         </View>
-
+                        {/** FORM INPUTS */}
                         <View
                             style={{
-                                flex: 2,
+                                flex: 6,
                                 alignItems: "center",
                                 justifyContent: "space-evenly",
                             }}>
@@ -119,6 +149,14 @@ export default class OrgSignUpScreen extends React.Component {
 
                             <TextInput
                                 style={SignUpStyles.textInput}
+                                placeholder="Charity or Organisation name"
+                                onSubmitEditing={() =>
+                                    this.charityNumber.focus()
+                                }
+                            />
+
+                            <TextInput
+                                style={SignUpStyles.textInput}
                                 placeholder="Charity number"
                                 inputRef={ref => (this.charityNumber = ref)}
                                 onSubmitEditing={() => this.regDate.focus()}
@@ -127,8 +165,10 @@ export default class OrgSignUpScreen extends React.Component {
                                 inputRef={ref => (this.regDate = ref)}
                                 style={SignUpStyles.textInput}
                                 placeholder="Date of Registration"
-                                onSubmitEditing={() => this.orgLogo.focus()}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
+
+                            {/** EXEMPTION REASONS */}
                             <View style={{width: FORM_WIDTH}}>
                                 <BoldText>Exemptions</BoldText>
                                 <Text style={(Styles.pt8, Styles.pb16)}>
@@ -182,43 +222,73 @@ export default class OrgSignUpScreen extends React.Component {
                                     </Text>
                                 </View>
                             </View>
-                            <View>
-                                <SemiBoldText>Organisation Logo</SemiBoldText>
+                            {/** LOGO UPLOAD */}
+                            <View
+                                style={{
+                                    width: FORM_WIDTH,
+                                    alignItems: "center",
+                                }}>
                                 <View style={{flexDirection: "row"}}>
-                                    <TextInput
-                                        style={SignUpStyles.textInput}
-                                        placeholder="Please add your organisation logo"
-                                        inputRef={ref => (this.orgLogo = ref)}
-                                        onChange={text => console.log(text)}
-                                        onSubmitEditing={() =>
-                                            Keyboard.dismiss()
-                                        }
-                                    />
-                                    {/* <TouchableOpacity
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            right: 0,
-                                            bottom: 0,}} >
-                                        <Text>Hello</Text>
-                                    </TouchableOpacity> */}
+                                    <PhotoUpload
+                                        onPhotoSelect={avatar => {
+                                            if (avatar) {
+                                                console.log(
+                                                    "Image base64 string: ",
+                                                    avatar,
+                                                ),
+                                                    this.setPhoto(avatar);
+                                            }
+                                        }}>
+                                        <Image
+                                            style={{
+                                                paddingVertical: 10,
+
+                                                width: 50,
+                                                height: 50,
+                                                borderRadius: 75,
+                                            }}
+                                            resizeMode="cover"
+                                            source={require("../assets/images/general-logos/photo-logo.png")}
+                                        />
+                                    </PhotoUpload>
+                                    <TouchableOpacity
+                                        style={styles.uploadButton}
+                                        onPress={() =>
+                                            this.uploadPhoto(this.state.photo)
+                                        }>
+                                        <RegularText
+                                            style={
+                                                (styles.buttonText,
+                                                {fontSize: 20, color: "gray"})
+                                            }>
+                                            Upload Photo
+                                        </RegularText>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
+                        {/** NEXT BUTTON */}
                         <View
                             style={[
+                                Styles.p16,
                                 {
-                                    flex: 1,
-                                    justifyContent: "flex-end",
-                                    width: FORM_WIDTH,
+                                    backgroundColor: "white",
+                                    width: SCREEN_WIDTH,
+                                    alignItems: "center",
                                 },
-                                Styles.pb24,
                             ]}>
-                            <GradientButton
-                                title="Next"
-                                onPress={() => console.log("Sign Up")}
-                            />
+                            <View
+                                style={[
+                                    {
+                                        width: FORM_WIDTH,
+                                    },
+                                    Styles.pb24,
+                                ]}>
+                                <GradientButton
+                                    title="Next"
+                                    onPress={() => console.log("Sign Up")}
+                                />
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
@@ -226,3 +296,31 @@ export default class OrgSignUpScreen extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    uploadButton: {
+        height: 50,
+        width: 200,
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderColor: "#D3D3D3",
+        borderRadius: 30,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    buttonText: {
+        fontSize: 15,
+        fontWeight: "400",
+        color: "gray",
+    },
+    headerText: {
+        fontSize: 25,
+        color: "black",
+        paddingLeft: 20,
+    },
+});
