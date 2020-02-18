@@ -1,9 +1,18 @@
+-- Created by Vertabelo (http://vertabelo.com)
+-- Last modification date: 2020-02-18 16:08:18.356
+
 -- foreign keys
+ALTER TABLE authentication
+    DROP CONSTRAINT authentication_user;
+
+ALTER TABLE complaint
+    DROP CONSTRAINT complaint_user;
+
 ALTER TABLE event
     DROP CONSTRAINT event_address;
 
 ALTER TABLE event
-    DROP CONSTRAINT event_organisation;
+    DROP CONSTRAINT event_user;
 
 ALTER TABLE event_cause
     DROP CONSTRAINT eventcause_cause;
@@ -18,22 +27,40 @@ ALTER TABLE favourite
     DROP CONSTRAINT favourite_individual;
 
 ALTER TABLE individual
+    DROP CONSTRAINT individual_address;
+
+ALTER TABLE individual
+    DROP CONSTRAINT individual_picture;
+
+ALTER TABLE individual
     DROP CONSTRAINT individual_user;
+
+ALTER TABLE notification
+    DROP CONSTRAINT notification_user_receiver;
+
+ALTER TABLE notification
+    DROP CONSTRAINT notification_user_sender;
+
+ALTER TABLE organisation
+    DROP CONSTRAINT organisation_address;
+
+ALTER TABLE organisation
+    DROP CONSTRAINT organisation_picture;
 
 ALTER TABLE organisation
     DROP CONSTRAINT organisation_user;
-
-ALTER TABLE picture
-    DROP CONSTRAINT picture_profile;
-
-ALTER TABLE profile
-    DROP CONSTRAINT profile_address;
 
 ALTER TABLE profile
     DROP CONSTRAINT profile_individual;
 
 ALTER TABLE registration
     DROP CONSTRAINT registration_user;
+
+ALTER TABLE report_user
+    DROP CONSTRAINT report_user_reported;
+
+ALTER TABLE report_user
+    DROP CONSTRAINT report_user_reporting;
 
 ALTER TABLE reset
     DROP CONSTRAINT reset_user;
@@ -56,7 +83,11 @@ ALTER TABLE setting
 -- tables
 DROP TABLE address;
 
+DROP TABLE authentication;
+
 DROP TABLE cause;
+
+DROP TABLE complaint;
 
 DROP TABLE event;
 
@@ -68,6 +99,8 @@ DROP TABLE individual;
 
 DROP TABLE information;
 
+DROP TABLE notification;
+
 DROP TABLE organisation;
 
 DROP TABLE picture;
@@ -75,6 +108,8 @@ DROP TABLE picture;
 DROP TABLE profile;
 
 DROP TABLE registration;
+
+DROP TABLE report_user;
 
 DROP TABLE reset;
 
