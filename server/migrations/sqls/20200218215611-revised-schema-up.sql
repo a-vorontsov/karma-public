@@ -140,7 +140,7 @@ CREATE TABLE profile (
                          id serial  NOT NULL,
                          individual_id int  NOT NULL,
                          karma_points int  NOT NULL DEFAULT 0,
-                         bio varchar(32)  NULL,
+                         bio text  NULL,
                          women_only boolean  NOT NULL,
                          CONSTRAINT profile_pk PRIMARY KEY (id)
 );
