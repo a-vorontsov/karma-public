@@ -1,4 +1,4 @@
-const db = require("./connection");
+const db = require("../database/connection");
 const eventRepository = require("./eventRepository");
 
 beforeEach(() => {
