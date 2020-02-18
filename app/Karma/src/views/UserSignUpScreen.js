@@ -22,9 +22,6 @@ import {SafeAreaView} from "react-native-safe-area-context";
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     constructor(props) {
         super(props);
