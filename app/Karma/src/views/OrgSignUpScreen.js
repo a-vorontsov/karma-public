@@ -12,6 +12,7 @@ import {
 import {hasNotch} from "react-native-device-info";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
+import {Dropdown} from "react-native-material-dropdown";
 import {
     RegularText,
     TitleText,
@@ -43,6 +44,11 @@ export default class OrgSignUpScreen extends React.Component {
 
     render() {
         const {navigate} = this.props.navigation;
+        const data = [
+            {value: "NGO (Non-Government Organisation"},
+            {value: "Charity Option 1"},
+            {value: "Charity Option 2"},
+        ];
 
         return (
             <KeyboardAvoidingView
@@ -95,20 +101,22 @@ export default class OrgSignUpScreen extends React.Component {
                                 justifyContent: "space-evenly",
                             }}>
                             <View>
-                                <Text>Are you a:</Text>
-                                <TextInput
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Placeholder text"
-                                    editable={false}
+                                <Text
+                                    style={{
+                                        marginBottom: -20,
+                                        color: TEXT_COLOUR,
+                                    }}>
+                                    Are you a:
+                                </Text>
+                                <Dropdown
+                                    containerStyle={{width: FORM_WIDTH}}
+                                    baseColor={TEXT_COLOUR}
+                                    textColor={TEXT_COLOUR}
+                                    value={data[0].value}
+                                    data={data}
                                 />
                             </View>
-                            <TextInput
-                                style={SignUpStyles.textInput}
-                                placeholder="Charity or Organisation name"
-                                onSubmitEditing={() =>
-                                    this.charityNumber.focus()
-                                }
-                            />
+
                             <TextInput
                                 style={SignUpStyles.textInput}
                                 placeholder="Charity number"
