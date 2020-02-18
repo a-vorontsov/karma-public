@@ -1,37 +1,75 @@
-import React, {Component} from "react";
-import {View, StatusBar, Platform} from "react-native";
-import {RegularText, LogoText} from "../components/text";
-import {TransparentButton, TextButton} from "../components/buttons";
+import React, { Component } from "react";
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    StatusBar,
+    Platform,
+    Text
+} from "react-native";
+import TextInput from "../components/TextInput";
+import { RegularText, LogoText } from "../components/text";
+import { TransparentButton, TextButton } from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";
 import Styles from "../styles/Styles";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {
-    static navigationOptions = {headerShown: false};
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isPressed: false,
+            isRecognised: false,
+            isVerified: false,
+        };
+        this.popUpLogin = this.popUpLogin.bind(this);
+    }
+
+    popUpLogin() {
+        // const {isPressed, isRecognised, isVerified} = this.state;
+
+        return (
+            <TextInput placeholder="owo" autoFocus={true} />
+        )
+
+    }
     render() {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
         return (
-            <LinearGradient
-                useAngle={true}
-                angle={45}
-                angleCenter={{x: 0.5, y: 0.5}}
-                colors={[Colours.blue, Colours.lightBlue]}
-                style={Styles.alignJustifyCenterContainer}>
-                <SafeAreaView style={Styles.stretchContainer}>
-                    <View style={[Styles.vcenter, Styles.textCenter]}>
-                        <LogoText
-                            style={[
-                                Styles.white,
-                                Styles.textCenter,
-                                Styles.welcomeLogo,
-                            ]}>
-                            KARMA
-                        </LogoText>
+            <View style={styles.container}>
+                <View style={{ flex: 2, justifyContent: "center" }}>
+                    <RegularText style={[styles.text, { fontSize: 70 }]}>
+                        KARMA
+                    </RegularText>
+                    <RegularText style={[styles.text, { fontSize: 40 }]}>
+                        lorem ipsum
+                    </RegularText>
+                    {this.state.isPressed ? this.popUpLogin() : null}
+                </View>
+
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        marginBottom: 40,
+                    }}>
+
+                    <TouchableOpacity
+                        style={[styles.button, { marginBottom: 20 }]}
+                        onPress={() => this.setState({ isPressed: true })}>
+                        <RegularText style={[styles.text, { fontSize: 20 }]}>
+                            Sign Up
+                        </RegularText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity >
                         <RegularText
                             style={[
                                 Styles.white,
@@ -60,8 +98,8 @@ class WelcomeScreen extends Component {
                             />
                         </View>
                     </View>
-                </SafeAreaView>
-            </LinearGradient>
+                </View>
+            </View>
         );
     }
 }
