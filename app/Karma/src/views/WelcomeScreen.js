@@ -5,11 +5,31 @@ import {
     TouchableOpacity,
     StatusBar,
     Platform,
+    Text
 } from "react-native";
 import {RegularText} from "../components/text";
+import TextInput from "../components/TextInput"
 
 class WelcomeScreen extends Component {
-    static navigationOptions = {headerShown: false};
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            isPressed: false,
+            isRecognised: false,
+            isVerified: false,
+        };
+        this.popUpLogin = this.popUpLogin.bind(this);
+    }
+
+    popUpLogin() {
+        // const {isPressed, isRecognised, isVerified} = this.state;
+
+        return(
+        <TextInput placeholder="owo" autoFocus={true} />
+        )
+        
+    }
     render() {
         const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
@@ -25,6 +45,7 @@ class WelcomeScreen extends Component {
                     <RegularText style={[styles.text, {fontSize: 40}]}>
                         lorem ipsum
                     </RegularText>
+                    {this.state.isPressed ? this.popUpLogin() : null}
                 </View>
 
                 <View
@@ -34,15 +55,16 @@ class WelcomeScreen extends Component {
                         alignItems: "center",
                         marginBottom: 40,
                     }}>
+                       
                     <TouchableOpacity
                         style={[styles.button, {marginBottom: 20}]}
-                        onPress={() => navigate("InitSignup")}>
+                        onPress={() => this.setState({isPressed: true})}>
                         <RegularText style={[styles.text, {fontSize: 20}]}>
                             Sign Up
                         </RegularText>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this._onPressButton}>
+                    <TouchableOpacity >
                         <RegularText
                             style={[
                                 styles.text,
