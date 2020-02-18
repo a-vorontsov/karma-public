@@ -8,7 +8,7 @@ const causesRoute = require('./routes/causes');
 const forgotPasswordRoute = require('./routes/forgotPassword');
 const verificationRoute = require('./routes/verification');
 const eventsRoute = require('./routes/event');
-// Midleware
+// Middleware
 app.use(express.json());
 
 app.use('/', require('./routes/index'));
