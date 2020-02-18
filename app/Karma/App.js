@@ -4,8 +4,8 @@ import WelcomeScreen from "./src/views/WelcomeScreen";
 import InitSignUpScreen from "./src/routes/InitSignupScreen";
 import UserSignUpScreen from "./src/views/UserSignUpScreen";
 import OrgSignUpScreen from "./src/views/OrgSignUpScreen";
-import PrivacyScreen from './src/views/PrivacyScreen';
-import TermsScreen from './src/views/TermsScreen';
+import PrivacyScreen from "./src/views/PrivacyScreen";
+import TermsScreen from "./src/views/TermsScreen";
 
 const MainNavigator = createStackNavigator(
     {
