@@ -11,7 +11,7 @@ class TInput extends Component {
 
     getInnerRef = () => this.ref;
     render() {
-        const {name, text, onChange} = this.props;
+        const {name, onChange} = this.props;
         const defaultError = "This field is required";
         const inputStyle = this.props.showError
             ? [styles.textInput, styles.errorMessage]

@@ -6,7 +6,10 @@ import {
     StatusBar,
     Platform,
 } from "react-native";
-import {RegularText} from "../components/text";
+import {RegularText, LogoText} from "../components/text";
+import {TransparentButton} from "../components/buttons";
+import Styles from "../styles/Styles";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 class WelcomeScreen extends Component {
     static navigationOptions = {headerShown: false};
@@ -17,42 +20,41 @@ class WelcomeScreen extends Component {
             StatusBar.setBackgroundColor("#f8f8f8");
         }
         return (
-            <View style={styles.container}>
-                <View style={{flex: 2, justifyContent: "center"}}>
-                    <RegularText style={[styles.text, {fontSize: 70}]}>
+            <SafeAreaView style={styles.container}>
+                <View style={[Styles.vcenter, Styles.textCenter]}>
+                    <LogoText
+                        style={[
+                            Styles.white,
+                            Styles.textCenter,
+                            {fontSize: 70},
+                        ]}>
                         KARMA
-                    </RegularText>
-                    <RegularText style={[styles.text, {fontSize: 40}]}>
+                    </LogoText>
+                    <RegularText
+                        style={[
+                            Styles.white,
+                            Styles.textCenter,
+                            Styles.xxxlarge,
+                        ]}>
                         lorem ipsum
                     </RegularText>
                 </View>
 
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        marginBottom: 40,
-                    }}>
-                    <TouchableOpacity
-                        style={[styles.button, {marginBottom: 20}]}
-                        onPress={() => navigate("InitSignup")}>
-                        <RegularText style={[styles.text, {fontSize: 20}]}>
-                            Sign Up
-                        </RegularText>
-                    </TouchableOpacity>
+                <View style={[Styles.bottom, Styles.pb24]}>
+                    <TransparentButton
+                        onPress={() => navigate("InitSignup")}
+                        white
+                        title="Sign Up"
+                    />
 
                     <TouchableOpacity onPress={this._onPressButton}>
                         <RegularText
-                            style={[
-                                styles.text,
-                                {fontSize: 15, fontWeight: "200"},
-                            ]}>
+                            style={[Styles.white, Styles.medium, Styles.pt8]}>
                             Already have an account? Login
                         </RegularText>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -63,20 +65,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#03A8AE",
-    },
-    text: {
-        justifyContent: "center",
-        textAlign: "center",
-        color: "white",
-    },
-    button: {
-        alignItems: "center",
-        backgroundColor: "transparent",
-        borderColor: "white",
-        borderWidth: 2,
-        borderRadius: 30,
-        paddingHorizontal: 125,
-        paddingVertical: 10,
     },
 });
 

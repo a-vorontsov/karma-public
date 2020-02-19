@@ -25,6 +25,13 @@ const Styles = StyleSheet.create({
     center: {
         marginHorizontal: "auto",
     },
+    vcenter: {
+        flex: 2,
+        justifyContent: "center",
+    },
+    textCenter: {
+        textAlign: "center",
+    },
     safeAreaContainer: {
         flex: 1,
         paddingTop: hasNotch() ? StatusBar.currentHeight : 0,
@@ -110,8 +117,17 @@ const Styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 10,
     },
-    roundButtonTransparentText: {
+    roundButtonTransparentWhite: {
+        borderColor: "#ffffff",
+        borderWidth: 2,
+        backgroundColor: "transparent",
+        padding: 10,
+    },
+    green: {
         color: "#01a7a6",
+    },
+    white: {
+        color: "#ffffff",
     },
     bottom: {
         flex: 1,

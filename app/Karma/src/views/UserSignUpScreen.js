@@ -15,6 +15,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {hasNotch} from "react-native-device-info";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const linkColour = "#3bbfb2";
 const {width, height} = Dimensions.get("window");

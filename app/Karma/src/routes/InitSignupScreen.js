@@ -1,8 +1,8 @@
 import React from "react";
 
-import {View, SafeAreaView} from "react-native";
-
+import {View} from "react-native";
 import Carousel, {Pagination} from "react-native-snap-carousel";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 import {SignupCard} from "../components/signup";
 import {TransparentButton} from "../components/buttons";
@@ -36,10 +36,10 @@ export default class InitSignupScreen extends React.Component {
     };
     render() {
         return (
-            <SafeAreaView style={Styles.safeAreaContainer}>
+            <SafeAreaView style={Styles.container}>
                 <View style={[Styles.pt8, Styles.ph24]}>
                     <TitleText>
-                        Welcome to{" "}
+                        Welcome to&nbsp;
                         <LogoText style={Styles.xxlarge}>Karma</LogoText>
                     </TitleText>
                     <RegularText style={[Styles.pv16, Styles.small]}>
