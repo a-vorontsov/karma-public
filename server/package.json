@@ -7,7 +7,7 @@
     "test": "jest",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "db-migrate": "db-migrate"
+    "db-migrate": "db-migrate",
     "dev-start": "nodemon ./server",
     "prod-start": "NODE_ENV=production nodemon ./server"
   },
@@ -25,7 +25,7 @@
     "nodemailer": "^6.4.2",
     "pg": "^7.18.1",
     "randomatic": "^3.1.1",
-    "twilio": "^3.39.4"
+    "twilio": "^3.39.4",
     "express-flash": "0.0.2",
     "express-session": "^1.17.0",
     "helmet": "^3.21.2",
@@ -39,18 +39,17 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
-    "passport-oauth2": "^1.5.0",
-    "pg": "^7.18.1"
+    "passport-oauth2": "^1.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
     "dotenv": "^8.2.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
-    "jest": "^25.1.0",
+    "jest": "^25.1.0"
   },
   "jest": {
     "setupFilesAfterEnv": [

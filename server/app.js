@@ -13,7 +13,6 @@ const session = require("express-session");
 const auth = require("./authentication/check-auth");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
-const PORT = process.env.PORT || 8000;
 const passport = require("passport");
 require("./authentication/passport-config");
 
@@ -53,6 +52,9 @@ if (process.env.ENABLE_OAUTH === "1") {
 }
 // Connect to DB
 // TODO:
+
+// Render and direct to view based on user auth status
+app.all("*", auth.requireAuthentication);
 
 module.exports = app;
 
