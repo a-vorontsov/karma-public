@@ -50,6 +50,7 @@ if (process.env.ENABLE_OAUTH === "1") {
     app.use("/auth/google", require("./routes/google"));
     app.use("/auth/linkedin", require("./routes/linkedin"));
 }
+
 // Connect to DB
 // TODO:
 

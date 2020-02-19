@@ -18,18 +18,19 @@ const publicKey = fs.readFileSync(
  * Create a PKC signed JWT token with given subject,
  * audience and payload.
  * Signing alg: ECDSA using P-256 curve and SHA-256
- * @param {*} tokenSubject
- * @param {*} tokenAudience
+ * @param {String} tokenSubject
+ * @param {String} tokenAudience
  * @param {JSON} payload
+ * @return {JSON} JWT token
  */
 function signWithCustomOptions(tokenSubject, tokenAudience, payload) {
-  return jwt.sign(payload, privateKey, {
-    issuer: iss,
-    subject: tokenSubject,
-    audience: tokenAudience,
-    expiresIn: exp,
-    algorithm: alg
-  });
+    return jwt.sign(payload, privateKey, {
+        issuer: iss,
+        subject: tokenSubject,
+        audience: tokenAudience,
+        expiresIn: exp,
+        algorithm: alg,
+    });
 }
 
 /**
@@ -37,15 +38,16 @@ function signWithCustomOptions(tokenSubject, tokenAudience, payload) {
  * audience and given payload.
  * Signing alg: ECDSA using P-256 curve and SHA-256
  * @param {JSON} payload
+ * @return {JSON} JWT token
  */
 function signWithDefaultOptions(payload) {
-  return jwt.sign(payload, privateKey, {
-    issuer: iss,
-    subject: sub,
-    audience: aud,
-    expiresIn: exp,
-    algorithm: alg
-  });
+    return jwt.sign(payload, privateKey, {
+        issuer: iss,
+        subject: sub,
+        audience: aud,
+        expiresIn: exp,
+        algorithm: alg,
+    });
 }
 
 /**
@@ -53,12 +55,13 @@ function signWithDefaultOptions(payload) {
  * only with required options and given payload.
  * Signing alg: ECDSA using P-256 curve and SHA-256
  * @param {JSON} payload
+ * @return {JSON} JWT token
  */
 function signWithMinimalOptions(payload) {
-  return jwt.sign(payload, privateKey, {
-    expiresIn: exp,
-    algorithm: alg
-  });
+    return jwt.sign(payload, privateKey, {
+        expiresIn: exp,
+        algorithm: alg,
+    });
 }
 
 /**
@@ -74,14 +77,15 @@ function signWithMinimalOptions(payload) {
  * @throws TokenExpiredError
  * @throws JsonWebTokenError
  * @param {JSON} token
+ * @return {JSON} decoded token
  */
 function verifyWithDefaultOptions(token) {
-  return jwt.verify(token, publicKey, {
-    audience: aud,
-    issuer: iss,
-    subject: sub,
-    algorithms: alg
-  });
+    return jwt.verify(token, publicKey, {
+        audience: aud,
+        issuer: iss,
+        subject: sub,
+        algorithms: alg,
+    });
 }
 
 /**
@@ -94,14 +98,15 @@ function verifyWithDefaultOptions(token) {
  * @throws TokenExpiredError
  * @throws JsonWebTokenError
  * @param {JSON} token
+ * @return {JSON} decoded token
  */
 function verifyWithMinimalOptions(token) {
-  return jwt.verify(token, publicKey, { algorithms: alg });
+    return jwt.verify(token, publicKey, {algorithms: alg});
 }
 
 module.exports = {
-  signWithDefaultOptions: signWithDefaultOptions,
-  signWithMinimalOptions: signWithMinimalOptions,
-  verifyWithDefaultOptions: verifyWithDefaultOptions,
-  verifyWithMinimalOptions: verifyWithMinimalOptions
+    signWithDefaultOptions: signWithDefaultOptions,
+    signWithMinimalOptions: signWithMinimalOptions,
+    verifyWithDefaultOptions: verifyWithDefaultOptions,
+    verifyWithMinimalOptions: verifyWithMinimalOptions,
 };
