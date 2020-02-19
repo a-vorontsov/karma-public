@@ -109,5 +109,5 @@ dist
 # JetBrains IDE configurations
 .idea
 
-# EC keys
+# PKC keys
 *.key

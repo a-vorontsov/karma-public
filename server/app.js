@@ -40,6 +40,7 @@ app.use("/", require("./routes/index"));
 app.use("/login", require("./routes/login"));
 app.use("/login/forgot", require("./routes/forgotPassword"));
 app.use("/verify/phone", require("./routes/verify/phone"));
+app.use("/verify/identity", require("./routes/verify/identity"));
 app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
