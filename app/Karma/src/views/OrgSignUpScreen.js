@@ -17,6 +17,7 @@ import {hasNotch} from "react-native-device-info";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
+import PageHeader from "../components/PageHeader";
 import {
     RegularText,
     TitleText,
@@ -81,154 +82,176 @@ export default class OrgSignUpScreen extends React.Component {
         ];
 
         return (
-            <KeyboardAvoidingView
-                style={Styles.container}
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
-                enabled>
-                <ScrollView showsVerticalScrollIndicator={false}>
+            <>
+                {/** HEADER */}
+                <View
+                    style={{
+                        alignItems: "center",
+                        flex: 0.2,
+                        backgroundColor: "white",
+                        justifyContent: "flex-start",
+                    }}>
+                    <PageHeader
+                        onPress={() => navigate("InitSignup")}
+                        title="Sign Up"
+                    />
+                    <Text style={SignUpStyles.subheaderText}>
+                        Create a new account
+                    </Text>
+                </View>
+                {/* <View style={{alignItems: "center"}}>
+                    <View style={{alignItems: "flex-start"}}>
+                        <Text>Hello</Text>
+                    </View>
+                </View> */}
+                {/* <View style={[{alignItems: "center", paddingTop:40}]}>
                     <View
                         style={{
-                            minHeight: SCREEN_HEIGHT,
-                            alignItems: "center",
+                            flex: 1,
+                            justifyContent: "flex-start",
+                            marginTop: hasNotch()
+                                ? 60
+                                : StatusBar.currentHeight,
+                            alignItems: "flex-start",
+                            width: FORM_WIDTH,
                         }}>
-                        {/**
-                         * Header
-                         */}
-                        <View
-                            style={{
-                                flex: 1,
-                                justifyContent: "flex-start",
-                                marginTop: hasNotch()
-                                    ? 60
-                                    : StatusBar.currentHeight,
-                                alignItems: "flex-start",
-                                width: FORM_WIDTH,
-                            }}>
-                            <View style={SignUpStyles.header}>
-                                <TouchableOpacity
-                                    onPress={() => navigate("InitSignup")}>
-                                    <Text
-                                        style={[
-                                            SignUpStyles.LINK_COLOUR,
-                                            {fontSize: 30},
-                                        ]}>
-                                        ←
-                                    </Text>
-                                </TouchableOpacity>
-                                <TitleText style={SignUpStyles.headerText}>
-                                    Sign Up
-                                </TitleText>
-                            </View>
-                            <Text style={SignUpStyles.subheaderText}>
-                                Create a new account
-                            </Text>
-                        </View>
-                        {/** FORM INPUTS */}
-                        <View
-                            style={{
-                                flex: 6,
-                                alignItems: "center",
-                                justifyContent: "space-evenly",
-                            }}>
-                            <View>
+                        <View style={SignUpStyles.header}>
+                            <TouchableOpacity
+                                onPress={() => navigate("InitSignup")}>
                                 <Text
-                                    style={{
-                                        marginBottom: -20,
-                                        color: TEXT_COLOUR,
-                                    }}>
-                                    Are you a:
+                                    style={[
+                                        SignUpStyles.LINK_COLOUR,
+                                        {fontSize: 30},
+                                    ]}>
+                                    ←
                                 </Text>
-                                <Dropdown
-                                    containerStyle={{width: FORM_WIDTH}}
-                                    baseColor={TEXT_COLOUR}
-                                    textColor={TEXT_COLOUR}
-                                    value={data[0].value}
-                                    data={data}
-                                />
-                            </View>
-
-                            <TextInput
-                                style={SignUpStyles.textInput}
-                                placeholder="Charity or Organisation name"
-                                onSubmitEditing={() =>
-                                    this.charityNumber.focus()
-                                }
-                            />
-
-                            <TextInput
-                                style={SignUpStyles.textInput}
-                                placeholder="Charity number"
-                                inputRef={ref => (this.charityNumber = ref)}
-                                onSubmitEditing={() => this.regDate.focus()}
-                            />
-                            <TextInput
-                                inputRef={ref => (this.regDate = ref)}
-                                style={SignUpStyles.textInput}
-                                placeholder="Date of Registration"
-                                onSubmitEditing={() => Keyboard.dismiss()}
-                            />
-
-                            {/** EXEMPTION REASONS */}
-                            <View style={{width: FORM_WIDTH}}>
-                                <BoldText>Exemptions</BoldText>
-                                <Text style={(Styles.pt8, Styles.pb16)}>
-                                    Please select why you are not registered
-                                </Text>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        paddingBottom: 10,
-                                    }}>
-                                    <CheckBox
-                                        style={SignUpStyles.checkBox}
-                                        onPressIn={() =>
-                                            this.setState({
-                                                isLowIncome: !this.state
-                                                    .isLowIncome,
-                                            })
-                                        }
-                                    />
-                                    <Text
-                                        style={{
-                                            flexShrink: 1,
-                                            color: TEXT_COLOUR,
-                                        }}>
-                                        <Text>
-                                            Your income is below £5,000 or are
-                                            'excepted'
-                                        </Text>
-                                    </Text>
-                                </View>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        paddingBottom: 10,
-                                    }}>
-                                    <CheckBox
-                                        style={SignUpStyles.checkBox}
-                                        onPressIn={() =>
-                                            this.setState({
-                                                isExempt: !this.state.isExempt,
-                                            })
-                                        }
-                                    />
-                                    <Text
-                                        style={{
-                                            flexShrink: 1,
-                                            color: TEXT_COLOUR,
-                                        }}>
-                                        You are exempt from regulation by the
-                                        Charity Comission
-                                    </Text>
-                                </View>
-                            </View>
-                            {/** LOGO UPLOAD */}
+                            </TouchableOpacity>
+                            <TitleText style={SignUpStyles.headerText}>
+                                Sign Up
+                            </TitleText>
+                        </View>
+                        <Text style={SignUpStyles.subheaderText}>
+                            Create a new account
+                        </Text>
+                    </View>
+                </View> */}
+                <KeyboardAvoidingView
+                    style={Styles.container}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                    enabled>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                minHeight: SCREEN_HEIGHT,
+                            }}>
+                            {/** FORM INPUTS */}
                             <View
                                 style={{
-                                    width: FORM_WIDTH,
+                                    flex: 1,
                                     alignItems: "center",
+                                    justifyContent: "space-evenly",
                                 }}>
-                                <View style={{flexDirection: "row"}}>
+                                <View>
+                                    <Text
+                                        style={{
+                                            marginBottom: -20,
+                                            color: TEXT_COLOUR,
+                                        }}>
+                                        Are you a:
+                                    </Text>
+                                    <Dropdown
+                                        containerStyle={{width: FORM_WIDTH}}
+                                        baseColor={TEXT_COLOUR}
+                                        textColor={TEXT_COLOUR}
+                                        value={data[0].value}
+                                        data={data}
+                                    />
+                                </View>
+
+                                <TextInput
+                                    style={SignUpStyles.textInput}
+                                    placeholder="Charity or Organisation name"
+                                    onSubmitEditing={() =>
+                                        this.charityNumber.focus()
+                                    }
+                                />
+
+                                <TextInput
+                                    style={SignUpStyles.textInput}
+                                    placeholder="Charity number"
+                                    inputRef={ref => (this.charityNumber = ref)}
+                                    onSubmitEditing={() => this.regDate.focus()}
+                                />
+                                <TextInput
+                                    inputRef={ref => (this.regDate = ref)}
+                                    style={SignUpStyles.textInput}
+                                    placeholder="Date of Registration"
+                                    onSubmitEditing={() => Keyboard.dismiss()}
+                                />
+
+                                {/** EXEMPTION REASONS */}
+                                <View style={{width: FORM_WIDTH}}>
+                                    <BoldText>Exemptions</BoldText>
+                                    <Text style={(Styles.pt8, Styles.pb16)}>
+                                        Please select why you are not registered
+                                    </Text>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            paddingBottom: 10,
+                                        }}>
+                                        <CheckBox
+                                            style={SignUpStyles.checkBox}
+                                            onPressIn={() =>
+                                                this.setState({
+                                                    isLowIncome: !this.state
+                                                        .isLowIncome,
+                                                })
+                                            }
+                                        />
+                                        <Text
+                                            style={{
+                                                flexShrink: 1,
+                                                color: TEXT_COLOUR,
+                                            }}>
+                                            <Text>
+                                                Your income is below £5,000 or
+                                                are 'excepted'
+                                            </Text>
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            paddingBottom: 10,
+                                        }}>
+                                        <CheckBox
+                                            style={SignUpStyles.checkBox}
+                                            onPressIn={() =>
+                                                this.setState({
+                                                    isExempt: !this.state
+                                                        .isExempt,
+                                                })
+                                            }
+                                        />
+                                        <Text
+                                            style={{
+                                                flexShrink: 1,
+                                                color: TEXT_COLOUR,
+                                            }}>
+                                            You are exempt from regulation by
+                                            the Charity Comission
+                                        </Text>
+                                    </View>
+                                </View>
+                                {/** LOGO UPLOAD */}
+
+                                {/* <View style={{flexDirection: "row"}}> */}
+
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                    }}>
                                     <PhotoUpload
                                         onPhotoSelect={avatar => {
                                             if (avatar) {
@@ -267,32 +290,32 @@ export default class OrgSignUpScreen extends React.Component {
                                 </View>
                             </View>
                         </View>
-                        {/** NEXT BUTTON */}
-                        <View
-                            style={[
-                                Styles.p16,
-                                {
-                                    backgroundColor: "white",
-                                    width: SCREEN_WIDTH,
-                                    alignItems: "center",
-                                },
-                            ]}>
-                            <View
-                                style={[
-                                    {
-                                        width: FORM_WIDTH,
-                                    },
-                                    Styles.pb24,
-                                ]}>
-                                <GradientButton
-                                    title="Next"
-                                    onPress={() => console.log("Sign Up")}
-                                />
-                            </View>
-                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+                {/** NEXT BUTTON */}
+                <View
+                    style={[
+                        Styles.p16,
+                        {
+                            backgroundColor: "white",
+                            width: SCREEN_WIDTH,
+                            alignItems: "center",
+                        },
+                    ]}>
+                    <View
+                        style={[
+                            {
+                                width: FORM_WIDTH,
+                            },
+                            Styles.pb24,
+                        ]}>
+                        <GradientButton
+                            title="Next"
+                            onPress={() => console.log("Sign Up")}
+                        />
                     </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                </View>
+            </>
         );
     }
 }
