@@ -69,6 +69,12 @@ function updatePassword(req) {
     console.log("update password called");
 }
 
+/**
+ * Returns true if input password is correct for given user.
+ * @param {Object} user 
+ * @param {string} password 256-bit
+ * @returns {boolean} true if password is correct
+ */
 function isCorrectPassword(user, password) {
     return user.password === digest.hashPassWithSaltInHex(password, user.salt);
 }
