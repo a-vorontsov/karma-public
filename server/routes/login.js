@@ -4,17 +4,17 @@ const passport = require("passport");
 const auth = require("../authentication/check-auth");
 
 router.get("/", auth.checkNotAuthenticated, (req, res) => {
-  res.render("login.ejs");
+    res.render("login.ejs");
 });
 
 router.post(
-  "/",
-  auth.checkNotAuthenticated,
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true
-  })
+    "/",
+    auth.checkNotAuthenticated,
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/login",
+        failureFlash: true,
+    }),
 );
 
 module.exports = router;

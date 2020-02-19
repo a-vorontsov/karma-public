@@ -5,19 +5,19 @@ const passport = require("passport");
 router.get("/", passport.authenticate("facebook"));
 
 router.get(
-  "/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "/auth/facebook/success",
-    failureRedirect: "/auth/facebook/fail"
-  })
+    "/callback",
+    passport.authenticate("facebook", {
+        successRedirect: "/auth/facebook/success",
+        failureRedirect: "/auth/facebook/fail",
+    }),
 );
 
 router.get("/success", (req, res) => {
-  res.status(200).send({ message: "Successful authentication with Facebook" });
+    res.status(200).send({message: "Successful authentication with Facebook"});
 });
 
 router.get("/fail", (req, res) => {
-  res.status(400).send({ message: "Failed to authenticate with Facebook" });
+    res.status(400).send({message: "Failed to authenticate with Facebook"});
 });
 
 module.exports = router;
