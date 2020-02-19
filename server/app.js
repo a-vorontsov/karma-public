@@ -39,9 +39,12 @@ app.use(methodOverride("_method"));
 // -- ROUTES -- //
 app.use("/", require("./routes/index"));
 app.use("/login", require("./routes/login"));
+app.use("/login/forgot", require("./routes/forgotPassword"));
+app.use("/verify", require("./routes/verification"));
 app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
+app.use("/events", require("./routes/event"));
 app.use("/edit/password", require("./routes/change-password"));
 if (process.env.ENABLE_OAUTH === "1") {
   app.use("/auth/facebook", require("./routes/facebook"));
@@ -51,24 +54,5 @@ if (process.env.ENABLE_OAUTH === "1") {
 // Connect to DB
 // TODO:
 
-const jw = require("./token/jwt-agent");
-var token = jw.signWithDefaultOptions({
-  email: "john@doe.com",
-  admin: false,
-  at_hash: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
-});
-console.log(token);
+module.exports = app;
 
-var token2 = jw.signWithMinimalOptions({
-  email: "john@doe.com",
-  admin: false,
-  at_hash: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
-});
-
-// console.log(jw.verifyWithDefaultOptions(token));
-console.log(jw.verifyWithMinimalOptions(token2));
-
-// Render and direct to view based on user auth status
-app.all("*", auth.requireAuthentication);
-
-app.listen(PORT, console.log(`Listening on port ${PORT} ...`));
