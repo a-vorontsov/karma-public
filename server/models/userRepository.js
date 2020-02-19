@@ -14,7 +14,7 @@ const findById = (id) => {
 
 const findAll = () => {
     const query = "SELECT * FROM \"user\"";
-    return db.query(query)
+    return db.query(query);
 };
 
 module.exports = {
