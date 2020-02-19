@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const users = require("../modules/authentication/user-agent");
-const auth = require("../modules/authentication/check-auth");
+const users = require("../../../modules/authentication/user-agent");
+const auth = require("../../../modules/authentication/check-auth");
 const owasp = require("owasp-password-strength-test");
 
 router.get("/", auth.checkAuthenticated, (req, res) => {
