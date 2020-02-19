@@ -33,18 +33,28 @@ router.post('/update', (req, res) => {
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
         .catch(err => res.status(500).send(err));
 });
-
-router.get('/', (req, res) => {
-    const user = userRepository.getUserLocation(1)
-        .then(result => console.log(result.rows))
-        .catch(err => console.log(err));
+/**
+ * gets called when user is in tab all in activities homepage
+ * url example : http://localhost:8000/event?id=1
+ */
+router.get('/', async (req, res) => {
+    const userId = req.query.id;
+    const userResult = await userRepository.getUserLocation(userId);
+    const user = userResult.rows[0];
+    if (!user) return res.status(400).send("No user with specified id");
     eventRepository.getEventsWithLocation()
         .then(result => {
             if (result.rows.length == 0) return res.status(404).send("No events");
-            res.status(200).json(result.rows);
+            const events = result.rows;
+            events.sort((event1, event2) => {
+                const distanceToEvent1 = distanceCalculator.getDistance(user, event1, 'M');
+                const distanceToEvent2 = distanceCalculator.getDistance(user, event2, 'M');
+                if (distanceToEvent1 > distanceToEvent2) return 1;
+                else if (distanceToEvent1 < distanceToEvent2) return -1;
+                else return 0;
+            });
+            res.status(200).json(events);
         })
-        // eventRepository.getAll()
-        //     .then(result => res.status(200).json(result.rows))
         .catch(err => res.status(500).send(err));
 });
 /**

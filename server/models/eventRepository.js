@@ -31,7 +31,7 @@ const getAll = () => {
     return db.query(query);
 };
 const getEventsWithLocation = () => {
-    const query = "select id(event),lat,long from address left join event on id(address) = address_id";
+    const query = "select id(event),lat,long from address right join event on id(address) = address_id";
     return db.query(query);
 };
 module.exports = {

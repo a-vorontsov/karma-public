@@ -1,12 +1,14 @@
 /**
- * @param {float} lat1 Latitude of point 1
- * @param {float} lon1 Longitude of point 1
- * @param {float} lat2 Latitude of point 2
- * @param {float} lon2 Longitude of point 2
+ * @param {object} loc1 point 1
+ * @param {object} loc2 point 2
  * @param {char} unit the unit you desire for results; M, K OR N
  * @return {float} distance between the two points
  */
-const getDistance = (lat1, lon1, lat2, lon2, unit) => {
+const getDistance = (loc1, loc2, unit) => {
+    const lat1 = loc1.lat;
+    const lat2 = loc2.lat;
+    const lon1 = loc1.long;
+    const lon2 = loc2.long;
     if ((lat1 == lat2) && (lon1 == lon2)) return 0;
     const radlat1 = Math.PI * lat1 / 180;
     const radlat2 = Math.PI * lat2 / 180;
