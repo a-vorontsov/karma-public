@@ -8,27 +8,32 @@ const accounts = [];
  * Upload an identity document picture
  * @param {Integer} userId
  */
-function uploadFile(userId) {
-    const file = stripe.files.create(
-        {
-            purpose: "userIdentity_document",
-            file: {
-                data: fs.readFileSync("./verify/temp/" + userId),
-                name: (userId + ".jpg"),
-                type: "application/octet-stream",
+async function uploadFile(userId) {
+    let file = "";
+    try {
+        file = await stripe.files.create(
+            {
+                purpose: "userIdentity_document",
+                file: {
+                    data: fs.readFileSync("./routes/verify/temp/" + userId + ".jpg"),
+                    name: userId + ".jpg",
+                    type: "application/octet-stream",
+                },
             },
-        },
-        {
-            stripe_account: "{{" + process.env.STRIPE_ACC_userId + "}}",
-        },
-    );
+            {
+                stripeAccount: "{{" + process.env.STRIPE_ACC_userId + "}}",
+            },
+        );
+    } catch (e) {
+        // TODO: return upload error as response
+    }
     accounts.push({
         id: userId,
         fileRef: file,
         timestamp: Date.now(),
         verified: false,
     });
-    console.log(file);
+    // console.log(accounts);
 }
 
 /**
@@ -38,7 +43,7 @@ function uploadFile(userId) {
  */
 function updateAccount(userId) {
     return (
-      accounts.find(account => account.id === id).timestamp + 5000 < Date.now()
+        accounts.find(account => account.id === userId).timestamp + 1000 < Date.now()
     );
 }
 
