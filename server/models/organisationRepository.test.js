@@ -56,6 +56,6 @@ test('insert organisation and findById organisation work', async () => {
         address_id: insertAddressResult.rows[0].id,
     };
     const insertOrganisationResult = await organisationRepository.insert(organisation);
-    const findIndividualResult = await organisationRepository.findById(insertOrganisationResult.rows[0].id);
-    expect(insertOrganisationResult.rows[0]).toMatchObject(insertOrganisationResult.rows[0]);
+    const findOrganisationResult = await organisationRepository.findById(insertOrganisationResult.rows[0].id);
+    expect(insertOrganisationResult.rows[0]).toMatchObject(findOrganisationResult.rows[0]);
 });
