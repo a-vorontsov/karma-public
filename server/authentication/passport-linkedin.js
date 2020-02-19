@@ -4,7 +4,7 @@ const users = require("../authentication/user-agent");
 /**
  * Passport's boilerplate.
  * Initialise the passport module for Linkedin OAuth 2.0 use.
- * @param {} passport
+ * @param {Object} passport
  */
 function initialise(passport) {
     passport.use(

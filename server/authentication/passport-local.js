@@ -4,7 +4,7 @@ const digest = require("./digest");
 /**
  * Passport's boilerplate.
  * Initialise the passport module for local use.
- * @param {} passport
+ * @param {Object} passport
  * @param {function} getUserByEmail
  * @param {function} getUserById
  */

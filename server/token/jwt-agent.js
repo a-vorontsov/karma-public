@@ -6,12 +6,12 @@ const alg = "ES256";
 const sub = "server-app";
 const aud = "app";
 const privateKey = fs.readFileSync(
-  "./token/pkc/server-client/priv.key",
-  "utf8"
+    "./token/pkc/server-client/priv.key",
+    "utf8",
 );
 const publicKey = fs.readFileSync(
-  "./token/pkc/server-client/pub.key",
-  "utf8"
+    "./token/pkc/server-client/pub.key",
+    "utf8",
 );
 
 /**
