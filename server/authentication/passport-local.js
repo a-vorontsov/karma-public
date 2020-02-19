@@ -9,7 +9,6 @@ const digest = require("./digest");
  * @param {function} getUserById
  */
 function initialise(passport, getUserByEmail, getUserById) {
-
   const authenticateUser = async (email, password, done) => {
     const user = getUserByEmail(email);
     if (user == null) {
@@ -33,7 +32,6 @@ function initialise(passport, getUserByEmail, getUserById) {
   passport.deserializeUser((id, done) => {
     return done(null, getUserById(id));
   });
-
 }
 
 module.exports = initialise;

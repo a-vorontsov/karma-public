@@ -5,8 +5,14 @@ const exp = "1h";
 const alg = "ES256";
 const sub = "server-app";
 const aud = "app";
-const privateKey = fs.readFileSync("./token/pkc/server-client/priv.key", "utf8");
-const publicKey = fs.readFileSync("./token/pkc/server-client/pub.key", "utf8");
+const privateKey = fs.readFileSync(
+  "./token/pkc/server-client/priv.key",
+  "utf8"
+);
+const publicKey = fs.readFileSync(
+  "./token/pkc/server-client/pub.key",
+  "utf8"
+);
 
 /**
  * Create a PKC signed JWT token with given subject,
