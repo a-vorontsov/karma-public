@@ -111,3 +111,4 @@ dist
 
 # PKC keys
 *.key
+server/routes/verify/temp/

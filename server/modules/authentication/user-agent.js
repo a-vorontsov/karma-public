@@ -103,6 +103,15 @@ function findById(id) {
     return users.find(user => user.id === id);
 }
 
+/**
+ * Return true if user with given ID exists.
+ * @param {integer} id
+ * @return {boolean} true if user exists
+ */
+function userExists(id) {
+    return users.find(user => user.id === id) != undefined;
+}
+
 module.exports = {
     register: register,
     findByEmail: findByEmail,
@@ -110,4 +119,5 @@ module.exports = {
     findById: findById,
     isCorrectPassword: isCorrectPassword,
     updatePassword: updatePassword,
+    userExists: userExists,
 };

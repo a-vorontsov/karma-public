@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const stripeVerification = require("../../verification/stripe");
-const auth = require("../../authentication/check-auth");
+const stripeVerification = require("../../modules/verification/stripe");
+const auth = require("../../modules/authentication/check-auth");
 
 router.post('/create', (req, res) => {
     try {

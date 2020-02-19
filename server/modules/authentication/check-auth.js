@@ -5,13 +5,14 @@
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
- * @return {HTTP} redirect
+ * @return {HTTP} status
  */
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/login");
+    // res.redirect("/login");
+    res.status(401).send({message: "Request is not authorised."});
 }
 
 /**
@@ -46,7 +47,8 @@ function requireAuthentication(req, res, next) {
         req.originalUrl !== "/login" &&
         req.originalUrl !== "/register"
     ) {
-        res.redirect("/login");
+        // res.redirect("/login");
+        res.status(401).send({message: "Request is not authorised."});
     }
     return next();
 }

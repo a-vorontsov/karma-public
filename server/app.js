@@ -1,20 +1,13 @@
-/**
- * If in development, import the local environment
- * configuration file.
- */
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
-}
-
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const flash = require("express-flash");
 const session = require("express-session");
-const auth = require("./authentication/check-auth");
+const auth = require("./modules/authentication/check-auth");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 const passport = require("passport");
-require("./authentication/passport-config");
+require("./modules/authentication/passport-config");
 
 // @temporary Set view engine (for demoing views)
 app.set("view-engine", "ejs");
