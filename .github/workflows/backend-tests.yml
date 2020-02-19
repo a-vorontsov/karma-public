@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     # setup node, build, and run tests
     steps:
-      - name: checkout Github repo
+      - name: checkout GitHub repo
         uses: actions/checkout@v2
 
       - name: set up Node.js 12.x
@@ -33,20 +33,14 @@ jobs:
 
       - name: npm install
         working-directory: ./server
-        run: npm i --ignore-scripts
-
-      - name: npm build
-        working-directory: ./server
-        run: npm run build --if-present
+        run: npm ci
 
       - name: run ESLint
-        uses: ninosaurus/eslint-check@v5
-        with:
-          eslint-config-path: "./server/.eslintrc.js"
-          custom-directory: "./server"
-          repo-token: ${{secrets.GITHUB_TOKEN}}
+        working-directory: ./server
+        run: npx eslint ./
 
   test:
+    needs: build
     services:
       postgres:
         image: postgres:12.1

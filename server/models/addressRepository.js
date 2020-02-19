@@ -12,7 +12,17 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
+const update = (address) => {
+    const query = "UPDATE address SET address_1 = $1, address_2 = $2, postcode = $3, city = $4, region = $5, " +
+        "lat = $6, long = $7 WHERE id = $8" +
+        "RETURNING *"; // returns passed event with it's id set to corresponding id in database
+    const params = [address.address_1, address.address_2, address.postcode, address.city, address.region, address.lat,
+        address.long, address.id];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
+    update: update,
 };
