@@ -4,6 +4,7 @@ const distanceCalculator = require('../distanceCalculator');
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
 const causeRepository = require("../models/causeRepository");
+const userRepository = require("../models/userRepository");
 
 router.post('/', (req, res) => {
     const address = req.body.address;
@@ -34,6 +35,9 @@ router.post('/update', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+    const user = userRepository.getUserLocation(1)
+        .then(result => console.log(result.rows))
+        .catch(err => console.log(err));
     eventRepository.getEventsWithLocation()
         .then(result => {
             if (result.rows.length == 0) return res.status(404).send("No events");

@@ -1,27 +1,25 @@
+const db = require("../database/connection");
 const addressRepository = require("./addressRepository");
-const testHelpers = require("../test/testHelpers");
 
 beforeEach(() => {
-    return testHelpers.clearDatabase();
+    db.query("DELETE FROM address");
 });
 
 afterEach(() => {
-    return testHelpers.clearDatabase();
+    db.query("DELETE FROM address");
 });
 
 test('insert and findById work', async () => {
-    const address = testHelpers.address;
+    const address = {
+        address_1: "Line 1",
+        address_2: "Line 2",
+        postcode: "14 aa",
+        city: "LDN",
+        region: "LDN again",
+        lat: "0.3",
+        long: "0.5"
+    };
     const insertResult = await addressRepository.insert(address);
     const findResult = await addressRepository.findById(insertResult.rows[0].id);
-    expect(findResult.rows[0]).toMatchObject(insertResult.rows[0]);
-});
-
-test('update works', async () => {
-    const address = testHelpers.address;
-    const insertAddressResult = await addressRepository.insert(address);
-    const insertedAddress = insertAddressResult.rows[0];
-    insertedAddress.city = "Tallinn";
-    insertedAddress.lat = "15.3000000";
-    const updateEventResult = await addressRepository.update(insertedAddress);
-    expect(updateEventResult.rows[0]).toMatchObject(insertedAddress);
+    expect(insertResult.rows[0]).toMatchObject(findResult.rows[0]);
 });
