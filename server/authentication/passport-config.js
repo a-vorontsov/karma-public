@@ -6,6 +6,8 @@ initialiseLocal(
   email => userAgent.findByEmail(email),
   id => userAgent.findById(id)
 );
-require("./passport-google")(passport);
-require("./passport-facebook")(passport);
-require("./passport-linkedin")(passport);
+if (process.env.ENABLE_OAUTH === "1") {
+  require("./passport-google")(passport);
+  require("./passport-facebook")(passport);
+  require("./passport-linkedin")(passport);
+}
