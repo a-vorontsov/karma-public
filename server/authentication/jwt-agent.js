@@ -1,50 +1,40 @@
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const toeknIssuer = "Karma app";
-const tokenExpiry = "1h";
-const algo = "ES512";
-const privateKey = fs.readFileSync("./priv.key", "utf8");
-const publicKey = fs.readFileSync("./pub.key", "utf8");
-const defaultTokenSubject = "Karma app communication";
-const defaultTokenAudiance = "user";
-
-// var payload = {
-//   data1: "Data 1",
-//   data2: "Data 2",
-//   data3: "Data 3",
-//   data4: true
-// };
-
-// var signOptions = {
-//   issuer: toeknIssuer,
-//   subject: tokenSubject,
-//   audience: tokenAudiance,
-//   expiresIn: tokenExpiry,
-//   algorithm: algo
-// };
+const iss = "Karma app";
+const exp = "1h";
+const alg = "ES256";
+const sub = "Karma app communication";
+const aud = "user";
+const privateKey = fs.readFileSync("./authentication/priv.key", "utf8");
+const publicKey = fs.readFileSync("./authentication/pub.key", "utf8");
 
 /**
- * ECDSA using P-521 curve and SHA-512 hash algorithm
+ * ECDSA using P-256 curve and SHA-256 hash algorithm
+ * @param {*} tokenSubject 
+ * @param {*} tokenAudience 
+ * @param {JSON} payload 
  */
-// var token = jwt.sign(payload, privateKey, signOptions);
-
-function sign(tokenSubject, tokenAudiance, payload) {
-    return jwt.sign(payload, privateKey, {
-        issuer: toeknIssuer,
-        subject: tokenSubject,
-        audience: tokenAudiance,
-        expiresIn: tokenExpiry,
-        algorithm: algo
-    })
+function sign(tokenSubject, tokenAudience, payload) {
+  return jwt.sign(payload, privateKey, {
+      issuer: iss,
+      subject: tokenSubject,
+      audience: tokenAudience,
+      expiresIn: exp,
+      algorithm: alg
+  });
 }
 
+/**
+ * ECDSA using P-256 curve and SHA-256 hash algorithm
+ * @param {JSON} payload 
+ */
 function signWithDefaultParams(payload) {
   return jwt.sign(payload, privateKey, {
-    issuer: toeknIssuer,
-    subject: defaultTokenSubject,
-    audience: defaultTokenAudiance,
-    expiresIn: tokenExpiry,
-    algorithm: algo
+    issuer: iss,
+    subject: sub,
+    audience: aud,
+    expiresIn: exp,
+    algorithm: alg
   });
 }
 

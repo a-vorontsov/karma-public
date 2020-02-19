@@ -108,3 +108,6 @@ dist
 
 # JetBrains IDE configurations
 .idea
+
+# EC keys
+*.key
