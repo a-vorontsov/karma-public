@@ -4,7 +4,8 @@
  * Otherwise, redirects user to the login page.
  * @param {HTTP} req
  * @param {HTTP} res
- * @param {} next
+ * @param {HTTP} next
+ * @return {HTTP} redirect
  */
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -17,9 +18,10 @@ function checkAuthenticated(req, res, next) {
  * Check if app user is not authenticated.
  * If not auth., directs user to desired destination.
  * Otherwise, redirects user to the main page.
- * @param req
- * @param res
- * @param next
+ * @param {HTTP} req
+ * @param {HTTP} res
+ * @param {HTTP} next
+ * @return {HTTP} redirect
  */
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -28,11 +30,21 @@ function checkNotAuthenticated(req, res, next) {
     next();
 }
 
+/**
+ * Check if app user is authenticated.
+ * If yes, directs user to desired destination.
+ * Otherwise, redirects user to the login page,
+ * unless already at login/register.
+ * @param {HTTP} req
+ * @param {HTTP} res
+ * @param {HTTP} next
+ * @return {HTTP} redirect
+ */
 function requireAuthentication(req, res, next) {
     if (
         !req.isAuthenticated() &&
-    req.originalUrl !== "/login" &&
-    req.originalUrl !== "/register"
+        req.originalUrl !== "/login" &&
+        req.originalUrl !== "/register"
     ) {
         res.redirect("/login");
     }

@@ -39,16 +39,16 @@ app.use(methodOverride("_method"));
 app.use("/", require("./routes/index"));
 app.use("/login", require("./routes/login"));
 app.use("/login/forgot", require("./routes/forgotPassword"));
-app.use("/verify", require("./routes/verification"));
+app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/register", require("./routes/register"));
 app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
 app.use("/events", require("./routes/event"));
 app.use("/edit/password", require("./routes/change-password"));
 if (process.env.ENABLE_OAUTH === "1") {
-    app.use("/auth/facebook", require("./routes/facebook"));
-    app.use("/auth/google", require("./routes/google"));
-    app.use("/auth/linkedin", require("./routes/linkedin"));
+    app.use("/auth/facebook", require("./routes/auth/facebook"));
+    app.use("/auth/google", require("./routes/auth/google"));
+    app.use("/auth/linkedin", require("./routes/auth/linkedin"));
 }
 
 // Connect to DB

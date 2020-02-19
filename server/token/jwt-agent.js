@@ -15,8 +15,9 @@ const publicKey = fs.readFileSync(
 );
 
 /**
- * Create a PKC signed JWT token with given subject,
+ * Create a PKC signed JWT token with custom subject,
  * audience and payload.
+ * Warning: only use this if you know what you are doing!
  * Signing alg: ECDSA using P-256 curve and SHA-256
  * @param {String} tokenSubject
  * @param {String} tokenAudience
@@ -105,6 +106,7 @@ function verifyWithMinimalOptions(token) {
 }
 
 module.exports = {
+    signWithCustomOptions: signWithCustomOptions,
     signWithDefaultOptions: signWithDefaultOptions,
     signWithMinimalOptions: signWithMinimalOptions,
     verifyWithDefaultOptions: verifyWithDefaultOptions,
