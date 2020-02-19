@@ -25,8 +25,8 @@ test('insert user and findById user work', async () => {
 
 test('find all users', async () => {
     const user1 = {
-        email: "test@gmail.com",
-        username: "test1",
+        email: "testersd@gmail.com",
+        username: "test1hak",
         password_hash: "password",
         verified: true,
         salt: "password",
