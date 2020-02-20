@@ -19,7 +19,8 @@ router.post('/', (req, res) => {
     } else {
         eventPromise = eventRepository.insert(req.body);
     }
-    eventPromise.then(eventResult => res.status(200).send(eventResult.rows[0]));
+    eventPromise.then(eventResult => res.status(200).send(eventResult.rows[0]))
+        .catch(err => res.status(500).send(err));
 });
 
 router.post('/update', (req, res) => {

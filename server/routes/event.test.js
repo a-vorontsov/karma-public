@@ -30,7 +30,7 @@ test('creating event with known address works', async () => {
             id: 1
         }]
     });
-    const response = await request(app).post("/events").send(event);
+    const response = await request(app).post("/event").send(event);
 
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);
@@ -56,7 +56,7 @@ test('updating events works', async () => {
         }]
     });
 
-    const response = await request(app).post("/events/update").send(event);
+    const response = await request(app).post("/event/update").send(event);
 
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
@@ -86,7 +86,7 @@ test('creating event with no address_id creates new address and event', async ()
         }]
     });
 
-    const response = await request(app).post("/events").send(eventNoAddressId);
+    const response = await request(app).post("/event").send(eventNoAddressId);
 
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(1);
