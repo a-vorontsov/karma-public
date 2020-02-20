@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @route {GET} /causes/:id
+ * route {GET} /causes/:id
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.params.id - ID of the cause required
