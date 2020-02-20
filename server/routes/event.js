@@ -38,14 +38,14 @@ router.post('/update', (req, res) => {
  * url example: http://localhost:8000/event/causes?id=2
  */
 /**
- * @route {GET} event/causes
+ * route {GET} event/causes
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.query.id - ID of user logged in
  * @returns:
- *  status: 200, @description: Array of all event objects that have user selected causes
- *  status: 400, @description: if ID param is not specified or in wrong format/NaN
- *  status: 500, @description: Most probably a database error occured
+ *  status: 200, description: Array of all event objects that have user selected causes
+ *  status: 400, description: if ID param is not specified or in wrong format/NaN
+ *  status: 500, description: Most probably a database error occured
  */
 router.get('/causes', (req, res) => {
     const id = req.query.id;

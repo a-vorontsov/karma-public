@@ -7,8 +7,8 @@ const causeRepository = require("../models/causeRepository");
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns:
- *  status: 200, @description: Array of all cause objects
- *  status: 500, @description: Most probably a database error occured
+ *  status: 200, description: Array of all cause objects
+ *  status: 500, description: Most probably a database error occured
  */
 router.get('/', (req, res) => {
     causeRepository.getAll()
@@ -22,10 +22,10 @@ router.get('/', (req, res) => {
  * @param {Object} res - Express response object
  * @param {integer} req.params.id - ID of the cause required
  * @returns:
- *  status: 200, @description: cause object with given id
- *  status: 400, @description: if ID param is not specified or in wrong format/NaN
- *  status: 404, @description: no cause was found in DB with ID
- *  status: 500, @description: Most probably a database error occured
+ *  status: 200, description: cause object with given id
+ *  status: 400, description: if ID param is not specified or in wrong format/NaN
+ *  status: 404, description: no cause was found in DB with ID
+ *  status: 500, description: Most probably a database error occured
  */
 router.get('/:id', (req, res) => {
     const id = req.params.id;
