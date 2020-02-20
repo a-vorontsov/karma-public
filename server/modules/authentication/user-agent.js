@@ -31,6 +31,29 @@ function isEmailVerified(email) {
 }
 
 /**
+ * Returns true if user account associated to
+ * given email address is partly registered.
+ * Partial registration means an existing user
+ * account without an individual / organisation
+ * profile.
+ * @param {string} email
+ * @return {boolean} true if partly registered
+ */
+function isPartlyRegistered(email) {
+    return false;
+}
+
+/**
+ * Returns true if user account associated to
+ * given email address is fully registered.
+ * @param {string} email
+ * @return {boolean} true if fully registered
+ */
+function isFullyRegistered(email) {
+    return false;
+}
+
+/**
  * Register a new user with given email, username
  * and password.
  * @param {string} email
@@ -154,6 +177,10 @@ function userExists(id) {
 }
 
 module.exports = {
+    isFullyRegistered: isFullyRegistered,
+    isPartlyRegistered: isPartlyRegistered,
+    emailExists: emailExists,
+    isEmailVerified: isEmailVerified,
     registerUser: registerUser,
     findByEmail: findByEmail,
     findByUsername: findByUsername,
