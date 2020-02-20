@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
  * @param {integer} req.params.id - ID of the cause required
  * @returns:
  *  status: 200, @description: cause object with given id
- *  status: 400, @description: if ID param is not convertible to an integer
+ *  status: 400, @description: if ID param is not specified or in wrong format/NaN
  *  status: 404, @description: no cause was found in DB with ID
  *  status: 500, @description: Most probably a database error occured
  */
