@@ -62,7 +62,7 @@ const profile = {
     karma_points: 134,
     bio: "tstest xlkhtle",
     women_only: false,
-}
+};
 
 const organisation = {
 
@@ -70,7 +70,7 @@ const organisation = {
     org_number: "1234AB",
     org_type: "NGO",
     poc_firstname: "Paul",
-    poc_lastname: "Muller" ,
+    poc_lastname: "Muller",
     phone: "+945380245",
     banned: false,
     org_register_date: "2016-10-09",
