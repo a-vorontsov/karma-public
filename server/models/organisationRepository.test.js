@@ -3,23 +3,30 @@ const userRepository = require("./userRepository");
 const organisationRepository = require("./organisationRepository");
 const addressRepository = require("./addressRepository");
 const testHelpers = require("../test/testHelpers");
+const registrationRepository = require("./registrationRepository");
+
+const registration = testHelpers.registration;
+const user = testHelpers.user;
+const address = testHelpers.address;
+const organisation = testHelpers.organisation;
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
+    user.email = "";
+    organisation.address_id = -1;
+    organisation.user_id = -1;
     return testHelpers.clearDatabase();
 });
 
 test('insert organisation and findById organisation work', async () => {
-    const user = testHelpers.user;
+
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
-
-    const address = testHelpers.address;
     const insertAddressResult = await addressRepository.insert(address);
-
-    const organisation = testHelpers.organisation;
     organisation.address_id = insertAddressResult.rows[0].id;
     organisation.user_id = insertUserResult.rows[0].id;
     const insertOrganisationResult = await organisationRepository.insert(organisation);

@@ -2,19 +2,27 @@ const addressRepository = require("./addressRepository");
 const eventRepository = require("./eventRepository");
 const testHelpers = require("../test/testHelpers");
 const userRepository = require("./userRepository");
+const registrationRepository = require("./registrationRepository");
+
+const registration = testHelpers.registration;
+const address = testHelpers.address;
+const event = testHelpers.event;
+const user = testHelpers.user;
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
+    user.email = "";
+    event.address_id = -1;
+    event.user_id = -1;
     return testHelpers.clearDatabase();
 });
 
 test('insert and findById work', async () => {
-    const address = testHelpers.address;
-    const event = testHelpers.event;
-    const user = testHelpers.user;
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
     const insertUserResult = await userRepository.insert(user);
     event.address_id =  insertAddressResult.rows[0].id;
@@ -25,9 +33,8 @@ test('insert and findById work', async () => {
 });
 
 test('update works', async () => {
-    const address = testHelpers.address;
-    const event = testHelpers.event;
-    const user = testHelpers.user;
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
     const insertUserResult = await userRepository.insert(user);
     event.address_id =  insertAddressResult.rows[0].id;

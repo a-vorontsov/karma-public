@@ -1,5 +1,21 @@
 const db = require("../database/connection");
 
+const registration = {
+    email: "test@gmail.com",
+    email_flag: 0,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
+const registration2 = {
+    email: "test2@gmail.com",
+    email_flag: 0,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
 const address = {
     address_1: "221B Baker St",
     address_2: "Marleybone",
@@ -88,10 +104,13 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM \"user\"");
+    await db.query("DELETE FROM registration");
 };
 
 module.exports = {
     address: address,
+    registration: registration,
+    registration2: registration2,
     event: event,
     user: user,
     user2: user2,
