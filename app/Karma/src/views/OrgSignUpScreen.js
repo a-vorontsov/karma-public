@@ -38,8 +38,13 @@ export default class OrgSignUpScreen extends React.Component {
             orgName: "",
             charityNumber: "",
             regDate: "",
+            email: "",
+            password: "",
+            confPassword: "",
             isLowIncome: false,
             isExempt: false,
+            photo: null,
+            submitPressed: false,
         };
     }
 
@@ -53,62 +58,29 @@ export default class OrgSignUpScreen extends React.Component {
 
         return (
             <>
-                {/** HEADER */}
-                <View
-                    style={{
-                        alignItems: "center",
-                        flex: 0.2,
-                        backgroundColor: "white",
-                        justifyContent: "flex-start",
-                    }}>
-                    <PageHeader
-                        onPress={() => navigate("InitSignup")}
-                        title="Sign Up"
-                    />
-                    <Text style={SignUpStyles.subheaderText}>
-                        Create a new account
-                    </Text>
-                </View>
-                {/* <View style={{alignItems: "center"}}>
-                    <View style={{alignItems: "flex-start"}}>
-                        <Text>Hello</Text>
-                    </View>
-                </View> */}
-                {/* <View style={[{alignItems: "center", paddingTop:40}]}>
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: "flex-start",
-                            marginTop: hasNotch()
-                                ? 60
-                                : StatusBar.currentHeight,
-                            alignItems: "flex-start",
-                            width: FORM_WIDTH,
-                        }}>
-                        <View style={SignUpStyles.header}>
-                            <TouchableOpacity
-                                onPress={() => navigate("InitSignup")}>
-                                <Text
-                                    style={[
-                                        SignUpStyles.LINK_COLOUR,
-                                        {fontSize: 30},
-                                    ]}>
-                                    ←
-                                </Text>
-                            </TouchableOpacity>
-                            <TitleText style={SignUpStyles.headerText}>
-                                Sign Up
-                            </TitleText>
-                        </View>
-                        <Text style={SignUpStyles.subheaderText}>
-                            Create a new account
-                        </Text>
-                    </View>
-                </View> */}
                 <KeyboardAvoidingView
                     style={Styles.container}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
+                    {/** HEADER */}
+                    <View style={{alignItems: "center", width: FORM_WIDTH}}>
+                        {/* <View
+                            style={{
+                                alignItems: "flex-start",
+                                backgroundColor: "white",
+                                marginTop: hasNotch()
+                                    ? 60
+                                    : StatusBar.currentHeight,
+                            }}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text>🔙</Text>
+                                <Text>Sign Up</Text>
+                            </View>
+                            <Text style={SignUpStyles.subheaderText}>
+                                Create a new account
+                            </Text>
+                        </View> */}
+                    </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View
                             style={{
