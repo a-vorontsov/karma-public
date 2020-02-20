@@ -93,21 +93,36 @@ function pushNewUser(email, username, secureSalt, hashedPassword) {
 /**
  * Register a new individual
  * @param {integer} id
- * @param {string} foreName
+ * @param {string} title //TODO: string?
+ * @param {string} firstName
+ * @param {string} middleNames
  * @param {string} surName
- * @param {date} birthDate
+ * @param {Date} dateOfBirth
+ * @param {string} gender //TODO: string?
+ * @param {string} addressLine1
+ * @param {string} addressLine2
+ * @param {string} townCity
+ * @param {string} countryState
+ * @param {string} postCode
+ * @param {string} phoneNumber
  */
-function registerIndividual(id, foreName, surName, birthDate) {
+function registerIndividual(id, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     // TODO:
 }
 
 /**
  * Register a new organisation
  * @param {integer} id
+ * @param {string} organisationNumber //TODO: string?
  * @param {string} name
- * @param {string} orgNumber
+ * @param {string} addressLine1
+ * @param {string} addressLine2
+ * @param {string} townCity
+ * @param {string} countryState
+ * @param {string} postCode
+ * @param {string} phoneNumber
  */
-function registerOrg(id, name, orgNumber) {
+function registerOrg(id, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     // TODO:
 }
 
@@ -182,6 +197,8 @@ module.exports = {
     emailExists: emailExists,
     isEmailVerified: isEmailVerified,
     registerUser: registerUser,
+    registerIndividual: registerIndividual,
+    registerOrg: registerOrg,
     findByEmail: findByEmail,
     findByUsername: findByUsername,
     findById: findById,

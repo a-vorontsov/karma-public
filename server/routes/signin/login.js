@@ -3,6 +3,11 @@ const router = express.Router();
 const passport = require("passport");
 const auth = require("../../modules/authentication/check-auth");
 
+/**
+ * Old version of the registration flow
+ * @deprecated OLD VERSION
+ */
+
 router.get("/", auth.checkNotAuthenticated, (req, res) => {
     res.render("login.ejs");
 });
@@ -25,4 +30,4 @@ router.get("/fail", (req, res) => {
     res.status(400).send({message: "Invalid username or password."});
 });
 
-module.exports = router;
+// module.exports = router;

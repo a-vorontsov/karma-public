@@ -4,6 +4,11 @@ const users = require("../../modules/authentication/user-agent");
 const auth = require("../../modules/authentication/check-auth");
 const owasp = require("owasp-password-strength-test");
 
+/**
+ * Old version of the registration flow
+ * @deprecated OLD VERSION
+ */
+
 owasp.config({
     allowPassphrases: true,
     maxLength: 128,
@@ -30,4 +35,4 @@ router.post("/", auth.checkNotAuthenticated, async (req, res) => {
     }
 });
 
-module.exports = router;
+// module.exports = router;

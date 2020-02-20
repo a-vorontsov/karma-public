@@ -30,10 +30,13 @@ app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
 app.use("/", require("./routes/index"));
-app.use("/signin", require("./routes/signin/login"));
+// app.use("/signin", require("./routes/signin/login"));
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/forgot", require("./routes/signin/forgotPassword"));
-app.use("/register", require("./routes/signin/register"));
+// app.use("/register", require("./routes/signin/register"));
+app.use("/register/user", require("./routes/register/user"));
+app.use("/register/individual", require("./routes/register/individual"));
+app.use("/register/organisation", require("./routes/register/organisation"));
 app.use("/logout", require("./routes/signin/logout"));
 
 app.use("/verify/phone", require("./routes/verify/phone"));

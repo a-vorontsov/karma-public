@@ -9,8 +9,9 @@ const userAgent = require("../../modules/authentication/user-agent");
  * a HTTP response will be sent based on the user's
  * registration status.
  * @route {POST} /signin/email
- * @param {HTTP} req - Express request object
- * @param {HTTP} res - Express response object
+ * @param {HTTP} req
+ * @param {HTTP} res
+ * @param {string} email the user's email address
  * @return {HTTP} one of the following HTTP responses
  * - if user/request already authenticated, 400 - already auth
  * - if user fully registered, 200 - goto login
