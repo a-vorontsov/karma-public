@@ -25,6 +25,14 @@ const event = {
     time: "10:23:54",
 };
 
+const cause = {
+    name: "Gardening",
+    description: "Trimming bushes, watering plants, and all kinds of boring stuff",
+};
+const clearCauses = async () => {
+    await db.query("DELETE FROM cause");
+};
+
 const clearDatabase = async () => {
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM address");
@@ -33,5 +41,7 @@ const clearDatabase = async () => {
 module.exports = {
     address: address,
     event: event,
+    cause: cause,
     clearDatabase: clearDatabase,
+    clearCauses: clearCauses,
 };
