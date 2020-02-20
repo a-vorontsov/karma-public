@@ -235,6 +235,8 @@ PODS:
     - React
   - RNGestureHandler (1.6.0):
     - React
+  - RNReanimated (1.7.0):
+    - React
   - RNScreens (2.0.0-beta.6):
     - React
   - Yoga (1.14.0)
@@ -276,6 +278,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -350,6 +353,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   Yoga:
@@ -390,9 +395,10 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 67607dfe9cfbed105838144c40187a8392aa404d
   RNFS: 90d1a32d3bc8f75cc7fc3dd2f67506049664346b
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
+  RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: c2c8bdde0146f16eb6bf092dd7485534851f2711
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 5bc6f963a7d6a0f3e286c035452714660b4bb865
+PODFILE CHECKSUM: d4c2f7af3d93402758bd8b60a372df258b712515
 
 COCOAPODS: 1.7.4

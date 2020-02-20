@@ -14,7 +14,7 @@ class ProfileScreen extends Component {
                     alignItems: "center",
                     justifyContent: "center",
                 }}>
-                <Text>Activities</Text>
+                <Text>Profile</Text>
             </View>
         );
     }

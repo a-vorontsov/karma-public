@@ -14,7 +14,7 @@ class NotificationsScreen extends Component {
                     alignItems: "center",
                     justifyContent: "center",
                 }}>
-                <Text>Activities</Text>
+                <Text>Notifications</Text>
             </View>
         );
     }
