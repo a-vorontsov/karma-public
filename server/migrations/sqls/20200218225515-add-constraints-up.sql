@@ -3,7 +3,7 @@
 ALTER TABLE authentication ADD CONSTRAINT authentication_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -11,7 +11,7 @@ ALTER TABLE authentication ADD CONSTRAINT authentication_user
 ALTER TABLE complaint ADD CONSTRAINT complaint_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -19,7 +19,7 @@ ALTER TABLE complaint ADD CONSTRAINT complaint_user
 ALTER TABLE event ADD CONSTRAINT event_address
     FOREIGN KEY (address_id)
         REFERENCES address (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -27,7 +27,7 @@ ALTER TABLE event ADD CONSTRAINT event_address
 ALTER TABLE event ADD CONSTRAINT event_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -35,7 +35,7 @@ ALTER TABLE event ADD CONSTRAINT event_user
 ALTER TABLE event_cause ADD CONSTRAINT eventcause_cause
     FOREIGN KEY (cause_id)
         REFERENCES cause (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -43,7 +43,7 @@ ALTER TABLE event_cause ADD CONSTRAINT eventcause_cause
 ALTER TABLE event_cause ADD CONSTRAINT eventcause_event
     FOREIGN KEY (event_id)
         REFERENCES event (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -51,7 +51,7 @@ ALTER TABLE event_cause ADD CONSTRAINT eventcause_event
 ALTER TABLE favourite ADD CONSTRAINT favourite_event
     FOREIGN KEY (event_id)
         REFERENCES event (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -59,7 +59,7 @@ ALTER TABLE favourite ADD CONSTRAINT favourite_event
 ALTER TABLE favourite ADD CONSTRAINT favourite_individual
     FOREIGN KEY (individual_id)
         REFERENCES individual (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -67,7 +67,7 @@ ALTER TABLE favourite ADD CONSTRAINT favourite_individual
 ALTER TABLE individual ADD CONSTRAINT individual_address
     FOREIGN KEY (address_id)
         REFERENCES address (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -75,7 +75,7 @@ ALTER TABLE individual ADD CONSTRAINT individual_address
 ALTER TABLE individual ADD CONSTRAINT individual_picture
     FOREIGN KEY (picture_id)
         REFERENCES picture (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -83,7 +83,7 @@ ALTER TABLE individual ADD CONSTRAINT individual_picture
 ALTER TABLE individual ADD CONSTRAINT individual_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -91,7 +91,7 @@ ALTER TABLE individual ADD CONSTRAINT individual_user
 ALTER TABLE notification ADD CONSTRAINT notification_user_receiver
     FOREIGN KEY (receiver_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -99,7 +99,7 @@ ALTER TABLE notification ADD CONSTRAINT notification_user_receiver
 ALTER TABLE notification ADD CONSTRAINT notification_user_sender
     FOREIGN KEY (sender_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -107,7 +107,7 @@ ALTER TABLE notification ADD CONSTRAINT notification_user_sender
 ALTER TABLE organisation ADD CONSTRAINT organisation_address
     FOREIGN KEY (address_id)
         REFERENCES address (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -115,7 +115,7 @@ ALTER TABLE organisation ADD CONSTRAINT organisation_address
 ALTER TABLE organisation ADD CONSTRAINT organisation_picture
     FOREIGN KEY (picture_id)
         REFERENCES picture (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -123,7 +123,7 @@ ALTER TABLE organisation ADD CONSTRAINT organisation_picture
 ALTER TABLE organisation ADD CONSTRAINT organisation_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -131,15 +131,7 @@ ALTER TABLE organisation ADD CONSTRAINT organisation_user
 ALTER TABLE profile ADD CONSTRAINT profile_individual
     FOREIGN KEY (individual_id)
         REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: registration_user (table: registration)
-ALTER TABLE registration ADD CONSTRAINT registration_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -147,7 +139,7 @@ ALTER TABLE registration ADD CONSTRAINT registration_user
 ALTER TABLE report_user ADD CONSTRAINT report_user_reported
     FOREIGN KEY (user_reporting)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -155,7 +147,7 @@ ALTER TABLE report_user ADD CONSTRAINT report_user_reported
 ALTER TABLE report_user ADD CONSTRAINT report_user_reporting
     FOREIGN KEY (user_reported)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -163,7 +155,7 @@ ALTER TABLE report_user ADD CONSTRAINT report_user_reporting
 ALTER TABLE reset ADD CONSTRAINT reset_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -171,7 +163,7 @@ ALTER TABLE reset ADD CONSTRAINT reset_user
 ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_cause
     FOREIGN KEY (cause_id)
         REFERENCES cause (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -179,7 +171,7 @@ ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_cause
 ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_user
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -187,7 +179,7 @@ ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_user
 ALTER TABLE sign_up ADD CONSTRAINT signup_event
     FOREIGN KEY (event_id)
         REFERENCES event (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -195,7 +187,15 @@ ALTER TABLE sign_up ADD CONSTRAINT signup_event
 ALTER TABLE sign_up ADD CONSTRAINT signup_individual
     FOREIGN KEY (individual_id)
         REFERENCES individual (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
+
+-- Reference: user_registration (table: user)
+ALTER TABLE "user" ADD CONSTRAINT user_registration
+    FOREIGN KEY (email)
+        REFERENCES registration (email)
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
@@ -203,7 +203,7 @@ ALTER TABLE sign_up ADD CONSTRAINT signup_individual
 ALTER TABLE setting ADD CONSTRAINT user_settings
     FOREIGN KEY (user_id)
         REFERENCES "user" (id)
-        NOT DEFERRABLE
+NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 

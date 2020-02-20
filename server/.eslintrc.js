@@ -20,7 +20,8 @@ module.exports = {
     "new-cap": 0,
     "quotes": 0,
     "arrow-parens": 0,
-    "max-len": ["error", {"code": 140}]
+    "max-len": ["error", {"code": 140}],
+    "camelcase" : 0,
   },
   "ignorePatterns": ["migrations/", "*.test.js"],
 

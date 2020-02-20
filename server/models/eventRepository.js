@@ -16,28 +16,31 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
+const findAll = () => {
+    const query = "SELECT * FROM event";
+    return db.query(query);
+};
+
 const update = (event) => {
-    const query = "UPDATE event SET name = $1, women_only = $2, spots = $3, address_visible = $4, minimum_age = $5, " +
-        "photo_id = $6, physical = $7, add_info = $8, content = $9, date = $10, time = $11 WHERE id = $12" +
+    const query = "UPDATE event SET name = $1, address_id = $2, women_only = $3, spots = $4, address_visible = $5, " +
+        "minimum_age = $6, photo_id = $7, physical = $8, add_info = $9, content = $10, " +
+        "date = $11, user_id = $12 WHERE id = $13" +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
-    const params = [event.name, event.women_only, event.spots, event.address_visible, event.minimum_age, event.photo_id,
-        event.physical, event.add_info, event.content, event.date, event.time, event.id,
+    const params = [event.name, event.address_id, event.women_only, event.spots, event.address_visible,
+        event.minimum_age, event.photo_id, event.physical, event.add_info, event.content, event.date, event.user_id, event.id,
     ];
     return db.query(query, params);
 };
 
-const getAll = () => {
-    const query = "SELECT * FROM event";
-    return db.query(query);
-};
 const getEventsWithLocation = () => {
     const query = "select id(event),lat,long from address right join event on id(address) = address_id";
     return db.query(query);
 };
+
 module.exports = {
     insert: insert,
     findById: findById,
+    findAll: findAll,
     update: update,
-    getAll: getAll,
     getEventsWithLocation: getEventsWithLocation,
 };

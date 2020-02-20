@@ -1,3 +1,5 @@
+-- Last modification date: 2020-02-20 17:21:03.854
+
 -- foreign keys
 ALTER TABLE authentication
     DROP CONSTRAINT authentication_user;
@@ -50,9 +52,6 @@ ALTER TABLE organisation
 ALTER TABLE profile
     DROP CONSTRAINT profile_individual;
 
-ALTER TABLE registration
-    DROP CONSTRAINT registration_user;
-
 ALTER TABLE report_user
     DROP CONSTRAINT report_user_reported;
 
@@ -73,6 +72,9 @@ ALTER TABLE sign_up
 
 ALTER TABLE sign_up
     DROP CONSTRAINT signup_individual;
+
+ALTER TABLE "user"
+    DROP CONSTRAINT user_registration;
 
 ALTER TABLE setting
     DROP CONSTRAINT user_settings;

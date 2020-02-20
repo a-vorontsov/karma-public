@@ -27,10 +27,22 @@ const getUserLocation = (userId) => {
     return db.query(query, [userId]);
 };
 
+const findByEmail = (email) => {
+    const query = "SELECT * FROM \"user\" WHERE email=$1";
+    return db.query(query, [email]);
+};
+
+const findByUsername = (username) => {
+    const query = "SELECT * FROM \"user\" WHERE username=$1";
+    return db.query(query, [username]);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
     getUsersLocations: getUsersLocations,
     getUserLocation: getUserLocation,
+    findByEmail: findByEmail,
+    findByUsername: findByUsername,
 };
