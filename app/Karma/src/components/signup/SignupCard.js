@@ -37,7 +37,7 @@ const SignupCard = props => {
                     title="Sign Up"
                     onPress={() =>
                         navigation.navigate(
-                            props.individual ? "SettingsMenu" : "OrgSignUp",
+                            props.individual ? "Profile" : "OrgSignUp",
                         )
                     }
                 />
