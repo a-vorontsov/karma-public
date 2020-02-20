@@ -22,8 +22,8 @@ const findAll = () => {
 };
 
 const findByUserID = (user_id) => {
-  const query = "SELECT * FROM individual WHERE user_id=$1";
-  return db.query(query, [user_id]);
+    const query = "SELECT * FROM individual WHERE user_id=$1";
+    return db.query(query, [user_id]);
 };
 
 module.exports = {
