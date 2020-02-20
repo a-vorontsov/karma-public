@@ -52,19 +52,41 @@ test('updating events works', async () => {
     eventRepository.update.mockResolvedValue({
         rows: [{
             ...event,
-            id: 1
+            id: 3
         }]
     });
 
-    const response = await request(app).post("/event/update").send(event);
+    const response = await request(app).post("/event/update/3").send(event);
 
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
+    expect(eventRepository.update).toHaveBeenCalledWith({...event, id: "3"});
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({
         ...event,
-        id: 1
+        id: 3
     });
+    console.log(response.body);
+
     expect(response.statusCode).toBe(200);
+});
+
+test('requesting specific event data works', async () => {
+    eventRepository.findById.mockResolvedValue({
+        rows: [{
+            ...event,
+            id: 3
+        }]
+    });
+    addressRepository.findById.mockResolvedValue({
+        rows: [address]
+    });
+    const response = await request(app).get("/event/3");
+
+    expect(eventRepository.findById).toHaveBeenCalledTimes(1);
+    expect(eventRepository.findById).toHaveBeenCalledWith("3");
+    expect(addressRepository.findById).toHaveBeenCalledWith(event.address_id);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({...event, id: 3});
 });
 
 test('creating event with no address_id creates new address and event', async () => {

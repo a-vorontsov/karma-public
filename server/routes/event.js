@@ -23,13 +23,25 @@ router.post('/', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
-router.post('/update', (req, res) => {
+router.post('/update/:id', (req, res) => {
     const address = req.body.address;
     const event = req.body;
+    event.id = req.params.id;
     addressRepository.update(address)
         .then(addressResult => eventRepository.update(event))
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
         .catch(err => res.status(500).send(err));
+});
+
+
+router.get("/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const eventResult = await eventRepository.findById(id);
+    const event = eventResult.rows[0];
+    const addressResult = await addressRepository.findById(event.address_id);
+    const address = addressResult.rows[0];
+    res.status(200).send({...event, address: address});
 });
 
 /**
