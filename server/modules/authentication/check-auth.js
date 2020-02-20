@@ -16,13 +16,14 @@ function checkAuthenticated(req, res, next) {
 }
 
 /**
- * Check if app user is not authenticated.
+ * Check if app user is NOT authenticated.
+ * This is used for avoiding unnecessary sing-in pages.
  * If not auth., directs user to desired destination.
- * Otherwise, redirects user to the main page.
+ * Otherwise, a HTTP error response is sent stating
+ * that user is already authenticated.
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
- * @return {HTTP} redirect
  */
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {

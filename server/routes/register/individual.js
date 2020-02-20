@@ -11,7 +11,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * number for identification.
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /register/user
+ * @route {POST} /register/individual
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {string} title //TODO: string?
