@@ -1,13 +1,8 @@
 import React, {Component} from "react";
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    StatusBar,
-    Platform,
-} from "react-native";
+import {View, Text, StatusBar, Platform} from "react-native";
 import {RegularText, LogoText} from "../components/text";
-import {TransparentButton} from "../components/buttons";
+import {TransparentButton, TextButton} from "../components/buttons";
+import LinearGradient from "react-native-linear-gradient";
 import Styles from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 
@@ -20,52 +15,54 @@ class WelcomeScreen extends Component {
             StatusBar.setBackgroundColor("#f8f8f8");
         }
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={[Styles.vcenter, Styles.textCenter]}>
-                    <LogoText
-                        style={[
-                            Styles.white,
-                            Styles.textCenter,
-                            {fontSize: 70},
-                        ]}>
-                        KARMA
-                    </LogoText>
-                    <RegularText
-                        style={[
-                            Styles.white,
-                            Styles.textCenter,
-                            Styles.xxxlarge,
-                        ]}>
-                        lorem ipsum
-                    </RegularText>
-                </View>
-
-                <View style={[Styles.bottom, Styles.pb24]}>
-                    <TransparentButton
-                        onPress={() => navigate("InitSignup")}
-                        white
-                        title="Sign Up"
-                    />
-
-                    <TouchableOpacity onPress={this._onPressButton}>
+            <LinearGradient
+                useAngle={true}
+                angle={45}
+                angleCenter={{x: 0.5, y: 0.5}}
+                colors={["#01a7a6", "#00c5c4"]}
+                style={Styles.alignJustifyCenterContainer}>
+                <SafeAreaView style={Styles.stretchContainer}>
+                    <View style={[Styles.vcenter, Styles.textCenter]}>
+                        <LogoText
+                            style={[
+                                Styles.white,
+                                Styles.textCenter,
+                                Styles.welcomeLogo,
+                            ]}>
+                            KARMA
+                        </LogoText>
                         <RegularText
-                            style={[Styles.white, Styles.medium, Styles.pt8]}>
-                            Already have an account? Login
+                            style={[
+                                Styles.white,
+                                Styles.textCenter,
+                                Styles.xxxlarge,
+                            ]}>
+                            lorem ipsum
                         </RegularText>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
+                    </View>
+
+                    <View style={Styles.bottom}>
+                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                            <TransparentButton
+                                onPress={() => navigate("InitSignup")}
+                                white
+                                title="Sign Up"
+                            />
+
+                            <TextButton
+                                title="Already have an account? Login"
+                                styles={[
+                                    Styles.white,
+                                    Styles.medium,
+                                    Styles.pt16,
+                                ]}
+                            />
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#03A8AE",
-    },
-});
 
 export default WelcomeScreen;

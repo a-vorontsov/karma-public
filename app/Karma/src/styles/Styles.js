@@ -39,6 +39,15 @@ const Styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    alignJustifyCenterContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    stretchContainer: {
+        flex: 1,
+        alignSelf: "stretch",
+    },
     p8: {
         padding: 8,
     },
@@ -105,6 +114,9 @@ const Styles = StyleSheet.create({
     xxxlarge: {
         fontSize: normalise(36),
     },
+    welcomeLogo: {
+        fontSize: normalise(70),
+    },
     roundButton: {
         padding: 12,
         alignItems: "center",
@@ -123,11 +135,17 @@ const Styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 10,
     },
+    buttonText: {
+        fontSize: 20,
+    },
     green: {
         color: "#01a7a6",
     },
     white: {
         color: "#ffffff",
+    },
+    bgWhite: {
+        backgroundColor: "#ffffff",
     },
     bottom: {
         flex: 1,

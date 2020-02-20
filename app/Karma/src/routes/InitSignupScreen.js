@@ -37,7 +37,7 @@ export default class InitSignupScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={Styles.container}>
-                <View style={[Styles.pt8, Styles.ph24]}>
+                <View style={[Styles.pt16, Styles.ph24]}>
                     <TitleText>
                         Welcome to&nbsp;
                         <LogoText style={Styles.xxlarge}>Karma</LogoText>
@@ -92,7 +92,7 @@ export default class InitSignupScreen extends React.Component {
                             Styles.ph24,
                             Styles.pb24,
                             Styles.pt8,
-                            {backgroundColor: "white"},
+                            Styles.bgWhite,
                         ]}>
                         <SemiBoldText style={[Styles.pv16, Styles.medium]}>
                             Already on Karma?
