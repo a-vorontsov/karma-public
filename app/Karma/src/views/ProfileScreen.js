@@ -51,7 +51,7 @@ class ProfileScreen extends Component {
                     <ActivityCard individual={item.individual} signedup={false}/>
                 </View>
             </View>
-        );
+        )
     };
 
     render() {

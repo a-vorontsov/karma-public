@@ -10,6 +10,9 @@ import Colours from "../../styles/Colours";
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
+const { width, height } = Dimensions.get("window")
+const formWidth = 0.8 * width;
+
 export default class GradientButton extends React.Component {
     render() {
         const {onPress, title, width} = this.props;
