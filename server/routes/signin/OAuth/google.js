@@ -7,8 +7,8 @@ router.get("/", passport.authenticate("google", {scope: ["profile"]}));
 router.get(
     "/callback",
     passport.authenticate("google", {
-        successRedirect: "/auth/google/success",
-        failureRedirect: "/auth/google/fail",
+        successRedirect: "/signin/oauth/google/success",
+        failureRedirect: "/signin/oauth/google/fail",
     }),
 );
 

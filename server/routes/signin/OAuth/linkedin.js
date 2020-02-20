@@ -7,8 +7,8 @@ router.get("/", passport.authenticate("linkedin"));
 router.get(
     "/callback",
     passport.authenticate("google", {
-        successRedirect: "/auth/linkedin/success",
-        failureRedirect: "/auth/linkedin/fail",
+        successRedirect: "/signin/oauth/linkedin/success",
+        failureRedirect: "/signin/oauth/linkedin/fail",
     }),
 );
 

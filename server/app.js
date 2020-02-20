@@ -30,10 +30,10 @@ app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
 app.use("/", require("./routes/index"));
-app.use("/login", require("./routes/login/login"));
-app.use("/login/forgot", require("./routes/login/forgotPassword"));
-app.use("/register", require("./routes/login/register"));
-app.use("/logout", require("./routes/login/logout"));
+app.use("/signin", require("./routes/signin/login"));
+app.use("/signin/forgot", require("./routes/signin/forgotPassword"));
+app.use("/register", require("./routes/signin/register"));
+app.use("/logout", require("./routes/signin/logout"));
 
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
@@ -44,9 +44,9 @@ app.use("/profile/edit/password", require("./routes/profile/edit/change-password
 app.use("/bugreport", require("./routes/bugreport"));
 // import OAuth routes if applicable
 if (process.env.ENABLE_OAUTH === "1") {
-    app.use("/auth/facebook", require("./routes/OAuth/facebook"));
-    app.use("/auth/google", require("./routes/OAuth/google"));
-    app.use("/auth/linkedin", require("./routes/OAuth/linkedin"));
+    app.use("signin/oauth/facebook", require("./routes/signin/OAuth/facebook"));
+    app.use("signin/oauth/google", require("./routes/signin/OAuth/google"));
+    app.use("signin/oauth/linkedin", require("./routes/signin/OAuth/linkedin"));
 }
 
 // Render and direct to view based on user auth status

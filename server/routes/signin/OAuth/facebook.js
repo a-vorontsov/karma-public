@@ -7,8 +7,8 @@ router.get("/", passport.authenticate("facebook"));
 router.get(
     "/callback",
     passport.authenticate("facebook", {
-        successRedirect: "/auth/facebook/success",
-        failureRedirect: "/auth/facebook/fail",
+        successRedirect: "/signin/oauth/facebook/success",
+        failureRedirect: "/signin/oauth/facebook/fail",
     }),
 );
 
