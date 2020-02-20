@@ -1,4 +1,4 @@
--- Last modification date: 2020-02-18 16:08:18.356
+-- Last modification date: 2020-02-20 17:21:03.854
 
 -- tables
 -- Table: address
@@ -82,7 +82,7 @@ CREATE TABLE individual (
                             phone varchar(32)  NOT NULL,
                             banned boolean  NOT NULL,
                             user_id int  NOT NULL,
-                            picture_id int NULL,
+                            picture_id int  NOT NULL,
                             address_id int  NOT NULL,
                             birthday date  NOT NULL,
                             gender char(1)  NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE organisation (
                               org_register_date date  NOT NULL,
                               low_income boolean  NOT NULL,
                               exempt boolean  NOT NULL,
-                              picture_id int NULL,
+                              picture_id int  NOT NULL,
                               user_id int  NOT NULL,
                               address_id int  NOT NULL,
                               CONSTRAINT organisation_ak_1 UNIQUE (org_number) NOT DEFERRABLE  INITIALLY IMMEDIATE,
@@ -140,7 +140,7 @@ CREATE TABLE profile (
                          id serial  NOT NULL,
                          individual_id int  NOT NULL,
                          karma_points int  NOT NULL DEFAULT 0,
-                         bio text  NULL,
+                         bio varchar(32)  NULL,
                          women_only boolean  NOT NULL,
                          CONSTRAINT profile_pk PRIMARY KEY (id)
 );
@@ -152,7 +152,6 @@ CREATE TABLE registration (
                               id_flag int  NOT NULL,
                               phone_flag int  NOT NULL,
                               sign_up_flag int  NOT NULL,
-                              user_id int  NOT NULL,
                               CONSTRAINT registration_pk PRIMARY KEY (email)
 );
 
@@ -209,216 +208,8 @@ CREATE TABLE "user" (
                         salt varchar(64)  NOT NULL,
                         date_registered timestamp  NOT NULL,
                         CONSTRAINT user_ak_1 UNIQUE (username) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+                        CONSTRAINT user_ak_2 UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
                         CONSTRAINT user_pk PRIMARY KEY (id)
 );
 
--- foreign keys
--- Reference: authentication_user (table: authentication)
-ALTER TABLE authentication ADD CONSTRAINT authentication_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: complaint_user (table: complaint)
-ALTER TABLE complaint ADD CONSTRAINT complaint_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: event_address (table: event)
-ALTER TABLE event ADD CONSTRAINT event_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: event_user (table: event)
-ALTER TABLE event ADD CONSTRAINT event_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: eventcause_cause (table: event_cause)
-ALTER TABLE event_cause ADD CONSTRAINT eventcause_cause
-    FOREIGN KEY (cause_id)
-        REFERENCES cause (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: eventcause_event (table: event_cause)
-ALTER TABLE event_cause ADD CONSTRAINT eventcause_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: favourite_event (table: favourite)
-ALTER TABLE favourite ADD CONSTRAINT favourite_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: favourite_individual (table: favourite)
-ALTER TABLE favourite ADD CONSTRAINT favourite_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: individual_address (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: individual_picture (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_picture
-    FOREIGN KEY (picture_id)
-        REFERENCES picture (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: individual_user (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: notification_user_receiver (table: notification)
-ALTER TABLE notification ADD CONSTRAINT notification_user_receiver
-    FOREIGN KEY (receiver_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: notification_user_sender (table: notification)
-ALTER TABLE notification ADD CONSTRAINT notification_user_sender
-    FOREIGN KEY (sender_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: organisation_address (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: organisation_picture (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_picture
-    FOREIGN KEY (picture_id)
-        REFERENCES picture (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: organisation_user (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: profile_individual (table: profile)
-ALTER TABLE profile ADD CONSTRAINT profile_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: registration_user (table: registration)
-ALTER TABLE registration ADD CONSTRAINT registration_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: report_user_reported (table: report_user)
-ALTER TABLE report_user ADD CONSTRAINT report_user_reported
-    FOREIGN KEY (user_reporting)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: report_user_reporting (table: report_user)
-ALTER TABLE report_user ADD CONSTRAINT report_user_reporting
-    FOREIGN KEY (user_reported)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: reset_user (table: reset)
-ALTER TABLE reset ADD CONSTRAINT reset_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: selectedcause_cause (table: selected_cause)
-ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_cause
-    FOREIGN KEY (cause_id)
-        REFERENCES cause (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: selectedcause_user (table: selected_cause)
-ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: signup_event (table: sign_up)
-ALTER TABLE sign_up ADD CONSTRAINT signup_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: signup_individual (table: sign_up)
-ALTER TABLE sign_up ADD CONSTRAINT signup_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- Reference: user_settings (table: setting)
-ALTER TABLE setting ADD CONSTRAINT user_settings
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- End of file.
+-- END OF FILE

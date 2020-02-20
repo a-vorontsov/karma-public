@@ -23,8 +23,14 @@ const findAll = () => {
     return db.query(query);
 };
 
+const findByUserID = (user_id) => {
+    const query = "SELECT * FROM organisation WHERE user_id=$1";
+    return db.query(query, [user_id]);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
+    findByUserID: findByUserID,
 };

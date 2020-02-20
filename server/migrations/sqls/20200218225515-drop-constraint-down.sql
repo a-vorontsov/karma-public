@@ -1,210 +1,80 @@
+-- Last modification date: 2020-02-20 17:21:03.854
+
 -- foreign keys
--- Reference: authentication_user (table: authentication)
-ALTER TABLE authentication ADD CONSTRAINT authentication_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE authentication
+    DROP CONSTRAINT authentication_user;
 
--- Reference: complaint_user (table: complaint)
-ALTER TABLE complaint ADD CONSTRAINT complaint_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE complaint
+    DROP CONSTRAINT complaint_user;
 
--- Reference: event_address (table: event)
-ALTER TABLE event ADD CONSTRAINT event_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE event
+    DROP CONSTRAINT event_address;
 
--- Reference: event_user (table: event)
-ALTER TABLE event ADD CONSTRAINT event_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE event
+    DROP CONSTRAINT event_user;
 
--- Reference: eventcause_cause (table: event_cause)
-ALTER TABLE event_cause ADD CONSTRAINT eventcause_cause
-    FOREIGN KEY (cause_id)
-        REFERENCES cause (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE event_cause
+    DROP CONSTRAINT eventcause_cause;
 
--- Reference: eventcause_event (table: event_cause)
-ALTER TABLE event_cause ADD CONSTRAINT eventcause_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE event_cause
+    DROP CONSTRAINT eventcause_event;
 
--- Reference: favourite_event (table: favourite)
-ALTER TABLE favourite ADD CONSTRAINT favourite_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE favourite
+    DROP CONSTRAINT favourite_event;
 
--- Reference: favourite_individual (table: favourite)
-ALTER TABLE favourite ADD CONSTRAINT favourite_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE favourite
+    DROP CONSTRAINT favourite_individual;
 
--- Reference: individual_address (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE individual
+    DROP CONSTRAINT individual_address;
 
--- Reference: individual_picture (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_picture
-    FOREIGN KEY (picture_id)
-        REFERENCES picture (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE individual
+    DROP CONSTRAINT individual_picture;
 
--- Reference: individual_user (table: individual)
-ALTER TABLE individual ADD CONSTRAINT individual_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE individual
+    DROP CONSTRAINT individual_user;
 
--- Reference: notification_user_receiver (table: notification)
-ALTER TABLE notification ADD CONSTRAINT notification_user_receiver
-    FOREIGN KEY (receiver_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE notification
+    DROP CONSTRAINT notification_user_receiver;
 
--- Reference: notification_user_sender (table: notification)
-ALTER TABLE notification ADD CONSTRAINT notification_user_sender
-    FOREIGN KEY (sender_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE notification
+    DROP CONSTRAINT notification_user_sender;
 
--- Reference: organisation_address (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_address
-    FOREIGN KEY (address_id)
-        REFERENCES address (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE organisation
+    DROP CONSTRAINT organisation_address;
 
--- Reference: organisation_picture (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_picture
-    FOREIGN KEY (picture_id)
-        REFERENCES picture (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE organisation
+    DROP CONSTRAINT organisation_picture;
 
--- Reference: organisation_user (table: organisation)
-ALTER TABLE organisation ADD CONSTRAINT organisation_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE organisation
+    DROP CONSTRAINT organisation_user;
 
--- Reference: profile_individual (table: profile)
-ALTER TABLE profile ADD CONSTRAINT profile_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE profile
+    DROP CONSTRAINT profile_individual;
 
--- Reference: registration_user (table: registration)
-ALTER TABLE registration ADD CONSTRAINT registration_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE report_user
+    DROP CONSTRAINT report_user_reported;
 
--- Reference: report_user_reported (table: report_user)
-ALTER TABLE report_user ADD CONSTRAINT report_user_reported
-    FOREIGN KEY (user_reporting)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE report_user
+    DROP CONSTRAINT report_user_reporting;
 
--- Reference: report_user_reporting (table: report_user)
-ALTER TABLE report_user ADD CONSTRAINT report_user_reporting
-    FOREIGN KEY (user_reported)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE reset
+    DROP CONSTRAINT reset_user;
 
--- Reference: reset_user (table: reset)
-ALTER TABLE reset ADD CONSTRAINT reset_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE selected_cause
+    DROP CONSTRAINT selectedcause_cause;
 
--- Reference: selectedcause_cause (table: selected_cause)
-ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_cause
-    FOREIGN KEY (cause_id)
-        REFERENCES cause (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE selected_cause
+    DROP CONSTRAINT selectedcause_user;
 
--- Reference: selectedcause_user (table: selected_cause)
-ALTER TABLE selected_cause ADD CONSTRAINT selectedcause_user
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE sign_up
+    DROP CONSTRAINT signup_event;
 
--- Reference: signup_event (table: sign_up)
-ALTER TABLE sign_up ADD CONSTRAINT signup_event
-    FOREIGN KEY (event_id)
-        REFERENCES event (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE sign_up
+    DROP CONSTRAINT signup_individual;
 
--- Reference: signup_individual (table: sign_up)
-ALTER TABLE sign_up ADD CONSTRAINT signup_individual
-    FOREIGN KEY (individual_id)
-        REFERENCES individual (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
+ALTER TABLE "user"
+    DROP CONSTRAINT user_registration;
 
--- Reference: user_settings (table: setting)
-ALTER TABLE setting ADD CONSTRAINT user_settings
-    FOREIGN KEY (user_id)
-        REFERENCES "user" (id)
-        NOT DEFERRABLE
-            INITIALLY IMMEDIATE
-;
-
--- End of file.
+ALTER TABLE setting
+    DROP CONSTRAINT user_settings;

@@ -17,8 +17,20 @@ const findAll = () => {
     return db.query(query);
 };
 
+const findByEmail = (email) => {
+    const query = "SELECT * FROM \"user\" WHERE email=$1";
+    return db.query(query, [email]);
+};
+
+const findByUsername = (username) => {
+    const query = "SELECT * FROM \"user\" WHERE username=$1";
+    return db.query(query, [username]);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
+    findByEmail: findByEmail,
+    findByUsername: findByUsername,
 };
