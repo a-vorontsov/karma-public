@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest -i",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db-migrate": "db-migrate"

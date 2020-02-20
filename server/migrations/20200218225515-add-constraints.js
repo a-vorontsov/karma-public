@@ -19,7 +19,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  var filePath = path.join(__dirname, 'sqls', '20200218225515-drop-constraint-up.sql');
+  var filePath = path.join(__dirname, 'sqls', '20200218225515-add-constraints-up.sql');
   return new Promise( function( resolve, reject ) {
     fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
       if (err) return reject(err);
@@ -35,7 +35,7 @@ exports.up = function(db) {
 
 exports.down = function(db) {
   console.log("running");
-  var filePath = path.join(__dirname, 'sqls', '20200218225515-drop-constraint-down.sql');
+  var filePath = path.join(__dirname, 'sqls', '20200218225515-add-constraints-down.sql');
   return new Promise( function( resolve, reject ) {
     fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
       if (err) return reject(err);
