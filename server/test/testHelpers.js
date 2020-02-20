@@ -120,15 +120,12 @@ module.exports = {
     registration: registration,
     registration2: registration2,
     event: event,
-<<<<<<< HEAD
     cause: cause,
-=======
     user: user,
     user2: user2,
     individual: individual,
     profile: profile,
     organisation: organisation,
->>>>>>> 017a7c109c5fb8276046b2f26a3600b40d392aa8
     clearDatabase: clearDatabase,
     clearCauses: clearCauses,
 };
