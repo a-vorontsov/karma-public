@@ -39,7 +39,6 @@ target 'Karma' do
 
 
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   target 'KarmaTests' do
     inherit! :search_paths
