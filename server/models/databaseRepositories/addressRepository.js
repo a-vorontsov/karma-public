@@ -7,9 +7,13 @@ const insert = (address) => {
     return db.query(query, params);
 };
 
-const findById = (id) => {
+const findById = async (id) => {
     const query = "SELECT * FROM address WHERE id=$1";
-    return db.query(query, [id]);
+    const queryResult = await db.query(query, [id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No address with id ${id} exists`);
+    }
+    return queryResult;
 };
 
 const update = (address) => {

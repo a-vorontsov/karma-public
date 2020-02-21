@@ -11,7 +11,11 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-test('insert and findById work', async () => {
+test('findByID throws error', async () => {
+    await expect(addressRepository.findById(0)).rejects.toThrow('No address with id 0 exists');
+});
+
+test('insert and findById work', async  () => {
     const insertResult = await addressRepository.insert(address);
     const findResult = await addressRepository.findById(insertResult.rows[0].id);
     expect(findResult.rows[0]).toMatchObject(insertResult.rows[0]);
