@@ -8,6 +8,7 @@ import AboutScreen from './src/views/AboutScreen';
 import ContactInfoScreen from './src/views/ContactInfoScreen';
 import PrivacyScreen from './src/views/PrivacyScreen';
 import TermsScreen from './src/views/TermsScreen';
+import SettingsMenuScreen from './src/views/SettingsMenuScreen';
 import MainTabNavigator from './MainTabNavigator'
 
 const MainNavigator = createStackNavigator(
@@ -21,6 +22,7 @@ const MainNavigator = createStackNavigator(
         Tab: MainTabNavigator,
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
+        SettingsMenu: {screen: SettingsMenuScreen}
     },
     {
         headerMode: "none",
