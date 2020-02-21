@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {View, Text, KeyboardAvoidingView, StyleSheet} from "react-native";
+import {View, Text, KeyboardAvoidingView, StyleSheet, SafeAreaView} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import SettingsButton from "../components/buttons/SettingsButton";
 import PageHeader from "../components/PageHeader";
 import {useNavigation} from "react-navigation-hooks";
+import Styles from "../styles/Styles";
 
 const icons = {
     email: require("../assets/images/settings-logos/email.png"),
@@ -23,6 +24,7 @@ class SettingsMenuScreen extends Component {
     render() {
         const {navigate} = this.props.navigation;
         return (
+            <SafeAreaView style={Styles.safeAreaContainer}>
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <PageHeader title="Settings"></PageHeader>
@@ -35,6 +37,7 @@ class SettingsMenuScreen extends Component {
             <SettingsButton title = "Log Out" icon={icons.logout} onPress={() => navigate("Activities")}></SettingsButton>
             </ScrollView>
             </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 }

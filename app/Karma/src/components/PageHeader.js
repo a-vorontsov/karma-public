@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, SafeAreaView, Dimensions, TouchableOpacity, Image} from 'react-native';
 import { RegularText} from "../components/text";
+import Styles from "../styles/Styles";
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
@@ -9,7 +10,7 @@ export default class PageHeader extends React.Component {
     render () {
         const {onPress, title} = this.props;
         return (
-            <SafeAreaView style={{ paddingTop: 100, flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', width: formWidth}}>
+            <SafeAreaView style={{ paddingTop: 0, flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', width: formWidth}}>
             <View style={{paddingTop: 30}}></View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableOpacity
