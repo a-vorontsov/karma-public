@@ -2,11 +2,11 @@ const request = require('supertest');
 const app = require('../app');
 const testHelpers = require("../test/testHelpers");
 
-const addressRepository = require("../models/addressRepository");
-const eventRepository = require("../models/eventRepository");
+const addressRepository = require("../models/databaseRepositories/addressRepository");
+const eventRepository = require("../models/databaseRepositories/eventRepository");
 
-jest.mock("../models/eventRepository");
-jest.mock("../models/addressRepository");
+jest.mock("../models/databaseRepositories/eventRepository");
+jest.mock("../models/databaseRepositories/addressRepository");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
