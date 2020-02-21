@@ -1,12 +1,14 @@
 const request = require('supertest');
 const app = require('../app');
 const testHelpers = require("../test/testHelpers");
+const util = require("../util/util");
 
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
 
 jest.mock("../models/eventRepository");
 jest.mock("../models/addressRepository");
+jest.mock("../util/util");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
@@ -56,16 +58,14 @@ test('updating events works', async () => {
         }]
     });
 
-    const response = await request(app).post("/event/update/3").send(event);
+    const response = await request(app).post("/event/update/3").send({event, address: mockAddress});
 
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
-    expect(eventRepository.update).toHaveBeenCalledWith({...event, id: "3"});
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({
         ...event,
         id: 3
     });
-    console.log(response.body);
 
     expect(response.statusCode).toBe(200);
 });
@@ -89,7 +89,17 @@ test('requesting specific event data works', async () => {
     expect(response.body).toMatchObject({...event, id: 3});
 });
 
+test('error returned when user tries to exceed monthly event creation limit', async () => {
+    util.isIndividual.mockResolvedValue(true);
+    eventRepository.findAllByUserId.mockResolvedValue({
+        rows: [{}, {}, {}, {}]
+    }); // 4 events
+    const response = await request(app).post("/event").send(event);
+    expect(response.statusCode).toBe(400);
+});
+
 test('creating event with no address_id creates new address and event', async () => {
+    util.isIndividual.mockResolvedValue(false);
     const eventNoAddressId = {
         ...event
     };

@@ -47,3 +47,20 @@ test('update works', async () => {
     const updateEventResult = await eventRepository.update(insertedEvent);
     expect(updateEventResult.rows[0]).toMatchObject(insertedEvent);
 });
+
+test('findAllByUserId works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(user);
+    event.address_id =  insertAddressResult.rows[0].id;
+    event.user_id = insertUserResult.rows[0].id;
+
+    const insertEventResult1 = await eventRepository.insert(event);
+    const insertedEvent1 = insertEventResult1.rows[0];
+    const insertEventResult2 = await eventRepository.insert(event);
+    const insertedEvent2 = insertEventResult2.rows[0];
+
+    const findAllByUserIdResult = await eventRepository.findAllByUserId(insertUserResult.rows[0].id);
+    expect(findAllByUserIdResult.rows).toMatchObject([insertedEvent1, insertedEvent2]);
+});

@@ -11,7 +11,7 @@ const isIndividual = async (userId) => {
     return individualResult.rows.length > 0; // found at least one individual with userId
 };
 
-const isOrganization = async (userId) => {
+const isOrganisation = async (userId) => {
     const userResult = await userRepository.findById(userId);
     if (userResult.rows.length === 0) {
         throw Error(`No user with id ${userId} exists`);
@@ -22,5 +22,5 @@ const isOrganization = async (userId) => {
 
 module.exports = {
     isIndividual: isIndividual,
-    isOrganization: isOrganization,
+    isOrganisation: isOrganisation,
 };

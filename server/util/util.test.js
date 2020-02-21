@@ -30,7 +30,7 @@ test('individuals and organisations correctly identified', async () => {
     individual.user_id = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
     const isIndividual = await util.isIndividual(individual.user_id);
-    const isOrganisation = await util.isOrganization(individual.user_id);
+    const isOrganisation = await util.isOrganisation(individual.user_id);
     expect(isOrganisation).toBe(false);
     expect(isIndividual).toBe(true);
 });
