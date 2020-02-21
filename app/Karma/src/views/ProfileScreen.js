@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, SafeAreaView, 
 // import { ScrollView } from "react-native-gesture-handler";
 import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
 import { GradientButton } from "../components/buttons";
+import PhotoUpload from 'react-native-photo-upload';
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
@@ -27,16 +28,25 @@ class ProfileScreen extends Component {
                     justifyContent: "space-evenly",
                     flexDirection: "row"
                 }}>
-                <Image
-                    style={{
-                    paddingVertical: 10,
-                    width: 130,
-                    height: 130,
-                    borderRadius: 75,
-                    }}
-                    resizeMode='cover'
-                    source={require('../assets/color.png')}
-                />
+                <PhotoUpload
+                onPhotoSelect={avatar => {
+                    if (avatar) {
+                        console.log('Image base64 string: ', avatar),
+                        this.setPhoto(avatar)
+                    }
+                }}
+                >
+                    <Image
+                        style={{
+                        paddingVertical: 5,
+                        width: 130,
+                        height: 130,
+                        borderRadius: 75,
+                        }}
+                        resizeMode='cover'
+                        source={require('../assets/images/general-logos/photo-plus-background.png')}
+                    />
+                 </PhotoUpload>
                 <View>
                     <RegularText style={styles.nameText}>Name</RegularText>
                     <View
@@ -52,11 +62,12 @@ class ProfileScreen extends Component {
                 style={{
                     flex: 5,
                     backgroundColor:"white",
-                    alignItems: "center",
-                    justifyContent: "center",
                     paddingVertical: 25
                 }}>
+                <View style={{alignItems: "center",
+                    justifyContent: "center",}}>
                 <GradientButton title='Create Activity' width={350}></GradientButton>
+                </View>
                 <View style={{flex:1, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
                     <RegularText>Activity</RegularText>
                     <RegularText>Bio</RegularText>
