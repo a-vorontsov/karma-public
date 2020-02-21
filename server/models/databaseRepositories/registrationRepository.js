@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 const insert = (registration) => {
     const query = "INSERT INTO registration(email, email_flag, id_flag, phone_flag, sign_up_flag) " +

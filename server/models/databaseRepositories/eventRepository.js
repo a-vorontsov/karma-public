@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 const insert = (event) => {
     const query = "INSERT INTO event(name, address_id, women_only, spots, address_visible, minimum_age, " +

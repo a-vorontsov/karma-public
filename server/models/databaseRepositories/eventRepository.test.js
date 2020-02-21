@@ -1,6 +1,6 @@
 const addressRepository = require("./addressRepository");
 const eventRepository = require("./eventRepository");
-const testHelpers = require("../test/testHelpers");
+const testHelpers = require("../../test/testHelpers");
 const userRepository = require("./userRepository");
 const registrationRepository = require("./registrationRepository");
 

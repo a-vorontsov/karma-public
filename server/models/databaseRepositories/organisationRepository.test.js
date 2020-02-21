@@ -1,8 +1,8 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 const userRepository = require("./userRepository");
 const organisationRepository = require("./organisationRepository");
 const addressRepository = require("./addressRepository");
-const testHelpers = require("../test/testHelpers");
+const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 
 const registration = testHelpers.registration;

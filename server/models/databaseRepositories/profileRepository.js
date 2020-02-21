@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 const insert = (profile) => {
     const query = "INSERT INTO profile(individual_id, karma_points, bio, women_only) VALUES ($1, $2, $3, $4)" +

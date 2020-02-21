@@ -1,5 +1,5 @@
 const registrationRepository = require("./registrationRepository");
-const testHelpers = require("../test/testHelpers");
+const testHelpers = require("../../test/testHelpers");
 
 const registration = testHelpers.registration;
 const registration2 = testHelpers.registration2;
