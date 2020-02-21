@@ -1,10 +1,27 @@
 import React from 'react';
 import { View, Text, Image, Alert, StyleSheet, Dimensions, Platform, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createStackNavigator} from "react-navigation-stack";
 import ActivitiesScreen from './src/views/ActivitiesScreen';
 import CausesScreen from './src/views/CausesScreen';
 import NotificationsScreen from './src/views/NotificationsScreen';
 import ProfileScreen from './src/views/ProfileScreen';
+import SettingsMenuScreen from './src/views/SettingsMenuScreen';
+
+const ProfileNavigator = createStackNavigator(
+  {
+      Profile: {screen: ProfileScreen},
+      SettingsMenu: {screen: SettingsMenuScreen}
+  },
+  {
+    headerMode: "none",
+    defaultNavigationOptions: {
+        cardStyle: {
+            backgroundColor: "#f8f8f8",
+        },
+    },
+  },
+);
 
 export default MainTabNavigator = createBottomTabNavigator(
     {
@@ -54,7 +71,7 @@ export default MainTabNavigator = createBottomTabNavigator(
         },
       },
       Profile: {
-        screen: ProfileScreen,
+        screen: ProfileNavigator,
         navigationOptions: {
           tabBarLabel:"Profile",
           tabBarIcon: ({ focused }) =>  (
