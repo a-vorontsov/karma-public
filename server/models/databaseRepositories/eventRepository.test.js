@@ -32,7 +32,7 @@ test('insert and findById work', async () => {
     expect(findEventResult.rows[0]).toMatchObject(insertEventResult.rows[0]);
 });
 
-test('update works', async () => {
+test('events update works', async () => {
     const insertRegistrationResult = await registrationRepository.insert(registration);
     user.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
