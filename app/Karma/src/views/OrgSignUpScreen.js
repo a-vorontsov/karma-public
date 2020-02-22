@@ -86,219 +86,194 @@ export default class OrgSignUpScreen extends React.Component {
         ];
 
         return (
-            <>
-                <KeyboardAvoidingView
-                    style={Styles.container}
-                    behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    enabled>
-                    {/** HEADER */}
-                    <View style={{alignItems: "center", width: FORM_WIDTH}}>
-                        {/* <View
+            <View style={Styles.container}>
+                {/** HEADER */}
+                <View
+                    style={{
+                        alignItems: "center",
+                        height: 0.1 * SCREEN_HEIGHT,
+                        justifyContent: "flex-start",
+                        marginTop: hasNotch() ? 60 : StatusBar.currentHeight,
+                    }}>
+                    <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
+                        <View
                             style={{
-                                alignItems: "flex-start",
-                                backgroundColor: "white",
-                                marginTop: hasNotch()
-                                    ? 60
-                                    : StatusBar.currentHeight,
+                                flexDirection: "row",
+                                justifyContent: "center",
                             }}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text>🔙</Text>
-                                <Text>Sign Up</Text>
-                            </View>
-                            <Text style={SignUpStyles.subheaderText}>
-                                Create a new account
-                            </Text>
-                        </View> */}
+                            <TouchableOpacity
+                                onPress={() => navigate("InitSignup")}>
+                                <Image
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        resizeMode: "contain",
+                                    }}
+                                    source={require("../assets/images/general-logos/back-arrow.png")}
+                                />
+                            </TouchableOpacity>
+                            <RegularText
+                                style={{
+                                    fontSize: 30,
+                                    fontWeight: "500",
+                                    color: "#3E3E3E",
+                                    paddingLeft: 20,
+                                }}>
+                                Sign Up
+                            </RegularText>
+                        </View>
+
+                        <SemiBoldText
+                            style={{
+                                color: "#01a7a6",
+                                fontSize: 20,
+                            }}>
+                            Create a new account
+                        </SemiBoldText>
                     </View>
+                </View>
+                <KeyboardAvoidingView
+                    style={{flex: 1}}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,
+                                justifyContent: "space-evenly",
+                                alignItems: "center",
                             }}>
-                            {/** FORM INPUTS */}
-                            <View
-                                style={{
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "space-evenly",
-                                }}>
-                                <View>
-                                    <Text
-                                        style={{
-                                            marginBottom: -20,
-                                            color: TEXT_COLOUR,
-                                        }}>
-                                        Are you a:
-                                    </Text>
-                                    <Dropdown
-                                        containerStyle={{width: FORM_WIDTH}}
-                                        baseColor={TEXT_COLOUR}
-                                        textColor={TEXT_COLOUR}
-                                        value={data[0].value}
-                                        data={data}
-                                    />
-                                </View>
+                            <Dropdown
+                                containerStyle={{width: FORM_WIDTH}}
+                                baseColor={TEXT_COLOUR}
+                                textColor={TEXT_COLOUR}
+                                value={data[0].value}
+                                data={data}
+                            />
+                            <TextInput placeholder="Charity or Organisation name" />
+                            <TextInput placeholder="Charity Number" />
+                            <TextInput placeholder="Email" />
+                            <TextInput placeholder="Password" />
+                            <TextInput placeholder="Confirm Password" />
 
-                                <TextInput
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Charity or Organisation name"
-                                    onSubmitEditing={() =>
-                                        this.charityNumber.focus()
-                                    }
-                                />
-
-                                <TextInput
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Charity number"
-                                    inputRef={ref => (this.charityNumber = ref)}
-                                    onSubmitEditing={() => this.regDate.focus()}
-                                />
-                                <TextInput
-                                    inputRef={ref => (this.regDate = ref)}
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Date of Registration"
-                                    onSubmitEditing={() => Keyboard.dismiss()}
-                                />
-                                <TextInput
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Email"
-                                    inputRef={ref => (this.charityNumber = ref)}
-                                    onSubmitEditing={() => this.regDate.focus()}
-                                />
-                                <TextInput
-                                    inputRef={ref => (this.regDate = ref)}
-                                    style={SignUpStyles.textInput}
-                                    placeholder="Password"
-                                    onSubmitEditing={() => Keyboard.dismiss()}
-                                />
-
-                                {/** EXEMPTION REASONS */}
-                                <View style={{width: FORM_WIDTH}}>
-                                    <BoldText>Exemptions</BoldText>
-                                    <Text style={(Styles.pt8, Styles.pb16)}>
-                                        Please select why you are not registered
-                                    </Text>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            paddingBottom: 10,
-                                        }}>
-                                        <CheckBox
-                                            style={SignUpStyles.checkBox}
-                                            onPressIn={() =>
-                                                this.setState({
-                                                    isLowIncome: !this.state
-                                                        .isLowIncome,
-                                                })
-                                            }
-                                        />
-                                        <Text
-                                            style={{
-                                                flexShrink: 1,
-                                                color: TEXT_COLOUR,
-                                            }}>
-                                            <Text>
-                                                Your income is below £5,000 or
-                                                are 'excepted'
-                                            </Text>
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            paddingBottom: 10,
-                                        }}>
-                                        <CheckBox
-                                            style={SignUpStyles.checkBox}
-                                            onPressIn={() =>
-                                                this.setState({
-                                                    isExempt: !this.state
-                                                        .isExempt,
-                                                })
-                                            }
-                                        />
-                                        <Text
-                                            style={{
-                                                flexShrink: 1,
-                                                color: TEXT_COLOUR,
-                                            }}>
-                                            You are exempt from regulation by
-                                            the Charity Comission
-                                        </Text>
-                                    </View>
-                                </View>
-                                {/** LOGO UPLOAD */}
-
-                                {/* <View style={{flexDirection: "row"}}> */}
-
+                            <TextInput placeholder="Date of Registration" />
+                            {/** EXEMPTION REASONS */}
+                            <View style={{width: FORM_WIDTH}}>
+                                <BoldText>Exemptions</BoldText>
+                                <Text style={(Styles.pt8, Styles.pb16)}>
+                                    Please select why you are not registered
+                                </Text>
                                 <View
                                     style={{
                                         flexDirection: "row",
+                                        paddingBottom: 10,
                                     }}>
-                                    <PhotoUpload
-                                        onPhotoSelect={avatar => {
-                                            if (avatar) {
-                                                console.log(
-                                                    "Image base64 string: ",
-                                                    avatar,
-                                                ),
-                                                    this.setPhoto(avatar);
-                                            }
+                                    <CheckBox
+                                        style={SignUpStyles.checkBox}
+                                        onPressIn={() =>
+                                            this.setState({
+                                                isLowIncome: !this.state
+                                                    .isLowIncome,
+                                            })
+                                        }
+                                    />
+                                    <Text
+                                        style={{
+                                            flexShrink: 1,
+                                            color: TEXT_COLOUR,
                                         }}>
-                                        <Image
-                                            style={{
-                                                paddingVertical: 10,
-
-                                                width: 50,
-                                                height: 50,
-                                                borderRadius: 75,
-                                            }}
-                                            resizeMode="cover"
-                                            source={require("../assets/images/general-logos/photo-logo.png")}
-                                        />
-                                    </PhotoUpload>
-                                    <TouchableOpacity
-                                        style={styles.uploadButton}
-                                        onPress={() =>
-                                            this.uploadPhoto(this.state.photo)
-                                        }>
-                                        <RegularText
-                                            style={
-                                                (styles.buttonText,
-                                                {fontSize: 20, color: "gray"})
-                                            }>
-                                            Upload Photo
-                                        </RegularText>
-                                    </TouchableOpacity>
+                                        <Text>
+                                            Your income is below £5,000 or are
+                                            'excepted'
+                                        </Text>
+                                    </Text>
                                 </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        paddingBottom: 10,
+                                    }}>
+                                    <CheckBox
+                                        style={SignUpStyles.checkBox}
+                                        onPressIn={() =>
+                                            this.setState({
+                                                isExempt: !this.state.isExempt,
+                                            })
+                                        }
+                                    />
+                                    <Text
+                                        style={{
+                                            flexShrink: 1,
+                                            color: TEXT_COLOUR,
+                                        }}>
+                                        You are exempt from regulation by the
+                                        Charity Comission
+                                    </Text>
+                                </View>
+                            </View>
+                            {/** PHOTO UPLOAD */}
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    width: FORM_WIDTH,
+                                }}>
+                                <PhotoUpload
+                                    containerStyle={{
+                                        alignItems: "center",
+                                    }}
+                                    onPhotoSelect={avatar => {
+                                        if (avatar) {
+                                            console.log(
+                                                "Image base64 string: ",
+                                                avatar,
+                                            ),
+                                                this.setPhoto(avatar);
+                                        }
+                                    }}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 10,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={require("../assets/images/general-logos/photo-logo.png")}
+                                    />
+                                </PhotoUpload>
+
+                                <TouchableOpacity
+                                    style={styles.uploadButton}
+                                    onPress={() =>
+                                        this.uploadPhoto(this.state.photo)
+                                    }>
+                                    <RegularText
+                                        style={
+                                            (styles.buttonText,
+                                            {fontSize: 20, color: "gray"})
+                                        }>
+                                        Upload Photo
+                                    </RegularText>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                {/** NEXT BUTTON */}
+
                 <View
-                    style={[
-                        Styles.p16,
-                        {
-                            backgroundColor: "white",
-                            width: SCREEN_WIDTH,
-                            alignItems: "center",
-                        },
-                    ]}>
-                    <View
-                        style={[
-                            {
-                                width: FORM_WIDTH,
-                            },
-                            Styles.pb24,
-                        ]}>
+                    style={{
+                        height: 0.1 * SCREEN_HEIGHT,
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        marginBottom: 30,
+                    }}>
+                    <View style={{width: FORM_WIDTH}}>
                         <GradientButton
                             title="Next"
-                            onPress={() => console.log("Sign Up")}
+                            onPress={() => navigate("Privacy")}
                         />
                     </View>
                 </View>
-            </>
+            </View>
         );
     }
 }
