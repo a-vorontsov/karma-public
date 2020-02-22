@@ -20,14 +20,14 @@ const cause = testHelpers.cause;
 
 
 test('getting all causes works', async () => {
-    causeRepository.getAll.mockResolvedValue({
+    causeRepository.findAll.mockResolvedValue({
         rows: [{
             ...cause,
             id: 1
         }]
     });
     const response = await request(app).get("/causes");
-    expect(causeRepository.getAll).toHaveBeenCalledTimes(1);
+    expect(causeRepository.findAll).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject([{
         ...cause,
         id: 1

@@ -22,8 +22,7 @@ const getUsersLocations = () => {
     return db.query(query);
 };
 const getUserLocation = (userId) => {
-    const query = "select user_id,lat,long from profile natural join individual " +
-        "natural join \"user\" left join address on address_id = id(address) where user_id = $1";
+    const query = "select user_id, lat,long from individual left join address on address_id = id(address) where user_id = $1";
     return db.query(query, [userId]);
 };
 
@@ -36,6 +35,7 @@ const findByUsername = (username) => {
     const query = "SELECT * FROM \"user\" WHERE username=$1";
     return db.query(query, [username]);
 };
+
 
 module.exports = {
     insert: insert,
