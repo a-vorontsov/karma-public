@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, StatusBar, Platform} from "react-native";
+import {View, StatusBar, Platform} from "react-native";
 import {RegularText, LogoText} from "../components/text";
 import {TransparentButton, TextButton} from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";

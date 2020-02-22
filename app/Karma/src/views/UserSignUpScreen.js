@@ -64,6 +64,7 @@ class SignUpScreen extends React.Component {
             confPassword,
         } = this.state;
         this.setState({firstOpen: false});
+        this.props.navigation.navigate("AboutScreen");
     };
 
     render() {

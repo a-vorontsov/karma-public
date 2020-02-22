@@ -25,7 +25,7 @@ const CarouselStyles = StyleSheet.create({
         width: itemWidth,
         height: itemHeight,
         overflow: "visible",
-        paddingHorizontal: itemHorizontalMargin
+        paddingHorizontal: itemHorizontalMargin,
     },
     item: {
         backgroundColor: "white",
@@ -36,7 +36,7 @@ const CarouselStyles = StyleSheet.create({
         borderBottomWidth: 16,
         borderBottomColor: "#00bab9",
         paddingTop: 16,
-        overflow: "visible"
+        overflow: "visible",
     },
     shadow: {
         shadowColor: "#000",
