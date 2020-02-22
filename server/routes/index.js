@@ -3,7 +3,9 @@ const router = express.Router();
 const auth = require("../modules/authentication/check-auth");
 
 router.get("/", auth.checkAuthenticated, (req, res) => {
-    res.render("index.ejs", {name: req.user.name});
+    res.status(200).send({
+        message: "Welcome to the Karma app.",
+    });
 });
 
 module.exports = router;

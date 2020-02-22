@@ -9,9 +9,6 @@ const helmet = require("helmet");
 const passport = require("passport");
 require("./modules/authentication/passport-config");
 
-// @temporary Set view engine (for demoing views)
-app.set("view-engine", "ejs");
-
 // -- MIDDLEWARE -- //
 app.use(helmet());
 app.use(express.json());

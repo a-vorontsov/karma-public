@@ -1,17 +1,5 @@
 const digest = require("./digest");
 
-// @temporary Since we don't yet have a DB connection
-const users = [];
-let nextId = users.length;
-
-users.push({
-    id: "admin0",
-    username: "admin",
-    email: "dan@dan.com",
-    salt: "d7895ef4ceb93b9808818dd1246026cef2a50a2351b447b29e08319d41b86713",
-    password: "bf6d74ab2d96afe33cd66ad1e9dc8eeb2c5e4a1d9d8001a2cb501708a02f1dc4",
-});
-
 /**
  * Returns true if email exists in emails table
  * @param {string} email
