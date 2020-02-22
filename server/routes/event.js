@@ -54,7 +54,7 @@ router.get('/causes', (req, res) => {
     if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
     selectedCauseRepository.findEventsSelectedByUser(userId)
         .then(result => {
-            if (result.rows.length == 0) return res.status(404).send("No causes selected by user");
+            if (result.rows.length === 0) return res.status(404).send("No causes selected by user");
             res.status(200).json(result.rows);
         })
         .catch(err => res.status(500).send(err));

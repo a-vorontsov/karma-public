@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
     if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
     causeRepository.findById(id)
         .then(result => {
-            if (result.rows.length == 0) return res.status(404).send("No cause with given id");
+            if (result.rows.length === 0) return res.status(404).send("No cause with given id");
             res.status(200).json(result.rows);
         })
         .catch(err => res.status(500).send(err));
