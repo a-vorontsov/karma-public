@@ -11,9 +11,10 @@ const userAgent = require("../../modules/authentication/user-agent");
  * number for identification.
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /register/ogranisation
+ * @route {POST} /register/organisation
  * @param {HTTP} req
  * @param {HTTP} res
+ * @param {integer} userId
  * @param {string} organisationNumber //TODO: string?
  * @param {string} name
  * @param {string} addressLine1
@@ -29,7 +30,7 @@ const userAgent = require("../../modules/authentication/user-agent");
 router.post("/", async (req, res) => {
     try {
         userAgent.registerOrg(
-            userAgent.findByEmail(req.body.id),
+            req.body.userId,
             req.body.organisationNumber,
             req.body.name,
             req.body.addressLine1,

@@ -1,7 +1,10 @@
 const digest = require("./digest");
+const regStatus = require("./registration-status");
 const regRepo = require("../../models/registrationRepository");
 const userRepo = require("../../models/userRepository");
-const regStatus = require("./registration-status");
+const individualRepo = require("../../models/individualRepository");
+const orgRepo = require("../../models/organisationRepository");
+const addressRepo = require("../../models/addressRepository");
 
 /**
  * Register a new record in the registration table.
@@ -24,10 +27,11 @@ function registerEmail(email) {
 
 /**
  * Register a new user with given email, username
- * and password.
+ * and password, then return the new user's id.
  * @param {string} email
  * @param {string} username
  * @param {string} password
+ * @return {integer} id of new user
  * @throws {error} if registration record not found
  * @throws {error} if already registered
  * @throws {error} if invalid query
@@ -52,14 +56,15 @@ function registerUser(email, username, password) {
         salt: secureSalt,
         date_registered: Date.now(),
     });
+    return userRepo.findByEmail(email).id;
 }
 
 /**
- * Register a new individual
- * @param {integer} id
+ * Register a new individual.
+ * @param {integer} userId
  * @param {string} title //TODO: string?
  * @param {string} firstName
- * @param {string} middleNames
+ * @param {string} middleNames // TODO: not in DB
  * @param {string} surName
  * @param {Date} dateOfBirth
  * @param {string} gender //TODO: string?
@@ -69,14 +74,32 @@ function registerUser(email, username, password) {
  * @param {string} countryState
  * @param {string} postCode
  * @param {string} phoneNumber
+ * @throws {error} if already registered
+ * @throws {error} if invalid query
  */
-function registerIndividual(id, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
-    // TODO:
+function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+    if (regStatus.isFullyRegistered(userId)) {
+        throw new Error("Invalid operation: already fully registered.");
+    }
+    // register address and get it's id
+    const addressId = registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+
+    individualRepo.insert({
+        firstname: firstName,
+        lastname: surName,
+        phone: phoneNumber,
+        banned: false,
+        user_id: userId,
+        picture_id: 0, // TODO: what to do here at this stage?
+        address_id: addressId,
+        birthday: dateOfBirth,
+        gender: gender,
+    });
 }
 
 /**
  * Register a new organisation
- * @param {integer} id
+ * @param {integer} userId
  * @param {string} organisationNumber //TODO: string?
  * @param {string} name
  * @param {string} addressLine1
@@ -86,8 +109,48 @@ function registerIndividual(id, title, firstName, middleNames, surName, dateOfBi
  * @param {string} postCode
  * @param {string} phoneNumber
  */
-function registerOrg(id, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
-    // TODO:
+function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+    if (regStatus.isFullyRegistered(userId)) {
+        throw new Error("Invalid operation: already fully registered.");
+    }
+    // register address and get it's id
+    const addressId = registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    orgRepo.insert({
+        org_name: name,
+        org_number: organisationNumber,
+        org_type: "TODO:",
+        poc_firstname: "TODO:",
+        poc_lastname: "TODO:",
+        phone: phoneNumber,
+        banned: false,
+        org_register_date: Date.now(),
+        low_income: "TODO:",
+        exempt: "TODO:",
+        picture_id: 0, // TODO:
+        user_id: userId,
+        addressId: addressId,
+    });
+}
+
+/**
+ * Register address and return it's id.
+ * @param {string} addressLine1
+ * @param {string} addressLine2
+ * @param {string} townCity
+ * @param {string} countryState
+ * @param {string} postCode
+ * @return {integer} addressId
+ */
+function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
+    return addressRepo.insert({
+        address_1: addressLine1,
+        address_2: addressLine2,
+        postcode: postCode,
+        city: townCity,
+        region: countryState,
+        lat: 0, // TODO: compute here?
+        long: 0,
+    }).id;
 }
 
 /**
@@ -122,40 +185,9 @@ function isCorrectPassword(user, password) {
     return user.password === digest.hashPassWithSaltInHex(password, user.salt);
 }
 
-/**
- * Return user with that email
- * @param email
- */
-function findByEmail(email) {
-    return users.find(user => user.email === email);
-}
-
-/**
- * Return user with that username
- * @param username
- */
-function findByUsername(username) {
-    return users.find(user => user.username === username);
-}
-
-/**
- * Return user with that id
- * @param id
- */
-function findById(id) {
-    return users.find(user => user.id === id);
-}
-
-/**
- * Return true if user with given ID exists.
- * @param {integer} id
- * @return {boolean} true if user exists
- */
-function userExists(id) {
-    return users.find(user => user.id === id) != undefined;
-}
-
 module.exports = {
     registerEmail: registerEmail,
     registerUser: registerUser,
+    registerIndividual: registerIndividual,
+    registerOrg: registerOrg,
 };

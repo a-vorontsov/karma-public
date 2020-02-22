@@ -54,7 +54,7 @@ router.post("/", auth.checkNotAuthenticated, async (req, res) => {
             });
         } else if (regStatus.isPartlyRegistered(req.body.email)) {
             res.status(400).send({
-                message: "User account registered, but no indiv/org profile. Goto indiv/org selection screen.",
+                message: "User account registered, but no indiv/org profile. Aks for password and then goto indiv/org selection screen.",
             });
         } else {
             // try to construct the records in the registration and user
@@ -73,7 +73,7 @@ router.post("/", auth.checkNotAuthenticated, async (req, res) => {
             }
             res.status(500).send({
                 message:
-                "This condition should not be executed. This indicates either a logical error in the code or an internal system error. Please debug the registration and user objects:",
+                "Logical or internal system error. Please debug the registration and user objects:",
                 regStatus: regRecord,
                 userStatus: userRecord,
             });

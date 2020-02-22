@@ -65,6 +65,23 @@ function isFullyRegistered(email) {
     return regRecord.sign_up_flag;
 }
 
+/**
+ * Returns true if user account associated to
+ * given user id is fully registered.
+ * A full registration means having an associated
+ * user and either an individual or an org record.
+ * This throws an error if the provided userId
+ * is not found, therefore this should only be
+ * called after emailExists has been checked.
+ * @param {integer} userId
+ * @return {boolean} true if fully registered
+ * @throws {error} if useId is not found
+ */
+function isFullyRegistered(userId) {
+    const userRecord = userRepo.findById(userId);
+    return isFullyRegistered(userRecord.email);
+}
+
 module.exports = {
     emailExists: emailExists,
     isEmailVerified: isEmailVerified,

@@ -14,6 +14,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @route {POST} /register/individual
  * @param {HTTP} req
  * @param {HTTP} res
+ * @param {integer} userId
  * @param {string} title //TODO: string?
  * @param {string} firstName
  * @param {string} middleNames
@@ -33,7 +34,7 @@ const userAgent = require("../../modules/authentication/user-agent");
 router.post("/", async (req, res) => {
     try {
         userAgent.registerIndividual(
-            userAgent.findByEmail(req.body.id),
+            req.body.userId,
             req.body.title,
             req.body.firstName,
             req.body.middleNames,

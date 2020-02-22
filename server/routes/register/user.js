@@ -12,7 +12,8 @@ const owasp = require("owasp-password-strength-test");
  * The HTTP request object must also contain the user's email
  * address for identification.
  * A HTTP response is generated based on the outcome of the
- * operation.
+ * operation. It will contain the new user's id following a
+ * successful registration.
  * @route {POST} /register/user
  * @param {HTTP} req
  * @param {HTTP} res
@@ -21,7 +22,7 @@ const owasp = require("owasp-password-strength-test");
  * @param {string} password
  * @param {string} confirmPassword
  * @return {HTTP} one of the following HTTP responses
- * - if success, 200 - user registration successful
+ * - if success, 200 - success, userId == new user's id
  * - if password != confirmPassword, 400 - passwords don't match
  * - if password is not strong enough, 400 - passStrengthTest errors
  * - if registration failed, 400 - error of operation
@@ -39,9 +40,10 @@ router.post("/", async (req, res) => {
         );
     } else {
         try {
-            userAgent.registerUser(req.body.email, req.body.username, req.body.password);
+            const userId = userAgent.registerUser(req.body.email, req.body.username, req.body.password);
             res.status(200).send({
                 message: "User registration successful. Goto individual/org registration selection",
+                userId: userId,
             });
         } catch (e) {
             res.status(400).send({
