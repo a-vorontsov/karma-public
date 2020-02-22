@@ -11,7 +11,7 @@ const causeRepository = require("../models/causeRepository");
  *  status: 500, description: Most probably a database error occured
  */
 router.get('/', (req, res) => {
-    causeRepository.getAll()
+    causeRepository.findAll()
         .then(result => res.status(200).json(result.rows))
         .catch(err => res.status(500).send(err));
 });

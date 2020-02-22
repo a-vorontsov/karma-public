@@ -15,7 +15,7 @@ const findByName = (name) => {
     const query = "SELECT * FROM cause WHERE name=$1";
     return db.query(query, [name]);
 };
-const getAll = () => {
+const findAll = () => {
     const query = "SELECT * FROM cause";
     return db.query(query);
 };
@@ -24,5 +24,5 @@ module.exports = {
     insert: insert,
     findById: findById,
     findByName: findByName,
-    getAll: getAll,
+    findAll: findAll,
 };
