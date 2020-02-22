@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../modules/authentication/check-auth");
+const regStatus = require("../../modules/authentication/registration-status");
 const userAgent = require("../../modules/authentication/user-agent");
+const regRepo = require("../../models/registrationRepository");
+const userRepo = require("../../models/userRepository");
 
 /**
  * This is the first step of the signup flow.
@@ -15,35 +18,70 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @return {HTTP} one of the following HTTP responses
  * - if user/request already authenticated, 400 - already auth
  * - if user fully registered, 200 - goto login
- * - if email != exist || unverified, 400 - goto email verif
+ * - if email != exist, store email in DB, 400 - goto email verif
+ * - if email != exist & store email FAILED, 400 - error of DB insert
  * - if email verif, but user unregistered, 400 - goto reg
  * - if partly reg (only user acc), 400 - goto indiv/org reg
- * - if none of the above, 500 - user object as JSON
+ * - if none of the above, 500 - reg & user object as JSON
+ * - if invalid query, 500 - error message
  */
 router.post("/", auth.checkNotAuthenticated, async (req, res) => {
-    if (userAgent.isFullyRegistered(req.email)) {
-        res.status(200).send({
-            message: "Fully registered. Goto login screen.",
-        });
-    }
-    if (
-        !userAgent.emailExists(req.email) || !userAgent.isEmailVerified(req.email)
-    ) {
-        res.status(400).send({
-            message: "Email does not exist. Goto email verification screen.",
-        });
-    } else if (!userAgent.isPartlyRegistered(req.email)) {
-        res.status(400).send({
-            message: "Email verified, but no user account. Goto user registration screen.",
-        });
-    } else if (userAgent.isPartlyRegistered(req.email)) {
-        res.status(400).send({
-            message: "User account registered, but no indiv/org profile. Goto indiv/org selection screen.",
-        });
-    } else {
+    try {
+        if (regStatus.isFullyRegistered(req.email)) {
+            res.status(200).send({
+                message: "Fully registered. Goto login screen.",
+            });
+        }
+        if (!regStatus.emailExists(req.body.email)) {
+            try {
+                userAgent.registerEmail(req.body.email);
+                res.status(400).send({
+                    message: "Email did not exist. Email successfully recorded, go to email verification screen.",
+                });
+            } catch (e) {
+                res.status(400).send({
+                    message: "Email did not exist. Error in recording user's email in database. Please see error message: " + e.message,
+                });
+            }
+        }
+        if (!regStatus.isEmailVerified(req.email)) {
+            res.status(400).send({
+                message: "Email exists but unverified. Goto email verification screen.",
+            });
+        } else if (!regStatus.isPartlyRegistered(req.email)) {
+            res.status(400).send({
+                message: "Email verified, but no user account. Goto user registration screen.",
+            });
+        } else if (regStatus.isPartlyRegistered(req.email)) {
+            res.status(400).send({
+                message: "User account registered, but no indiv/org profile. Goto indiv/org selection screen.",
+            });
+        } else {
+            // try to construct the records in the registration and user
+            // tables for debugging the error
+            const regRecord = [];
+            const userRecord = [];
+            try {
+                regRecord = regRepo.findByEmail(req.body.email);
+            } catch (e) {
+                regRecord = e.message;
+            }
+            try {
+                userRecord = userRepo.findByEmail(req.body.email);
+            } catch (e) {
+                userRecord = e.message;
+            }
+            res.status(500).send({
+                message:
+                "This condition should not be executed. This indicates either a logical error in the code or an internal system error. Please debug the registration and user objects:",
+                regStatus: regRecord,
+                userStatus: userRecord,
+            });
+        }
+    } catch (e) {
+        // in case of invalid queries, an error may be thrown
         res.status(500).send({
-            message: "This condition should not be executed. Please debug the user object:",
-            user: userAgent.findByEmail(email),
+            message: e.message,
         });
     }
 });
