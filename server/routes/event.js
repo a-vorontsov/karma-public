@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
-const causeRepository = require("../models/causeRepository");
 const selectedCauseRepository = require("../models/selectedCauseRepository");
 
 router.post('/', (req, res) => {
