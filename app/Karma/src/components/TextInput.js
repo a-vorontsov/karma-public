@@ -17,7 +17,7 @@ class TInput extends Component {
         return (
             <View>
                 <TextInput
-                    style={inputStyle}
+                    style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
                     returnKeyType={
