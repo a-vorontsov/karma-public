@@ -16,6 +16,14 @@ const registration2 = {
     sign_up_flag: 0,
 };
 
+const registration3 = {
+    email: "test3@gmail.com",
+    email_flag: 0,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
 const address = {
     address_1: "221B Baker St",
     address_2: "Marleybone",
@@ -60,6 +68,14 @@ const user2 = {
     date_registered: "2016-06-22 19:10:25-07",
 };
 
+const user3 = {
+    email: "test3@gmail.com",
+    username: "test3",
+    password_hash: "password",
+    verified: true,
+    salt: "xlzljlfas",
+    date_registered: "2016-06-22 19:10:25-07",
+};
 const individual = {
 
     firstname: "Paul",
@@ -97,25 +113,39 @@ const organisation = {
     address_id: -1,
 };
 
+const cause = {
+    name: "cause1",
+    description: "description of cause1",
+};
+const clearCauses = async () => {
+    await db.query("DELETE FROM cause");
+};
+
 const clearDatabase = async () => {
     await db.query("DELETE FROM profile");
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
+    await db.query("DELETE FROM selected_cause");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
+    await db.query("DELETE FROM cause");
 };
 
 module.exports = {
     address: address,
     registration: registration,
     registration2: registration2,
+    registration3: registration3,
     event: event,
+    cause: cause,
     user: user,
     user2: user2,
+    user3: user3,
     individual: individual,
     profile: profile,
     organisation: organisation,
     clearDatabase: clearDatabase,
+    clearCauses: clearCauses,
 };

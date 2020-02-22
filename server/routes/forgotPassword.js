@@ -6,7 +6,7 @@ const mailSender = require('../mailSender');
 
 // This function will be imported from model once db is setup
 const updateUserToken = (email, token)=>{
-    const updateUserQuery = `Update users 
+    const updateUserQuery = `Update users
     set resetpasswordtoken = ${token},
     resetPasswordExpires = ${Date.now()+360000}
     where email = \'${email}\'`;

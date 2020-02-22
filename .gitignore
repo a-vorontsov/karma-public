@@ -108,3 +108,4 @@ dist
 
 # JetBrains IDE configurations
 .idea
+.vscode
