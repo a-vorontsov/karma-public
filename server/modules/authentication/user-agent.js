@@ -59,6 +59,7 @@ function registerUser(email, username, password) {
     return userRepo.findByEmail(email).id;
 }
 
+/* eslint-disable max-len */
 /**
  * Register a new individual.
  * @param {integer} userId
@@ -78,6 +79,7 @@ function registerUser(email, username, password) {
  * @throws {error} if invalid query
  */
 function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+    /* eslint-enable max-len */
     if (regStatus.isFullyRegistered(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
@@ -151,38 +153,6 @@ function registerAddress(addressLine1, addressLine2, townCity, countryState, pos
         lat: 0, // TODO: compute here?
         long: 0,
     }).id;
-}
-
-/**
- * Change a user's password
- * @param {integer} id
- * @param {string} secureSalt 256-bit
- * @param {string} hashedPassword 256-bit
- */
-function changePassword(id, secureSalt, hashedPassword) {
-    const user = findById(id);
-    user.salt = secureSalt;
-    user.password = hashedPassword;
-}
-
-/**
- * Update password for an already existing, logged-in
- * user.
- * @param {HTTP} req
- */
-function updatePassword(req) {
-    // TODO: push
-    console.log("update password called");
-}
-
-/**
- * Returns true if input password is correct for given user.
- * @param {Object} user
- * @param {string} password 256-bit
- * @return {boolean} true if password is correct
- */
-function isCorrectPassword(user, password) {
-    return user.password === digest.hashPassWithSaltInHex(password, user.salt);
 }
 
 module.exports = {

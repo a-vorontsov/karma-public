@@ -4,6 +4,7 @@ const passport = require("passport");
 const auth = require("../../modules/authentication/check-auth");
 
 /**
+ * //TODO: Move to token based authentication, with DB storage.
  * Attempt to log in an existing user with local strategy
  * (email & password).
  * A HTTP redirect is generated based on the outcome of the
@@ -32,13 +33,15 @@ router.post(
 );
 
 router.get("/success", (req, res) => {
-    res
-        .status(200)
-        .send({message: "Successful authentication with email & password."});
+    res.status(200).send({
+        message: "Successful authentication with email & password.",
+    });
 });
 
 router.get("/fail", (req, res) => {
-    res.status(400).send({message: "Invalid email or password."});
+    res.status(400).send({
+        message: "Invalid email or password.",
+    });
 });
 
 module.exports = router;

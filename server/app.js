@@ -30,7 +30,6 @@ app.use("/", require("./routes/index"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/forgot", require("./routes/signin/forgotPassword"));
-// app.use("/register", require("./routes/signin/register"));
 app.use("/register/user", require("./routes/register/user"));
 app.use("/register/individual", require("./routes/register/individual"));
 app.use("/register/organisation", require("./routes/register/organisation"));
