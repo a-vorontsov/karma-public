@@ -24,8 +24,8 @@ const owasp = require("owasp-password-strength-test");
  * - if success, 200 - user registration successful
  * - if password != confirmPassword, 400 - passwords don't match
  * - if password is not strong enough, 400 - passStrengthTest errors
- * - if email does not exist in DB, 500 - email does not exist
- * - if registration failed, 400 - error == exception
+ * - if registration failed, 400 - error of operation
+ *   (e.x. if email does not exist)
  */
 router.post("/", async (req, res) => {
     const passStrengthTest = owasp.test(req.body.password);
@@ -34,16 +34,14 @@ router.post("/", async (req, res) => {
             message: "Passwords do not match.",
         });
     } else if (!passStrengthTest.strong && process.env.ANY_PASSWORD !== "SKIP_CHECKS") {
-        res.status(400).send(passStrengthTest.errors);
-    } else if (!userAgent.userExists(req.userId)) {
-        res.status(500).send({
-            message: "Email does not exist.",
-        });
+        res.status(400).send(
+            passStrengthTest.errors,
+        );
     } else {
         try {
             userAgent.registerUser(req.body.email, req.body.username, req.body.password);
             res.status(200).send({
-                message: "User registration successful.",
+                message: "User registration successful. Goto individual/org registration selection",
             });
         } catch (e) {
             res.status(400).send({

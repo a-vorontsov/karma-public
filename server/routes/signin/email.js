@@ -27,7 +27,7 @@ const userRepo = require("../../models/userRepository");
  */
 router.post("/", auth.checkNotAuthenticated, async (req, res) => {
     try {
-        if (regStatus.isFullyRegistered(req.email)) {
+        if (regStatus.isFullyRegistered(req.body.email)) {
             res.status(200).send({
                 message: "Fully registered. Goto login screen.",
             });
@@ -44,15 +44,15 @@ router.post("/", auth.checkNotAuthenticated, async (req, res) => {
                 });
             }
         }
-        if (!regStatus.isEmailVerified(req.email)) {
+        if (!regStatus.isEmailVerified(req.body.email)) {
             res.status(400).send({
                 message: "Email exists but unverified. Goto email verification screen.",
             });
-        } else if (!regStatus.isPartlyRegistered(req.email)) {
+        } else if (!regStatus.isPartlyRegistered(req.body.email)) {
             res.status(400).send({
                 message: "Email verified, but no user account. Goto user registration screen.",
             });
-        } else if (regStatus.isPartlyRegistered(req.email)) {
+        } else if (regStatus.isPartlyRegistered(req.body.email)) {
             res.status(400).send({
                 message: "User account registered, but no indiv/org profile. Goto indiv/org selection screen.",
             });

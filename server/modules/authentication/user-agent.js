@@ -1,44 +1,25 @@
 const digest = require("./digest");
+const regRepo = require("../../models/registrationRepository");
+const userRepo = require("../../models/userRepository");
+const regStatus = require("./registration-status");
 
 /**
- * Returns true if email exists in emails table
+ * Register a new record in the registration table.
  * @param {string} email
- * @return {boolean} true if email exists in DB
+ * @throws {error} if email already stored
+ * @throws {error} if invalid query
  */
-function emailExists(email) {
-    return findByEmail(email) !== undefined;
-}
-
-/**
- * Returns true if email verified flag is true
- * @param {string} email
- * @return {boolean} true if email is verified
- */
-function isEmailVerified(email) {
-    return true;
-}
-
-/**
- * Returns true if user account associated to
- * given email address is partly registered.
- * Partial registration means an existing user
- * account without an individual / organisation
- * profile.
- * @param {string} email
- * @return {boolean} true if partly registered
- */
-function isPartlyRegistered(email) {
-    return false;
-}
-
-/**
- * Returns true if user account associated to
- * given email address is fully registered.
- * @param {string} email
- * @return {boolean} true if fully registered
- */
-function isFullyRegistered(email) {
-    return false;
+function registerEmail(email) {
+    if (regStatus.emailExists(email)) {
+        throw new Error("Invalid operation: email already exists.");
+    }
+    regRepo.insert({
+        email: email,
+        email_flag: false,
+        id_flag: false,
+        phone_flag: false,
+        sign_up_flag: false,
+    });
 }
 
 /**
@@ -47,35 +28,30 @@ function isFullyRegistered(email) {
  * @param {string} email
  * @param {string} username
  * @param {string} password
+ * @throws {error} if registration record not found
+ * @throws {error} if already registered
+ * @throws {error} if invalid query
  */
 function registerUser(email, username, password) {
+    if (regStatus.emailExists(email)) {
+        throw new Error("Invalid operation: registration record not found.");
+    }
+    if (regStatus.isPartlyRegistered(email) || regStatus.isFullyRegistered(email)) {
+        throw new Error("Invalid operation: user record already exists.");
+    }
     const secureSalt = digest.getSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         secureSalt,
     );
-    pushNewUser(email, username, secureSalt, hashedPassword);
-}
-
-/**
- * Push a new user to the database.
- * This function should only be accessible from
- * withing this module.
- * @param {string} email
- * @param {string} username
- * @param {string} secureSalt 256-bit
- * @param {string} hashedPassword 256-bit
- */
-function pushNewUser(email, username, secureSalt, hashedPassword) {
-    users.push({
-        id: nextId,
+    userRepo.insert({
         email: email,
         username: username,
+        password_hash: hashedPassword,
+        verified: false,
         salt: secureSalt,
-        password: hashedPassword,
+        date_registered: Date.now(),
     });
-    ++nextId;
-    console.log(users);
 }
 
 /**
@@ -180,17 +156,6 @@ function userExists(id) {
 }
 
 module.exports = {
-    isFullyRegistered: isFullyRegistered,
-    isPartlyRegistered: isPartlyRegistered,
-    emailExists: emailExists,
-    isEmailVerified: isEmailVerified,
+    registerEmail: registerEmail,
     registerUser: registerUser,
-    registerIndividual: registerIndividual,
-    registerOrg: registerOrg,
-    findByEmail: findByEmail,
-    findByUsername: findByUsername,
-    findById: findById,
-    isCorrectPassword: isCorrectPassword,
-    updatePassword: updatePassword,
-    userExists: userExists,
 };

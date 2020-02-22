@@ -1,4 +1,5 @@
 const regRepo = require("../../models/registrationRepository");
+const userRepo = require("../../models/userRepository");
 
 /**
  * Returns true if email exists in registration table
@@ -44,7 +45,7 @@ function isEmailVerified(email) {
  * @throws {error} if email is not found
  */
 function isPartlyRegistered(email) {
-    return !isFullyRegistered;
+    return !isFullyRegistered(email) && userRepo.findByEmail(email);
 }
 
 /**
