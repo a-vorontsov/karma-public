@@ -127,10 +127,10 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
+    await db.query("DELETE FROM selected_cause");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
-    await db.query("DELETE FROM selected_cause");
 };
 
 module.exports = {
