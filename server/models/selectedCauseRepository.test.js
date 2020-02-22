@@ -5,9 +5,9 @@ const userRepository = require("./userRepository");
 const registrationRepository = require("./registrationRepository");
 
 
-const registration = testHelpers.registration;
+const registration = testHelpers.registration3;
 const cause = testHelpers.cause;
-const user = testHelpers.user;
+const user = testHelpers.user3;
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
