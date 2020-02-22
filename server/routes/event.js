@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
-const causeRepository = require("../models/causeRepository");
 const util = require("../util/util");
+const selectedCauseRepository = require("../models/selectedCauseRepository");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -164,19 +164,19 @@ router.get("/:id", async (req, res) => {
  * route {GET} event/causes
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @param {integer} req.query.id - ID of user logged in
+ * @param {integer} req.query.userId - ID of user logged in
  * @returns:
  *  status: 200, description: Array of all event objects that have user selected causes
  *  status: 400, description: if ID param is not specified or in wrong format/NaN
  *  status: 500, description: Most probably a database error occured
  */
 router.get('/causes', (req, res) => {
-    const id = req.query.id;
-    if (!id) return res.status(400).send("No user id was specified in the query");
-    if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
-    causeRepository.getAllSelectedByUser(id)
+    const userId = req.query.userId;
+    if (!userId) return res.status(400).send("No user id was specified in the query");
+    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+    selectedCauseRepository.findEventsSelectedByUser(userId)
         .then(result => {
-            if (result.rows.length == 0) return res.status(404).send("No causes selected by user");
+            if (result.rows.length === 0) return res.status(404).send("No causes selected by user");
             res.status(200).json(result.rows);
         })
         .catch(err => res.status(500).send(err));

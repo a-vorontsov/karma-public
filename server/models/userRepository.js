@@ -27,6 +27,7 @@ const findByUsername = (username) => {
     return db.query(query, [username]);
 };
 
+
 module.exports = {
     insert: insert,
     findById: findById,

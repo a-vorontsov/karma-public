@@ -1,9 +1,9 @@
 const db = require("../database/connection");
 
-const insert = (name, description) => {
+const insert = (cause) => {
     const query = "INSERT INTO cause(name,description) VALUES ($1, $2) " +
         "RETURNING *"; // returns passed cause with it's id set to corresponding id in database
-    const params = [name, description];
+    const params = [cause.name, cause.description];
     return db.query(query, params);
 };
 
@@ -15,19 +15,14 @@ const findByName = (name) => {
     const query = "SELECT * FROM cause WHERE name=$1";
     return db.query(query, [name]);
 };
-const getAll = () => {
+const findAll = () => {
     const query = "SELECT * FROM cause";
     return db.query(query);
-};
-const getAllSelectedByUser = (id) =>{
-    const query = "select cause_id, name, description from selected_cause left join cause on cause_id = id where user_id = $1";
-    return db.query(query, [id]);
 };
 
 module.exports = {
     insert: insert,
     findById: findById,
     findByName: findByName,
-    getAll: getAll,
-    getAllSelectedByUser: getAllSelectedByUser,
+    findAll: findAll,
 };
