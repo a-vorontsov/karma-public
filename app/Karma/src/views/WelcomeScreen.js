@@ -19,17 +19,32 @@ class WelcomeScreen extends Component {
             isRecognised: false,
             isVerified: false,
         };
-        this.popUpLogin = this.popUpLogin.bind(this);
+        this.popUpEmail = this.popUpEmail.bind(this);
+        this.popUpPassword = this.popUpPassword.bind(this);
+
     }
 
-    popUpLogin() {
+    onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
+    };
+
+    popUpEmail() {
         // const {isPressed, isRecognised, isVerified} = this.state;
 
         return(
-        <TextInput placeholder="owo" autoFocus={true} />
+        <TextInput placeholder="Please enter your email" autoFocus={true} onChange={this.onChangeText} style={[styles.text, this.props.styles]}/>
         )
-        
     }
+    popUpPassword() {
+        // const {isPressed, isRecognised, isVerified} = this.state;
+
+        return(
+        <TextInput placeholder="Please enter your password" autoFocus={true} />
+        )
+    }
+    popUpCode() {}
+
     render() {
         const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
@@ -45,7 +60,7 @@ class WelcomeScreen extends Component {
                     <RegularText style={[styles.text, {fontSize: 40}]}>
                         lorem ipsum
                     </RegularText>
-                    {this.state.isPressed ? this.popUpLogin() : null}
+                    {this.state.isPressed ? this.popUpEmail() : null}
                 </View>
 
                 <View
@@ -64,7 +79,7 @@ class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
 
-                    <TouchableOpacity >
+                    {/* <TouchableOpacity >
                         <RegularText
                             style={[
                                 styles.text,
@@ -72,7 +87,7 @@ class WelcomeScreen extends Component {
                             ]}>
                             Already have an account? Login
                         </RegularText>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );
@@ -80,6 +95,7 @@ class WelcomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         alignItems: "center",
