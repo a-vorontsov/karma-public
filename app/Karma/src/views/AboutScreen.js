@@ -4,17 +4,19 @@ import {
     Image,
     Alert,
     StyleSheet,
-    Dimensions,
     KeyboardAvoidingView,
     TouchableOpacity,
+    Platform,
 } from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
 import PhotoUpload from "react-native-photo-upload";
-import {RegularText} from "../components/text";
+import {RegularText, SubTitleText} from "../components/text";
+import {RadioInput} from "../components/radio";
 
-const {width} = Dimensions.get("window");
-const formWidth = 0.8 * width;
+import PageHeader from "../components/PageHeader";
+import {GradientButton} from "../components/buttons";
+import Styles, {normalise} from "../styles/Styles";
 
 class AboutScreen extends React.Component {
     constructor(props) {
@@ -34,7 +36,7 @@ class AboutScreen extends React.Component {
     };
 
     goToPrevious() {
-        this.props.navigation.navigate("SignUpScreen");
+        this.props.navigation.goBack();
     }
 
     goToNext() {
@@ -68,6 +70,7 @@ class AboutScreen extends React.Component {
     }
 
     setGender(selectedGender) {
+        console.log(selectedGender);
         this.setState({
             gender: selectedGender,
             genderSelected: true,
@@ -104,46 +107,21 @@ class AboutScreen extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView
-                style={styles.container}
-                behavior="padding"
+                style={[Styles.container, Styles.ph24]}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {/* HEADER */}
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: "flex-start",
-                            marginTop: 70,
-                            alignItems: "flex-start",
-                            width: formWidth,
-                        }}>
-                        <View style={styles.header}>
-                            <TouchableOpacity
-                                onPress={() => this.goToPrevious()}>
-                                <Image
-                                    style={{
-                                        flex: 1,
-                                        width: 30,
-                                        height: 30,
-                                        resizeMode: "contain",
-                                    }}
-                                    source={require("../assets/images/general-logos/back-arrow.png")}
-                                />
-                            </TouchableOpacity>
-                            <RegularText style={styles.headerText}>
-                                About
-                            </RegularText>
-                        </View>
-                        <RegularText style={styles.subheaderText}>
+                    <View>
+                        <PageHeader title="About" />
+                        <SubTitleText style={{fontSize: normalise(26)}}>
                             Tell us about yourself
-                        </RegularText>
-                        <RegularText style={styles.subText}>
+                        </SubTitleText>
+                        <RegularText style={Styles.pb8}>
                             Charities need to know this information about
                             volunteers.
                         </RegularText>
                     </View>
 
-                    {/* PHOTO UPLOAD */}
                     <View style={styles.header}>
                         <PhotoUpload
                             onPhotoSelect={avatar => {
@@ -157,7 +135,7 @@ class AboutScreen extends React.Component {
                             }}>
                             <Image
                                 style={{
-                                    paddingVertical: 10,
+                                    paddingVertical: 8,
                                     width: 50,
                                     height: 50,
                                     borderRadius: 75,
@@ -178,10 +156,8 @@ class AboutScreen extends React.Component {
                             </RegularText>
                         </TouchableOpacity>
                     </View>
-                    {/* BIRTHDAY SELECTION */}
-                    <RegularText style={styles.smallHeaderText}>
-                        When is your birthday?
-                    </RegularText>
+
+                    <SubTitleText>When is your birthday?</SubTitleText>
                     <DatePicker
                         fadeToColor="none"
                         mode="date"
@@ -189,75 +165,19 @@ class AboutScreen extends React.Component {
                         onDateChange={date => this.setDate(date)}
                     />
 
-                    {/* GENDER SELECTION */}
-                    <RegularText style={styles.smallHeaderText}>
-                        Choose your gender
-                    </RegularText>
-                    <View style={styles.genderContainer}>
-                        <TouchableOpacity
-                            style={[
-                                this.state.gender === "Male"
-                                    ? styles.genderButtonSelected
-                                    : styles.genderButton,
-                            ]}
-                            onPress={() => this.setGender("Male")}>
-                            <RegularText
-                                style={[
-                                    this.state.gender === "Male"
-                                        ? styles.buttonTextSelected
-                                        : styles.buttonText,
-                                ]}>
-                                Male
-                            </RegularText>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                this.state.gender === "Female"
-                                    ? styles.genderButtonSelected
-                                    : styles.genderButton,
-                            ]}
-                            onPress={() => this.setGender("Female")}>
-                            <RegularText
-                                style={[
-                                    this.state.gender === "Female"
-                                        ? styles.buttonTextSelected
-                                        : styles.buttonText,
-                                ]}>
-                                Female
-                            </RegularText>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.genderContainer}>
-                        <TouchableOpacity
-                            style={[
-                                this.state.gender === "Non-Binary"
-                                    ? styles.genderButtonSelected
-                                    : styles.genderButton,
-                            ]}
-                            onPress={() => this.setGender("Non-Binary")}>
-                            <RegularText
-                                style={[
-                                    this.state.gender === "Non-Binary"
-                                        ? styles.buttonTextSelected
-                                        : styles.buttonText,
-                                ]}>
-                                Non-Binary
-                            </RegularText>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* FORM SUBMISSION */}
-                    <TouchableOpacity
-                        style={styles.nextButton}
-                        onPress={() => this.goToNext()}>
-                        <RegularText
-                            style={
-                                (styles.buttonText,
-                                {color: "white", fontSize: 20})
-                            }>
-                            Next
-                        </RegularText>
-                    </TouchableOpacity>
+                    <SubTitleText>Choose your gender</SubTitleText>
+                    <RadioInput
+                        values={[
+                            {value: "male", title: "Male"},
+                            {value: "female", title: "Female"},
+                            {value: "non-binary", title: "Non-Binary"},
+                        ]}
+                        onValue={value => this.setGender(value)}
+                    />
+                    <GradientButton
+                        onPress={() => this.goToNext()}
+                        title="Next"
+                    />
                 </ScrollView>
             </KeyboardAvoidingView>
         );
@@ -265,52 +185,9 @@ class AboutScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
     header: {
         flexDirection: "row",
         alignItems: "center",
-    },
-    headerText: {
-        fontSize: 25,
-        color: "black",
-        paddingLeft: 20,
-    },
-    subheaderText: {
-        fontSize: 25,
-        textAlignVertical: "top",
-        textAlign: "left",
-        paddingTop: 20,
-        paddingBottom: 20,
-        color: "#00A8A6",
-    },
-    smallHeaderText: {
-        fontSize: 20,
-        textAlignVertical: "top",
-        textAlign: "left",
-        paddingTop: 20,
-        paddingBottom: 10,
-        color: "#00A8A6",
-    },
-    subText: {
-        fontSize: 15,
-        textAlignVertical: "top",
-        textAlign: "left",
-        paddingTop: 0,
-        paddingBottom: 10,
-        color: "black",
-    },
-    nextButton: {
-        height: 50,
-        backgroundColor: "#00A8A6",
-        paddingHorizontal: 30,
-        marginTop: 40,
-        borderRadius: 30,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
     },
     uploadButton: {
         height: 50,
@@ -327,44 +204,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "400",
         color: "gray",
-    },
-    buttonTextSelected: {
-        fontSize: 15,
-        fontWeight: "400",
-        color: "white",
-    },
-    genderContainer: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    genderButton: {
-        height: 40,
-        width: 150,
-        backgroundColor: "transparent",
-        borderWidth: 2,
-        borderColor: "#D3D3D3",
-        marginRight: 20,
-        marginTop: 15,
-        marginBottom: 10,
-        borderRadius: 30,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    genderButtonSelected: {
-        height: 40,
-        width: 150,
-        backgroundColor: "#00A8A6",
-        borderWidth: 2,
-        borderColor: "#D3D3D3",
-        marginRight: 20,
-        marginTop: 15,
-        marginBottom: 10,
-        borderRadius: 30,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
     },
 });
 

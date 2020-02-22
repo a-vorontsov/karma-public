@@ -44,7 +44,7 @@ class WelcomeScreen extends Component {
                     <View style={Styles.bottom}>
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
-                                onPress={() => navigate("InitSignup")}
+                                onPress={() => navigate("About")}
                                 white
                                 title="Sign Up"
                             />

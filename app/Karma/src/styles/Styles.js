@@ -141,8 +141,43 @@ const Styles = StyleSheet.create({
     green: {
         color: "#01a7a6",
     },
+    cyan: {
+        color: "#3bbfb2",
+    },
+    link: {
+        color: "#3bbfb2",
+        textDecorationLine: "underline",
+    },
     white: {
         color: "#ffffff",
+    },
+    grey: {
+        color: "#7f7f7f",
+    },
+    error: {
+        color: "#e81f10",
+    },
+    textInput: {
+        alignSelf: "stretch",
+        height: 45,
+        borderColor: "transparent",
+        borderBottomColor: "#d3d3d3",
+        borderWidth: 1.5,
+        marginTop: 5,
+        marginBottom: 20,
+        fontSize: 20,
+        lineHeight: 20,
+        color: "#7f7f7f",
+        fontFamily: "OpenSans-Regular",
+    },
+    textInputError: {
+        borderBottomColor: "#e81f10",
+        marginBottom: 10,
+    },
+    textInputMiscText: {
+        position: "absolute",
+        right: 16,
+        top: 16,
     },
     bgWhite: {
         backgroundColor: "#ffffff",

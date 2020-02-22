@@ -2,11 +2,11 @@ import React from "react";
 import {Image} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
 import {createStackNavigator} from "react-navigation-stack";
-import ActivitiesScreen from "./src/views/ActivitiesScreen";
-import CausesScreen from "./src/views/CausesScreen";
-import NotificationsScreen from "./src/views/NotificationsScreen";
-import ProfileScreen from "./src/views/ProfileScreen";
-import SettingsMenuScreen from "./src/views/SettingsMenuScreen";
+import ActivitiesScreen from "../views/ActivitiesScreen";
+import CausesScreen from "../views/CausesScreen";
+import NotificationsScreen from "../views/NotificationsScreen";
+import ProfileScreen from "../views/ProfileScreen";
+import SettingsMenuScreen from "../views/SettingsMenuScreen";
 
 const ProfileNavigator = createStackNavigator(
     {
@@ -32,12 +32,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("./src/assets/images/nav-bar/activities-on.png")}
+                            source={require("../assets/images/nav-bar/activities-on.png")}
                             style={{aspectRatio: 0.75, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("./src/assets/images/nav-bar/activities-off.png")}
+                            source={require("../assets/images/nav-bar/activities-off.png")}
                             style={{aspectRatio: 0.75, resizeMode: "contain"}}
                         />
                     ),
@@ -50,12 +50,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("./src/assets/images/nav-bar/causes-on.png")}
+                            source={require("../assets/images/nav-bar/causes-on.png")}
                             style={{aspectRatio: 0.7, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("./src/assets/images/nav-bar/causes-off.png")}
+                            source={require("../assets/images/nav-bar/causes-off.png")}
                             style={{aspectRatio: 0.7, resizeMode: "contain"}}
                         />
                     ),
@@ -68,12 +68,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("./src/assets/images/nav-bar/notifications-on.png")}
+                            source={require("../assets/images/nav-bar/notifications-on.png")}
                             style={{aspectRatio: 0.5, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("./src/assets/images/nav-bar/notifications-off.png")}
+                            source={require("../assets/images/nav-bar/notifications-off.png")}
                             style={{aspectRatio: 0.5, resizeMode: "contain"}}
                         />
                     ),
@@ -86,12 +86,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("./src/assets/images/nav-bar/profile-on.png")}
+                            source={require("../assets/images/nav-bar/profile-on.png")}
                             style={{aspectRatio: 0.6, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("./src/assets/images/nav-bar/profile-off.png")}
+                            source={require("../assets/images/nav-bar/profile-off.png")}
                             style={{aspectRatio: 0.6, resizeMode: "contain"}}
                         />
                     ),
