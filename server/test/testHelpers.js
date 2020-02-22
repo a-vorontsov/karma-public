@@ -130,6 +130,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
+    await db.query("DELETE FROM selected_cause");
 };
 
 module.exports = {
