@@ -57,34 +57,61 @@ export default class OrgSignUpScreen extends React.Component {
         ];
 
         return (
-            <>
-                <KeyboardAvoidingView
-                    style={Styles.container}
-                    behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    enabled>
-                    {/** HEADER */}
-                    <View style={{alignItems: "center", width: FORM_WIDTH}}>
-                        {/* <View
+            <View style={Styles.container}>
+                {/** HEADER */}
+                <View
+                    style={{
+                        alignItems: "center",
+                        height: 0.1 * SCREEN_HEIGHT,
+                        justifyContent: "flex-start",
+                        marginTop: hasNotch() ? 60 : StatusBar.currentHeight,
+                    }}>
+                    <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
+                        <View
                             style={{
-                                alignItems: "flex-start",
-                                backgroundColor: "white",
-                                marginTop: hasNotch()
-                                    ? 60
-                                    : StatusBar.currentHeight,
+                                flexDirection: "row",
+                                justifyContent: "center",
                             }}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text>🔙</Text>
-                                <Text>Sign Up</Text>
-                            </View>
-                            <Text style={SignUpStyles.subheaderText}>
-                                Create a new account
-                            </Text>
-                        </View> */}
+                            <TouchableOpacity
+                                onPress={() => navigate("InitSignup")}>
+                                <Image
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        resizeMode: "contain",
+                                    }}
+                                    source={require("../assets/images/general-logos/back-arrow.png")}
+                                />
+                            </TouchableOpacity>
+                            <RegularText
+                                style={{
+                                    fontSize: 30,
+                                    fontWeight: "500",
+                                    color: "#3E3E3E",
+                                    paddingLeft: 20,
+                                }}>
+                                Sign Up
+                            </RegularText>
+                        </View>
+
+                        <SemiBoldText
+                            style={{
+                                color: "#01a7a6",
+                                fontSize: 20,
+                            }}>
+                            Create a new account
+                        </SemiBoldText>
                     </View>
+                </View>
+                <KeyboardAvoidingView
+                    style={{flex: 1}}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,
+                                justifyContent: "space-evenly",
+                                alignItems: "center",
                             }}>
                             {/** FORM INPUTS */}
                             <View>
@@ -303,7 +330,7 @@ export default class OrgSignUpScreen extends React.Component {
                         onPress={() => console.log("Sign Up")}
                     />
                 </View>
-            </>
+            </View>
         );
     }
 }
