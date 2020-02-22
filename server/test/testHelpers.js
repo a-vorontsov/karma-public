@@ -98,8 +98,8 @@ const organisation = {
 };
 
 const cause = {
-    name: "Gardening",
-    description: "Trimming bushes, watering plants, and all kinds of boring stuff",
+    name: "cause1",
+    description: "description of cause1",
 };
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");

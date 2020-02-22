@@ -1,9 +1,9 @@
 const db = require("../database/connection");
 
-const insert = (name, description) => {
+const insert = (cause) => {
     const query = "INSERT INTO cause(name,description) VALUES ($1, $2) " +
         "RETURNING *"; // returns passed cause with it's id set to corresponding id in database
-    const params = [name, description];
+    const params = [cause.name, cause.description];
     return db.query(query, params);
 };
 

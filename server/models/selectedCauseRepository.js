@@ -38,20 +38,20 @@ const findByCauseId = (id) => {
 };
 const find = (userID, causeID) => {
     const query = "SELECT * FROM selected_cause WHERE user_id = $1 AND cause_id=$2";
-    const params = [userID, causes];
+    const params = [userID, causeID];
     return db.query(query, params);
 };
 
 const findEventsSelectedByUser = (userID) => {
     const query = "select id(event),name(event),address_id,women_only,spots,address_visible,minimum_age,photo_id,physical," +
-        "add_info,content,date,cause_id(event_cause),name(cause),description " +
+        "add_info,content,date,cause_id(event_cause),name(cause),description as cause_description " +
         "from event left join event_cause on id(event) = event_id " +
         "right join selected_cause on cause_id(event_cause)=cause_id(selected_cause) " +
         "left join cause on cause_id(event_cause) = id(cause) where user_id(selected_cause) = $1";
     return db.query(query, [userID]);
 };
 module.exports = {
-    insertSingle: insert,
+    insert: insert,
     insertMultiple: insertMultiple,
     deleteUnselected: deleteUnselected,
     deleteMultiple: deleteMultiple,
