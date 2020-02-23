@@ -65,16 +65,19 @@ router.get('/', async (req, res) => {
  * @param {integer} req.query.userId - ID of user logged in
  * @returns:
  *  status: 200, description: Array of all event objects that have user selected causes
- *  status: 400, description: if ID param is not specified or in wrong format/NaN
+ *  status: 400, description: if userID param is not specified or in wrong format/NaN
+ *  status: 404, description: if userID doesnt belong to any user
  *  status: 500, description: Most probably a database error occured
  */
 router.get('/causes', async (req, res) => {
     const userId = req.query.userId;
+
     if (!userId) return res.status(400).send("No user id was specified in the query");
     if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
-    if (!user) return res.status(400).send("No user with specified id");
+    if (!user) return res.status(404).send("No user with specified id");
     selectedCauseRepository.findEventsSelectedByUser(userId)
         .then(result => {
             const events = result.rows;
