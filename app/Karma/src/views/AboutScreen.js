@@ -70,7 +70,6 @@ class AboutScreen extends React.Component {
     }
 
     setGender(selectedGender) {
-        console.log(selectedGender);
         this.setState({
             gender: selectedGender,
             genderSelected: true,
