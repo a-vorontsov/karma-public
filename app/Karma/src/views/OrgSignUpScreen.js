@@ -7,6 +7,7 @@ import {
     Dimensions,
     StatusBar,
     Picker,
+    Image,
     Keyboard,
 } from "react-native";
 import {hasNotch} from "react-native-device-info";
@@ -14,6 +15,8 @@ import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
+import {TextInputMask} from "react-native-masked-text";
+
 import {
     RegularText,
     TitleText,
@@ -25,6 +28,8 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
+import {ThemeColors} from "react-navigation";
+
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const LINK_COLOUR = "#3bbfb2";
@@ -41,6 +46,7 @@ export default class OrgSignUpScreen extends React.Component {
             email: "",
             password: "",
             confPassword: "",
+            hidePassword: true,
             isLowIncome: false,
             isExempt: false,
             photo: null,
@@ -76,8 +82,8 @@ export default class OrgSignUpScreen extends React.Component {
                                 onPress={() => navigate("InitSignup")}>
                                 <Image
                                     style={{
-                                        width: 25,
-                                        height: 25,
+                                        width: 30,
+                                        height: 45,
                                         resizeMode: "contain",
                                     }}
                                     source={require("../assets/images/general-logos/back-arrow.png")}
@@ -97,7 +103,7 @@ export default class OrgSignUpScreen extends React.Component {
                         <SemiBoldText
                             style={{
                                 color: "#01a7a6",
-                                fontSize: 20,
+                                fontSize: 25,
                             }}>
                             Create a new account
                         </SemiBoldText>
