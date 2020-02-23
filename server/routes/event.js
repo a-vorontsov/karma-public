@@ -5,7 +5,8 @@ const eventRepository = require("../models/eventRepository");
 const userRepository = require("../models/userRepository");
 const selectedCauseRepository = require("../models/selectedCauseRepository");
 const eventSorter = require("../sorting/event");
-
+const paginator = require("../pagination");
+// const querystring = require('querystring');
 
 router.post('/', (req, res) => {
     const address = req.body.address;
@@ -34,13 +35,15 @@ router.post('/update', (req, res) => {
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
         .catch(err => res.status(500).send(err));
 });
+
+
 /**
  * gets called when user is in tab all in activities homepage
- * url example : http://localhost:8000/event?id=1
+ * url example : http://localhost:8000/event?userId=1
  * distance in miles
  */
 router.get('/', async (req, res) => {
-    const userId = req.query.id;
+    const userId = req.query.userId;
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) return res.status(400).send("No user with specified id");
@@ -50,7 +53,7 @@ router.get('/', async (req, res) => {
             if (events.length === 0) return res.status(404).send("No events");
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).json(events);
+            res.status(200).json(paginator.getPageData(req, events));
         })
         .catch(err => res.status(500).send(err));
 });

@@ -10,6 +10,7 @@ const sortByTime = (events) => {
     });
     return events;
 };
+
 const sortByDistanceFromUser = (events, user) => {
     events.sort((event1, event2) => {
         event1.distance = distanceCalculator.getDistance(user, event1, 'M');
@@ -20,6 +21,8 @@ const sortByDistanceFromUser = (events, user) => {
     });
     return events;
 };
+
+
 const groupBy = key => array =>
     array.reduce(
         (objectsByKeyValue, obj) => ({
@@ -28,6 +31,7 @@ const groupBy = key => array =>
         }), {},
     );
 const groupByCause = groupBy('cause_name');
+
 module.exports = {
     sortByTime: sortByTime,
     sortByDistanceFromUser: sortByDistanceFromUser,
