@@ -18,6 +18,8 @@ import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
+import {TextInputMask} from "react-native-masked-text";
+
 import {
     RegularText,
     TitleText,
@@ -29,6 +31,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
+import {ThemeColors} from "react-navigation";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -48,12 +51,18 @@ export default class OrgSignUpScreen extends React.Component {
             email: "",
             password: "",
             confPassword: "",
+            hidePassword: true,
             isLowIncome: false,
             isExempt: false,
             photo: null,
             submitPressed: false,
         };
     }
+
+    onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
+    };
 
     setPhoto(selectedPhoto) {
         this.setState({
@@ -72,6 +81,34 @@ export default class OrgSignUpScreen extends React.Component {
             Alert.alert("Error", "Please upload a photo.");
         }
     }
+
+    _renderDateInput = () => {
+        return (
+            <TextInputMask
+                refInput={ref => (this.regDate = ref)}
+                placeholder="Date of registration ('D/M/Y')"
+                style={SignUpStyles.textInput}
+                type={"datetime"}
+                options={{
+                    format: "DD/MM/YYYY",
+                }}
+                value={this.state.dt}
+                onChangeText={text => {
+                    this.setState({
+                        dt: text,
+                    });
+                }}
+                onSubmitEditing={this.isValidDate}
+                ref={ref => (this.datetimeField = ref)}
+            />
+        );
+    };
+
+    isValidDate = () => {
+        const isValid = this.datetimeField.isValid();
+        const momentDate = this.datetimeField.getRawValue();
+        console.log(momentDate);
+    };
 
     render() {
         const showPasswordError =
@@ -105,8 +142,8 @@ export default class OrgSignUpScreen extends React.Component {
                                 onPress={() => navigate("InitSignup")}>
                                 <Image
                                     style={{
-                                        width: 25,
-                                        height: 25,
+                                        width: 30,
+                                        height: 45,
                                         resizeMode: "contain",
                                     }}
                                     source={require("../assets/images/general-logos/back-arrow.png")}
@@ -126,7 +163,7 @@ export default class OrgSignUpScreen extends React.Component {
                         <SemiBoldText
                             style={{
                                 color: "#01a7a6",
-                                fontSize: 20,
+                                fontSize: 25,
                             }}>
                             Create a new account
                         </SemiBoldText>
@@ -143,23 +180,78 @@ export default class OrgSignUpScreen extends React.Component {
                                 alignItems: "center",
                             }}>
                             <Dropdown
+                                label="Are you a:"
                                 containerStyle={{width: FORM_WIDTH}}
                                 baseColor={TEXT_COLOUR}
                                 textColor={TEXT_COLOUR}
+                                itemTextStyle={{fontFamily: "OpenSans-Regular"}}
                                 value={data[0].value}
                                 data={data}
+                                animationDuration={200}
                             />
-                            <TextInput placeholder="Charity or Organisation name" />
-                            <TextInput placeholder="Charity Number" />
-                            <TextInput placeholder="Email" />
-                            <TextInput placeholder="Password" />
-                            <TextInput placeholder="Confirm Password" />
+                            <TextInput
+                                placeholder="Charity or Organisation name"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() =>
+                                    this.charityNumber.focus()
+                                }
+                            />
+                            <TextInput
+                                inputRef={ref => (this.charityNumber = ref)}
+                                placeholder="Charity Number"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.email.focus()}
+                            />
+                            <TextInput
+                                inputRef={ref => (this.email = ref)}
+                                placeholder="Email"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.password.focus()}
+                            />
+                            {/** PASSWORD FIELDS */}
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                }}>
+                                <TextInput
+                                    inputRef={ref => (this.password = ref)}
+                                    placeholder="Password"
+                                    secureTextEntry={this.state.hidePassword}
+                                    onChange={this.onChangeText}
+                                    blurOnSubmit={false}
+                                    onSubmitEditing={() =>
+                                        this.confirmPassword.focus()
+                                    }
+                                />
+                                
+                                {/* <TouchableOpacity>
+                                    <Text>Show</Text>
+                                </TouchableOpacity> */}
+                            </View>
 
-                            <TextInput placeholder="Date of Registration" />
+                            <TextInput
+                                inputRef={ref => (this.confirmPassword = ref)}
+                                placeholder="Confirm Password"
+                                secureTextEntry={this.state.hidePassword}
+                                onChange={this.onChangeText}
+                                blurOnSubmit={false}
+                                onSubmitEditing={() => this.regDate.focus()}
+                            />
+
+                            {this._renderDateInput()}
+
                             {/** EXEMPTION REASONS */}
                             <View style={{width: FORM_WIDTH}}>
-                                <BoldText>Exemptions</BoldText>
-                                <Text style={(Styles.pt8, Styles.pb16)}>
+                                <BoldText style={SignUpStyles.text}>
+                                    Exemptions
+                                </BoldText>
+                                <Text
+                                    style={[
+                                        SignUpStyles.text,
+                                        Styles.pt8,
+                                        Styles.pb16,
+                                        {fontFamily: "OpenSans-Regular"},
+                                    ]}>
                                     Please select why you are not registered
                                 </Text>
                                 <View
@@ -181,10 +273,10 @@ export default class OrgSignUpScreen extends React.Component {
                                             flexShrink: 1,
                                             color: TEXT_COLOUR,
                                         }}>
-                                        <Text>
+                                        <RegularText>
                                             Your income is below £5,000 or are
                                             'excepted'
-                                        </Text>
+                                        </RegularText>
                                     </Text>
                                 </View>
                                 <View
@@ -200,17 +292,27 @@ export default class OrgSignUpScreen extends React.Component {
                                             })
                                         }
                                     />
-                                    <Text
+                                    <RegularText
                                         style={{
                                             flexShrink: 1,
                                             color: TEXT_COLOUR,
                                         }}>
                                         You are exempt from regulation by the
                                         Charity Comission
-                                    </Text>
+                                    </RegularText>
                                 </View>
                             </View>
                             {/** PHOTO UPLOAD */}
+                            <View
+                                style={{
+                                    alignItems: "flex-start",
+                                    width: FORM_WIDTH,
+                                }}>
+                                <RegularText
+                                    style={[SignUpStyles.text, {fontSize: 20}]}>
+                                    Organisation Logo
+                                </RegularText>
+                            </View>
                             <View
                                 style={{
                                     flexDirection: "row",
@@ -261,7 +363,7 @@ export default class OrgSignUpScreen extends React.Component {
 
                 <View
                     style={{
-                        height: 0.1 * SCREEN_HEIGHT,
+                        height: 0.08 * SCREEN_HEIGHT,
                         justifyContent: "flex-end",
                         alignItems: "center",
                         marginBottom: 30,
