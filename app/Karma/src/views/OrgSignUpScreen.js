@@ -41,6 +41,7 @@ const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
+        console.disableYellowBox = true;
         super(props);
 
         this.state = {
@@ -62,6 +63,7 @@ export default class OrgSignUpScreen extends React.Component {
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
+        console.log(name, text);
     };
 
     setPhoto(selectedPhoto) {
@@ -82,39 +84,62 @@ export default class OrgSignUpScreen extends React.Component {
         }
     }
 
-    _renderDateInput = () => {
-        return (
-            <TextInputMask
-                refInput={ref => (this.regDate = ref)}
-                placeholder="Date of registration ('D/M/Y')"
-                style={SignUpStyles.textInput}
-                type={"datetime"}
-                options={{
-                    format: "DD/MM/YYYY",
-                }}
-                value={this.state.dt}
-                onChangeText={text => {
-                    this.setState({
-                        dt: text,
-                    });
-                }}
-                onSubmitEditing={this.isValidDate}
-                ref={ref => (this.datetimeField = ref)}
-            />
-        );
+    getPasswordError = () => {
+        let isValid = this.isValidPassword(this.state.password);
+        let err;
+        if (isValid) {
+            if (this.state.password !== this.state.confPassword) {
+                err = "Passwords must match";
+            }
+        } else {
+            if (!this.state.password && this.state.confPassword) {
+                err = "Passwords must match";
+            } else {
+                err = "Passwords must be at least 8 chars (upper/lower/digit)";
+            }
+        }
+        return err;
+    };
+
+    submit = () => {
+        const {navigate} = this.props.navigation;
+        this.setState({submitPressed: true});
+        if (
+            !this.state.orgName ||
+            !this.state.password ||
+            !this.state.confPassword
+        ) {
+            return;
+        }
+
+        if (
+            !this.state.charityNumber &&
+            (!this.state.isExempt && !this.state.isLowIncome)
+        ) {
+            return;
+        }
+        navigate("About");
     };
 
     isValidDate = () => {
         const isValid = this.datetimeField.isValid();
-        const momentDate = this.datetimeField.getRawValue();
-        console.log(momentDate);
+        console.log(isValid, this.datetimeField.getRawValue());
+        return isValid;
     };
 
     render() {
+        const passwordError = this.getPasswordError();
+
         const showPasswordError =
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
             !this.isValidPassword();
+
+        const showDateError =
+            this.state.submitPressed &&
+            !this.isValidDate() &&
+            (!this.state.isExempt && !this.state.isLowIncome);
+
         const {navigate} = this.props.navigation;
         const data = [
             {value: "NGO (Non-Government Organisation"},
@@ -130,7 +155,7 @@ export default class OrgSignUpScreen extends React.Component {
                         alignItems: "center",
                         height: 0.1 * SCREEN_HEIGHT,
                         justifyContent: "flex-start",
-                        marginTop: hasNotch() ? 60 : StatusBar.currentHeight,
+                        marginTop: hasNotch() ? 30 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <View
@@ -195,18 +220,30 @@ export default class OrgSignUpScreen extends React.Component {
                                 onSubmitEditing={() =>
                                     this.charityNumber.focus()
                                 }
+                                name="orgName"
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.orgName
+                                        : false
+                                }
                             />
                             <TextInput
                                 inputRef={ref => (this.charityNumber = ref)}
                                 placeholder="Charity Number"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() => this.email.focus()}
+                                name="charityNumber"
+                                onSubmitEditing={() => this.password.focus()}
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.charityNumber &&
+                                          (!this.state.isExempt &&
+                                              !this.state.isLowIncome)
+                                        : false
+                                }
                             />
                             <TextInput
-                                inputRef={ref => (this.email = ref)}
-                                placeholder="Email"
-                                onChange={this.onChangeText}
-                                onSubmitEditing={() => this.password.focus()}
+                                placeholder="team-team@gmail.com"
+                                editable={false}
                             />
                             {/** PASSWORD FIELDS */}
                             <View
@@ -222,23 +259,82 @@ export default class OrgSignUpScreen extends React.Component {
                                     onSubmitEditing={() =>
                                         this.confirmPassword.focus()
                                     }
+                                    name="password"
+                                    showError={
+                                        this.state.submitPressed
+                                            ? showPasswordError
+                                            : false
+                                    }
+                                    errorText={
+                                        !this.state.password ? undefined : ""
+                                    }
                                 />
-                                
-                                {/* <TouchableOpacity>
-                                    <Text>Show</Text>
-                                </TouchableOpacity> */}
                             </View>
-
-                            <TextInput
-                                inputRef={ref => (this.confirmPassword = ref)}
-                                placeholder="Confirm Password"
-                                secureTextEntry={this.state.hidePassword}
-                                onChange={this.onChangeText}
-                                blurOnSubmit={false}
-                                onSubmitEditing={() => this.regDate.focus()}
-                            />
-
-                            {this._renderDateInput()}
+                            <View
+                                style={{
+                                    width: FORM_WIDTH,
+                                    flexDirection: "row",
+                                }}>
+                                <TextInput
+                                    inputRef={ref =>
+                                        (this.confirmPassword = ref)
+                                    }
+                                    placeholder="Confirm Password"
+                                    secureTextEntry={this.state.hidePassword}
+                                    onChange={this.onChangeText}
+                                    blurOnSubmit={false}
+                                    name="confPassword"
+                                    onSubmitEditing={() => this.regDate.focus()}
+                                    showError={
+                                        this.state.submitPressed
+                                            ? showPasswordError
+                                            : false
+                                    }
+                                    errorText={passwordError}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        position: "absolute",
+                                    }}>
+                                    <Text>why not working</Text>
+                                </TouchableOpacity>
+                                {/* <Text style={{position: "absolute"}}>
+                                    why not working
+                                </Text> */}
+                            </View>
+                            {/** DATE INPUT */}
+                            <View>
+                                <TextInputMask
+                                    refInput={ref => (this.regDate = ref)}
+                                    placeholder="Date of registration ('D/M/Y')"
+                                    style={
+                                        showDateError
+                                            ? [
+                                                  SignUpStyles.textInput,
+                                                  SignUpStyles.errorMessage,
+                                              ]
+                                            : SignUpStyles.textInput
+                                    }
+                                    type={"datetime"}
+                                    options={{
+                                        format: "DD/MM/YYYY",
+                                    }}
+                                    name="regDate"
+                                    value={this.state.regDate}
+                                    onChangeText={text => {
+                                        this.setState({
+                                            regDate: text,
+                                        });
+                                    }}
+                                    onSubmitEditing={this.isValidDate}
+                                    ref={ref => (this.datetimeField = ref)}
+                                />
+                                {showDateError ? (
+                                    <Text style={SignUpStyles.errorText}>
+                                        Please Enter a valid date
+                                    </Text>
+                                ) : null}
+                            </View>
 
                             {/** EXEMPTION REASONS */}
                             <View style={{width: FORM_WIDTH}}>
@@ -371,7 +467,7 @@ export default class OrgSignUpScreen extends React.Component {
                     <View style={{width: FORM_WIDTH}}>
                         <GradientButton
                             title="Next"
-                            onPress={() => navigate("Privacy")}
+                            onPress={() => this.submit()}
                         />
                     </View>
                 </View>
