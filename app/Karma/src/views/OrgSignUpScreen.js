@@ -37,6 +37,7 @@ const TEXT_COLOUR = "#7F7F7F";
 
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
+        console.disableYellowBox = true;
         super(props);
         this.state = {
             orgType: "",
@@ -70,7 +71,7 @@ export default class OrgSignUpScreen extends React.Component {
                         alignItems: "center",
                         height: 0.1 * SCREEN_HEIGHT,
                         justifyContent: "flex-start",
-                        marginTop: hasNotch() ? 60 : StatusBar.currentHeight,
+                        marginTop: hasNotch() ? 30 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <View

@@ -46,6 +46,13 @@ const SignUpStyles = StyleSheet.create({
     linkColour: {
         color: "#3bbfb2",
     },
+    errorMessage: {
+        borderBottomColor: "#e81f10",
+        marginBottom: 10,
+    },
+    errorText: {
+        color: "#e81f10",
+    },
 });
 
 export default SignUpStyles;
