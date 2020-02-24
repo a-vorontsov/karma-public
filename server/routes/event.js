@@ -110,6 +110,57 @@ router.post('/update/:id', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
+/**
+ * Endpoint called whenever a user requests information about an event.
+ * URL example: GET http://localhost:8000/event/5
+ * @param {Integer} id - id of requested event.
+ * @returns:
+ *  status: 200, description: Information regarding the event containing the same properties as this example:
+ {
+    "id": 7,
+    "name": "event",
+    "address_id": 24,
+    "women_only": true,
+    "spots": 3,
+    "address_visible": true,
+    "minimum_age": 16,
+    "photo_id": true,
+    "physical": true,
+    "add_info": true,
+    "content": "fun event yay",
+    "date": "2004-10-19T09:23:54.000Z",
+    "user_id": 27,
+    "address": {
+        "id": 24,
+        "address_1": "221B Baker St",
+        "address_2": "Marleybone",
+        "postcode": "NW1 6XE",
+        "city": "London",
+        "region": "Greater London",
+        "lat": "51.5237740",
+        "long": "-0.1585340"
+    }
+}
+ *  status: 500, description: DB error
+ */
+router.get("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const eventResult = await eventRepository.findById(id);
+        const event = eventResult.rows[0];
+        const addressResult = await addressRepository.findById(event.address_id);
+        const address = addressResult.rows[0];
+        res.status(200).send({
+            ...event,
+            address: address,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+});
+
 
 /**
  * endpoint called when "All" tab is pressed in Activities homepage
