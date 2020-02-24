@@ -37,10 +37,18 @@ const update = (event) => {
     return db.query(query, params);
 };
 
+const getEventsWithLocation = () => {
+    const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
+        "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
+        "from address right join event on id(address) = address_id";
+    return db.query(query);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
     update: update,
+    getEventsWithLocation: getEventsWithLocation,
     findAllByUserId: findAllByUserId,
 };
