@@ -1,8 +1,9 @@
-const userRepository = require("./userRepository");
-const individualRepository = require("./individualRepository");
-const addressRepository = require("./addressRepository");
+const userRepository = require("../models/userRepository");
+const individualRepository = require("../models/individualRepository");
+const addressRepository = require("../models/addressRepository");
 const testHelpers = require("../test/testHelpers");
-const registrationRepository = require("./registrationRepository");
+const util = require("../util/util");
+const registrationRepository = require("../models/registrationRepository");
 
 const registration = testHelpers.registration;
 const user = testHelpers.user;
@@ -20,8 +21,7 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-test('insert individual and findById individual work', async () => {
-
+test('individuals and organisations correctly identified', async () => {
     const insertRegistrationRepository = await registrationRepository.insert(registration);
     user.email = insertRegistrationRepository.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
@@ -29,6 +29,8 @@ test('insert individual and findById individual work', async () => {
     individual.address_id = insertAddressResult.rows[0].id;
     individual.user_id = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
-    const findIndividualResult = await individualRepository.findById(insertIndividualResult.rows[0].id);
-    expect(insertIndividualResult.rows[0]).toMatchObject(findIndividualResult.rows[0]);
+    const isIndividual = await util.isIndividual(individual.user_id);
+    const isOrganisation = await util.isOrganisation(individual.user_id);
+    expect(isOrganisation).toBe(false);
+    expect(isIndividual).toBe(true);
 });
