@@ -5,6 +5,7 @@ const eventRepository = require("../models/eventRepository");
 const userRepository = require("../models/userRepository");
 const util = require("../util/util");
 const selectedCauseRepository = require("../models/selectedCauseRepository");
+const individualRepository = require("../models/individualRepository");
 const eventSorter = require("../sorting/event");
 const paginator = require("../pagination");
 const eventSignupRoute = require("./eventSignup");
@@ -321,6 +322,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/causes', async (req, res) => {
     const userId = req.query.userId;
+
     if (!userId) return res.status(400).send("No user id was specified in the query");
     if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
 
@@ -335,6 +337,70 @@ router.get('/causes', async (req, res) => {
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
             res.status(200).json(eventSorter.groupByCause(events));
+        })
+        .catch(err => res.status(500).send(err));
+});
+
+/**
+ * route {GET} event/causes
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {integer} req.query.userId - ID of user logged in
+ * @returns:
+ *  status: 200, description: Array of all event objects favourited by the user
+ *  status: 400, description: if userID param is not specified or in wrong format/NaN
+ *  status: 404, description: if userID doesnt belong to any user
+ *  status: 500, description: Most probably a database error occured
+ */
+router.get('/favourites', async (req, res) => {
+    const userId = req.query.userId;
+
+    if (!userId) return res.status(400).send("No user id was specified in the query");
+    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+
+    const userResult = await userRepository.getUserLocation(userId);
+    const user = userResult.rows[0];
+    if (!user) return res.status(404).send("No user with specified id");
+
+    individualRepository.findFavouriteEvents(userId)
+        .then(result => {
+            const events = result.rows;
+            if (events.length === 0) return res.status(404).send("No events favourited by user");
+            eventSorter.sortByTime(events);
+            eventSorter.sortByDistanceFromUser(events, user);
+            res.status(200).json(events);
+        })
+        .catch(err => res.status(500).send(err));
+});
+
+/**
+ * route {GET} event/causes
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {integer} req.query.userId - ID of user logged in
+ * @returns:
+ *  status: 200, description: Array of all event objects that user is going to
+ *  status: 400, description: if userID param is not specified or in wrong format/NaN
+ *  status: 404, description: if userID doesnt belong to any user
+ *  status: 500, description: Most probably a database error occured
+ */
+router.get('/going', async (req, res) => {
+    const userId = req.query.userId;
+
+    if (!userId) return res.status(400).send("No user id was specified in the query");
+    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+
+    const userResult = await userRepository.getUserLocation(userId);
+    const user = userResult.rows[0];
+    if (!user) return res.status(404).send("No user with specified id");
+
+    individualRepository.findGoingEvents(userId)
+        .then(result => {
+            const events = result.rows;
+            if (events.length === 0) return res.status(404).send("User not going to any events");
+            eventSorter.sortByTime(events);
+            eventSorter.sortByDistanceFromUser(events, user);
+            res.status(200).json(events);
         })
         .catch(err => res.status(500).send(err));
 });
