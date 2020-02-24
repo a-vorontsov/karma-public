@@ -162,12 +162,14 @@ class AboutScreen extends React.Component {
                             </View>
 
                             <SubTitleText>When is your birthday?</SubTitleText>
-                            <DatePicker
-                                fadeToColor="none"
-                                mode="date"
-                                date={this.state.date}
-                                onDateChange={date => this.setDate(date)}
-                            />
+                            <View style={{alignItems: "center"}}>
+                                <DatePicker
+                                    fadeToColor="none"
+                                    mode="date"
+                                    date={this.state.date}
+                                    onDateChange={date => this.setDate(date)}
+                                />
+                            </View>
 
                             <SubTitleText>Choose your gender</SubTitleText>
                             <RadioInput
