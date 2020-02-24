@@ -6,7 +6,7 @@ import PhotoUpload from 'react-native-photo-upload';
 import Styles from "../styles/Styles";
 import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";
 import Carousel, {Pagination} from "react-native-snap-carousel";
-import {ActivityCard} from "../components/ActivityCard";
+import ActivityCard from "../components/ActivityCard";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 
@@ -35,7 +35,7 @@ class ProfileScreen extends Component {
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer}>
-                <View style={CarouselStyles.item, CarouselStyles.shadow}>
+                <View style={[CarouselStyles.item, CarouselStyles.shadow]}>
                     <ActivityCard individual={item.individual} />
                 </View>
             </View>
@@ -56,7 +56,7 @@ class ProfileScreen extends Component {
                     flexDirection: "row"
                 }}/>
             <SafeAreaView>
-            <View style={{flex: 1, backgroundColor: '#00A8A6', alignItems: "", justifyContent: "space-evenly", paddingLeft: 30, flexDirection: "row"}}>
+            <View style={{flex: 1, backgroundColor: '#00A8A6', justifyContent: "space-between", position: "absolute", left:0, top: 0,flexDirection: "row-reverse"}}>
                     <Image source={icons.cog} style={{ height: 25, width: 25, paddingRight: 10}}></Image>
                     <Image source={icons.edit_white} style={{ height: 25, width: 25}}></Image>
             </View>
@@ -121,7 +121,10 @@ class ProfileScreen extends Component {
                 <GradientButton title='Create Activity' width={350}></GradientButton>
                 </View>
                 <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
-                    <RegularText style={styles.bioHeader}>Activity</RegularText>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "space-evenly"}}>
+                        <RegularText style={styles.bioHeader}>Activity</RegularText>
+                        <Image source={icons.edit_grey} style={{ height: 25, width: 25}}></Image>
+                    </View>
                     <View style={{ flex: 1, flexDirection: "row"}}>
                         <RegularText style={styles.contentText}>Availability:</RegularText>
                         <RegularText style={styles.answerText}>DATES</RegularText>
@@ -141,7 +144,7 @@ class ProfileScreen extends Component {
                     <RegularText style={styles.bioHeader}>Causes</RegularText>
                 </View>
             </View>
-            <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
+            <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start"}}>
             <RegularText style={styles.bioHeader}>Upcoming Events</RegularText>
                 <View>
                     <Carousel
@@ -160,27 +163,6 @@ class ProfileScreen extends Component {
                             this.setState({activeSlide: index})
                         }
                     />
-                    <Pagination
-                        dotsLength={carouselEntries.length}
-                        containerStyle={Styles.pv8}
-                        activeDotIndex={this.state.activeSlide}
-                        dotStyle={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 10,
-                            backgroundColor: "#01a7a6",
-                        }}
-                        inactiveDotStyle={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 10,
-                            borderColor: "#01a7a6",
-                            borderWidth: 2,
-                            backgroundColor: "rgba(0, 0, 0, 0)",
-                        }}
-                        inactiveDotOpacity={1}
-                        inactiveDotScale={0.8}
-                    />
                 </View>
             </View>
             </SafeAreaView>
@@ -191,6 +173,9 @@ class ProfileScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    topicHeaderContainer: {
+
+    },
     nameText: {
         fontSize: 30,
         color: 'white',
