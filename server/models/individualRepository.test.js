@@ -21,7 +21,6 @@ afterEach(() => {
 });
 
 test('insert individual and findById individual work', async () => {
-
     const insertRegistrationRepository = await registrationRepository.insert(registration);
     user.email = insertRegistrationRepository.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
