@@ -1,16 +1,45 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, BackHandler,} from "react-native";
-// import { ScrollView } from "react-native-gesture-handler";
 import { RegularText, TitleText, SemiBoldText, LogoText } from "../components/text";
 import { GradientButton } from "../components/buttons";
 import PhotoUpload from 'react-native-photo-upload';
+import Styles from "../styles/Styles";
+import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";
+import Carousel, {Pagination} from "react-native-snap-carousel";
+import {ActivityCard} from "../components/ActivityCard";
+
+const carouselEntries = [{individual: true}, {individual: false}];
 
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
+const icons = {
+    cog: require("../assets/images/general-logos/cog.png"),
+    badge: require("../assets/images/general-logos/badges-logo.png"),
+    edit_white: require("../assets/images/general-logos/edit-white.png"),
+    edit_grey: require("../assets/images/general-logos/edit-grey.png"),
+    photo_add: require('../assets/images/general-logos/photo-plus-background.png')
+}
 
 class ProfileScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeSlide: 0,
+        };
+    }
+
     static navigationOptions = {
         headerShown: false,
+    };
+
+    _renderItem = ({item}) => {
+        return (
+            <View style={CarouselStyles.itemContainer}>
+                <View style={CarouselStyles.item, CarouselStyles.shadow}>
+                    <ActivityCard individual={item.individual} />
+                </View>
+            </View>
+        );
     };
 
     render() {
@@ -22,10 +51,24 @@ class ProfileScreen extends Component {
                 style={{
                     flex: 1,
                     backgroundColor: '#00A8A6',
-                    height: 260,
+                    height: 45,
+                    width: width,
+                    flexDirection: "row"
+                }}/>
+            <SafeAreaView>
+            <View style={{flex: 1, backgroundColor: '#00A8A6', alignItems: "", justifyContent: "space-evenly", paddingLeft: 30, flexDirection: "row"}}>
+                    <Image source={icons.cog} style={{ height: 25, width: 25, paddingRight: 10}}></Image>
+                    <Image source={icons.edit_white} style={{ height: 25, width: 25}}></Image>
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: '#00A8A6',
+                    height: 180,
                     width: width,
                     alignItems: "center",
-                    justifyContent: "space-evenly",
+                    justifyContent: "space-between",
+                    paddingRight: 30,
                     flexDirection: "row"
                 }}>
                 <PhotoUpload
@@ -39,12 +82,12 @@ class ProfileScreen extends Component {
                     <Image
                         style={{
                         paddingVertical: 5,
-                        width: 130,
-                        height: 130,
+                        width: 140,
+                        height: 140,
                         borderRadius: 75,
                         }}
                         resizeMode='cover'
-                        source={require('../assets/images/general-logos/photo-plus-background.png')}
+                        source={icons.photo_add}
                     />
                  </PhotoUpload>
                 <View>
@@ -56,24 +99,91 @@ class ProfileScreen extends Component {
                         <Text style={styles.usernameText}>Username</Text>
                         <Text style={styles.locationText}>Location</Text>
                     </View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            paddingTop:20, 
+                            justifyContent: 'space-between'
+                        }}>
+                        <Image source={icons.badge} style={{height: 60, width: 60}}></Image>
+                        <Image source={icons.edit_white} style={{ height: 20, width: 20}}></Image>
+                    </View>
                 </View>
             </View>
-            <View
+            <View 
                 style={{
                     flex: 5,
                     backgroundColor:"white",
-                    paddingVertical: 25
+                    paddingVertical: 25,
                 }}>
                 <View style={{alignItems: "center",
                     justifyContent: "center",}}>
                 <GradientButton title='Create Activity' width={350}></GradientButton>
                 </View>
-                <View style={{flex:1, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
-                    <RegularText>Activity</RegularText>
-                    <RegularText>Bio</RegularText>
-                    <RegularText>Causes</RegularText>
+                <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
+                    <RegularText style={styles.bioHeader}>Activity</RegularText>
+                    <View style={{ flex: 1, flexDirection: "row"}}>
+                        <RegularText style={styles.contentText}>Availability:</RegularText>
+                        <RegularText style={styles.answerText}>DATES</RegularText>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: "row"}}>
+                        <RegularText style={styles.contentText}>Activity Date:</RegularText>
+                        <RegularText style={styles.answerText}>DATES</RegularText>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: "row"}}>
+                        <RegularText style={styles.contentText}>Women Only:</RegularText>
+                        <RegularText style={styles.answerText}>HECK YES</RegularText>
+                    </View>
+                    <RegularText style={styles.bioHeader}>Bio</RegularText>
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", paddingRight: 40}}>
+                    <RegularText style={styles.contentText}>o eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga</RegularText>
+                    </View>
+                    <RegularText style={styles.bioHeader}>Causes</RegularText>
                 </View>
             </View>
+            <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
+            <RegularText style={styles.bioHeader}>Upcoming Events</RegularText>
+                <View>
+                    <Carousel
+                        ref={c => {
+                            this._carousel = c;
+                        }}
+                        data={carouselEntries}
+                        removeClippedSubviews={false}
+                        renderItem={this._renderItem}
+                        sliderWidth={sliderWidth}
+                        itemWidth={itemWidth}
+                        inactiveSlideOpacity={1}
+                        inactiveSlideScale={1}
+                        containerCustomStyle={CarouselStyles.slider}
+                        onSnapToItem={index =>
+                            this.setState({activeSlide: index})
+                        }
+                    />
+                    <Pagination
+                        dotsLength={carouselEntries.length}
+                        containerStyle={Styles.pv8}
+                        activeDotIndex={this.state.activeSlide}
+                        dotStyle={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                            backgroundColor: "#01a7a6",
+                        }}
+                        inactiveDotStyle={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                            borderColor: "#01a7a6",
+                            borderWidth: 2,
+                            backgroundColor: "rgba(0, 0, 0, 0)",
+                        }}
+                        inactiveDotOpacity={1}
+                        inactiveDotScale={0.8}
+                    />
+                </View>
+            </View>
+            </SafeAreaView>
             </ScrollView>
             </KeyboardAvoidingView>
         );
@@ -94,6 +204,23 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#75C4C3',
         paddingLeft: 10
+    },
+    bioHeader: {
+        paddingTop: 25,
+        fontSize: 20,
+        color: 'black',
+        fontWeight: '500',
+    },
+    contentText: {
+        fontSize: 15,
+        color: 'black',
+        paddingVertical: 5
+    },
+    answerText: {
+        fontSize: 15,
+        color: '#00A8A6',
+        paddingVertical: 5,
+        paddingLeft: 5
     }
 
 })
