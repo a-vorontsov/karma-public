@@ -39,7 +39,9 @@ app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
 app.use("/users", require("./routes/users"));
-app.use("/events", require("./routes/event/event"));
+app.use("/user", require("./routes/user"));
+app.use("/causes", require("./routes/causes"));
+app.use("/event", require("./routes/event/event"));
 app.use("/profile/edit/password", require("./routes/profile/edit/change-password"));
 app.use("/bugreport", require("./routes/bugreport"));
 // import OAuth routes if applicable
