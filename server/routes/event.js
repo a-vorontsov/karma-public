@@ -3,32 +3,107 @@ const router = express.Router();
 const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
 const userRepository = require("../models/userRepository");
+const util = require("../util/util");
 const selectedCauseRepository = require("../models/selectedCauseRepository");
 const eventSorter = require("../sorting/event");
 const paginator = require("../pagination");
 
-router.post('/', (req, res) => {
-    const address = req.body.address;
-    let eventPromise;
-    if (!req.body.address_id) { // address doesn't exist in database yet
-        eventPromise = addressRepository.insert(address)
-            .then(addressResult => {
-                const event = {
-                    ...req.body,
-                    address_id: addressResult.rows[0].id,
-                };
-                return eventRepository.insert(event);
-            });
-    } else {
-        eventPromise = eventRepository.insert(req.body);
+/**
+ * Endpoint called whenever a user creates a new event.
+ * If an existing address_id is specified in the request, it is reused and no new address is created.
+ * URL example: POST http://localhost:8000/event/
+ * @param {Event} req.body - Information regarding the event containing the same properties as this example:
+ {
+        "address": {
+            "address_1": "Line 1",
+            "address_2": "Line 2",
+            "postcode": "14 aa",
+            "city": "LDN",
+            "region": "LDN again",
+            "lat": "0.3",
+            "long": "100.50"
+        },
+        "name": "event",
+        "women_only": "true",
+        "spots": "3",
+        "address_visible": "true",
+        "minimum_age": "16",
+        "photo_id": "true",
+        "physical": "true",
+        "add_info": "true",
+        "content": "fun event yay",
+        "date": "2004-10-19",
+        "time": "10:23:54",
+        "user_id": "3"
+     }
+ * "address" can be substituted with "address_id: {Integer}" in which case the existing address is reused.
+ * @returns:
+ *  status: 200, description: The event object created with it's id and address_id set to the ones stored in the database
+ *  status: 400, description: User has reached their monthly event creation limit.
+ *  status: 500, description: DB error
+ */
+router.post('/', async (req, res) => {
+    try {
+        const event = req.body;
+        const isIndividual = await util.isIndividual(event.user_id);
+        if (isIndividual) {
+            const existingUserEvents = await eventRepository.findAllByUserId(event.user_id);
+            if (existingUserEvents.rows.length >= 3) {
+                return res.status(400).send("Event creation limit reached; user has already created 3 events this month.");
+            }
+        }
+
+        if (!req.body.address_id) { // address doesn't exist in database yet
+            const addressResult = await addressRepository.insert(event.address);
+            event.address_id = addressResult.rows[0].id;
+        }
+
+        const eventResult = await eventRepository.insert(event);
+        res.status(200).send(eventResult.rows[0]);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
     }
-    eventPromise.then(eventResult => res.status(200).send(eventResult.rows[0]))
-        .catch(err => res.status(500).send(err));
 });
 
-router.post('/update', (req, res) => {
+/**
+ * Endpoint called whenever a user updates an event.
+ * URL example: POST http://localhost:8000/event/update/5
+ * @param {Event} req.body - Information regarding the event containing the same properties as this example:
+ {
+        "address": {
+            "id": "5",
+            "address_1": "Line 1",
+            "address_2": "Line 2",
+            "postcode": "14 aa",
+            "city": "LDN",
+            "region": "LDN again",
+            "lat": "0.3",
+            "long": "100.50"
+        },
+        "name": "event",
+        "women_only": "true",
+        "spots": "3",
+        "address_visible": "true",
+        "minimum_age": "16",
+        "photo_id": "true",
+        "physical": "true",
+        "add_info": "true",
+        "content": "fun event yay",
+        "date": "2004-10-19",
+        "time": "10:23:54",
+        "user_id": "3"
+     }
+ * Note that address must have an id.
+ * @returns:
+ *  status: 200, description: The event object updated event object.
+ *  status: 500, description: DB error
+ */
+router.post('/update/:id', (req, res) => {
     const address = req.body.address;
     const event = req.body;
+    event.address_id = address.id;
+    event.id = req.params.id;
     addressRepository.update(address)
         .then(addressResult => eventRepository.update(event))
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
