@@ -7,7 +7,7 @@ const insert = (individual) => {
         "RETURNING *"; // returns passed user with it's id set to corresponding id in database
     const params = [individual.firstname, individual.lastname, individual.phone,
         individual.banned, individual.user_id, individual.picture_id,
-        individual.address_id, individual.birthday, individual.gender
+        individual.address_id, individual.birthday, individual.gender,
     ];
     return db.query(query, params);
 };
