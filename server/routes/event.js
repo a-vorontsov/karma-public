@@ -4,6 +4,7 @@ const addressRepository = require("../models/addressRepository");
 const eventRepository = require("../models/eventRepository");
 const util = require("../util/util");
 const selectedCauseRepository = require("../models/selectedCauseRepository");
+const eventSignupRoute = require("./eventSignup");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -182,5 +183,6 @@ router.get('/causes', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
+router.use("/", eventSignupRoute);
 
 module.exports = router;
