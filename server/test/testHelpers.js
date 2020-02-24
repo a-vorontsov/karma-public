@@ -117,12 +117,20 @@ const cause = {
     name: "cause1",
     description: "description of cause1",
 };
+
+const signUp = {
+    individual_id: -1,
+    event_id: -1,
+    confirmed: true,
+};
+
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
 
 const clearDatabase = async () => {
     await db.query("DELETE FROM profile");
+    await db.query("DELETE FROM sign_up");
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
@@ -146,6 +154,7 @@ module.exports = {
     individual: individual,
     profile: profile,
     organisation: organisation,
+    signUp: signUp,
     clearDatabase: clearDatabase,
     clearCauses: clearCauses,
 };

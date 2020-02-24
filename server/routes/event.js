@@ -8,6 +8,7 @@ const selectedCauseRepository = require("../models/selectedCauseRepository");
 const individualRepository = require("../models/individualRepository");
 const eventSorter = require("../sorting/event");
 const paginator = require("../pagination");
+const eventSignupRoute = require("./eventSignup");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -161,7 +162,6 @@ router.get("/:id", async (req, res) => {
         res.status(500).send(e);
     }
 });
-
 
 /**
  * endpoint called when "All" tab is pressed in Activities homepage
@@ -404,5 +404,7 @@ router.get('/going', async (req, res) => {
         })
         .catch(err => res.status(500).send(err));
 });
+
+router.use("/", eventSignupRoute);
 
 module.exports = router;
