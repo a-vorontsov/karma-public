@@ -1,7 +1,8 @@
 import React from "react";
 import {View, TouchableOpacity, Image} from "react-native";
 import {RegularText} from "../components/text";
-import {useNavigation} from "react-navigation-hooks";
+import { useNavigation } from "react-navigation-hooks";
+import Colours from "../styles/Colours";
 
 const PageHeader = props => {
     const navigation = useNavigation();
@@ -25,7 +26,7 @@ const PageHeader = props => {
                     style={{
                         fontSize: 24,
                         fontWeight: "600",
-                        color: "#3E3E3E",
+                        color: Colours.darkGrey,
                         paddingLeft: 16,
                     }}>
                     {title}

@@ -4,7 +4,8 @@ import {RegularText, LogoText} from "../components/text";
 import {TransparentButton, TextButton} from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";
 import Styles from "../styles/Styles";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {
     static navigationOptions = {headerShown: false};
@@ -12,14 +13,14 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor("#f8f8f8");
+            StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
         return (
             <LinearGradient
                 useAngle={true}
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
-                colors={["#01a7a6", "#00c5c4"]}
+                colors={[Colours.blue, Colours.lightBlue]}
                 style={Styles.alignJustifyCenterContainer}>
                 <SafeAreaView style={Styles.stretchContainer}>
                     <View style={[Styles.vcenter, Styles.textCenter]}>
@@ -44,7 +45,7 @@ class WelcomeScreen extends Component {
                     <View style={Styles.bottom}>
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
-                                onPress={() => navigate("InitSignup")}
+                                onPress={() => navigate("About")}
                                 white
                                 title="Sign Up"
                             />

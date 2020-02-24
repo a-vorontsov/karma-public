@@ -1,4 +1,5 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
+import Colours from "./Colours";
 
 const RadioButtonStyles = StyleSheet.create({
     container: {
@@ -13,7 +14,7 @@ const RadioButtonStyles = StyleSheet.create({
         width: 150,
         backgroundColor: "transparent",
         borderWidth: 2,
-        borderColor: "#D3D3D3",
+        borderColor: Colours.lightGrey,
         marginRight: 16,
         marginTop: 8,
         marginBottom: 8,
@@ -23,9 +24,9 @@ const RadioButtonStyles = StyleSheet.create({
         justifyContent: "center",
     },
     buttonSelected: {
-        backgroundColor: "#01a7a6",
+        backgroundColor: Colours.blue,
         borderWidth: 2,
-        borderColor: "#01a7a6",
+        borderColor: Colours.blue,
     },
     buttonText: {
         fontSize: 16,

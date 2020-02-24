@@ -6,6 +6,7 @@ import {
     PixelRatio,
 } from "react-native";
 import {hasNotch} from "react-native-device-info";
+import Colours from "./Colours";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 
@@ -124,16 +125,16 @@ const Styles = StyleSheet.create({
         padding: 12,
         alignItems: "center",
         borderRadius: 32,
-        backgroundColor: "#01a7a6",
+        backgroundColor: Colours.blue,
     },
     roundButtonTransparent: {
-        borderColor: "#01a7a6",
+        borderColor: Colours.blue,
         borderWidth: 2,
         backgroundColor: "transparent",
         padding: 10,
     },
     roundButtonTransparentWhite: {
-        borderColor: "#ffffff",
+        borderColor: Colours.white,
         borderWidth: 2,
         backgroundColor: "transparent",
         padding: 10,
@@ -142,39 +143,39 @@ const Styles = StyleSheet.create({
         fontSize: 20,
     },
     green: {
-        color: "#01a7a6",
+        color: Colours.blue,
     },
     cyan: {
-        color: "#3bbfb2",
+        color: Colours.cyan,
     },
     link: {
-        color: "#3bbfb2",
+        color: Colours.blue,
         textDecorationLine: "underline",
     },
     white: {
-        color: "#ffffff",
+        color: Colours.white,
     },
     grey: {
-        color: "#7f7f7f",
+        color: Colours.grey,
     },
     error: {
-        color: "#e81f10",
+        color: Colours.red,
     },
     textInput: {
         alignSelf: "stretch",
         height: 45,
         borderColor: "transparent",
-        borderBottomColor: "#d3d3d3",
+        borderBottomColor: Colours.lightGrey,
         borderWidth: 1.5,
         marginTop: 5,
         marginBottom: 20,
         fontSize: 20,
         lineHeight: 20,
-        color: "#7f7f7f",
+        color: Colours.grey,
         fontFamily: "OpenSans-Regular",
     },
     textInputError: {
-        borderBottomColor: "#e81f10",
+        borderBottomColor: Colours.red,
         marginBottom: 10,
     },
     textInputMiscText: {
@@ -183,7 +184,7 @@ const Styles = StyleSheet.create({
         top: 16,
     },
     bgWhite: {
-        backgroundColor: "#ffffff",
+        backgroundColor: Colours.white,
     },
     bottom: {
         flex: 1,

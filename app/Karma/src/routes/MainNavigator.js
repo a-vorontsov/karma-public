@@ -1,4 +1,5 @@
-import {createStackNavigator} from "react-navigation-stack";
+import { createStackNavigator } from "react-navigation-stack";
+import Colours from "../styles/Colours";
 
 import WelcomeScreen from "../views/WelcomeScreen";
 import InitSignUpScreen from "../views/InitSignupScreen";
@@ -28,7 +29,7 @@ const MainNavigator = createStackNavigator(
         headerMode: "none",
         defaultNavigationOptions: {
             cardStyle: {
-                backgroundColor: "#f8f8f8",
+                backgroundColor: Colours.backgroundWhite,
             },
         },
     },

@@ -15,6 +15,7 @@ import {
 
 import Styles from "../styles/Styles";
 import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";
+import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 
@@ -72,13 +73,13 @@ export default class InitSignupScreen extends React.Component {
                             width: 20,
                             height: 20,
                             borderRadius: 10,
-                            backgroundColor: "#01a7a6",
+                            backgroundColor: Colours.blue,
                         }}
                         inactiveDotStyle={{
                             width: 20,
                             height: 20,
                             borderRadius: 10,
-                            borderColor: "#01a7a6",
+                            borderColor: Colours.blue,
                             borderWidth: 2,
                             backgroundColor: "rgba(0, 0, 0, 0)",
                         }}

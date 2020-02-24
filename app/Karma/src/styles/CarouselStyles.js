@@ -1,4 +1,6 @@
-import {StyleSheet, Dimensions} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+import Colours from "../styles/Colours";
 
 const {width: viewportWidth} = Dimensions.get("window");
 
@@ -33,12 +35,12 @@ const CarouselStyles = StyleSheet.create({
         left: 8,
         borderRadius: 6,
         borderBottomWidth: 16,
-        borderBottomColor: "#00bab9",
+        borderBottomColor: Colours.blue,
         paddingTop: 16,
         overflow: "visible",
     },
     shadow: {
-        shadowColor: "#000",
+        shadowColor: Colours.black,
         shadowOffset: {
             width: 0,
             height: 2,

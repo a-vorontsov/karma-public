@@ -4,7 +4,8 @@ import {TouchableOpacity} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import Styles from "../../styles/Styles";
-import {RegularText} from "../text";
+import { RegularText } from "../text";
+import Colours from "../../styles/Colours";
 
 export default class GradientButton extends React.Component {
     render() {
@@ -14,7 +15,7 @@ export default class GradientButton extends React.Component {
                 <LinearGradient
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 0}}
-                    colors={["#01a7a6", "#00c5c4"]}
+                    colors={[Colours.blue, Colours.lightBlue]}
                     style={Styles.roundButton}>
                     <RegularText
                         style={{

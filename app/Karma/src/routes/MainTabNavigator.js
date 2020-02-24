@@ -1,7 +1,9 @@
 import React from "react";
 import {Image} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
-import {createStackNavigator} from "react-navigation-stack";
+import { createStackNavigator } from "react-navigation-stack";
+import Colours from "../styles/Colours";
+
 import ActivitiesScreen from "../views/ActivitiesScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
@@ -17,7 +19,7 @@ const ProfileNavigator = createStackNavigator(
         headerMode: "none",
         defaultNavigationOptions: {
             cardStyle: {
-                backgroundColor: "#f8f8f8",
+                backgroundColor: Colours.backgroundWhite,
             },
         },
     },
@@ -102,8 +104,8 @@ const MainTabNavigator = createBottomTabNavigator(
         tabBarOptions: {
             showLabel: true,
             allowFontScaling: false,
-            inactiveTintColor: "#00A58B",
-            activeTintColor: "#01a7a6",
+            inactiveTintColor: Colours.green,
+            activeTintColor: Colours.blue,
             labelStyle: {
                 fontSize: 15,
                 fontWeight: "500",

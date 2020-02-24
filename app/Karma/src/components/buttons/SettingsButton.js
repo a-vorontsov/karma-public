@@ -2,7 +2,9 @@ import React from "react";
 
 import {Image, TouchableOpacity, View} from "react-native";
 
-import {RegularText} from "../text";
+import { RegularText } from "../text";
+
+import Colours from "../../styles/Colours";
 
 export default class SettingsButton extends React.Component {
     render() {
@@ -10,7 +12,7 @@ export default class SettingsButton extends React.Component {
         return (
             <TouchableOpacity
                 style={{
-                    borderBottomColor: "#e5e5e5",
+                    borderBottomColor: Colours.lighterGrey,
                     borderBottomWidth: 2,
                     flexDirection: "row",
                     alignItems: "center",

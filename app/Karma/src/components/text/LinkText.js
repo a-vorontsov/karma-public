@@ -1,5 +1,6 @@
 import React from "react";
-import {Text, StyleSheet} from "react-native";
+import { Text, StyleSheet } from "react-native";
+import Colours from "../../styles/Colours";
 
 export default class LinkText extends React.Component {
     render() {
@@ -16,7 +17,7 @@ export default class LinkText extends React.Component {
 const styles = StyleSheet.create({
     text: {
         fontFamily: "OpenSans-Regular",
-        color: "#3bbfb2",
+        color: Colours.blue,
         textDecorationLine: "underline",
     },
 });

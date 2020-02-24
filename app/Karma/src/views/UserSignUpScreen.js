@@ -13,7 +13,8 @@ import {ScrollView} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import {RegularText} from "../components/text";
+import { RegularText } from "../components/text";
+import Colours from "../styles/Colours";
 
 import Styles from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -79,9 +80,9 @@ class SignUpScreen extends React.Component {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={Styles.fullMinHeight}>
                             <PageHeader title="Sign Up" />
-                            <RegularText style={styles.subheaderText}>
+                            <SubTitleText style={{fontSize: normalise(26)}}>
                                 Create a new account
-                            </RegularText>
+                            </SubTitleText>
 
                             {/** form content **/}
                             <View style={Styles.bottom}>
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
         paddingTop: 20,
         paddingBottom: 25,
-        color: "#3bbfb2",
+        color: Colours.blue,
     },
     checkBox: {
         paddingRight: 16,

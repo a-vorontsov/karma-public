@@ -17,7 +17,8 @@ import {RadioInput} from "../components/radio";
 
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import Styles, {normalise} from "../styles/Styles";
+import Styles, { normalise } from "../styles/Styles";
+import Colours from "../styles/Colours";
 
 class AboutScreen extends React.Component {
     constructor(props) {
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
         width: 200,
         backgroundColor: "transparent",
         borderWidth: 2,
-        borderColor: "#D3D3D3",
+        borderColor: Colours.lightGrey,
         borderRadius: 30,
         flexDirection: "row",
         alignItems: "center",
