@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Platform,
 } from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
 import PhotoUpload from "react-native-photo-upload";
@@ -105,80 +106,86 @@ class AboutScreen extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView
-                style={[Styles.container, Styles.ph24]}
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
-                enabled>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        <PageHeader title="About" />
-                        <SubTitleText style={{fontSize: normalise(26)}}>
-                            Tell us about yourself
-                        </SubTitleText>
-                        <RegularText style={Styles.pb8}>
-                            Charities need to know this information about
-                            volunteers.
-                        </RegularText>
-                    </View>
+            <SafeAreaView style={Styles.container}>
+                <KeyboardAvoidingView
+                    style={Styles.ph24}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                    enabled>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={Styles.fullMinHeight}>
+                            <View>
+                                <PageHeader title="About" />
+                                <SubTitleText style={{fontSize: normalise(26)}}>
+                                    Tell us about yourself
+                                </SubTitleText>
+                                <RegularText style={Styles.pb8}>
+                                    Charities need to know this information
+                                    about volunteers.
+                                </RegularText>
+                            </View>
 
-                    <View style={styles.header}>
-                        <PhotoUpload
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    console.log(
-                                        "Image base64 string: ",
-                                        avatar,
-                                    );
-                                    this.setPhoto(avatar);
-                                }
-                            }}>
-                            <Image
-                                style={{
-                                    paddingVertical: 8,
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: 75,
-                                }}
-                                resizeMode="cover"
-                                source={require("../assets/images/general-logos/photo-logo.png")}
+                            <View style={styles.header}>
+                                <PhotoUpload
+                                    onPhotoSelect={avatar => {
+                                        if (avatar) {
+                                            console.log(
+                                                "Image base64 string: ",
+                                                avatar,
+                                            );
+                                            this.setPhoto(avatar);
+                                        }
+                                    }}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 8,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={require("../assets/images/general-logos/photo-logo.png")}
+                                    />
+                                </PhotoUpload>
+                                <TouchableOpacity
+                                    style={styles.uploadButton}
+                                    onPress={() =>
+                                        this.uploadPhoto(this.state.photo)
+                                    }>
+                                    <RegularText
+                                        style={
+                                            (styles.buttonText,
+                                            {fontSize: 20, color: "gray"})
+                                        }>
+                                        Upload Photo
+                                    </RegularText>
+                                </TouchableOpacity>
+                            </View>
+
+                            <SubTitleText>When is your birthday?</SubTitleText>
+                            <DatePicker
+                                fadeToColor="none"
+                                mode="date"
+                                date={this.state.date}
+                                onDateChange={date => this.setDate(date)}
                             />
-                        </PhotoUpload>
-                        <TouchableOpacity
-                            style={styles.uploadButton}
-                            onPress={() => this.uploadPhoto(this.state.photo)}>
-                            <RegularText
-                                style={
-                                    (styles.buttonText,
-                                    {fontSize: 20, color: "gray"})
-                                }>
-                                Upload Photo
-                            </RegularText>
-                        </TouchableOpacity>
-                    </View>
 
-                    <SubTitleText>When is your birthday?</SubTitleText>
-                    <DatePicker
-                        fadeToColor="none"
-                        mode="date"
-                        date={this.state.date}
-                        onDateChange={date => this.setDate(date)}
-                    />
-
-                    <SubTitleText>Choose your gender</SubTitleText>
-                    <RadioInput
-                        values={[
-                            {value: "male", title: "Male"},
-                            {value: "female", title: "Female"},
-                            {value: "non-binary", title: "Non-Binary"},
-                        ]}
-                        onValue={value => this.setGender(value)}
-                    />
-                    <GradientButton
-                        onPress={() => this.goToNext()}
-                        title="Next"
-                    />
-                </ScrollView>
-            </KeyboardAvoidingView>
+                            <SubTitleText>Choose your gender</SubTitleText>
+                            <RadioInput
+                                values={[
+                                    {value: "male", title: "Male"},
+                                    {value: "female", title: "Female"},
+                                    {value: "non-binary", title: "Non-Binary"},
+                                ]}
+                                onValue={value => this.setGender(value)}
+                            />
+                            <GradientButton
+                                onPress={() => this.goToNext()}
+                                title="Next"
+                            />
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 }

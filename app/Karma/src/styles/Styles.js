@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import {hasNotch} from "react-native-device-info";
 
-const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 
 // based on iphone 5s's scale
 const scale = SCREEN_WIDTH / 375;
@@ -47,6 +47,9 @@ const Styles = StyleSheet.create({
     stretchContainer: {
         flex: 1,
         alignSelf: "stretch",
+    },
+    fullMinHeight: {
+        minHeight: SCREEN_HEIGHT,
     },
     p8: {
         padding: 8,

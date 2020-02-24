@@ -5,7 +5,9 @@ import RegularText from "./RegularText";
 export default class TitleText extends React.Component {
     render() {
         return (
-            <RegularText style={[styles.title, this.props.style]}>
+            <RegularText
+                style={[styles.title, this.props.style]}
+                onPress={this.props.onPress}>
                 {this.props.children}
             </RegularText>
         );

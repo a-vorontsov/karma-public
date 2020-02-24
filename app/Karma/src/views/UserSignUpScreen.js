@@ -16,6 +16,7 @@ import {GradientButton} from "../components/buttons";
 import {RegularText} from "../components/text";
 
 import Styles from "../styles/Styles";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
@@ -70,202 +71,219 @@ class SignUpScreen extends React.Component {
             !this.isValidPassword();
         const {navigate} = this.props.navigation;
         return (
-            <KeyboardAvoidingView
-                style={[Styles.container, Styles.ph24]}
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
-                enabled>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        <PageHeader title="Sign Up" />
-                        <RegularText style={styles.subheaderText}>
-                            Create a new account
-                        </RegularText>
+            <SafeAreaView style={Styles.container}>
+                <KeyboardAvoidingView
+                    style={Styles.ph24}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                    enabled>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={Styles.fullMinHeight}>
+                            <PageHeader title="Sign Up" />
+                            <RegularText style={styles.subheaderText}>
+                                Create a new account
+                            </RegularText>
 
-                        {/** form content **/}
-                        <View style={Styles.bottom}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="First Name"
-                                name="fname"
-                                onChange={this.onChangeText}
-                                onSubmitEditing={() => this.lname.focus()}
-                                showError={
-                                    this.state.firstOpen
-                                        ? false
-                                        : !this.state.fname
-                                }
-                            />
-
-                            <TextInput
-                                inputRef={ref => (this.lname = ref)}
-                                placeholder="Last Name"
-                                name="lname"
-                                onChange={this.onChangeText}
-                                onSubmitEditing={() => this.username.focus()}
-                                showError={
-                                    this.state.firstOpen
-                                        ? false
-                                        : !this.state.lname
-                                }
-                            />
-
-                            <View>
-                                <TextInput
-                                    placeholder={this.state.email}
-                                    autoCapitalize="none"
-                                    name="email"
-                                    onChange={this.onChangeText}
-                                    showError={false}
-                                    editable={false}
-                                />
-                                <RegularText style={Styles.textInputMiscText}>
-                                    ✔️
-                                </RegularText>
-                            </View>
-
-                            <TextInput
-                                inputRef={ref => (this.username = ref)}
-                                placeholder="Choose a username"
-                                autoCapitalize="none"
-                                onChange={this.onChangeText}
-                                name="username"
-                                onSubmitEditing={() => this.password.focus()}
-                                showError={
-                                    this.state.firstOpen
-                                        ? false
-                                        : !this.state.username
-                                }
-                            />
-                            {/**
-                             *  -- Password fields --
-                             */}
-                            <View>
-                                <TextInput
-                                    placeholder="Password"
-                                    autoCapitalize="none"
-                                    name="password"
-                                    secureTextEntry={this.state.hidePassword}
-                                    blurOnSubmit={false}
-                                    onChange={this.onChangeText}
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.password ||
-                                              this.state.password !==
-                                                  this.state.confPassword
-                                    }
-                                    errorText={
-                                        this.state.password !==
-                                        this.state.confPassword
-                                            ? ""
-                                            : undefined
-                                    }
-                                    inputRef={ref => (this.password = ref)}
-                                    onSubmitEditing={() =>
-                                        this.confPassword.focus()
-                                    }
-                                    returnKeyType="next"
-                                />
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.setState({
-                                            hidePassword: !this.state
-                                                .hidePassword,
-                                        })
-                                    }
-                                    style={Styles.textInputMiscText}>
-                                    <RegularText style={Styles.cyan}>
-                                        Show
-                                    </RegularText>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View>
+                            {/** form content **/}
+                            <View style={Styles.bottom}>
                                 <TextInput
                                     style={styles.textInput}
-                                    placeholder="Confirm Password"
-                                    name="confPassword"
-                                    autoCapitalize="none"
-                                    blurOnSubmit={false}
-                                    inputRef={ref => (this.confPassword = ref)}
-                                    onSubmitEditing={() => Keyboard.dismiss()}
-                                    secureTextEntry={this.state.hidePassword}
-                                    returnKeyType="default"
+                                    placeholder="First Name"
+                                    name="fname"
                                     onChange={this.onChangeText}
+                                    onSubmitEditing={() => this.lname.focus()}
                                     showError={
                                         this.state.firstOpen
                                             ? false
-                                            : showPasswordError
-                                    }
-                                    errorText={
-                                        showPasswordError
-                                            ? "Passwords must match"
-                                            : null
+                                            : !this.state.fname
                                     }
                                 />
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.setState({
-                                            hidePassword: !this.state
-                                                .hidePassword,
-                                        })
+
+                                <TextInput
+                                    inputRef={ref => (this.lname = ref)}
+                                    placeholder="Last Name"
+                                    name="lname"
+                                    onChange={this.onChangeText}
+                                    onSubmitEditing={() =>
+                                        this.username.focus()
                                     }
-                                    style={Styles.textInputMiscText}>
-                                    <RegularText style={Styles.cyan}>
-                                        Show
-                                    </RegularText>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        {/**
-                         * -- Footer --
-                         * **/}
-                        <View style={[Styles.pv24, Styles.bottom]}>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    paddingBottom: 16,
-                                }}>
-                                <CheckBox
-                                    style={styles.checkBox}
-                                    onPressIn={() =>
-                                        this.setState({
-                                            termsChecked: !this.state
-                                                .termsChecked,
-                                        })
+                                    showError={
+                                        this.state.firstOpen
+                                            ? false
+                                            : !this.state.lname
                                     }
                                 />
-                                <RegularText
-                                    style={[Styles.grey, {flexShrink: 1}]}>
-                                    By creating an account, you agree to all the
-                                    legal stuff:{" "}
+
+                                <View>
+                                    <TextInput
+                                        placeholder={this.state.email}
+                                        autoCapitalize="none"
+                                        name="email"
+                                        onChange={this.onChangeText}
+                                        showError={false}
+                                        editable={false}
+                                    />
                                     <RegularText
-                                        style={Styles.link}
-                                        onPress={() => navigate("Terms")}>
-                                        Terms of Use
+                                        style={Styles.textInputMiscText}>
+                                        ✔️
                                     </RegularText>
-                                    {" & "}
-                                    <RegularText
-                                        style={Styles.link}
-                                        onPress={() => navigate("Privacy")}>
-                                        Privacy
-                                    </RegularText>
-                                </RegularText>
+                                </View>
+
+                                <TextInput
+                                    inputRef={ref => (this.username = ref)}
+                                    placeholder="Choose a username"
+                                    autoCapitalize="none"
+                                    onChange={this.onChangeText}
+                                    name="username"
+                                    onSubmitEditing={() =>
+                                        this.password.focus()
+                                    }
+                                    showError={
+                                        this.state.firstOpen
+                                            ? false
+                                            : !this.state.username
+                                    }
+                                />
+                                {/**
+                                 *  -- Password fields --
+                                 */}
+                                <View>
+                                    <TextInput
+                                        placeholder="Password"
+                                        autoCapitalize="none"
+                                        name="password"
+                                        secureTextEntry={
+                                            this.state.hidePassword
+                                        }
+                                        blurOnSubmit={false}
+                                        onChange={this.onChangeText}
+                                        showError={
+                                            this.state.firstOpen
+                                                ? false
+                                                : !this.state.password ||
+                                                  this.state.password !==
+                                                      this.state.confPassword
+                                        }
+                                        errorText={
+                                            this.state.password !==
+                                            this.state.confPassword
+                                                ? ""
+                                                : undefined
+                                        }
+                                        inputRef={ref => (this.password = ref)}
+                                        onSubmitEditing={() =>
+                                            this.confPassword.focus()
+                                        }
+                                        returnKeyType="next"
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.setState({
+                                                hidePassword: !this.state
+                                                    .hidePassword,
+                                            })
+                                        }
+                                        style={Styles.textInputMiscText}>
+                                        <RegularText style={Styles.cyan}>
+                                            Show
+                                        </RegularText>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View>
+                                    <TextInput
+                                        style={styles.textInput}
+                                        placeholder="Confirm Password"
+                                        name="confPassword"
+                                        autoCapitalize="none"
+                                        blurOnSubmit={false}
+                                        inputRef={ref =>
+                                            (this.confPassword = ref)
+                                        }
+                                        onSubmitEditing={() =>
+                                            Keyboard.dismiss()
+                                        }
+                                        secureTextEntry={
+                                            this.state.hidePassword
+                                        }
+                                        returnKeyType="default"
+                                        onChange={this.onChangeText}
+                                        showError={
+                                            this.state.firstOpen
+                                                ? false
+                                                : showPasswordError
+                                        }
+                                        errorText={
+                                            showPasswordError
+                                                ? "Passwords must match"
+                                                : null
+                                        }
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.setState({
+                                                hidePassword: !this.state
+                                                    .hidePassword,
+                                            })
+                                        }
+                                        style={Styles.textInputMiscText}>
+                                        <RegularText style={Styles.cyan}>
+                                            Show
+                                        </RegularText>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            {!this.state.firstOpen &&
-                            !this.state.termsChecked ? (
-                                <RegularText style={[Styles.error, Styles.pb8]}>
-                                    You must agree to the terms and conditions
-                                </RegularText>
-                            ) : null}
-                            <GradientButton
-                                onPress={this.signUserUp}
-                                title="Next"
-                            />
+                            {/**
+                             * -- Footer --
+                             * **/}
+                            <View style={[Styles.pv24, Styles.bottom]}>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        paddingBottom: 16,
+                                    }}>
+                                    <CheckBox
+                                        style={styles.checkBox}
+                                        onPressIn={() =>
+                                            this.setState({
+                                                termsChecked: !this.state
+                                                    .termsChecked,
+                                            })
+                                        }
+                                    />
+                                    <RegularText
+                                        style={[Styles.grey, {flexShrink: 1}]}>
+                                        By creating an account, you agree to all
+                                        the legal stuff:{" "}
+                                        <RegularText
+                                            style={Styles.link}
+                                            onPress={() => navigate("Terms")}>
+                                            Terms of Use
+                                        </RegularText>
+                                        {" & "}
+                                        <RegularText
+                                            style={Styles.link}
+                                            onPress={() => navigate("Privacy")}>
+                                            Privacy
+                                        </RegularText>
+                                    </RegularText>
+                                </View>
+                                {!this.state.firstOpen &&
+                                !this.state.termsChecked ? (
+                                    <RegularText
+                                        style={[Styles.error, Styles.pb8]}>
+                                        You must agree to the terms and
+                                        conditions
+                                    </RegularText>
+                                ) : null}
+                                <GradientButton
+                                    onPress={this.signUserUp}
+                                    title="Next"
+                                />
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 }

@@ -12,7 +12,8 @@ export default class SubTitleText extends React.Component {
                     Styles.green,
                     Styles.pv16,
                     this.props.style,
-                ]}>
+                ]}
+                onPress={this.props.onPress}>
                 {this.props.children}
             </RegularText>
         );
