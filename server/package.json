@@ -19,6 +19,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "nodemailer": "^6.4.2",
+    "paginate-info": "^1.0.4",
     "pg": "^7.18.1",
     "randomatic": "^3.1.1",
     "twilio": "^3.39.4"

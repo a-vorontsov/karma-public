@@ -25,7 +25,7 @@ test('insert and findById work', async () => {
     user.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
     const insertUserResult = await userRepository.insert(user);
-    event.address_id =  insertAddressResult.rows[0].id;
+    event.address_id = insertAddressResult.rows[0].id;
     event.user_id = insertUserResult.rows[0].id;
     const insertEventResult = await eventRepository.insert(event);
     const findEventResult = await eventRepository.findById(insertEventResult.rows[0].id);
@@ -37,7 +37,7 @@ test('update works', async () => {
     user.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
     const insertUserResult = await userRepository.insert(user);
-    event.address_id =  insertAddressResult.rows[0].id;
+    event.address_id = insertAddressResult.rows[0].id;
     event.user_id = insertUserResult.rows[0].id;
 
     const insertEventResult = await eventRepository.insert(event);

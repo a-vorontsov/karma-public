@@ -58,7 +58,10 @@ test('updating events works', async () => {
         }]
     });
 
-    const response = await request(app).post("/event/update/3").send({event, address: mockAddress});
+    const response = await request(app).post("/event/update/3").send({
+        event,
+        address: mockAddress
+    });
 
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
@@ -86,7 +89,10 @@ test('requesting specific event data works', async () => {
     expect(eventRepository.findById).toHaveBeenCalledWith("3");
     expect(addressRepository.findById).toHaveBeenCalledWith(event.address_id);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject({...event, id: 3});
+    expect(response.body).toMatchObject({
+        ...event,
+        id: 3
+    });
 });
 
 test('error returned when user tries to exceed monthly event creation limit', async () => {
