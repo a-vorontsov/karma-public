@@ -13,6 +13,7 @@ const carouselEntries = [{individual: true}, {individual: false}];
 const { width, height } = Dimensions.get("window")
 const formWidth = 0.8 * width;
 const icons = {
+    share: require("../assets/images/general-logos/light_share.png"),
     cog: require("../assets/images/general-logos/cog.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
@@ -35,7 +36,7 @@ class ProfileScreen extends Component {
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer}>
-                <View style={[CarouselStyles.item, CarouselStyles.shadow]}>
+                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
                     <ActivityCard individual={item.individual} />
                 </View>
             </View>
@@ -56,9 +57,15 @@ class ProfileScreen extends Component {
                     flexDirection: "row"
                 }}/>
             <SafeAreaView>
-            <View style={{flex: 1, backgroundColor: '#00A8A6', justifyContent: "space-between", position: "absolute", left:0, top: 0,flexDirection: "row-reverse"}}>
-                    <Image source={icons.cog} style={{ height: 25, width: 25, paddingRight: 10}}></Image>
-                    <Image source={icons.edit_white} style={{ height: 25, width: 25}}></Image>
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: '#00A8A6',
+                    width: width,
+                    flexDirection: "row-reverse",
+                }}>
+                    <Image source={icons.cog} style={{ height: 25, width: 25, marginRight: 20,}}></Image>
+                    <Image source={icons.edit_white} style={{ height: 25, width: 25, marginRight: 20,}}></Image>
             </View>
             <View
                 style={{
@@ -106,7 +113,7 @@ class ProfileScreen extends Component {
                             justifyContent: 'space-between'
                         }}>
                         <Image source={icons.badge} style={{height: 60, width: 60}}></Image>
-                        <Image source={icons.edit_white} style={{ height: 20, width: 20}}></Image>
+                        <Image source={icons.share} style={{ height: 40, width: 40}}></Image>
                     </View>
                 </View>
             </View>
@@ -123,7 +130,7 @@ class ProfileScreen extends Component {
                 <View style={{flex:1, paddingLeft: 30, alignItems: "flex-start", justifyContent: "flex-start", paddingTop: 20}}>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "space-evenly"}}>
                         <RegularText style={styles.bioHeader}>Activity</RegularText>
-                        <Image source={icons.edit_grey} style={{ height: 25, width: 25}}></Image>
+                        {/* <Image source={icons.edit_grey} style={{ height: 25, width: 25}}></Image> */}
                     </View>
                     <View style={{ flex: 1, flexDirection: "row"}}>
                         <RegularText style={styles.contentText}>Availability:</RegularText>

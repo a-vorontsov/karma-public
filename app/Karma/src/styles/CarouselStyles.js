@@ -39,6 +39,16 @@ const CarouselStyles = StyleSheet.create({
         paddingTop: 16,
         overflow: "visible",
     },
+    item2: {
+        backgroundColor: "white",
+        position: "absolute",
+        top: 8,
+        left: itemHorizontalMargin,
+        right: itemHorizontalMargin,
+        bottom: 8,
+        borderRadius: 6,
+        paddingTop: 16,
+    },
     shadow: {
         shadowColor: Colours.black,
         shadowOffset: {
