@@ -82,6 +82,9 @@ jobs:
           TWILIO_ACCOUND_SID: fake1
           TWILIO_AUTH_TOKEN: fake2
           TWILIO_SERVICE_SID: fake3
+          SESSION_SECRET: GIT_CI
+          STRIPE_SECRET: sk_test_TBD
+          STRIPE_ACC_ID: acct_TBD
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
