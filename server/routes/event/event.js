@@ -6,8 +6,8 @@ const userRepository = require("../../models/userRepository");
 const util = require("../../util/util");
 const selectedCauseRepository = require("../../models/selectedCauseRepository");
 const individualRepository = require("../../models/individualRepository");
-const eventSorter = require("../../sorting/event");
-const paginator = require("../../pagination");
+const eventSorter = require("../../modules/sorting/event");
+const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
 
 /**
