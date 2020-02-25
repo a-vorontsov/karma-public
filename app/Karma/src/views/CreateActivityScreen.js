@@ -34,7 +34,7 @@ export default class CreateActivityScreen extends React.Component {
 
         this.state = {
             isAddressVisible: false,
-            isMinAge18: true,
+            isWomenOnly: false,
             isIDReq: false,
             isPhysical: false,
             isAdditionalInfo: false,
@@ -217,17 +217,18 @@ export default class CreateActivityScreen extends React.Component {
                             </View>
                             <View style={{flexDirection: "row"}}>
                                 <TextInput
-                                    placeholder="Minimum age is 18"
+                                    placeholder="Women only event"
                                     editable={false}
                                 />
                                 <Switch
                                     style={{position: "absolute", right: 0}}
                                     onValueChange={() =>
                                         this.setState({
-                                            isMinAge18: !this.state.isMinAge18,
+                                            isWomenOnly: !this.state
+                                                .isWomenOnly,
                                         })
                                     }
-                                    value={this.state.isMinAge18}
+                                    value={this.state.isWomenOnly}
                                 />
                             </View>
 
