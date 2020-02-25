@@ -108,4 +108,9 @@ dist
 
 # JetBrains IDE configurations
 .idea
+
+# PKC keys
+*.key
+server/routes/verify/temp/
+
 .vscode

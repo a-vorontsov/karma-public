@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const addressRepository = require("../models/addressRepository");
-const eventRepository = require("../models/eventRepository");
-const userRepository = require("../models/userRepository");
-const util = require("../util/util");
-const selectedCauseRepository = require("../models/selectedCauseRepository");
-const individualRepository = require("../models/individualRepository");
-const eventSorter = require("../sorting/event");
-const paginator = require("../pagination");
-const eventSignupRoute = require("./eventSignup");
+const addressRepository = require("../../models/addressRepository");
+const eventRepository = require("../../models/eventRepository");
+const userRepository = require("../../models/userRepository");
+const util = require("../../util/util");
+const selectedCauseRepository = require("../../models/selectedCauseRepository");
+const individualRepository = require("../../models/individualRepository");
+const eventSorter = require("../../modules/sorting/event");
+const paginator = require("../../modules/pagination");
+const eventSignupRoute = require("../eventSignup");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -44,18 +44,25 @@ const eventSignupRoute = require("./eventSignup");
  *  status: 400, description: User has reached their monthly event creation limit.
  *  status: 500, description: DB error
  */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const event = req.body;
         const isIndividual = await util.isIndividual(event.user_id);
         if (isIndividual) {
-            const existingUserEvents = await eventRepository.findAllByUserId(event.user_id);
+            const existingUserEvents = await eventRepository.findAllByUserId(
+                event.user_id,
+            );
             if (existingUserEvents.rows.length >= 3) {
-                return res.status(400).send("Event creation limit reached; user has already created 3 events this month.");
+                return res
+                    .status(400)
+                    .send(
+                        "Event creation limit reached; user has already created 3 events this month.",
+                    );
             }
         }
 
-        if (!req.body.address_id) { // address doesn't exist in database yet
+        if (!req.body.address_id) {
+            // address doesn't exist in database yet
             const addressResult = await addressRepository.insert(event.address);
             event.address_id = addressResult.rows[0].id;
         }
@@ -101,12 +108,13 @@ router.post('/', async (req, res) => {
  *  status: 200, description: The event object updated event object.
  *  status: 500, description: DB error
  */
-router.post('/update/:id', (req, res) => {
+router.post("/update/:id", (req, res) => {
     const address = req.body.address;
     const event = req.body;
     event.address_id = address.id;
     event.id = req.params.id;
-    addressRepository.update(address)
+    addressRepository
+        .update(address)
         .then(addressResult => eventRepository.update(event))
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
         .catch(err => res.status(500).send(err));
@@ -231,17 +239,22 @@ router.get("/:id", async (req, res) => {
  *  status: 404, description: if userID doesnt belong to any user
  *  status: 500, description: Most probably a database error occured
  */
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     const userId = req.query.userId;
 
-    if (!userId) return res.status(400).send("No user id was specified in the query");
-    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+    if (!userId) {
+        return res.status(400).send("No user id was specified in the query");
+    }
+    if (isNaN(userId)) {
+        return res.status(400).send("ID specified is in wrong format");
+    }
 
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) return res.status(404).send("No user with specified id");
 
-    eventRepository.getEventsWithLocation()
+    eventRepository
+        .getEventsWithLocation()
         .then(result => {
             const events = result.rows;
             if (events.length === 0) return res.status(404).send("No events");
@@ -320,20 +333,27 @@ router.get('/', async (req, res) => {
  *  status: 404, description: if userID doesnt belong to any user
  *  status: 500, description: Most probably a database error occured
  */
-router.get('/causes', async (req, res) => {
+router.get("/causes", async (req, res) => {
     const userId = req.query.userId;
 
-    if (!userId) return res.status(400).send("No user id was specified in the query");
-    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+    if (!userId) {
+        return res.status(400).send("No user id was specified in the query");
+    }
+    if (isNaN(userId)) {
+        return res.status(400).send("ID specified is in wrong format");
+    }
 
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) return res.status(404).send("No user with specified id");
 
-    selectedCauseRepository.findEventsSelectedByUser(userId)
+    selectedCauseRepository
+        .findEventsSelectedByUser(userId)
         .then(result => {
             const events = result.rows;
-            if (events.length === 0) return res.status(404).send("No causes selected by user");
+            if (events.length === 0) {
+                return res.status(404).send("No causes selected by user");
+            }
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
             res.status(200).json(eventSorter.groupByCause(events));
@@ -352,20 +372,27 @@ router.get('/causes', async (req, res) => {
  *  status: 404, description: if userID doesnt belong to any user
  *  status: 500, description: Most probably a database error occured
  */
-router.get('/favourites', async (req, res) => {
+router.get("/favourites", async (req, res) => {
     const userId = req.query.userId;
 
-    if (!userId) return res.status(400).send("No user id was specified in the query");
-    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+    if (!userId) {
+        return res.status(400).send("No user id was specified in the query");
+    }
+    if (isNaN(userId)) {
+        return res.status(400).send("ID specified is in wrong format");
+    }
 
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) return res.status(404).send("No user with specified id");
 
-    individualRepository.findFavouriteEvents(userId)
+    individualRepository
+        .findFavouriteEvents(userId)
         .then(result => {
             const events = result.rows;
-            if (events.length === 0) return res.status(404).send("No events favourited by user");
+            if (events.length === 0) {
+                return res.status(404).send("No events favourited by user");
+            }
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
             res.status(200).json(events);
@@ -384,20 +411,27 @@ router.get('/favourites', async (req, res) => {
  *  status: 404, description: if userID doesnt belong to any user
  *  status: 500, description: Most probably a database error occured
  */
-router.get('/going', async (req, res) => {
+router.get("/going", async (req, res) => {
     const userId = req.query.userId;
 
-    if (!userId) return res.status(400).send("No user id was specified in the query");
-    if (isNaN(userId)) return res.status(400).send("ID specified is in wrong format");
+    if (!userId) {
+        return res.status(400).send("No user id was specified in the query");
+    }
+    if (isNaN(userId)) {
+        return res.status(400).send("ID specified is in wrong format");
+    }
 
     const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) return res.status(404).send("No user with specified id");
 
-    individualRepository.findGoingEvents(userId)
+    individualRepository
+        .findGoingEvents(userId)
         .then(result => {
             const events = result.rows;
-            if (events.length === 0) return res.status(404).send("User not going to any events");
+            if (events.length === 0) {
+                return res.status(404).send("User not going to any events");
+            }
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
             res.status(200).json(events);
