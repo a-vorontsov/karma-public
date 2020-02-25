@@ -27,6 +27,10 @@ const icons = {
 =======
 >>>>>>> Add carousel to view past events and future events
 
+const icons = {
+    fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
+}
+
 const ActivityCard = props => {
     const navigation = useNavigation();
     return (
@@ -92,9 +96,14 @@ const ActivityCard = props => {
                     style={{flex: 1, width: null, height: null}}
                     resizeMode="contain"
                 />
-                <View style={Styles.pv16}>
+                <View>
+                    <RegularText style={{fontWeight:'500', fontSize: 20}}>
+                        Activity Name
+                    </RegularText>
+                </View>
+                <View>
                     <RegularText>
-                        Lorem ipsum dolor sit amet, consectetur adip isicing
+                        Activity description, consectetur adip isicing
                         elit, sed do eiusm ut labore et dolore magna aliqua
                     </RegularText>
                 </View>
