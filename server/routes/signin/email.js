@@ -27,7 +27,7 @@ const userRepo = require("../../models/userRepository");
  */
 router.post("/", auth.checkNotAuthenticated, async (req, res) => {
     try {
-        if (regStatus.isFullyRegistered(req.body.email)) {
+        if (regStatus.isFullyRegisteredByEmail(req.body.email)) {
             res.status(200).send({
                 message: "Fully registered. Goto login screen.",
             });

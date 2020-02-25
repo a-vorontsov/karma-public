@@ -40,7 +40,7 @@ function registerUser(email, username, password) {
     if (regStatus.emailExists(email)) {
         throw new Error("Invalid operation: registration record not found.");
     }
-    if (regStatus.isPartlyRegistered(email) || regStatus.isFullyRegistered(email)) {
+    if (regStatus.isPartlyRegistered(email) || regStatus.isFullyRegisteredByEmail(email)) {
         throw new Error("Invalid operation: user record already exists.");
     }
     const secureSalt = digest.getSecureSaltInHex();
@@ -80,7 +80,7 @@ function registerUser(email, username, password) {
  */
 function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     /* eslint-enable max-len */
-    if (regStatus.isFullyRegistered(userId)) {
+    if (regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
     // register address and get it's id
@@ -112,7 +112,7 @@ function registerIndividual(userId, title, firstName, middleNames, surName, date
  * @param {string} phoneNumber
  */
 function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
-    if (regStatus.isFullyRegistered(userId)) {
+    if (regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
     // register address and get it's id

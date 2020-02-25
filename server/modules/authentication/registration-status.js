@@ -45,7 +45,7 @@ function isEmailVerified(email) {
  * @throws {error} if email is not found
  */
 function isPartlyRegistered(email) {
-    return !isFullyRegistered(email) && userRepo.findByEmail(email);
+    return !isFullyRegisteredByEmail(email) && userRepo.findByEmail(email);
 }
 
 /**
@@ -60,7 +60,7 @@ function isPartlyRegistered(email) {
  * @return {boolean} true if fully registered
  * @throws {error} if email is not found
  */
-function isFullyRegistered(email) {
+function isFullyRegisteredByEmail(email) {
     const regRecord = regRepo.findByEmail(email);
     return regRecord.sign_up_flag;
 }
@@ -77,14 +77,15 @@ function isFullyRegistered(email) {
  * @return {boolean} true if fully registered
  * @throws {error} if useId is not found
  */
-function isFullyRegistered(userId) {
+function isFullyRegisteredById(userId) {
     const userRecord = userRepo.findById(userId);
-    return isFullyRegistered(userRecord.email);
+    return isFullyRegisteredByEmail(userRecord.email);
 }
 
 module.exports = {
     emailExists: emailExists,
     isEmailVerified: isEmailVerified,
     isPartlyRegistered: isPartlyRegistered,
-    isFullyRegistered: isFullyRegistered,
+    isFullyRegisteredByEmail: isFullyRegisteredByEmail,
+    isFullyRegisteredById: isFullyRegisteredById,
 };
