@@ -25,9 +25,8 @@ class TInput extends Component {
                             ? this.props.returnKeyType
                             : "next"
                     }
-
-                   
-                    // multiline={this.props.multiline}
+                    onFocus={this.props.onFocus}
+                    multiline={this.props.multiline}
                     onChangeText={text => onChange({name, text})}
                     ref={this.props.inputRef}
                     onSubmitEditing={this.props.onSubmitEditing}
@@ -35,6 +34,7 @@ class TInput extends Component {
                     autoCorrect={false}
                     secureTextEntry={this.props.secureTextEntry}
                     editable={this.props.editable}
+                    value={this.props.value}
                 />
                 {this.props.showError ? (
                     <Text style={Styles.error}>
