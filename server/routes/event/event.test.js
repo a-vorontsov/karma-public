@@ -1,14 +1,14 @@
 const request = require("supertest");
-const app = require("../app");
-const testHelpers = require("../test/testHelpers");
-const util = require("../util/util");
+const app = require("../../app");
+const testHelpers = require("../../test/testHelpers");
+const util = require("../../util/util");
 
-const addressRepository = require("../models/addressRepository");
-const eventRepository = require("../models/eventRepository");
+const addressRepository = require("../../models/addressRepository");
+const eventRepository = require("../../models/eventRepository");
 
-jest.mock("../models/eventRepository");
-jest.mock("../models/addressRepository");
-jest.mock("../util/util");
+jest.mock("../../models/eventRepository");
+jest.mock("../../models/addressRepository");
+jest.mock("../../util/util");
 
 beforeEach(() => {
   return testHelpers.clearDatabase();
