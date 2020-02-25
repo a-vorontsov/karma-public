@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const addressRepository = require("../models/addressRepository");
-const eventRepository = require("../models/eventRepository");
-const userRepository = require("../models/userRepository");
-const util = require("../util/util");
-const selectedCauseRepository = require("../models/selectedCauseRepository");
-const individualRepository = require("../models/individualRepository");
-const eventSorter = require("../sorting/event");
-const paginator = require("../pagination");
-const eventSignupRoute = require("./eventSignup");
+const addressRepository = require("../../models/addressRepository");
+const eventRepository = require("../../models/eventRepository");
+const userRepository = require("../../models/userRepository");
+const util = require("../../util/util");
+const selectedCauseRepository = require("../../models/selectedCauseRepository");
+const individualRepository = require("../../models/individualRepository");
+const eventSorter = require("../../sorting/event");
+const paginator = require("../../pagination");
+const eventSignupRoute = require("../eventSignup");
 
 /**
  * Endpoint called whenever a user creates a new event.
