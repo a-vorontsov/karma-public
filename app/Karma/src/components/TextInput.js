@@ -17,7 +17,7 @@ class TInput extends Component {
         return (
             <View>
                 <TextInput
-                    style={inputStyle}
+                    style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
                     returnKeyType={
@@ -25,6 +25,9 @@ class TInput extends Component {
                             ? this.props.returnKeyType
                             : "next"
                     }
+
+                   
+                    // multiline={this.props.multiline}
                     onChangeText={text => onChange({name, text})}
                     ref={this.props.inputRef}
                     onSubmitEditing={this.props.onSubmitEditing}

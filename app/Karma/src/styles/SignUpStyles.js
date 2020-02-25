@@ -53,6 +53,22 @@ const SignUpStyles = StyleSheet.create({
     errorText: {
         color: "#e81f10",
     },
+    uploadButton: {
+        height: 50,
+        width: 200,
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderColor: "#D3D3D3",
+        borderRadius: 30,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    uploadButtonText: {
+        fontSize: 15,
+        fontWeight: "400",
+        color: "gray",
+    }
 });
 
 export default SignUpStyles;
