@@ -1,4 +1,4 @@
-import {createSwitchNavigator,createAppContainer} from "react-navigation";
+import {createSwitchNavigator, createAppContainer} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
 import WelcomeScreen from "./src/views/WelcomeScreen";
 import InitSignUpScreen from "./src/routes/InitSignupScreen";
@@ -34,28 +34,28 @@ const MainNavigator = createStackNavigator(
     },
 );
 
-
 //  Hide Tabs when on any screen on MainNavigator except for SelectScreen
-MainNavigator.navigationOptions = ({ navigation }) => {
+MainNavigator.navigationOptions = ({navigation}) => {
     let tabBarVisible = true;
     // if (navigation.state.index > 0) {
     // //   tabBarVisible = false;
     // }
-  
-    return {
-      tabBarVisible,
-    };
-  };
 
-const AppNavigator = createSwitchNavigator({
+    return {
+        tabBarVisible,
+    };
+};
+
+const AppNavigator = createSwitchNavigator(
+    {
         Splash: {
-            getScreen: () => require('./src/views/WelcomeScreen').default,
+            getScreen: () => require("./src/views/WelcomeScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,
-    }, 
+    },
     {
-        initialRouteName: 'Splash',
+        initialRouteName: "Splash",
     },
 );
 
