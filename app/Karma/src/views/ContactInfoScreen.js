@@ -1,5 +1,25 @@
 import React from "react";
-import {Text} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    Alert,
+    StyleSheet,
+    Dimensions,
+    KeyboardAvoidingView,
+    TouchableOpacity,
+} from "react-native";
+import {ScrollView} from "react-native-gesture-handler";
+import PhotoUpload from "react-native-photo-upload";
+import {
+    RegularText,
+    TitleText,
+    SemiBoldText,
+    LogoText,
+} from "../components/text";
+
+const {width, height} = Dimensions.get("window");
+const formWidth = 0.8 * width;
 
 class ContactInfoScreen extends React.Component {
     constructor(props) {
@@ -28,4 +48,9 @@ class ContactInfoScreen extends React.Component {
     }
 }
 
+<<<<<<< HEAD
+=======
+const styles = StyleSheet.create({});
+
+>>>>>>> Fix carousel and improve activity card
 export default ContactInfoScreen;
