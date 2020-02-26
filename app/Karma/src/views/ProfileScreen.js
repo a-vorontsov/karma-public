@@ -336,9 +336,6 @@ class ProfileScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    topicHeaderContainer: {
-
-    },
     nameText: {
         fontSize: 30,
         color: "white",

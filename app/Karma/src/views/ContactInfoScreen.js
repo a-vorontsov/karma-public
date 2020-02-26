@@ -48,9 +48,7 @@ class ContactInfoScreen extends React.Component {
     }
 }
 
-<<<<<<< HEAD
-=======
+
 const styles = StyleSheet.create({});
 
->>>>>>> Fix carousel and improve activity card
 export default ContactInfoScreen;

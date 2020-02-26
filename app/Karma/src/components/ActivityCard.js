@@ -7,8 +7,12 @@ import {GradientButton, InfoBar} from "./buttons";
 =======
 import {View, Image} from "react-native";
 
+<<<<<<< HEAD
 import {GradientButton} from "./buttons";
 >>>>>>> Add carousel to view past events and future events
+=======
+import {GradientButton, InfoBar} from "./buttons";
+>>>>>>> Fix carousel and improve activity card
 import {RegularText, SemiBoldText} from "./text";
 import Styles from "../styles/Styles";
 
@@ -29,7 +33,9 @@ const icons = {
 
 const icons = {
     fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
-}
+    clock: require("../assets/images/general-logos/clock-logo.png"),
+    people: require("../assets/images/general-logos/people-logo.png"),
+};
 
 const ActivityCard = props => {
     const navigation = useNavigation();
@@ -97,14 +103,21 @@ const ActivityCard = props => {
                     resizeMode="contain"
                 />
                 <View>
-                    <RegularText style={{fontWeight:'500', fontSize: 20}}>
+                    <View
+                        style = {{
+                            flexDirection: "row",
+                        }}>
+                        <InfoBar title='TIME' image={icons.clock}></InfoBar>
+                        <InfoBar title='SPOTS LEFT' image={icons.people}></InfoBar>
+                    </View>
+                    <RegularText style={{fontWeight: "500", fontSize: 20}}>
                         Activity Name
                     </RegularText>
                 </View>
                 <View>
                     <RegularText>
-                        Activity description, consectetur adip isicing
-                        elit, sed do eiusm ut labore et dolore magna aliqua
+                        Activity description, consectetur adip isicing elit, sed
+                        do eiusm ut labore et dolore magna aliqua
                     </RegularText>
                 </View>
 >>>>>>> Add carousel to view past events and future events
