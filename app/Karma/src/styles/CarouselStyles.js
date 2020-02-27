@@ -37,6 +37,12 @@ const CarouselStyles = StyleSheet.create({
         height: itemHeight2,
         overflow: "visible",
     },
+    itemContainer2: {
+        marginBottom: IS_IOS ? 0 : -1,
+        width: itemWidth2,
+        height: itemHeight2,
+        overflow: "visible",
+    },
     item: {
         backgroundColor: "white",
         position: "absolute",
@@ -63,8 +69,8 @@ const CarouselStyles = StyleSheet.create({
         backgroundColor: "white",
         position: "absolute",
         top: 8,
-        left: itemHorizontalMargin,
-        right: itemHorizontalMargin,
+        left: itemHorizontalMargin2,
+        right: itemHorizontalMargin2,
         bottom: 8,
         borderRadius: 6,
         paddingTop: 16,
