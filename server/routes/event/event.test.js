@@ -6,11 +6,15 @@ const util = require("../../util/util");
 const addressRepository = require("../../models/addressRepository");
 const eventRepository = require("../../models/eventRepository");
 const selectedCauseRepository = require("../../models/selectedCauseRepository");
+const individualRepository = require("../../models/individualRepository");
+const userRepository = require("../../models/userRepository");
 
 
 jest.mock("../../models/eventRepository");
 jest.mock("../../models/addressRepository");
 jest.mock("../../models/selectedCauseRepository");
+jest.mock("../../models/individualRepository");
+jest.mock("../../models/userRepository");
 jest.mock("../../util/util");
 
 beforeEach(() => {
@@ -147,6 +151,24 @@ test("creating event with no address_id creates new address and event", async ()
   expect(response.statusCode).toBe(200);
 });
 
+test("getting all events works", async () => {
+  userRepository.getUserLocation.mockResolvedValue({
+    rows: [{
+      id: 1,
+      lat: 51.414916,
+      long: -0.190487,
+    }]
+  });
+  eventRepository.getEventsWithLocation.mockResolvedValue({
+    rows: [eventWithLocation, eventWithLocation2]
+  });
+  const response = await request(app).get("/event?userId=1");
+  expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
+  expect(userRepository.getUserLocation).toHaveBeenCalledTimes(1);
+  expect(response.statusCode).toBe(200);
+  expect(response.body.data).toMatchObject([eventWithLocation, eventWithLocation2]);
+});
+
 test("getting events grouped by causes selected by user works", async () => {
   util.checkUserId.mockResolvedValue({
     status: 200,
@@ -156,6 +178,7 @@ test("getting events grouped by causes selected by user works", async () => {
       long: -0.190487,
     }
   });
+  userRepository.get
   selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
     rows: [eventWithLocation, eventWithLocation2]
   });
@@ -170,5 +193,44 @@ test("getting events grouped by causes selected by user works", async () => {
       ...eventWithLocation2
     }],
   });
+});
 
+test("getting events favourited by user works", async () => {
+  util.checkUserId.mockResolvedValue({
+    status: 200,
+    user: {
+      id: 1,
+      lat: 51.414916,
+      long: -0.190487,
+    }
+  });
+  individualRepository.findFavouriteEvents.mockResolvedValue({
+    rows: [eventWithLocation, eventWithLocation2]
+  });
+  const response = await request(app).get("/event/favourites?userId=1");
+  expect(individualRepository.findFavouriteEvents).toHaveBeenCalledTimes(1);
+  expect(response.statusCode).toBe(200);
+  expect(response.body).toMatchObject(
+    [eventWithLocation, eventWithLocation2]
+  );
+});
+
+test("getting events user is going to works", async () => {
+  util.checkUserId.mockResolvedValue({
+    status: 200,
+    user: {
+      id: 1,
+      lat: 51.414916,
+      long: -0.190487,
+    }
+  });
+  individualRepository.findGoingEvents.mockResolvedValue({
+    rows: [eventWithLocation, eventWithLocation2]
+  });
+  const response = await request(app).get("/event/going?userId=1");
+  expect(individualRepository.findGoingEvents).toHaveBeenCalledTimes(1);
+  expect(response.statusCode).toBe(200);
+  expect(response.body).toMatchObject(
+    [eventWithLocation, eventWithLocation2]
+  );
 });

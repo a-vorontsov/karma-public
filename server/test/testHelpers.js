@@ -78,30 +78,6 @@ const user3 = {
     date_registered: "2016-06-22 19:10:25-07",
 };
 
-const userWithAddress = {
-    email: 'houssammahlous123@gmail.com',
-    username: 'houssam966',
-    password_hash: 'pw',
-    verified: true,
-    salt: 'salt',
-    date_registered: '2016-06-22 19:10:25-07',
-};
-
-const individualWithAddress = {
-    firstname: "Houssam",
-    lastname: "Mahlous",
-    phone: "+435958934",
-    banned: false,
-    user_id: -1,
-    picture_id: null,
-    address_id: -1,
-    birthday: "1998-10-09",
-    gender: 'M',
-}
-
-const nearbyAddress = {
-
-}
 const individual = {
 
     firstname: "Paul",
