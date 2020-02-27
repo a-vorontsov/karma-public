@@ -13,10 +13,10 @@ import {ScrollView} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import { RegularText } from "../components/text";
+import { RegularText, SubTitleText } from "../components/text";
 import Colours from "../styles/Colours";
 
-import Styles from "../styles/Styles";
+import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -85,7 +85,7 @@ class SignUpScreen extends React.Component {
                             </SubTitleText>
 
                             {/** form content **/}
-                            <View style={Styles.bottom}>
+                            <View>
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder="First Name"
