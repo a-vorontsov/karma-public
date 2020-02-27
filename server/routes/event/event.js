@@ -192,23 +192,15 @@ router.post("/update/:id", (req, res) => {
  */
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
-    const filters = {
-        filters: [
-            "womenOnly", "physical",
-        ],
-    };
-    const qs = querystring.encode(filters);
-    console.log(qs);
-    const decodeResult = querystring.decode("userId=1&currentPage=1&pageSize=2&filter=womenOnly&filter=idkwhat&filter=anotherFilter&filter=filtermetoo");
-    console.log(decodeResult.filter);
+    const filters = req.query.filter;
+
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status != 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
-
     eventRepository
-        .getEventsWithLocation()
+        .getEventsWithLocation(filters)
         .then(result => {
             const events = result.rows;
             if (events.length === 0) return res.status(404).send("No events");
