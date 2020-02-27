@@ -9,6 +9,7 @@ const individualRepository = require("../../models/individualRepository");
 const eventSorter = require("../../modules/sorting/event");
 const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
+const querystring = require('querystring');
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -191,17 +192,20 @@ router.post("/update/:id", (req, res) => {
  */
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const filters = {
+        filters: [
+            "womenOnly", "physical",
+        ],
+    };
+    const qs = querystring.encode(filters);
+    console.log(qs);
+    const decodeResult = querystring.decode("userId=1&currentPage=1&pageSize=2&filter=womenOnly&filter=idkwhat&filter=anotherFilter&filter=filtermetoo");
+    console.log(decodeResult.filter);
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
+    const user = checkUserIdResult.user;
 
     eventRepository
         .getEventsWithLocation()
