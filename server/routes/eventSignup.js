@@ -1,19 +1,28 @@
+/**
+ * @module Event-signup
+ */
+
 const express = require('express');
 const router = express.Router();
 const eventRepository = require("../models/eventRepository");
 const signupRepository = require("../models/signupRepository");
 
 /**
- * Endpoint called whenever a user wishes to sign up to an event.
+ * Endpoint called whenever a user wishes to sign up to an event.<br/>
  * URL example: POST http://localhost:8000/event/5/signUp
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
+ <pre>
  {
     "individual_id": "3",
     "confirmed": "true"
   }
- * @returns:
- *  status: 200, description: The signup object created
+ </pre>
+ * @returns
+ *  status: 200, description: The signup object created <br/>
  *  status: 500, description: DB error
+ *  @name Sign up to event
+ *  @function
+ *  @memberOf: Event-signup
  */
 router.post('/:event_id/signUp', async (req, res) => {
     try {
@@ -29,15 +38,20 @@ router.post('/:event_id/signUp', async (req, res) => {
 });
 
 /**
- * Endpoint called whenever a user wishes to all events they have signed up to.
+ * Endpoint called whenever a user wishes to all events they have signed up to.<br/>
  * URL example: GET http://localhost:8000/event/signUp/history
  * @param {Event} req.body - id of individual requesting their signup history:
+ <pre>
  {
     "individual_id": "3"
   }
- * @returns:
- *  status: 200, description: The signup object created
+ </pre>
+ * @returns
+ *  status: 200, description: The signup object created<br/>
  *  status: 500, description: DB error
+ *  @name See signup history
+ *  @function
+ *  @memberOf: Event-signup
  */
 router.get('/signUp/history', async (req, res) => {
     try {
@@ -53,16 +67,21 @@ router.get('/signUp/history', async (req, res) => {
 });
 
 /**
- * Endpoint called whenever a user updates their attendance confirmation in an event.
+ * Endpoint called whenever a user updates their attendance confirmation in an event.<br/>
  * URL example: POST http://localhost:8000/event/5/signUp/update
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
+ <pre>
  {
     "individual_id": "3",
     "confirmed": "false"
   }
- * @returns:
- *  status: 200, description: The signup object updated
+ </pre>
+ * @returns
+ *  status: 200, description: The signup object updated<br/>
  *  status: 500, description: DB error
+ *  @name Update signup status for event
+ *  @function
+ *  @memberOf: Event-signup
  */
 router.post('/:event_id/signUp/update', async (req, res) => {
     try {
