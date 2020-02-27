@@ -33,7 +33,7 @@ const icons = {
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
 };
 
-class ProfileScreen extends Component {
+class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -83,14 +83,12 @@ class ProfileScreen extends Component {
                             }}>
                                 <TouchableOpacity>
                                     <Image
-                                        onPress={() => navigate("ProfileEdit")}
                                         source={icons.edit_white}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.05,}}
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity>
                                     <Image
-                                        onPress={() => navigate("Settings")}
                                         source={icons.cog}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
                                     />
@@ -156,7 +154,7 @@ class ProfileScreen extends Component {
                                             style={{height: 60, width: 60}}
                                             /> 
                                             <Image
-                                            // source={icons.edit_grey}
+                                            source={icons.edit_grey}
                                             style={{height: 60, width: 60, position: "absolute"}}
                                             /> 
                                         </View>
@@ -202,7 +200,6 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity>
                                             <Image
-                                                onPress={() => navigate("ProfileEdit")}
                                                 source={icons.edit_grey}
                                                 style={styles.edit}
                                             />
@@ -245,7 +242,6 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity>
                                             <Image
-                                                onPress={() => navigate("ProfileEdit")}
                                                 source={icons.edit_grey}
                                                 style={styles.edit}
                                             />
@@ -392,4 +388,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProfileScreen;
+export default ProfileEditScreen;
