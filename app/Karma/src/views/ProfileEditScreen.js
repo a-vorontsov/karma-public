@@ -8,8 +8,10 @@ import {
     SafeAreaView,
     Image,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Switch
 } from "react-native";
+import Slider from '@react-native-community/slider';
 import {
     RegularText,
 } from "../components/text";
@@ -19,6 +21,7 @@ import Styles from "../styles/Styles";
 import CarouselStyles, {itemWidth, itemWidth2, sliderWidth} from "../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/ActivityCard";
+import TextInput from "../components/TextInput";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 
@@ -26,18 +29,19 @@ const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/light_share.png"),
-    cog: require("../assets/images/general-logos/cog.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
-    edit_grey: require("../assets/images/general-logos/edit-grey.png"),
+    calendar: require("../assets/images/general-logos/calendar-dark.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
+    new_cause: require("../assets/images/general-logos/new_cause.png"),
 };
 
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeSlide: 0,
+            womenOnlyValue: true,
+            distance: 90,
         };
     }
 
@@ -45,19 +49,8 @@ class ProfileEditScreen extends Component {
         headerShown: false,
     };
 
-    _renderItem = ({item}) => {
-        return (
-            <View style={CarouselStyles.itemContainer2}>
-                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard individual={item.individual} signedup={false}/>
-                </View>
-            </View>
-        );
-    };
-
     render() {
         return (
-            // {this.props.navigation.getParam('name', null)}
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior="padding"
@@ -84,13 +77,7 @@ class ProfileEditScreen extends Component {
                                 <TouchableOpacity>
                                     <Image
                                         source={icons.edit_white}
-                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.05,}}
-                                    />
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Image
-                                        source={icons.cog}
-                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
+                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.05, marginTop:2}}
                                     />
                                 </TouchableOpacity>
                         </View>
@@ -129,7 +116,7 @@ class ProfileEditScreen extends Component {
                             </PhotoUpload>
                             <View>
                                 <RegularText style={styles.nameText}>
-                                    Name
+                                    EDIT
                                 </RegularText>
                                 <View
                                     style={{
@@ -175,16 +162,6 @@ class ProfileEditScreen extends Component {
                             }}>
                             <View
                                 style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}>
-                                <GradientButton
-                                    title="Create Activity"
-                                    width={350}
-                                />
-                            </View>
-                            <View
-                                style={{
                                     flex: 1,
                                     paddingHorizontal: formWidth*0.075,
                                     alignItems: "flex-start",
@@ -197,38 +174,53 @@ class ProfileEditScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Activity
                                     </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
                                 </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
+                                <View style={styles.editContainer}>
                                     <RegularText style={styles.contentText}>
                                         Availability:
                                     </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
+                                    <View style={styles.leftItem}>
+                                        <TouchableOpacity>
+                                        <Image
+                                            source={icons.calendar}
+                                            style={{width:25, height:25, resizeMode:"contain"}}/>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Activity Date:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
+                                <View style={{flex: 1, flexDirection: "column"}}>
+                                    <View style={{flex: 1, flexDirection: "row"}}>
+                                        <RegularText style={styles.contentText}>
+                                            Distance
+                                        </RegularText>
+                                        <View style={styles.leftItem}>
+                                            <RegularText style={styles.contentText}>
+                                                {this.state.distance} Miles
+                                            </RegularText>
+                                        </View>
+                                    </View>
+                                    <Slider
+                                        style={styles.slider}
+                                        value = {this.state.distance}
+                                        minimumValue={0}
+                                        maximumValue={100}
+                                        step={1}
+                                        thumbTintColor = "#00A8A6"
+                                        minimumTrackTintColor= "#A9DCDF"
+                                        onSlidingComplete={val => this.setState({ distance: val })}
+                                    />
                                 </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
+                                <View style={styles.editContainer}>
                                     <RegularText style={styles.contentText}>
-                                        Women Only:
+                                        Women Only Activities:
                                     </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        Y/N
-                                    </RegularText>
+                                    <View style={styles.leftItem}>
+                                        <Switch
+                                            style={styles.switch}
+                                            value = {this.state.womenOnlyValue}
+                                            trackColor={{true: '#A9DCDF', false: 'grey'}}
+                                            thumbColor = "grey"
+                                            onChange={val => this.setState({ womenOnlyValue: val })} />
+                                    </View>
                                 </View>
                                 <View
                                     style={{
@@ -239,14 +231,6 @@ class ProfileEditScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Bio
                                     </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
                                 </View>
                                 <View
                                     style={{
@@ -254,77 +238,45 @@ class ProfileEditScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "center",
                                     }}>
-                                    <RegularText style={styles.contentText}>
-                                        o eos et accusamus et iusto odio
-                                        dignissimos ducimus qui blanditiis
-                                        praesentium voluptatum deleniti atque
-                                        corrupti quos dolores et quas molestias
-                                        excepturi sint occaecati cupiditate non
-                                        provident, similique sunt in culpa qui
-                                        officia deserunt mollitia animi, id est
-                                        laborum et dolorum fuga
-                                    </RegularText>
+                                    <TextInput>
+                                        
+                                    </TextInput>
                                 </View>
                                 <View
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "flex-end",
+                                        flexDirection: "column",
+                                        alignItems: "flex-start",
                                         justifyContent: "flex-end",
                                     }}>
                                     <RegularText style={styles.bioHeader}>
                                         Causes
                                     </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
+                                    <TouchableOpacity>
+                                        <Image 
+                                            source={icons.new_cause}
+                                            style={{width:60, height:60, resizeMode:"contain"}}
+                                        />
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
                         <View
                             style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                justifyContent: "flex-start",
+                                flex: 5,
+                                backgroundColor: "white",
+                                paddingVertical: 25,
                             }}>
-                                <View 
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        paddingHorizontal: formWidth*0.075,
-                                    }}>
-                                        <TouchableOpacity>
-                                            <RegularText style={styles.bioHeader}>Upcoming Events</RegularText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity>
-                                            <RegularText style={styles.bioHeaderAlt}>
-                                                Past Events
-                                            </RegularText>
-                                        </TouchableOpacity>
-                                </View>
-                            <View style={{alignItems: "flex-start", justifyContent: "flex-start"}}>
-                                <Carousel
-                                    ref={c => {
-                                        this._carousel = c;
-                                    }}
-                                    data={carouselEntries}
-                                    removeClippedSubviews={false}
-                                    renderItem={this._renderItem}
-                                    sliderWidth={sliderWidth}
-                                    itemWidth={itemWidth2}
-                                    inactiveSlideOpacity={1}
-                                    inactiveSlideScale={1}
-                                    containerCustomStyle={CarouselStyles.slider}
-                                    onSnapToItem={index =>
-                                        this.setState({activeSlide: index})
-                                    }
+                            <View
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}>
+                                <GradientButton
+                                    title="Update"
+                                    width={350}
                                 />
                             </View>
-                        </View>
+                            </View>
                     </SafeAreaView>
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -333,6 +285,15 @@ class ProfileEditScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    slider: {
+        width: formWidth+(formWidth*0.1),
+        height:15
+    },
+    switch: {
+        alignSelf: "flex-start",
+        marginTop:5,
+        transform:[{ scaleX: .8 }, { scaleY: .8 }] 
+    },
     nameText: {
         fontSize: 30,
         color: "white",
@@ -361,9 +322,9 @@ const styles = StyleSheet.create({
         marginLeft: 80
     },
     contentText: {
-        fontSize: 15,
-        color: "black",
-        paddingVertical: 5,
+        fontSize: 18,
+        color: "grey",
+        paddingVertical: 20,
     },
     answerText: {
         fontSize: 15,
@@ -375,17 +336,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-    },
-    edit: {
-        height: 25,
-        width: 25,
-        alignSelf: "center",
-        resizeMode: 'contain',
+        alignItems: 'center',
+        borderColor: "transparent",
+        borderBottomColor: "#D3D3D3",
+        borderWidth: 1.5,
     },
     pointContainer:{
         flex: 1,
     },
+    leftItem:{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    }
 });
 
 export default ProfileEditScreen;

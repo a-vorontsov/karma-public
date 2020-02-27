@@ -21,7 +21,6 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/ActivityCard";
 
 const carouselEntries = [{individual: true}, {individual: false}];
-
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
@@ -56,8 +55,8 @@ class ProfileScreen extends Component {
     };
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
-            // {this.props.navigation.getParam('name', null)}
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior="padding"
@@ -90,9 +89,9 @@ class ProfileScreen extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity>
                                     <Image
-                                        onPress={() => navigate("Settings")}
                                         source={icons.cog}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
+                                        onPress={() => navigate("SettingsMenu")}
                                     />
                                 </TouchableOpacity>
                         </View>

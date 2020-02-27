@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { View, Text, Image, Alert, StyleSheet, Dimensions, Platform, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -7,12 +6,14 @@ import ActivitiesScreen from './src/views/ActivitiesScreen';
 import CausesScreen from './src/views/CausesScreen';
 import NotificationsScreen from './src/views/NotificationsScreen';
 import ProfileScreen from './src/views/ProfileScreen';
+import ProfileEditScreen from './src/views/ProfileEditScreen';
 import SettingsMenuScreen from './src/views/SettingsMenuScreen';
 
 const ProfileNavigator = createStackNavigator(
   {
       Profile: {screen: ProfileScreen},
-      SettingsMenu: {screen: SettingsMenuScreen}
+      SettingsMenu: {screen: SettingsMenuScreen},
+      ProfileEdit: {screen: ProfileEditScreen}
   },
   {
     headerMode: "none",
@@ -23,25 +24,6 @@ const ProfileNavigator = createStackNavigator(
     },
   },
 );
-=======
-import React from "react";
-import {
-    View,
-    Text,
-    Image,
-    Alert,
-    StyleSheet,
-    Dimensions,
-    Platform,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-} from "react-native";
-import {createBottomTabNavigator} from "react-navigation-tabs";
-import ActivitiesScreen from "./src/views/ActivitiesScreen";
-import CausesScreen from "./src/views/CausesScreen";
-import NotificationsScreen from "./src/views/NotificationsScreen";
-import ProfileScreen from "./src/views/ProfileScreen";
->>>>>>> Fix carousel and improve activity card
 
 export default (MainTabNavigator = createBottomTabNavigator(
     {
@@ -99,8 +81,6 @@ export default (MainTabNavigator = createBottomTabNavigator(
                     ),
             },
         },
-<<<<<<< HEAD
-      },
       Profile: {
         screen: ProfileNavigator,
         navigationOptions: {
@@ -114,27 +94,9 @@ export default (MainTabNavigator = createBottomTabNavigator(
                     style = {{aspectRatio: 0.60, 
                     resizeMode: 'contain'}}   /> 
            )
-=======
-        Profile: {
-            screen: ProfileScreen,
-            navigationOptions: {
-                tabBarLabel: "Profile",
-                tabBarIcon: ({focused}) =>
-                    focused ? (
-                        <Image
-                            source={require("./src/assets/images/nav-bar/profile-on.png")}
-                            style={{aspectRatio: 0.6, resizeMode: "contain"}}
-                        />
-                    ) : (
-                        <Image
-                            source={require("./src/assets/images/nav-bar/profile-off.png")}
-                            style={{aspectRatio: 0.6, resizeMode: "contain"}}
-                        />
-                    ),
-            },
->>>>>>> Fix carousel and improve activity card
         },
     },
+},
     {
         tabBarOptions: {
             showLabel: true,
