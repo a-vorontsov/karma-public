@@ -6,12 +6,14 @@ import ActivitiesScreen from './src/views/ActivitiesScreen';
 import CausesScreen from './src/views/CausesScreen';
 import NotificationsScreen from './src/views/NotificationsScreen';
 import ProfileScreen from './src/views/ProfileScreen';
+import ProfileEditScreen from './src/views/ProfileEditScreen';
 import SettingsMenuScreen from './src/views/SettingsMenuScreen';
 
 const ProfileNavigator = createStackNavigator(
   {
       Profile: {screen: ProfileScreen},
-      SettingsMenu: {screen: SettingsMenuScreen}
+      SettingsMenu: {screen: SettingsMenuScreen},
+      ProfileEdit: {screen: ProfileEditScreen}
   },
   {
     headerMode: "none",
