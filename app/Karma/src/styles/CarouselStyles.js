@@ -11,10 +11,14 @@ function wp(percentage) {
 
 const slideWidth = wp(85);
 const itemHorizontalMargin = wp(2);
+const itemHorizontalMargin2 = wp(0.5);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 export const itemHeight = itemWidth * 1.2;
+
+export const itemWidth2 = slideWidth + itemHorizontalMargin2 * 5;
+export const itemHeight2 = itemWidth * 1;
 
 const CarouselStyles = StyleSheet.create({
     slider: {
@@ -26,6 +30,12 @@ const CarouselStyles = StyleSheet.create({
         height: itemHeight,
         overflow: "visible",
         paddingHorizontal: itemHorizontalMargin,
+    },
+    itemContainer2: {
+        marginBottom: IS_IOS ? 0 : -1,
+        width: itemWidth2,
+        height: itemHeight2,
+        overflow: "visible",
     },
     item: {
         backgroundColor: "white",
@@ -43,8 +53,8 @@ const CarouselStyles = StyleSheet.create({
         backgroundColor: "white",
         position: "absolute",
         top: 8,
-        left: itemHorizontalMargin,
-        right: itemHorizontalMargin,
+        left: itemHorizontalMargin2,
+        right: itemHorizontalMargin2,
         bottom: 8,
         borderRadius: 6,
         paddingTop: 16,
