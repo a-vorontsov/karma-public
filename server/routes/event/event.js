@@ -191,18 +191,11 @@ router.post("/update/:id", (req, res) => {
  */
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
-
+    const user = checkUserIdResult.user;
     eventRepository
         .getEventsWithLocation()
         .then(result => {

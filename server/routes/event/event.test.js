@@ -152,19 +152,19 @@ test("creating event with no address_id creates new address and event", async ()
 });
 
 test("getting all events works", async () => {
-  userRepository.getUserLocation.mockResolvedValue({
-    rows: [{
+  util.checkUserId.mockResolvedValue({
+    status: 200,
+    user: {
       id: 1,
       lat: 51.414916,
       long: -0.190487,
-    }]
+    }
   });
   eventRepository.getEventsWithLocation.mockResolvedValue({
     rows: [eventWithLocation, eventWithLocation2]
   });
   const response = await request(app).get("/event?userId=1");
   expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
-  expect(userRepository.getUserLocation).toHaveBeenCalledTimes(1);
   expect(response.statusCode).toBe(200);
   expect(response.body.data).toMatchObject([eventWithLocation, eventWithLocation2]);
 });
@@ -178,7 +178,6 @@ test("getting events grouped by causes selected by user works", async () => {
       long: -0.190487,
     }
   });
-  userRepository.get
   selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
     rows: [eventWithLocation, eventWithLocation2]
   });
