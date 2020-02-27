@@ -89,6 +89,7 @@ class ProfileScreen extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity>
                                     <Image
+                                        onPress={() => navigate("Settings")}
                                         source={icons.cog}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
                                         onPress={() => navigate("SettingsMenu")}

@@ -1,11 +1,15 @@
 import React from "react";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {View, Image, Text} from "react-native";
 
 import {GradientButton, InfoBar} from "./buttons";
 =======
 import {View, Image} from "react-native";
+=======
+import {View, Image, Text} from "react-native";
+>>>>>>> Add Read More to Activity Card
 
 <<<<<<< HEAD
 import {GradientButton} from "./buttons";
@@ -33,7 +37,11 @@ const icons = {
 >>>>>>> Add carousel to view past events and future events
 =======
 import {TouchableOpacity} from "react-native-gesture-handler";
+<<<<<<< HEAD
 >>>>>>> Add elements to Activity Cards and all buttons to profile page
+=======
+import ReadMore from 'react-native-read-more-text';
+>>>>>>> Add Read More to Activity Card
 
 const icons = {
     fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
@@ -143,10 +151,14 @@ const ActivityCard = props => {
                     </RegularText>
                 </View>
                 <View>
-                    <RegularText>
-                        Activity description, consectetur adip isicing elit, sed
-                        do eiusm ut labore et dolore magna aliqua
-                    </RegularText>
+                    <ReadMore
+                        numberOfLines={2}
+                        renderTruncatedFooter={this._renderTruncatedFooter}>
+                        <RegularText>
+                            Activity description, consectetur adip isicing elit, sed
+                            do eiusm ut labore et dolore magna aliqua
+                        </RegularText>
+                    </ReadMore>
                 </View>
 >>>>>>> Add carousel to view past events and future events
             </View>
@@ -155,6 +167,9 @@ const ActivityCard = props => {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Add Read More to Activity Card
 _renderTruncatedFooter = (handlePress) => {
     return (
         <Text style={{color: "#00A8A6", marginTop: 5}} onPress={handlePress}>
@@ -163,6 +178,9 @@ _renderTruncatedFooter = (handlePress) => {
     );
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> Add carousel to view past events and future events
+=======
+>>>>>>> Add Read More to Activity Card
 export default ActivityCard;
