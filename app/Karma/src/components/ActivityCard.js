@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View, Image} from "react-native";
+import {View, Image, Text} from "react-native";
 
 import {GradientButton, InfoBar} from "./buttons";
 import {RegularText, SemiBoldText} from "./text";
@@ -8,6 +8,7 @@ import Styles from "../styles/Styles";
 
 import {useNavigation} from "react-navigation-hooks";
 import {TouchableOpacity} from "react-native-gesture-handler";
+import ReadMore from 'react-native-read-more-text';
 
 const icons = {
     fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
@@ -65,14 +66,26 @@ const ActivityCard = props => {
                     </RegularText>
                 </View>
                 <View>
-                    <RegularText>
-                        Activity description, consectetur adip isicing elit, sed
-                        do eiusm ut labore et dolore magna aliqua
-                    </RegularText>
+                    <ReadMore
+                        numberOfLines={2}
+                        renderTruncatedFooter={this._renderTruncatedFooter}>
+                        <RegularText>
+                            Activity description, consectetur adip isicing elit, sed
+                            do eiusm ut labore et dolore magna aliqua
+                        </RegularText>
+                    </ReadMore>
                 </View>
             </View>
         </View>
     );
 };
+
+_renderTruncatedFooter = (handlePress) => {
+    return (
+        <Text style={{color: "#00A8A6", marginTop: 5}} onPress={handlePress}>
+        READ MORE
+        </Text>
+    );
+}
 
 export default ActivityCard;
