@@ -22,7 +22,6 @@ const signupRepository = require("../models/signupRepository");
  *  status: 500, description: DB error
  *  @name Sign up to event
  *  @function
- *  @memberOf: Event-signup
  */
 router.post('/:event_id/signUp', async (req, res) => {
     try {
@@ -51,7 +50,6 @@ router.post('/:event_id/signUp', async (req, res) => {
  *  status: 500, description: DB error
  *  @name See signup history
  *  @function
- *  @memberOf: Event-signup
  */
 router.get('/signUp/history', async (req, res) => {
     try {
@@ -81,7 +79,6 @@ router.get('/signUp/history', async (req, res) => {
  *  status: 500, description: DB error
  *  @name Update signup status for event
  *  @function
- *  @memberOf: Event-signup
  */
 router.post('/:event_id/signUp/update', async (req, res) => {
     try {
