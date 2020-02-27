@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
         res.status(400).send({
             message: "Passwords do not match.",
         });
-    } else if (!passStrengthTest.strong && process.env.ANY_PASSWORD !== "SKIP_CHECKS") {
+    } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS === "0") {
         res.status(400).send(
             passStrengthTest.errors,
         );

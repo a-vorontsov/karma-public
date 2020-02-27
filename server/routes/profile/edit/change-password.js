@@ -18,11 +18,11 @@ router.get("/", auth.checkAuthenticated, (req, res) => {
  * @param {HTTP} req must contain userId, oldPassword, newPassword, confirmPassword
  * @return {HTTP} res
  */
-router.post("/", auth.checkAuthenticated, async (req, res) => {
+router.post("/", async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
     if (req.body.newPassword !== req.body.confirmPassword) {
         res.status(400).send({message: "Passwords do not match."});
-    } else if (!passStrengthTest.strong && process.env.ANY_PASSWORD !== "SKIP_CHECKS") {
+    } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS === "0") {
         res.status(400).send(passStrengthTest.errors);
     } else if (!users.userExists(req.userId)) {
         res.status(400).send({message: "User with given ID does not exist."});

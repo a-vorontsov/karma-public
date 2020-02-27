@@ -160,4 +160,7 @@ module.exports = {
     registerUser: registerUser,
     registerIndividual: registerIndividual,
     registerOrg: registerOrg,
+    userExists: () => true,
+    isCorrectPassword: () => true,
+    updatePassword: () => true,
 };
