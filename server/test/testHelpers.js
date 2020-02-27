@@ -59,6 +59,7 @@ const user = {
     date_registered: "2016-06-22 19:10:25-07",
 };
 
+
 const user2 = {
     email: "test2@gmail.com",
     username: "test2",
@@ -76,6 +77,31 @@ const user3 = {
     salt: "xlzljlfas",
     date_registered: "2016-06-22 19:10:25-07",
 };
+
+const userWithAddress = {
+    email: 'houssammahlous123@gmail.com',
+    username: 'houssam966',
+    password_hash: 'pw',
+    verified: true,
+    salt: 'salt',
+    date_registered: '2016-06-22 19:10:25-07',
+};
+
+const individualWithAddress = {
+    firstname: "Houssam",
+    lastname: "Mahlous",
+    phone: "+435958934",
+    banned: false,
+    user_id: -1,
+    picture_id: null,
+    address_id: -1,
+    birthday: "1998-10-09",
+    gender: 'M',
+}
+
+const nearbyAddress = {
+
+}
 const individual = {
 
     firstname: "Paul",
@@ -124,6 +150,54 @@ const signUp = {
     confirmed: true,
 };
 
+const eventWithLocation1 = {
+    id: 3,
+    name: "Staying at Home",
+    address_id: 1,
+    women_only: false,
+    spots: 1,
+    address_visible: true,
+    minimum_age: 18,
+    photo_id: false,
+    add_info: false,
+    content: "sleeping at home",
+    date: "2020-03-25T19:10:00.000Z",
+    cause_id: 3,
+    cause_name: "peace",
+    cause_description: "not dealing with people",
+    event_creator_id: 1,
+    address_1: "pincot road",
+    address_2: null,
+    postcode: "SW19 2LF",
+    city: "London",
+    region: null,
+    lat: "51.4149160",
+    long: "-0.1904870",
+};
+const eventWithLocation2 = {
+    id: 1,
+    name: "Close to Home",
+    address_id: 3,
+    women_only: false,
+    spots: 3,
+    address_visible: true,
+    minimum_age: 18,
+    photo_id: false,
+    add_info: false,
+    content: "very very close from home",
+    date: "2020-03-25T19:10:00.000Z",
+    cause_id: 1,
+    cause_name: "gardening",
+    cause_description: "watering plants and dat",
+    event_creator_id: 1,
+    address_1: "nearby road",
+    address_2: null,
+    postcode: "whatever",
+    city: "London",
+    region: null,
+    lat: "51.4161220",
+    long: "-0.1866410",
+};
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
@@ -131,7 +205,8 @@ const clearCauses = async () => {
 const clearDatabase = async () => {
     await db.query("DELETE FROM profile");
     await db.query("DELETE FROM sign_up");
-    await db.query("DELETE FROM event");
+    await db.query("DELETE FROM favourite");
+    await db.query("DELETE FROM event_cause");
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
@@ -157,4 +232,6 @@ module.exports = {
     signUp: signUp,
     clearDatabase: clearDatabase,
     clearCauses: clearCauses,
+    eventWithLocation1: eventWithLocation1,
+    eventWithLocation2: eventWithLocation2,
 };

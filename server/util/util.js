@@ -20,7 +20,32 @@ const isOrganisation = async (userId) => {
     return organisationResult.rows.length > 0; // found at least one organisation with userId
 };
 
+const checkUserId = async (userId) => {
+    const result = {};
+    if (!userId) {
+        result.status = 400;
+        result.message = "No user id was specified in the query";
+        return result;
+    }
+    if (isNaN(userId)) {
+        result.status = 400;
+        result.message = "ID specified is in wrong format";
+        return result;
+    }
+    const userResult = await userRepository.getUserLocation(userId);
+    const user = userResult.rows[0];
+    if (!user) {
+        result.status = 404;
+        result.message = "No user with specified id";
+        return result;
+    }
+    result.status = 200;
+    result.user = user;
+    return result;
+};
+
 module.exports = {
     isIndividual: isIndividual,
     isOrganisation: isOrganisation,
+    checkUserId: checkUserId,
 };
