@@ -16,7 +16,7 @@ import {
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
-import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";
+import CarouselStyles, {itemWidth, itemWidth2, sliderWidth} from "../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/ActivityCard";
 
@@ -47,9 +47,9 @@ class ProfileScreen extends Component {
 
     _renderItem = ({item}) => {
         return (
-            <View style={CarouselStyles.itemContainer}>
+            <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard individual={item.individual} />
+                    <ActivityCard individual={item.individual} signedup={false}/>
                 </View>
             </View>
         );
@@ -78,26 +78,32 @@ class ProfileScreen extends Component {
                                 flex: 1,
                                 backgroundColor: "#00A8A6",
                                 width: width,
+                                justifyContent: "flex-start",
                                 flexDirection: "row-reverse",
                             }}>
-                            <Image
-                                source={icons.cog}
-                                style={{height: 25, width: 25, marginRight: 20}}
-                            />
-                            <Image
-                                source={icons.edit_white}
-                                style={{height: 25, width: 25, marginRight: 20}}
-                            />
+                                <TouchableOpacity>
+                                    <Image
+                                        source={icons.edit_white}
+                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.05,}}
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image
+                                        source={icons.cog}
+                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
+                                    />
+                                </TouchableOpacity>
                         </View>
                         <View
                             style={{
                                 flex: 1,
                                 backgroundColor: "#00A8A6",
-                                height: 180,
+                                height: 160,
                                 width: width,
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 paddingRight: 30,
+                                paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
                             <PhotoUpload
@@ -142,14 +148,22 @@ class ProfileScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                    <Image
-                                        source={icons.badge}
-                                        style={{height: 60, width: 60}}
-                                    />
-                                    <Image
-                                        source={icons.share}
-                                        style={{height: 40, width: 40}}
-                                    />
+                                        <View style={styles.pointContainer}>
+                                            <Image
+                                            source={icons.badge}
+                                            style={{height: 60, width: 60}}
+                                            /> 
+                                            <Image
+                                            source={icons.edit_grey}
+                                            style={{height: 60, width: 60, position: "absolute"}}
+                                            /> 
+                                        </View>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.share}
+                                                style={{height: 40, width: 40}}
+                                            />
+                                        </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -172,29 +186,25 @@ class ProfileScreen extends Component {
                             <View
                                 style={{
                                     flex: 1,
-                                    paddingLeft: 30,
+                                    paddingHorizontal: formWidth*0.075,
                                     alignItems: "flex-start",
-                                    justifyContent: "flex-start",
-                                    paddingTop: 20,
+                                    justifyContent: "space-between",
                                 }}>
                                 <View
                                     style={{
                                         flexDirection: "row",
-                                        alignItems: "flex-end",
-                                        justifyContent: "flex-end",
                                     }}>
                                     <RegularText style={styles.bioHeader}>
                                         Activity
                                     </RegularText>
-                                    <Image
-                                        source={icons.edit_grey}
-                                        style={{
-                                            height: 25,
-                                            width: 25,
-                                            marginTop: 25,
-                                            marginLeft: formWidth * 0.75,
-                                        }}
-                                    />
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                                 <View style={{flex: 1, flexDirection: "row"}}>
                                     <RegularText style={styles.contentText}>
@@ -217,7 +227,7 @@ class ProfileScreen extends Component {
                                         Women Only:
                                     </RegularText>
                                     <RegularText style={styles.answerText}>
-                                        HECK YES
+                                        Y/N
                                     </RegularText>
                                 </View>
                                 <View
@@ -229,22 +239,20 @@ class ProfileScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Bio
                                     </RegularText>
-                                    <Image
-                                        source={icons.edit_grey}
-                                        style={{
-                                            height: 25,
-                                            width: 25,
-                                            marginTop: 25,
-                                            marginLeft: formWidth * 0.75,
-                                        }}
-                                    />
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                                 <View
                                     style={{
                                         flex: 1,
                                         flexDirection: "row",
                                         justifyContent: "center",
-                                        paddingRight: 40,
                                     }}>
                                     <RegularText style={styles.contentText}>
                                         o eos et accusamus et iusto odio
@@ -266,39 +274,39 @@ class ProfileScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Causes
                                     </RegularText>
-                                    <Image
-                                        source={icons.edit_grey}
-                                        style={{
-                                            height: 25,
-                                            width: 25,
-                                            marginTop: 25,
-                                            marginLeft: formWidth * 0.75,
-                                        }}
-                                    />
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
                         </View>
                         <View
                             style={{
                                 flex: 1,
-                                paddingLeft: 30,
                                 alignItems: "flex-start",
                                 justifyContent: "flex-start",
                             }}>
                                 <View 
                                     style={{
                                         flexDirection: "row",
-                                        alignItems: "flex-start",
-                                        justifyContent: "space-evenly",
+                                        alignItems: "center",
+                                        paddingHorizontal: formWidth*0.075,
                                     }}>
-                                <RegularText style={styles.bioHeader}>
-                                    Upcoming Events
-                                </RegularText>
-                                <RegularText style={styles.bioHeader}>
-                                    Past Events
-                                </RegularText>
+                                        <TouchableOpacity>
+                                            <RegularText style={styles.bioHeader}>Upcoming Events</RegularText>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <RegularText style={styles.bioHeaderAlt}>
+                                                Past Events
+                                            </RegularText>
+                                        </TouchableOpacity>
                                 </View>
-                            <View>
+                            <View style={{alignItems: "flex-start", justifyContent: "flex-start"}}>
                                 <Carousel
                                     ref={c => {
                                         this._carousel = c;
@@ -307,7 +315,7 @@ class ProfileScreen extends Component {
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}
-                                    itemWidth={itemWidth}
+                                    itemWidth={itemWidth2}
                                     inactiveSlideOpacity={1}
                                     inactiveSlideScale={1}
                                     containerCustomStyle={CarouselStyles.slider}
@@ -345,6 +353,13 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: "500",
     },
+    bioHeaderAlt: {
+        paddingTop: 25,
+        fontSize: 18,
+        color: "#00A8A6",
+        fontWeight: "500",
+        marginLeft: 80
+    },
     contentText: {
         fontSize: 15,
         color: "black",
@@ -355,6 +370,21 @@ const styles = StyleSheet.create({
         color: "#00A8A6",
         paddingVertical: 5,
         paddingLeft: 5,
+    },
+    editContainer:{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    },
+    edit: {
+        height: 25,
+        width: 25,
+        alignSelf: "center",
+        resizeMode: 'contain',
+    },
+    pointContainer:{
+        flex: 1,
     },
 });
 
