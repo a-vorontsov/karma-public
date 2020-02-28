@@ -8,6 +8,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db-migrate": "db-migrate",
+    "docs": "jsdoc -r ./routes",
     "dev-start": "nodemon ./server",
     "prod-start": "NODE_ENV=production nodemon ./server"
   },
@@ -45,13 +46,14 @@
     "twilio": "^3.39.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2",
-    "supertest": "^4.0.2",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
-    "jest": "^25.1.0"
+    "jest": "^25.1.0",
+    "jsdoc": "^3.6.3",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "jest": {
     "setupFilesAfterEnv": [
