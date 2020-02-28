@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const addressRepository = require("../../models/addressRepository");
 const eventRepository = require("../../models/eventRepository");
-const userRepository = require("../../models/userRepository");
 const util = require("../../util/util");
 const selectedCauseRepository = require("../../models/selectedCauseRepository");
 const individualRepository = require("../../models/individualRepository");
@@ -120,56 +119,6 @@ router.post("/update/:id", (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
-/**
- * Endpoint called whenever a user requests information about an event.
- * URL example: GET http://localhost:8000/event/5
- * @param {Integer} id - id of requested event.
- * @returns:
- *  status: 200, description: Information regarding the event containing the same properties as this example:
- {
-    "id": 7,
-    "name": "event",
-    "address_id": 24,
-    "women_only": true,
-    "spots": 3,
-    "address_visible": true,
-    "minimum_age": 16,
-    "photo_id": true,
-    "physical": true,
-    "add_info": true,
-    "content": "fun event yay",
-    "date": "2004-10-19T09:23:54.000Z",
-    "user_id": 27,
-    "address": {
-        "id": 24,
-        "address_1": "221B Baker St",
-        "address_2": "Marleybone",
-        "postcode": "NW1 6XE",
-        "city": "London",
-        "region": "Greater London",
-        "lat": "51.5237740",
-        "long": "-0.1585340"
-    }
-}
- *  status: 500, description: DB error
- */
-router.get("/:id", async (req, res) => {
-    try {
-        const id = req.params.id;
-
-        const eventResult = await eventRepository.findById(id);
-        const event = eventResult.rows[0];
-        const addressResult = await addressRepository.findById(event.address_id);
-        const address = addressResult.rows[0];
-        res.status(200).send({
-            ...event,
-            address: address,
-        });
-    } catch (e) {
-        console.log(e);
-        res.status(500).send(e);
-    }
-});
 
 /**
  * endpoint called when "All" tab is pressed in Activities homepage
@@ -241,18 +190,11 @@ router.get("/:id", async (req, res) => {
  */
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
-
+    const user = checkUserIdResult.user;
     eventRepository
         .getEventsWithLocation()
         .then(result => {
@@ -335,18 +277,11 @@ router.get("/", async (req, res) => {
  */
 router.get("/causes", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
-
+    const user = checkUserIdResult.user;
     selectedCauseRepository
         .findEventsSelectedByUser(userId)
         .then(result => {
@@ -362,7 +297,7 @@ router.get("/causes", async (req, res) => {
 });
 
 /**
- * route {GET} event/causes
+ * route {GET} event/favourites
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.query.userId - ID of user logged in
@@ -374,18 +309,11 @@ router.get("/causes", async (req, res) => {
  */
 router.get("/favourites", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
-
+    const user = checkUserIdResult.user;
     individualRepository
         .findFavouriteEvents(userId)
         .then(result => {
@@ -401,7 +329,7 @@ router.get("/favourites", async (req, res) => {
 });
 
 /**
- * route {GET} event/causes
+ * route {GET} event/going
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.query.userId - ID of user logged in
@@ -413,18 +341,11 @@ router.get("/favourites", async (req, res) => {
  */
 router.get("/going", async (req, res) => {
     const userId = req.query.userId;
-
-    if (!userId) {
-        return res.status(400).send("No user id was specified in the query");
+    const checkUserIdResult = await util.checkUserId(userId);
+    if (checkUserIdResult.status != 200) {
+        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
-    if (isNaN(userId)) {
-        return res.status(400).send("ID specified is in wrong format");
-    }
-
-    const userResult = await userRepository.getUserLocation(userId);
-    const user = userResult.rows[0];
-    if (!user) return res.status(404).send("No user with specified id");
-
+    const user = checkUserIdResult.user;
     individualRepository
         .findGoingEvents(userId)
         .then(result => {
@@ -437,6 +358,57 @@ router.get("/going", async (req, res) => {
             res.status(200).json(events);
         })
         .catch(err => res.status(500).send(err));
+});
+
+/**
+ * Endpoint called whenever a user requests information about an event.
+ * URL example: GET http://localhost:8000/event/5
+ * @param {Integer} id - id of requested event.
+ * @returns:
+ *  status: 200, description: Information regarding the event containing the same properties as this example:
+ {
+    "id": 7,
+    "name": "event",
+    "address_id": 24,
+    "women_only": true,
+    "spots": 3,
+    "address_visible": true,
+    "minimum_age": 16,
+    "photo_id": true,
+    "physical": true,
+    "add_info": true,
+    "content": "fun event yay",
+    "date": "2004-10-19T09:23:54.000Z",
+    "user_id": 27,
+    "address": {
+        "id": 24,
+        "address_1": "221B Baker St",
+        "address_2": "Marleybone",
+        "postcode": "NW1 6XE",
+        "city": "London",
+        "region": "Greater London",
+        "lat": "51.5237740",
+        "long": "-0.1585340"
+    }
+}
+ *  status: 500, description: DB error
+ */
+router.get("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const eventResult = await eventRepository.findById(id);
+        const event = eventResult.rows[0];
+        const addressResult = await addressRepository.findById(event.address_id);
+        const address = addressResult.rows[0];
+        res.status(200).send({
+            ...event,
+            address: address,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
 });
 
 router.use("/", eventSignupRoute);

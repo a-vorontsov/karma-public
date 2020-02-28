@@ -8,12 +8,12 @@ jest.mock("../models/causeRepository");
 
 
 beforeEach(() => {
-    return testHelpers.clearCauses();
+    return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
     jest.clearAllMocks();
-    return testHelpers.clearCauses();
+    return testHelpers.clearDatabase();
 });
 
 const cause = testHelpers.cause;
