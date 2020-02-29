@@ -1,14 +1,19 @@
+/**
+ * @module Causes
+ */
+
 const express = require('express');
 const router = express.Router();
 const causeRepository = require("../models/causeRepository");
 
 /**
- * @route {GET} /causes
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns:
- *  status: 200, description: Array of all cause objects
+ * Gets all causes.<br/>
+ * URL example: GET http://localhost:8000/causes
+ * @returns
+ *  status: 200, description: Array of all cause objects<br/>
  *  status: 500, description: Most probably a database error occured
+ *  @name Get all causes
+ *  @function
  */
 router.get('/', (req, res) => {
     causeRepository.findAll()
@@ -17,15 +22,16 @@ router.get('/', (req, res) => {
 });
 
 /**
- * route {GET} /causes/:id
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * Gets a cause specified by id.<br/>
+ * URL example: GET http://localhost:8000/causes/3
  * @param {integer} req.params.id - ID of the cause required
- * @returns:
- *  status: 200, description: cause object with given id
- *  status: 400, description: if ID param is not specified or in wrong format/NaN
- *  status: 404, description: no cause was found in DB with ID
+ * @returns
+ *  status: 200, description: cause object with given id <br/>
+ *  status: 400, description: if ID param is not specified or in wrong format/NaN <br/>
+ *  status: 404, description: no cause was found in DB with ID <br/>
  *  status: 500, description: Most probably a database error occured
+ *  @name Get by ID
+ *  @function
  */
 router.get('/:id', (req, res) => {
     const id = req.params.id;

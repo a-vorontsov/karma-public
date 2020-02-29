@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const addressRepository = require("../../models/addressRepository");
 const eventRepository = require("../../models/eventRepository");
-const userRepository = require("../../models/userRepository");
 const util = require("../../util/util");
 const selectedCauseRepository = require("../../models/selectedCauseRepository");
 const individualRepository = require("../../models/individualRepository");
