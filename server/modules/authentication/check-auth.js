@@ -5,14 +5,11 @@
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
- * @return {HTTP} status
  */
 function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    // res.redirect("/login");
-    res.status(401).send({message: "Request is not authorised."});
+    // TODO: validate token and userID in request
+    next();
+    // res.status(401).send({message: "Request is not authorised."});
 }
 
 /**
@@ -26,12 +23,9 @@ function checkAuthenticated(req, res, next) {
  * @param {HTTP} next
  */
 function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        res.status(400).send({
-            message: "User / request already authenticated",
-        });
-    }
+    // TODO: validate token and userID in request
     next();
+    // res.status(401).send({message: "Request is not authorised."});
 }
 
 /**
@@ -42,18 +36,11 @@ function checkNotAuthenticated(req, res, next) {
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
- * @return {HTTP} redirect
  */
 function requireAuthentication(req, res, next) {
-    if (
-        !req.isAuthenticated() &&
-        req.originalUrl !== "/login" &&
-        req.originalUrl !== "/register"
-    ) {
-        // res.redirect("/login");
-        res.status(401).send({message: "Request is not authorised."});
-    }
-    return next();
+    // TODO: validate token and userID in request
+    next();
+    // res.status(401).send({message: "Request is not authorised."});
 }
 
 module.exports = {

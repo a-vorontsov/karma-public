@@ -155,12 +155,35 @@ function registerAddress(addressLine1, addressLine2, townCity, countryState, pos
     }).id;
 }
 
+/**
+ * Return true if password is correct for given
+ * user.
+ * @param {integer} userId
+ * @param {string} password
+ * @return {boolean} true if password is correct
+ * @throws {error} if invalid query
+ */
+function isCorrectPassword(userId, password) {
+    return true;
+}
+
+/**
+ * Update password for given user.
+ * This also updates the salt for
+ * this user.
+ * @param {Integer} userId
+ * @param {String} password
+ * @throws {error} if invalid query
+ */
+function updatePassword(userId, password) {
+    // TODO:
+}
+
 module.exports = {
     registerEmail: registerEmail,
     registerUser: registerUser,
     registerIndividual: registerIndividual,
     registerOrg: registerOrg,
-    userExists: () => true,
-    isCorrectPassword: () => true,
-    updatePassword: () => true,
+    isCorrectPassword: isCorrectPassword,
+    updatePassword: updatePassword,
 };

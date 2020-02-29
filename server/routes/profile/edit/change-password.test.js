@@ -15,9 +15,9 @@ afterEach(() => {
 
 const changePasswordRequest = {
     userId: 1,
-    oldPassword: "old_hash",
-    newPassword: "new_hash",
-    confirmPassword: "new_hash",
+    oldPassword: "old_plaintext",
+    newPassword: "new_plaintext",
+    confirmPassword: "new_plaintext",
 };
 
 
