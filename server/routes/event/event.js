@@ -8,7 +8,6 @@ const individualRepository = require("../../models/individualRepository");
 const eventSorter = require("../../modules/sorting/event");
 const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
-const querystring = require('querystring');
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -192,7 +191,6 @@ router.post("/update/:id", (req, res) => {
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
     const filters = req.query.filter;
-
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status != 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
@@ -280,13 +278,14 @@ router.get("/", async (req, res) => {
  */
 router.get("/causes", async (req, res) => {
     const userId = req.query.userId;
+    const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status != 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
     selectedCauseRepository
-        .findEventsSelectedByUser(userId)
+        .findEventsSelectedByUser(userId, filters)
         .then(result => {
             const events = result.rows;
             if (events.length === 0) {

@@ -1,4 +1,5 @@
 const db = require("../database/connection");
+const filterer = require("../modules/filtering");
 
 const insert = (event) => {
     const query = "INSERT INTO event(name, address_id, women_only, spots, address_visible, minimum_age, " +
@@ -38,25 +39,12 @@ const update = (event) => {
 };
 
 const getEventsWithLocation = (filters) => {
-    if (filters) {
-        let whereClause = " where ";
-        if (filters.includes("womenOnly")) {
-            whereClause += "women_only = true and ";
-        }
-        if (filters.includes("physical")) {
-            whereClause += "physical = true";
-        }
-        const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
-            "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
-            "from address right join event on id(address) = address_id" + whereClause;
-        return db.query(query);
-    }
+    const whereClause = filterer.getWhereClause(filters);
     const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
-        "from address right join event on id(address) = address_id";
+        "from address right join event on id(address) = address_id" + whereClause;
     return db.query(query);
 };
-
 module.exports = {
     insert: insert,
     findById: findById,
