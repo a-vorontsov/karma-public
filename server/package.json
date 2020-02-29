@@ -41,7 +41,6 @@
     "passport-oauth": "^1.0.0",
     "passport-oauth2": "^1.5.0",
     "pg": "^7.18.1",
-    "query-string": "^6.11.0",
     "randomatic": "^3.1.1",
     "stripe": "^8.19.0",
     "twilio": "^3.39.4"
