@@ -176,7 +176,8 @@ function isCorrectPassword(userId, password) {
  * @throws {error} if invalid query
  */
 function updatePassword(userId, password) {
-    // TODO:
+    const hashedPassword = digest.hashPassWithSaltInHex(password, digest.getSecureSaltInHex());
+    userRepo.updatePassword(userId, hashedPassword);
 }
 
 module.exports = {
