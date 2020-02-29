@@ -37,7 +37,7 @@ const findByUsername = (username) => {
 };
 
 const updatePassword = (userId, hashedPassword) => {
-    const query = "UPDATE user SET password_hash = $2 WHERE user_id = $1 RETURNING *";
+    const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
     const params = [userId, hashedPassword];
     return db.query(query, params);
 };
