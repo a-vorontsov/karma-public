@@ -20,12 +20,12 @@ const changePasswordRequest = {
 
 
 test('changing password works', async () => {
-    owasp.test.mockReturnValue(true);
+    owasp.test.mockReturnValue({strong: true});
     const response = await request(app)
         .post("/profile/edit/password")
         .send(changePasswordRequest);
     expect(owasp.test).toHaveBeenCalledTimes(1);
-
+    
     expect(response.statusCode).toBe(200);
 });
 
