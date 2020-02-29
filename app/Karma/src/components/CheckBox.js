@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet} from "react-native";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Colours from "../styles/Colours";
 
-const LIGHT_GREY = "#d7dadb";
 const TICK = "✓";
 
 class CheckBox extends Component {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         width: 20,
         borderWidth: 2,
         borderColor: "transparent",
-        backgroundColor: LIGHT_GREY,
+        backgroundColor: Colours.lightGrey,
         borderRadius: 3,
         alignItems: "center",
         justifyContent: "center",

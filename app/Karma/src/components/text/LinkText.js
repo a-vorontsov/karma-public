@@ -1,7 +1,8 @@
 import React from "react";
-import {Text, StyleSheet} from "react-native";
+import { Text, StyleSheet } from "react-native";
+import Colours from "../../styles/Colours";
 
-export default class BoldText extends React.Component {
+export default class LinkText extends React.Component {
     render() {
         return (
             <Text
@@ -15,6 +16,8 @@ export default class BoldText extends React.Component {
 
 const styles = StyleSheet.create({
     text: {
-        fontFamily: "OpenSans-Bold",
+        fontFamily: "OpenSans-Regular",
+        color: Colours.blue,
+        textDecorationLine: "underline",
     },
 });

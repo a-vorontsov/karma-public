@@ -1,12 +1,11 @@
 import React, {Component} from "react";
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    StatusBar,
-    Platform,
-} from "react-native";
-import {RegularText} from "../components/text";
+import {View, StatusBar, Platform} from "react-native";
+import {RegularText, LogoText} from "../components/text";
+import {TransparentButton, TextButton} from "../components/buttons";
+import LinearGradient from "react-native-linear-gradient";
+import Styles from "../styles/Styles";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {
     static navigationOptions = {headerShown: false};
@@ -14,70 +13,57 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor("#f8f8f8");
+            StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
         return (
-            <View style={styles.container}>
-                <View style={{flex: 2, justifyContent: "center"}}>
-                    <RegularText style={[styles.text, {fontSize: 70}]}>
-                        KARMA
-                    </RegularText>
-                    <RegularText style={[styles.text, {fontSize: 40}]}>
-                        lorem ipsum
-                    </RegularText>
-                </View>
-
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        marginBottom: 40,
-                    }}>
-                    <TouchableOpacity
-                        style={[styles.button, {marginBottom: 20}]}
-                        onPress={() => navigate("InitSignup")}>
-                        <RegularText style={[styles.text, {fontSize: 20}]}>
-                            Sign Up
-                        </RegularText>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this._onPressButton}>
+            <LinearGradient
+                useAngle={true}
+                angle={45}
+                angleCenter={{x: 0.5, y: 0.5}}
+                colors={[Colours.blue, Colours.lightBlue]}
+                style={Styles.alignJustifyCenterContainer}>
+                <SafeAreaView style={Styles.stretchContainer}>
+                    <View style={[Styles.vcenter, Styles.textCenter]}>
+                        <LogoText
+                            style={[
+                                Styles.white,
+                                Styles.textCenter,
+                                Styles.welcomeLogo,
+                            ]}>
+                            KARMA
+                        </LogoText>
                         <RegularText
                             style={[
-                                styles.text,
-                                {fontSize: 15, fontWeight: "200"},
+                                Styles.white,
+                                Styles.textCenter,
+                                Styles.xxxlarge,
                             ]}>
-                            Already have an account? Login
+                            lorem ipsum
                         </RegularText>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                    </View>
+
+                    <View style={Styles.bottom}>
+                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                            <TransparentButton
+                                onPress={() => navigate("InitSignup")}
+                                white
+                                title="Sign Up"
+                            />
+
+                            <TextButton
+                                title="Already have an account? Login"
+                                styles={[
+                                    Styles.white,
+                                    Styles.medium,
+                                    Styles.pt16,
+                                ]}
+                            />
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#03A8AE",
-    },
-    text: {
-        justifyContent: "center",
-        textAlign: "center",
-        color: "white",
-    },
-    button: {
-        alignItems: "center",
-        backgroundColor: "transparent",
-        borderColor: "white",
-        borderWidth: 2,
-        borderRadius: 30,
-        paddingHorizontal: 125,
-        paddingVertical: 10,
-    },
-});
 
 export default WelcomeScreen;

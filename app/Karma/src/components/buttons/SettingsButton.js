@@ -1,9 +1,10 @@
 import React from "react";
 
-import {Image, TouchableOpacity, StyleSheet, Icon, View} from "react-native";
+import {Image, TouchableOpacity, View} from "react-native";
 
-import Styles from "../../styles/Styles";
-import {RegularText} from "../text";
+import { RegularText } from "../text";
+
+import Colours from "../../styles/Colours";
 
 export default class SettingsButton extends React.Component {
     render() {
@@ -11,21 +12,30 @@ export default class SettingsButton extends React.Component {
         return (
             <TouchableOpacity
                 style={{
-                    borderBottomColor: '#e5e5e5',
+                    borderBottomColor: Colours.lighterGrey,
                     borderBottomWidth: 2,
-                    flexDirection: 'row', 
-                    alignItems: 'center', 
+                    flexDirection: "row",
+                    alignItems: "center",
                 }}
                 onPress={onPress}
                 activeOpacity={0.9}>
-                <View 
+                <View
                     style={{
                         flex: 1,
-                        flexDirection: 'row', 
-                        alignItems: 'center', 
-                }}>
-                    <Image style={{height: 20, width: 20, resizeMode: 'contain'}} source={icon}></Image>
-                    <RegularText style={{fontSize: 20, color: "gray", paddingVertical: 25, paddingLeft: 15}}>
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}>
+                    <Image
+                        style={{height: 20, width: 20, resizeMode: "contain"}}
+                        source={icon}
+                    />
+                    <RegularText
+                        style={{
+                            fontSize: 20,
+                            color: "gray",
+                            paddingVertical: 25,
+                            paddingLeft: 15,
+                        }}>
                         {title}
                     </RegularText>
                 </View>

@@ -1,6 +1,7 @@
-import {StyleSheet, Dimensions, Platform} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
-const IS_IOS = Platform.OS === "ios";
+import Colours from "../styles/Colours";
+
 const {width: viewportWidth} = Dimensions.get("window");
 
 function wp(percentage) {
@@ -21,25 +22,25 @@ const CarouselStyles = StyleSheet.create({
         overflow: "visible",
     },
     itemContainer: {
-        marginBottom: IS_IOS ? 0 : -1,
         width: itemWidth,
         height: itemHeight,
         overflow: "visible",
+        paddingHorizontal: itemHorizontalMargin,
     },
     item: {
         backgroundColor: "white",
         position: "absolute",
         top: 8,
-        left: itemHorizontalMargin,
-        right: itemHorizontalMargin,
         bottom: 8,
+        left: 8,
         borderRadius: 6,
         borderBottomWidth: 16,
-        borderBottomColor: "#00bab9",
+        borderBottomColor: Colours.blue,
         paddingTop: 16,
+        overflow: "visible",
     },
     shadow: {
-        shadowColor: "#000",
+        shadowColor: Colours.black,
         shadowOffset: {
             width: 0,
             height: 2,

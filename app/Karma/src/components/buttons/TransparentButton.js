@@ -7,14 +7,22 @@ import {RegularText} from "../text";
 
 export default class TransparentButton extends React.Component {
     render() {
-        const {onPress, title} = this.props;
+        const {onPress, title, white} = this.props;
         return (
             <TouchableOpacity
-                style={[Styles.roundButton, Styles.roundButtonTransparent]}
+                style={[
+                    Styles.roundButton,
+                    white
+                        ? Styles.roundButtonTransparentWhite
+                        : Styles.roundButtonTransparent,
+                ]}
                 onPress={onPress}
                 activeOpacity={0.9}>
                 <RegularText
-                    style={[{fontSize: 20}, Styles.roundButtonTransparentText]}>
+                    style={[
+                        {fontSize: 20},
+                        white ? Styles.white : Styles.green,
+                    ]}>
                     {title}
                 </RegularText>
             </TouchableOpacity>
