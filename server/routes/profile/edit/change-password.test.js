@@ -5,7 +5,9 @@ const owasp = require("owasp-password-strength-test");
 
 jest.mock("owasp-password-strength-test");
 
-
+beforeEach(() => {
+    process.env.SKIP_PASSWORD_CHECKS = 0;
+});
 
 afterEach(() => {
     jest.clearAllMocks();
