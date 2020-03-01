@@ -12,27 +12,21 @@ import ReadMore from 'react-native-read-more-text';
 
 const icons = {
     fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
-    fave_active: require("../assets/images/general-logos/fav-outline-profile.png"),
+    fave_active: require("../assets/images/general-logos/heart-red.png"),
     clock: require("../assets/images/general-logos/clock-logo.png"),
     people: require("../assets/images/general-logos/people-logo.png"),
     signup: require("../assets/images/general-logos/favourite.png"),
+    date: require("../assets/images/general-logos/rectangle-blue.png"),
 };
+
+
 
 const ActivityCard = props => {
     const navigation = useNavigation();
+
     return (
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>
-                <Image source={props.signedup ? icons.signup : null} 
-                    style={{
-                        position:"absolute",
-                        top: 0,
-                        right: 0,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
-                />
                 <Image
                     source={
                         props.individual
@@ -42,6 +36,54 @@ const ActivityCard = props => {
                     style={{flex: 1, width: null, height: null, marginBottom: 10}}
                     resizeMode="cover"
                 />
+                <Image source={props.signedup ? icons.signup : null} 
+                    style={{
+                        position:"absolute",
+                        top: 5,
+                        right: 5,
+                        height: 50,
+                        width: 50,
+                        resizeMode: "contain",
+                    }}
+                />
+                <Image source={icons.date} 
+                    style={{
+                        position:"absolute",
+                        top: 5,
+                        left: 5,
+                        height: 50,
+                        width: 50,
+                        resizeMode: "contain",
+                    }}
+                />
+                <RegularText
+                style={{
+                    position:"absolute",
+                    top: 5,
+                    left: 1,
+                    height: 50,
+                    width: 50,
+                    fontSize: 20,
+                    textAlign: "center",
+                    fontWeight: "500",
+                    color: "white",
+                }}
+                > MON
+                </RegularText>
+                <RegularText
+                style={{
+                    position:"absolute",
+                    top: 25,
+                    left: 0,
+                    height: 50,
+                    width: 50,
+                    fontSize: 20,
+                    textAlign: "center",
+                    fontWeight: "500",
+                    color: "white",
+                }}
+                > DAY
+                </RegularText>
                 <View>
                     <View
                         style={{
@@ -58,6 +100,7 @@ const ActivityCard = props => {
                                     resizeMode: "contain",
                                     marginLeft: 20,
                                 }}
+                                onPress={this.setFav(!props.favorited)}
                             />
                         </TouchableOpacity>
                     </View>
@@ -79,6 +122,12 @@ const ActivityCard = props => {
         </View>
     );
 };
+
+setFav = (handlePress) => {
+    return (
+        favorited = false
+    );
+}
 
 _renderTruncatedFooter = (handlePress) => {
     return (

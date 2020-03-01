@@ -45,7 +45,7 @@ class SettingsMenuScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        paddingHorizontal: 10
     },
     header: {
         flexDirection: 'row',
