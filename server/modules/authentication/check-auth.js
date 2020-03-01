@@ -71,8 +71,18 @@ async function isAuthenticated(userId, authToken) {
     return true;
 }
 
+/**
+ * Log user out and destroy their
+ * auth token.
+ * @param {integer} userId
+ */
+async function logOut(userId) {
+    // TODO:
+}
+
 module.exports = {
     checkAuthenticated: checkAuthenticated,
     checkNotAuthenticated: checkNotAuthenticated,
     requireAuthentication: requireAuthentication,
+    logOut: logOut,
 };
