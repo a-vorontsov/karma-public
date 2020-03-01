@@ -5,16 +5,13 @@ const userRepo = require("../../models/userRepository");
  * Returns true if email exists in registration table
  * @param {string} email
  * @return {boolean} true if email exists in DB
+ * @throws {error} if failed query
  */
 async function emailExists(email) {
-    try {
-        // regRepo might throw an error if query returns undefined
-        const regResult = await regRepo.findByEmail(email);
-        const regRecord = regResult.rows[0];
-        return regRecord !== undefined;
-    } catch (e) {
-        return false;
-    }
+    // regRepo might throw an error if query returns undefined
+    const regResult = await regRepo.findByEmail(email);
+    const regRecord = regResult.rows[0];
+    return regRecord !== undefined;
 }
 
 /**
@@ -25,7 +22,7 @@ async function emailExists(email) {
  * called after emailExists has been checked.
  * @param {string} email
  * @return {boolean} true if email is verified
- * @throws {error} if email is not found
+ * @throws {error} if failed query
  */
 async function isEmailVerified(email) {
     const regResult = await regRepo.findByEmail(email);
@@ -47,7 +44,7 @@ async function isEmailVerified(email) {
  * called after emailExists has been checked.
  * @param {string} email
  * @return {boolean} true if partly registered
- * @throws {error} if email is not found
+ * @throws {error} if failed query
  */
 async function isPartlyRegistered(email) {
     const userResult = await userRepo.findByEmail(email);
@@ -79,6 +76,7 @@ async function userAccountExists(email) {
  * @param {string} email
  * @return {boolean} true if fully registered
  * @throws {error} if email is not found
+ * @throws {error} if failed query
  */
 async function isFullyRegisteredByEmail(email) {
     const regResult = await regRepo.findByEmail(email);
@@ -100,6 +98,7 @@ async function isFullyRegisteredByEmail(email) {
  * @param {integer} userId
  * @return {boolean} true if fully registered
  * @throws {error} if useId is not found
+ * @throws {error} if failed query
  */
 async function isFullyRegisteredById(userId) {
     const userResult = await userRepo.findById(userId);
