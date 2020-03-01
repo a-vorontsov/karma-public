@@ -159,12 +159,18 @@ function registerAddress(addressLine1, addressLine2, townCity, countryState, pos
  * Return true if password is correct for given
  * user.
  * @param {integer} userId
- * @param {string} password
+ * @param {string} inputPassword
  * @return {boolean} true if password is correct
+ * @throws {error} if user with userId not found
  * @throws {error} if invalid query
  */
-function isCorrectPassword(userId, password) {
-    return true;
+async function isCorrectPassword(userId, inputPassword) {
+    const userResult = await userRepo.findById(userId);
+    const user = userResult.rows[0];
+    if (user === undefined) {
+        throw new Error("User with userId(" + userId + ") not found");
+    }
+    return user.password_hash === digest.hashPassWithSaltInHex(inputPassword, user.salt);
 }
 
 /**
@@ -176,7 +182,10 @@ function isCorrectPassword(userId, password) {
  * @throws {error} if invalid query
  */
 function updatePassword(userId, password) {
-    const hashedPassword = digest.hashPassWithSaltInHex(password, digest.getSecureSaltInHex());
+    const hashedPassword = digest.hashPassWithSaltInHex(
+        password,
+        digest.getSecureSaltInHex(),
+    );
     userRepo.updatePassword(userId, hashedPassword);
 }
 

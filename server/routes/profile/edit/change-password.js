@@ -27,15 +27,19 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
             message: "Passwords do not match.",
         });
     } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
-        res.status(400).send(
-            passStrengthTest.errors,
-        );
-    } else if (!userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword)) {
         res.status(400).send({
-            message: "Incorrect old password.",
+            message: "Weak password.",
+            errors: passStrengthTest.errors,
         });
     } else {
         try {
+            // TODO: await isCorrectPass
+            const isCorrectPass = userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword);
+            if (!isCorrectPass) {
+                res.status(400).send({
+                    message: "Incorrect old password.",
+                });
+            }
             userAgent.updatePassword(req.body.userId, req.body.newPassword);
             res.status(200).send({
                 message: "Password successfully updated.",
