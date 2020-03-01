@@ -13,7 +13,7 @@ const addressRepo = require("../../models/addressRepository");
  * @throws {error} if invalid query
  */
 async function registerEmail(email) {
-    if (await !regStatus.emailExists(email)) {
+    if (!(await regStatus.emailExists(email))) {
         throw new Error("Invalid operation: email already exists.");
     }
     await regRepo.insert({
