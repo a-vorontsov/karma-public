@@ -1,7 +1,7 @@
 import React from "react";
 import {View, TouchableOpacity, Image} from "react-native";
 import {RegularText} from "../components/text";
-import { useNavigation } from "react-navigation-hooks";
+import {useNavigation} from "react-navigation-hooks";
 import Colours from "../styles/Colours";
 
 const PageHeader = props => {

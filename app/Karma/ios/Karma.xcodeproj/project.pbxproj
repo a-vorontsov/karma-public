@@ -104,6 +104,8 @@
 		4E8D162E96E4497FA0531B36 /* privacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AC72A3A51C441969831F8F9 /* privacy.png */; };
 		DFA78B4ADC4E440BAA5809F0 /* report-problem.png in Resources */ = {isa = PBXBuildFile; fileRef = F45D8B49FD014178AA8619AD /* report-problem.png */; };
 		E46DC8A95B31419193F9834A /* terms.png in Resources */ = {isa = PBXBuildFile; fileRef = A58B44034AE04C139233AC0E /* terms.png */; };
+		138FECED6E234E86874479CC /* energy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3710C17041EA4CBA8A87A67F /* energy.png */; };
+		4BFE20E9458D468D9042E815 /* energy-white.png in Resources */ = {isa = PBXBuildFile; fileRef = F09438F6ED7A42468B734383 /* energy-white.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +239,8 @@
 		8AC72A3A51C441969831F8F9 /* privacy.png */ = {isa = PBXFileReference; name = "privacy.png"; path = "../src/assets/images/settings-logos/privacy.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F45D8B49FD014178AA8619AD /* report-problem.png */ = {isa = PBXFileReference; name = "report-problem.png"; path = "../src/assets/images/settings-logos/report-problem.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A58B44034AE04C139233AC0E /* terms.png */ = {isa = PBXFileReference; name = "terms.png"; path = "../src/assets/images/settings-logos/terms.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3710C17041EA4CBA8A87A67F /* energy.png */ = {isa = PBXFileReference; name = "energy.png"; path = "../src/assets/images/causes-logos/energy.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F09438F6ED7A42468B734383 /* energy-white.png */ = {isa = PBXFileReference; name = "energy-white.png"; path = "../src/assets/images/causes-logos/white/energy-white.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,6 +410,8 @@
 				8AC72A3A51C441969831F8F9 /* privacy.png */,
 				F45D8B49FD014178AA8619AD /* report-problem.png */,
 				A58B44034AE04C139233AC0E /* terms.png */,
+				3710C17041EA4CBA8A87A67F /* energy.png */,
+				F09438F6ED7A42468B734383 /* energy-white.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -689,6 +695,8 @@
 				4E8D162E96E4497FA0531B36 /* privacy.png in Resources */,
 				DFA78B4ADC4E440BAA5809F0 /* report-problem.png in Resources */,
 				E46DC8A95B31419193F9834A /* terms.png in Resources */,
+				138FECED6E234E86874479CC /* energy.png in Resources */,
+				4BFE20E9458D468D9042E815 /* energy-white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

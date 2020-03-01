@@ -17,7 +17,7 @@ import {RadioInput} from "../components/radio";
 
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import Styles, { normalise } from "../styles/Styles";
+import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 
 class AboutScreen extends React.Component {
@@ -43,7 +43,7 @@ class AboutScreen extends React.Component {
 
     goToNext() {
         if (this.state.genderSelected && this.state.dateSelected) {
-            this.props.navigation.navigate("ContactInfoScreen", {
+            this.props.navigation.navigate("PickCauses", {
                 photo: this.state.photo,
                 gender: this.state.gender,
                 date: this.state.date,
