@@ -13,7 +13,7 @@ test("response is true after wait", async () => {
 
 /* eslint-disable require-jsdoc */
 async function waitForAccountUpdate() {
-    await sleep(2000);
+    await sleep(1250);
 }
 
 function sleep(ms) {

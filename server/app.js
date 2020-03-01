@@ -38,6 +38,11 @@ app.use("/logout", require("./routes/signin/logout"));
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
+app.use("/error/nouserid", require("./routes/error/noUserId"));
+app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
+app.use("/error/unauthorised", require("./routes/error/unauthorised"));
+app.use("/error/tokenexpired", require("./routes/error/tokenExpired"));
+
 app.use("/users", require("./routes/users"));
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));

@@ -19,6 +19,7 @@ const changePasswordRequest = {
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     changePasswordRequest.oldPassword = "password";
     changePasswordRequest.confirmPassword = "new_plaintext";
     return testHelpers.clearDatabase();

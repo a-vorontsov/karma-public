@@ -43,7 +43,7 @@ async function uploadFile(userId) {
  */
 function updateAccount(userId) {
     return (
-        accounts.find(account => account.id === userId).timestamp + 1000 < Date.now()
+        accounts.find(account => account.id === userId).timestamp + 500 < Date.now()
     );
 }
 
