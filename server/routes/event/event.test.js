@@ -7,7 +7,6 @@ const addressRepository = require("../../models/addressRepository");
 const eventRepository = require("../../models/eventRepository");
 const selectedCauseRepository = require("../../models/selectedCauseRepository");
 const individualRepository = require("../../models/individualRepository");
-const userRepository = require("../../models/userRepository");
 
 
 jest.mock("../../models/eventRepository");

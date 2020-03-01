@@ -138,10 +138,9 @@ async function setSignUpFlagTrue(userId) {
  * @param {string} phoneNumber
  */
 async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, organisationType, lowIncome, exempt, pocFirstName, pocLastName, townCity, countryState, postCode, phoneNumber) {
-    // if (regStatus.isFullyRegisteredById(userId)) {
-    //     throw new Error("Invalid operation: already fully registered.");
-    // }
-    // register address and get it's id
+    if (await regStatus.isFullyRegisteredById(userId)) {
+        throw new Error("Invalid operation: already fully registered.");
+    }
 
     const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
     const addressId = addressResult.rows[0].id;
@@ -154,12 +153,12 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         poc_lastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        org_register_date: Date.now(),
+        org_register_date: "2016-06-22 19:10:25-07", // TODO:
         low_income: lowIncome,
         exempt: exempt,
         picture_id: null, // TODO:
         user_id: userId,
-        addressId: addressId,
+        address_id: addressId,
     });
 
     await setSignUpFlagTrue(userId);
