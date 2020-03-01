@@ -5,6 +5,7 @@ on:
   push:
     branches: # == run tests only on push to following branches: ==
       - master # master (rerun tests after merging a PR)
+      - "be-*"
     paths:
       - "server/**" # limit workflow tests only to changes in backend folder
   pull_request:
