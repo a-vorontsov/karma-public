@@ -61,6 +61,23 @@ test('weak passwords rejected', async () => {
     expect(response.body.message).toBe("Weak password.");
 });
 
+test("confirm password mismatch rejected", async () => {
+  await regRepo.insert(registration);
+  const insertUserResult = await userRepo.insert(user);
+
+  changePasswordRequest.userId = insertUserResult.rows[0].id;
+  changePasswordRequest.confirmPassword = "new_plaintext_mistyped";
+
+  owasp.test.mockReturnValue({ strong: false });
+  const response = await request(app)
+    .post("/profile/edit/password")
+    .send(changePasswordRequest);
+  expect(owasp.test).toHaveBeenCalledTimes(1);
+
+  expect(response.statusCode).toBe(400);
+  expect(response.body.message).toBe("Passwords do not match.");
+});
+
 //TODO: check change-password.js
 // test("incorrect old pass rejected", async () => {
 //   await regRepo.insert(registration);
