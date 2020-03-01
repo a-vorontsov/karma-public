@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const stripeVerification = require("../../modules/verification/stripe");
-const auth = require("../../modules/authentication/check-auth");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 router.post('/create', (req, res) => {
     try {
@@ -12,7 +12,7 @@ router.post('/create', (req, res) => {
     }
 });
 
-router.get('/check', auth.checkAuthenticated, (req, res) => {
+router.get('/check', authAgent.checkAuthenticated, (req, res) => {
     try {
         stripeVerification.updateAccount(req.user.id);
         res.status(200).send({message: "Identity verified for user {" + req.user.id +"}."});

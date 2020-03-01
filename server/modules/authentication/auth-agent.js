@@ -72,6 +72,17 @@ async function isAuthenticated(userId, authToken) {
 }
 
 /**
+ * Log user in: initialise and return their
+ * auth token.
+ * @param {integer} userId
+ * @return {string} authToken
+ */
+async function logIn(userId) {
+    // TODO:
+    return "secureKarmaToken";
+}
+
+/**
  * Log user out and destroy their
  * auth token.
  * @param {integer} userId
@@ -84,5 +95,6 @@ module.exports = {
     checkAuthenticated: checkAuthenticated,
     checkNotAuthenticated: checkNotAuthenticated,
     requireAuthentication: requireAuthentication,
+    logIn: logIn,
     logOut: logOut,
 };

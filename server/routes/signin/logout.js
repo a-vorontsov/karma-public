@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const auth = require("../../modules/authentication/check-auth");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever a user wishes to log out from the
@@ -24,9 +24,9 @@ const auth = require("../../modules/authentication/check-auth");
  * @name Log-out
  * @function
  */
-router.get("/", auth.checkAuthenticated, async (req, res) => {
+router.get("/", authAgent.checkAuthenticated, async (req, res) => {
     try {
-        auth.logOut(req.body.userId);
+        authAgent.logOut(req.body.userId);
         res.status(200).send({
             message: "User successfully logged out.",
         });

@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const auth = require("../../modules/authentication/check-auth");
+const authAgent = require("../../modules/authentication/auth-agent");
 const regStatus = require("../../modules/authentication/registration-status");
 const userAgent = require("../../modules/authentication/user-agent");
 const regRepo = require("../../models/registrationRepository");
@@ -31,7 +31,7 @@ const userRepo = require("../../models/userRepository");
  * @name Sign-in with email
  * @function
  */
-router.post("/", auth.checkNotAuthenticated, async (req, res) => {
+router.post("/", authAgent.checkNotAuthenticated, async (req, res) => {
     try {
         if (!(await regStatus.emailExists(req.body.email))) {
             try {

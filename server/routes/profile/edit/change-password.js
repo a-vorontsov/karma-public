@@ -5,7 +5,7 @@
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
-const auth = require("../../../modules/authentication/check-auth");
+const authAgent = require("../../../modules/authentication/auth-agent");
 const owasp = require("owasp-password-strength-test");
 
 /**
@@ -26,7 +26,7 @@ const owasp = require("owasp-password-strength-test");
  * @name Change password
  * @function
  */
-router.post("/", auth.checkAuthenticated, async (req, res) => {
+router.post("/", authAgent.checkAuthenticated, async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
     if (req.body.newPassword !== req.body.confirmPassword) {
         res.status(400).send({
@@ -39,7 +39,7 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
         });
     } else {
         try {
-            if (await userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword)) {
+            if (await userAgent.isCorrectPasswordById(req.body.userId, req.body.oldPassword)) {
                 await userAgent.updatePassword(
                     req.body.userId,
                     req.body.newPassword,

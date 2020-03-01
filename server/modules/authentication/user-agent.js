@@ -189,20 +189,47 @@ async function registerAddress(addressLine1, addressLine2, townCity, countryStat
 
 /**
  * Return true if password is correct for given
- * user.
+ * user. The user is specified by their userId address.
  * @param {integer} userId
  * @param {string} inputPassword
  * @return {boolean} true if password is correct
  * @throws {error} if user with userId not found
  * @throws {error} if invalid query
  */
-async function isCorrectPassword(userId, inputPassword) {
+async function isCorrectPasswordById(userId, inputPassword) {
     const userResult = await userRepo.findById(userId);
-    const user = userResult.rows[0];
+    return isCorrectPassword(userResult.rows[0], inputPassword);
+}
+
+/**
+ * Return true if password is correct for given
+ * user. The user is specified by their email address.
+ * @param {email} email
+ * @param {string} inputPassword
+ * @return {boolean} true if password is correct
+ * @throws {error} if user with userId not found
+ * @throws {error} if invalid query
+ */
+async function isCorrectPasswordByEmail(email, inputPassword) {
+    const userResult = await userRepo.findByEmail(email);
+    return isCorrectPassword(userResult.rows[0], inputPassword);
+}
+
+/**
+ * Return true if password correct for user.
+ * The user is passed as a user object.
+ * This throws and error if user is undefined indicating
+ * that it was not found in the database.
+ * @param {Object} user
+ * @param {string} inputPassword
+ * @throws {error} if user is undefined
+ * @return {boolean} true if correct password
+ */
+function isCorrectPassword(user, inputPassword) {
     if (user === undefined) {
-        throw new Error("User with userId(" + userId + ") not found");
+        throw new Error("User by given email/id not found");
     }
-    return user.password_hash === digest.hashPassWithSaltInHex(inputPassword, user.salt);
+    return (user.password_hash === digest.hashPassWithSaltInHex(inputPassword, user.salt));
 }
 
 /**
@@ -221,11 +248,26 @@ async function updatePassword(userId, password) {
     await userRepo.updatePassword(userId, hashedPassword);
 }
 
+/**
+ * Get userId of user specified by email address.
+ * @param {string} email
+ * @return {integer} userId
+ * @throws {error} if user is not found
+ * @throws {error} if invalid query
+ */
+async function getUserId(email) {
+    const userResult = await userRepo.findByEmail(email);
+    const userRecord = userResult.rows[0];
+    return userRecord.id;
+}
+
 module.exports = {
     registerEmail: registerEmail,
     registerUser: registerUser,
     registerIndividual: registerIndividual,
     registerOrg: registerOrg,
-    isCorrectPassword: isCorrectPassword,
+    isCorrectPasswordById: isCorrectPasswordById,
+    isCorrectPasswordByEmail: isCorrectPasswordByEmail,
     updatePassword: updatePassword,
+    getUserId: getUserId,
 };
