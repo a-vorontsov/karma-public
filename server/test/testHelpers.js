@@ -32,6 +32,22 @@ const registration4 = {
     sign_up_flag: 0,
 };
 
+const registration5 = {
+    email: "test4@gmail.com",
+    email_flag: 1,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
+const registration6 = {
+    email: "test4@gmail.com",
+    email_flag: 1,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 1,
+};
+
 const address = {
     address_1: "221B Baker St",
     address_2: "Marleybone",
@@ -215,6 +231,8 @@ module.exports = {
     registration2: registration2,
     registration3: registration3,
     registration4: registration4,
+    registration5: registration5,
+    registration6: registration6,
     event: event,
     cause: cause,
     user: user,

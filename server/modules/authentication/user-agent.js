@@ -18,10 +18,10 @@ async function registerEmail(email) {
     }
     await regRepo.insert({
         email: email,
-        email_flag: false,
-        id_flag: false,
-        phone_flag: false,
-        sign_up_flag: false,
+        email_flag: 0,
+        id_flag: 0,
+        phone_flag: 0,
+        sign_up_flag: 0,
     });
 }
 

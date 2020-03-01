@@ -44,6 +44,7 @@ async function isEmailVerified(email) {
  * called after emailExists has been checked.
  * @param {string} email
  * @return {boolean} true if partly registered
+ * @throws {error} if email is not found
  * @throws {error} if failed query
  */
 async function isPartlyRegistered(email) {
