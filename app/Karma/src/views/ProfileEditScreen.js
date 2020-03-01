@@ -18,12 +18,7 @@ import {
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
-import CarouselStyles, {itemWidth, itemWidth2, sliderWidth} from "../styles/CarouselStyles";
-import Carousel from "react-native-snap-carousel";
-import ActivityCard from "../components/ActivityCard";
 import TextInput from "../components/TextInput";
-
-const carouselEntries = [{individual: true}, {individual: false}];
 
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
