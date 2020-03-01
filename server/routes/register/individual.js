@@ -15,12 +15,12 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {integer} userId
- * @param {string} title //TODO: string?
+ * @param {string} title
  * @param {string} firstName
  * @param {string} middleNames
  * @param {string} surName
  * @param {Date} dateOfBirth
- * @param {string} gender //TODO: string?
+ * @param {string} gender
  * @param {string} addressLine1
  * @param {string} addressLine2
  * @param {string} townCity
@@ -33,7 +33,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  */
 router.post("/", async (req, res) => {
     try {
-        userAgent.registerIndividual(
+        await userAgent.registerIndividual(
             req.body.userId,
             req.body.title,
             req.body.firstName,

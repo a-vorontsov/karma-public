@@ -2,10 +2,8 @@ const request = require("supertest");
 const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
-const userRepo = require("../../models/userRepository");
 const regRepo = require("../../models/registrationRepository");
 
-const user = testHelpers.user4;
 const registration = testHelpers.registration4;
 
 jest.mock("owasp-password-strength-test");
@@ -41,6 +39,7 @@ test("user registration works", async () => {
     expect(owasp.test).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("User registration successful. Goto individual/org registration selection");
+    expect(response.body.userId).toBeGreaterThan(-1);
 });
 
 test("weak password fails", async () => {

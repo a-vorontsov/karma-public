@@ -40,7 +40,7 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
                     message: "Incorrect old password.",
                 });
             }
-            userAgent.updatePassword(req.body.userId, req.body.newPassword);
+            await userAgent.updatePassword(req.body.userId, req.body.newPassword);
             res.status(200).send({
                 message: "Password successfully updated.",
             });

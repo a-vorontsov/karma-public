@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
         });
     } else {
         try {
-            const userId = userAgent.registerUser(req.body.email, req.body.username, req.body.password);
+            const userId = await userAgent.registerUser(req.body.email, req.body.username, req.body.password);
             res.status(200).send({
                 message: "User registration successful. Goto individual/org registration selection",
                 userId: userId,

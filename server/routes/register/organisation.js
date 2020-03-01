@@ -29,7 +29,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  */
 router.post("/", async (req, res) => {
     try {
-        userAgent.registerOrg(
+        await userAgent.registerOrg(
             req.body.userId,
             req.body.organisationNumber,
             req.body.name,

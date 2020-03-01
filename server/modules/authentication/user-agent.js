@@ -57,19 +57,20 @@ async function registerUser(email, username, password) {
         salt: secureSalt,
         date_registered: "2016-06-22 19:10:25-07", // TODO:
     });
-    return await userRepo.findByEmail(email).id;
+    const userResult = await userRepo.findByEmail(email);
+    return userResult.rows[0].id;
 }
 
 /* eslint-disable max-len */
 /**
  * Register a new individual.
  * @param {integer} userId
- * @param {string} title //TODO: string?
+ * @param {string} title
  * @param {string} firstName
  * @param {string} middleNames // TODO: not in DB
  * @param {string} surName
  * @param {Date} dateOfBirth
- * @param {string} gender //TODO: string?
+ * @param {string} gender
  * @param {string} addressLine1
  * @param {string} addressLine2
  * @param {string} townCity
@@ -81,11 +82,13 @@ async function registerUser(email, username, password) {
  */
 async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     /* eslint-enable max-len */
-    if (regStatus.isFullyRegisteredById(userId)) {
-        throw new Error("Invalid operation: already fully registered.");
-    }
+    // if (regStatus.isFullyRegisteredById(userId)) {
+    //     throw new Error("Invalid operation: already fully registered.");
+    // }
     // register address and get it's id
-    const addressId = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+
+    const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    const addressId = addressResult.rows[0].id;
 
     await individualRepo.insert({
         firstname: firstName,
@@ -93,7 +96,7 @@ async function registerIndividual(userId, title, firstName, middleNames, surName
         phone: phoneNumber,
         banned: false,
         user_id: userId,
-        picture_id: 0, // TODO: what to do here at this stage?
+        picture_id: null, // TODO:
         address_id: addressId,
         birthday: dateOfBirth,
         gender: gender,
@@ -113,11 +116,12 @@ async function registerIndividual(userId, title, firstName, middleNames, surName
  * @param {string} phoneNumber
  */
 async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
-    if (regStatus.isFullyRegisteredById(userId)) {
-        throw new Error("Invalid operation: already fully registered.");
-    }
+    // if (regStatus.isFullyRegisteredById(userId)) {
+    //     throw new Error("Invalid operation: already fully registered.");
+    // }
     // register address and get it's id
-    const addressId = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    const addressId = addressResult.rows[0].id;
     await orgRepo.insert({
         org_name: name,
         org_number: organisationNumber,
@@ -153,7 +157,7 @@ async function registerAddress(addressLine1, addressLine2, townCity, countryStat
         region: countryState,
         lat: 0, // TODO: compute here?
         long: 0,
-    }).id;
+    });
 }
 
 /**
