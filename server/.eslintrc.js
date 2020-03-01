@@ -23,6 +23,6 @@ module.exports = {
     "max-len": ["error", {"code": 140}],
     "camelcase" : 0,
   },
-  "ignorePatterns": ["migrations/", "*Repository.test.js", "*util.test.js"],
+  "ignorePatterns": ["migrations/", "*.test.js"],
 
 };
