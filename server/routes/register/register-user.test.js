@@ -8,18 +8,16 @@ const registration = testHelpers.registration4;
 
 jest.mock("owasp-password-strength-test");
 
-beforeEach(async done => {
+beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    await testHelpers.clearDatabase();
     registerUserRequest.confirmPassword = "new_plaintext";
     registerUserRequest.email = "test4@gmail.com";
-    done();
+    return testHelpers.clearDatabase();
 });
 
-afterEach(async done => {
+afterEach(() => {
     jest.clearAllMocks();
-    await testHelpers.clearDatabase();
-    done();
+    return testHelpers.clearDatabase();
 });
 
 const registerUserRequest = {

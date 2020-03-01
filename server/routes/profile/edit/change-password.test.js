@@ -17,18 +17,16 @@ const changePasswordRequest = {
     confirmPassword: "new_plaintext",
 };
 
-beforeEach(async (done) => {
+beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    await testHelpers.clearDatabase();
     changePasswordRequest.oldPassword = "password";
     changePasswordRequest.confirmPassword = "new_plaintext";
-    done();
+    return testHelpers.clearDatabase();
 });
 
-afterEach(async (done) => {
+afterEach(() => {
     jest.clearAllMocks();
-    await testHelpers.clearDatabase();
-    done();
+    return testHelpers.clearDatabase();
 });
 
 

@@ -7,16 +7,14 @@ const regRepo = require("../../models/registrationRepository");
 const user = testHelpers.user4;
 const registration = testHelpers.registration4;
 
-beforeEach(async done => {
+beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    await testHelpers.clearDatabase();
-    done();
+    return testHelpers.clearDatabase();
 });
 
-afterEach(async done => {
+afterEach(() => {
     jest.clearAllMocks();
-    await testHelpers.clearDatabase();
-    done();
+    return testHelpers.clearDatabase();
 });
 
 const ogranisationRegistrationRequest = {
