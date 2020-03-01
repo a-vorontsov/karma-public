@@ -37,12 +37,17 @@ async function registerEmail(email) {
  * @throws {error} if invalid query
  */
 async function registerUser(email, username, password) {
-    // if (!(await regStatus.emailExists(email))) {
-    //     throw new Error("Invalid operation: registration record not found.");
-    // }
-    // if (await regStatus.isPartlyRegistered(email) || await regStatus.isFullyRegisteredByEmail(email)) {
-    //     throw new Error("Invalid operation: user record already exists.");
-    // }
+    if (!(await regStatus.emailExists(email))) {
+        throw new Error("Invalid operation: registration record not found.");
+    }
+    if (await regStatus.isPartlyRegistered(email) || await regStatus.isFullyRegisteredByEmail(email)) {
+        throw new Error("Invalid operation: user record already exists.");
+    }
+    if (await regStatus.userAccountExists(email)) {
+        /* eslint-disable max-len */
+        throw new Error("500:Internal Server Error. This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
+        /* eslint-enable max-len */
+    }
 
     const secureSalt = digest.getSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(

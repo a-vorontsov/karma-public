@@ -12,6 +12,7 @@ beforeEach(async done => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
     await testHelpers.clearDatabase();
     registerUserRequest.confirmPassword = "new_plaintext";
+    registerUserRequest.email = "test4@gmail.com";
     done();
 });
 
@@ -80,4 +81,40 @@ test("confirm password mismatch rejected", async () => {
     expect(owasp.test).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe("Passwords do not match.");
+});
+
+test("duplicate user registration fails", async () => {
+    await regRepo.insert(registration);
+    owasp.test.mockReturnValue({strong: true});
+
+    const response = await request(app)
+        .post("/register/user")
+        .send(registerUserRequest);
+
+    expect(owasp.test).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe("User registration successful. Goto individual/org registration selection");
+    expect(response.body.userId).toBeGreaterThan(-1);
+
+    const duplicateResponse = await request(app)
+        .post("/register/user")
+        .send(registerUserRequest);
+
+    expect(owasp.test).toHaveBeenCalledTimes(2);
+    expect(duplicateResponse.statusCode).toBe(400);
+    expect(duplicateResponse.body.message).toBe("Invalid operation: user record already exists.");
+});
+
+test("invalid email fails", async () => {
+    await regRepo.insert(registration);
+    owasp.test.mockReturnValue({strong: false});
+    registerUserRequest.email = "invalid@email.com";
+
+    const response = await request(app)
+        .post("/register/user")
+        .send(registerUserRequest);
+
+    expect(owasp.test).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe("Weak password.");
 });

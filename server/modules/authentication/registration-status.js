@@ -50,9 +50,22 @@ async function isEmailVerified(email) {
  * @throws {error} if email is not found
  */
 async function isPartlyRegistered(email) {
-    const userResult = await userRepo.findById(userId);
+    const userResult = await userRepo.findByEmail(email);
     const userRecord = userResult.rows[0];
-    return !isFullyRegisteredByEmail(email) && (userRecord !== undefined);
+    return !(await isFullyRegisteredByEmail(email)) && (userRecord !== undefined);
+}
+
+/**
+ * Returns true if user account associated to
+ * given email address exists.
+ * @param {string} email
+ * @return {boolean} true if user account exists
+ * @throws {error} if failed query
+ */
+async function userAccountExists(email) {
+    const userResult = await userRepo.findByEmail(email);
+    const userRecord = userResult.rows[0];
+    return userRecord !== undefined;
 }
 
 /**
@@ -103,4 +116,5 @@ module.exports = {
     isPartlyRegistered: isPartlyRegistered,
     isFullyRegisteredByEmail: isFullyRegisteredByEmail,
     isFullyRegisteredById: isFullyRegisteredById,
+    userAccountExists: userAccountExists,
 };
