@@ -35,9 +35,10 @@ router.post("/", async (req, res) => {
             message: "Passwords do not match.",
         });
     } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
-        res.status(400).send(
-            passStrengthTest.errors,
-        );
+        res.status(400).send({
+            message: "Weak password.",
+            errors: passStrengthTest.errors,
+        });
     } else {
         try {
             const userId = userAgent.registerUser(req.body.email, req.body.username, req.body.password);

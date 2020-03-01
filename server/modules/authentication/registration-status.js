@@ -6,11 +6,12 @@ const userRepo = require("../../models/userRepository");
  * @param {string} email
  * @return {boolean} true if email exists in DB
  */
-function emailExists(email) {
+async function emailExists(email) {
     try {
         // regRepo throws an error if query returns undefined
-        regRepo.findByEmail(email);
-        return true;
+        const regResult = await regRepo.findByEmail(email);
+        const regRecord = regResult.rows[0];
+        return regRecord !== undefined;
     } catch (e) {
         return false;
     }
@@ -26,8 +27,9 @@ function emailExists(email) {
  * @return {boolean} true if email is verified
  * @throws {error} if email is not found
  */
-function isEmailVerified(email) {
-    const regRecord = regRepo.findByEmail(email);
+async function isEmailVerified(email) {
+    const regResult = await regRepo.findByEmail(email);
+    const regRecord = regResult.rows[0];
     return regRecord.email_flag;
 }
 
@@ -44,8 +46,10 @@ function isEmailVerified(email) {
  * @return {boolean} true if partly registered
  * @throws {error} if email is not found
  */
-function isPartlyRegistered(email) {
-    return !isFullyRegisteredByEmail(email) && userRepo.findByEmail(email);
+async function isPartlyRegistered(email) {
+    const userResult = await userRepo.findById(userId);
+    const userRecord = userResult.rows[0];
+    return !isFullyRegisteredByEmail(email) && (userRecord !== undefined);
 }
 
 /**
@@ -60,8 +64,9 @@ function isPartlyRegistered(email) {
  * @return {boolean} true if fully registered
  * @throws {error} if email is not found
  */
-function isFullyRegisteredByEmail(email) {
-    const regRecord = regRepo.findByEmail(email);
+async function isFullyRegisteredByEmail(email) {
+    const regResult = await regRepo.findByEmail(email);
+    const regRecord = regResult.rows[0];
     return regRecord.sign_up_flag;
 }
 
@@ -77,8 +82,9 @@ function isFullyRegisteredByEmail(email) {
  * @return {boolean} true if fully registered
  * @throws {error} if useId is not found
  */
-function isFullyRegisteredById(userId) {
-    const userRecord = userRepo.findById(userId);
+async function isFullyRegisteredById(userId) {
+    const userResult = await userRepo.findById(userId);
+    const userRecord = userResult.rows[0];
     return isFullyRegisteredByEmail(userRecord.email);
 }
 

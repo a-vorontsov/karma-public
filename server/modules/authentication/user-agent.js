@@ -12,11 +12,11 @@ const addressRepo = require("../../models/addressRepository");
  * @throws {error} if email already stored
  * @throws {error} if invalid query
  */
-function registerEmail(email) {
-    if (regStatus.emailExists(email)) {
+async function registerEmail(email) {
+    if (!regStatus.emailExists(email)) {
         throw new Error("Invalid operation: email already exists.");
     }
-    regRepo.insert({
+    await regRepo.insert({
         email: email,
         email_flag: false,
         id_flag: false,
@@ -36,27 +36,28 @@ function registerEmail(email) {
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-function registerUser(email, username, password) {
-    if (regStatus.emailExists(email)) {
-        throw new Error("Invalid operation: registration record not found.");
-    }
-    if (regStatus.isPartlyRegistered(email) || regStatus.isFullyRegisteredByEmail(email)) {
-        throw new Error("Invalid operation: user record already exists.");
-    }
+async function registerUser(email, username, password) {
+    // if (!regStatus.emailExists(email)) {
+    //     throw new Error("Invalid operation: registration record not found.");
+    // }
+    // if (await regStatus.isPartlyRegistered(email) || await regStatus.isFullyRegisteredByEmail(email)) {
+    //     throw new Error("Invalid operation: user record already exists.");
+    // }
+
     const secureSalt = digest.getSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         secureSalt,
     );
-    userRepo.insert({
+    await userRepo.insert({
         email: email,
         username: username,
         password_hash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        date_registered: Date.now(),
+        date_registered: "2016-06-22 19:10:25-07", // TODO:
     });
-    return userRepo.findByEmail(email).id;
+    return await userRepo.findByEmail(email).id;
 }
 
 /* eslint-disable max-len */
@@ -78,15 +79,15 @@ function registerUser(email, username, password) {
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     /* eslint-enable max-len */
     if (regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
     // register address and get it's id
-    const addressId = registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    const addressId = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
 
-    individualRepo.insert({
+    await individualRepo.insert({
         firstname: firstName,
         lastname: surName,
         phone: phoneNumber,
@@ -111,13 +112,13 @@ function registerIndividual(userId, title, firstName, middleNames, surName, date
  * @param {string} postCode
  * @param {string} phoneNumber
  */
-function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     if (regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
     // register address and get it's id
-    const addressId = registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
-    orgRepo.insert({
+    const addressId = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
+    await orgRepo.insert({
         org_name: name,
         org_number: organisationNumber,
         org_type: "TODO:",
@@ -143,8 +144,8 @@ function registerOrg(userId, organisationNumber, name, addressLine1, addressLine
  * @param {string} postCode
  * @return {integer} addressId
  */
-function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
-    return addressRepo.insert({
+async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
+    return await addressRepo.insert({
         address_1: addressLine1,
         address_2: addressLine2,
         postcode: postCode,
@@ -181,12 +182,12 @@ async function isCorrectPassword(userId, inputPassword) {
  * @param {String} password
  * @throws {error} if invalid query
  */
-function updatePassword(userId, password) {
+async function updatePassword(userId, password) {
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         digest.getSecureSaltInHex(),
     );
-    userRepo.updatePassword(userId, hashedPassword);
+    await userRepo.updatePassword(userId, hashedPassword);
 }
 
 module.exports = {
