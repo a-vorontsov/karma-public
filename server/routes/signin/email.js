@@ -1,3 +1,7 @@
+/**
+ * @module Sign-in-email
+ */
+
 const express = require("express");
 const router = express.Router();
 const auth = require("../../modules/authentication/check-auth");
@@ -24,6 +28,7 @@ const userRepo = require("../../models/userRepository");
  * - if partly reg (only user acc), 400 - goto indiv/org reg
  * - if none of the above, 500 - reg & user object as JSON
  * - if invalid query, 500 - error message
+ * @function
  */
 router.post("/", auth.checkNotAuthenticated, async (req, res) => {
     try {

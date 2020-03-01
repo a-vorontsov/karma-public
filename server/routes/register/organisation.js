@@ -1,3 +1,7 @@
+/**
+ * @module Register-organisation
+ */
+
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../modules/authentication/user-agent");
@@ -31,6 +35,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @return {HTTP} one of the following HTTP responses
  * - if success, 200 - organisation registration successful
  * - if registration failed, 400 - error == exception
+ * @function
  */
 router.post("/", async (req, res) => {
     try {

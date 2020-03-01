@@ -1,3 +1,7 @@
+/**
+ * @module Sign-in-password
+ */
+
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
@@ -21,6 +25,7 @@ const auth = require("../../modules/authentication/check-auth");
  * - if user/request already authenticated, 400 - already auth
  * - if successful authentication, 200 - success with password
  * - if invalid password || email not found, 400 - invalid email or password
+ * @function
  */
 router.post(
     "/",

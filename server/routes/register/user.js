@@ -1,3 +1,7 @@
+/**
+ * @module Register-user
+ */
+
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../modules/authentication/user-agent");
@@ -27,6 +31,7 @@ const owasp = require("owasp-password-strength-test");
  * - if password is not strong enough, 400 - passStrengthTest errors
  * - if registration failed, 400 - error of operation
  *   (e.x. if email does not exist)
+ * @function
  */
 router.post("/", async (req, res) => {
     const passStrengthTest = owasp.test(req.body.password);

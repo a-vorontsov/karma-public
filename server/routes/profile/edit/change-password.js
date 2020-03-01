@@ -1,3 +1,7 @@
+/**
+ * @module Change-password
+ */
+
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
@@ -19,6 +23,7 @@ const owasp = require("owasp-password-strength-test");
  * - if password is not strong enough, 400 - passStrengthTest errors
  * - if oldPassword != user's password, 400 - incorrect old password
  * - if success, 200 - successfully updated
+ * @function
  */
 router.post("/", auth.checkAuthenticated, async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
