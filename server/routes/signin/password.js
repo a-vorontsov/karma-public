@@ -21,10 +21,11 @@ const auth = require("../../modules/authentication/check-auth");
  * @param {HTTP} res
  * @param {string} email the user's email address
  * @param {string} password
- * @return {HTTP} one of the following HTTP responses
- * - if user/request already authenticated, 400 - already auth
- * - if successful authentication, 200 - success with password
+ * @return {HTTP} one of the following HTTP responses<br/>
+ * - if user/request already authenticated, 400 - already auth<br/>
+ * - if successful authentication, 200 - success with password<br/>
  * - if invalid password || email not found, 400 - invalid email or password
+ * @name Sign-in with password
  * @function
  */
 router.post(

@@ -18,11 +18,12 @@ const owasp = require("owasp-password-strength-test");
  * @param {string} oldPassword
  * @param {string} newPassword
  * @param {string} confirmPassword
- * @return {HTTP} one of the following HTTP responses
- * - if confirm password mismatch, 400 - passwords don't match
- * - if password is not strong enough, 400 - passStrengthTest errors
- * - if oldPassword != user's password, 400 - incorrect old password
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if confirm password mismatch, 400 - passwords don't match<br/>
+ * - if password is not strong enough, 400 - passStrengthTest errors<br/>
+ * - if oldPassword != user's password, 400 - incorrect old password<br/>
  * - if success, 200 - successfully updated
+ * @name Change password
  * @function
  */
 router.post("/", auth.checkAuthenticated, async (req, res) => {

@@ -25,12 +25,13 @@ const owasp = require("owasp-password-strength-test");
  * @param {string} username
  * @param {string} password
  * @param {string} confirmPassword
- * @return {HTTP} one of the following HTTP responses
- * - if success, 200 - success, userId == new user's id
- * - if password != confirmPassword, 400 - passwords don't match
- * - if password is not strong enough, 400 - passStrengthTest errors
- * - if registration failed, 400 - error of operation
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if success, 200 - success, userId == new user's id<br/>
+ * - if password != confirmPassword, 400 - passwords don't match<br/>
+ * - if password is not strong enough, 400 - passStrengthTest errors<br/>
+ * - if registration failed, 400 - error of operation<br/>
  *   (e.x. if email does not exist)
+ * @name Register user
  * @function
  */
 router.post("/", async (req, res) => {

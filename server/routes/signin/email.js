@@ -19,15 +19,16 @@ const userRepo = require("../../models/userRepository");
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {string} email the user's email address
- * @return {HTTP} one of the following HTTP responses
- * - if user/request already authenticated, 400 - already auth
- * - if user fully registered, 200 - goto login
- * - if email != exist, store email in DB, 400 - goto email verif
- * - if email != exist & store email FAILED, 400 - error of DB insert
- * - if email verif, but user unregistered, 400 - goto reg
- * - if partly reg (only user acc), 400 - goto indiv/org reg
- * - if none of the above, 500 - reg & user object as JSON
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if user/request already authenticated, 400 - already auth<br/>
+ * - if user fully registered, 200 - goto login<br/>
+ * - if email != exist, store email in DB, 400 - goto email verif<br/>
+ * - if email != exist & store email FAILED, 400 - error of DB insert<br/>
+ * - if email verif, but user unregistered, 400 - goto reg<br/>
+ * - if partly reg (only user acc), 400 - goto indiv/org reg<br/>
+ * - if none of the above, 500 - reg & user object as JSON<br/>
  * - if invalid query, 500 - error message
+ * @name Sign-in with email
  * @function
  */
 router.post("/", auth.checkNotAuthenticated, async (req, res) => {
