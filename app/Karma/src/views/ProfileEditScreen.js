@@ -50,6 +50,7 @@ class ProfileEditScreen extends Component {
     };
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -272,6 +273,7 @@ class ProfileEditScreen extends Component {
                                     justifyContent: "center",
                                 }}>
                                 <GradientButton
+                                    onPress={() => navigate("Profile")}
                                     title="Update"
                                     width={350}
                                 />

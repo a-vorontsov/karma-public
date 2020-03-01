@@ -23,8 +23,8 @@ const MainNavigator = createStackNavigator(
         Tab: MainTabNavigator,
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
-        SettingsMenu: {screen: SettingsMenuScreen},
-        ProfileEdit: {screen: ProfileEditScreen}
+        // SettingsMenu: {screen: SettingsMenuScreen},
+        // ProfileEdit: {screen: ProfileEditScreen}
     },
     {
         headerMode: "none",
