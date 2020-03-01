@@ -33,9 +33,7 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
         });
     } else {
         try {
-            // TODO: await isCorrectPass
-            const isCorrectPass = await userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword);
-            if (!isCorrectPass) {
+            if (!(await userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword))) {
                 res.status(400).send({
                     message: "Incorrect old password.",
                 });

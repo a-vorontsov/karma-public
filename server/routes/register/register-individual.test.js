@@ -57,5 +57,25 @@ test("individual reg with wrong userId fails", async () => {
         .send(registerIndividualRequest);
 
     expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('insert or update on table \"individual\" violates foreign key constraint \"individual_user\"');
+    expect(response.body.message).toBe("User with given ID does not exist");
+});
+
+test("duplicate individual reg fails", async () => {
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    registerIndividualRequest.userId = insertUserResult.rows[0].id;
+
+    const response = await request(app)
+        .post("/register/individual")
+        .send(registerIndividualRequest);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe("Individual registration successful.");
+
+    const duplicateResponse = await request(app)
+        .post("/register/individual")
+        .send(registerIndividualRequest);
+
+    expect(duplicateResponse.statusCode).toBe(400);
+    expect(duplicateResponse.body.message).toBe("Invalid operation: already fully registered.");
 });

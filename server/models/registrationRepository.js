@@ -19,8 +19,15 @@ const findByEmail = (email) => {
     return db.query(query, [email]);
 };
 
+const updateSignUpFlag = (email) => {
+    const query = 'UPDATE \"registration\" SET sign_up_flag = 1 WHERE email = $1 RETURNING *';
+    const params = [email];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findAll: findAll,
     findByEmail: findByEmail,
+    updateSignUpFlag: updateSignUpFlag,
 };

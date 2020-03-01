@@ -37,7 +37,7 @@ async function registerEmail(email) {
  * @throws {error} if invalid query
  */
 async function registerUser(email, username, password) {
-    // if (!regStatus.emailExists(email)) {
+    // if (!(await regStatus.emailExists(email))) {
     //     throw new Error("Invalid operation: registration record not found.");
     // }
     // if (await regStatus.isPartlyRegistered(email) || await regStatus.isFullyRegisteredByEmail(email)) {
@@ -82,10 +82,9 @@ async function registerUser(email, username, password) {
  */
 async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     /* eslint-enable max-len */
-    // if (regStatus.isFullyRegisteredById(userId)) {
-    //     throw new Error("Invalid operation: already fully registered.");
-    // }
-    // register address and get it's id
+    if (await regStatus.isFullyRegisteredById(userId)) {
+        throw new Error("Invalid operation: already fully registered.");
+    }
 
     const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
     const addressId = addressResult.rows[0].id;
@@ -101,6 +100,22 @@ async function registerIndividual(userId, title, firstName, middleNames, surName
         birthday: dateOfBirth,
         gender: gender,
     });
+
+    await setSignUpFlagTrue(userId);
+}
+
+/**
+ * Set sign-up flag for given user to be 1,
+ * true, reflecting that they are fully registered.
+ * A full registration means having a user account
+ * and either an individual or an organisation account
+ * recorded in the database.
+ * @param {integer} userId
+ */
+async function setSignUpFlagTrue(userId) {
+    const userResult = await userRepo.findById(userId);
+    const userRecord = userResult.rows[0];
+    await regRepo.updateSignUpFlag(userRecord.email);
 }
 
 /**
@@ -120,8 +135,10 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
     //     throw new Error("Invalid operation: already fully registered.");
     // }
     // register address and get it's id
+
     const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
     const addressId = addressResult.rows[0].id;
+
     await orgRepo.insert({
         org_name: name,
         org_number: organisationNumber,
@@ -137,6 +154,8 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         user_id: userId,
         addressId: addressId,
     });
+
+    await setSignUpFlagTrue(userId);
 }
 
 /**
