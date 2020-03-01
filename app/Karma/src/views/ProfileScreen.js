@@ -24,12 +24,13 @@ const carouselEntries = [{individual: true}, {individual: false}];
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
-    share: require("../assets/images/general-logos/light_share.png"),
+    share: require("../assets/images/general-logos/share-logo.png"),
     cog: require("../assets/images/general-logos/cog.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
+    ribbon: require("../assets/images/general-logos/k-ribbon.png"),
 };
 
 class ProfileScreen extends Component {
@@ -71,7 +72,7 @@ class ProfileScreen extends Component {
                             flexDirection: "row",
                         }}
                     />
-                    <SafeAreaView>
+                    <SafeAreaView style={Styles.safeAreaContainer}>
                         <View
                             style={{
                                 flex: 1,
@@ -80,19 +81,19 @@ class ProfileScreen extends Component {
                                 justifyContent: "flex-start",
                                 flexDirection: "row-reverse",
                             }}>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                onPress={() => navigate("ProfileEdit")}>
                                     <Image
-                                        onPress={() => navigate("ProfileEdit")}
                                         source={icons.edit_white}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.05,}}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                onPress={() => navigate('SettingsMenu')}>
                                     <Image
                                         onPress={() => navigate("Settings")}
                                         source={icons.cog}
                                         style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
-                                        onPress={() => navigate("SettingsMenu")}
                                     />
                                 </TouchableOpacity>
                         </View>
@@ -156,14 +157,14 @@ class ProfileScreen extends Component {
                                             style={{height: 60, width: 60}}
                                             /> 
                                             <Image
-                                            // source={icons.edit_grey}
+                                            source={icons.ribbon}
                                             style={{height: 60, width: 60, position: "absolute"}}
                                             /> 
                                         </View>
                                         <TouchableOpacity>
                                             <Image
                                                 source={icons.share}
-                                                style={{height: 40, width: 40}}
+                                                style={{height: 25, width: 25, resizeMode:"contain"}}
                                             />
                                         </TouchableOpacity>
                                 </View>
@@ -200,9 +201,9 @@ class ProfileScreen extends Component {
                                         Activity
                                     </RegularText>
                                     <View style={styles.editContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
                                             <Image
-                                                onPress={() => navigate("ProfileEdit")}
                                                 source={icons.edit_grey}
                                                 style={styles.edit}
                                             />
@@ -243,9 +244,9 @@ class ProfileScreen extends Component {
                                         Bio
                                     </RegularText>
                                     <View style={styles.editContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
                                             <Image
-                                                onPress={() => navigate("ProfileEdit")}
                                                 source={icons.edit_grey}
                                                 style={styles.edit}
                                             />
@@ -279,7 +280,8 @@ class ProfileScreen extends Component {
                                         Causes
                                     </RegularText>
                                     <View style={styles.editContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
                                             <Image
                                                 source={icons.edit_grey}
                                                 style={styles.edit}

@@ -28,12 +28,13 @@ const carouselEntries = [{individual: true}, {individual: false}];
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
-    share: require("../assets/images/general-logos/light_share.png"),
+    share: require("../assets/images/general-logos/share-logo.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     calendar: require("../assets/images/general-logos/calendar-dark.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     new_cause: require("../assets/images/general-logos/new_cause.png"),
+    ribbon: require("../assets/images/general-logos/k-ribbon.png"),
 };
 
 class ProfileEditScreen extends Component {
@@ -66,7 +67,7 @@ class ProfileEditScreen extends Component {
                             flexDirection: "row",
                         }}
                     />
-                    <SafeAreaView>
+                    <SafeAreaView style={Styles.safeAreaContainer}>
                         <View
                             style={{
                                 flex: 1,
@@ -142,14 +143,14 @@ class ProfileEditScreen extends Component {
                                             style={{height: 60, width: 60}}
                                             /> 
                                             <Image
-                                            source={icons.edit_grey}
+                                            source={icons.ribbon}
                                             style={{height: 60, width: 60, position: "absolute"}}
                                             /> 
                                         </View>
                                         <TouchableOpacity>
                                             <Image
                                                 source={icons.share}
-                                                style={{height: 40, width: 40}}
+                                                style={{height: 25, width: 25, resizeMode:"contain"}}
                                             />
                                         </TouchableOpacity>
                                 </View>
