@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const digest = require("./digest");
 const regStatus = require("./registration-status");
 const regRepo = require("../../models/registrationRepository");
@@ -44,9 +45,7 @@ async function registerUser(email, username, password) {
         throw new Error("Invalid operation: user record already exists.");
     }
     if (await regStatus.userAccountExists(email)) {
-        /* eslint-disable max-len */
         throw new Error("500:Internal Server Error. This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
-        /* eslint-enable max-len */
     }
 
     const secureSalt = digest.getSecureSaltInHex();
@@ -66,7 +65,6 @@ async function registerUser(email, username, password) {
     return userResult.rows[0].id;
 }
 
-/* eslint-disable max-len */
 /**
  * Register a new individual.
  * @param {integer} userId
@@ -86,7 +84,6 @@ async function registerUser(email, username, password) {
  * @throws {error} if invalid query
  */
 async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
-    /* eslint-enable max-len */
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
@@ -130,12 +127,17 @@ async function setSignUpFlagTrue(userId) {
  * @param {string} name
  * @param {string} addressLine1
  * @param {string} addressLine2
+ * @param {string} organisationType
+ * @param {string} lowIncome
+ * @param {string} exempt
+ * @param {string} pocFirstName
+ * @param {string} pocLastName
  * @param {string} townCity
  * @param {string} countryState
  * @param {string} postCode
  * @param {string} phoneNumber
  */
-async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, organisationType, lowIncome, exempt, pocFirstName, pocLastName, townCity, countryState, postCode, phoneNumber) {
     // if (regStatus.isFullyRegisteredById(userId)) {
     //     throw new Error("Invalid operation: already fully registered.");
     // }
@@ -147,15 +149,15 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
     await orgRepo.insert({
         org_name: name,
         org_number: organisationNumber,
-        org_type: "TODO:",
-        poc_firstname: "TODO:",
-        poc_lastname: "TODO:",
+        org_type: organisationType,
+        poc_firstname: pocFirstName,
+        poc_lastname: pocLastName,
         phone: phoneNumber,
         banned: false,
         org_register_date: Date.now(),
-        low_income: "TODO:",
-        exempt: "TODO:",
-        picture_id: 0, // TODO:
+        low_income: lowIncome,
+        exempt: exempt,
+        picture_id: null, // TODO:
         user_id: userId,
         addressId: addressId,
     });

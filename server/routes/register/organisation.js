@@ -19,6 +19,11 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @param {string} name
  * @param {string} addressLine1
  * @param {string} addressLine2
+ * @param {string} organisationType
+ * @param {string} lowIncome
+ * @param {string} exempt
+ * @param {string} pocFirstName
+ * @param {string} pocLastName
  * @param {string} townCity
  * @param {string} countryState
  * @param {string} postCode
@@ -35,6 +40,11 @@ router.post("/", async (req, res) => {
             req.body.name,
             req.body.addressLine1,
             req.body.addressLine2,
+            req.body.organisationType,
+            req.body.lowIncome,
+            req.body.exempt,
+            req.body.pocFirstName,
+            req.body.pocLastName,
             req.body.townCity,
             req.body.countryState,
             req.body.postCode,
