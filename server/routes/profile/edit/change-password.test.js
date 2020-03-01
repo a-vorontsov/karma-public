@@ -82,21 +82,20 @@ test("confirm password mismatch rejected", async () => {
     expect(response.body.message).toBe("Passwords do not match.");
 });
 
-// TODO: check change-password.js
-// test("incorrect old pass rejected", async () => {
-//     await regRepo.insert(registration);
-//     const insertUserResult = await userRepo.insert(user);
+test("incorrect old pass rejected", async () => {
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
 
-//     changePasswordRequest.userId = insertUserResult.rows[0].id;
-//     changePasswordRequest.oldPassword = "incorrect_old_pass";
+    changePasswordRequest.userId = insertUserResult.rows[0].id;
+    changePasswordRequest.oldPassword = "incorrect_old_pass";
 
-//     owasp.test.mockReturnValue({strong: true});
-//     const response = await request(app)
-//         .post("/profile/edit/password")
-//         .send(changePasswordRequest);
+    owasp.test.mockReturnValue({strong: true});
+    const response = await request(app)
+        .post("/profile/edit/password")
+        .send(changePasswordRequest);
+    expect(owasp.test).toHaveBeenCalledTimes(1);
 
-//     expect(owasp.test).toHaveBeenCalledTimes(1);
-//     expect(response.statusCode).toBe(400);
-//     expect(response.body.message).toBe("Incorrect old password.");
-// });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe("Incorrect old password.");
+});
 

@@ -33,15 +33,19 @@ router.post("/", auth.checkAuthenticated, async (req, res) => {
         });
     } else {
         try {
-            if (!(await userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword))) {
+            if (await userAgent.isCorrectPassword(req.body.userId, req.body.oldPassword)) {
+                await userAgent.updatePassword(
+                    req.body.userId,
+                    req.body.newPassword,
+                );
+                res.status(200).send({
+                    message: "Password successfully updated.",
+                });
+            } else {
                 res.status(400).send({
                     message: "Incorrect old password.",
                 });
             }
-            await userAgent.updatePassword(req.body.userId, req.body.newPassword);
-            res.status(200).send({
-                message: "Password successfully updated.",
-            });
         } catch (e) {
             res.status(400).send({
                 message: e.message,
