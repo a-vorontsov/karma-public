@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const digest = require("./digest");
 const regStatus = require("./registration-status");
 const regRepo = require("../../models/registrationRepository");
@@ -45,7 +44,8 @@ async function registerUser(email, username, password) {
         throw new Error("Invalid operation: user record already exists.");
     }
     if (await regStatus.userAccountExists(email)) {
-        throw new Error("500:Internal Server Error. This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
+        throw new Error("500:Internal Server Error." +
+        "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
     }
 
     const secureSalt = digest.getSecureSaltInHex();
@@ -83,7 +83,8 @@ async function registerUser(email, username, password) {
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender, addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender,
+    addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
@@ -137,7 +138,8 @@ async function setSignUpFlagTrue(userId) {
  * @param {string} postCode
  * @param {string} phoneNumber
  */
-async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, organisationType, lowIncome, exempt, pocFirstName, pocLastName, townCity, countryState, postCode, phoneNumber) {
+async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, organisationType,
+    lowIncome, exempt, pocFirstName, pocLastName, townCity, countryState, postCode, phoneNumber) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }

@@ -8,8 +8,8 @@
  */
 async function checkAuthenticated(req, res, next) {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
-      next();
-      return;
+        next();
+        return;
     }
     const userId = req.body.userId;
     const authToken = req.body.authToken;
