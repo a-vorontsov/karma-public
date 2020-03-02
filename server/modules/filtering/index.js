@@ -24,4 +24,5 @@ const filterIsValid = (filter) => {
 
 module.exports = {
     getWhereClause: getWhereClause,
+    filterIsValid: filterIsValid,
 };
