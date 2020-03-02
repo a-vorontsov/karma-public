@@ -36,7 +36,7 @@ class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            womenOnlyValue: true,
+            womenOnlyValue: false,
             distance: 90,
         };
     }
@@ -216,7 +216,7 @@ class ProfileEditScreen extends Component {
                                             value = {this.state.womenOnlyValue}
                                             trackColor={{true: '#A9DCDF', false: 'grey'}}
                                             thumbColor = "grey"
-                                            onChange={val => this.setState({ womenOnlyValue: val })} />
+                                            onChange={prevState => this.setState({ womenOnlyValue: !prevState.womenOnlyValue })} />
                                     </View>
                                 </View>
                                 <View
