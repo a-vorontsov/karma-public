@@ -207,6 +207,56 @@ const eventWithLocation2 = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
+const womenOnlyEvent = {
+    id: 4,
+    name: "Women Only Event",
+    address_id: 3,
+    women_only: true,
+    spots: 3,
+    address_visible: true,
+    minimum_age: 18,
+    photo_id: false,
+    add_info: false,
+    content: "just doing women stuff",
+    date: "2020-03-25T19:10:00.000Z",
+    cause_id: 1,
+    cause_name: "gardening",
+    cause_description: "watering plants and dat",
+    event_creator_id: 1,
+    address_1: "nearby road",
+    address_2: null,
+    postcode: "whatever",
+    city: "London",
+    region: null,
+    lat: "51.4161220",
+    long: "-0.1866410",
+};
+const physicalEvent = {
+    id: 5,
+    name: "Physical",
+    address_id: 3,
+    women_only: false,
+    spots: 3,
+    address_visible: true,
+    minimum_age: 18,
+    photo_id: false,
+    physical: true,
+    add_info: false,
+    content: "doing stuff that make you sweat",
+    date: "2020-03-25T19:10:00.000Z",
+    cause_id: 1,
+    cause_name: "gardening",
+    cause_description: "watering plants and dat",
+    event_creator_id: 1,
+    address_1: "nearby road",
+    address_2: null,
+    postcode: "whatever",
+    city: "London",
+    region: null,
+    lat: "51.4161220",
+    long: "-0.1866410",
+};
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
@@ -247,4 +297,6 @@ module.exports = {
     clearCauses: clearCauses,
     eventWithLocation1: eventWithLocation1,
     eventWithLocation2: eventWithLocation2,
+    womenOnlyEvent: womenOnlyEvent,
+    physicalEvent: physicalEvent,
 };

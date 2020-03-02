@@ -122,11 +122,12 @@ router.post("/update/:id", (req, res) => {
 
 /**
  * endpoint called when "All" tab is pressed in Activities homepage
- * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2
+ * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!women_only&filter[]=physical
  * route {GET} /event
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.query.userId - ID of user logged in
+ * @param {Array} req.query.filter - all filters required as an array of strings
  * @returns:
  *  status: 200, description: Array of all event objects sorted by time
  *  and distance from the user (distance measured in miles), along with pagination information as follows:
@@ -190,13 +191,14 @@ router.post("/update/:id", (req, res) => {
  */
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
+    const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status != 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
     eventRepository
-        .getEventsWithLocation()
+        .getEventsWithLocation(filters)
         .then(result => {
             const events = result.rows;
             if (events.length === 0) return res.status(404).send("No events");
@@ -209,9 +211,11 @@ router.get("/", async (req, res) => {
 
 /**
  * route {GET} event/causes
+ * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!women_only&filter[]=physical
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {integer} req.query.userId - ID of user logged in
+ * @param {Array} req.query.filter - all filters required as an array of strings
  * @returns:
  *  status: 200, description: Array of all event objects grouped by causes that were selected by user
  *  Each cause group is sorted by time and distance from the user (distance measured in miles) as follows:
@@ -277,13 +281,14 @@ router.get("/", async (req, res) => {
  */
 router.get("/causes", async (req, res) => {
     const userId = req.query.userId;
+    const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status != 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
     selectedCauseRepository
-        .findEventsSelectedByUser(userId)
+        .findEventsSelectedByUser(userId, filters)
         .then(result => {
             const events = result.rows;
             if (events.length === 0) {

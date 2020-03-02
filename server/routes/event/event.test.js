@@ -27,6 +27,8 @@ afterEach(() => {
 
 const eventWithLocation = testHelpers.eventWithLocation1;
 const eventWithLocation2 = testHelpers.eventWithLocation2;
+const womenOnlyEvent = testHelpers.womenOnlyEvent;
+const physicalEvent = testHelpers.physicalEvent;
 const address = testHelpers.address;
 const event = testHelpers.event;
 event.organization_id = 1;
@@ -166,6 +168,42 @@ test("getting all events works", async () => {
     expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toMatchObject([eventWithLocation, eventWithLocation2]);
+});
+
+test("getting physical events only works", async () => {
+  util.checkUserId.mockResolvedValue({
+    status: 200,
+    user: {
+      id: 1,
+      lat: 51.414916,
+      long: -0.190487,
+    }
+  });
+  eventRepository.getEventsWithLocation.mockResolvedValue({
+    rows: [physicalEvent]
+  });
+  const response = await request(app).get("/event?userId=1&filter[]=physical");
+  expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
+  expect(response.statusCode).toBe(200);
+  expect(response.body.data).toMatchObject([physicalEvent]);
+});
+
+test("getting women only events works", async () => {
+  util.checkUserId.mockResolvedValue({
+    status: 200,
+    user: {
+      id: 1,
+      lat: 51.414916,
+      long: -0.190487,
+    }
+  });
+  eventRepository.getEventsWithLocation.mockResolvedValue({
+    rows: [womenOnlyEvent]
+  });
+  const response = await request(app).get("/event?userId=1&filter[]=women_only");
+  expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
+  expect(response.statusCode).toBe(200);
+  expect(response.body.data).toMatchObject([womenOnlyEvent]);
 });
 
 test("getting events grouped by causes selected by user works", async () => {
