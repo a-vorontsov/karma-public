@@ -23,7 +23,6 @@ const textColour = "#7F7F7F";
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
