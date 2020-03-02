@@ -169,7 +169,6 @@ const ActivityCard = props => {
                         </RegularText>
                     </ReadMore>
                 </View>
-
             </View>
         </View>
     );

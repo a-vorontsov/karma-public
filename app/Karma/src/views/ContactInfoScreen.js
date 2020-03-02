@@ -48,7 +48,6 @@ class ContactInfoScreen extends React.Component {
     }
 }
 
-
 const styles = StyleSheet.create({});
 
 export default ContactInfoScreen;

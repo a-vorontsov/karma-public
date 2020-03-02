@@ -335,6 +335,287 @@ class ProfileScreen extends Component {
                 </ScrollView>
             </KeyboardAvoidingView>
         );
+    };
+
+    render() {
+        const {navigate} = this.props.navigation;
+        return (
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior="padding"
+                enabled>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: "#00A8A6",
+                            height: 45,
+                            width: width,
+                            flexDirection: "row",
+                        }}
+                    />
+                    <SafeAreaView style={Styles.safeAreaContainer}>
+                        <View
+                            style={{
+                                flex: 1,
+                                backgroundColor: "#00A8A6",
+                                width: width,
+                                justifyContent: "flex-start",
+                                flexDirection: "row-reverse",
+                            }}>
+                                <TouchableOpacity
+                                onPress={() => navigate("ProfileEdit")}>
+                                    <Image
+                                        source={icons.edit_white}
+                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.05,}}
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                onPress={() => navigate('SettingsMenu')}>
+                                    <Image
+                                        source={icons.cog}
+                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.02, marginTop:2}}
+                                    />
+                                </TouchableOpacity>
+                        </View>
+                        <View
+                            style={{
+                                flex: 1,
+                                backgroundColor: "#00A8A6",
+                                height: 160,
+                                width: width,
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                paddingRight: 30,
+                                paddingBottom: 40,
+                                flexDirection: "row",
+                            }}>
+                            <PhotoUpload
+                                onPhotoSelect={avatar => {
+                                    if (avatar) {
+                                        console.log(
+                                            "Image base64 string: ",
+                                            avatar,
+                                        ),
+                                            this.setPhoto(avatar);
+                                    }
+                                }}>
+                                <Image
+                                    style={{
+                                        paddingVertical: 5,
+                                        width: 140,
+                                        height: 140,
+                                        borderRadius: 75,
+                                    }}
+                                    resizeMode="cover"
+                                    source={icons.photo_add}
+                                />
+                            </PhotoUpload>
+                            <View>
+                                <RegularText style={styles.nameText}>
+                                    Name
+                                </RegularText>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                    }}>
+                                    <Text style={styles.usernameText}>
+                                        Username
+                                    </Text>
+                                    <Text style={styles.locationText}>
+                                        Location
+                                    </Text>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        paddingTop: 20,
+                                        justifyContent: "space-between",
+                                    }}>
+                                        <View style={styles.pointContainer}>
+                                            <Image
+                                            source={icons.badge}
+                                            style={{height: 60, width: 60}}
+                                            /> 
+                                            <Image
+                                            source={icons.ribbon}
+                                            style={{height: 60, width: 60, position: "absolute"}}
+                                            /> 
+                                        </View>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.share}
+                                                style={{height: 25, width: 25, resizeMode:"contain"}}
+                                            />
+                                        </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flex: 5,
+                                backgroundColor: "white",
+                                paddingVertical: 25,
+                            }}>
+                            <View
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}>
+                                <GradientButton
+                                    title="Create Activity"
+                                    width={350}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    paddingHorizontal: formWidth*0.075,
+                                    alignItems: "flex-start",
+                                    justifyContent: "space-between",
+                                }}>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                    }}>
+                                    <RegularText style={styles.bioHeader}>
+                                        Activity
+                                    </RegularText>
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{flex: 1, flexDirection: "row"}}>
+                                    <RegularText style={styles.contentText}>
+                                        Availability:
+                                    </RegularText>
+                                    <RegularText style={styles.answerText}>
+                                        DATES
+                                    </RegularText>
+                                </View>
+                                <View style={{flex: 1, flexDirection: "row"}}>
+                                    <RegularText style={styles.contentText}>
+                                        Activity Date:
+                                    </RegularText>
+                                    <RegularText style={styles.answerText}>
+                                        DATES
+                                    </RegularText>
+                                </View>
+                                <View style={{flex: 1, flexDirection: "row"}}>
+                                    <RegularText style={styles.contentText}>
+                                        Women Only:
+                                    </RegularText>
+                                    <RegularText style={styles.answerText}>
+                                        Y/N
+                                    </RegularText>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "flex-end",
+                                        justifyContent: "flex-end",
+                                    }}>
+                                    <RegularText style={styles.bioHeader}>
+                                        Bio
+                                    </RegularText>
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                    }}>
+                                    <RegularText style={styles.contentText}>
+                                        o eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga
+                                    </RegularText>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "flex-end",
+                                        justifyContent: "flex-end",
+                                    }}>
+                                    <RegularText style={styles.bioHeader}>
+                                        Causes
+                                    </RegularText>
+                                    <View style={styles.editContainer}>
+                                        <TouchableOpacity
+                                        onPress={() => navigate("ProfileEdit")}>
+                                            <Image
+                                                source={icons.edit_grey}
+                                                style={styles.edit}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flex: 1,
+                                alignItems: "flex-start",
+                                justifyContent: "flex-start",
+                            }}>
+                                <View 
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        paddingHorizontal: formWidth*0.075,
+                                    }}>
+                                        <TouchableOpacity>
+                                            <RegularText style={styles.bioHeader}>Upcoming Events</RegularText>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <RegularText style={styles.bioHeaderAlt}>
+                                                Past Events
+                                            </RegularText>
+                                        </TouchableOpacity>
+                                </View>
+                            <View style={{alignItems: "flex-start", justifyContent: "flex-start"}}>
+                                <Carousel
+                                    ref={c => {
+                                        this._carousel = c;
+                                    }}
+                                    data={carouselEntries}
+                                    removeClippedSubviews={false}
+                                    renderItem={this._renderItem}
+                                    sliderWidth={sliderWidth}
+                                    itemWidth={itemWidth2}
+                                    inactiveSlideOpacity={1}
+                                    inactiveSlideScale={1}
+                                    containerCustomStyle={CarouselStyles.slider}
+                                    onSnapToItem={index =>
+                                        this.setState({activeSlide: index})
+                                    }
+                                />
+                            </View>
+                        </View>
+                    </SafeAreaView>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        );
     }
 }
 
