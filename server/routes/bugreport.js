@@ -1,3 +1,7 @@
+/**
+ * @module Send-bug-report
+ */
+
 const express = require("express");
 const router = express.Router();
 const mailSender = require("../modules/mailSender/index");
@@ -11,9 +15,11 @@ const mailSender = require("../modules/mailSender/index");
  * @param {HTTP} req
  * @param {string} email of user (typed-in)
  * @param {string} report bug description (typed-in)
- * @return {HTTP} one of the following HTTP responses:
- * - if email successfully sent, 200 - bug report sent
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if email successfully sent, 200 - bug report sent<br/>
  * - if any error, 400 - error msg from mailSender module
+ * @name Send bug report
+ * @function
  */
 router.post("/", async (req, res) => {
     try {

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../modules/authentication/check-auth");
+const authAgent = require("../modules/authentication/auth-agent");
 
-router.get("/", auth.checkAuthenticated, (req, res) => {
+router.get("/", authAgent.checkAuthenticated, (req, res) => {
     res.status(200).send({
         message: "Welcome to the Karma app.",
     });

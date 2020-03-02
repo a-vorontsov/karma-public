@@ -1,3 +1,7 @@
+/**
+ * @module Register-user
+ */
+
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../modules/authentication/user-agent");
@@ -21,12 +25,14 @@ const owasp = require("owasp-password-strength-test");
  * @param {string} username
  * @param {string} password
  * @param {string} confirmPassword
- * @return {HTTP} one of the following HTTP responses
- * - if success, 200 - success, userId == new user's id
- * - if password != confirmPassword, 400 - passwords don't match
- * - if password is not strong enough, 400 - passStrengthTest errors
- * - if registration failed, 400 - error of operation
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if success, 200 - success, userId == new user's id<br/>
+ * - if password != confirmPassword, 400 - passwords don't match<br/>
+ * - if password is not strong enough, 400 - passStrengthTest errors<br/>
+ * - if registration failed, 400 - error of operation<br/>
  *   (e.x. if email does not exist)
+ * @name Register user
+ * @function
  */
 router.post("/", async (req, res) => {
     const passStrengthTest = owasp.test(req.body.password);
@@ -34,13 +40,14 @@ router.post("/", async (req, res) => {
         res.status(400).send({
             message: "Passwords do not match.",
         });
-    } else if (!passStrengthTest.strong && process.env.ANY_PASSWORD !== "SKIP_CHECKS") {
-        res.status(400).send(
-            passStrengthTest.errors,
-        );
+    } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
+        res.status(400).send({
+            message: "Weak password.",
+            errors: passStrengthTest.errors,
+        });
     } else {
         try {
-            const userId = userAgent.registerUser(req.body.email, req.body.username, req.body.password);
+            const userId = await userAgent.registerUser(req.body.email, req.body.username, req.body.password);
             res.status(200).send({
                 message: "User registration successful. Goto individual/org registration selection",
                 userId: userId,

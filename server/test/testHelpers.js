@@ -24,6 +24,30 @@ const registration3 = {
     sign_up_flag: 0,
 };
 
+const registration4 = {
+    email: "test4@gmail.com",
+    email_flag: 0,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
+const registration5 = {
+    email: "test4@gmail.com",
+    email_flag: 1,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 0,
+};
+
+const registration6 = {
+    email: "test4@gmail.com",
+    email_flag: 1,
+    id_flag: 0,
+    phone_flag: 0,
+    sign_up_flag: 1,
+};
+
 const address = {
     address_1: "221B Baker St",
     address_2: "Marleybone",
@@ -75,6 +99,15 @@ const user3 = {
     password_hash: "password",
     verified: true,
     salt: "xlzljlfas",
+    date_registered: "2016-06-22 19:10:25-07",
+};
+
+const user4 = {
+    email: "test4@gmail.com",
+    username: "test4",
+    password_hash: "bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32",
+    verified: true,
+    salt: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
     date_registered: "2016-06-22 19:10:25-07",
 };
 
@@ -197,11 +230,15 @@ module.exports = {
     registration: registration,
     registration2: registration2,
     registration3: registration3,
+    registration4: registration4,
+    registration5: registration5,
+    registration6: registration6,
     event: event,
     cause: cause,
     user: user,
     user2: user2,
     user3: user3,
+    user4: user4,
     individual: individual,
     profile: profile,
     organisation: organisation,

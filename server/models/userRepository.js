@@ -36,6 +36,12 @@ const findByUsername = (username) => {
     return db.query(query, [username]);
 };
 
+const updatePassword = (userId, hashedPassword) => {
+    const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
+    const params = [userId, hashedPassword];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
@@ -44,4 +50,5 @@ module.exports = {
     getUserLocation: getUserLocation,
     findByEmail: findByEmail,
     findByUsername: findByUsername,
+    updatePassword: updatePassword,
 };

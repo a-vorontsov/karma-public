@@ -27,8 +27,8 @@ test('creating signup works', async () => {
     signupRepository.insert.mockResolvedValue({
         rows: [{
             signUp,
-            id: 1
-        }]
+            id: 1,
+        }],
     });
     const response = await request(app).post("/event/3/signUp").send(event);
 
@@ -40,8 +40,8 @@ test('updating works', async () => {
     signupRepository.update.mockResolvedValue({
         rows: [{
             signUp,
-            id: 1
-        }]
+            id: 1,
+        }],
     });
     const response = await request(app).post("/event/3/signUp/update").send(event);
 
@@ -51,7 +51,7 @@ test('updating works', async () => {
 
 test('requesting event history works', async () => {
     signupRepository.findAllByIndividualId.mockResolvedValue({
-        rows: [{}, {}, {}] // 3 events
+        rows: [{}, {}, {}], // 3 events
     });
     const response = await request(app).get("/event/signUp/history").send({individual_id: 5});
 

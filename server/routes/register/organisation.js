@@ -1,3 +1,7 @@
+/**
+ * @module Register-organisation
+ */
+
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../modules/authentication/user-agent");
@@ -19,22 +23,34 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @param {string} name
  * @param {string} addressLine1
  * @param {string} addressLine2
+ * @param {string} organisationType
+ * @param {string} lowIncome
+ * @param {string} exempt
+ * @param {string} pocFirstName
+ * @param {string} pocLastName
  * @param {string} townCity
  * @param {string} countryState
  * @param {string} postCode
  * @param {string} phoneNumber
- * @return {HTTP} one of the following HTTP responses
- * - if success, 200 - organisation registration successful
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if success, 200 - organisation registration successful<br/>
  * - if registration failed, 400 - error == exception
+ * @name Register organisation
+ * @function
  */
 router.post("/", async (req, res) => {
     try {
-        userAgent.registerOrg(
+        await userAgent.registerOrg(
             req.body.userId,
             req.body.organisationNumber,
             req.body.name,
             req.body.addressLine1,
             req.body.addressLine2,
+            req.body.organisationType,
+            req.body.lowIncome,
+            req.body.exempt,
+            req.body.pocFirstName,
+            req.body.pocLastName,
             req.body.townCity,
             req.body.countryState,
             req.body.postCode,

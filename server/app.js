@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const flash = require("express-flash");
 const session = require("express-session");
-const auth = require("./modules/authentication/check-auth");
+const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 const passport = require("passport");
@@ -38,6 +38,11 @@ app.use("/logout", require("./routes/signin/logout"));
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
+app.use("/error/nouserid", require("./routes/error/noUserId"));
+app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
+app.use("/error/unauthorised", require("./routes/error/unauthorised"));
+app.use("/error/tokenexpired", require("./routes/error/tokenExpired"));
+
 app.use("/users", require("./routes/users"));
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));
@@ -52,6 +57,6 @@ if (process.env.ENABLE_OAUTH === "1") {
 }
 
 // Render and direct to view based on user auth status
-app.all("*", auth.requireAuthentication);
+app.all("*", authAgent.requireAuthentication);
 
 module.exports = app;
