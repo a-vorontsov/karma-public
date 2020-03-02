@@ -68,7 +68,7 @@ const SignUpStyles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "400",
         color: "gray",
-    }
+    },
 });
 
 export default SignUpStyles;

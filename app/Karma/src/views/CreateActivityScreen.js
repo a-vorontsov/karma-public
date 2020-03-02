@@ -1,7 +1,6 @@
 import React from "react";
 import {
     View,
-    Text,
     TouchableOpacity,
     Image,
     KeyboardAvoidingView,
@@ -10,8 +9,8 @@ import {
     StatusBar,
     Switch,
     Modal,
-    TouchableHighlight,
     FlatList,
+    Keyboard,
 } from "react-native";
 import Styles from "../styles/Styles";
 import {hasNotch} from "react-native-device-info";
@@ -21,18 +20,19 @@ import {
     RegularText,
     TitleText,
     SemiBoldText,
-    LogoText,
     BoldText,
 } from "../components/text";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import {GradientButton, Button} from "../components/buttons";
+import TimePicker from "react-native-24h-timepicker";
+
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
-var keySlot = 0;
+var SLOT_KEY_ID = 0;
 
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
@@ -82,22 +82,14 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    setTime(selectedTime) {
-        this.setState({time: selectedTime});
-        let mins = "" + selectedTime.getMinutes();
-       
-        mins = mins.length === 1 ? mins : "0" + mins;
-        let hours = "" + selectedTime.getHours();
-        hours = hours.length === 1 ? hours : "0" + hours;
-        let timeVal = hours + " : " + mins;
-        this.setState({
-            timeValue: timeVal,
-        });
-        if (selectedTime.getTime() >= this.state.minTime) {
-            this.setState({validTimeSelected: true});
-        } else {
-            this.setState({validTimeSelected: false});
-        }
+    onCancel() {
+        this.TimePicker.close();
+    }
+
+    onConfirm(hour, minute) {
+        this.setState({time: `${hour}:${minute}`});
+        this.setState({validTimeSelected: true});
+        this.TimePicker.close();
     }
 
     setDate(selectedDate) {
@@ -272,7 +264,12 @@ export default class CreateActivityScreen extends React.Component {
                                 <View style={{flexDirection: "row"}}>
                                     <TextInput
                                         placeholder="Date"
-                                        editable={false}
+                                        // editable={false}
+                                        onFocus={() =>
+                                            this.setState({
+                                                dateModalVisible: true,
+                                            })
+                                        }
                                         value={
                                             this.state.validDateSelected
                                                 ? this.state.date.toDateString()
@@ -295,108 +292,110 @@ export default class CreateActivityScreen extends React.Component {
                                         source={require("../assets/images/general-logos/calendar-dark.png")}
                                     />
                                 </View>
-                                <View style={{alignItems: "center"}}>
-                                    <View style={{width: 0.5 * FORM_WIDTH}}>
-                                        <GradientButton
-                                            title="Change Date"
-                                            onPress={() =>
-                                                this.setState({
-                                                    dateModalVisible: true,
-                                                })
+                            </View>
+
+                            {/** TIME PICKER */}
+                            <View>
+                                <SemiBoldText
+                                    style={{
+                                        fontSize: 15,
+                                    }}>
+                                    Event Time
+                                </SemiBoldText>
+                                <View style={{flexDirection: "row"}}>
+                                    <View
+                                        style={{
+                                            width: 0.5 * FORM_WIDTH,
+                                            alignItems: "center",
+                                        }}>
+                                        <TextInput
+                                            placeholder="From"
+                                            style={{width: 0.25 * FORM_WIDTH}}
+                                        />
+                                    </View>
+                                    <View
+                                        style={{
+                                            width: 0.5 * FORM_WIDTH,
+                                            alignItems: "center",
+                                        }}>
+                                        <TextInput
+                                            style={{width: 0.25 * FORM_WIDTH}}
+                                            placeholder="To"
+                                            inputRef={ref =>
+                                                (this.timeInput = ref)
+                                            }
+                                            onFocus={() =>
+                                                this.TimePicker.focus()
+                                            }
+                                            showError={
+                                                this.state.submitPressed
+                                                    ? !this.state.time
+                                                    : false
+                                            }
+                                            value={
+                                                this.state.validTimeSelected
+                                                    ? this.state.time
+                                                    : null
                                             }
                                         />
                                     </View>
                                 </View>
                             </View>
-                            {/** TIME PICKER */}
-                            <Modal
-                                animationType="slide"
-                                transparent={false}
-                                visible={this.state.timeModalVisible}
-                                onRequestClose={() => {}}>
-                                <View
-                                    style={[
-                                        Styles.container,
-                                        {
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                        },
-                                    ]}>
-                                    <DatePicker
-                                        fadeToColor="none"
-                                        mode="time"
-                                        date={this.state.time}
-                                        locale="en_GB"
-                                        onDateChange={time =>
-                                            this.setTime(time)
-                                        }
-                                    />
-
-                                    <GradientButton
-                                        title="Set Time"
-                                        onPress={() => {
-                                            this.setState({
-                                                timeModalVisible: false,
-                                            });
-                                        }}
-                                    />
-                                </View>
-                            </Modal>
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    placeholder="Time"
-                                    onChange={this.onChangeText}
-                                    showError={
-                                        this.state.submitPressed
-                                            ? !this.state.time
-                                            : false
-                                    }
-                                    value={
-                                        this.state.validTimeSelected
-                                            ? this.state.timeValue
-                                            : null
-                                    }
-                                />
-
-                                <Image
-                                    style={{
-                                        position: "absolute",
-                                        right: 0,
-                                        top: 20,
-                                        height: 20,
-                                        width: 20,
-                                        borderRadius: 25,
-                                        backgroundColor: "grey",
-                                        borderWidth: 1,
-                                        borderColor: "grey",
-                                    }}
-                                    source={require("../assets/images/general-logos/clock-logo.png")}
-                                />
-                            </View>
-                            <View style={{alignItems: "center"}}>
-                                <View style={{width: 0.5 * FORM_WIDTH}}>
-                                    <GradientButton
-                                        title="Change Time"
-                                        onPress={() =>
-                                            this.setState({
-                                                timeModalVisible: true,
-                                            })
-                                        }
-                                    />
-                                </View>
-                            </View>
-                            {/** TIME SLOTS */}
+                            <TimePicker
+                                ref={ref => {
+                                    this.TimePicker = ref;
+                                }}
+                                onCancel={() => this.onCancel()}
+                                onConfirm={(hour, minute) =>
+                                    this.onConfirm(hour, minute)
+                                }
+                                minuteInterval={15}
+                            />
+                            {/** TIME SLOTS
+                             * TODO - separate into 'to' and 'from'
+                             * BOTH FOR slots and for time
+                             *
+                             */}
                             <FlatList
                                 data={this.state.slots}
                                 renderItem={({item, index}) => (
+                                   
+                                        <View>
+                                            {index == 0 ? 
+                                             <SemiBoldText
+                                             style={{
+                                                 fontSize: 15,
+                                             }}>
+                                             Slot Time(s)
+                                           
+                                             
+                                         </SemiBoldText>
+                                            : 
+                                            null
+                                            }
+                                       
+                                    
                                     <View
                                         key={index}
                                         style={{flexDirection: "row"}}>
-                                        <TextInput
-                                            placeholder="Slot"
-                                            name={index.toString()}
-                                            onChange={this.onChangeText}
-                                        />
+                                        <View style={{width: 0.5 * FORM_WIDTH, alignItems:"center"}}>
+                                            <TextInput
+                                            style={{width:0.25*FORM_WIDTH}}
+                                                placeholder="From"
+                                                name={index.toString()}
+                                                onChange={this.onChangeText}
+                                            />
+                                        </View>
+
+                                        <View style={{width: 0.5 * FORM_WIDTH, alignItems:"center"}}>
+                                            
+                                            <TextInput
+                                            style={{width:0.25*FORM_WIDTH}}
+                                                placeholder="To"
+                                                name={index.toString()}
+                                                onChange={this.onChangeText}
+                                            />
+                                        </View>
                                         {/** only show delete icon if it's not the first slot */}
                                         {index > 0 ? (
                                             <TouchableOpacity
@@ -418,6 +417,7 @@ export default class CreateActivityScreen extends React.Component {
                                                 />
                                             </TouchableOpacity>
                                         ) : null}
+                                    </View>
                                     </View>
                                 )}
                                 keyExtractor={item => item.toString()}
@@ -446,9 +446,9 @@ export default class CreateActivityScreen extends React.Component {
                                             height: 20,
                                             width: 20,
                                             borderRadius: 10,
-                                            borderColor: "grey",
-                                            backgroundColor: "grey",
-                                            borderWidth: 1,
+                                            // borderColor: "grey",
+                                            // backgroundColor: "grey",
+                                            // borderWidth: 1,
                                         }}
                                         source={require("../assets/images/general-logos/photo-plus.png")}
                                     />
@@ -459,6 +459,7 @@ export default class CreateActivityScreen extends React.Component {
                                     Address
                                 </SemiBoldText>
                                 <TextInput
+                                    inputRef={ref => (this.address = ref)}
                                     style={{marginTop: 0, fontSize: 13}}
                                     placeholder={
                                         "Please leave this blank if you will be sending this via email once a volunteer has confirmed"
