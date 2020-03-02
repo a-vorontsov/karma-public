@@ -8,11 +8,13 @@ import ActivitiesScreen from "../views/ActivitiesScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
+import ProfileEditScreen from "../views/ProfileEditScreen";
 import SettingsMenuScreen from "../views/SettingsMenuScreen";
 
 const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
+        ProfileEdit: {screen: ProfileEditScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
     },
     {

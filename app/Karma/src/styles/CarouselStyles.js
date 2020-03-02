@@ -32,19 +32,6 @@ const CarouselStyles = StyleSheet.create({
         paddingHorizontal: itemHorizontalMargin,
     },
     itemContainer2: {
-        marginBottom: IS_IOS ? 0 : -1,
-        width: itemWidth2,
-        height: itemHeight2,
-        overflow: "visible",
-    },
-    itemContainer2: {
-        marginBottom: IS_IOS ? 0 : -1,
-        width: itemWidth2,
-        height: itemHeight2,
-        overflow: "visible",
-    },
-    itemContainer2: {
-        marginBottom: IS_IOS ? 0 : -1,
         width: itemWidth2,
         height: itemHeight2,
         overflow: "visible",
