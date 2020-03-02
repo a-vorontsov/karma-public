@@ -5,18 +5,12 @@ const getWhereClause = (filters) => {
     if (!filters) return clause;
     clause += " where ";
     filters.forEach(filter => {
-        if (filter.startsWith("!")) {
-            if (filterIsValid(filter.substring(1))) {
-                clause += filter.substring(1) + " = false ";
-            } else {
-                return;
-            }
+        if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
+            clause += filter.substring(1) + " = false ";
+        } else if (filterIsValid(filter)) {
+            clause += filter + " = true ";
         } else {
-            if (filterIsValid(filter)) {
-                clause += filter + " = true ";
-            } else {
-                return;
-            }
+            return;
         }
         clause += "and ";
     });

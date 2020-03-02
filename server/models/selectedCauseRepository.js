@@ -48,14 +48,13 @@ const findEventsSelectedByUser = (userID, filters) => {
     if (whereClause === "") whereClause = "where ";
     else whereClause += " and ";
     const query = "select id(event),name(event),address_id,women_only,spots,address_visible,minimum_age,photo_id," +
-        "physical add_info,content,date,cause_id(event_cause),name(cause) as cause_name,description as cause_description," +
+        "physical, add_info,content,date,cause_id(event_cause),name(cause) as cause_name,description as cause_description," +
         "user_id(event) as event_creator_id,address_1,address_2,postcode,city,region,lat,long from event " +
         "left join event_cause on id(event) = event_id " +
         "right join selected_cause on cause_id(event_cause)=cause_id(selected_cause) " +
         "left join cause on cause_id(event_cause) = id(cause) " +
         "left join address on id(address) = address_id " +
         whereClause + "user_id(selected_cause) = $1";
-    console.log(query);
     return db.query(query, [userID]);
 };
 
