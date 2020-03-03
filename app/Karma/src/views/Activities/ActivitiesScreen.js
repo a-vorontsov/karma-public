@@ -18,8 +18,13 @@ import PhotoUpload from "react-native-photo-upload";
 import Styles from "../../styles/Styles";
 import TextInput from "../../components/TextInput";
 import Colours from "../../styles/Colours";
+import ActivityCard from "../../components/ActivityCard";
+import ActivitiesTab from "../../routes/ActivitiesTab"
+import {createSwitchNavigator, createAppContainer} from "react-navigation";
 
 const {width, height} = Dimensions.get("window");
+
+const AppContainer = createAppContainer(ActivitiesTab);
 
 class ActivitiesScreen extends Component {
     constructor(props) {
@@ -33,14 +38,26 @@ class ActivitiesScreen extends Component {
     };
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                <Text>Activities</Text>
-            </View>
+            <SafeAreaView style={Styles.container}>
+                <KeyboardAvoidingView
+                    style={Styles.ph24}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                    enabled>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{paddingTop: 24}} />
+                    <RegularText
+                        style={{
+                            fontSize: 24,
+                            fontWeight: "600",
+                            color: Colours.black,
+                            paddingLeft: 16,
+                        }}>
+                        Activities
+                    </RegularText>
+                    <AppContainer/>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 }
