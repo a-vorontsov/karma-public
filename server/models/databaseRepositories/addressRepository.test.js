@@ -11,7 +11,7 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-test('insert and findById work', async  () => {
+test('insert and findById work', async () => {
     const insertResult = await addressRepository.insert(address);
     const findResult = await addressRepository.findById(insertResult.rows[0].id);
     expect(findResult.rows[0]).toMatchObject(insertResult.rows[0]);
