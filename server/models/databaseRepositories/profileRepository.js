@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 const insert = (profile) => {
     const query = "INSERT INTO profile(individual_id, karma_points, bio, women_only) VALUES ($1, $2, $3, $4)" +
@@ -12,6 +12,11 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
+const findByIndividualId = (individualId) => {
+    const query = "SELECT * FROM profile WHERE individual_id=$1";
+    return db.query(query, [individualId]);
+};
+
 const findAll = () => {
     const query = "SELECT * FROM profile";
     return db.query(query);
@@ -21,4 +26,5 @@ module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
+    findByIndividualId: findByIndividualId,
 };

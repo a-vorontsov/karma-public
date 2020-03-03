@@ -114,5 +114,6 @@ dist
 server/routes/verify/temp/
 
 .vscode
+*.DS_Store
 
 out

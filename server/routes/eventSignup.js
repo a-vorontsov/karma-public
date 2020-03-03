@@ -4,8 +4,8 @@
 
 const express = require('express');
 const router = express.Router();
-const eventRepository = require("../models/eventRepository");
-const signupRepository = require("../models/signupRepository");
+const eventRepository = require("../models/databaseRepositories/eventRepository");
+const signupRepository = require("../models/databaseRepositories/signupRepository");
 
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>

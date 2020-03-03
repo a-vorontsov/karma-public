@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 const insert = (organisation) => {
     const query = "INSERT INTO organisation(org_name, org_number, org_type, poc_firstname," +
@@ -23,9 +23,9 @@ const findAll = () => {
     return db.query(query);
 };
 
-const findByUserID = (user_id) => {
+const findByUserID = (userId) => {
     const query = "SELECT * FROM organisation WHERE user_id=$1";
-    return db.query(query, [user_id]);
+    return db.query(query, [userId]);
 };
 
 module.exports = {
