@@ -193,7 +193,6 @@ CREATE TABLE authentication
             user_id int NOT NULL,
             password_token varchar(64) NOT NULL,
             expiry_date timestamp NOT NULL,
-            succesful boolean NOT NULL,
             CONSTRAINT reset_pk PRIMARY KEY (id)
         );
 
