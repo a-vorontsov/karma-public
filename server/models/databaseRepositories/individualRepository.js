@@ -15,7 +15,6 @@ const insert = (individual) => {
 const findById = (id) => {
     const query = "SELECT * FROM individual WHERE id=$1";
     return db.query(query, [id]);
-
 };
 
 const findAll = () => {

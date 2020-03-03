@@ -53,11 +53,10 @@ const getEventsWithLocation = (filters) => {
         "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
         "from address right join event on id(address) = address_id" + whereClause;
     return db.query(query);
-    if(queryResult.rowCount === 0) {
+    if (queryResult.rowCount === 0) {
         throw Error(`No event with these filters exists`);
     }
     return queryResult;
-
 };
 module.exports = {
     insert: insert,

@@ -36,7 +36,7 @@ const findByUserId = (userId) => {
 const findByCauseId = (causeId) => {
     const query = "SELECT * FROM selected_cause WHERE cause_id=$1";
     return db.query(query, [causeId]);
-    if(queryResult.rowCount === 0) {
+    if (queryResult.rowCount === 0) {
         throw Error(`No causes for causeID ${causeId} exists`);
     }
     return queryResult;
