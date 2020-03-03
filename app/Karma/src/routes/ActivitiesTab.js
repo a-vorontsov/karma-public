@@ -1,11 +1,13 @@
 import React from 'react';
-import {Image} from "react-native";
+import {Image, Dimensions} from "react-native";
 import ActivitiesAllScreen from "../views/Activities/ActivitiesAllScreen";
 import ActivitiesCausesScreen from '../views/Activities/ActivitiesCausesScreen';
 import ActivitiesGoingScreen from '../views/Activities/ActivitiesGoingScreen';
 import ActivitiesFavouritesScreen from '../views/Activities/ActivitiesFavouritesScreen';
 import { createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createSwitchNavigator, createAppContainer} from "react-navigation";
+import Colours from "../styles/Colours";
+const {width, height} = Dimensions.get("window");
 
 const ActivitiesTab = createMaterialTopTabNavigator(
     {  
@@ -35,14 +37,23 @@ const ActivitiesTab = createMaterialTopTabNavigator(
         }
     },  
     {  
-        tabBarOptions: {  
-            activeTintColor: 'white',  
-            showIcon: true,  
-            showLabel:true,  
-            style: {  
-                backgroundColor:'red'  
-            }  
-        },  
+        tabBarOptions: {
+            showLabel: true,
+            allowFontScaling: false,
+            inactiveTintColor: Colours.lightGrey,
+            activeTintColor: Colours.white,
+            labelStyle: {
+                fontSize: 15,
+                fontWeight: "500",
+            },
+            style: {
+                borderTopColor: "transparent",
+                borderTopWidth: 0,
+                height: 80,
+                backgroundColor: "red",
+                width: width,
+            },
+        },
     }  
 
 );
