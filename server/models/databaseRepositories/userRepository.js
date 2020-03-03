@@ -16,6 +16,15 @@ const findAll = () => {
     const query = "SELECT * FROM \"user\"";
     return db.query(query);
 };
+const getUsersLocations = () => {
+    const query = "select user_id,lat,long from profile natural join individual " +
+        "natural join \"user\" left join address on address_id = id(address)";
+    return db.query(query);
+};
+const getUserLocation = (userId) => {
+    const query = "select user_id, lat,long from individual left join address on address_id = id(address) where user_id = $1";
+    return db.query(query, [userId]);
+};
 
 const findByEmail = (email) => {
     const query = "SELECT * FROM \"user\" WHERE email=$1";
@@ -27,10 +36,19 @@ const findByUsername = (username) => {
     return db.query(query, [username]);
 };
 
+const updatePassword = (userId, hashedPassword) => {
+    const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
+    const params = [userId, hashedPassword];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
+    getUsersLocations: getUsersLocations,
+    getUserLocation: getUserLocation,
     findByEmail: findByEmail,
     findByUsername: findByUsername,
+    updatePassword: updatePassword,
 };

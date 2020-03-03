@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const randomize = require('randomatic');
-const db = require('../database/connection');
-const mailSender = require('../mailSender');
+const db = require('../../database/connection');
+const mailSender = require('../../modules/mailSender');
 
 // This function will be imported from model once db is setup
 const updateUserToken = (email, token)=>{
-    const updateUserQuery = `Update users 
+    const updateUserQuery = `Update users
     set resetpasswordtoken = ${token},
     resetPasswordExpires = ${Date.now()+360000}
     where email = \'${email}\'`;
