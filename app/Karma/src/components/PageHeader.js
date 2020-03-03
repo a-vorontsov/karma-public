@@ -7,6 +7,7 @@ import {
     Image,
 } from "react-native";
 import {RegularText} from "../components/text";
+import {useNavigation} from "react-navigation-hooks";
 
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;

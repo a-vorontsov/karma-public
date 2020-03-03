@@ -9,16 +9,15 @@ import {
     Image,
     ScrollView,
     TouchableOpacity,
-    Switch
+    Switch,
 } from "react-native";
-import Slider from '@react-native-community/slider';
-import {
-    RegularText,
-} from "../components/text";
+import Slider from "@react-native-community/slider";
+import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import TextInput from "../components/TextInput";
+import Colours from "../styles/Colours";
 
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -39,10 +38,16 @@ class ProfileEditScreen extends Component {
             womenOnlyValue: false,
             distance: 90,
         };
+        this.onChangeText = this.onChangeText.bind(this);
     }
 
     static navigationOptions = {
         headerShown: false,
+    };
+
+    onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
     };
 
     render() {
@@ -56,7 +61,7 @@ class ProfileEditScreen extends Component {
                     <View
                         style={{
                             flex: 1,
-                            backgroundColor: "#00A8A6",
+                            backgroundColor: Colours.blue,
                             height: 45,
                             width: width,
                             flexDirection: "row",
@@ -66,22 +71,27 @@ class ProfileEditScreen extends Component {
                         <View
                             style={{
                                 flex: 1,
-                                backgroundColor: "#00A8A6",
+                                backgroundColor: Colours.blue,
                                 width: width,
                                 justifyContent: "flex-start",
                                 flexDirection: "row-reverse",
                             }}>
-                                <TouchableOpacity>
-                                    <Image
-                                        source={icons.edit_white}
-                                        style={{height: 25, width: 25, marginHorizontal: formWidth*0.05, marginTop:2}}
-                                    />
-                                </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Image
+                                    source={icons.edit_white}
+                                    style={{
+                                        height: 25,
+                                        width: 25,
+                                        marginHorizontal: formWidth * 0.05,
+                                        marginTop: 2,
+                                    }}
+                                />
+                            </TouchableOpacity>
                         </View>
                         <View
                             style={{
                                 flex: 1,
-                                backgroundColor: "#00A8A6",
+                                backgroundColor: Colours.blue,
                                 height: 160,
                                 width: width,
                                 alignItems: "center",
@@ -132,35 +142,43 @@ class ProfileEditScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                        <View style={styles.pointContainer}>
-                                            <Image
+                                    <View style={styles.pointContainer}>
+                                        <Image
                                             source={icons.badge}
                                             style={{height: 60, width: 60}}
-                                            /> 
-                                            <Image
+                                        />
+                                        <Image
                                             source={icons.ribbon}
-                                            style={{height: 60, width: 60, position: "absolute"}}
-                                            /> 
-                                        </View>
-                                        <TouchableOpacity>
-                                            <Image
-                                                source={icons.share}
-                                                style={{height: 25, width: 25, resizeMode:"contain"}}
-                                            />
-                                        </TouchableOpacity>
+                                            style={{
+                                                height: 60,
+                                                width: 60,
+                                                position: "absolute",
+                                            }}
+                                        />
+                                    </View>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={icons.share}
+                                            style={{
+                                                height: 25,
+                                                width: 25,
+                                                resizeMode: "contain",
+                                            }}
+                                        />
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
                         <View
                             style={{
                                 flex: 5,
-                                backgroundColor: "white",
+                                backgroundColor: Colours.white,
                                 paddingVertical: 25,
                             }}>
                             <View
                                 style={{
                                     flex: 1,
-                                    paddingHorizontal: formWidth*0.075,
+                                    paddingHorizontal: formWidth * 0.075,
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                 }}>
@@ -178,32 +196,42 @@ class ProfileEditScreen extends Component {
                                     </RegularText>
                                     <View style={styles.leftItem}>
                                         <TouchableOpacity>
-                                        <Image
-                                            source={icons.calendar}
-                                            style={{width:25, height:25, resizeMode:"contain"}}/>
+                                            <Image
+                                                source={icons.calendar}
+                                                style={{
+                                                    width: 25,
+                                                    height: 25,
+                                                    resizeMode: "contain",
+                                                }}
+                                            />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style={{flex: 1, flexDirection: "column"}}>
-                                    <View style={{flex: 1, flexDirection: "row"}}>
+                                <View
+                                    style={{flex: 1, flexDirection: "column"}}>
+                                    <View
+                                        style={{flex: 1, flexDirection: "row"}}>
                                         <RegularText style={styles.contentText}>
                                             Distance
                                         </RegularText>
                                         <View style={styles.leftItem}>
-                                            <RegularText style={styles.contentText}>
+                                            <RegularText
+                                                style={styles.contentText}>
                                                 {this.state.distance} Miles
                                             </RegularText>
                                         </View>
                                     </View>
                                     <Slider
                                         style={styles.slider}
-                                        value = {this.state.distance}
+                                        value={this.state.distance}
                                         minimumValue={0}
                                         maximumValue={100}
                                         step={1}
-                                        thumbTintColor = "#00A8A6"
-                                        minimumTrackTintColor= "#A9DCDF"
-                                        onSlidingComplete={val => this.setState({ distance: val })}
+                                        thumbTintColor={Colours.blue}
+                                        minimumTrackTintColor="#A9DCDF"
+                                        onSlidingComplete={val =>
+                                            this.setState({distance: val})
+                                        }
                                     />
                                 </View>
                                 <View style={styles.editContainer}>
@@ -213,10 +241,18 @@ class ProfileEditScreen extends Component {
                                     <View style={styles.leftItem}>
                                         <Switch
                                             style={styles.switch}
-                                            value = {this.state.womenOnlyValue}
-                                            trackColor={{true: '#A9DCDF', false: 'grey'}}
-                                            thumbColor = "grey"
-                                            onChange={prevState => this.setState({ womenOnlyValue: !prevState.womenOnlyValue })} />
+                                            value={this.state.womenOnlyValue}
+                                            trackColor={{
+                                                true: "#A9DCDF",
+                                                false: Colours.grey,
+                                            }}
+                                            thumbColor={Colours.grey}
+                                            onChange={prevState =>
+                                                this.setState({
+                                                    womenOnlyValue: !prevState.womenOnlyValue,
+                                                })
+                                            }
+                                        />
                                     </View>
                                 </View>
                                 <View
@@ -235,9 +271,17 @@ class ProfileEditScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "center",
                                     }}>
-                                    <TextInput>
-                                        
-                                    </TextInput>
+                                    <TextInput
+                                        inputRef={ref => (this.bio = ref)}
+                                        placeholder="this is your bio"
+                                        autoCapitalize="none"
+                                        onChange={this.onChangeText}
+                                        name="bio"
+                                        onSubmitEditing={() =>
+                                            this.password.focus()
+                                        }
+                                        showError={false}
+                                    />
                                 </View>
                                 <View
                                     style={{
@@ -249,9 +293,13 @@ class ProfileEditScreen extends Component {
                                         Causes
                                     </RegularText>
                                     <TouchableOpacity>
-                                        <Image 
+                                        <Image
                                             source={icons.new_cause}
-                                            style={{width:60, height:60, resizeMode:"contain"}}
+                                            style={{
+                                                width: 60,
+                                                height: 60,
+                                                resizeMode: "contain",
+                                            }}
                                         />
                                     </TouchableOpacity>
                                 </View>
@@ -260,7 +308,7 @@ class ProfileEditScreen extends Component {
                         <View
                             style={{
                                 flex: 5,
-                                backgroundColor: "white",
+                                backgroundColor: Colours.white,
                                 paddingVertical: 25,
                             }}>
                             <View
@@ -274,7 +322,7 @@ class ProfileEditScreen extends Component {
                                     width={350}
                                 />
                             </View>
-                            </View>
+                        </View>
                     </SafeAreaView>
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -284,22 +332,22 @@ class ProfileEditScreen extends Component {
 
 const styles = StyleSheet.create({
     slider: {
-        width: formWidth+(formWidth*0.1),
-        height:15
+        width: formWidth + formWidth * 0.1,
+        height: 15,
     },
     switch: {
         alignSelf: "flex-start",
-        marginTop:5,
-        transform:[{ scaleX: .8 }, { scaleY: .8 }] 
+        marginTop: 5,
+        transform: [{scaleX: 0.8}, {scaleY: 0.8}],
     },
     nameText: {
         fontSize: 30,
-        color: "white",
+        color: Colours.white,
         fontWeight: "bold",
     },
     usernameText: {
         fontSize: 20,
-        color: "white",
+        color: Colours.white,
     },
     locationText: {
         fontSize: 20,
@@ -309,45 +357,39 @@ const styles = StyleSheet.create({
     bioHeader: {
         paddingTop: 25,
         fontSize: 20,
-        color: "black",
+        color: Colours.black,
         fontWeight: "500",
     },
     bioHeaderAlt: {
         paddingTop: 25,
         fontSize: 18,
-        color: "#00A8A6",
+        color: Colours.blue,
         fontWeight: "500",
-        marginLeft: 80
+        marginLeft: 80,
     },
     contentText: {
         fontSize: 18,
-        color: "grey",
+        color: Colours.grey,
         paddingVertical: 20,
     },
-    answerText: {
-        fontSize: 15,
-        color: "#00A8A6",
-        paddingVertical: 5,
-        paddingLeft: 5,
-    },
-    editContainer:{
+    editContainer: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
         borderColor: "transparent",
-        borderBottomColor: "#D3D3D3",
+        borderBottomColor: Colours.lightGrey,
         borderWidth: 1.5,
     },
-    pointContainer:{
+    pointContainer: {
         flex: 1,
     },
-    leftItem:{
+    leftItem: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-    }
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+    },
 });
 
 export default ProfileEditScreen;

@@ -13,7 +13,7 @@ import {ScrollView} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import { RegularText, SubTitleText } from "../components/text";
+import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 
 import Styles, {normalise} from "../styles/Styles";
@@ -70,7 +70,6 @@ class SignUpScreen extends React.Component {
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
             !this.isValidPassword();
-        const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
@@ -78,7 +77,7 @@ class SignUpScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={Styles.fullMinHeight}>
+                        <View>
                             <PageHeader title="Sign Up" />
                             <SubTitleText style={{fontSize: normalise(26)}}>
                                 Create a new account

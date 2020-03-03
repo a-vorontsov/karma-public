@@ -11,6 +11,6 @@ const Colours = {
     lighterGrey: "#e5e5e5",
     red: "#e81f10",
     black: "#000000",
-}
+};
 
 export default Colours;

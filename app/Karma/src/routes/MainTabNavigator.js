@@ -1,7 +1,7 @@
 import React from "react";
 import {Image} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
-import { createStackNavigator } from "react-navigation-stack";
+import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
 import ActivitiesScreen from "../views/ActivitiesScreen";
