@@ -7,67 +7,39 @@ const insert = (user) => {
     return db.query(query, params);
 };
 
-const findById = async (id) => {
+const findById = (id) => {
     const query = "SELECT * FROM \"user\" WHERE id=$1";
-    const queryResult = await db.query(query, [id]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No user found with id ${id}`);
-    }
-    return queryResult;
+    return db.query(query, [id]);
 };
 
-const findAll = async () => {
+const findAll = () => {
     const query = "SELECT * FROM \"user\"";
-    const queryResult = await db.query(query);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No users found`);
-    }
-    return queryResult;
+    return db.query(query);
 };
-const getUsersLocations = async () => {
+const getUsersLocations = () => {
     const query = "select user_id,lat,long from profile natural join individual " +
         "natural join \"user\" left join address on address_id = id(address)";
-    const queryResult = await db.query(query);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No users found`);
-    }
-    return queryResult;
+    return db.query(query);
 };
-const getUserLocation = async (userId) => {
+const getUserLocation = (userId) => {
     const query = "select user_id, lat,long from individual left join address on address_id = id(address) where user_id = $1";
-    const queryResult = await db.query(query, [userId]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No user found with UserID ${userId}`);
-    }
-    return queryResult;
+    return db.query(query, [userId]);
 };
 
-const findByEmail = async (email) => {
+const findByEmail = (email) => {
     const query = "SELECT * FROM \"user\" WHERE email=$1";
-    const queryResult = await db.query(query, [email]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No user found with email ${email}`);
-    }
-    return queryResult;
+    return db.query(query, [email]);
 };
 
-const findByUsername = async (username) => {
+const findByUsername = (username) => {
     const query = "SELECT * FROM \"user\" WHERE username=$1";
-    const queryResult = await db.query(query, [username]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No user found with username ${username}`);
-    }
-    return queryResult;
+    return db.query(query, [username]);
 };
 
-const updatePassword = async (userId, hashedPassword) => {
+const updatePassword = (userId, hashedPassword) => {
     const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
     const params = [userId, hashedPassword];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No user found with UserID ${userId}`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
 module.exports = {

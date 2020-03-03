@@ -7,26 +7,18 @@ const insert = (address) => {
     return db.query(query, params);
 };
 
-const findById = async (id) => {
+const findById = (id) => {
     const query = "SELECT * FROM address WHERE id=$1";
-    const queryResult = await db.query(query, [id]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No address with id ${id} exists`);
-    }
-    return queryResult;
+    return db.query(query, [id]);
 };
 
-const update = async (address) => {
+const update = (address) => {
     const query = "UPDATE address SET address_1 = $1, address_2 = $2, postcode = $3, city = $4, region = $5, " +
         "lat = $6, long = $7 WHERE id = $8" +
         "RETURNING *"; // returns passed address with it's id set to corresponding id in database
     const params = [address.address_1, address.address_2, address.postcode, address.city, address.region, address.lat,
         address.long, address.id];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No address with id ${address.id} exists`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
 module.exports = {

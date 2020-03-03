@@ -15,55 +15,39 @@ const insertMultiple = (userID, causes) => {
     return db.query(query, params);
 };
 
-const deleteUnselected = async (userID, causes) => {
+const deleteUnselected = (userID, causes) => {
     const query = "DELETE FROM selected_cause WHERE cause_id NOT IN (SELECT * FROM unnest($2::int[])) AND user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
     const params = [userID, causes];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No unselected cause with userID ${userID} exists`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
-const deleteMultiple = async (userID, causes) => {
+const deleteMultiple = (userID, causes) => {
     const query = "DELETE FROM selected_cause WHERE cause_id IN (SELECT * FROM unnest($2::int[])) AND user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
     const params = [userID, causes];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No causes to delete with userID ${userID}`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
-const findByUserId = async (userId) => {
+const findByUserId = (userId) => {
     const query = "SELECT * FROM selected_cause WHERE user_id=$1";
-    const queryResult = await db.query(query, [userId]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No causes for userID ${userId} exists`);
-    }
-    return queryResult;
+    return db.query(query, [userId]);
 };
-const findByCauseId = async (causeId) => {
+const findByCauseId = (causeId) => {
     const query = "SELECT * FROM selected_cause WHERE cause_id=$1";
-    const queryResult = await db.query(query, [causeId]);
+    return db.query(query, [causeId]);
     if(queryResult.rowCount === 0) {
         throw Error(`No causes for causeID ${causeId} exists`);
     }
     return queryResult;
 };
-const find = async (userID, causeID) => {
+const find = (userID, causeID) => {
     const query = "SELECT * FROM selected_cause WHERE user_id = $1 AND cause_id=$2";
     const params = [userID, causeID];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No selectedCauses to find with userID ${userID} and causeID ${causeID}`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
-const findEventsSelectedByUser = async (userID, filters) => {
+const findEventsSelectedByUser = (userID, filters) => {
     let whereClause = filterer.getWhereClause(filters);
     if (whereClause === "") whereClause = "where ";
     else whereClause += " and ";
@@ -75,12 +59,7 @@ const findEventsSelectedByUser = async (userID, filters) => {
         "left join cause on cause_id(event_cause) = id(cause) " +
         "left join address on id(address) = address_id " +
         whereClause + "user_id(selected_cause) = $1";
-    const queryResult = await db.query(query, [userID]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No events to find with userID ${userID} and these filters`);
-    }
-    return queryResult;
-
+    return db.query(query, [userID]);
 };
 
 module.exports = {

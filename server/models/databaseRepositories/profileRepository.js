@@ -7,31 +7,19 @@ const insert = (profile) => {
     return db.query(query, params);
 };
 
-const findById = async (id) => {
+const findById = (id) => {
     const query = "SELECT * FROM profile WHERE id=$1";
-    const queryResult = await db.query(query, [id]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No profile with id ${id} exists`);
-    }
-    return queryResult;
+    return db.query(query, [id]);
 };
 
-const findByIndividualId = async (individualId) => {
+const findByIndividualId = (individualId) => {
     const query = "SELECT * FROM profile WHERE individual_id=$1";
-    const queryResult = await db.query(query, [individualId]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No profile with individual_id ${individualId} exists`);
-    }
-    return queryResult;
+    return db.query(query, [individualId]);
 };
 
-const findAll = async () => {
+const findAll = () => {
     const query = "SELECT * FROM profile";
-    const queryResult = await db.query(query);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No profile exists`);
-    }
-    return queryResult;
+    return db.query(query);
 };
 
 module.exports = {

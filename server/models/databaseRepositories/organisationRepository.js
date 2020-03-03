@@ -13,31 +13,19 @@ const insert = (organisation) => {
     return db.query(query, params);
 };
 
-const findById = async (id) => {
+const findById = (id) => {
     const query = "SELECT * FROM organisation WHERE id=$1";
-    const queryResult = await db.query(query, [id]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No organisation with id ${id} exists`);
-    }
-    return queryResult;
+    return db.query(query, [id]);
 };
 
-const findAll = async () => {
+const findAll = () => {
     const query = "SELECT * FROM organisation";
-    const queryResult = await db.query(query);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No organisation exists`);
-    }
-    return queryResult;
+    return db.query(query);
 };
 
-const findByUserID = async (userId) => {
+const findByUserID = (userId) => {
     const query = "SELECT * FROM organisation WHERE user_id=$1";
-    const queryResult = await db.query(query, [userId]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No organisation with user_id ${userId} exists`);
-    }
-    return queryResult;
+    return db.query(query, [userId]);
 };
 
 module.exports = {

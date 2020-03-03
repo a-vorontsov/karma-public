@@ -9,44 +9,28 @@ const insert = (registration) => {
     return db.query(query, params);
 };
 
-const update = async (registration) => {
+const update = (registration) => {
     const query = "UPDATE registration SET email = $1, email_flag = $2, id_flag = $3, phone_flag = $4, sign_up_flag = $5 " +
         "WHERE email = $1" +
         "RETURNING *"; // returns passed registration with it's id set to corresponding id in database
     const params = [registration.email, registration.email_flag, registration.id_flag, registration.phone_flag, registration.sign_up_flag];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No registration with id ${registration.id} exists`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
-const findAll = async () => {
+const findAll = () => {
     const query = "SELECT * FROM registration";
-    const queryResult = await db.query(query);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No registration exists`);
-    }
-    return queryResult;
+    return db.query(query);
 };
 
-const findByEmail = async (email) => {
+const findByEmail = (email) => {
     const query = "SELECT * FROM registration WHERE email=$1";
-    const queryResult = await db.query(query, [email]);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No registration with email ${email} exists`);
-    }
-    return queryResult;
+    return db.query(query, [email]);
 };
 
-const updateSignUpFlag = async (email) => {
+const updateSignUpFlag = (email) => {
     const query = 'UPDATE \"registration\" SET sign_up_flag = 1 WHERE email = $1 RETURNING *';
     const params = [email];
-    const queryResult = await db.query(query, params);
-    if(queryResult.rowCount === 0) {
-        throw Error(`No registration with email ${email} exists`);
-    }
-    return queryResult;
+    return db.query(query, params);
 };
 
 module.exports = {
