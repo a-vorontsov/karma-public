@@ -64,6 +64,7 @@ CREATE TABLE authentication
         content text NOT NULL,
         date timestamp NOT NULL,
         user_id int NOT NULL,
+        creation_date timestamp NOT NULL,
         CONSTRAINT event_pk PRIMARY KEY (id)
     );
 
@@ -148,7 +149,7 @@ CREATE TABLE authentication
         CREATE TABLE picture
         (
             id serial NOT NULL,
-            picture_location varchar(32) NOT NULL,
+            picture_location varchar(256) NOT NULL,
             CONSTRAINT picture_pk PRIMARY KEY (id)
         );
 

@@ -1,4 +1,4 @@
-const testHelpers = require("../test/testHelpers");
+const testHelpers = require("../../test/testHelpers");
 const selectedCauseRepository = require("./selectedCauseRepository");
 const causeRepository = require("./causeRepository");
 

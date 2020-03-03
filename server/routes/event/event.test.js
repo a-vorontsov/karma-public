@@ -5,7 +5,7 @@ const util = require("../../util/util");
 
 const addressRepository = require("../../models/addressRepository");
 const eventRepository = require("../../models/eventRepository");
-const selectedCauseRepository = require("../../models/selectedCauseRepository");
+const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const individualRepository = require("../../models/individualRepository");
 
 

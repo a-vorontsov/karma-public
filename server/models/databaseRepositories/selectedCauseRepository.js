@@ -1,5 +1,5 @@
-const db = require("../database/connection");
-const filterer = require("../modules/filtering");
+const db = require("../../database/connection");
+const filterer = require("../../modules/filtering");
 
 const insert = (userID, causeID) => {
     const query = "INSERT INTO selected_cause VALUES ($1, $2) " +

@@ -71,6 +71,7 @@ const event = {
     content: "fun event yay",
     date: "2004-10-19 10:23:54",
     user_id: -1,
+    creation_date: "2019-10-19 10:23:54"
 };
 
 
