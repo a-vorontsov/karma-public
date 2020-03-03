@@ -19,7 +19,7 @@ import Styles from "../../styles/Styles";
 import TextInput from "../../components/TextInput";
 import Colours from "../../styles/Colours";
 import ActivityCard from "../../components/ActivityCard";
-import ActivitiesTab from "../../routes/ActivitiesTab"
+import ActivitiesTab from "../../routes/ActivitiesTabNavigator"
 import {createSwitchNavigator, createAppContainer} from "react-navigation";
 
 const {width, height} = Dimensions.get("window");

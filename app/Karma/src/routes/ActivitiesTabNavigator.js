@@ -1,13 +1,22 @@
 import React from 'react';
-import {Image, Dimensions} from "react-native";
+import {Image, Dimensions, StyleSheet} from "react-native";
 import ActivitiesAllScreen from "../views/Activities/ActivitiesAllScreen";
 import ActivitiesCausesScreen from '../views/Activities/ActivitiesCausesScreen';
 import ActivitiesGoingScreen from '../views/Activities/ActivitiesGoingScreen';
 import ActivitiesFavouritesScreen from '../views/Activities/ActivitiesFavouritesScreen';
 import { createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createSwitchNavigator, createAppContainer} from "react-navigation";
+import posed from "react-native-pose";
 import Colours from "../styles/Colours";
 const {width, height} = Dimensions.get("window");
+
+const tabWidth = width / 4;
+const SpotLight = posed.View({
+  All: { x: 0 },
+  Causes: { x: tabWidth },
+  Going: { x: tabWidth * 2 },
+  Favourites: { x: tabWidth * 3 }
+});
 
 const ActivitiesTab = createMaterialTopTabNavigator(
     {  
@@ -39,23 +48,32 @@ const ActivitiesTab = createMaterialTopTabNavigator(
     {  
         tabBarOptions: {
             showLabel: true,
-            allowFontScaling: false,
+            allowFontScaling: true,
             inactiveTintColor: Colours.lightGrey,
             activeTintColor: Colours.white,
             labelStyle: {
-                fontSize: 15,
+                fontSize: 12,
                 fontWeight: "500",
             },
             style: {
+                flex:1,
                 borderTopColor: "transparent",
                 borderTopWidth: 0,
-                height: 80,
                 backgroundColor: "red",
-                width: width,
+                width: "100%",
             },
         },
     }  
 
 );
+
+const styles = StyleSheet.create({
+    spotLight: {
+      width: tabWidth,
+      height: "100%",
+      backgroundColor: Colours.blue,
+      borderRadius: 8
+    }
+  });
 
 export default createAppContainer(ActivitiesTab);
