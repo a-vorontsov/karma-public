@@ -7,26 +7,42 @@ const insert = (signup) => {
     return db.query(query, params);
 };
 
-const findAllByIndividualId = (individual_id) => {
+const findAllByIndividualId = async (individual_id) => {
     const query = "SELECT * FROM sign_up WHERE individual_id=$1";
-    return db.query(query, [individual_id]);
+    const queryResult = await db.query(query, [individual_id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No sign-ups found with individualID ${individual_id}`);
+    }
+    return queryResult;
 };
 
-const findAllByEventId = (event_id) => {
+const findAllByEventId = async (event_id) => {
     const query = "SELECT * FROM sign_up WHERE event_id=$1";
-    return db.query(query, [event_id]);
+    const queryResult = db.query(query, [event_id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No sign-ups found with eventID ${event_id}`);
+    }
+    return queryResult;
 };
 
-const find = (individual_id, event_id) => {
+const find = async (individual_id, event_id) => {
     const query = "SELECT * FROM sign_up WHERE individual_id = $1 AND event_id=$2";
     const params = [individual_id, event_id];
-    return db.query(query, params);
+    const queryResult = await db.query(query, params);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No sign-ups found with individualID ${individual_id} and eventID ${event_id}`);
+    }
+    return queryResult;
 };
 
-const update = (signup) => {
+const update = async (signup) => {
     const query = "UPDATE sign_up SET confirmed = $1 WHERE individual_id = $2 AND event_id = $3 RETURNING *";
     const params = [signup.confirmed, signup.individual_id, signup.event_id];
-    return db.query(query, params);
+    const queryResult = await db.query(query, params);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No sign-up found with individualID ${signup.individual_id} and eventID ${signup.event_id}`);
+    }
+    return queryResult;
 };
 
 module.exports = {

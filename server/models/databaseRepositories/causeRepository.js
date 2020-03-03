@@ -7,17 +7,29 @@ const insert = (cause) => {
     return db.query(query, params);
 };
 
-const findById = (id) => {
+const findById = async (id) => {
     const query = "SELECT * FROM cause WHERE id=$1";
-    return db.query(query, [id]);
+    const queryResult = await db.query(query, [id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No cause with id ${id} exists`);
+    }
+    return queryResult;
 };
-const findByName = (name) => {
+const findByName = async (name) => {
     const query = "SELECT * FROM cause WHERE name=$1";
-    return db.query(query, [name]);
+    const queryResult = await db.query(query, [name]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No cause with name ${name} exists`);
+    }
+    return queryResult;
 };
-const findAll = () => {
+const findAll = async () => {
     const query = "SELECT * FROM cause";
-    return db.query(query);
+    const queryResult = await db.query(query);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No cause exists`);
+    }
+    return queryResult;
 };
 
 module.exports = {

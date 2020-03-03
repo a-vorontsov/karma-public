@@ -12,34 +12,55 @@ const insert = (individual) => {
     return db.query(query, params);
 };
 
-const findById = (id) => {
+const findById = async (id) => {
     const query = "SELECT * FROM individual WHERE id=$1";
-    return db.query(query, [id]);
+    const queryResult = await db.query(query, [id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No individual with id ${id} exists`);
+    }
+    return queryResult;
+
 };
 
-const findAll = () => {
+const findAll = async () => {
     const query = "SELECT * FROM individual";
-    return db.query(query);
+    const queryResult = await db.query(query);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No individual exists`);
+    }
+    return queryResult;
 };
 
-const findByUserID = (user_id) => {
+const findByUserID = async (user_id) => {
     const query = "SELECT * FROM individual WHERE user_id=$1";
-    return db.query(query, [user_id]);
+    const queryResult = await db.query(query, [user_id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No event with user_id ${user_id} exists`);
+    }
+    return queryResult;
 };
 
-const findFavouriteEvents = (userId) => {
+const findFavouriteEvents = async (userId) => {
     const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
         "from favourite left join event on event_id = id(event) left join address on id(address) = address_id where individual_id = $1";
-    return db.query(query, [userId]);
+    const queryResult = await db.query(query, [userId]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No favourite event for user with id ${userId} exists`);
+    }
+    return queryResult;
 };
 
-const findGoingEvents = (userId) => {
+const findGoingEvents = async (userId) => {
     const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
         "from sign_up left join event on event_id = id(event)" +
         "left join address on id(address) = address_id where individual_id = $1 and confirmed = true";
-    return db.query(query, [userId]);
+    const queryResult = await db.query(query, [userId]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`User with user_id ${userId} is not going to any events`);
+    }
+    return queryResult;
 };
 
 module.exports = {

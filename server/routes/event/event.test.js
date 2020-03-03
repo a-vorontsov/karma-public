@@ -3,17 +3,17 @@ const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const util = require("../../util/util");
 
-const addressRepository = require("../../models/addressRepository");
-const eventRepository = require("../../models/eventRepository");
+const addressRepository = require("../../models/databaseRepositories/addressRepository");
+const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
-const individualRepository = require("../../models/individualRepository");
+const individualRepository = require("../../models/databaseRepositories/individualRepository");
 
 
-jest.mock("../../models/eventRepository");
-jest.mock("../../models/addressRepository");
-jest.mock("../../models/selectedCauseRepository");
-jest.mock("../../models/individualRepository");
-jest.mock("../../models/userRepository");
+jest.mock("../../models/databaseRepositories/eventRepository");
+jest.mock("../../models/databaseRepositories/addressRepository");
+jest.mock("../../models/databaseRepositories/selectedCauseRepository");
+jest.mock("../../models/databaseRepositories/individualRepository");
+jest.mock("../../models/databaseRepositories/userRepository");
 jest.mock("../../util/util");
 
 beforeEach(() => {

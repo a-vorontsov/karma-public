@@ -3,10 +3,10 @@ const app = require('../app');
 const testHelpers = require("../test/testHelpers");
 
 const signupRepository = require("../models/databaseRepositories/signupRepository");
-const eventRepository = require("../models/eventRepository");
+const eventRepository = require("../models/databaseRepositories/eventRepository");
 
-jest.mock("../models/eventRepository");
-jest.mock("../models/signupRepository");
+jest.mock("../models/databaseRepositories/eventRepository");
+jest.mock("../models/databaseRepositories/signupRepository");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();

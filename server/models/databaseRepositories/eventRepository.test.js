@@ -64,3 +64,27 @@ test('findAllByUserId works', async () => {
     const findAllByUserIdResult = await eventRepository.findAllByUserId(insertUserResult.rows[0].id);
     expect(findAllByUserIdResult.rows).toMatchObject([insertedEvent1, insertedEvent2]);
 });
+
+test('findAllByUserIdLastMonth works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(user);
+    event.address_id =  insertAddressResult.rows[0].id;
+    event.user_id = insertUserResult.rows[0].id;
+
+    const fiveDaysAgo = new Date();
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+    event.creation_date = fiveDaysAgo;
+    const insertEventResult1 = await eventRepository.insert(event);
+    const insertedEvent1 = insertEventResult1.rows[0];
+
+    const yearAgo = new Date();
+    yearAgo.setDate(yearAgo.getDate() - 365);
+    event.creation_date = yearAgo;
+    await eventRepository.insert(event);
+
+    const findAllByUserIdLastMonthResult = await eventRepository.findAllByUserIdLastMonth(insertUserResult.rows[0].id);
+    expect(findAllByUserIdLastMonthResult.rows[0]).toMatchObject(insertedEvent1);
+    expect(findAllByUserIdLastMonthResult.rowCount).toBe(1);
+});

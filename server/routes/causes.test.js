@@ -4,7 +4,7 @@ const testHelpers = require("../test/testHelpers");
 
 const causeRepository = require("../models/databaseRepositories/causeRepository");
 
-jest.mock("../models/causeRepository");
+jest.mock("../models/databaseRepositories/causeRepository");
 
 
 beforeEach(() => {

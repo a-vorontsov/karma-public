@@ -4,7 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
-const eventRepository = require("../models/eventRepository");
+const eventRepository = require("../models/databaseRepositories/eventRepository");
 const signupRepository = require("../models/databaseRepositories/signupRepository");
 
 /**

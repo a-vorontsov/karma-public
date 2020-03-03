@@ -7,24 +7,44 @@ const insert = (authentication) => {
     return db.query(query, params);
 };
 
-const findById = (id) => {
+const findById = async (id) => {
     const query = "SELECT * FROM authentication WHERE id=$1";
-    return db.query(query, [id]);
+    const queryResult = await db.query(query, [id]);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No authentication with id ${id} exists`);
+    }
+    return queryResult;
 };
 
-const findAll = () => {
+const findAll = async () => {
     const query = "SELECT * FROM authentication";
-    return db.query(query);
+    const queryResult = await db.query(query);
+    if(queryResult.rowCount === 0) {
+        throw Error(`No authentication exists`);
+    }
+    return queryResult;
 };
 
-const findAllByUserID = (user_id) => {
+const findAllByUserID = async (user_id) => {
     const query = "SELECT * FROM authentication WHERE user_id=$1";
-    return db.query(query, [user_id]);
+    const queryResult = await db.query(query, [user_id]);
+
+    if(queryResult.rowCount === 0) {
+        throw Error(`No authentication with user_id ${user_id} exists`);
+    }
+    return queryResult;
+
 };
 
-const findLatestByUserID = (user_id) => {
+const findLatestByUserID = async (user_id) => {
     const query = "SELECT * FROM authentication WHERE user_id=$1 ORDER BY creation_date DESC LIMIT 1";
-    return db.query(query, [user_id]);
+    const queryResult = await db.query(query, [user_id]);
+
+    if(queryResult.rowCount === 0) {
+        throw Error(`No authentication with user_id ${user_id} exists`);
+    }
+    return queryResult;
+
 };
 
 module.exports = {
