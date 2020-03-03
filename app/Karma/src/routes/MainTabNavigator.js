@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from "react-navigation-tabs";
 import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
-import ActivitiesScreen from "../views/ActivitiesScreen";
+import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
