@@ -1,0 +1,17 @@
+const {calculateLimitAndOffset, paginate} = require('paginate-info');
+
+module.exports = {
+    getPageData: (req, data) => {
+        const {query: {currentPage, pageSize}} = req;
+        const {limit, offset} = calculateLimitAndOffset(currentPage, pageSize);
+        const count = data.length;
+        const paginatedData = data.slice(offset, offset + limit);
+        const paginationInfo = paginate(currentPage, count, paginatedData);
+        const result = {
+            meta: paginationInfo,
+            data: paginatedData,
+        };
+        return result;
+    },
+};
+
