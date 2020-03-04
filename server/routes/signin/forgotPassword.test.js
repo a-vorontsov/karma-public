@@ -3,8 +3,10 @@ const app = require('../../app');
 const testHelpers = require("../../test/testHelpers");
 
 const userRepository = require("../../models/databaseRepositories/userRepository");
+const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const mailSender = require("../../modules/mailSender");
 
+jest.mock("../../models/databaseRepositories/resetRepository");
 jest.mock("../../models/databaseRepositories/userRepository");
 jest.mock("../../modules/mailSender");
 
@@ -22,7 +24,7 @@ const reset1 = testHelpers.reset1;
 const reset2 = testHelpers.reset2;
 
 test('requesting reset password token works', async () => {
-    userRepository.insertResetToken.mockResolvedValue({
+    resetRepository.insertResetToken.mockResolvedValue({
         rows: [{
             ...reset1,
             id: 1,
@@ -41,7 +43,7 @@ test('requesting reset password token works', async () => {
             email: "test@gmail.com"
         });
 
-    expect(userRepository.insertResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.text).toMatch("Code sent successfully to test@gmail.com");
@@ -52,7 +54,7 @@ test('requesting reset password token with no email does not work', async () => 
         .post("/signin/forgot")
         .send({});
 
-    expect(userRepository.insertResetToken).toHaveBeenCalledTimes(0);
+    expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(0);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("No email was specified");
@@ -67,7 +69,7 @@ test('confirming correct token works', async () => {
             id: 1,
         }],
     });
-    userRepository.findResetToken.mockResolvedValue({
+    resetRepository.findResetToken.mockResolvedValue({
         rows: [{
                 ...reset2,
                 id: 2,
@@ -86,7 +88,7 @@ test('confirming correct token works', async () => {
             email: "test@gmail.com",
             token: "234567",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.text).toMatch("Token accepted");
@@ -101,7 +103,7 @@ test('confirming correct token but not latest does not work', async () => {
             id: 1,
         }],
     });
-    userRepository.findResetToken.mockResolvedValue({
+    resetRepository.findResetToken.mockResolvedValue({
         rows: [{
                 ...reset2,
                 id: 2,
@@ -120,7 +122,7 @@ test('confirming correct token but not latest does not work', async () => {
             email: "test@gmail.com",
             token: "123456",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(401);
     expect(response.text).toMatch("Tokens did not match");
@@ -135,7 +137,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             id: 1,
         }],
     });
-    userRepository.findResetToken.mockResolvedValue({
+    resetRepository.findResetToken.mockResolvedValue({
         rows: [{
             ...reset1,
             id: 1,
@@ -148,7 +150,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             email: "test@gmail.com",
             token: "incorrect token",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(401);
     expect(response.text).toMatch("Tokens did not match");
@@ -163,7 +165,7 @@ test('confirming expired token returns token expired response', async () => {
             id: 1,
         }],
     });
-    userRepository.findResetToken.mockResolvedValue({
+    resetRepository.findResetToken.mockResolvedValue({
         rows: [{
             ...reset1,
             id: 1,
@@ -176,7 +178,7 @@ test('confirming expired token returns token expired response', async () => {
             email: "test@gmail.com",
             token: "123456",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(401);
     expect(response.text).toMatch("Token expired");
@@ -196,7 +198,7 @@ test('confirming with no token specified returns token not defined response', as
         .send({
             email: "test@gmail.com",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(0);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Token not defined");
@@ -209,7 +211,7 @@ test('confirming token not sent to email returns no token sent response', async 
             id: 1,
         }],
     });
-    userRepository.findResetToken.mockResolvedValue({
+    resetRepository.findResetToken.mockResolvedValue({
         rows: [],
     })
     const response = await request(app)
@@ -218,7 +220,7 @@ test('confirming token not sent to email returns no token sent response', async 
             email: "test@gmail.com",
             token: "123456",
         });
-    expect(userRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(404);
     expect(response.text).toMatch("No token sent to test@gmail.com");

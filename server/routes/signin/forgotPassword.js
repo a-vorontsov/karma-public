@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const randomize = require('randomatic');
 const mailSender = require('../../modules/mailSender');
-const userRepository = require("../../models/databaseRepositories/userRepository");
+const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const util = require("../../util/util");
 
 /**
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     // generate 6 digit code
     const token = randomize('0', 6);
     // update the db
-    userRepository.insertResetToken(user.id, token)
+    resetRepository.insertResetToken(user.id, token)
         .then(() => mailSender.sendToken(email, token))
         .then(() => res.status(200).send("Code sent successfully to " + email))
         .catch(err => res.status(500).send(err));
@@ -60,7 +60,7 @@ router.post('/confirm', async (req, res) => {
     }
     if (!tokenRecieved) return res.status(400).send("Token not defined");
 
-    userRepository.findResetToken(checkEmailResult.user.id)
+    resetRepository.findResetToken(checkEmailResult.user.id)
         .then(result => {
             if (result.rows.length == 0) return res.status(404).send("No token sent to " + email);
 
