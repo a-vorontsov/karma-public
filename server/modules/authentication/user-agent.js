@@ -5,6 +5,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
 const individualRepo = require("../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const date = require("date-and-time");
 
 /**
  * Register a new record in the registration table.
@@ -53,13 +54,14 @@ async function registerUser(email, username, password) {
         password,
         secureSalt,
     );
+
     await userRepo.insert({
         email: email,
         username: username,
         password_hash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        date_registered: "2016-06-22 19:10:25-07", // TODO:
+        date_registered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
     });
     const userResult = await userRepo.findByEmail(email);
     return userResult.rows[0].id;
@@ -155,7 +157,7 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         poc_lastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        org_register_date: "2016-06-22 19:10:25-07", // TODO:
+        org_register_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
         low_income: lowIncome,
         exempt: exempt,
         picture_id: null, // TODO:

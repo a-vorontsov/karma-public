@@ -37,8 +37,8 @@ test("user registration works", async () => {
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("User registration successful. Goto individual/org registration selection");
+    expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBeGreaterThan(-1);
 });
 
