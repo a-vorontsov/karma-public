@@ -7,8 +7,8 @@ const router = express.Router();
 const authAgent = require("../../modules/authentication/auth-agent");
 const regStatus = require("../../modules/authentication/registration-status");
 const userAgent = require("../../modules/authentication/user-agent");
-const regRepo = require("../../models/registrationRepository");
-const userRepo = require("../../models/userRepository");
+const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const userRepo = require("../../models/databaseRepositories/userRepository");
 
 /**
  * This is the first step of the signup flow.

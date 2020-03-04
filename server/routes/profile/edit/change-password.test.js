@@ -2,8 +2,8 @@ const request = require('supertest');
 const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
-const userRepo = require("../../../models/userRepository");
-const regRepo = require("../../../models/registrationRepository");
+const userRepo = require("../../../models/databaseRepositories/userRepository");
+const regRepo = require("../../../models/databaseRepositories/registrationRepository");
 
 const user = testHelpers.user4;
 const registration = testHelpers.registration4;

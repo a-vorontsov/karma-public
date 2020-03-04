@@ -1,10 +1,10 @@
 const digest = require("./digest");
 const regStatus = require("./registration-status");
-const regRepo = require("../../models/registrationRepository");
-const userRepo = require("../../models/userRepository");
-const individualRepo = require("../../models/individualRepository");
-const orgRepo = require("../../models/organisationRepository");
-const addressRepo = require("../../models/addressRepository");
+const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const userRepo = require("../../models/databaseRepositories/userRepository");
+const individualRepo = require("../../models/databaseRepositories/individualRepository");
+const orgRepo = require("../../models/databaseRepositories/organisationRepository");
+const addressRepo = require("../../models/databaseRepositories/addressRepository");
 
 /**
  * Register a new record in the registration table.

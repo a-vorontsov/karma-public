@@ -71,6 +71,7 @@ const event = {
     content: "fun event yay",
     date: "2004-10-19 10:23:54",
     user_id: -1,
+    creation_date: "2019-10-19 10:23:54",
 };
 
 
@@ -83,6 +84,19 @@ const user = {
     date_registered: "2016-06-22 19:10:25-07",
 };
 
+const authentication = {
+    token: "thisIsASecureToken",
+    expiry_date: "2020-01-22 19:10:25-07",
+    creation_date: "2020-01-10 19:10:25-07",
+    user_id: -1,
+};
+
+const authentication2 = {
+    token: "thisIsANonSecureToken",
+    expiry_date: "2020-01-10 19:10:25-07",
+    creation_date: "2019-12-23 19:10:25-07",
+    user_id: -1,
+};
 
 const user2 = {
     email: "test2@gmail.com",
@@ -269,6 +283,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
+    await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
@@ -279,6 +294,8 @@ module.exports = {
     address: address,
     registration: registration,
     registration2: registration2,
+    authentication: authentication,
+    authentication2: authentication2,
     registration3: registration3,
     registration4: registration4,
     registration5: registration5,

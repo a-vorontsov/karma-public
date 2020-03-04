@@ -1,5 +1,5 @@
-const db = require("../database/connection");
-const filterer = require("../modules/filtering");
+const db = require("../../database/connection");
+const filterer = require("../../modules/filtering");
 
 const insert = (userID, causeID) => {
     const query = "INSERT INTO selected_cause VALUES ($1, $2) " +
@@ -29,13 +29,17 @@ const deleteMultiple = (userID, causes) => {
     return db.query(query, params);
 };
 
-const findByUserId = (id) => {
+const findByUserId = (userId) => {
     const query = "SELECT * FROM selected_cause WHERE user_id=$1";
-    return db.query(query, [id]);
+    return db.query(query, [userId]);
 };
-const findByCauseId = (id) => {
+const findByCauseId = (causeId) => {
     const query = "SELECT * FROM selected_cause WHERE cause_id=$1";
-    return db.query(query, [id]);
+    return db.query(query, [causeId]);
+    if (queryResult.rowCount === 0) {
+        throw Error(`No causes for causeID ${causeId} exists`);
+    }
+    return queryResult;
 };
 const find = (userID, causeID) => {
     const query = "SELECT * FROM selected_cause WHERE user_id = $1 AND cause_id=$2";
