@@ -51,8 +51,8 @@ const insertResetToken = (user_id, token) => {
 };
 
 const findResetToken = (user_id) => {
-    const query = "SELECT * FROM reset WHERE user_id =$1 and expiry_date > $2";
-    const params = [user_id, Date.now()];
+    const query = "SELECT * FROM reset WHERE user_id =$1 ORDER BY expiry_date DESC";
+    const params = [user_id];
     return db.query(query, params);
 };
 

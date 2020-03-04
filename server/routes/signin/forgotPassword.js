@@ -28,28 +28,31 @@ router.post('/', async (req, res) => {
 });
 
 // gets called when user writes in the token they recieved and click submit
-router.post('/confirm', (req, res) => {
+router.post('/confirm', async (req, res) => {
     const tokenRecieved = req.body.token;
     const email = req.body.email;
-    if (!tokenRecieved && !email) {
-        return res.status(400).send("Token and email not defined");
-    } else if (!email) return res.status(400).send("Email not defined");
-    else if (!tokenRecieved) return res.status(400).send("Token not defined");
-    db.query('SELECT resetpasswordtoken,resetpasswordexpires FROM users WHERE email = $1', [email], (err, result) => {
-        if (err) return res.status(500).send(err);
-        else if (result.rows.length == 0) {
-            return res.status(400).send("There is no user with that email");
-        }
-        const tokenSent = result.rows[0].resetpasswordtoken;
-        const expiryTime = result.rows[0].resetpasswordexpires;
-        if (tokenSent === tokenRecieved && Date.now() <= expiryTime) {
-            res.status(200).send("Token is accepted");
-        } else if (tokenSent != tokenRecieved) {
-            res.status(401).send("Tokens did not match");
-        } else {
-            res.status(401).send("Token expired");
-        }
-    });
+    const checkEmailResult = await util.checkEmail(email);
+    if (checkEmailResult.status != 200) {
+        return res.status(checkEmailResult.status).send(checkEmailResult.message);
+    }
+    if (!tokenRecieved) return res.status(400).send("Token not defined");
+
+    userRepository.findResetToken(checkEmailResult.user.id)
+        .then(result => {
+            if (result.rows.length == 0) return res.status(400).send("No token sent to " + email);
+
+            const tokenSent = result.rows[0].password_token;
+            const expiryDate = result.rows[0].expiry_date;
+
+            if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
+                res.status(200).send("Token is accepted");
+            } else if (tokenSent != tokenRecieved) {
+                res.status(401).send("Tokens did not match");
+            } else {
+                res.status(401).send("Token expired");
+            }
+        })
+        .catch(err => res.status(500).send(err));
 });
 
 module.exports = router;
