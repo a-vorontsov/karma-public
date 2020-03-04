@@ -21,7 +21,7 @@ const MainNavigator = createStackNavigator(
         About: {screen: AboutScreen},
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
-        // CreateActivity: {screen: CreateActivityScreen},
+        
     },
     {
         headerMode: "none",
