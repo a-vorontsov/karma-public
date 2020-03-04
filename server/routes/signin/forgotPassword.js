@@ -45,7 +45,8 @@ router.post('/', async (req, res) => {
  * @returns
  *  status: 200, description: Token is accepted <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
- *  status: 401, description: Token did not match sent token or token expired(tokens are valid only for 1 hour) <br/>
+ *  status: 400, description: Token did not match sent token <br/>
+ *  status: 400, description: Token expired(tokens are valid only for 1 hour) <br/>
  *  status: 404, description: Token sent to specified email not found <br/>
  *  status: 500, description: DB error
  *  @name Confirm token
@@ -70,9 +71,9 @@ router.post('/confirm', async (req, res) => {
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
                 res.status(200).send("Token accepted");
             } else if (tokenSent != tokenRecieved) {
-                res.status(401).send("Tokens did not match");
+                res.status(400).send("Tokens did not match");
             } else {
-                res.status(401).send("Token expired");
+                res.status(400).send("Token expired");
             }
         })
         .catch(err => res.status(500).send(err));
