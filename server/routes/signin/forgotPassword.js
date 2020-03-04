@@ -68,7 +68,7 @@ router.post('/confirm', async (req, res) => {
             const expiryDate = result.rows[0].expiry_date;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
-                res.status(200).send("Token is accepted");
+                res.status(200).send("Token accepted");
             } else if (tokenSent != tokenRecieved) {
                 res.status(401).send("Tokens did not match");
             } else {
