@@ -8,7 +8,7 @@ import {
     Dimensions,
     StatusBar,
     Switch,
-    Modal,
+    Animated,
     FlatList,
     Keyboard,
 } from "react-native";
@@ -22,10 +22,8 @@ import {
     SemiBoldText,
     BoldText,
 } from "../components/text";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 import {GradientButton, Button} from "../components/buttons";
-import TimePicker from "react-native-24h-timepicker";
 
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
@@ -45,23 +43,36 @@ export default class CreateActivityScreen extends React.Component {
             isIDReq: false,
             isPhysical: false,
             isAdditionalInfo: false,
-            timeModalVisible: false,
-            dateModalVisible: false,
-            validTimeSelected: false,
-            validDateSelected: false,
-
+            startDate: new Date(),
+            endDate: new Date(),
+            title: "",
             time: new Date(),
             timeValue: "",
             date: new Date().getT,
             minTime: new Date().getUTCSeconds(),
-
+            isStartDateVisible: false,
+            visible: false,
+            y: new Animated.Value(-50),
             minYear: new Date().getFullYear(),
             slots: [""],
             submitPressed: false,
+            
         };
 
         console.disableYellowBox = true;
     }
+
+    slide = () => {
+
+        Animated.timing(this.state.y, {
+          toValue: -20,
+          duration: 500
+        }).start();
+        this.setState({
+          
+          isStartDateVisible: true
+        });
+      };
 
     addSlot = () => {
         this.setState(prevState => {
@@ -82,30 +93,21 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    onCancel() {
-        this.TimePicker.close();
-    }
 
-    onConfirm(hour, minute) {
-        this.setState({time: `${hour}:${minute}`});
-        this.setState({validTimeSelected: true});
-        this.TimePicker.close();
-    }
+    // setDate(selectedDate) {
+    //     this.setState({date: selectedDate});
 
-    setDate(selectedDate) {
-        this.setState({date: selectedDate});
-
-        //events can only be scheduled for the current day and the future
-        if (selectedDate.getFullYear() >= this.state.minYear) {
-            this.setState({
-                validDateSelected: true,
-            });
-        } else {
-            this.setState({
-                validDateSelected: false,
-            });
-        }
-    }
+    //     //events can only be scheduled for the current day and the future
+    //     if (selectedDate.getFullYear() >= this.state.minYear) {
+    //         this.setState({
+    //             validDateSelected: true,
+    //         });
+    //     } else {
+    //         this.setState({
+    //             validDateSelected: false,
+    //         });
+    //     }
+    // }
 
     onChangeText = event => {
         const {name, text} = event;
@@ -113,10 +115,18 @@ export default class CreateActivityScreen extends React.Component {
         this.setState({[name]: text});
     };
 
+    submit = () => {
+        this.setState({
+            submitPressed:true
+        })
+    }
+
     render() {
         const {navigate} = this.props.navigation;
 
+        
         return (
+            
             <View style={Styles.container}>
                 {/** HEADER */}
                 <View
@@ -226,45 +236,74 @@ export default class CreateActivityScreen extends React.Component {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            {/** DATE PICKER */}
-                            <Modal
-                                animationType="slide"
-                                transparent={false}
-                                visible={this.state.dateModalVisible}
-                                onRequestClose={() => {}}>
-                                <View
-                                    style={[
-                                        Styles.container,
-                                        {
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                        },
-                                    ]}>
-                                    <DatePicker
-                                        fadeToColor="none"
-                                        mode="date"
-                                        date={this.state.date}
-                                        locale="en_GB"
-                                        onDateChange={date =>
-                                            this.setDate(date)
-                                        }
-                                    />
-                                    <GradientButton
-                                        title="Set Date"
-                                        onPress={() => {
-                                            this.setState({
-                                                dateModalVisible: !this.state
-                                                    .dateModalVisible,
-                                            });
-                                        }}
-                                    />
-                                </View>
-                            </Modal>
                             <View>
+                                <TextInput 
+                                    placeholder="Title"
+                                    showError={!this.state.title && this.state.submitPressed}
+                                />
+
+                            </View>
+                            {/** EVENT START DATE 
+                             * 
+                             * TODO - update the start date everytime the date is changed
+                            */}
+                            <View>
+                            <TouchableOpacity onPress={() => this.slide()}>
                                 <View style={{flexDirection: "row"}}>
                                     <TextInput
-                                        placeholder="Date"
-                                        // editable={false}
+                                        placeholder="Start"
+                                        editable={false}
+                                        
+                                        value={
+                                            this.state.validDateSelected
+                                                ? this.state.date.toDateString()
+                                                : null
+                                        }
+                                        showError={
+                                            this.state.submitPressed
+                                                ? !this.state.date
+                                                : false
+                                        }
+
+                                    />
+                                    <Image
+                                        style={{
+                                            position: "absolute",
+                                            right: 0,
+                                            top: 20,
+                                            height: 20,
+                                            width: 20,
+                                        }}
+                                        source={require("../assets/images/general-logos/calendar-dark.png")}
+                                    />
+                                </View>
+                                </TouchableOpacity>
+                            </View>
+                            {this.state.isStartDateVisible
+                            && 
+                            <Animated.View
+                            style={{
+                                transform: [
+                                {
+                                    translateY: this.state.y
+                                }
+                                ]
+                            }}
+                        >
+                            <View><DatePicker 
+                                mode="datetime"
+                            /></View>
+                        
+                        </Animated.View>
+}
+                            
+                            <View>
+                                
+                                <View style={{flexDirection: "row"}}>
+                                    
+                                    <TextInput
+                                        placeholder="End"
+                                        
                                         onFocus={() =>
                                             this.setState({
                                                 dateModalVisible: true,
@@ -292,65 +331,15 @@ export default class CreateActivityScreen extends React.Component {
                                         source={require("../assets/images/general-logos/calendar-dark.png")}
                                     />
                                 </View>
+                                
                             </View>
 
-                            {/** TIME PICKER */}
-                            <View>
-                                <SemiBoldText
-                                    style={{
-                                        fontSize: 15,
-                                    }}>
-                                    Event Time
-                                </SemiBoldText>
-                                <View style={{flexDirection: "row"}}>
-                                    <View
-                                        style={{
-                                            width: 0.5 * FORM_WIDTH,
-                                            alignItems: "center",
-                                        }}>
-                                        <TextInput
-                                            placeholder="From"
-                                            style={{width: 0.25 * FORM_WIDTH}}
-                                        />
-                                    </View>
-                                    <View
-                                        style={{
-                                            width: 0.5 * FORM_WIDTH,
-                                            alignItems: "center",
-                                        }}>
-                                        <TextInput
-                                            style={{width: 0.25 * FORM_WIDTH}}
-                                            placeholder="To"
-                                            inputRef={ref =>
-                                                (this.timeInput = ref)
-                                            }
-                                            onFocus={() =>
-                                                this.TimePicker.focus()
-                                            }
-                                            showError={
-                                                this.state.submitPressed
-                                                    ? !this.state.time
-                                                    : false
-                                            }
-                                            value={
-                                                this.state.validTimeSelected
-                                                    ? this.state.time
-                                                    : null
-                                            }
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                            <TimePicker
-                                ref={ref => {
-                                    this.TimePicker = ref;
-                                }}
-                                onCancel={() => this.onCancel()}
-                                onConfirm={(hour, minute) =>
-                                    this.onConfirm(hour, minute)
-                                }
+                            
+                            {/* <DatePicker 
+                                mode="datetime"
                                 minuteInterval={15}
-                            />
+                                locale="en_GB"
+                            /> */}
                             {/** TIME SLOTS
                              * TODO - separate into 'to' and 'from'
                              * BOTH FOR slots and for time
@@ -589,7 +578,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginBottom: 30,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Next" onPress={() => null} />
+                        <GradientButton title="Next" onPress={this.submit} />
                     </View>
                 </View>
             </View>
