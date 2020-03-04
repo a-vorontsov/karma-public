@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Colours from "../../styles/Colours";
+import Styles from "../../styles/Styles";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 const {width, height} = Dimensions.get("window");

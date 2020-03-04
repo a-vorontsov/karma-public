@@ -22,7 +22,7 @@ const icons = {
 const ActivityDisplayCard = props => {
     return (
         <View>
-            <View style={{backgroundColor: "red", height:60, flexDirection:"row", alignItems:"center"}}>
+            <View style={{backgroundColor: Colours.backgroundWhite, height:60, paddingHorizontal: 24, flexDirection:"row", alignItems:"center"}}>
                 <TouchableOpacity>
                     <Image
                         source={icons.profile}
@@ -30,28 +30,36 @@ const ActivityDisplayCard = props => {
                             width: 50,
                             height: 50,
                             borderRadius: 75,
+                            paddingHorizontal: 24
                         }}
                         resizeMode="cover">
                     </Image>
                 </TouchableOpacity>
                 <View style={{alignItems:"center"}}>
+                    <View style={{alignItems:"flex-start", marginLeft:15}}>
                     <View style={{flexDirection:"row", alignItems:"center", justifyItems:"flex-start"}}>
-                        <RegularText>
+                        <RegularText
+                            style={{fontSize:20, color: Colours.black, fontWeight: "500"}}
+                        >
                             Name
                         </RegularText>
                         <Image>
 
                         </Image>
                     </View>
-                    <RegularText>
+                    <RegularText
+                        style={{fontSize:15, color: Colours.lightGrey, fontWeight: "500"}}
+                    >
                         Location
-
                     </RegularText>
+                </View>
                 </View>
                 <TouchableOpacity>
                     <Image
                         source={icons.share}
                         style={{
+                            marginLeft: 200,
+                            alignSelf: "flex-end",
                             width: 30,
                             height: 30,
                         }}
@@ -61,7 +69,8 @@ const ActivityDisplayCard = props => {
             </View>
             <View style={CarouselStyles.itemContainer3}>
             <View style={[CarouselStyles.item3]}>
-                <ActivityCard/>
+                <ActivityCard
+                    favorited={props.favorited}/>
             </View>
             </View>
         </View>

@@ -45,9 +45,8 @@ class ActivitiesScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{backgroundColor:Colours.white, flex:1}}>
                 <KeyboardAvoidingView
-                    // style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled
                     >
@@ -88,7 +87,7 @@ class ActivitiesScreen extends Component {
                             </View>
                         </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{flex:1, marginTop: 10}}>
+                    <View style={{flex:1, marginTop: 10, marginBottom:100}}>
                         <this.state.display/>
                     </View>
                     </ScrollView>

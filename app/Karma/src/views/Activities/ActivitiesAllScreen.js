@@ -18,6 +18,8 @@ class ActivitiesAllScreen extends Component {
         return (
             <View>
                 <ActivityDisplayCard/>
+                <ActivityDisplayCard/>
+                <ActivityDisplayCard/>
             </View>
         );
     }

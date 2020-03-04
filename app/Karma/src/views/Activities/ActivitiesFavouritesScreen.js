@@ -27,7 +27,9 @@ class ActivitiesFavouritesScreen extends Component {
 
     render() {
         return (
-            <View style = {Styles.ph24}>
+            <View>
+                <ActivityDisplayCard/>
+                <ActivityDisplayCard/>
                 <ActivityDisplayCard/>
             </View>
         );

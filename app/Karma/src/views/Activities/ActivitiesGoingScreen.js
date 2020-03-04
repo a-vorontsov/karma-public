@@ -31,8 +31,9 @@ class ActivitiesGoingScreen extends Component {
 
     render() {
         return (
-            <View style = {Styles.ph24}>
-                <ActivityDisplayCard/>
+            <View>
+                <ActivityDisplayCard
+                    favorited={false}/>
             </View>
         );
     }
