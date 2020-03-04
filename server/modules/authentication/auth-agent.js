@@ -108,7 +108,7 @@ async function logIn(userId) {
     const tokenResult = await authRepo.insert({
         token: digest.hashVarargInBase64(
             userId,
-            digest.generateSecureSaltInHex,
+            digest.generateSecureSaltInHex(),
         ),
         expiry_date: date.format(
             date.addMinutes(new Date(), 15),
@@ -129,7 +129,7 @@ async function logIn(userId) {
 async function logOut(userId) {
     await authRepo.updateAllExpirationForUser(
         userId,
-        date.format(date.addHours(new Date(), -12), "YYYY-MM-DD HH:mm:ss", true),
+        date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     );
 }
 
@@ -138,4 +138,5 @@ module.exports = {
     requireNoAuthentication: requireNoAuthentication,
     logIn: logIn,
     logOut: logOut,
+    isValidToken: isValidToken,
 };
