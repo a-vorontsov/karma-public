@@ -124,7 +124,7 @@ test('confirming correct token but not latest does not work', async () => {
         });
     expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Tokens did not match");
 });
 
@@ -152,7 +152,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
         });
     expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Tokens did not match");
 });
 
@@ -180,7 +180,7 @@ test('confirming expired token returns token expired response', async () => {
         });
     expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Token expired");
 });
 
