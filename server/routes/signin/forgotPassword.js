@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const randomize = require('randomatic');
-const db = require('../../database/connection');
 const mailSender = require('../../modules/mailSender');
 const userRepository = require("../../models/databaseRepositories/userRepository");
 const util = require("../../util/util");
