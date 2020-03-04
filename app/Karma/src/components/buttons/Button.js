@@ -13,7 +13,7 @@ export default class Button extends React.Component {
                 style={Styles.roundButton}
                 onPress={onPress}
                 activeOpacity={0.9}>
-                <RegularText style={{fontSize: 20, color: "white"}}>
+                <RegularText style={[Styles.buttonText, Styles.white]}>
                     {title}
                 </RegularText>
             </TouchableOpacity>

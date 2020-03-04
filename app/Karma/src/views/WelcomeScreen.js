@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     View,
     StyleSheet,
@@ -7,13 +7,17 @@ import {
     Platform,
     Text
 } from "react-native";
-import {RegularText} from "../components/text";
-import TextInput from "../components/TextInput"
+import TextInput from "../components/TextInput";
+import { RegularText, LogoText } from "../components/text";
+import { TransparentButton, TextButton } from "../components/buttons";
+import LinearGradient from "react-native-linear-gradient";
+import Styles from "../styles/Styles";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
-    
         this.state = {
             isPressed: false,
             isRecognised: false,
@@ -25,39 +29,39 @@ class WelcomeScreen extends Component {
     }
 
     onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
+        const { name, text } = event;
+        this.setState({ [name]: text });
     };
 
     popUpEmail() {
         // const {isPressed, isRecognised, isVerified} = this.state;
 
-        return(
-        <TextInput placeholder="Please enter your email" autoFocus={true} onChange={this.onChangeText} style={[styles.text, this.props.styles]}/>
+        return (
+            <TextInput placeholder="Please enter your email" autoFocus={true} onChange={this.onChangeText} style={[styles.text, this.props.styles]} />
         )
     }
     popUpPassword() {
         // const {isPressed, isRecognised, isVerified} = this.state;
 
-        return(
-        <TextInput placeholder="Please enter your password" autoFocus={true} />
+        return (
+            <TextInput placeholder="Please enter your password" autoFocus={true} />
         )
     }
-    popUpCode() {}
+    popUpCode() { }
 
     render() {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor("#f8f8f8");
+            StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
         return (
             <View style={styles.container}>
-                <View style={{flex: 2, justifyContent: "center"}}>
-                    <RegularText style={[styles.text, {fontSize: 70}]}>
+                <View style={{ flex: 2, justifyContent: "center" }}>
+                    <RegularText style={[styles.text, { fontSize: 70 }]}>
                         KARMA
                     </RegularText>
-                    <RegularText style={[styles.text, {fontSize: 40}]}>
+                    <RegularText style={[styles.text, { fontSize: 40 }]}>
                         lorem ipsum
                     </RegularText>
                     {this.state.isPressed ? this.popUpEmail() : null}
@@ -70,11 +74,11 @@ class WelcomeScreen extends Component {
                         alignItems: "center",
                         marginBottom: 40,
                     }}>
-                       
+
                     <TouchableOpacity
-                        style={[styles.button, {marginBottom: 20}]}
-                        onPress={() => this.setState({isPressed: true})}>
-                        <RegularText style={[styles.text, {fontSize: 20}]}>
+                        style={[styles.button, { marginBottom: 20 }]}
+                        onPress={() => this.setState({ isPressed: true })}>
+                        <RegularText style={[styles.text, { fontSize: 20 }]}>
                             Sign Up
                         </RegularText>
                     </TouchableOpacity>
@@ -82,11 +86,32 @@ class WelcomeScreen extends Component {
                     {/* <TouchableOpacity >
                         <RegularText
                             style={[
-                                styles.text,
-                                {fontSize: 15, fontWeight: "200"},
+                                Styles.white,
+                                Styles.textCenter,
+                                Styles.xxxlarge,
                             ]}>
-                            Already have an account? Login
+                            lorem ipsum
                         </RegularText>
+                    </View>
+
+                    <View style={Styles.bottom}>
+                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                            <TransparentButton
+                                onPress={() => navigate("InitSignup")}
+                                white
+                                title="Sign Up"
+                            />
+
+                            <TextButton
+                                title="Already have an account? Login"
+                                styles={[
+                                    Styles.white,
+                                    Styles.medium,
+                                    Styles.pt16,
+                                ]}
+                            />
+                        </View>
+                    </View>
                     </TouchableOpacity> */}
                 </View>
             </View>

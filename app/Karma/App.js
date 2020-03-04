@@ -1,34 +1,30 @@
-import {createAppContainer} from "react-navigation";
-import {createStackNavigator} from "react-navigation-stack";
-import WelcomeScreen from "./src/views/WelcomeScreen";
-import InitSignUpScreen from "./src/routes/InitSignupScreen";
-import UserSignUpScreen from "./src/views/UserSignUpScreen";
-import OrgSignUpScreen from "./src/views/OrgSignUpScreen";
-import AboutScreen from './src/views/AboutScreen';
-import ContactInfoScreen from './src/views/ContactInfoScreen';
-import PrivacyScreen from './src/views/PrivacyScreen';
-import TermsScreen from './src/views/TermsScreen';
+import React from "react";
+import {createSwitchNavigator, createAppContainer} from "react-navigation";
 
-const MainNavigator = createStackNavigator(
+import {SafeAreaProvider} from "react-native-safe-area-context";
+
+import MainTabNavigator from "./src/routes/MainTabNavigator";
+import MainNavigator from "./src/routes/MainNavigator";
+
+const AppNavigator = createSwitchNavigator(
     {
-        Welcome: {screen: WelcomeScreen},
-        InitSignup: {screen: InitSignUpScreen},
-        UserSignUp: {screen: UserSignUpScreen},
-        OrgSignUp: {screen: OrgSignUpScreen},
-        About: {screen: AboutScreen},
-        Privacy: {screen: PrivacyScreen},
-        Terms: {screen: TermsScreen},
+        Splash: {
+            getScreen: () => require("./src/views/WelcomeScreen").default,
+        },
+        Auth: MainNavigator,
+        Main: MainTabNavigator,
     },
     {
-        headerMode: "none",
-        defaultNavigationOptions: {
-            cardStyle: {
-                backgroundColor: "#f8f8f8",
-            },
-        },
+        initialRouteName: "Splash",
     },
 );
 
-const App = createAppContainer(MainNavigator);
+const AppContainer = createAppContainer(AppNavigator);
 
-export default App;
+export default function App() {
+    return (
+        <SafeAreaProvider>
+            <AppContainer />
+        </SafeAreaProvider>
+    );
+}

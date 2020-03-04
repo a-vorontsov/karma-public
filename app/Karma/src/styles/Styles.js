@@ -6,8 +6,9 @@ import {
     PixelRatio,
 } from "react-native";
 import {hasNotch} from "react-native-device-info";
+import Colours from "./Colours";
 
-const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 
 // based on iphone 5s's scale
 const scale = SCREEN_WIDTH / 375;
@@ -25,12 +26,31 @@ const Styles = StyleSheet.create({
     center: {
         marginHorizontal: "auto",
     },
+    vcenter: {
+        flex: 2,
+        justifyContent: "center",
+    },
+    textCenter: {
+        textAlign: "center",
+    },
     safeAreaContainer: {
         flex: 1,
         paddingTop: hasNotch() ? StatusBar.currentHeight : 0,
     },
     container: {
         flex: 1,
+    },
+    alignJustifyCenterContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    stretchContainer: {
+        flex: 1,
+        alignSelf: "stretch",
+    },
+    fullMinHeight: {
+        minHeight: SCREEN_HEIGHT - StatusBar.currentHeight,
     },
     p8: {
         padding: 8,
@@ -98,20 +118,73 @@ const Styles = StyleSheet.create({
     xxxlarge: {
         fontSize: normalise(36),
     },
+    welcomeLogo: {
+        fontSize: normalise(70),
+    },
     roundButton: {
         padding: 12,
         alignItems: "center",
         borderRadius: 32,
-        backgroundColor: "#01a7a6",
+        backgroundColor: Colours.blue,
     },
     roundButtonTransparent: {
-        borderColor: "#01a7a6",
+        borderColor: Colours.blue,
         borderWidth: 2,
         backgroundColor: "transparent",
         padding: 10,
     },
-    roundButtonTransparentText: {
-        color: "#01a7a6",
+    roundButtonTransparentWhite: {
+        borderColor: Colours.white,
+        borderWidth: 2,
+        backgroundColor: "transparent",
+        padding: 10,
+    },
+    buttonText: {
+        fontSize: 20,
+    },
+    green: {
+        color: Colours.blue,
+    },
+    cyan: {
+        color: Colours.cyan,
+    },
+    link: {
+        color: Colours.blue,
+        textDecorationLine: "underline",
+    },
+    white: {
+        color: Colours.white,
+    },
+    grey: {
+        color: Colours.grey,
+    },
+    error: {
+        color: Colours.red,
+    },
+    textInput: {
+        alignSelf: "stretch",
+        height: 45,
+        borderColor: "transparent",
+        borderBottomColor: Colours.lightGrey,
+        borderWidth: 1.5,
+        marginTop: 5,
+        marginBottom: 20,
+        fontSize: 20,
+        lineHeight: 20,
+        color: Colours.grey,
+        fontFamily: "OpenSans-Regular",
+    },
+    textInputError: {
+        borderBottomColor: Colours.red,
+        marginBottom: 10,
+    },
+    textInputMiscText: {
+        position: "absolute",
+        right: 16,
+        top: 16,
+    },
+    bgWhite: {
+        backgroundColor: Colours.white,
     },
     bottom: {
         flex: 1,
