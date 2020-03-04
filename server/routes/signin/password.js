@@ -27,7 +27,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @name Sign-in with password
  * @function
  */
-router.post("/", authAgent.checkNotAuthenticated, async (req, res) => {
+router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
         if (await userAgent.isCorrectPasswordByEmail(req.body.email, req.body.password)) {
             const userId = await userAgent.getUserId(req.body.email);

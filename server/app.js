@@ -41,7 +41,9 @@ app.use("/verify/identity", require("./routes/verify/identity"));
 app.use("/error/nouserid", require("./routes/error/noUserId"));
 app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
 app.use("/error/unauthorised", require("./routes/error/unauthorised"));
-app.use("/error/tokenexpired", require("./routes/error/tokenExpired"));
+app.use("/error/alreadyauthenticated", require("./routes/error/alreadyAuthenticated"));
+app.use("/error/customerror", require("./routes/error/customError"));
+app.use("/error/usernotfound", require("./routes/error/userNotFound"));
 
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));

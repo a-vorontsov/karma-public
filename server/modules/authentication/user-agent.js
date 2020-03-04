@@ -49,7 +49,7 @@ async function registerUser(email, username, password) {
         "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
     }
 
-    const secureSalt = digest.getSecureSaltInHex();
+    const secureSalt = digest.generateSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         secureSalt,
@@ -61,7 +61,7 @@ async function registerUser(email, username, password) {
         password_hash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        date_registered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
+        date_registered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     });
     const userResult = await userRepo.findByEmail(email);
     return userResult.rows[0].id;
@@ -157,7 +157,7 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         poc_lastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        org_register_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss"),
+        org_register_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         low_income: lowIncome,
         exempt: exempt,
         picture_id: null, // TODO:
@@ -243,7 +243,7 @@ function isCorrectPassword(user, inputPassword) {
  * @throws {error} if invalid query
  */
 async function updatePassword(userId, password) {
-    const secureSalt = digest.getSecureSaltInHex();
+    const secureSalt = digest.generateSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         secureSalt,

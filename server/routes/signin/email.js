@@ -31,7 +31,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  * @name Sign-in with email
  * @function
  */
-router.post("/", authAgent.checkNotAuthenticated, async (req, res) => {
+router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
         if (!(await regStatus.emailExists(req.body.email))) {
             try {

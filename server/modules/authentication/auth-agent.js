@@ -1,3 +1,6 @@
+const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const digest = require("./digest");
+const date = require("date-and-time");
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -6,7 +9,7 @@
  * @param {HTTP} res
  * @param {HTTP} next
  */
-async function checkAuthenticated(req, res, next) {
+async function requireAuthentication(req, res, next) {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
         next();
         return;
@@ -19,10 +22,16 @@ async function checkAuthenticated(req, res, next) {
         res.redirect("/error/noauthtoken");
     } else if (authToken === null) {
         res.redirect("/error/unauthorised");
-    } else if (!(await isAuthenticated(userId, authToken))) {
-        res.redirect("/error/unauthorised");
     } else {
-        next();
+        const isValid = await isValidToken(userId, authToken);
+        if (isValid.isValidToken) {
+            next();
+        } else {
+            req.body.push({
+                customError: isValid.error,
+            });
+            res.redirect("/error/customerror");
+        }
     }
 }
 
@@ -36,25 +45,20 @@ async function checkAuthenticated(req, res, next) {
  * @param {HTTP} res
  * @param {HTTP} next
  */
-function checkNotAuthenticated(req, res, next) {
-    // TODO: validate token and userID in request
-    next();
-    // res.status(401).send({message: "Request is not authorised."});
-}
-
-/**
- * Check if app user is authenticated.
- * If yes, directs user to desired destination.
- * Otherwise, redirects user to the login page,
- * unless already at login/register.
- * @param {HTTP} req
- * @param {HTTP} res
- * @param {HTTP} next
- */
-function requireAuthentication(req, res, next) {
-    // TODO: validate token and userID in request
-    next();
-    // res.status(401).send({message: "Request is not authorised."});
+async function requireNoAuthentication(req, res, next) {
+    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+        next();
+        return;
+    }
+    const userId = req.body.userId;
+    const authToken = req.body.authToken;
+    if (userId === undefined || authToken === undefined || authToken === null) {
+        next(); // for performance reasons logic is separated
+    } else if (await isValidToken(userId, authToken).isValid) {
+        res.redirect("/error/alreadyauthenticated");
+    } else {
+        next();
+    }
 }
 
 /**
@@ -66,9 +70,31 @@ function requireAuthentication(req, res, next) {
  * @param {integer} userId
  * @param {string} authToken
  */
-async function isAuthenticated(userId, authToken) {
-    // TODO: DB query & check for expiry & format
-    return true;
+async function isValidToken(userId, authToken) {
+    const tokenResult = await authRepo.findLatestByUserID(userId);
+    if (tokenResult.rows.length === 0) {
+        return ({
+            isValidToken: false,
+            error: "Token not found",
+        });
+    }
+    const tokenRecord = tokenResult.rows[0];
+    if (tokenRecord.token !== authToken) {
+        return ({
+            isValidToken: false,
+            error: "Invalid token",
+        });
+    } else if (tokenRecord.expiry_date <= Date.now()) {
+        return ({
+            isValidToken: false,
+            error: "Expired token",
+        });
+    } else {
+        return ({
+            isValidToken: true,
+            error: null,
+        });
+    }
 }
 
 /**
@@ -76,25 +102,40 @@ async function isAuthenticated(userId, authToken) {
  * auth token.
  * @param {integer} userId
  * @return {string} authToken
+ * @throws {error} if failed query
  */
 async function logIn(userId) {
-    // TODO:
-    return "secureKarmaToken";
+    const tokenResult = await authRepo.insert({
+        token: digest.hashVarargInBase64(
+            userId,
+            digest.generateSecureSaltInHex,
+        ),
+        expiry_date: date.format(
+            date.addMinutes(new Date(), 15),
+            "YYYY-MM-DD HH:mm:ss",
+        ),
+        creation_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        user_id: userId,
+    });
+    return tokenResult.rows[0].token;
 }
 
 /**
- * Log user out and destroy their
- * auth token.
+ * Log user out: ting their
+ * auth token(s) expired.
  * @param {integer} userId
+ * @throws {error} if failed query
  */
 async function logOut(userId) {
-    // TODO:
+    await authRepo.updateAllExpirationForUser(
+        userId,
+        date.format(date.addHours(new Date(), -12), "YYYY-MM-DD HH:mm:ss", true),
+    );
 }
 
 module.exports = {
-    checkAuthenticated: checkAuthenticated,
-    checkNotAuthenticated: checkNotAuthenticated,
     requireAuthentication: requireAuthentication,
+    requireNoAuthentication: requireNoAuthentication,
     logIn: logIn,
     logOut: logOut,
 };

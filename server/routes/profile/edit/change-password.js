@@ -27,7 +27,7 @@ const owasp = require("owasp-password-strength-test");
  * @name Change password
  * @function
  */
-router.post("/", authAgent.checkAuthenticated, async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
     if (req.body.newPassword !== req.body.confirmPassword) {
         res.status(400).send({
