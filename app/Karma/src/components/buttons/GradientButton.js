@@ -1,20 +1,27 @@
 import React from "react";
 
-import {TouchableOpacity} from "react-native";
+import {Dimensions, TouchableOpacity} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
+import Colours from "../../styles/Colours";
+
+const {width, height} = Dimensions.get("window");
+const formWidth = 0.8 * width;
 
 export default class GradientButton extends React.Component {
     render() {
-        const {onPress, title} = this.props;
+        const {onPress, title, width} = this.props;
         return (
-            <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+            <TouchableOpacity
+                style={{width: width}}
+                onPress={onPress}
+                activeOpacity={0.9}>
                 <LinearGradient
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 0}}
-                    colors={["#01a7a6", "#00c5c4"]}
+                    colors={[Colours.blue, Colours.lightBlue]}
                     style={Styles.roundButton}>
                     <RegularText
                         style={{

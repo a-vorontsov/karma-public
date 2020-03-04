@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Dimensions, TextInput} from "react-native";
-import SignUpScreen from "../views/UserSignUpScreen";
+import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 
-const {width} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 class TInput extends Component {
     constructor(props) {
@@ -13,7 +11,7 @@ class TInput extends Component {
 
     getInnerRef = () => this.ref;
     render() {
-        const {name, text, onChange} = this.props;
+        const {name, onChange} = this.props;
         const defaultError = "This field is required";
         const inputStyle = this.props.showError
             ? [SignUpStyles.textInput, styles.errorMessage]
@@ -42,7 +40,7 @@ class TInput extends Component {
                     value={this.props.value}
                 />
                 {this.props.showError ? (
-                    <Text style={styles.errorText}>
+                    <Text style={Styles.error}>
                         {this.props.errorText !== undefined
                             ? this.props.errorText
                             : defaultError}

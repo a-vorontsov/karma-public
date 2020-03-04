@@ -62,7 +62,8 @@ export default class CreateActivityScreen extends React.Component {
             
             
         };
-
+        this.addSlot = this.addSlot.bind(this);
+        this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
 
@@ -154,7 +155,7 @@ export default class CreateActivityScreen extends React.Component {
                                 alignContent: "center",
                             }}>
                             <TouchableOpacity
-                                onPress={() => navigate("InitSignup")}>
+                                onPress={() => navigate("Profile")}>
                                 <Image
                                     style={{
                                         width: 30,

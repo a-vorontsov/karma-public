@@ -9,11 +9,13 @@ export default class Button extends React.Component {
     render() {
         const {onPress, title} = this.props;
         return (
-            <TouchableOpacity
-                style={Styles.roundButton}
-                onPress={onPress}
-                activeOpacity={0.9}>
-                <RegularText style={[Styles.buttonText, Styles.white]}>
+            <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+                <RegularText
+                    style={[
+                        Styles.buttonText,
+                        Styles.textCenter,
+                        this.props.styles,
+                    ]}>
                     {title}
                 </RegularText>
             </TouchableOpacity>
