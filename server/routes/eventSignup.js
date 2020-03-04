@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const eventRepository = require("../models/databaseRepositories/eventRepository");
 const signupRepository = require("../models/databaseRepositories/signupRepository");
+const util = require("../util/util");
 
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
@@ -32,8 +33,36 @@ router.post('/:event_id/signUp', async (req, res) => {
         res.status(200).send(signupResult);
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
-        res.status(500).send({message: e.message});
+        res.status(500).send({
+            message: e.message,
+        });
     }
+});
+
+/**
+ * Endpoint called to get all users signed up to an event.<br/>
+ * URL example: GET http://localhost:8000/event/1/signUp
+ * @param {Integer} req.params.event_id - id of the event.
+ * @returns
+ *  status: 200, description: Array of all users signed up with necessary details<br/>
+ *  status: 400, description: Event id not specified or specified in wrong format<br/>
+ *  status: 404, description: No event with id specified found or no users signed up<br/>
+ *  status: 500, description: DB error
+ *  @name See signed up users
+ *  @function
+ */
+router.get('/:event_id/signUp', async (req, res) => {
+    const event_id = req.params.event_id;
+    const checkEventIdResult = await util.checkEventId(event_id);
+    if (checkEventIdResult.status != 200) {
+        return res.status(checkEventIdResult.status).send(checkEventIdResult.message);
+    }
+    signupRepository.findUsersSignedUp(event_id)
+        .then(result => {
+            if (result.rows.length === 0) return res.status(404).send("No users signed up for this event");
+            res.status(200).json(result.rows);
+        })
+        .catch(err => res.status(500).send(err));
 });
 
 /**
@@ -60,7 +89,9 @@ router.get('/signUp/history', async (req, res) => {
         res.status(200).send(signedUpEvents);
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
-        res.status(500).send({message: e.message});
+        res.status(500).send({
+            message: e.message,
+        });
     }
 });
 
@@ -89,7 +120,9 @@ router.post('/:event_id/signUp/update', async (req, res) => {
         res.status(200).send(signupResult);
     } catch (e) {
         console.log("Error while updating signup: " + e.message);
-        res.status(500).send({message: e.message});
+        res.status(500).send({
+            message: e.message,
+        });
     }
 });
 

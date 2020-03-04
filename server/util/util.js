@@ -1,6 +1,7 @@
 const userRepository = require("../models/databaseRepositories/userRepository");
 const individualRepository = require("../models/databaseRepositories/individualRepository");
 const organisationRepository = require("../models/databaseRepositories/organisationRepository");
+const eventRepository = require("../models/databaseRepositories/eventRepository");
 
 const isIndividual = async (userId) => {
     const userResult = await userRepository.findById(userId);
@@ -44,8 +45,34 @@ const checkUserId = async (userId) => {
     return result;
 };
 
+const checkEventId = async (event_id) => {
+    const result = {};
+    if (!event_id) {
+        result.status = 400;
+        result.message = "Event ID not defined";
+        return result;
+    }
+    if (isNaN(event_id)) {
+        result.status = 400;
+        result.message = "ID specified is in wrong format";
+        return result;
+    }
+    const eventResult = await eventRepository.findById(event_id);
+    const event = eventResult.rows[0];
+    if (!event) {
+        result.status = 404;
+        result.message = "No event with specified id";
+        return result;
+    }
+    result.status = 200;
+    result.event = event;
+    return result;
+};
+
+
 module.exports = {
     isIndividual: isIndividual,
     isOrganisation: isOrganisation,
     checkUserId: checkUserId,
+    checkEventId: checkEventId,
 };

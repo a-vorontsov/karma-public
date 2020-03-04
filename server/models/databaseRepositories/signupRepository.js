@@ -29,10 +29,18 @@ const update = (signup) => {
     return db.query(query, params);
 };
 
+const findUsersSignedUp = (event_id) => {
+    const query = "SELECT event_id,individual_id,confirmed,firstname,lastname,user_id,email,username,date_registered " +
+        "FROM sign_up LEFT JOIN individual ON individual_id = id(individual) RIGHT JOIN \"user\" ON user_id=id(\"user\")" +
+        "WHERE event_id = $1";
+    return db.query(query, [event_id]);
+};
+
 module.exports = {
     insert: insert,
     findAllByIndividualId: findAllByIndividualId,
     findAllByEventId: findAllByEventId,
     find: find,
     update: update,
+    findUsersSignedUp: findUsersSignedUp,
 };
