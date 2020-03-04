@@ -1,8 +1,16 @@
 import React from "react";
-import {View, TouchableOpacity, Image} from "react-native";
+import {
+    View,
+    SafeAreaView,
+    Dimensions,
+    TouchableOpacity,
+    Image,
+} from "react-native";
 import {RegularText} from "../components/text";
-import { useNavigation } from "react-navigation-hooks";
-import Colours from "../styles/Colours";
+import {useNavigation} from "react-navigation-hooks";
+
+const {width, height} = Dimensions.get("window");
+const formWidth = 0.8 * width;
 
 const PageHeader = props => {
     const navigation = useNavigation();
@@ -26,7 +34,7 @@ const PageHeader = props => {
                     style={{
                         fontSize: 24,
                         fontWeight: "600",
-                        color: Colours.darkGrey,
+                        color: "grey",
                         paddingLeft: 16,
                     }}>
                     {title}

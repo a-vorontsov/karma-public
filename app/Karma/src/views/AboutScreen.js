@@ -17,7 +17,7 @@ import {RadioInput} from "../components/radio";
 
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
-import Styles, { normalise } from "../styles/Styles";
+import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 
 class AboutScreen extends React.Component {
@@ -113,7 +113,7 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={Styles.fullMinHeight}>
+                        <View>
                             <View>
                                 <PageHeader title="About" />
                                 <SubTitleText style={{fontSize: normalise(26)}}>

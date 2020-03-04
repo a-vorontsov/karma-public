@@ -4,7 +4,7 @@ import {RegularText, LogoText} from "../components/text";
 import {TransparentButton, TextButton} from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";
 import Styles from "../styles/Styles";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {SafeAreaView} from "react-native-safe-area-context";
 import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {

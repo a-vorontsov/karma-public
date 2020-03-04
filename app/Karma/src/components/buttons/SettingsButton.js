@@ -2,7 +2,7 @@ import React from "react";
 
 import {Image, TouchableOpacity, View} from "react-native";
 
-import { RegularText } from "../text";
+import {RegularText} from "../text";
 
 import Colours from "../../styles/Colours";
 

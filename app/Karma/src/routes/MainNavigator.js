@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation-stack";
+import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
 import WelcomeScreen from "../views/WelcomeScreen";

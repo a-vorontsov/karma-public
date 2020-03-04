@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import {StyleSheet, Dimensions} from "react-native";
 
 import Colours from "../styles/Colours";
 
@@ -11,10 +11,14 @@ function wp(percentage) {
 
 const slideWidth = wp(85);
 const itemHorizontalMargin = wp(2);
+const itemHorizontalMargin2 = wp(0.5);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 export const itemHeight = itemWidth * 1.2;
+
+export const itemWidth2 = slideWidth + itemHorizontalMargin2 * 5;
+export const itemHeight2 = itemWidth * 1;
 
 const CarouselStyles = StyleSheet.create({
     slider: {
@@ -27,6 +31,11 @@ const CarouselStyles = StyleSheet.create({
         overflow: "visible",
         paddingHorizontal: itemHorizontalMargin,
     },
+    itemContainer2: {
+        width: itemWidth2,
+        height: itemHeight2,
+        overflow: "visible",
+    },
     item: {
         backgroundColor: "white",
         position: "absolute",
@@ -38,6 +47,36 @@ const CarouselStyles = StyleSheet.create({
         borderBottomColor: Colours.blue,
         paddingTop: 16,
         overflow: "visible",
+    },
+    item2: {
+        backgroundColor: "white",
+        position: "absolute",
+        top: 8,
+        left: itemHorizontalMargin2,
+        right: itemHorizontalMargin2,
+        bottom: 8,
+        borderRadius: 6,
+        paddingTop: 16,
+    },
+    item2: {
+        backgroundColor: "white",
+        position: "absolute",
+        top: 8,
+        left: itemHorizontalMargin2,
+        right: itemHorizontalMargin2,
+        bottom: 8,
+        borderRadius: 6,
+        paddingTop: 16,
+    },
+    item2: {
+        backgroundColor: "white",
+        position: "absolute",
+        top: 8,
+        left: itemHorizontalMargin2,
+        right: itemHorizontalMargin2,
+        bottom: 8,
+        borderRadius: 6,
+        paddingTop: 16,
     },
     shadow: {
         shadowColor: Colours.black,
