@@ -14,7 +14,7 @@ const util = require("../../util/util");
  * URL example: POST http://localhost:8000/signin/forgot
  * @param {String} req.body.email - Email of the user
  * @returns
- *  status: 200, description: Token sent successfully <br/>
+ *  status: 200, description: Token sent successfully. Valid for use 1 hour from sending <br/>
  *  status: 400, description: Email not specified in request body <br/>
  *  status: 404, description: User with email specified not found <br/>
  *  status: 500, description: DB error or error in sending email
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
  * @returns
  *  status: 200, description: Token is accepted <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
- *  status: 401, description: Token did not match sent token or token expired <br/>
+ *  status: 401, description: Token did not match sent token or token expired(tokens are valid only for 1 hour) <br/>
  *  status: 404, description: Token sent to specified email not found <br/>
  *  status: 500, description: DB error
  *  @name Confirm token
