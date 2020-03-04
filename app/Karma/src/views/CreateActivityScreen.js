@@ -11,11 +11,13 @@ import {
     Animated,
     FlatList,
     Keyboard,
+    Alert
 } from "react-native";
 import Styles from "../styles/Styles";
 import {hasNotch} from "react-native-device-info";
 import PhotoUpload from "react-native-photo-upload";
 import DatePicker from "react-native-date-picker";
+import PageHeader from "../components/PageHeader";
 import {
     RegularText,
     TitleText,
@@ -67,10 +69,26 @@ export default class CreateActivityScreen extends React.Component {
         console.disableYellowBox = true;
     }
 
-    /**
-     * Slides the datepicker fro behind the start button
-     */
-    slide = (name) => {
+
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null) {
+            Alert.alert("Success!", "Your new photo has been uploaded.");
+        } else {
+            Alert.alert("Error", "Please upload a photo.");
+        }
+    }
+    
+    showDatePicker = (name) => {
+        if(name === "isStartDateVisible"){
+            this.setState({
+                isEndDateVisible: false
+            })
+        }
+        else{
+            this.setState({
+                isStartDateVisible: false
+            })
+        }
       this.setState({
           [name]: !this.state[name]
       })
@@ -79,10 +97,16 @@ export default class CreateActivityScreen extends React.Component {
 
   
     setDateValue = (date, name) => {
-        
+        //events must be at least one hour long
         if (name === "startDate") {
+
+            const min = new Date(date);
+            min.setHours(min.getHours() + 1);
+
             this.setState({
-                minEndDate: date,
+                minEndDate: min,
+                isStartDateVisible: false,
+                isEndDateVisible:true
             })
         } 
         //removes day and local timezone from date
@@ -126,7 +150,11 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed:true
         })
 
-        if(!this.state.title || !this.state.startDate || !this.state.endDate || !this.state.eventDesc){
+        if(!this.state.title 
+            || !this.state.startDate 
+            || !this.state.endDate 
+            || !this.state.eventDesc
+            || !this.state.numSlots){
             return
         }
         //submit data and navigate back to profile page
@@ -149,35 +177,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignContent: "center",
-                            }}>
-                            <TouchableOpacity
-                                onPress={() => navigate("Profile")}>
-                                <Image
-                                    style={{
-                                        width: 30,
-                                        height: 40,
-                                        resizeMode: "contain",
-                                        flex: 1,
-                                    }}
-                                    source={require("../assets/images/general-logos/back-arrow.png")}
-                                />
-                            </TouchableOpacity>
-                            <RegularText
-                                style={{
-                                    fontSize: 30,
-                                    fontWeight: "500",
-                                    color: "#3E3E3E",
-                                    paddingLeft: 20,
-
-                                    justifyContent: "center",
-                                }}>
-                                Create Activity
-                            </RegularText>
-                        </View>
+                        <PageHeader title="Create Activity"/>
                     </View>
                 </View>
 
@@ -254,21 +254,20 @@ export default class CreateActivityScreen extends React.Component {
                                     showError={!this.state.title && this.state.submitPressed}
                                     name="title"
                                     onChange={this.onChangeText}
+                                    onSubmitEditing={() => Keyboard.dismiss()}
                                 />
-
                             </View>
                             {/** EVENT START DATE 
                             */}
                             <View>
-                            <TouchableOpacity onPress={() => this.slide("isStartDateVisible")} style={{backgroundColor:"#f8f8f8", zIndex:50}}>
+                            <TouchableOpacity onPress={() => this.showDatePicker("isStartDateVisible")} style={{backgroundColor:"#f8f8f8", zIndex:50}}>
                                 <View style={{flexDirection: "row"}}>
                                     <TextInput
                                         pointerEvents="none"
                                         placeholder="Start"
                                         editable={false}
                                         showError={
-                                            this.state.submitPressed && !this.state.startDate
-                                                
+                                            this.state.submitPressed && !this.state.startDate      
                                         }
                                         value={this.state.startDate}
                                     />
@@ -299,7 +298,7 @@ export default class CreateActivityScreen extends React.Component {
                         }    
                         {/** END DATE  */}
                             <View>
-                            <TouchableOpacity onPress={() => this.slide("isEndDateVisible")} >
+                            <TouchableOpacity onPress={() => this.showDatePicker("isEndDateVisible")} >
                                 <View style={{flexDirection: "row"}}>
                                     
                                     <TextInput
@@ -461,6 +460,8 @@ export default class CreateActivityScreen extends React.Component {
                                 showError={
                                     this.state.submitPressed && !this.state.eventDesc
                                 }
+                                value={this.state.eventDesc}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
                             <View>
                                 <SemiBoldText style={{fontSize: 15}}>
@@ -479,6 +480,17 @@ export default class CreateActivityScreen extends React.Component {
                                     }}>
                                     Important
                                 </SemiBoldText>
+                            </View>
+                            <View>
+                                <TextInput 
+                                    placeholder="Number of slots available"
+                                    name="numSlots"
+                                    keyboardType="number-pad"
+                                    showError={this.state.submitPressed && !this.state.numSlots}
+                                    onChange={this.onChangeText}
+                                    returnKeyType="done"
+                                    onSubmitEditing={() => Keyboard.dismiss()}
+                                />
                             </View>
                             <View style={{flexDirection: "row"}}>
                                 <TextInput

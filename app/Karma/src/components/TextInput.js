@@ -23,11 +23,13 @@ class TInput extends Component {
                     style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
+                    
                     returnKeyType={
                         this.props.returnKeyType
                             ? this.props.returnKeyType
                             : "next"
                     }
+                    keyboardType={this.props.keyboardType}
                     onFocus={this.props.onFocus}
                     multiline={this.props.multiline}
                     onChangeText={text => onChange({name, text})}
