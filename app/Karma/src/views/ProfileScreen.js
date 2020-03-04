@@ -19,7 +19,7 @@ import CarouselStyles, {
     sliderWidth,
 } from "../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
-import ActivityCard from "../components/ActivityCard";
+import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];

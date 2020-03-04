@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Dimensions, StyleSheet} from "react-native";
+import {Image, Dimensions, StyleSheet, Text, View} from "react-native";
 import ActivitiesAllScreen from "../views/Activities/ActivitiesAllScreen";
 import ActivitiesCausesScreen from '../views/Activities/ActivitiesCausesScreen';
 import ActivitiesGoingScreen from '../views/Activities/ActivitiesGoingScreen';
@@ -12,7 +12,7 @@ const {width, height} = Dimensions.get("window");
 
 const tabWidth = width / 4;
 const SpotLight = posed.View({
-  All: { x: 0 },
+  route0: { x: 0 },
   Causes: { x: tabWidth },
   Going: { x: tabWidth * 2 },
   Favourites: { x: tabWidth * 3 }
@@ -24,6 +24,10 @@ const ActivitiesTab = createMaterialTopTabNavigator(
             screen: ActivitiesAllScreen,
             navigationOptions: {
                 tabBarLabel: "All",
+                tabBarIcon: 
+                        <View>
+                            <Text>hi</Text>
+                        </View>
             }
         },
         Causes: {
@@ -47,20 +51,36 @@ const ActivitiesTab = createMaterialTopTabNavigator(
     },  
     {  
         tabBarOptions: {
+            upperCaseLabel: false,
             showLabel: true,
             allowFontScaling: true,
             inactiveTintColor: Colours.lightGrey,
             activeTintColor: Colours.white,
+            pressColor: Colours.blue,
+            marginLeft: 20,
+            indicatorStyle: { 
+                backgroundColor: 'transparent', 
+            },
+            tabStyle:{
+                alignItems: "center",
+                width: 'auto'
+            },
             labelStyle: {
-                fontSize: 12,
-                fontWeight: "500",
+                fontSize: 15,
+                fontWeight: "700",
+                fontFamily: "OpenSans-Regular",
+                margin: 0,
+                padding: 0,
             },
             style: {
                 flex:1,
                 borderTopColor: "transparent",
                 borderTopWidth: 0,
+                borderBottomWidth: 0,
                 backgroundColor: "red",
                 width: "100%",
+                verticalMargin: 0,
+                horizontalMargin: 0,
             },
         },
     }  

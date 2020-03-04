@@ -14,11 +14,9 @@ import {
 import Slider from "@react-native-community/slider";
 import {RegularText} from "../../components/text";
 import {GradientButton} from "../../components/buttons";
-import PhotoUpload from "react-native-photo-upload";
 import Styles from "../../styles/Styles";
-import TextInput from "../../components/TextInput";
 import Colours from "../../styles/Colours";
-import ActivityCard from "../../components/ActivityCard";
+import ActivityCard from "../../components/activities/ActivityCard";
 import ActivitiesTab from "../../routes/ActivitiesTabNavigator"
 import {createSwitchNavigator, createAppContainer} from "react-navigation";
 
@@ -43,7 +41,6 @@ class ActivitiesScreen extends Component {
                     style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
-                    <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{paddingTop: 24}} />
                     <RegularText
                         style={{
@@ -54,7 +51,14 @@ class ActivitiesScreen extends Component {
                         }}>
                         Activities
                     </RegularText>
-                    <AppContainer/>
+                    <View>
+                        <AppContainer/>
+                    </View>
+                    
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <View>
+                        <AppContainer/>
+                    </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>

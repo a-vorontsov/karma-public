@@ -1,19 +1,19 @@
 import React from "react";
 
-import {GradientButton, InfoBar} from "./buttons";
+import {GradientButton, InfoBar} from "../buttons";
 import {View, Image, Text} from "react-native";
-import {RegularText, SemiBoldText} from "./text";
-import Styles from "../styles/Styles";
+import {RegularText, SemiBoldText} from "../text";
+import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
 
 const icons = {
-    fave_inactive: require("../assets/images/general-logos/fav-outline-profile.png"),
-    fave_active: require("../assets/images/general-logos/heart-red.png"),
-    clock: require("../assets/images/general-logos/clock-logo.png"),
-    people: require("../assets/images/general-logos/people-logo.png"),
-    signup: require("../assets/images/general-logos/favourite.png"),
-    date: require("../assets/images/general-logos/rectangle-blue.png"),
+    fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
+    fave_active: require("../../assets/images/general-logos/heart-red.png"),
+    clock: require("../../assets/images/general-logos/clock-logo.png"),
+    people: require("../../assets/images/general-logos/people-logo.png"),
+    signup: require("../../assets/images/general-logos/favourite.png"),
+    date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
 const ActivityCard = props => {
@@ -23,8 +23,8 @@ const ActivityCard = props => {
                 <Image
                     source={
                         props.individual
-                            ? require("../assets/images/general-logos/hands-heart.png")
-                            : require("../assets/images/general-logos/globe.png")
+                            ? require("../../../assets/images/general-logos/hands-heart.png")
+                            : require("../../../assets/images/general-logos/globe.png")
                     }
                     style={{
                         flex: 1,
