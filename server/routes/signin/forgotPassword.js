@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
  * @returns
  *  status: 200, description: Token is accepted <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
- *  status: 401, description: Token did not match sent token or toke expired <br/>
+ *  status: 401, description: Token did not match sent token or token expired <br/>
  *  status: 404, description: Token sent to specified email not found <br/>
  *  status: 500, description: DB error
  *  @name Confirm token
