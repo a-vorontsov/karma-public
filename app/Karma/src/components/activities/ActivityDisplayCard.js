@@ -1,16 +1,12 @@
 import React from "react";
 
 import {GradientButton, InfoBar} from "../buttons";
-import {View, Image, Text, Dimensions} from "react-native";
+import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
 import {RegularText, SemiBoldText} from "../text";
 import Styles from "../../styles/Styles";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
 import ActivityCard from "./ActivityCard";
-import CarouselStyles, {
-    itemWidth2,
-    sliderWidth,
-} from "../../styles/CarouselStyles";
+import CarouselStyles from "../../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
 import Colours from "../../styles/Colours";
 
@@ -19,47 +15,68 @@ const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
 const icons = {
-    fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
-    fave_active: require("../../assets/images/general-logos/heart-red.png"),
-    clock: require("../../assets/images/general-logos/clock-logo.png"),
-    people: require("../../assets/images/general-logos/people-logo.png"),
-    signup: require("../../assets/images/general-logos/favourite.png"),
-    date: require("../../assets/images/general-logos/rectangle-blue.png"),
+    share: require("../../assets/images/general-logos/export-logo.png"),
+    profile: require("../../assets/images/general-logos/globe.png"),
 };
 
 const ActivityDisplayCard = props => {
-    _renderItem = ({item}) => {
-        return (
-            <View style={CarouselStyles.itemContainer3}>
-                <ActivityCard
-                    individual={item.individual}
-                    signedup={false}
-                />
-            </View>
-        );
-    };
-
     return (
-        <View
-            style={{
-                flex:1,
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                marginLeft: -25
-            }}>
-                {/* <View style={[Styles.container, Styles.ph24]}>
+        <View>
+            <View style={{backgroundColor: "red", height:60, flexDirection:"row", alignItems:"center"}}>
+                <TouchableOpacity>
+                    <Image
+                        source={icons.profile}
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 75,
+                        }}
+                        resizeMode="cover">
+                    </Image>
+                </TouchableOpacity>
+                <View style={{alignItems:"center"}}>
+                    <View style={{flexDirection:"row", alignItems:"center", justifyItems:"flex-start"}}>
+                        <RegularText>
+                            Name
+                        </RegularText>
+                        <Image>
 
-                </View> */}
-                <Carousel
-                    ref={c => {
-                        this._carousel = c;
-                    }}
-                    data={carouselEntries}
-                    renderItem={this._renderItem}
-                    sliderWidth={sliderWidth}
-                    itemWidth={itemWidth2}
-                />
+                        </Image>
+                    </View>
+                    <RegularText>
+                        Location
+
+                    </RegularText>
+                </View>
+                <TouchableOpacity>
+                    <Image
+                        source={icons.share}
+                        style={{
+                            width: 30,
+                            height: 30,
+                        }}
+                        resizeMode="contain">
+                    </Image>
+                </TouchableOpacity>
+            </View>
+            <View style={CarouselStyles.itemContainer3}>
+            <View style={[CarouselStyles.item3]}>
+                <ActivityCard/>
+            </View>
+            </View>
         </View>
+    );
+};
+
+setFav = handlePress => {
+    return (favorited = false);
+};
+
+_renderTruncatedFooter = handlePress => {
+    return (
+        <Text style={{color: "#00A8A6", marginTop: 5}} onPress={handlePress}>
+            READ MORE
+        </Text>
     );
 };
 

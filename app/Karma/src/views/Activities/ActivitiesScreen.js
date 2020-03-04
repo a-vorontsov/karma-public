@@ -45,23 +45,26 @@ class ActivitiesScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={Styles.container}>
+            <SafeAreaView>
                 <KeyboardAvoidingView
-                    style={Styles.ph24}
+                    // style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    enabled>
-                        <View style={{paddingTop: 24}} />
+                    enabled
+                    >
+                        <View style={{paddingTop: 24, paddingHorizontal: 24}}>
                         <RegularText
                                 style={{
                                     fontSize: 24,
                                     fontWeight: "600",
                                     color: Colours.black,
                                     paddingLeft: 16,
+                                    paddingBottom: 10,
                                 }}>
                                 Activities
                         </RegularText>
-                        <View style={{paddingBottom:30}}>
-                            <View style={{flex:1, height:50, paddingLeft: 16, backgroundColor: "blue", flexDirection:"row", justifyContent: "flex-start"}}>
+                        </View>
+                        <View style={{paddingBottom:30, paddingHorizontal: 24}}>
+                            <View style={{flex:1, height:50, paddingBottom:10, flexDirection:"row", justifyContent: "flex-start"}}>
                                 <TouchableOpacity
                                     onPress={() => this.setScreen(ActivitiesAllScreen)}
                                     style={this.state.display === ActivitiesAllScreen ? styles.navButtonActive : styles.navButtonInactive}>
@@ -85,7 +88,7 @@ class ActivitiesScreen extends Component {
                             </View>
                         </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
+                    <View style={{flex:1, marginTop: 10}}>
                         <this.state.display/>
                     </View>
                     </ScrollView>
@@ -104,6 +107,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: "auto",
         paddingHorizontal:10,
+        marginHorizontal: 10,
         backgroundColor: Colours.blue,
         borderWidth: 0,
         borderRadius: 30,
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: "auto",
         paddingHorizontal:10,
+        marginHorizontal: 10,
         backgroundColor: "transparent",
         borderWidth: 0,
         borderRadius: 30,

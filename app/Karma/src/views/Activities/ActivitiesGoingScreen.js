@@ -31,11 +31,9 @@ class ActivitiesGoingScreen extends Component {
 
     render() {
         return (
-            <View style={CarouselStyles.itemContainer2}>
-            <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
+            <View style = {Styles.ph24}>
                 <ActivityDisplayCard/>
             </View>
-        </View>
         );
     }
 }

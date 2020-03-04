@@ -1,22 +1,9 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
-    KeyboardAvoidingView,
-    SafeAreaView,
-    Image,
-    ScrollView,
-    TouchableOpacity,
 } from "react-native";
-import {RegularText} from "../../components/text";
-import Styles from "../../styles/Styles";
-import CarouselStyles, {
-    itemWidth2,
-    sliderWidth,
-} from "../../styles/CarouselStyles";
-import Carousel from "react-native-snap-carousel";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Colours from "../../styles/Colours";
 
@@ -39,9 +26,7 @@ class ActivitiesCausesScreen extends Component {
 
     render() {
         return (
-            <View>
-                <ActivityCauseCarousel/>
-                <ActivityCauseCarousel/>
+            <View style = {Styles.ph24}>
                 <ActivityCauseCarousel/>
                 <ActivityCauseCarousel/>
                 <ActivityCauseCarousel/>
