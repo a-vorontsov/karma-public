@@ -241,11 +241,12 @@ function isCorrectPassword(user, inputPassword) {
  * @throws {error} if invalid query
  */
 async function updatePassword(userId, password) {
+    const secureSalt = digest.getSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
-        digest.getSecureSaltInHex(),
+        secureSalt,
     );
-    await userRepo.updatePassword(userId, hashedPassword);
+    await userRepo.updatePassword(userId, hashedPassword, secureSalt);
 }
 
 /**

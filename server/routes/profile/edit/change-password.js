@@ -22,7 +22,8 @@ const owasp = require("owasp-password-strength-test");
  * - if confirm password mismatch, 400 - passwords don't match<br/>
  * - if password is not strong enough, 400 - passStrengthTest errors<br/>
  * - if oldPassword != user's password, 400 - incorrect old password<br/>
- * - if success, 200 - successfully updated
+ * - if success, 200 - successfully updated<br/>
+ * - if error with operation, 500 - error message
  * @name Change password
  * @function
  */
@@ -53,7 +54,7 @@ router.post("/", authAgent.checkAuthenticated, async (req, res) => {
                 });
             }
         } catch (e) {
-            res.status(400).send({
+            res.status(500).send({
                 message: e.message,
             });
         }
