@@ -28,6 +28,7 @@ import {GradientButton, Button} from "../components/buttons";
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
+import TimeSlot from "../components/activity/TimeSlot";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 var SLOT_KEY_ID = 0;
@@ -43,36 +44,54 @@ export default class CreateActivityScreen extends React.Component {
             isIDReq: false,
             isPhysical: false,
             isAdditionalInfo: false,
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: "",
+            endDate:"",
             title: "",
             time: new Date(),
             timeValue: "",
-            date: new Date().getT,
+            date: new Date(),
             minTime: new Date().getUTCSeconds(),
             isStartDateVisible: false,
-            visible: false,
-            y: new Animated.Value(-50),
+            isEndDateVisible: false,
+            y: new Animated.Value(-20),
             minYear: new Date().getFullYear(),
             slots: [""],
             submitPressed: false,
+            minEndDate: new Date()
+            
+            
             
         };
 
         console.disableYellowBox = true;
     }
 
-    slide = () => {
-
-        Animated.timing(this.state.y, {
-          toValue: -20,
-          duration: 500
-        }).start();
-        this.setState({
-          
-          isStartDateVisible: true
-        });
+    /**
+     * Slides the datepicker fro behind the start button
+     */
+    slide = (name) => {
+      this.setState({
+          [name]: !this.state[name]
+      })
+        
       };
+
+  
+    setDateValue = (date, name) => {
+        
+        if (name === "startDate") {
+            this.setState({
+                minEndDate: date,
+            })
+        } 
+        //removes day and local timezone from date
+        let formattedString = date.toUTCString().substring(5)
+        formattedString = formattedString.slice(0, -7)
+        this.setState({
+            [name]: formattedString
+        })
+
+    }
 
     addSlot = () => {
         this.setState(prevState => {
@@ -93,32 +112,24 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-
-    // setDate(selectedDate) {
-    //     this.setState({date: selectedDate});
-
-    //     //events can only be scheduled for the current day and the future
-    //     if (selectedDate.getFullYear() >= this.state.minYear) {
-    //         this.setState({
-    //             validDateSelected: true,
-    //         });
-    //     } else {
-    //         this.setState({
-    //             validDateSelected: false,
-    //         });
-    //     }
-    // }
-
     onChangeText = event => {
         const {name, text} = event;
 
         this.setState({[name]: text});
     };
 
-    submit = () => {
+    submit = () => {   
+        const {navigate} = this.props.navigation;
+        
         this.setState({
             submitPressed:true
         })
+
+        if(!this.state.title || !this.state.startDate || !this.state.endDate || !this.state.eventDesc){
+            return
+        }
+        //submit data and navigate back to profile page
+        
     }
 
     render() {
@@ -240,31 +251,25 @@ export default class CreateActivityScreen extends React.Component {
                                 <TextInput 
                                     placeholder="Title"
                                     showError={!this.state.title && this.state.submitPressed}
+                                    name="title"
+                                    onChange={this.onChangeText}
                                 />
 
                             </View>
                             {/** EVENT START DATE 
-                             * 
-                             * TODO - update the start date everytime the date is changed
                             */}
                             <View>
-                            <TouchableOpacity onPress={() => this.slide()}>
+                            <TouchableOpacity onPress={() => this.slide("isStartDateVisible")} style={{backgroundColor:"#f8f8f8", zIndex:50}}>
                                 <View style={{flexDirection: "row"}}>
                                     <TextInput
+                                        pointerEvents="none"
                                         placeholder="Start"
                                         editable={false}
-                                        
-                                        value={
-                                            this.state.validDateSelected
-                                                ? this.state.date.toDateString()
-                                                : null
-                                        }
                                         showError={
-                                            this.state.submitPressed
-                                                ? !this.state.date
-                                                : false
+                                            this.state.submitPressed && !this.state.startDate
+                                                
                                         }
-
+                                        value={this.state.startDate}
                                     />
                                     <Image
                                         style={{
@@ -281,44 +286,31 @@ export default class CreateActivityScreen extends React.Component {
                             </View>
                             {this.state.isStartDateVisible
                             && 
-                            <Animated.View
-                            style={{
-                                transform: [
-                                {
-                                    translateY: this.state.y
-                                }
-                                ]
-                            }}
-                        >
+                            <Animated.View>
                             <View><DatePicker 
                                 mode="datetime"
+                                onDateChange={(date) => this.setDateValue(date, "startDate")}
+                                locale="en_GB"
+                                minuteInterval={15}
                             /></View>
-                        
+
                         </Animated.View>
-}
-                            
+                        }    
+                        {/** END DATE  */}
                             <View>
-                                
+                            <TouchableOpacity onPress={() => this.slide("isEndDateVisible")} >
                                 <View style={{flexDirection: "row"}}>
                                     
                                     <TextInput
                                         placeholder="End"
-                                        
-                                        onFocus={() =>
-                                            this.setState({
-                                                dateModalVisible: true,
-                                            })
-                                        }
-                                        value={
-                                            this.state.validDateSelected
-                                                ? this.state.date.toDateString()
-                                                : null
-                                        }
+                                        pointerEvents="none"
+                                        editable={false}
+                                       
                                         showError={
-                                            this.state.submitPressed
-                                                ? !this.state.date
-                                                : false
+                                            this.state.submitPressed && !this.state.endDate
+                                                
                                         }
+                                        value={this.state.endDate}
                                     />
                                     <Image
                                         style={{
@@ -331,62 +323,50 @@ export default class CreateActivityScreen extends React.Component {
                                         source={require("../assets/images/general-logos/calendar-dark.png")}
                                     />
                                 </View>
-                                
+                                </TouchableOpacity>
                             </View>
 
-                            
-                            {/* <DatePicker 
-                                mode="datetime"
-                                minuteInterval={15}
-                                locale="en_GB"
-                            /> */}
-                            {/** TIME SLOTS
-                             * TODO - separate into 'to' and 'from'
-                             * BOTH FOR slots and for time
-                             *
-                             */}
+                            {this.state.isEndDateVisible
+                            && 
+                            <Animated.View >
+                                <View>
+                                    <DatePicker 
+                                    mode="datetime"
+                                    onDateChange={(date) => this.setDateValue(date, "endDate")}
+                                    locale="en_GB"
+                                    minuteInterval={15}
+                                    
+                                    minimumDate={this.state.minEndDate}
+                                    
+                                />
+                                </View>
+                        
+                            </Animated.View>
+                            }
+                            {/** TIME SLOTS */}
                             <FlatList
                                 data={this.state.slots}
                                 renderItem={({item, index}) => (
                                    
-                                        <View>
+                                        <View style={{width:FORM_WIDTH}}>
                                             {index == 0 ? 
                                              <SemiBoldText
                                              style={{
                                                  fontSize: 15,
                                              }}>
-                                             Slot Time(s)
-                                           
-                                             
+                                             Slot Time(s) (optional)      
                                          </SemiBoldText>
                                             : 
                                             null
                                             }
                                        
-                                    
-                                    <View
-                                        key={index}
-                                        style={{flexDirection: "row"}}>
-                                        <View style={{width: 0.5 * FORM_WIDTH, alignItems:"center"}}>
-                                            <TextInput
-                                            style={{width:0.25*FORM_WIDTH}}
-                                                placeholder="From"
-                                                name={index.toString()}
-                                                onChange={this.onChangeText}
-                                            />
-                                        </View>
-
-                                        <View style={{width: 0.5 * FORM_WIDTH, alignItems:"center"}}>
-                                            
-                                            <TextInput
-                                            style={{width:0.25*FORM_WIDTH}}
-                                                placeholder="To"
-                                                name={index.toString()}
-                                                onChange={this.onChangeText}
-                                            />
-                                        </View>
+                                    <View style={{alignItems:"flex-start"}}>
+                                        
+                                        <TimeSlot 
+                                        minFromDate={this.state.minEndDate}
+                                        style={{width:FORM_WIDTH * 0.9, }}/>
                                         {/** only show delete icon if it's not the first slot */}
-                                        {index > 0 ? (
+                                        {index != 0 ? (
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.removeSlot(index)
@@ -435,9 +415,7 @@ export default class CreateActivityScreen extends React.Component {
                                             height: 20,
                                             width: 20,
                                             borderRadius: 10,
-                                            // borderColor: "grey",
-                                            // backgroundColor: "grey",
-                                            // borderWidth: 1,
+                                           
                                         }}
                                         source={require("../assets/images/general-logos/photo-plus.png")}
                                     />
@@ -479,6 +457,9 @@ export default class CreateActivityScreen extends React.Component {
                                 multiline
                                 name="eventDesc"
                                 onChange={this.onChangeText}
+                                showError={
+                                    this.state.submitPressed && !this.state.eventDesc
+                                }
                             />
                             <View>
                                 <SemiBoldText style={{fontSize: 15}}>
@@ -578,7 +559,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginBottom: 30,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Next" onPress={this.submit} />
+                        <GradientButton title="Create" onPress={this.submit} />
                     </View>
                 </View>
             </View>

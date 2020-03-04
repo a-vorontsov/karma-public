@@ -17,6 +17,7 @@ class TInput extends Component {
         return (
             <View>
                 <TextInput
+                    pointerEvents={this.props.pointerEvents}
                     style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
