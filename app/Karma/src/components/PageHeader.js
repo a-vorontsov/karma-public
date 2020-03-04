@@ -1,5 +1,11 @@
 import React from "react";
-import {View, TouchableOpacity, Image} from "react-native";
+import {
+    View,
+    SafeAreaView,
+    Dimensions,
+    TouchableOpacity,
+    Image,
+} from "react-native";
 import {RegularText} from "../components/text";
 import {useNavigation} from "react-navigation-hooks";
 import Colours from "../styles/Colours";

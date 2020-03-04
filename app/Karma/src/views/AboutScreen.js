@@ -113,7 +113,7 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={Styles.fullMinHeight}>
+                        <View>
                             <View>
                                 <PageHeader title="About" />
                                 <SubTitleText style={{fontSize: normalise(26)}}>

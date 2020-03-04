@@ -106,6 +106,14 @@
 		E46DC8A95B31419193F9834A /* terms.png in Resources */ = {isa = PBXBuildFile; fileRef = A58B44034AE04C139233AC0E /* terms.png */; };
 		138FECED6E234E86874479CC /* energy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3710C17041EA4CBA8A87A67F /* energy.png */; };
 		4BFE20E9458D468D9042E815 /* energy-white.png in Resources */ = {isa = PBXBuildFile; fileRef = F09438F6ED7A42468B734383 /* energy-white.png */; };
+		0CDE41AE411F4893B7A4A1B2 /* circle-grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF1B5DF18B4784B5DC4BB3 /* circle-grey.png */; };
+		50DE8A33D21744B0907915AC /* heart-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C8F7B14B5C0F4F4C81C382E9 /* heart-red.png */; };
+		364505C9B5F347CC9B92D68B /* k-ribbon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77101C4B5E274E5EA28361C2 /* k-ribbon.png */; };
+		8CF098786EEA4CE98EC2EF51 /* light_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 58099CD8276B43669D4757D3 /* light_share.png */; };
+		39084251EBB24B8FAC9DF2F0 /* new_cause.png in Resources */ = {isa = PBXBuildFile; fileRef = 520076A4241B4310ACD470F7 /* new_cause.png */; };
+		16CF32B2F4CA4627A844D299 /* photo-plus-background.png in Resources */ = {isa = PBXBuildFile; fileRef = EC88241CB95249239F5174AD /* photo-plus-background.png */; };
+		74E0C152DACC4237A1881F69 /* rectangle-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6796543B6B0F42F4A49AEF36 /* rectangle-blue.png */; };
+		7FED78B03A434CF7A5A0E135 /* share-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CB840BDB31D46F6B6292F3C /* share-logo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +249,14 @@
 		A58B44034AE04C139233AC0E /* terms.png */ = {isa = PBXFileReference; name = "terms.png"; path = "../src/assets/images/settings-logos/terms.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		3710C17041EA4CBA8A87A67F /* energy.png */ = {isa = PBXFileReference; name = "energy.png"; path = "../src/assets/images/causes-logos/energy.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F09438F6ED7A42468B734383 /* energy-white.png */ = {isa = PBXFileReference; name = "energy-white.png"; path = "../src/assets/images/causes-logos/white/energy-white.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3DFF1B5DF18B4784B5DC4BB3 /* circle-grey.png */ = {isa = PBXFileReference; name = "circle-grey.png"; path = "../src/assets/images/general-logos/circle-grey.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C8F7B14B5C0F4F4C81C382E9 /* heart-red.png */ = {isa = PBXFileReference; name = "heart-red.png"; path = "../src/assets/images/general-logos/heart-red.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		77101C4B5E274E5EA28361C2 /* k-ribbon.png */ = {isa = PBXFileReference; name = "k-ribbon.png"; path = "../src/assets/images/general-logos/k-ribbon.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		58099CD8276B43669D4757D3 /* light_share.png */ = {isa = PBXFileReference; name = "light_share.png"; path = "../src/assets/images/general-logos/light_share.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		520076A4241B4310ACD470F7 /* new_cause.png */ = {isa = PBXFileReference; name = "new_cause.png"; path = "../src/assets/images/general-logos/new_cause.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EC88241CB95249239F5174AD /* photo-plus-background.png */ = {isa = PBXFileReference; name = "photo-plus-background.png"; path = "../src/assets/images/general-logos/photo-plus-background.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6796543B6B0F42F4A49AEF36 /* rectangle-blue.png */ = {isa = PBXFileReference; name = "rectangle-blue.png"; path = "../src/assets/images/general-logos/rectangle-blue.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8CB840BDB31D46F6B6292F3C /* share-logo.png */ = {isa = PBXFileReference; name = "share-logo.png"; path = "../src/assets/images/general-logos/share-logo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -412,6 +428,14 @@
 				A58B44034AE04C139233AC0E /* terms.png */,
 				3710C17041EA4CBA8A87A67F /* energy.png */,
 				F09438F6ED7A42468B734383 /* energy-white.png */,
+				3DFF1B5DF18B4784B5DC4BB3 /* circle-grey.png */,
+				C8F7B14B5C0F4F4C81C382E9 /* heart-red.png */,
+				77101C4B5E274E5EA28361C2 /* k-ribbon.png */,
+				58099CD8276B43669D4757D3 /* light_share.png */,
+				520076A4241B4310ACD470F7 /* new_cause.png */,
+				EC88241CB95249239F5174AD /* photo-plus-background.png */,
+				6796543B6B0F42F4A49AEF36 /* rectangle-blue.png */,
+				8CB840BDB31D46F6B6292F3C /* share-logo.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -697,6 +721,14 @@
 				E46DC8A95B31419193F9834A /* terms.png in Resources */,
 				138FECED6E234E86874479CC /* energy.png in Resources */,
 				4BFE20E9458D468D9042E815 /* energy-white.png in Resources */,
+				0CDE41AE411F4893B7A4A1B2 /* circle-grey.png in Resources */,
+				50DE8A33D21744B0907915AC /* heart-red.png in Resources */,
+				364505C9B5F347CC9B92D68B /* k-ribbon.png in Resources */,
+				8CF098786EEA4CE98EC2EF51 /* light_share.png in Resources */,
+				39084251EBB24B8FAC9DF2F0 /* new_cause.png in Resources */,
+				16CF32B2F4CA4627A844D299 /* photo-plus-background.png in Resources */,
+				74E0C152DACC4237A1881F69 /* rectangle-blue.png in Resources */,
+				7FED78B03A434CF7A5A0E135 /* share-logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

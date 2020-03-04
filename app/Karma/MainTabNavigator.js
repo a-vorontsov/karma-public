@@ -1,33 +1,41 @@
 import React from "react";
-import {Image} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    Alert,
+    StyleSheet,
+    Dimensions,
+    Platform,
+    KeyboardAvoidingView,
+    TouchableOpacity,
+} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
 import {createStackNavigator} from "react-navigation-stack";
-import Colours from "../styles/Colours";
-
-import ActivitiesScreen from "../views/ActivitiesScreen";
-import CausesScreen from "../views/CausesScreen";
-import NotificationsScreen from "../views/NotificationsScreen";
-import ProfileScreen from "../views/ProfileScreen";
-import ProfileEditScreen from "../views/ProfileEditScreen";
-import SettingsMenuScreen from "../views/SettingsMenuScreen";
+import ActivitiesScreen from "./src/views/ActivitiesScreen";
+import CausesScreen from "./src/views/CausesScreen";
+import NotificationsScreen from "./src/views/NotificationsScreen";
+import ProfileScreen from "./src/views/ProfileScreen";
+import ProfileEditScreen from "./src/views/ProfileEditScreen";
+import SettingsMenuScreen from "./src/views/SettingsMenuScreen";
 
 const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
-        ProfileEdit: {screen: ProfileEditScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
+        ProfileEdit: {screen: ProfileEditScreen},
     },
     {
         headerMode: "none",
         defaultNavigationOptions: {
             cardStyle: {
-                backgroundColor: Colours.backgroundWhite,
+                backgroundColor: "#f8f8f8",
             },
         },
     },
 );
 
-const MainTabNavigator = createBottomTabNavigator(
+export default (MainTabNavigator = createBottomTabNavigator(
     {
         Activities: {
             screen: ActivitiesScreen,
@@ -36,12 +44,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("../assets/images/nav-bar/activities-on.png")}
+                            source={require("./src/assets/images/nav-bar/activities-on.png")}
                             style={{aspectRatio: 0.75, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("../assets/images/nav-bar/activities-off.png")}
+                            source={require("./src/assets/images/nav-bar/activities-off.png")}
                             style={{aspectRatio: 0.75, resizeMode: "contain"}}
                         />
                     ),
@@ -54,12 +62,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("../assets/images/nav-bar/causes-on.png")}
+                            source={require("./src/assets/images/nav-bar/causes-on.png")}
                             style={{aspectRatio: 0.7, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("../assets/images/nav-bar/causes-off.png")}
+                            source={require("./src/assets/images/nav-bar/causes-off.png")}
                             style={{aspectRatio: 0.7, resizeMode: "contain"}}
                         />
                     ),
@@ -72,12 +80,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("../assets/images/nav-bar/notifications-on.png")}
+                            source={require("./src/assets/images/nav-bar/notifications-on.png")}
                             style={{aspectRatio: 0.5, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("../assets/images/nav-bar/notifications-off.png")}
+                            source={require("./src/assets/images/nav-bar/notifications-off.png")}
                             style={{aspectRatio: 0.5, resizeMode: "contain"}}
                         />
                     ),
@@ -90,12 +98,12 @@ const MainTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({focused}) =>
                     focused ? (
                         <Image
-                            source={require("../assets/images/nav-bar/profile-on.png")}
+                            source={require("./src/assets/images/nav-bar/profile-on.png")}
                             style={{aspectRatio: 0.6, resizeMode: "contain"}}
                         />
                     ) : (
                         <Image
-                            source={require("../assets/images/nav-bar/profile-off.png")}
+                            source={require("./src/assets/images/nav-bar/profile-off.png")}
                             style={{aspectRatio: 0.6, resizeMode: "contain"}}
                         />
                     ),
@@ -106,8 +114,8 @@ const MainTabNavigator = createBottomTabNavigator(
         tabBarOptions: {
             showLabel: true,
             allowFontScaling: false,
-            inactiveTintColor: Colours.green,
-            activeTintColor: Colours.blue,
+            inactiveTintColor: "#00A58B",
+            activeTintColor: "#01a7a6",
             labelStyle: {
                 fontSize: 15,
                 fontWeight: "500",
@@ -120,6 +128,4 @@ const MainTabNavigator = createBottomTabNavigator(
             },
         },
     },
-);
-
-export default MainTabNavigator;
+));
