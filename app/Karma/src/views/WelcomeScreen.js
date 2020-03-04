@@ -5,16 +5,12 @@ import {
     TouchableOpacity,
     StatusBar,
     Platform,
-    Text
+    Text,
+    Image,
+    KeyboardAvoidingView
 } from "react-native";
-import TextInput from "../components/TextInput";
-import { RegularText, LogoText } from "../components/text";
-import { TransparentButton, TextButton } from "../components/buttons";
-import LinearGradient from "react-native-linear-gradient";
-import Styles from "../styles/Styles";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Colours from "../styles/Colours";
-
+import { RegularText } from "../components/text";
+import TextInput from "../components/TextInput"
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -25,30 +21,24 @@ class WelcomeScreen extends Component {
         };
         this.popUpEmail = this.popUpEmail.bind(this);
         this.popUpPassword = this.popUpPassword.bind(this);
-
     }
-
     onChangeText = event => {
         const { name, text } = event;
         this.setState({ [name]: text });
     };
-
     popUpEmail() {
         // const {isPressed, isRecognised, isVerified} = this.state;
-
         return (
             <TextInput placeholder="Please enter your email" autoFocus={true} onChange={this.onChangeText} style={[styles.text, this.props.styles]} />
         )
     }
     popUpPassword() {
         // const {isPressed, isRecognised, isVerified} = this.state;
-
         return (
             <TextInput placeholder="Please enter your password" autoFocus={true} />
         )
     }
     popUpCode() { }
-
     render() {
         const { navigate } = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
@@ -57,24 +47,34 @@ class WelcomeScreen extends Component {
         }
         return (
             <View style={styles.container}>
-                <View style={{ flex: 2, justifyContent: "center" }}>
-                    <RegularText style={[styles.text, { fontSize: 70 }]}>
-                        KARMA
-                    </RegularText>
-                    <RegularText style={[styles.text, { fontSize: 40 }]}>
+                <View style={{ flex: 2, justifyContent: "center", /*backgroundColor:"black" */ }}>
+                    <Image
+                        style={{ width: 273, height: 60, flexDirection: "column", justifyContent: "center" }}
+                        source={require('../assets/images/general-logos/KARMA-logo.png')}
+                    >
+                    </Image>
+                    <RegularText style={[styles.text, { fontSize: 40 }]} /* // should be an image so that its moved as smoothly as the image PROBLEM */>
                         lorem ipsum
                     </RegularText>
-                    {this.state.isPressed ? this.popUpEmail() : null}
                 </View>
-
+                <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}>
+                    <View style={{
+                        flex: 1,
+                        alignItems: "flex-start",
+                        marginBottom: 40, /*backgroundColor:"red"*/
+                    }}>
+                        {this.state.isPressed ? this.popUpEmail() : null}
+                    </View>
+                </KeyboardAvoidingView>
                 <View
                     style={{
                         flex: 1,
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        marginBottom: 40,
+                        marginBottom: 40
                     }}>
-
                     <TouchableOpacity
                         style={[styles.button, { marginBottom: 20 }]}
                         onPress={() => this.setState({ isPressed: true })}>
@@ -82,45 +82,12 @@ class WelcomeScreen extends Component {
                             Sign Up
                         </RegularText>
                     </TouchableOpacity>
-
-                    {/* <TouchableOpacity >
-                        <RegularText
-                            style={[
-                                Styles.white,
-                                Styles.textCenter,
-                                Styles.xxxlarge,
-                            ]}>
-                            lorem ipsum
-                        </RegularText>
-                    </View>
-
-                    <View style={Styles.bottom}>
-                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
-                            <TransparentButton
-                                onPress={() => navigate("InitSignup")}
-                                white
-                                title="Sign Up"
-                            />
-
-                            <TextButton
-                                title="Already have an account? Login"
-                                styles={[
-                                    Styles.white,
-                                    Styles.medium,
-                                    Styles.pt16,
-                                ]}
-                            />
-                        </View>
-                    </View>
-                    </TouchableOpacity> */}
                 </View>
             </View>
         );
     }
 }
-
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         alignItems: "center",
@@ -142,5 +109,4 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
 });
-
 export default WelcomeScreen;
