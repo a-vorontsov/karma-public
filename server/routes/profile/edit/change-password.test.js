@@ -49,22 +49,22 @@ test('changing password works', async () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("Password successfully updated.");
     expect(
-      await userAgent.isCorrectPasswordById(
-        changePasswordRequest.userId,
-        changePasswordRequest.newPassword
-      )
+        await userAgent.isCorrectPasswordById(
+            changePasswordRequest.userId,
+            changePasswordRequest.newPassword,
+        ),
     ).toBe(true);
     expect(
-      await userAgent.isCorrectPasswordById(
-        changePasswordRequest.userId,
-        changePasswordRequest.confirmPassword
-      )
+        await userAgent.isCorrectPasswordById(
+            changePasswordRequest.userId,
+            changePasswordRequest.confirmPassword,
+        ),
     ).toBe(true);
     expect(
-      await userAgent.isCorrectPasswordByEmail(
-        registration.email,
-        changePasswordRequest.newPassword
-      )
+        await userAgent.isCorrectPasswordByEmail(
+            registration.email,
+            changePasswordRequest.newPassword,
+        ),
     ).toBe(true);
 });
 

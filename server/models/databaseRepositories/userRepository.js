@@ -42,6 +42,20 @@ const updatePassword = (userId, hashedPassword, salt) => {
     return db.query(query, params);
 };
 
+const updateVerificationStatus = (userId, isVerified) => {
+    const query =
+    'UPDATE "user" SET verified = $2 WHERE id = $1 RETURNING *';
+    const params = [userId, isVerified];
+    return db.query(query, params);
+};
+
+const updateUsername = (userId, username) => {
+    const query =
+    'UPDATE "user" SET username = $2 WHERE id = $1 RETURNING *';
+    const params = [userId, username];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
@@ -51,4 +65,6 @@ module.exports = {
     findByEmail: findByEmail,
     findByUsername: findByUsername,
     updatePassword: updatePassword,
+    updateVerificationStatus: updateVerificationStatus,
+    updateUsername: updateUsername,
 };
