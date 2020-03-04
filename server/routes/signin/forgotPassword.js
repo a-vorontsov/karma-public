@@ -3,51 +3,28 @@ const router = express.Router();
 const randomize = require('randomatic');
 const db = require('../../database/connection');
 const mailSender = require('../../modules/mailSender');
-const userRepository = require("../../models/userRepository");
-
-// This function will be imported from model once db is setup
-const updateUserToken = (email, token) => {
-    const updateUserQuery = `Update users
-    set resetpasswordtoken = ${token},
-    resetPasswordExpires = ${Date.now()+360000}
-    where email = \'${email}\'`;
-
-    db.query(updateUserQuery, (err, result) => {
-        if (err) throw new Error(err.message);
-        else {
-            console.log(`User with email ${email} updated successfuly`);
-        }
-    });
-};
+const userRepository = require("../../models/databaseRepositories/userRepository");
+const util = require("../../util/util");
 
 router.get('/', (req, res) => {
     res.send('forgot password screen');
 });
 
 // gets called when the person submits the forgot password button
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const email = req.body.email;
-    if (!email) {
-        return res.status(400).send("No email was defined");
+    const checkEmailResult = await util.checkEmail(email);
+    if (checkEmailResult.status != 200) {
+        return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
-    db.query('SELECT * FROM users WHERE email = $1', [email], (err, result) => {
-        const user = result.rows[0];
-        if (err) res.status(500).send(err);
-        else if (!user) {
-            return res.status(404).send(`There is no user with email ${email}`);
-        }
-        // generate 6 digit code
-        const token = randomize('0', 6);
-        try {
-            // update the db
-            updateUserToken(email, token);
-            // send the email
-            mailSender.sendToken(email, token);
-        } catch (error) {
-            return res.status(500).send(err);
-        }
-        res.status(200).send("Code sent successfully to " + email);
-    });
+    const user = checkEmailResult.user;
+    // generate 6 digit code
+    const token = randomize('0', 6);
+    // update the db
+    userRepository.insertResetToken(user.id, token)
+        .then(() => mailSender.sendToken(email, token))
+        .then(() => res.status(200).send("Code sent successfully to " + email))
+        .catch(err => res.status(500).send(err));
 });
 
 // gets called when user writes in the token they recieved and click submit
