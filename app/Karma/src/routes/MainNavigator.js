@@ -27,7 +27,7 @@ const MainNavigator = createStackNavigator(
         Terms: {screen: TermsScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
         CreateActivity: {screen: CreateActivityScreen},
-
+        ProfileScreen: {screen: ProfileScreen}
         
        
     },

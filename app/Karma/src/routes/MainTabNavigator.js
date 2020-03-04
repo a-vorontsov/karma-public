@@ -18,7 +18,7 @@ const ProfileNavigator = createStackNavigator(
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
-        CreateActivity: {screen: CreateActivityScreen},
+        
     },
     {
         headerMode: "none",
