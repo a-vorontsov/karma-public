@@ -42,6 +42,17 @@ const updatePassword = (userId, hashedPassword) => {
     return db.query(query, params);
 };
 
+const insertResetToken = (user_id, token) => {
+    const query = "INSERT INTO reset(user_id,password_token,expiry_date) VALUES($1,$2,$3)";
+    const params = [user_id, token, Date.now() + 360000];
+    return db.query(query, params);
+};
+
+const findResetToken = (user_id) => {
+    const query = "SELECT * FROM reset WHERE user_id =$1 and expiry_date > $2";
+    const params = [user_id, Date.now()];
+    return db.query(query, params);
+};
 module.exports = {
     insert: insert,
     findById: findById,
@@ -51,4 +62,6 @@ module.exports = {
     findByEmail: findByEmail,
     findByUsername: findByUsername,
     updatePassword: updatePassword,
+    insertResetToken: insertResetToken,
+    findResetToken: findResetToken,
 };

@@ -3,9 +3,10 @@ const router = express.Router();
 const randomize = require('randomatic');
 const db = require('../../database/connection');
 const mailSender = require('../../modules/mailSender');
+const userRepository = require("../../models/userRepository");
 
 // This function will be imported from model once db is setup
-const updateUserToken = (email, token)=>{
+const updateUserToken = (email, token) => {
     const updateUserQuery = `Update users
     set resetpasswordtoken = ${token},
     resetPasswordExpires = ${Date.now()+360000}
@@ -64,7 +65,7 @@ router.post('/confirm', (req, res) => {
         }
         const tokenSent = result.rows[0].resetpasswordtoken;
         const expiryTime = result.rows[0].resetpasswordexpires;
-        if (tokenSent === tokenRecieved && Date.now()<=expiryTime) {
+        if (tokenSent === tokenRecieved && Date.now() <= expiryTime) {
             res.status(200).send("Token is accepted");
         } else if (tokenSent != tokenRecieved) {
             res.status(401).send("Tokens did not match");
