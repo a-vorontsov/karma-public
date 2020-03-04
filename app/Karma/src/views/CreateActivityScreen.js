@@ -79,6 +79,7 @@ export default class CreateActivityScreen extends React.Component {
     }
     
     showDatePicker = (name) => {
+        
         if(name === "isStartDateVisible"){
             this.setState({
                 isEndDateVisible: false
@@ -105,8 +106,6 @@ export default class CreateActivityScreen extends React.Component {
 
             this.setState({
                 minEndDate: min,
-                isStartDateVisible: false,
-                isEndDateVisible:true
             })
         } 
         //removes day and local timezone from date
