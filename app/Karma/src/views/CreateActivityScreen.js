@@ -60,9 +60,6 @@ export default class CreateActivityScreen extends React.Component {
             slots: [""],
             submitPressed: false,
             minEndDate: new Date(),
-
-
-
         };
 
         console.disableYellowBox = true;
@@ -77,7 +74,7 @@ export default class CreateActivityScreen extends React.Component {
     }
 
     showDatePicker = name => {
-        if (name === "isStartDateVisible"){
+        if (name === "isStartDateVisible") {
             this.setState({
                 isEndDateVisible: false,
             });
@@ -89,9 +86,7 @@ export default class CreateActivityScreen extends React.Component {
         this.setState({
             [name]: !this.state[name],
         });
-
-      };
-
+    };
 
     setDateValue = (date, name) => {
         //events must be at least one hour long
@@ -111,7 +106,6 @@ export default class CreateActivityScreen extends React.Component {
         this.setState({
             [name]: formattedString,
         });
-
     };
 
     addSlot = () => {
@@ -146,7 +140,8 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: true,
         });
 
-        if (!this.state.title ||
+        if (
+            !this.state.title ||
             !this.state.startDate ||
             !this.state.endDate ||
             !this.state.eventDesc ||
@@ -160,9 +155,7 @@ export default class CreateActivityScreen extends React.Component {
     render() {
         const {navigate} = this.props.navigation;
 
-
         return (
-
             <View style={Styles.container}>
                 {/** HEADER */}
                 <View
@@ -345,15 +338,13 @@ export default class CreateActivityScreen extends React.Component {
                                         this.showDatePicker("isEndDateVisible")
                                     }>
                                     <View style={{flexDirection: "row"}}>
-
-                                    <TextInput
+                                        <TextInput
                                             placeholder="End"
                                             pointerEvents="none"
                                             editable={false}
-
-                                        showError={
+                                            showError={
                                                 this.state.submitPressed &&
-
+                                                !this.state.endDate
                                             }
                                             value={this.state.endDate}
                                         />
@@ -382,10 +373,8 @@ export default class CreateActivityScreen extends React.Component {
                                                     "endDate",
                                                 )
                                             }
-
                                             minuteInterval={15}
-
-                                />
+                                        />
                                     </View>
                                 </Animated.View>
                             )}
@@ -464,7 +453,6 @@ export default class CreateActivityScreen extends React.Component {
                                             height: 20,
                                             width: 20,
                                             borderRadius: 10,
-
                                         }}
                                         source={require("../assets/images/general-logos/photo-plus.png")}
                                     />
@@ -615,7 +603,6 @@ export default class CreateActivityScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                
 
                 {/** NEXT BUTTON */}
                 <View
@@ -630,7 +617,6 @@ export default class CreateActivityScreen extends React.Component {
                     </View>
                 </View>
             </View>
-            
         );
     }
 }
