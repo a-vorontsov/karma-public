@@ -285,6 +285,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
+    await db.query("DELETE FROM reset");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");

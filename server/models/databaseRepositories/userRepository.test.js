@@ -39,3 +39,13 @@ test('find all users', async () => {
     expect(insertUserResult1.rows[0]).toMatchObject(findUserResult.rows[0]);
     expect(insertUserResult2.rows[0]).toMatchObject(findUserResult.rows[1]);
 });
+
+test('insert token and find token work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registration);
+    user.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const insertTokenResult = await userRepository.insertResetToken(userId, "333333");
+    const findTokenResult = await userRepository.findResetToken(userId);
+    expect(insertTokenResult.rows[0]).toMatchObject(findTokenResult.rows[0]);
+});
