@@ -23,8 +23,8 @@ const ActivityCard = props => {
                 <Image
                     source={
                         props.individual
-                            ? require("../../../assets/images/general-logos/hands-heart.png")
-                            : require("../../../assets/images/general-logos/globe.png")
+                            ? require("../../assets/images/general-logos/hands-heart.png")
+                            : require("../../assets/images/general-logos/globe.png")
                     }
                     style={{
                         flex: 1,
@@ -35,7 +35,7 @@ const ActivityCard = props => {
                     resizeMode="cover"
                 />
                 <Image
-                    source={props.signedup ? icons.signup : null}
+                    source={props.signedup ? null : icons.signup}
                     style={{
                         position: "absolute",
                         top: 5,

@@ -17,7 +17,7 @@ import CarouselStyles, {
     sliderWidth,
 } from "../../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
-import ActivityCard from "../../components/activities/ActivityCard";
+import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import Colours from "../../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
@@ -29,29 +29,13 @@ class ActivitiesGoingScreen extends Component {
         headerShown: false,
     };
 
-    _renderItem = ({item}) => {
-        return (
-            <View style={CarouselStyles.itemContainer2}>
-                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard
-                        individual={item.individual}
-                        signedup={false}
-                    />
-                </View>
-            </View>
-        );
-    };
-
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                <Text>GOING</Text>
+            <View style={CarouselStyles.itemContainer2}>
+            <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
+                <ActivityDisplayCard/>
             </View>
+        </View>
         );
     }
 }

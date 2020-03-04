@@ -17,7 +17,7 @@ import CarouselStyles, {
     sliderWidth,
 } from "../../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
-import ActivityCard from "../../components/activities/ActivityCard";
+import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Colours from "../../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
@@ -25,70 +25,27 @@ const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
 class ActivitiesCausesScreen extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeSlide: 0,
+        };
+    }
+    
     static navigationOptions = {
         headerShown: false,
     };
 
-    _renderItem = ({item}) => {
-        return (
-            <View style={CarouselStyles.itemContainer2}>
-                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard
-                        individual={item.individual}
-                        signedup={false}
-                    />
-                </View>
-            </View>
-        );
-    };
-
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                }}>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                    }}>
-                    <TouchableOpacity>
-                        <RegularText style={styles.causeHeader}>
-                            Cause Name
-                        </RegularText>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{marginLeft: 150, alignItems: "center",}}>
-                        <RegularText style={styles.bioHeaderAlt}>
-                            See All
-                        </RegularText>
-                    </TouchableOpacity>
-                </View>
-                <View
-                    style={{
-                        alignItems: "flex-start",
-                        justifyContent: "flex-start",
-                    }}>
-                    <Carousel
-                        ref={c => {
-                            this._carousel = c;
-                        }}
-                        data={carouselEntries}
-                        removeClippedSubviews={false}
-                        renderItem={this._renderItem}
-                        sliderWidth={sliderWidth}
-                        itemWidth={itemWidth2}
-                        inactiveSlideOpacity={1}
-                        inactiveSlideScale={1}
-                        containerCustomStyle={CarouselStyles.slider}
-                        onSnapToItem={index =>
-                            this.setState({activeSlide: index})
-                        }
-                    />
-                </View>
+            <View>
+                <ActivityCauseCarousel/>
+                <ActivityCauseCarousel/>
+                <ActivityCauseCarousel/>
+                <ActivityCauseCarousel/>
+                <ActivityCauseCarousel/>
+                <ActivityCauseCarousel/>
             </View>
         );
     }

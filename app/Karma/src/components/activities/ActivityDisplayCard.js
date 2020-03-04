@@ -1,11 +1,22 @@
 import React from "react";
 
 import {GradientButton, InfoBar} from "../buttons";
-import {View, Image, Text} from "react-native";
+import {View, Image, Text, Dimensions} from "react-native";
 import {RegularText, SemiBoldText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
+import ActivityCard from "./ActivityCard";
+import CarouselStyles, {
+    itemWidth2,
+    sliderWidth,
+} from "../../styles/CarouselStyles";
+import Carousel from "react-native-snap-carousel";
+import Colours from "../../styles/Colours";
+
+const carouselEntries = [{individual: true}];
+const {width, height} = Dimensions.get("window");
+const formWidth = 0.8 * width;
 
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -16,134 +27,40 @@ const icons = {
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
-const ActivityCard = props => {
-    return (
-        <View style={[Styles.container, Styles.ph24]}>
-            <View style={[Styles.pb24, Styles.bottom]}>
-                <Image
-                    source={
-                        props.individual
-                            ? require("../../../assets/images/general-logos/hands-heart.png")
-                            : require("../../../assets/images/general-logos/globe.png")
-                    }
-                    style={{
-                        flex: 1,
-                        width: null,
-                        height: null,
-                        marginBottom: 10,
-                    }}
-                    resizeMode="cover"
+const ActivityDisplayCard = props => {
+    _renderItem = ({item}) => {
+        return (
+            <View style={CarouselStyles.itemContainer3}>
+                <ActivityCard
+                    individual={item.individual}
+                    signedup={false}
                 />
-                <Image
-                    source={props.signedup ? icons.signup : null}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        right: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
-                />
-                <Image
-                    source={icons.date}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
-                />
-                <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 1,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
-                    {" "}
-                    MON
-                </RegularText>
-                <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 25,
-                        left: 0,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
-                    {" "}
-                    DAY
-                </RegularText>
-                <View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                        }}>
-                        <InfoBar title="TIME" image={icons.clock} />
-                        <InfoBar title="0 SPOTS LEFT" image={icons.people} />
-                        <TouchableOpacity>
-                            <Image
-                                source={
-                                    props.favorited
-                                        ? icons.fave_inactive
-                                        : icons.fave_active
-                                }
-                                style={{
-                                    width: 30,
-                                    height: 30,
-                                    resizeMode: "contain",
-                                    marginLeft: 20,
-                                }}
-                                onPress={this.setFav(!props.favorited)}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <RegularText
-                        style={{
-                            fontWeight: "500",
-                            fontSize: 20,
-                            marginVertical: 8,
-                        }}>
-                        Activity Name
-                    </RegularText>
-                </View>
-                <View>
-                    <ReadMore
-                        numberOfLines={2}
-                        renderTruncatedFooter={this._renderTruncatedFooter}>
-                        <RegularText>
-                            Activity description, consectetur adip isicing elit,
-                            sed do eiusm ut labore et dolore magna aliqua
-                        </RegularText>
-                    </ReadMore>
-                </View>
             </View>
+        );
+    };
+
+    return (
+        <View
+            style={{
+                flex:1,
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                marginLeft: -25
+            }}>
+                {/* <View style={[Styles.container, Styles.ph24]}>
+
+                </View> */}
+                <Carousel
+                    ref={c => {
+                        this._carousel = c;
+                    }}
+                    data={carouselEntries}
+                    renderItem={this._renderItem}
+                    sliderWidth={sliderWidth}
+                    itemWidth={itemWidth2}
+                />
         </View>
     );
 };
 
-setFav = handlePress => {
-    return (favorited = false);
-};
-
-_renderTruncatedFooter = handlePress => {
-    return (
-        <Text style={{color: "#00A8A6", marginTop: 5}} onPress={handlePress}>
-            READ MORE
-        </Text>
-    );
-};
-
-export default ActivityCard;
+export default ActivityDisplayCard;
