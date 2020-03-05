@@ -18,14 +18,9 @@ import {hasNotch} from "react-native-device-info";
 import PhotoUpload from "react-native-photo-upload";
 import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
-import {
-    RegularText,
-    TitleText,
-    SemiBoldText,
-    BoldText,
-} from "../components/text";
+import {RegularText, SemiBoldText} from "../components/text";
 
-import {GradientButton, Button} from "../components/buttons";
+import {GradientButton} from "../components/buttons";
 
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
@@ -33,7 +28,6 @@ import SignUpStyles from "../styles/SignUpStyles";
 import TimeSlot from "../components/activity/TimeSlot";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
-var SLOT_KEY_ID = 0;
 
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
@@ -49,14 +43,8 @@ export default class CreateActivityScreen extends React.Component {
             startDate: "",
             endDate: "",
             title: "",
-            time: new Date(),
-            timeValue: "",
-            date: new Date(),
-            minTime: new Date().getUTCSeconds(),
             isStartDateVisible: false,
             isEndDateVisible: false,
-            y: new Animated.Value(-20),
-            minYear: new Date().getFullYear(),
             slots: [""],
             submitPressed: false,
             minEndDate: new Date(),
@@ -150,11 +138,10 @@ export default class CreateActivityScreen extends React.Component {
             return;
         }
         //submit data and navigate back to profile page
+        navigate("Profile");
     };
 
     render() {
-        const {navigate} = this.props.navigation;
-
         return (
             <View style={Styles.container}>
                 {/** HEADER */}
@@ -381,52 +368,50 @@ export default class CreateActivityScreen extends React.Component {
                             {/** TIME SLOTS */}
                             <FlatList
                                 data={this.state.slots}
-                                // renderItem={({item, index}) => (
+                                renderItem={({item, index}) => (
+                                    <View style={{width: FORM_WIDTH}}>
+                                        {index === 0 ? (
+                                            <SemiBoldText
+                                                style={{
+                                                    fontSize: 15,
+                                                }}>
+                                                Slot Time(s) (optional)
+                                            </SemiBoldText>
+                                        ) : null}
 
-                                //         <View style={{width:FORM_WIDTH}}>
-                                //         {index == 0 ? (
-                                //             <SemiBoldText
-                                //                 style={{
-                                //                     fontSize: 15,
-                                //                 }}>
-                                //                 Slot Time(s) (optional)
-                                //             </SemiBoldText>
-                                //         ) : null}
-
-                                //         <View
-                                //             style={{alignItems: "flex-start"}}>
-
-                                //     <View style={{alignItems:"flex-start"}}>
-                                //                     this.state.minEndDate
-                                //                 }
-                                //                 style={{
-                                //                     width: FORM_WIDTH * 0.9,
-                                //                 }}
-                                //             />
-                                //             {/** only show delete icon if it's not the first slot */}
-                                //             {index != 0 ? (
-                                //                 <TouchableOpacity
-                                //                     onPress={() =>
-                                //                         this.removeSlot(index)
-                                //                     }
-                                //                     style={{
-                                //                         position: "absolute",
-                                //                         right: 0,
-                                //                         top: 25,
-                                //                     }}>
-                                //                     <Image
-                                //                         style={{
-                                //                             height: 20,
-                                //                             width: 20,
-                                //                             borderRadius: 25,
-                                //                         }}
-                                //                         source={require("../assets/images/general-logos/cross.png")}
-                                //                     />
-                                //                 </TouchableOpacity>
-                                //             ) : null}
-                                //         </View>
-                                //     </View>
-                                // )}
+                                        <View
+                                            style={{alignItems: "flex-start"}}>
+                                            <TimeSlot
+                                                minDate={this.state.minSlotDate}
+                                                maxDate={this.state.maxSlotDate}
+                                                style={{
+                                                    width: FORM_WIDTH * 0.9,
+                                                }}
+                                            />
+                                            {/** only show delete icon if it's not the first slot */}
+                                            {index !== 0 ? (
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        this.removeSlot(index)
+                                                    }
+                                                    style={{
+                                                        position: "absolute",
+                                                        right: 0,
+                                                        top: 25,
+                                                    }}>
+                                                    <Image
+                                                        style={{
+                                                            height: 20,
+                                                            width: 20,
+                                                            borderRadius: 25,
+                                                        }}
+                                                        source={require("../assets/images/general-logos/cross.png")}
+                                                    />
+                                                </TouchableOpacity>
+                                            ) : null}
+                                        </View>
+                                    </View>
+                                )}
                                 keyExtractor={item => item.toString()}
                             />
                             <View
