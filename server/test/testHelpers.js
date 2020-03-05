@@ -296,6 +296,16 @@ const signedUpUser2 = {
     "username": "test2",
     "date_registered": "2016-06-22T18:10:25.000Z",
 };
+
+const reset1 = {
+    user_id: 1,
+    password_token: "123456",
+};
+const reset2 = {
+    user_id: 1,
+    password_token: "234567",
+};
+
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
@@ -310,6 +320,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
+    await db.query("DELETE FROM reset");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
@@ -343,4 +354,6 @@ module.exports = {
     physicalEvent: physicalEvent,
     signedUpUser1: signedUpUser1,
     signedUpUser2: signedUpUser2,
+    reset1: reset1,
+    reset2: reset2,
 };

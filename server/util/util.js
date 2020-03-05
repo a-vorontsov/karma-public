@@ -21,6 +21,25 @@ const isOrganisation = async (userId) => {
     return organisationResult.rows.length > 0; // found at least one organisation with userId
 };
 
+const checkEmail = async (email) => {
+    const result = {};
+    if (!email) {
+        result.status = 400;
+        result.message = "No email was specified";
+        return result;
+    }
+    const userResult = await userRepository.findByEmail(email);
+    const user = userResult.rows[0];
+    if (!user) {
+        result.status = 404;
+        result.message = "No user with specified email";
+        return result;
+    }
+    result.status = 200;
+    result.user = user;
+    return result;
+};
+
 const checkUserId = async (userId) => {
     const result = {};
     if (!userId) {
@@ -75,4 +94,5 @@ module.exports = {
     isOrganisation: isOrganisation,
     checkUserId: checkUserId,
     checkEventId: checkEventId,
+    checkEmail: checkEmail,
 };
