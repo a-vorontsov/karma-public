@@ -233,6 +233,11 @@ const anyRequest6 = {
     confirmPassword: "mistypedNewPass",
 };
 
+const logInReq = {
+    email: "email",
+    password: "password",
+};
+
 const owasp = require("owasp-password-strength-test");
 jest.mock("owasp-password-strength-test");
 
@@ -242,7 +247,13 @@ test("valid and expired token working", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const validToken = await authAgent.logIn(userId);
+
+    logInReq.email = user.email;
+    const logInResponse = await request(app)
+        .post("/signin/password")
+        .send(logInReq)
+        .redirects(0);
+    const validToken = logInResponse.body.authToken;
     const verifyValidToken = await authAgent.isValidToken(userId, validToken);
     expect(verifyValidToken.isValidToken).toBe(true);
 
