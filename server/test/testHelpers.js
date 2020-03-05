@@ -173,6 +173,11 @@ const signUp = {
     confirmed: true,
 };
 
+const favourite = {
+    individual_id: -1,
+    event_id: -1,
+};
+
 const eventWithLocation1 = {
     id: 3,
     name: "Staying at Home",
@@ -316,4 +321,5 @@ module.exports = {
     eventWithLocation2: eventWithLocation2,
     womenOnlyEvent: womenOnlyEvent,
     physicalEvent: physicalEvent,
+    favourite: favourite,
 };

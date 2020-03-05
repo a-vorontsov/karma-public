@@ -30,7 +30,7 @@ test('creating signup works', async () => {
             id: 1,
         }],
     });
-    const response = await request(app).post("/event/3/signUp").send(event);
+    const response = await request(app).post("/event/3/signUp").send(signUp);
 
     expect(signupRepository.insert).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
@@ -43,7 +43,7 @@ test('updating works', async () => {
             id: 1,
         }],
     });
-    const response = await request(app).post("/event/3/signUp/update").send(event);
+    const response = await request(app).post("/event/3/signUp/update").send(signUp);
 
     expect(signupRepository.update).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
