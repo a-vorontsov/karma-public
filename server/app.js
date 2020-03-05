@@ -48,6 +48,7 @@ app.use("/error/usernotfound", require("./routes/error/userNotFound"));
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));
 app.use("/event", require("./routes/event/event"));
+app.use("/profile/view", require("./routes/profile/view"));
 app.use("/profile/edit/password", require("./routes/profile/edit/change-password"));
 app.use("/bugreport", require("./routes/bugreport"));
 // import OAuth routes if applicable
