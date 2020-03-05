@@ -63,14 +63,14 @@ router.post('/confirm', async (req, res) => {
 
     resetRepository.findResetToken(checkEmailResult.user.id)
         .then(result => {
-            if (result.rows.length == 0) return res.status(404).send("No token sent to " + email);
+            if (result.rows.length === 0) return res.status(404).send("No token sent to " + email);
 
             const tokenSent = result.rows[0].password_token;
             const expiryDate = result.rows[0].expiry_date;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
                 res.status(200).send("Token accepted");
-            } else if (tokenSent != tokenRecieved) {
+            } else if (tokenSent !== tokenRecieved) {
                 res.status(400).send("Tokens did not match");
             } else {
                 res.status(400).send("Token expired");
