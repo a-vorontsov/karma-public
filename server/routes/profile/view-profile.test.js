@@ -6,9 +6,6 @@ const regRepo = require("../../models/databaseRepositories/registrationRepositor
 
 const user = testHelpers.user4;
 const registration = testHelpers.registration5;
-const address = testHelpers.address;
-const individual = testHelpers.individual;
-const org = testHelpers.organisation;
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
