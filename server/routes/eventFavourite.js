@@ -4,7 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-const eventRepository = require("../models/databaseRepositories/eventRepository");
 const favouriteRepository = require("../models/databaseRepositories/favouriteRepository");
 
 /**
