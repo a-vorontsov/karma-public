@@ -14,6 +14,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
  * Endpoint called whenever a user wishes to view their profile.<br/>
  * URL example: GET http://localhost:8000/profile/view/
  * @param {Integer} req.body.userId
+ * @param {String} req.body.authToken
  * @returns
  *  status: 200, description: A message variable stating successfully
  * finding the user's individual or organisation profile, as well as,
