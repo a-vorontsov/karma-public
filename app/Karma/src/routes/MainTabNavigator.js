@@ -5,6 +5,7 @@ import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
 import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
+import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
@@ -27,10 +28,25 @@ const ProfileNavigator = createStackNavigator(
     },
 );
 
+const ActivitiesNavigator = createStackNavigator(
+    {
+        Activities: {screen: ActivitiesScreen},
+        ActivityInfo: {screen: ActivityInfoScreen},
+    },
+    {
+        headerMode: "none",
+        defaultNavigationOptions: {
+            cardStyle: {
+                backgroundColor: Colours.backgroundWhite,
+            },
+        },
+    },
+);
+
 const MainTabNavigator = createBottomTabNavigator(
     {
         Activities: {
-            screen: ActivitiesScreen,
+            screen: ActivitiesNavigator,
             navigationOptions: {
                 tabBarLabel: "Activities",
                 tabBarIcon: ({focused}) =>

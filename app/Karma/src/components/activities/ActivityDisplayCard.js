@@ -9,6 +9,7 @@ import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
 import Colours from "../../styles/Colours";
+import { NavigationEvents } from "react-navigation";
 
 const carouselEntries = [{individual: true}];
 const {width, height} = Dimensions.get("window");
@@ -20,10 +21,10 @@ const icons = {
 };
 
 const ActivityDisplayCard = props => {
+    // const {navigate} = this.props.navigation;
     return (
         <View>
             <View style={{backgroundColor: Colours.backgroundWhite, height:60, paddingHorizontal: 24, flexDirection:"row", alignItems:"center"}}>
-                <TouchableOpacity>
                     <Image
                         source={icons.profile}
                         style={{
@@ -34,7 +35,6 @@ const ActivityDisplayCard = props => {
                         }}
                         resizeMode="cover">
                     </Image>
-                </TouchableOpacity>
                 <View style={{alignItems:"center"}}>
                     <View style={{alignItems:"flex-start", marginLeft:15}}>
                     <View style={{flexDirection:"row", alignItems:"center", justifyItems:"flex-start"}}>
@@ -58,7 +58,7 @@ const ActivityDisplayCard = props => {
                     <Image
                         source={icons.share}
                         style={{
-                            marginLeft: 200,
+                            marginLeft:200,
                             alignSelf: "flex-end",
                             width: 30,
                             height: 30,

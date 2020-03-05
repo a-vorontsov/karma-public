@@ -14,16 +14,10 @@ import {
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
-import ActivitiesTab from "../../routes/ActivitiesTabNavigator"
-import {createSwitchNavigator, createAppContainer} from "react-navigation";
 import ActivitiesAllScreen from "./ActivitiesAllScreen";
 import ActivitiesCausesScreen from './ActivitiesCausesScreen';
 import ActivitiesGoingScreen from './ActivitiesGoingScreen';
 import ActivitiesFavouritesScreen from './ActivitiesFavouritesScreen';
-
-const {width, height} = Dimensions.get("window");
-
-const AppContainer = createAppContainer(ActivitiesTab);
 
 class ActivitiesScreen extends Component {
     constructor(props) {

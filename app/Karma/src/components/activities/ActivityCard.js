@@ -93,7 +93,8 @@ const ActivityCard = props => {
                         }}>
                         <InfoBar title="TIME" image={icons.clock} />
                         <InfoBar title="0 SPOTS LEFT" image={icons.people} />
-                        <TouchableOpacity>
+                        <View style={{flex:1, alignItems: "flex-end", justifyContent:"flex-end"}}>
+                        <TouchableOpacity style={{alignSelf: "center"}}>
                             <Image
                                 source={
                                     props.favorited
@@ -104,11 +105,12 @@ const ActivityCard = props => {
                                     width: 30,
                                     height: 30,
                                     resizeMode: "contain",
-                                    marginLeft: 20,
+                                    marginRight:10
                                 }}
                                 onPress={this.setFav(!props.favorited)}
                             />
                         </TouchableOpacity>
+                        </View>
                     </View>
                     <RegularText
                         style={{
@@ -125,6 +127,8 @@ const ActivityCard = props => {
                         renderTruncatedFooter={this._renderTruncatedFooter}>
                         <RegularText>
                             Activity description, consectetur adip isicing elit,
+                            sed do eiusm ut labore et dolore magna aliqua consectetur adip isicing elit,
+                            sed do eiusm ut labore et dolore magna aliqua consectetur adip isicing elit,
                             sed do eiusm ut labore et dolore magna aliqua
                         </RegularText>
                     </ReadMore>
