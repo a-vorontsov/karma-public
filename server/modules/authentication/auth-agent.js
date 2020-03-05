@@ -10,7 +10,7 @@ const date = require("date-and-time");
  * @param {HTTP} next
  */
 async function requireAuthentication(req, res, next) {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == 1) {
         next();
         return;
     }
@@ -20,17 +20,14 @@ async function requireAuthentication(req, res, next) {
         res.redirect("/error/nouserid");
     } else if (authToken === undefined) {
         res.redirect("/error/noauthtoken");
-    } else if (authToken === null) {
+    } else if (authToken === null || userId === null) {
         res.redirect("/error/unauthorised");
     } else {
         const isValid = await isValidToken(userId, authToken);
         if (isValid.isValidToken) {
             next();
         } else {
-            req.body.push({
-                customError: isValid.error,
-            });
-            res.redirect("/error/customerror");
+            res.redirect("/error/customerror/?err=" + isValid.error);
         }
     }
 }
@@ -75,7 +72,7 @@ async function isValidToken(userId, authToken) {
     if (tokenResult.rows.length === 0) {
         return ({
             isValidToken: false,
-            error: "Token not found",
+            error: "No token found for user, or user does not exist.",
         });
     }
     const tokenRecord = tokenResult.rows[0];
