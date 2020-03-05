@@ -38,7 +38,7 @@ const registerIndividualRequest = {
 };
 
 const profileViewRequest = {
-    userId: 666,
+    userId: 99999999999999999,
 };
 
 test("viewing individual profile works", async () => {
@@ -126,9 +126,36 @@ test("viewing org profile works", async () => {
         ogranisationRegistrationRequest.postCode,
     );
     expect(profileResponse.body.organisationNumber).toBe(
-      ogranisationRegistrationRequest.organisationNumber
+        ogranisationRegistrationRequest.organisationNumber,
     );
     expect(profileResponse.body.username).toBe(user.username);
     expect(profileResponse.body.email).toBe(registration.email);
     expect(profileResponse.statusCode).toBe(200);
+});
+
+test("viewing profile without user account works", async () => {
+    const profileResponse = await request(app)
+        .get("/profile/view")
+        .send(profileViewRequest);
+
+    expect(profileResponse.statusCode).toBe(400);
+    expect(profileResponse.body.message).toBe(
+        "Cannot read property 'address_id' of undefined",
+    );
+});
+
+test("viewing profile without indiv or org account works", async () => {
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+
+    profileViewRequest.userId = userId;
+    const profileResponse = await request(app)
+        .get("/profile/view")
+        .send(profileViewRequest);
+
+    expect(profileResponse.statusCode).toBe(400);
+    expect(profileResponse.body.message).toBe(
+        "Cannot read property 'address_id' of undefined",
+    );
 });
