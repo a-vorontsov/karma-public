@@ -4,7 +4,10 @@ const date = require("date-and-time");
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
- * Otherwise, redirects user to the login page.
+ * Otherwise, redirects to an error route which
+ * sends an appropriate error response.
+ * Therefore, it prevents unauthorised access
+ * to internal routes.
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
@@ -36,8 +39,8 @@ async function requireAuthentication(req, res, next) {
  * Check if app user is NOT authenticated.
  * This is used for avoiding unnecessary sing-in pages.
  * If not auth., directs user to desired destination.
- * Otherwise, a HTTP error response is sent stating
- * that user is already authenticated.
+ * Otherwise, redirects to an error route which
+ * sends an appropriate error response.
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
@@ -64,6 +67,8 @@ async function requireNoAuthentication(req, res, next) {
  * This requires the token to be of valid format,
  * matching the user specified by the userId in
  * the database and to be not expired.
+ * If no token is found for specified user or
+ * user is not found, a custom error is returned.
  * @param {integer} userId
  * @param {string} authToken
  */
@@ -95,10 +100,10 @@ async function isValidToken(userId, authToken) {
 }
 
 /**
- * Log user in: initialise and return their
- * auth token.
+ * Log user in: initialise an authToken valid
+ * for 15 minutes for given user and return it.
  * @param {integer} userId
- * @return {string} authToken
+ * @return {string} authToken valid for 15 minutes
  * @throws {error} if failed query
  */
 async function logIn(userId) {
@@ -110,7 +115,7 @@ async function logIn(userId) {
         expiry_date: date.format(
             date.addMinutes(new Date(), 15),
             "YYYY-MM-DD HH:mm:ss",
-        ),
+        ), // TODO: token renewal
         creation_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         user_id: userId,
     });
@@ -118,7 +123,7 @@ async function logIn(userId) {
 }
 
 /**
- * Log user out: ting their
+ * Log user out: set their
  * auth token(s) expired.
  * @param {integer} userId
  * @throws {error} if failed query
