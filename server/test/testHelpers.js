@@ -202,6 +202,7 @@ const eventWithLocation1 = {
     lat: "51.4149160",
     long: "-0.1904870",
 };
+
 const eventWithLocation2 = {
     id: 1,
     name: "Close to Home",
@@ -251,6 +252,7 @@ const womenOnlyEvent = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
 const physicalEvent = {
     id: 5,
     name: "Physical",
@@ -275,6 +277,29 @@ const physicalEvent = {
     region: null,
     lat: "51.4161220",
     long: "-0.1866410",
+};
+
+const signedUpUser1 = {
+    "event_id": 1,
+    "individual_id": 1,
+    "confirmed": true,
+    "firstname": "fname",
+    "lastname": "lname",
+    "user_id": 677,
+    "email": "test@gmail.com",
+    "username": "test1",
+    "date_registered": "2016-06-22T18:10:25.000Z",
+};
+const signedUpUser2 = {
+    "event_id": 1,
+    "individual_id": 2,
+    "confirmed": true,
+    "firstname": "fname2",
+    "lastname": "lname2",
+    "user_id": 678,
+    "email": "test2@gmail.com",
+    "username": "test2",
+    "date_registered": "2016-06-22T18:10:25.000Z",
 };
 
 const reset1 = {
@@ -333,6 +358,8 @@ module.exports = {
     womenOnlyEvent: womenOnlyEvent,
     physicalEvent: physicalEvent,
     favourite: favourite,
+    signedUpUser1: signedUpUser1,
+    signedUpUser2: signedUpUser2,
     reset1: reset1,
     reset2: reset2,
 };
