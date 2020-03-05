@@ -271,6 +271,16 @@ const physicalEvent = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
+const reset1 = {
+    user_id: 1,
+    password_token: "123456",
+};
+const reset2 = {
+    user_id: 1,
+    password_token: "234567",
+};
+
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
@@ -285,6 +295,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
+    await db.query("DELETE FROM reset");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
@@ -316,4 +327,6 @@ module.exports = {
     eventWithLocation2: eventWithLocation2,
     womenOnlyEvent: womenOnlyEvent,
     physicalEvent: physicalEvent,
+    reset1: reset1,
+    reset2: reset2,
 };

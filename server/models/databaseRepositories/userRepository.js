@@ -56,6 +56,10 @@ const updateUsername = (userId, username) => {
     return db.query(query, params);
 };
 
+const findIdFromEmail = (email) => {
+    const query = "SELECT id FROM \"user\" WHERE email = $1";
+    return db.query(query, [email]);
+};
 module.exports = {
     insert: insert,
     findById: findById,
@@ -67,4 +71,5 @@ module.exports = {
     updatePassword: updatePassword,
     updateVerificationStatus: updateVerificationStatus,
     updateUsername: updateUsername,
+    findIdFromEmail: findIdFromEmail,
 };
