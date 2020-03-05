@@ -11,21 +11,16 @@ import {
     Animated,
     FlatList,
     Keyboard,
-    Alert
+    Alert,
 } from "react-native";
 import Styles from "../styles/Styles";
 import {hasNotch} from "react-native-device-info";
 import PhotoUpload from "react-native-photo-upload";
 import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
-import {
-    RegularText,
-    TitleText,
-    SemiBoldText,
-    BoldText,
-} from "../components/text";
+import {RegularText, SemiBoldText} from "../components/text";
 
-import {GradientButton, Button} from "../components/buttons";
+import {GradientButton} from "../components/buttons";
 
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
@@ -33,7 +28,6 @@ import SignUpStyles from "../styles/SignUpStyles";
 import TimeSlot from "../components/activity/TimeSlot";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
-var SLOT_KEY_ID = 0;
 
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
@@ -47,28 +41,19 @@ export default class CreateActivityScreen extends React.Component {
             isPhysical: false,
             isAdditionalInfo: false,
             startDate: "",
-            endDate:"",
+            endDate: "",
             title: "",
-            time: new Date(),
-            timeValue: "",
-            date: new Date(),
-            minTime: new Date().getUTCSeconds(),
             isStartDateVisible: false,
             isEndDateVisible: false,
-            y: new Animated.Value(-20),
-            minYear: new Date().getFullYear(),
             slots: [""],
             submitPressed: false,
-            minEndDate: new Date()
-            
-            
-            
+            minEndDate: new Date(),
+            minSlotDate: new Date(),
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
-
 
     uploadPhoto(selectedPhoto) {
         if (selectedPhoto != null) {
@@ -77,45 +62,48 @@ export default class CreateActivityScreen extends React.Component {
             Alert.alert("Error", "Please upload a photo.");
         }
     }
-    
-    showDatePicker = (name) => {
-        
-        if(name === "isStartDateVisible"){
-            this.setState({
-                isEndDateVisible: false
-            })
-        }
-        else{
-            this.setState({
-                isStartDateVisible: false
-            })
-        }
-      this.setState({
-          [name]: !this.state[name]
-      })
-        
-      };
 
-  
+    showDatePicker = name => {
+        if (name === "isStartDateVisible") {
+            this.setState({
+                isEndDateVisible: false,
+            });
+        } else {
+            this.setState({
+                isStartDateVisible: false,
+            });
+        }
+        this.setState({
+            [name]: !this.state[name],
+        });
+    };
+
     setDateValue = (date, name) => {
+
+        if(name === "endDate"){
+            this.setState({
+                maxSlotDate: date,
+            })
+        }
+
         //events must be at least one hour long
         if (name === "startDate") {
-
             const min = new Date(date);
             min.setHours(min.getHours() + 1);
 
             this.setState({
                 minEndDate: min,
-            })
-        } 
+                minSlotDate: date,
+                
+            });
+        }
         //removes day and local timezone from date
-        let formattedString = date.toUTCString().substring(5)
-        formattedString = formattedString.slice(0, -7)
+        let formattedString = date.toUTCString().substring(5);
+        formattedString = formattedString.slice(0, -7);
         this.setState({
-            [name]: formattedString
-        })
-
-    }
+            [name]: formattedString,
+        });
+    };
 
     addSlot = () => {
         this.setState(prevState => {
@@ -142,30 +130,29 @@ export default class CreateActivityScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-    submit = () => {   
+    submit = () => {
         const {navigate} = this.props.navigation;
-        
-        this.setState({
-            submitPressed:true
-        })
 
-        if(!this.state.title 
-            || !this.state.startDate 
-            || !this.state.endDate 
-            || !this.state.eventDesc
-            || !this.state.numSlots){
-            return
+        this.setState({
+            submitPressed: true,
+        });
+
+        if (
+            !this.state.title ||
+            !this.state.startDate ||
+            !this.state.endDate ||
+            !this.state.eventDesc ||
+            !this.state.numSlots
+        ) {
+            return;
         }
         //submit data and navigate back to profile page
-        
-    }
+        navigate("Profile")
+    };
 
     render() {
-        const {navigate} = this.props.navigation;
 
-        
         return (
-            
             <View style={Styles.container}>
                 {/** HEADER */}
                 <View
@@ -176,7 +163,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader title="Create Activity"/>
+                        <PageHeader title="Create Activity" />
                     </View>
                 </View>
 
@@ -248,144 +235,168 @@ export default class CreateActivityScreen extends React.Component {
                                 </View>
                             </View>
                             <View>
-                                <TextInput 
+                                <TextInput
                                     placeholder="Title"
-                                    showError={!this.state.title && this.state.submitPressed}
+                                    showError={
+                                        !this.state.title &&
+                                        this.state.submitPressed
+                                    }
                                     name="title"
                                     onChange={this.onChangeText}
                                     onSubmitEditing={() => Keyboard.dismiss()}
                                 />
                             </View>
-                            {/** EVENT START DATE 
-                            */}
+                            {/** EVENT START DATE
+                             */}
                             <View>
-                            <TouchableOpacity onPress={() => this.showDatePicker("isStartDateVisible")} style={{backgroundColor:"#f8f8f8", zIndex:50}}>
-                                <View style={{flexDirection: "row"}}>
-                                    <TextInput
-                                        pointerEvents="none"
-                                        placeholder="Start"
-                                        editable={false}
-                                        showError={
-                                            this.state.submitPressed && !this.state.startDate      
-                                        }
-                                        value={this.state.startDate}
-                                    />
-                                    <Image
-                                        style={{
-                                            position: "absolute",
-                                            right: 0,
-                                            top: 20,
-                                            height: 20,
-                                            width: 20,
-                                        }}
-                                        source={require("../assets/images/general-logos/calendar-dark.png")}
-                                    />
-                                </View>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.showDatePicker(
+                                            "isStartDateVisible",
+                                        )
+                                    }
+                                    style={{
+                                        backgroundColor: "#f8f8f8",
+                                        zIndex: 50,
+                                    }}>
+                                    <View style={{flexDirection: "row"}}>
+                                        <TextInput
+                                            pointerEvents="none"
+                                            placeholder="Start"
+                                            editable={false}
+                                            showError={
+                                                this.state.submitPressed &&
+                                                !this.state.startDate
+                                            }
+                                            value={this.state.startDate}
+                                        />
+                                        <Image
+                                            style={{
+                                                position: "absolute",
+                                                right: 0,
+                                                top: 20,
+                                                height: 20,
+                                                width: 20,
+                                            }}
+                                            source={require("../assets/images/general-logos/calendar-dark.png")}
+                                        />
+                                    </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.state.isStartDateVisible
-                            && 
-                            <Animated.View>
-                            <View><DatePicker 
-                                mode="datetime"
-                                onDateChange={(date) => this.setDateValue(date, "startDate")}
-                                locale="en_GB"
-                                minuteInterval={15}
-                            /></View>
-
-                        </Animated.View>
-                        }    
-                        {/** END DATE  */}
+                            {this.state.isStartDateVisible && (
+                                <Animated.View>
+                                    <View>
+                                        <DatePicker
+                                            mode="datetime"
+                                            onDateChange={date =>
+                                                this.setDateValue(
+                                                    date,
+                                                    "startDate",
+                                                )
+                                            }
+                                            locale="en_GB"
+                                            minuteInterval={15}
+                                        />
+                                    </View>
+                                </Animated.View>
+                            )}
+                            {/** END DATE  */}
                             <View>
-                            <TouchableOpacity onPress={() => this.showDatePicker("isEndDateVisible")} >
-                                <View style={{flexDirection: "row"}}>
-                                    
-                                    <TextInput
-                                        placeholder="End"
-                                        pointerEvents="none"
-                                        editable={false}
-                                       
-                                        showError={
-                                            this.state.submitPressed && !this.state.endDate
-                                                
-                                        }
-                                        value={this.state.endDate}
-                                    />
-                                    <Image
-                                        style={{
-                                            position: "absolute",
-                                            right: 0,
-                                            top: 20,
-                                            height: 20,
-                                            width: 20,
-                                        }}
-                                        source={require("../assets/images/general-logos/calendar-dark.png")}
-                                    />
-                                </View>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.showDatePicker("isEndDateVisible")
+                                    }>
+                                    <View style={{flexDirection: "row"}}>
+                                        <TextInput
+                                            placeholder="End"
+                                            pointerEvents="none"
+                                            editable={false}
+                                            showError={
+                                                this.state.submitPressed &&
+                                                !this.state.endDate
+                                            }
+                                            value={this.state.endDate}
+                                        />
+                                        <Image
+                                            style={{
+                                                position: "absolute",
+                                                right: 0,
+                                                top: 20,
+                                                height: 20,
+                                                width: 20,
+                                            }}
+                                            source={require("../assets/images/general-logos/calendar-dark.png")}
+                                        />
+                                    </View>
                                 </TouchableOpacity>
                             </View>
 
-                            {this.state.isEndDateVisible
-                            && 
-                            <Animated.View >
-                                <View>
-                                    <DatePicker 
-                                    mode="datetime"
-                                    onDateChange={(date) => this.setDateValue(date, "endDate")}
-                                    locale="en_GB"
-                                    minuteInterval={15}
-                                    
-                                    minimumDate={this.state.minEndDate}
-                                    
-                                />
-                                </View>
-                        
-                            </Animated.View>
-                            }
+                            {this.state.isEndDateVisible && (
+                                <Animated.View>
+                                    <View>
+                                        <DatePicker
+                                            mode="datetime"
+                                            onDateChange={date =>
+                                                this.setDateValue(
+                                                    date,
+                                                    "endDate",
+                                                )
+                                            }
+                                            minimumDate={this.state.minEndDate}
+                                            minuteInterval={15}
+                                        />
+                                    </View>
+                                </Animated.View>
+                            )}
                             {/** TIME SLOTS */}
                             <FlatList
                                 data={this.state.slots}
                                 renderItem={({item, index}) => (
-                                   
-                                        <View style={{width:FORM_WIDTH}}>
-                                            {index == 0 ? 
-                                             <SemiBoldText
-                                             style={{
-                                                 fontSize: 15,
-                                             }}>
-                                             Slot Time(s) (optional)      
-                                         </SemiBoldText>
-                                            : 
-                                            null
-                                            }
-                                       
-                                    <View style={{alignItems:"flex-start"}}>
-                                        
-                                        <TimeSlot 
-                                        minFromDate={this.state.minEndDate}
-                                        style={{width:FORM_WIDTH * 0.9, }}/>
-                                        {/** only show delete icon if it's not the first slot */}
-                                        {index != 0 ? (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.removeSlot(index)
+                                    <View style={{width: FORM_WIDTH}}>
+                                        {index === 0 ? (
+                                            <SemiBoldText
+                                                style={{
+                                                    fontSize: 15,
+                                                }}>
+                                                Slot Time(s) (optional)
+                                            </SemiBoldText>
+                                        ) : null}
+
+                                        <View
+                                            style={{alignItems: "flex-start"}}>
+                                            <TimeSlot
+                                                minDate={
+                                                    this.state.minSlotDate
+                                                }
+                                                maxDate={
+                                                    this.state.maxSlotDate
                                                 }
                                                 style={{
-                                                    position: "absolute",
-                                                    right: 0,
-                                                    top: 25,
-                                                }}>
-                                                <Image
+                                                    width: FORM_WIDTH * 0.9,
+                                                }}
+                                            />
+                                            {/** only show delete icon if it's not the first slot */}
+                                            {index !== 0 ? (
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        this.removeSlot(index)
+                                                    }
                                                     style={{
-                                                        height: 20,
-                                                        width: 20,
-                                                        borderRadius: 25,
-                                                    }}
-                                                    source={require("../assets/images/general-logos/cross.png")}
-                                                />
-                                            </TouchableOpacity>
-                                        ) : null}
-                                    </View>
+                                                        position: "absolute",
+                                                        right: 0,
+                                                        top: 25,
+                                                    }}>
+                                                    <Image
+                                                        style={{
+                                                            height: 20,
+                                                            width: 20,
+                                                            borderRadius: 25,
+                                                        }}
+                                                        source={require("../assets/images/general-logos/cross.png")}
+                                                    />
+                                                </TouchableOpacity>
+                                            ) : null}
+                                        </View>
                                     </View>
                                 )}
                                 keyExtractor={item => item.toString()}
@@ -414,7 +425,6 @@ export default class CreateActivityScreen extends React.Component {
                                             height: 20,
                                             width: 20,
                                             borderRadius: 10,
-                                           
                                         }}
                                         source={require("../assets/images/general-logos/photo-plus.png")}
                                     />
@@ -457,7 +467,8 @@ export default class CreateActivityScreen extends React.Component {
                                 name="eventDesc"
                                 onChange={this.onChangeText}
                                 showError={
-                                    this.state.submitPressed && !this.state.eventDesc
+                                    this.state.submitPressed &&
+                                    !this.state.eventDesc
                                 }
                                 value={this.state.eventDesc}
                                 onSubmitEditing={() => Keyboard.dismiss()}
@@ -481,11 +492,14 @@ export default class CreateActivityScreen extends React.Component {
                                 </SemiBoldText>
                             </View>
                             <View>
-                                <TextInput 
+                                <TextInput
                                     placeholder="Number of slots available"
                                     name="numSlots"
                                     keyboardType="number-pad"
-                                    showError={this.state.submitPressed && !this.state.numSlots}
+                                    showError={
+                                        this.state.submitPressed &&
+                                        !this.state.numSlots
+                                    }
                                     onChange={this.onChangeText}
                                     returnKeyType="done"
                                     onSubmitEditing={() => Keyboard.dismiss()}
