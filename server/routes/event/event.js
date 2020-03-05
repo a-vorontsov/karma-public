@@ -8,6 +8,7 @@ const individualRepository = require("../../models/databaseRepositories/individu
 const eventSorter = require("../../modules/sorting/event");
 const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
+const eventFavouriteRoute = require("../eventFavourite");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -416,5 +417,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.use("/", eventSignupRoute);
+router.use("/", eventFavouriteRoute);
 
 module.exports = router;
