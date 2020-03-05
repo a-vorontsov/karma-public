@@ -54,7 +54,7 @@ router.post('/:event_id/signUp', async (req, res) => {
 router.get('/:event_id/signUp', async (req, res) => {
     const event_id = req.params.event_id;
     const checkEventIdResult = await util.checkEventId(event_id);
-    if (checkEventIdResult.status != 200) {
+    if (checkEventIdResult.status !== 200) {
         return res.status(checkEventIdResult.status).send(checkEventIdResult.message);
     }
     signupRepository.findUsersSignedUp(event_id)
