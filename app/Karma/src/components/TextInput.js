@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Text, TextInput, View} from "react-native";
+import {View, Text, StyleSheet, TextInput} from "react-native";
 import Styles from "../styles/Styles";
+import SignUpStyles from "../styles/SignUpStyles";
 
 class TInput extends Component {
     constructor(props) {
@@ -12,12 +13,13 @@ class TInput extends Component {
         const {name, onChange} = this.props;
         const defaultError = "This field is required";
         const inputStyle = this.props.showError
-            ? [Styles.textInput, Styles.textInputError]
-            : Styles.textInput;
+            ? [SignUpStyles.textInput, styles.errorMessage]
+            : SignUpStyles.textInput;
         return (
             <View>
                 <TextInput
-                    style={inputStyle}
+                    pointerEvents={this.props.pointerEvents}
+                    style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
                     returnKeyType={
@@ -25,6 +27,9 @@ class TInput extends Component {
                             ? this.props.returnKeyType
                             : "next"
                     }
+                    keyboardType={this.props.keyboardType}
+                    onFocus={this.props.onFocus}
+                    multiline={this.props.multiline}
                     onChangeText={text => onChange({name, text})}
                     ref={this.props.inputRef}
                     onSubmitEditing={this.props.onSubmitEditing}
@@ -32,6 +37,7 @@ class TInput extends Component {
                     autoCorrect={false}
                     secureTextEntry={this.props.secureTextEntry}
                     editable={this.props.editable}
+                    value={this.props.value}
                 />
                 {this.props.showError ? (
                     <Text style={Styles.error}>
@@ -44,5 +50,15 @@ class TInput extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    errorMessage: {
+        borderBottomColor: "#e81f10",
+        marginBottom: 10,
+    },
+    errorText: {
+        color: "#e81f10",
+    },
+});
 
 export default TInput;
