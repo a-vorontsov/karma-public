@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
-import SettingsButton from "../components/buttons/SettingsButton";
-import PageHeader from "../components/PageHeader";
-import Styles from "../styles/Styles";
+import SettingsButton from "../../components/buttons/SettingsButton";
+import PageHeader from "../../components/PageHeader";
+import Styles from "../../styles/Styles";
 
 const icons = {
-    email: require("../assets/images/settings-logos/email.png"),
-    guidelines: require("../assets/images/settings-logos/guidelines.png"),
-    logo: require("../assets/images/settings-logos/K-logo.png"),
-    logout: require("../assets/images/settings-logos/logout.png"),
-    privacy: require("../assets/images/settings-logos/privacy.png"),
-    report: require("../assets/images/settings-logos/report-problem.png"),
-    terms: require("../assets/images/settings-logos/terms.png"),
+    email: require("../../assets/images/settings-logos/email.png"),
+    guidelines: require("../../assets/images/settings-logos/guidelines.png"),
+    logo: require("../../assets/images/settings-logos/K-logo.png"),
+    logout: require("../../assets/images/settings-logos/logout.png"),
+    privacy: require("../../assets/images/settings-logos/privacy.png"),
+    report: require("../../assets/images/settings-logos/report-problem.png"),
+    terms: require("../../assets/images/settings-logos/terms.png"),
 };
 
 class SettingsMenuScreen extends Component {
@@ -35,12 +35,12 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="About KARMA"
                             icon={icons.logo}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("AboutKarma")}
                         />
                         <SettingsButton
                             title="Community Guidelines"
                             icon={icons.guidelines}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("Guidelines")}
                         />
                         <SettingsButton
                             title="Privacy Policy"
