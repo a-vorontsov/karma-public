@@ -35,6 +35,9 @@ const icons = {
     ribbon: require("../assets/images/general-logos/k-ribbon.png"),
 };
 
+
+
+
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);

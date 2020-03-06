@@ -19,26 +19,28 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "./ActivityCard";
 import Colours from "../../styles/Colours";
+import {useNavigation} from "react-navigation-hooks";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
 const ActivityCauseCarousel = props => {
-_renderItem = ({item}) => {
-    return (
-        <View style={CarouselStyles.itemContainer2}>
-            <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                <ActivityCard
-                    individual={item.individual}
-                    signedup={false}
-                />
+    const navigation = useNavigation();
+    _renderItem = ({item}) => {
+        return (
+            <View style={CarouselStyles.itemContainer2}>
+                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
+                    <ActivityCard
+                        individual={item.individual}
+                        signedup={false}
+                    />
+                </View>
             </View>
-        </View>
-    );
-};
+        );
+    };
 
-return (
+    return (
         <View
             style={{
                 flex: 1,
@@ -56,7 +58,9 @@ return (
                     </RegularText>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{marginLeft: 150, alignItems: "center",}}>
+                    style={{marginLeft: 150, alignItems: "center",}}
+                    onPress={() => navigation.navigate("CauseAll")}
+                    >
                     <RegularText style={styles.bioHeaderAlt}>
                         See All
                     </RegularText>
@@ -80,9 +84,6 @@ return (
                     inactiveSlideOpacity={1}
                     inactiveSlideScale={1}
                     containerCustomStyle={CarouselStyles.slider}
-                    // onSnapToItem={index =>
-                    //     this.setState({activeSlide: index})
-                    // }
                 />
             </View>
         </View>

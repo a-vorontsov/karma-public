@@ -6,6 +6,7 @@ import {RegularText, SemiBoldText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
+import {useNavigation} from "react-navigation-hooks";
 
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -17,6 +18,7 @@ const icons = {
 };
 
 const ActivityCard = props => {
+    const navigation = useNavigation();
     return (
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>

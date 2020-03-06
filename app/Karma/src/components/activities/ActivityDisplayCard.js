@@ -1,15 +1,12 @@
 import React from "react";
 
-import {GradientButton, InfoBar} from "../buttons";
 import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
 import {RegularText, SemiBoldText} from "../text";
-import Styles from "../../styles/Styles";
-import ReadMore from "react-native-read-more-text";
 import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
-import Carousel from "react-native-snap-carousel";
 import Colours from "../../styles/Colours";
 import { NavigationEvents } from "react-navigation";
+import {useNavigation} from "react-navigation-hooks";
 
 const carouselEntries = [{individual: true}];
 const {width, height} = Dimensions.get("window");
@@ -20,8 +17,8 @@ const icons = {
     profile: require("../../assets/images/general-logos/globe.png"),
 };
 
+
 const ActivityDisplayCard = props => {
-    // const {navigate} = this.props.navigation;
     return (
         <View>
             <View style={{backgroundColor: Colours.backgroundWhite, height:60, paddingHorizontal: 24, flexDirection:"row", alignItems:"center"}}>
@@ -54,18 +51,19 @@ const ActivityDisplayCard = props => {
                     </RegularText>
                 </View>
                 </View>
-                <TouchableOpacity>
-                    <Image
-                        source={icons.share}
-                        style={{
-                            marginLeft:200,
-                            alignSelf: "flex-end",
-                            width: 30,
-                            height: 30,
-                        }}
-                        resizeMode="contain">
-                    </Image>
-                </TouchableOpacity>
+                <View style={{flex:1, alignItem:"flex-end", justifyContent:"flex-end"}}>
+                    <TouchableOpacity style={{alignSelf:"flex-end"}}>
+                        <Image
+                            source={icons.share}
+                            style={{
+                                alignSelf: "flex-end",
+                                width: 30,
+                                height: 30,
+                            }}
+                            resizeMode="contain">
+                        </Image>
+                    </TouchableOpacity>
+                </View>
             </View>
             <View style={CarouselStyles.itemContainer3}>
             <View style={[CarouselStyles.item3]}>
