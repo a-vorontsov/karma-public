@@ -339,7 +339,8 @@ class ProfileScreen extends Component {
                                         Upcoming Events
                                     </RegularText>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{alignSelf:"flex-start", marginLeft:80}}>
                                     <RegularText style={styles.bioHeaderAlt}>
                                         Past Events
                                     </RegularText>
@@ -401,7 +402,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: Colours.blue,
         fontWeight: "500",
-        marginLeft: 80,
     },
     contentText: {
         fontSize: 15,
