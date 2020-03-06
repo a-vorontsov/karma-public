@@ -43,7 +43,7 @@ class AboutScreen extends React.Component {
 
     goToNext() {
         if (this.state.genderSelected && this.state.dateSelected) {
-            this.props.navigation.navigate("ContactInfoScreen", {
+            this.props.navigation.navigate("PickCauses", {
                 photo: this.state.photo,
                 gender: this.state.gender,
                 date: this.state.date,

@@ -30,6 +30,7 @@ const MainNavigator = createStackNavigator(
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
+        PickCauses: {screen: PickCausesScreen},
     },
     {
         headerMode: "none",
