@@ -71,7 +71,6 @@ const validateAddress = (address) => {
 };
 
 const validateEvent = (event) => {
-    console.log(validator);
     return validator.validate(event, eventSchema);
 };
 
