@@ -50,7 +50,7 @@ const Styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     fullMinHeight: {
-        minHeight: SCREEN_HEIGHT - StatusBar.currentHeight,
+        minHeight: SCREEN_HEIGHT,
     },
     p8: {
         padding: 8,
@@ -189,6 +189,11 @@ const Styles = StyleSheet.create({
     bottom: {
         flex: 1,
         justifyContent: "flex-end",
+    },
+    stickyBottom: {
+        position: "absolute",
+        width: "100%",
+        bottom: 0,
     },
 });
 

@@ -19,7 +19,7 @@ import CarouselStyles, {
     sliderWidth,
 } from "../styles/CarouselStyles";
 import Carousel from "react-native-snap-carousel";
-import ActivityCard from "../components/ActivityCard";
+import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
@@ -100,7 +100,7 @@ class ProfileScreen extends Component {
                             <TouchableOpacity
                                 onPress={() => navigate("SettingsMenu")}>
                                 <Image
-                                    onPress={() => navigate("Settings")}
+                                    onPress={() => navigate("SettingsMenu")}
                                     source={icons.cog}
                                     style={{
                                         height: 25,
@@ -337,7 +337,10 @@ class ProfileScreen extends Component {
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf:"flex-start", marginLeft:80}}>
+                                    style={{
+                                        alignSelf: "flex-start",
+                                        marginLeft: 80,
+                                    }}>
                                     <RegularText style={styles.bioHeaderAlt}>
                                         Past Events
                                     </RegularText>

@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
-import SettingsButton from "../components/buttons/SettingsButton";
-import PageHeader from "../components/PageHeader";
-import Styles from "../styles/Styles";
+import SettingsButton from "../../components/buttons/SettingsButton";
+import PageHeader from "../../components/PageHeader";
+import Styles from "../../styles/Styles";
 
 const icons = {
-    email: require("../assets/images/settings-logos/email.png"),
-    guidelines: require("../assets/images/settings-logos/guidelines.png"),
-    logo: require("../assets/images/settings-logos/K-logo.png"),
-    logout: require("../assets/images/settings-logos/logout.png"),
-    privacy: require("../assets/images/settings-logos/privacy.png"),
-    report: require("../assets/images/settings-logos/report-problem.png"),
-    terms: require("../assets/images/settings-logos/terms.png"),
+    email: require("../../assets/images/settings-logos/email.png"),
+    guidelines: require("../../assets/images/settings-logos/guidelines.png"),
+    logo: require("../../assets/images/settings-logos/K-logo.png"),
+    logout: require("../../assets/images/settings-logos/logout.png"),
+    privacy: require("../../assets/images/settings-logos/privacy.png"),
+    report: require("../../assets/images/settings-logos/report-problem.png"),
+    terms: require("../../assets/images/settings-logos/terms.png"),
 };
 
 class SettingsMenuScreen extends Component {
@@ -24,23 +24,25 @@ class SettingsMenuScreen extends Component {
         const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
+                <View style={Styles.ph24}>
+                    <PageHeader title="Settings" />
+                </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={Styles.fullMinHeight}>
-                        <PageHeader title="Settings" />
+                    <View style={Styles.ph24}>
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("ReportProblem")}
                         />
                         <SettingsButton
                             title="About KARMA"
                             icon={icons.logo}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("AboutKarma")}
                         />
                         <SettingsButton
                             title="Community Guidelines"
                             icon={icons.guidelines}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("Guidelines")}
                         />
                         <SettingsButton
                             title="Privacy Policy"
@@ -55,12 +57,12 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("EmailSettings")}
                         />
                         <SettingsButton
                             title="Log Out"
                             icon={icons.logout}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("LogOut")}
                         />
                     </View>
                 </ScrollView>

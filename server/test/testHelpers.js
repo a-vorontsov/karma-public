@@ -54,8 +54,8 @@ const address = {
     postcode: "NW1 6XE",
     city: "London",
     region: "Greater London",
-    lat: "51.523774",
-    long: "-0.158534",
+    lat: 51.523774,
+    long: -0.158534,
 };
 
 const event = {
