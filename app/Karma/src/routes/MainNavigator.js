@@ -10,6 +10,7 @@ import ContactInfoScreen from "../views/ContactInfoScreen";
 import PrivacyScreen from "../views/PrivacyScreen";
 import TermsScreen from "../views/TermsScreen";
 import SettingsMenuScreen from "../views/SettingsMenuScreen";
+import PickCausesScreen from "../views/PickCausesScreen";
 import MainTabNavigator from "./MainTabNavigator";
 
 const MainNavigator = createStackNavigator(
@@ -24,6 +25,7 @@ const MainNavigator = createStackNavigator(
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
+        PickCauses: {screen: PickCausesScreen},
     },
     {
         headerMode: "none",

@@ -8,9 +8,7 @@ import {
 } from "react-native";
 import {RegularText} from "../components/text";
 import {useNavigation} from "react-navigation-hooks";
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
+import Colours from "../styles/Colours";
 
 const PageHeader = props => {
     const navigation = useNavigation();
@@ -34,7 +32,7 @@ const PageHeader = props => {
                     style={{
                         fontSize: 24,
                         fontWeight: "600",
-                        color: "grey",
+                        color: Colours.darkGrey,
                         paddingLeft: 16,
                     }}>
                     {title}
