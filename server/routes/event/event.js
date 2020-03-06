@@ -13,6 +13,7 @@ const eventSorter = require("../../modules/sorting/event");
 const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
 const eventFavouriteRoute = require("../eventFavourite");
+const validation = require("../../modules/validation");
 
 /**
  * Endpoint called whenever a user creates a new event.<br/>
@@ -27,21 +28,20 @@ const eventFavouriteRoute = require("../eventFavourite");
         "postcode": "14 aa",
         "city": "LDN",
         "region": "LDN again",
-        "lat": "0.3",
-        "long": "100.50"
+        "lat": 0.3,
+        "long": 100.50
     },
     "name": "event",
     "women_only": "true",
-    "spots": "3",
+    "spots": 3,
     "address_visible": "true",
-    "minimum_age": "16",
+    "minimum_age": 16,
     "photo_id": "true",
     "physical": "true",
     "add_info": "true",
     "content": "fun event yay",
-    "date": "2004-10-19",
-    "time": "10:23:54",
-    "user_id": "3"
+    "date": "2004-10-19 10:23:54",
+    "user_id": 3
  }
  </pre>
  * "address" can be substituted with "address_id: {Integer}" in which case the existing address is reused.
@@ -55,6 +55,12 @@ const eventFavouriteRoute = require("../eventFavourite");
 router.post("/", async (req, res) => {
     try {
         const event = req.body;
+        const validationResult = validation.validateEvent(event);
+        if (validationResult.errors.length !== 0) {
+            res.status(400).send(validationResult.errors);
+            return;
+        }
+
         const isIndividual = await util.isIndividual(event.user_id);
         if (isIndividual) {
             const existingUserEvents = await eventRepository.findAllByUserId(
@@ -91,27 +97,26 @@ router.post("/", async (req, res) => {
  <pre>
 {
     "address": {
-        "id": "5",
+        "id": 5,
         "address_1": "Line 1",
         "address_2": "Line 2",
         "postcode": "14 aa",
         "city": "LDN",
         "region": "LDN again",
-        "lat": "0.3",
-        "long": "100.50"
+        "lat": 0.3,
+        "long": 100.50
     },
     "name": "event",
     "women_only": "true",
-    "spots": "3",
+    "spots": 3,
     "address_visible": "true",
-    "minimum_age": "16",
+    "minimum_age": 16,
     "photo_id": "true",
     "physical": "true",
     "add_info": "true",
     "content": "fun event yay",
-    "date": "2004-10-19",
-    "time": "10:23:54",
-    "user_id": "3"
+    "date": "2004-10-19 10:23:54",
+    "user_id": 3
  }
  </pre>
  * Note that address must have an id.
@@ -124,11 +129,17 @@ router.post("/", async (req, res) => {
 router.post("/update/:id", (req, res) => {
     const address = req.body.address;
     const event = req.body;
+    const validationResult = validation.validateEvent(event);
+    if (validationResult.errors.length !== 0) {
+        res.status(400).send(validationResult.errors);
+        return;
+    }
+
     event.address_id = address.id;
     event.id = req.params.id;
     addressRepository
         .update(address)
-        .then(addressResult => eventRepository.update(event))
+        .then(_ => eventRepository.update(event))
         .then(eventResult => res.status(200).send(eventResult.rows[0]))
         .catch(err => res.status(500).send(err));
 });
@@ -170,8 +181,8 @@ router.post("/update/:id", (req, res) => {
            "postcode": "whatever",
            "city": "London",
            "region": null,
-           "lat": "51.4161220",
-           "long": "-0.1866410",
+           "lat": 51.4161220,
+           "long": -0.1866410,
             "distance": 0.18548890708299523
        },
        {
@@ -192,8 +203,8 @@ router.post("/update/:id", (req, res) => {
            "postcode": "whatever",
            "city": "London",
            "region": null,
-           "lat": "51.5114070",
-           "long": "-0.1159050",
+           "lat": 51.5114070,
+           "long": -0.1159050,
            "distance": 7.399274608089304
        }
    ]
@@ -258,8 +269,8 @@ router.get("/", async (req, res) => {
             "postcode": "SW19 2LF",
             "city": "London",
             "region": null,
-            "lat": "51.4149160",
-            "long": "-0.1904870",
+            "lat": 51.4149160,
+            "long": -0.1904870,
             "distance": 0
         }
     ],
@@ -285,8 +296,8 @@ router.get("/", async (req, res) => {
             "postcode": "whatever",
             "city": "London",
             "region": null,
-            "lat": "51.4161220",
-            "long": "-0.1866410",
+            "lat": 51.4161220,
+            "long": -0.1866410,
             "distance": 0.18548890708299523
         }
     ]
@@ -413,8 +424,8 @@ router.get("/going", async (req, res) => {
         "postcode": "NW1 6XE",
         "city": "London",
         "region": "Greater London",
-        "lat": "51.5237740",
-        "long": "-0.1585340"
+        "lat": 51.5237740,
+        "long": -0.1585340
     }
 }
  </pre>

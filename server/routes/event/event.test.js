@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const util = require("../../util/util");
+const validation = require("../../modules/validation");
 
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
@@ -15,6 +16,8 @@ jest.mock("../../models/databaseRepositories/selectedCauseRepository");
 jest.mock("../../models/databaseRepositories/individualRepository");
 jest.mock("../../models/databaseRepositories/userRepository");
 jest.mock("../../util/util");
+jest.mock("../../modules/validation");
+validation.validateEvent.mockReturnValue({errors: ""});
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
@@ -45,6 +48,7 @@ test("creating event with known address works", async () => {
         .post("/event")
         .send(event);
 
+    expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);
     expect(response.body).toMatchObject({
@@ -76,6 +80,7 @@ test("updating events works", async () => {
             address: mockAddress,
         });
 
+    expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({
@@ -116,6 +121,8 @@ test("error returned when user tries to exceed monthly event creation limit", as
     const response = await request(app)
         .post("/event")
         .send(event);
+
+    expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
 });
 
@@ -123,6 +130,7 @@ test("creating event with no address_id creates new address and event", async ()
     util.isIndividual.mockResolvedValue(false);
     const eventNoAddressId = {
         ...event,
+        address: address,
     };
     delete eventNoAddressId.address_id;
     const mockAddress = {
@@ -143,6 +151,7 @@ test("creating event with no address_id creates new address and event", async ()
         .post("/event")
         .send(eventNoAddressId);
 
+    expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({
