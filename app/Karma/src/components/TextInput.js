@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Dimensions, TextInput} from "react-native";
+import {View, Text, StyleSheet, TextInput} from "react-native";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
-
 
 class TInput extends Component {
     constructor(props) {
@@ -23,7 +22,6 @@ class TInput extends Component {
                     style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
-                    
                     returnKeyType={
                         this.props.returnKeyType
                             ? this.props.returnKeyType

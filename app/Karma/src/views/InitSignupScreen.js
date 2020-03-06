@@ -99,7 +99,7 @@ export default class InitSignupScreen extends React.Component {
                         <SemiBoldText style={[Styles.pv16, Styles.medium]}>
                             Already on Karma?
                         </SemiBoldText>
-                        <TransparentButton title="Log in"  />
+                        <TransparentButton title="Log in" />
                     </View>
                 </View>
             </SafeAreaView>

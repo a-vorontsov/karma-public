@@ -338,7 +338,10 @@ class ProfileScreen extends Component {
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf:"flex-start", marginLeft:80}}>
+                                    style={{
+                                        alignSelf: "flex-start",
+                                        marginLeft: 80,
+                                    }}>
                                     <RegularText style={styles.bioHeaderAlt}>
                                         Past Events
                                     </RegularText>
