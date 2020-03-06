@@ -17,26 +17,6 @@ import LogOutScreen from "../views/Settings/LogOutScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
 
-const SettingsNavigator = createStackNavigator(
-    {
-        SettingsMenu: {screen: SettingsMenuScreen},
-        ReportProblem: {screen: ReportProblemScreen},
-        AboutKarma: {screen: AboutKarmaScreen},
-        Guidelines: {screen: GuidelinesScreen},
-        Privacy: {screen: PrivacyScreen},
-        Terms: {screen: TermsScreen},
-        EmailSettings: {screen: EmailSettingsScreen},
-        LogOut: {screen: LogOutScreen},
-    },
-    {
-        headerMode: "none",
-        defaultNavigationOptions: {
-            cardStyle: {
-                backgroundColor: Colours.backgroundWhite,
-            },
-        },
-    },
-);
 
 const MainNavigator = createStackNavigator(
     {
@@ -47,7 +27,6 @@ const MainNavigator = createStackNavigator(
         About: {screen: AboutScreen},
         ContactInfo: {screen: ContactInfoScreen},
         Tab: MainTabNavigator,
-        Settings: SettingsNavigator,
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
