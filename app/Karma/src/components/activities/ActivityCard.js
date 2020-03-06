@@ -1,7 +1,7 @@
 import React from "react";
 
 import {GradientButton, InfoBar} from "../buttons";
-import {View, Image, Text} from "react-native";
+import {View, Image, Text, StyleSheet} from "react-native";
 import {RegularText, SemiBoldText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -53,53 +53,19 @@ const ActivityCard = props => {
                 />
                 <Image
                     source={props.signedup ? null : icons.signup}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        right: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
+                    style={styles.icon}
                 />
                 <Image
                     source={icons.date}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
+                    style={[styles.icon, {left: 5}]}
                 />
                 <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 1,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
+                    style={[styles.dateText, {top: 5, left: 1,}]}>
                     {" "}
                     MON
                 </RegularText>
                 <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 25,
-                        left: 0,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
+                    style={styles.dateText}>
                     {" "}
                     DAY
                 </RegularText>
@@ -161,5 +127,27 @@ const ActivityCard = props => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    dateText: {
+        position: "absolute",
+        top: 25,
+        left: 0,
+        height: 50,
+        width: 50,
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "500",
+        color: "white",
+    },
+    icon: {
+        position: "absolute",
+        top: 5,
+        right: 5,
+        height: 50,
+        width: 50,
+        resizeMode: "contain",
+    }
+});
 
 export default ActivityCard;
