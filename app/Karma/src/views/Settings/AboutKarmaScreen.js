@@ -11,7 +11,7 @@ class AboutKarmaScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="About Karma"/>
+                <PageHeader title="About Karma" />
             </SafeAreaView>
         );
     }

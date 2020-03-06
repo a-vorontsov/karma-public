@@ -45,7 +45,6 @@ const ActivitiesNavigator = createStackNavigator(
     },
 );
 
-
 const MainTabNavigator = createBottomTabNavigator(
     {
         Activities: {

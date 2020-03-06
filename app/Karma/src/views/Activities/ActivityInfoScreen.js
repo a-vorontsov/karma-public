@@ -20,7 +20,7 @@ import PageHeader from "../../components/PageHeader";
 import {GradientButton, Button} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBarCustom from "../../components/ProgressBarCustom";
-import Communications from 'react-native-communications';
+import Communications from "react-native-communications";
 
 const carouselEntries = [{individual: true}];
 
@@ -66,7 +66,12 @@ class ActivityInfoScreen extends Component {
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <PageHeader />
                     </View>
-                    <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap',}}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            flex: 1,
+                            flexWrap: "wrap",
+                        }}>
                         <RegularText
                             style={[
                                 Styles.pv16,
@@ -310,7 +315,12 @@ class ActivityInfoScreen extends Component {
                             <TouchableOpacity
                                 style={styles.contactButton}
                                 activeOpacity={0.9}
-                                onPress={() => Communications.phonecall(phoneNumbers[0].number, true)}>
+                                onPress={() =>
+                                    Communications.phonecall(
+                                        phoneNumbers[0].number,
+                                        true,
+                                    )
+                                }>
                                 <RegularText
                                     style={{
                                         fontSize: 18,
@@ -322,7 +332,15 @@ class ActivityInfoScreen extends Component {
                             <TouchableOpacity
                                 style={styles.contactButton}
                                 activeOpacity={0.9}
-                                onPress={() => Communications.email(['emailAddress1', 'emailAddress2'],null,null,'My Subject','My body text')}>
+                                onPress={() =>
+                                    Communications.email(
+                                        ["emailAddress1", "emailAddress2"],
+                                        null,
+                                        null,
+                                        "My Subject",
+                                        "My body text",
+                                    )
+                                }>
                                 <RegularText
                                     style={{
                                         fontSize: 18,

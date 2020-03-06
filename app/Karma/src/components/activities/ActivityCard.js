@@ -23,10 +23,12 @@ const ActivityCard = props => {
     setFav = handlePress => {
         return (favorited = false);
     };
-    
+
     _renderTruncatedFooter = handlePress => {
         return (
-            <Text style={{color: "#00A8A6", marginTop: 5}} onPress={() =>navigation.navigate("ActivityInfo")}>
+            <Text
+                style={{color: "#00A8A6", marginTop: 5}}
+                onPress={() => navigation.navigate("ActivityInfo")}>
                 READ MORE
             </Text>
         );
@@ -159,6 +161,5 @@ const ActivityCard = props => {
         </View>
     );
 };
-
 
 export default ActivityCard;

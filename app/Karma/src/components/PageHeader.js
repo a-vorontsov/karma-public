@@ -19,7 +19,12 @@ const PageHeader = props => {
     return (
         <View>
             <View style={{paddingTop: 24}} />
-            <View style={{flexDirection: "row", alignItems: "center", paddingHorizontal:24}}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: 24,
+                }}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image
                         style={{

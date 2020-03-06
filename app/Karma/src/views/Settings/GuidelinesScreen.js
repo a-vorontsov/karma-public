@@ -3,7 +3,6 @@ import {SafeAreaView, View, Text} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 
-
 class GuidelinesScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -12,7 +11,7 @@ class GuidelinesScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="Community Guidelines"/>
+                <PageHeader title="Community Guidelines" />
             </SafeAreaView>
         );
     }

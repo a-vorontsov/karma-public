@@ -26,7 +26,7 @@ const SettingsNavigator = createStackNavigator(
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
         EmailSettings: {screen: EmailSettingsScreen},
-        LogOut: {screen: LogOutScreen}
+        LogOut: {screen: LogOutScreen},
     },
     {
         headerMode: "none",

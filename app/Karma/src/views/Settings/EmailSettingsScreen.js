@@ -11,7 +11,7 @@ class EmailSettingsScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="Email Settings"/>
+                <PageHeader title="Email Settings" />
             </SafeAreaView>
         );
     }

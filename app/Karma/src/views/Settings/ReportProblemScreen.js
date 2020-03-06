@@ -11,7 +11,7 @@ class ReportProblemScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="Report A Problem"/>
+                <PageHeader title="Report A Problem" />
             </SafeAreaView>
         );
     }

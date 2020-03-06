@@ -11,7 +11,7 @@ class LogOutScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="Log Out"/>
+                <PageHeader title="Log Out" />
             </SafeAreaView>
         );
     }
