@@ -57,7 +57,6 @@ export default class AddressInput extends React.Component {
                     name="address1"
                     onChange={this.onChangeText}
                     onSubmitEditing={() => {
-                        this.passUpState;
                         this.address2.focus();
                     }}
                     onBlur={this.passUpState}
@@ -72,7 +71,6 @@ export default class AddressInput extends React.Component {
                     name="address2"
                     onChange={this.onChangeText}
                     onSubmitEditing={() => {
-                        this.passUpState;
                         this.city.focus();
                     }}
                     onBlur={this.passUpState}
@@ -86,7 +84,6 @@ export default class AddressInput extends React.Component {
                     name="city"
                     onChange={this.onChangeText}
                     onSubmitEditing={() => {
-                        this.passUpState;
                         this.region.focus();
                     }}
                     onBlur={this.passUpState}
@@ -101,7 +98,6 @@ export default class AddressInput extends React.Component {
                     name="region"
                     onChange={this.onChangeText}
                     onSubmitEditing={() => {
-                        this.passUpState;
                         this.postCode.focus();
                     }}
                     onBlur={this.passUpState}
@@ -117,13 +113,12 @@ export default class AddressInput extends React.Component {
                     name="postcode"
                     onChange={this.onChangeText}
                     onSubmitEditing={() => {
-                        this.testPostCode;
+                        this.testPostCode();
                         Keyboard.dismiss();
-                        this.passUpState;
                     }}
                     onBlur={() => {
-                        this.testPostCode;
-                        this.passUpState;
+                        this.testPostCode();
+                        this.passUpState();
                     }}
                     showError={!correctPostCode}
                     errorText="Incorrect postcode format"
