@@ -11,6 +11,8 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+    <!-- this part will override default jsdoc styling -->
     <style>
         .type-signature {
             display: none;
@@ -24,9 +26,25 @@
             display: none;
         }
 
+        h3.subsection-title + h4.name {
+            margin-top: 75px;
+        }
+
         h4.name {
             margin-top: 150px;
             font-size: 28px;
+        }
+
+        pre {
+            font-family: monospace;
+        }
+
+        article {
+            margin-bottom: 50px;
+        }
+
+        p.introduction {
+            margin: 0 50px 0 20px;
         }
     </style>
 </head>
@@ -38,8 +56,12 @@
     <h1 class="page-title"><?js= title ?></h1>
 
     <?js= content ?>
+    <p class="introduction"><?js= title==='Home' ? 'Welcome to the Karma app official documentation! Here you can find ' +
+     ' details about developing using our API, including expected parameters, return values, and errors. Happy developing!' : '' ?></p>
 </div>
 
+<!--Welcome to the Karma app documentation! Here you can find details about our API\'s
+    endpoints, their expected parameters and returned data-->
 <nav>
     <?js= this.nav ?>
 </nav>
