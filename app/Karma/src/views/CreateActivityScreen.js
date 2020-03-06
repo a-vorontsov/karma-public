@@ -9,7 +9,7 @@ import {
     StatusBar,
     Switch,
     Animated,
-    FlatList,
+    Picker,
     Keyboard,
     Alert,
 } from "react-native";
@@ -25,7 +25,6 @@ import {GradientButton} from "../components/buttons";
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
-import TimeSlot from "../components/activity/TimeSlot";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 
@@ -46,6 +45,7 @@ export default class CreateActivityScreen extends React.Component {
             isStartDateVisible: false,
             isEndDateVisible: false,
             slots: [""],
+            numSlots: "",
             submitPressed: false,
             minEndDate: new Date(),
             minSlotDate: new Date(),
@@ -79,11 +79,10 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     setDateValue = (date, name) => {
-
-        if(name === "endDate"){
+        if (name === "endDate") {
             this.setState({
                 maxSlotDate: date,
-            })
+            });
         }
 
         //events must be at least one hour long
@@ -94,7 +93,6 @@ export default class CreateActivityScreen extends React.Component {
             this.setState({
                 minEndDate: min,
                 minSlotDate: date,
-                
             });
         }
         //removes day and local timezone from date
@@ -124,9 +122,31 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
+    onChangeSlotsAvail = event => {
+        const {name, text} = event;
+        let number = parseInt(text);
+        //limit the max number of slots to 100
+        if(number > 100){
+
+            let limited = text.slice(0, -1);
+
+            if(name === "numPad"){
+                this.setState({
+                    [name]: "" + limited
+                })
+            }
+            
+        }
+        else{
+            this.setState({
+                [name] : text
+            })
+        }    
+    }
+
     onChangeText = event => {
         const {name, text} = event;
-
+        
         this.setState({[name]: text});
     };
 
@@ -147,11 +167,10 @@ export default class CreateActivityScreen extends React.Component {
             return;
         }
         //submit data and navigate back to profile page
-        navigate("Profile")
+        navigate("Profile");
     };
 
     render() {
-
         return (
             <View style={Styles.container}>
                 {/** HEADER */}
@@ -218,7 +237,7 @@ export default class CreateActivityScreen extends React.Component {
                                             source={require("../assets/images/general-logos/photo-logo.png")}
                                         />
                                     </PhotoUpload>
-
+                                    
                                     <TouchableOpacity
                                         style={SignUpStyles.uploadButton}
                                         onPress={() =>
@@ -348,100 +367,19 @@ export default class CreateActivityScreen extends React.Component {
                                     </View>
                                 </Animated.View>
                             )}
-                            {/** TIME SLOTS */}
-                            <FlatList
-                                data={this.state.slots}
-                                renderItem={({item, index}) => (
-                                    <View style={{width: FORM_WIDTH}}>
-                                        {index === 0 ? (
-                                            <SemiBoldText
-                                                style={{
-                                                    fontSize: 15,
-                                                }}>
-                                                Slot Time(s) (optional)
-                                            </SemiBoldText>
-                                        ) : null}
 
-                                        <View
-                                            style={{alignItems: "flex-start"}}>
-                                            <TimeSlot
-                                                minDate={
-                                                    this.state.minSlotDate
-                                                }
-                                                maxDate={
-                                                    this.state.maxSlotDate
-                                                }
-                                                style={{
-                                                    width: FORM_WIDTH * 0.9,
-                                                }}
-                                            />
-                                            {/** only show delete icon if it's not the first slot */}
-                                            {index !== 0 ? (
-                                                <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.removeSlot(index)
-                                                    }
-                                                    style={{
-                                                        position: "absolute",
-                                                        right: 0,
-                                                        top: 25,
-                                                    }}>
-                                                    <Image
-                                                        style={{
-                                                            height: 20,
-                                                            width: 20,
-                                                            borderRadius: 25,
-                                                        }}
-                                                        source={require("../assets/images/general-logos/cross.png")}
-                                                    />
-                                                </TouchableOpacity>
-                                            ) : null}
-                                        </View>
-                                    </View>
-                                )}
-                                keyExtractor={item => item.toString()}
-                            />
-                            <View
-                                style={{
-                                    width: FORM_WIDTH,
-                                    flexDirection: "row",
-                                    justifyContent: "flex-end",
-                                }}>
-                                <View>
-                                    <RegularText
-                                        style={{
-                                            flex: 1,
-                                            justifyContent: "center",
-                                        }}>
-                                        Add another slot
-                                    </RegularText>
-                                </View>
-
-                                <TouchableOpacity
-                                    style={{paddingLeft: 10}}
-                                    onPress={() => this.addSlot()}>
-                                    <Image
-                                        style={{
-                                            height: 20,
-                                            width: 20,
-                                            borderRadius: 10,
-                                        }}
-                                        source={require("../assets/images/general-logos/photo-plus.png")}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                            {/**
+                             * Address picker
+                             */}
                             <View>
-                                <SemiBoldText style={{fontSize: 15}}>
-                                    Address
-                                </SemiBoldText>
                                 <TextInput
                                     inputRef={ref => (this.address = ref)}
-                                    style={{marginTop: 0, fontSize: 13}}
+                                    
                                     placeholder={
-                                        "Please leave this blank if you will be sending this via email once a volunteer has confirmed"
+                                        "Address"
                                     }
                                     onChange={this.onChangeText}
-                                    multiline
+                                    
                                 />
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -491,6 +429,7 @@ export default class CreateActivityScreen extends React.Component {
                                     Important
                                 </SemiBoldText>
                             </View>
+                            
                             <View>
                                 <TextInput
                                     placeholder="Number of slots available"
@@ -500,11 +439,31 @@ export default class CreateActivityScreen extends React.Component {
                                         this.state.submitPressed &&
                                         !this.state.numSlots
                                     }
-                                    onChange={this.onChangeText}
+                                    onChange={this.onChangeSlotsAvail}
                                     returnKeyType="done"
                                     onSubmitEditing={() => Keyboard.dismiss()}
+                                    value={this.state.numSlots}
                                 />
                             </View>
+
+                            
+                            {this.state.isSlotOption && (
+                                <Animated.View>
+                                    <View>
+                                        <DatePicker
+                                            mode="datetime"
+                                            onDateChange={date =>
+                                                this.setDateValue(
+                                                    date,
+                                                    "endDate",
+                                                )
+                                            }
+                                            minimumDate={this.state.minEndDate}
+                                            minuteInterval={15}
+                                        />
+                                    </View>
+                                </Animated.View>
+                            )}
                             <View style={{flexDirection: "row"}}>
                                 <TextInput
                                     placeholder="Women only event"
