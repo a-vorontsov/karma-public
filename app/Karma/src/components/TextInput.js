@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Text, TextInput, View} from "react-native";
+import {TextInput, View} from "react-native";
+import {RegularText} from "./text";
 import Styles from "../styles/Styles";
 
 class TInput extends Component {
@@ -17,9 +18,11 @@ class TInput extends Component {
         return (
             <View>
                 <TextInput
+                    value={this.props.value}
                     style={inputStyle}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
+                    autoCompleteType={this.props.autoCompleteType}
                     returnKeyType={
                         this.props.returnKeyType
                             ? this.props.returnKeyType
@@ -30,15 +33,16 @@ class TInput extends Component {
                     onSubmitEditing={this.props.onSubmitEditing}
                     blurOnSubmit={false}
                     autoCorrect={false}
+                    onBlur={this.props.onBlur}
                     secureTextEntry={this.props.secureTextEntry}
                     editable={this.props.editable}
                 />
                 {this.props.showError ? (
-                    <Text style={Styles.error}>
+                    <RegularText style={Styles.error}>
                         {this.props.errorText !== undefined
                             ? this.props.errorText
                             : defaultError}
-                    </Text>
+                    </RegularText>
                 ) : null}
             </View>
         );

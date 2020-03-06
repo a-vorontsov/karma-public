@@ -66,6 +66,9 @@ class SignUpScreen extends React.Component {
     };
 
     render() {
+        const {
+            navigation: {navigate},
+        } = this.props;
         const showPasswordError =
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
@@ -76,7 +79,9 @@ class SignUpScreen extends React.Component {
                     style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="always">
                         <View>
                             <PageHeader title="Sign Up" />
                             <SubTitleText style={{fontSize: normalise(26)}}>
@@ -86,7 +91,6 @@ class SignUpScreen extends React.Component {
                             {/** form content **/}
                             <View>
                                 <TextInput
-                                    style={styles.textInput}
                                     placeholder="First Name"
                                     name="fname"
                                     onChange={this.onChangeText}
