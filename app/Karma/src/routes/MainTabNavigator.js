@@ -33,7 +33,7 @@ const ActivitiesNavigator = createStackNavigator(
     {
         Activities: {screen: ActivitiesScreen},
         ActivityInfo: {screen: ActivityInfoScreen},
-        CauseAll: {screen: CauseAllActivitiesScreen}
+        CauseAll: {screen: CauseAllActivitiesScreen},
     },
     {
         headerMode: "none",

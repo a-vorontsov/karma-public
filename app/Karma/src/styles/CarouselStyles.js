@@ -67,7 +67,7 @@ const CarouselStyles = StyleSheet.create({
         position: "absolute",
         left: 0,
         right: 0,
-        top:8,
+        top: 8,
         bottom: 8,
         borderRadius: 6,
         paddingTop: 16,

@@ -58,9 +58,8 @@ const ActivityCauseCarousel = props => {
                     </RegularText>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{marginLeft: 150, alignItems: "center",}}
-                    onPress={() => navigation.navigate("CauseAll")}
-                    >
+                    style={{marginLeft: 150, alignItems: "center"}}
+                    onPress={() => navigation.navigate("CauseAll")}>
                     <RegularText style={styles.bioHeaderAlt}>
                         See All
                     </RegularText>
@@ -70,7 +69,7 @@ const ActivityCauseCarousel = props => {
                 style={{
                     alignItems: "flex-start",
                     justifyContent: "flex-start",
-                    marginLeft: -25
+                    marginLeft: -25,
                 }}>
                 <Carousel
                     ref={c => {
@@ -88,7 +87,7 @@ const ActivityCauseCarousel = props => {
             </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     nameText: {
@@ -145,4 +144,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityCauseCarousel ;
+export default ActivityCauseCarousel;

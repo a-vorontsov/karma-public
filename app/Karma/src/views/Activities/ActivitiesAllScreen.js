@@ -1,8 +1,5 @@
 import React, {Component} from "react";
-import {
-    View,
-    Dimensions,
-} from "react-native";
+import {View, Dimensions} from "react-native";
 import Styles from "../../styles/Styles";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 
@@ -17,12 +14,12 @@ class ActivitiesAllScreen extends Component {
     render() {
         return (
             <View>
-                <ActivityDisplayCard/>
-                <ActivityDisplayCard/>
-                <ActivityDisplayCard/>
+                <ActivityDisplayCard />
+                <ActivityDisplayCard />
+                <ActivityDisplayCard />
             </View>
         );
     }
 }
 
-export default ActivitiesAllScreen ;
+export default ActivitiesAllScreen;

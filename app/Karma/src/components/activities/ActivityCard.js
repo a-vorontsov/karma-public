@@ -95,23 +95,28 @@ const ActivityCard = props => {
                         }}>
                         <InfoBar title="TIME" image={icons.clock} />
                         <InfoBar title="0 SPOTS LEFT" image={icons.people} />
-                        <View style={{flex:1, alignItems: "flex-end", justifyContent:"flex-end"}}>
-                        <TouchableOpacity style={{alignSelf: "center"}}>
-                            <Image
-                                source={
-                                    props.favorited
-                                        ? icons.fave_inactive
-                                        : icons.fave_active
-                                }
-                                style={{
-                                    width: 30,
-                                    height: 30,
-                                    resizeMode: "contain",
-                                    marginRight:10
-                                }}
-                                onPress={this.setFav(!props.favorited)}
-                            />
-                        </TouchableOpacity>
+                        <View
+                            style={{
+                                flex: 1,
+                                alignItems: "flex-end",
+                                justifyContent: "flex-end",
+                            }}>
+                            <TouchableOpacity style={{alignSelf: "center"}}>
+                                <Image
+                                    source={
+                                        props.favorited
+                                            ? icons.fave_inactive
+                                            : icons.fave_active
+                                    }
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        resizeMode: "contain",
+                                        marginRight: 10,
+                                    }}
+                                    onPress={this.setFav(!props.favorited)}
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <RegularText
@@ -129,9 +134,11 @@ const ActivityCard = props => {
                         renderTruncatedFooter={this._renderTruncatedFooter}>
                         <RegularText>
                             Activity description, consectetur adip isicing elit,
-                            sed do eiusm ut labore et dolore magna aliqua consectetur adip isicing elit,
-                            sed do eiusm ut labore et dolore magna aliqua consectetur adip isicing elit,
                             sed do eiusm ut labore et dolore magna aliqua
+                            consectetur adip isicing elit, sed do eiusm ut
+                            labore et dolore magna aliqua consectetur adip
+                            isicing elit, sed do eiusm ut labore et dolore magna
+                            aliqua
                         </RegularText>
                     </ReadMore>
                 </View>

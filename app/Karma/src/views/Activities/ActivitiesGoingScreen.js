@@ -32,8 +32,7 @@ class ActivitiesGoingScreen extends Component {
     render() {
         return (
             <View>
-                <ActivityDisplayCard
-                    favorited={false}/>
+                <ActivityDisplayCard favorited={false} />
             </View>
         );
     }

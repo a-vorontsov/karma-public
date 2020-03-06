@@ -1,9 +1,5 @@
 import React, {Component} from "react";
-import {
-    View,
-    StyleSheet,
-    Dimensions,
-} from "react-native";
+import {View, StyleSheet, Dimensions} from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Colours from "../../styles/Colours";
 import Styles from "../../styles/Styles";
@@ -13,25 +9,24 @@ const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
 class ActivitiesCausesScreen extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             activeSlide: 0,
         };
     }
-    
+
     static navigationOptions = {
         headerShown: false,
     };
 
     render() {
         return (
-            <View style = {Styles.ph24}>
-                <ActivityCauseCarousel/>
-                <ActivityCauseCarousel/>
-                <ActivityCauseCarousel/>
-                <ActivityCauseCarousel/>
+            <View style={Styles.ph24}>
+                <ActivityCauseCarousel />
+                <ActivityCauseCarousel />
+                <ActivityCauseCarousel />
+                <ActivityCauseCarousel />
             </View>
         );
     }
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivitiesCausesScreen ;
+export default ActivitiesCausesScreen;

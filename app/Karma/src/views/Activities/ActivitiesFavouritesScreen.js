@@ -19,7 +19,6 @@ import Colours from "../../styles/Colours";
 const {width, height} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 
-
 class ActivitiesFavouritesScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -28,9 +27,9 @@ class ActivitiesFavouritesScreen extends Component {
     render() {
         return (
             <View>
-                <ActivityDisplayCard/>
-                <ActivityDisplayCard/>
-                <ActivityDisplayCard/>
+                <ActivityDisplayCard />
+                <ActivityDisplayCard />
+                <ActivityDisplayCard />
             </View>
         );
     }

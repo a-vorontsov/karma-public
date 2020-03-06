@@ -35,9 +35,6 @@ const icons = {
     ribbon: require("../assets/images/general-logos/k-ribbon.png"),
 };
 
-
-
-
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -340,7 +337,10 @@ class ProfileScreen extends Component {
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{alignSelf:"flex-start", marginLeft:80}}>
+                                    style={{
+                                        alignSelf: "flex-start",
+                                        marginLeft: 80,
+                                    }}>
                                     <RegularText style={styles.bioHeaderAlt}>
                                         Past Events
                                     </RegularText>
