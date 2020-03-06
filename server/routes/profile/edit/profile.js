@@ -56,7 +56,8 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         if (req.body.isIndividual === true) {
             const indivResult = await indivRepo.findByUserID(req.body.userId);
             const individual = indivResult.rows[0];
-            const indivCopy = individual;
+            const indivCopy = {...individual};
+
             const addressResult = await addressRepo.findById(individual.address_id);
             await updateAddress(req, addressResult.rows[0]);
 
@@ -79,7 +80,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         } else {
             const orgResult = await orgRepo.findByUserID(req.body.userId);
             const organisation = orgResult.rows[0];
-            const orgCopy = organisation;
+            const orgCopy = {...organisation};
 
             const addressResult = await addressRepo.findById(organisation.address_id);
             await updateAddress(req, addressResult.rows[0]);
@@ -130,7 +131,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  * @param {Object} address
  */
 async function updateAddress(req, address) {
-    const addressObj = address;
+    const addressObj = {...address};
     if (req.body.addressLine1 === undefined) {
         addressObj.address_1 = req.body.addressLine1;
     }

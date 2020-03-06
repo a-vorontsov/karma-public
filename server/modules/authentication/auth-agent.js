@@ -37,7 +37,7 @@ async function requireAuthentication(req, res, next) {
 
 /**
  * Check if app user is NOT authenticated.
- * This is used for avoiding unnecessary sing-in pages.
+ * This is used for avoiding unnecessary sign-in pages.
  * If not auth., directs user to desired destination.
  * Otherwise, redirects to an error route which
  * sends an appropriate error response.
@@ -54,7 +54,7 @@ async function requireNoAuthentication(req, res, next) {
     const authToken = req.body.authToken;
     if (userId === undefined || authToken === undefined || authToken === null) {
         next(); // for performance reasons logic is separated
-    } else if (await isValidToken(userId, authToken).isValid) {
+    } else if ((await isValidToken(userId, authToken)).isValidToken) {
         res.redirect("/error/alreadyauthenticated");
     } else {
         next();
@@ -129,7 +129,7 @@ async function logIn(userId) {
  * @throws {error} if failed query
  */
 async function logOut(userId) {
-    await authRepo.updateAllExpirationForUser(
+    await authRepo.updateAllExpiratonsForUser(
         userId,
         date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     );
