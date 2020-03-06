@@ -8,8 +8,6 @@ import {
     Dimensions,
     StatusBar,
     Switch,
-    Animated,
-    Picker,
     Keyboard,
     Alert,
 } from "react-native";
@@ -42,10 +40,11 @@ export default class CreateActivityScreen extends React.Component {
             startDate: "",
             endDate: "",
             title: "",
+            address: "",
             isStartDateVisible: false,
             isEndDateVisible: false,
             slots: [""],
-            numSlots: "",
+            numSpots: "",
             submitPressed: false,
             minEndDate: new Date(),
         };
@@ -115,34 +114,36 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    onChangeSlotsAvail = event => {
+    onChangeSpotsAvail = event => {
         const {name, text} = event;
-        let number = parseInt(text);
-        //limit the max number of slots to 100
-        if(number > 100){
+        let number = parseInt(text, 2);
 
+        //limit the max number of slots to 100
+        if (number > 100 || text.length > 3) {
             let limited = text.slice(0, -1);
 
-            if(name === "numPad"){
+            if (name === "numPad") {
                 this.setState({
-                    [name]: "" + limited
-                })
+                    [name]: "" + limited,
+                });
             }
-            
-        }
-        else{
+        } else {
             this.setState({
-                [name] : text
-            })
-        }    
-    }
+                [name]: text,
+            });
+        }
+    };
 
     onChangeText = event => {
         const {name, text} = event;
-        
+
         this.setState({[name]: text});
     };
 
+    /**
+     * Submits activity information and
+     * goes back to Profile page
+     */
     submit = () => {
         const {navigate} = this.props.navigation;
 
@@ -155,15 +156,19 @@ export default class CreateActivityScreen extends React.Component {
             !this.state.startDate ||
             !this.state.endDate ||
             !this.state.eventDesc ||
-            !this.state.numSlots
+            !this.state.numSpots
         ) {
             return;
         }
-        //submit data and navigate back to profile page
+
         navigate("Profile");
     };
 
     render() {
+        let spotCount = this.state.numSpots
+            ? parseInt(this.state.numSpots, 2)
+            : 0;
+
         return (
             <View style={Styles.container}>
                 {/** HEADER */}
@@ -258,7 +263,7 @@ export default class CreateActivityScreen extends React.Component {
                                             source={require("../assets/images/general-logos/photo-logo.png")}
                                         />
                                     </PhotoUpload>
-                                    
+
                                     <TouchableOpacity
                                         style={SignUpStyles.uploadButton}
                                         onPress={() =>
@@ -324,21 +329,16 @@ export default class CreateActivityScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             {this.state.isStartDateVisible && (
-                                <Animated.View>
-                                    <View>
-                                        <DatePicker
-                                            mode="datetime"
-                                            onDateChange={date =>
-                                                this.setDateValue(
-                                                    date,
-                                                    "startDate",
-                                                )
-                                            }
-                                            locale="en_GB"
-                                            minuteInterval={15}
-                                        />
-                                    </View>
-                                </Animated.View>
+                                <View>
+                                    <DatePicker
+                                        mode="datetime"
+                                        onDateChange={date =>
+                                            this.setDateValue(date, "startDate")
+                                        }
+                                        locale="en_GB"
+                                        minuteInterval={15}
+                                    />
+                                </View>
                             )}
                             {/** END DATE  */}
                             <View>
@@ -455,12 +455,12 @@ export default class CreateActivityScreen extends React.Component {
                             <View>
                                 <TextInput
                                     inputRef={ref => (this.address = ref)}
-                                    
-                                    placeholder={
-                                        "Address"
-                                    }
+                                    placeholder={"Address"}
                                     onChange={this.onChangeText}
-                                    
+                                    showError={
+                                        this.state.submitPressed &&
+                                        !this.state.address
+                                    }
                                 />
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -493,7 +493,7 @@ export default class CreateActivityScreen extends React.Component {
                                 onSubmitEditing={() => Keyboard.dismiss()}
                             />
                             <View>
-                                <SemiBoldText style={{fontSize: 15}}>
+                                <SemiBoldText style={{fontSize: 20}}>
                                     Who to contact
                                 </SemiBoldText>
                                 <TextInput
@@ -510,41 +510,28 @@ export default class CreateActivityScreen extends React.Component {
                                     Important
                                 </SemiBoldText>
                             </View>
-                            
+
                             <View>
                                 <TextInput
-                                    placeholder="Number of slots available"
-                                    name="numSlots"
+                                    placeholder="Number of spots available"
+                                    name="numSpots"
                                     keyboardType="number-pad"
                                     showError={
                                         this.state.submitPressed &&
-                                        !this.state.numSlots
+                                        !this.state.numSpots
                                     }
-                                    onChange={this.onChangeSlotsAvail}
+                                    errorText={
+                                        spotCount <= 0
+                                            ? "Must have at least 1 spot available"
+                                            : null
+                                    }
+                                    onChange={this.onChangeSpotsAvail}
                                     returnKeyType="done"
                                     onSubmitEditing={() => Keyboard.dismiss()}
-                                    value={this.state.numSlots}
+                                    value={this.state.numSpots}
                                 />
                             </View>
 
-                            
-                            {this.state.isSlotOption && (
-                                <Animated.View>
-                                    <View>
-                                        <DatePicker
-                                            mode="datetime"
-                                            onDateChange={date =>
-                                                this.setDateValue(
-                                                    date,
-                                                    "endDate",
-                                                )
-                                            }
-                                            minimumDate={this.state.minEndDate}
-                                            minuteInterval={15}
-                                        />
-                                    </View>
-                                </Animated.View>
-                            )}
                             <View style={{flexDirection: "row"}}>
                                 <TextInput
                                     placeholder="Women only event"

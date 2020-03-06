@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, TextInput, View} from "react-native";
+import {View, Text, TextInput} from "react-native";
 import Styles from "../styles/Styles";
 
 class TInput extends Component {
@@ -21,7 +21,6 @@ class TInput extends Component {
                     style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
-                    
                     returnKeyType={
                         this.props.returnKeyType
                             ? this.props.returnKeyType
