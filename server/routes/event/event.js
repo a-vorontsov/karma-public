@@ -75,6 +75,7 @@ router.post("/", async (req, res) => {
             event.address_id = addressResult.rows[0].id;
         }
 
+        event.creation_date = new Date();
         const eventResult = await eventRepository.insert(event);
         res.status(200).send(eventResult.rows[0]);
     } catch (e) {
