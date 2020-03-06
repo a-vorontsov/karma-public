@@ -10,13 +10,20 @@ import {RegularText} from "../components/text";
 import {useNavigation} from "react-navigation-hooks";
 import Colours from "../styles/Colours";
 
+const {width, height} = Dimensions.get("window");
+const formWidth = 0.8 * width;
+
 const PageHeader = props => {
     const navigation = useNavigation();
     const {title} = props;
     return (
         <View>
             <View style={{paddingTop: 24}} />
-            <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                }}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image
                         style={{
@@ -32,7 +39,7 @@ const PageHeader = props => {
                     style={{
                         fontSize: 24,
                         fontWeight: "600",
-                        color: Colours.darkGrey,
+                        color: Colours.black,
                         paddingLeft: 16,
                     }}>
                     {title}

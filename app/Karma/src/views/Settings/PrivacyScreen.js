@@ -1,5 +1,7 @@
 import React, {Component} from "react";
-import {View, Text} from "react-native";
+import {SafeAreaView, View, Text} from "react-native";
+import PageHeader from "../../components/PageHeader";
+import Styles from "../../styles/Styles";
 
 class PrivacyScreen extends Component {
     static navigationOptions = {
@@ -8,14 +10,9 @@ class PrivacyScreen extends Component {
 
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
+            <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <Text>Privacy</Text>
-            </View>
+            </SafeAreaView>
         );
     }
 }

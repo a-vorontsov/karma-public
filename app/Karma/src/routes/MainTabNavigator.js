@@ -4,18 +4,65 @@ import {createBottomTabNavigator} from "react-navigation-tabs";
 import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
-import ActivitiesScreen from "../views/ActivitiesScreen";
+import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
+import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScreen";
+import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
-import SettingsMenuScreen from "../views/SettingsMenuScreen";
+import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
+import PrivacyScreen from "../views/Settings/PrivacyScreen";
+import TermsScreen from "../views/Settings/TermsScreen";
+import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
+import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
+import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
+import LogOutScreen from "../views/Settings/LogOutScreen";
+import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
+
+const SettingsNavigator = createStackNavigator(
+    {
+        SettingsMenu: {screen: SettingsMenuScreen},
+        ReportProblem: {screen: ReportProblemScreen},
+        AboutKarma: {screen: AboutKarmaScreen},
+        Guidelines: {screen: GuidelinesScreen},
+        Privacy: {screen: PrivacyScreen},
+        Terms: {screen: TermsScreen},
+        EmailSettings: {screen: EmailSettingsScreen},
+        LogOut: {screen: LogOutScreen},
+    },
+    {
+        headerMode: "none",
+        defaultNavigationOptions: {
+            cardStyle: {
+                backgroundColor: Colours.backgroundWhite,
+            },
+        },
+    },
+);
 
 const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
-        SettingsMenu: {screen: SettingsMenuScreen},
+        SettingsMenu:{screen: SettingsMenuScreen},
+        Settings: SettingsNavigator,
+    },
+    {
+        headerMode: "none",
+        defaultNavigationOptions: {
+            cardStyle: {
+                backgroundColor: Colours.backgroundWhite,
+            },
+        },
+    },
+);
+
+const ActivitiesNavigator = createStackNavigator(
+    {
+        Activities: {screen: ActivitiesScreen},
+        ActivityInfo: {screen: ActivityInfoScreen},
+        CauseAll: {screen: CauseAllActivitiesScreen},
     },
     {
         headerMode: "none",
@@ -30,7 +77,7 @@ const ProfileNavigator = createStackNavigator(
 const MainTabNavigator = createBottomTabNavigator(
     {
         Activities: {
-            screen: ActivitiesScreen,
+            screen: ActivitiesNavigator,
             navigationOptions: {
                 tabBarLabel: "Activities",
                 tabBarIcon: ({focused}) =>

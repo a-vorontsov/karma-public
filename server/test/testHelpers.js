@@ -54,8 +54,8 @@ const address = {
     postcode: "NW1 6XE",
     city: "London",
     region: "Greater London",
-    lat: "51.523774",
-    long: "-0.158534",
+    lat: 51.523774,
+    long: -0.158534,
 };
 
 const event = {
@@ -173,6 +173,11 @@ const signUp = {
     confirmed: true,
 };
 
+const favourite = {
+    individual_id: -1,
+    event_id: -1,
+};
+
 const eventWithLocation1 = {
     id: 3,
     name: "Staying at Home",
@@ -197,6 +202,7 @@ const eventWithLocation1 = {
     lat: "51.4149160",
     long: "-0.1904870",
 };
+
 const eventWithLocation2 = {
     id: 1,
     name: "Close to Home",
@@ -246,6 +252,7 @@ const womenOnlyEvent = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
 const physicalEvent = {
     id: 5,
     name: "Physical",
@@ -271,6 +278,39 @@ const physicalEvent = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
+const signedUpUser1 = {
+    "event_id": 1,
+    "individual_id": 1,
+    "confirmed": true,
+    "firstname": "fname",
+    "lastname": "lname",
+    "user_id": 677,
+    "email": "test@gmail.com",
+    "username": "test1",
+    "date_registered": "2016-06-22T18:10:25.000Z",
+};
+const signedUpUser2 = {
+    "event_id": 1,
+    "individual_id": 2,
+    "confirmed": true,
+    "firstname": "fname2",
+    "lastname": "lname2",
+    "user_id": 678,
+    "email": "test2@gmail.com",
+    "username": "test2",
+    "date_registered": "2016-06-22T18:10:25.000Z",
+};
+
+const reset1 = {
+    user_id: 1,
+    password_token: "123456",
+};
+const reset2 = {
+    user_id: 1,
+    password_token: "234567",
+};
+
 const clearCauses = async () => {
     await db.query("DELETE FROM cause");
 };
@@ -285,6 +325,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM event");
     await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
+    await db.query("DELETE FROM reset");
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
@@ -316,4 +357,9 @@ module.exports = {
     eventWithLocation2: eventWithLocation2,
     womenOnlyEvent: womenOnlyEvent,
     physicalEvent: physicalEvent,
+    favourite: favourite,
+    signedUpUser1: signedUpUser1,
+    signedUpUser2: signedUpUser2,
+    reset1: reset1,
+    reset2: reset2,
 };
