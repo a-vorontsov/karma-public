@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {View, Text, TextInput} from "react-native";
+import {View, Text, StyleSheet, TextInput} from "react-native";
 import Styles from "../styles/Styles";
+import SignUpStyles from "../styles/SignUpStyles";
 
 class TInput extends Component {
     constructor(props) {
@@ -12,8 +13,8 @@ class TInput extends Component {
         const {name, onChange} = this.props;
         const defaultError = "This field is required";
         const inputStyle = this.props.showError
-            ? [Styles.textInput, Styles.textInputError]
-            : Styles.textInput;
+            ? [SignUpStyles.textInput, styles.errorMessage]
+            : SignUpStyles.textInput;
         return (
             <View>
                 <TextInput
@@ -49,5 +50,15 @@ class TInput extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    errorMessage: {
+        borderBottomColor: "#e81f10",
+        marginBottom: 10,
+    },
+    errorText: {
+        color: "#e81f10",
+    },
+});
 
 export default TInput;

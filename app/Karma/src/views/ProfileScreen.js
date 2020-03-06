@@ -204,6 +204,7 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                 }}>
                                 <GradientButton
+                                    onPress={() => navigate("CreateActivity")}
                                     title="Create Activity"
                                     width={350}
                                 />

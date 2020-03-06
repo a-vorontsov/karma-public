@@ -47,8 +47,10 @@ export default class CreateActivityScreen extends React.Component {
             numSpots: "",
             submitPressed: false,
             minEndDate: new Date(),
+            minSlotDate: new Date(),
         };
-
+        this.addSlot = this.addSlot.bind(this);
+        this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
 
@@ -76,6 +78,12 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     setDateValue = (date, name) => {
+        if (name === "endDate") {
+            this.setState({
+                maxSlotDate: date,
+            });
+        }
+
         //events must be at least one hour long
         if (name === "startDate") {
             const min = new Date(date);
@@ -83,8 +91,7 @@ export default class CreateActivityScreen extends React.Component {
 
             this.setState({
                 minEndDate: min,
-                isStartDateVisible: false,
-                isEndDateVisible: true,
+                minSlotDate: date,
             });
         }
         //removes day and local timezone from date
@@ -180,35 +187,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignContent: "center",
-                            }}>
-                            <TouchableOpacity
-                                onPress={() => navigate("InitSignup")}>
-                                <Image
-                                    style={{
-                                        width: 30,
-                                        height: 40,
-                                        resizeMode: "contain",
-                                        flex: 1,
-                                    }}
-                                    source={require("../assets/images/general-logos/back-arrow.png")}
-                                />
-                            </TouchableOpacity>
-                            <RegularText
-                                style={{
-                                    fontSize: 30,
-                                    fontWeight: "500",
-                                    color: "#3E3E3E",
-                                    paddingLeft: 20,
-
-                                    justifyContent: "center",
-                                }}>
-                                Create Activity
-                            </RegularText>
-                        </View>
+                        <PageHeader title="Create Activity" />
                     </View>
                 </View>
 
@@ -222,157 +201,173 @@ export default class CreateActivityScreen extends React.Component {
                                 justifyContent: "space-evenly",
                                 alignItems: "center",
                             }}>
-                            <View
-                                style={{width: FORM_WIDTH, paddingBottom: 20}}>
-                                <RegularText>
-                                    Lorem Ipsum dolor sit amet, conste ctetur
-                                    adip isicing do eiut, sunt in culpa
-                                </RegularText>
-                            </View>
                             <View style={{width: FORM_WIDTH}}>
-                                <RegularText
-                                    style={{
-                                        marginLeft: 30,
-                                        paddingBottom: 10,
-                                        fontSize: 20,
-                                    }}>
-                                    Add Photo
-                                </RegularText>
                                 <View
                                     style={{
-                                        flexDirection: "row",
-                                        justifyContent: "flex-start",
+                                        width: FORM_WIDTH,
+                                        paddingBottom: 20,
                                     }}>
-                                    <PhotoUpload
-                                        containerStyle={{
-                                            alignItems: "center",
-                                        }}
-                                        onPhotoSelect={avatar => {
-                                            if (avatar) {
-                                                this.setPhoto(avatar);
-                                            }
-                                        }}>
-                                        <Image
-                                            style={{
-                                                paddingVertical: 10,
-                                                width: 50,
-                                                height: 50,
-                                                borderRadius: 75,
-                                            }}
-                                            resizeMode="cover"
-                                            source={require("../assets/images/general-logos/photo-logo.png")}
-                                        />
-                                    </PhotoUpload>
-
-                                    <TouchableOpacity
-                                        style={SignUpStyles.uploadButton}
-                                        onPress={() =>
-                                            this.uploadPhoto(this.state.photo)
-                                        }>
-                                        <RegularText
-                                            style={
-                                                (SignUpStyles.uploadButtonText,
-                                                {fontSize: 20, color: "gray"})
-                                            }>
-                                            Upload Photo
-                                        </RegularText>
-                                    </TouchableOpacity>
+                                    <RegularText>
+                                        Lorem Ipsum dolor sit amet, conste
+                                        ctetur adip isicing do eiut, sunt in
+                                        culpa
+                                    </RegularText>
                                 </View>
-                            </View>
-                            <View>
-                                <TextInput
-                                    placeholder="Title"
-                                    showError={
-                                        !this.state.title &&
-                                        this.state.submitPressed
-                                    }
-                                    name="title"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() => Keyboard.dismiss()}
-                                />
-                            </View>
-                            {/** EVENT START DATE
-                             */}
-                            <View>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.showDatePicker(
-                                            "isStartDateVisible",
-                                        )
-                                    }
-                                    style={{
-                                        backgroundColor: "#f8f8f8",
-                                        zIndex: 50,
-                                    }}>
-                                    <View style={{flexDirection: "row"}}>
-                                        <TextInput
-                                            pointerEvents="none"
-                                            placeholder="Start"
-                                            editable={false}
-                                            showError={
-                                                this.state.submitPressed &&
-                                                !this.state.startDate
-                                            }
-                                            value={this.state.startDate}
-                                        />
-                                        <Image
-                                            style={{
-                                                position: "absolute",
-                                                right: 0,
-                                                top: 20,
-                                                height: 20,
-                                                width: 20,
+                                <View style={{width: FORM_WIDTH}}>
+                                    <RegularText
+                                        style={{
+                                            marginLeft: 30,
+                                            paddingBottom: 10,
+                                            fontSize: 20,
+                                        }}>
+                                        Add Photo
+                                    </RegularText>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            justifyContent: "flex-start",
+                                            width: FORM_WIDTH,
+                                        }}>
+                                        <PhotoUpload
+                                            containerStyle={{
+                                                alignItems: "center",
                                             }}
-                                            source={require("../assets/images/general-logos/calendar-dark.png")}
-                                        />
+                                            onPhotoSelect={avatar => {
+                                                if (avatar) {
+                                                    this.setPhoto(avatar);
+                                                }
+                                            }}>
+                                            <Image
+                                                style={{
+                                                    paddingVertical: 10,
+                                                    width: 50,
+                                                    height: 50,
+                                                    borderRadius: 75,
+                                                }}
+                                                resizeMode="cover"
+                                                source={require("../assets/images/general-logos/photo-logo.png")}
+                                            />
+                                        </PhotoUpload>
+
+                                        <TouchableOpacity
+                                            style={SignUpStyles.uploadButton}
+                                            onPress={() =>
+                                                this.uploadPhoto(
+                                                    this.state.photo,
+                                                )
+                                            }>
+                                            <RegularText
+                                                style={
+                                                    (SignUpStyles.uploadButtonText,
+                                                    {
+                                                        fontSize: 20,
+                                                        color: "gray",
+                                                    })
+                                                }>
+                                                Upload Photo
+                                            </RegularText>
+                                        </TouchableOpacity>
                                     </View>
-                                </TouchableOpacity>
-                            </View>
-                            {this.state.isStartDateVisible && (
+                                </View>
                                 <View>
-                                    <DatePicker
-                                        mode="datetime"
-                                        onDateChange={date =>
-                                            this.setDateValue(date, "startDate")
+                                    <TextInput
+                                        placeholder="Title"
+                                        showError={
+                                            !this.state.title &&
+                                            this.state.submitPressed
                                         }
-                                        locale="en_GB"
-                                        minuteInterval={15}
+                                        name="title"
+                                        onChange={this.onChangeText}
+                                        onSubmitEditing={() =>
+                                            Keyboard.dismiss()
+                                        }
                                     />
                                 </View>
-                            )}
-                            {/** END DATE  */}
-                            <View>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.showDatePicker("isEndDateVisible")
-                                    }>
-                                    <View style={{flexDirection: "row"}}>
-                                        <TextInput
-                                            placeholder="End"
-                                            pointerEvents="none"
-                                            editable={false}
-                                            showError={
-                                                this.state.submitPressed &&
-                                                !this.state.endDate
+                                {/** EVENT START DATE
+                                 */}
+                                <View>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.showDatePicker(
+                                                "isStartDateVisible",
+                                            )
+                                        }
+                                        style={{
+                                            backgroundColor: "#f8f8f8",
+                                        }}>
+                                        <View style={{flexDirection: "row"}}>
+                                            <TextInput
+                                                pointerEvents="none"
+                                                placeholder="Start"
+                                                editable={false}
+                                                showError={
+                                                    this.state.submitPressed &&
+                                                    !this.state.startDate
+                                                }
+                                                value={this.state.startDate}
+                                            />
+                                            <Image
+                                                style={{
+                                                    position: "absolute",
+                                                    right: 0,
+                                                    top: 20,
+                                                    height: 20,
+                                                    width: 20,
+                                                }}
+                                                source={require("../assets/images/general-logos/calendar-dark.png")}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                {this.state.isStartDateVisible && (
+                                    <View>
+                                        <DatePicker
+                                            mode="datetime"
+                                            onDateChange={date =>
+                                                this.setDateValue(
+                                                    date,
+                                                    "startDate",
+                                                )
                                             }
-                                            value={this.state.endDate}
-                                        />
-                                        <Image
-                                            style={{
-                                                position: "absolute",
-                                                right: 0,
-                                                top: 20,
-                                                height: 20,
-                                                width: 20,
-                                            }}
-                                            source={require("../assets/images/general-logos/calendar-dark.png")}
+                                            locale="en_GB"
+                                            minuteInterval={15}
                                         />
                                     </View>
-                                </TouchableOpacity>
-                            </View>
+                                )}
+                                {/** END DATE  */}
+                                <View>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.showDatePicker(
+                                                "isEndDateVisible",
+                                            )
+                                        }>
+                                        <View style={{flexDirection: "row"}}>
+                                            <TextInput
+                                                placeholder="End"
+                                                pointerEvents="none"
+                                                editable={false}
+                                                showError={
+                                                    this.state.submitPressed &&
+                                                    !this.state.endDate
+                                                }
+                                                value={this.state.endDate}
+                                            />
+                                            <Image
+                                                style={{
+                                                    position: "absolute",
+                                                    right: 0,
+                                                    top: 20,
+                                                    height: 20,
+                                                    width: 20,
+                                                }}
+                                                source={require("../assets/images/general-logos/calendar-dark.png")}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
 
-                            {this.state.isEndDateVisible && (
-                                <Animated.View>
+                                {this.state.isEndDateVisible && (
                                     <View>
                                         <DatePicker
                                             mode="datetime"
@@ -382,222 +377,165 @@ export default class CreateActivityScreen extends React.Component {
                                                     "endDate",
                                                 )
                                             }
+                                            minimumDate={this.state.minEndDate}
                                             minuteInterval={15}
                                         />
                                     </View>
-                                </Animated.View>
-                            )}
-
-                                        <View
-                                            style={{alignItems: "flex-start"}}>
-                                            <TimeSlot
-                                                minDate={this.state.minSlotDate}
-                                                maxDate={this.state.maxSlotDate}
-                                                style={{
-                                                    width: FORM_WIDTH * 0.9,
-                                                }}
-                                            />
-                                            {/** only show delete icon if it's not the first slot */}
-                                            {index !== 0 ? (
-                                                <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.removeSlot(index)
-                                                    }
-                                                    style={{
-                                                        position: "absolute",
-                                                        right: 0,
-                                                        top: 25,
-                                                    }}>
-                                                    <Image
-                                                        style={{
-                                                            height: 20,
-                                                            width: 20,
-                                                            borderRadius: 25,
-                                                        }}
-                                                        source={require("../assets/images/general-logos/cross.png")}
-                                                    />
-                                                </TouchableOpacity>
-                                            ) : null}
-                                        </View>
-                                    </View>
                                 )}
-                                keyExtractor={item => item.toString()}
-                            />
-                            <View
-                                style={{
-                                    width: FORM_WIDTH,
-                                    flexDirection: "row",
-                                    justifyContent: "flex-end",
-                                }}>
+
+                                {/**
+                                 * Address picker
+                                 */}
                                 <View>
-                                    <RegularText
-                                        style={{
-                                            flex: 1,
-                                            justifyContent: "center",
-                                        }}>
-                                        Add another slot
-                                    </RegularText>
+                                    <TextInput
+                                        inputRef={ref => (this.address = ref)}
+                                        placeholder={"Address"}
+                                        onChange={this.onChangeText}
+                                        showError={
+                                            this.state.submitPressed &&
+                                            !this.state.address
+                                        }
+                                    />
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        placeholder="Make address visible"
+                                        editable={false}
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isAddressVisible: !this.state
+                                                    .isAddressVisible,
+                                            })
+                                        }
+                                        value={this.state.isAddressVisible}
+                                    />
                                 </View>
 
-                                <TouchableOpacity
-                                    style={{paddingLeft: 10}}
-                                    onPress={() => this.addSlot()}>
-                                    <Image
-                                        style={{
-                                            height: 20,
-                                            width: 20,
-                                            borderRadius: 10,
-                                        }}
-                                        source={require("../assets/images/general-logos/photo-plus.png")}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View>
                                 <TextInput
-                                    inputRef={ref => (this.address = ref)}
-                                    placeholder={"Address"}
+                                    placeholder="What will volunteers do?"
+                                    multiline
+                                    name="eventDesc"
                                     onChange={this.onChangeText}
                                     showError={
                                         this.state.submitPressed &&
-                                        !this.state.address
+                                        !this.state.eventDesc
                                     }
-                                />
-                            </View>
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    placeholder="Make address visible"
-                                    editable={false}
-                                />
-                                <Switch
-                                    style={{position: "absolute", right: 0}}
-                                    onValueChange={() =>
-                                        this.setState({
-                                            isAddressVisible: !this.state
-                                                .isAddressVisible,
-                                        })
-                                    }
-                                    value={this.state.isAddressVisible}
-                                />
-                            </View>
-
-                            <TextInput
-                                placeholder="What will volunteers do?"
-                                multiline
-                                name="eventDesc"
-                                onChange={this.onChangeText}
-                                showError={
-                                    this.state.submitPressed &&
-                                    !this.state.eventDesc
-                                }
-                                value={this.state.eventDesc}
-                                onSubmitEditing={() => Keyboard.dismiss()}
-                            />
-                            <View>
-                                <SemiBoldText style={{fontSize: 20}}>
-                                    Who to contact
-                                </SemiBoldText>
-                                <TextInput
-                                    placeholder="team-team@gmail.com"
-                                    style={{marginTop: 0}}
-                                />
-                            </View>
-                            <View style={{width: FORM_WIDTH}}>
-                                <SemiBoldText
-                                    style={{
-                                        alignItems: "flex-start",
-                                        fontSize: 20,
-                                    }}>
-                                    Important
-                                </SemiBoldText>
-                            </View>
-
-                            <View>
-                                <TextInput
-                                    placeholder="Number of spots available"
-                                    name="numSpots"
-                                    keyboardType="number-pad"
-                                    showError={
-                                        this.state.submitPressed &&
-                                        !this.state.numSpots
-                                    }
-                                    errorText={
-                                        spotCount <= 0
-                                            ? "Must have at least 1 spot available"
-                                            : null
-                                    }
-                                    onChange={this.onChangeSpotsAvail}
-                                    returnKeyType="done"
+                                    value={this.state.eventDesc}
                                     onSubmitEditing={() => Keyboard.dismiss()}
-                                    value={this.state.numSpots}
                                 />
-                            </View>
+                                <View>
+                                    <SemiBoldText style={{fontSize: 20}}>
+                                        Who to contact
+                                    </SemiBoldText>
+                                    <TextInput
+                                        placeholder="team-team@gmail.com"
+                                        style={{marginTop: 0}}
+                                    />
+                                </View>
+                                <View style={{width: FORM_WIDTH}}>
+                                    <SemiBoldText
+                                        style={{
+                                            alignItems: "flex-start",
+                                            fontSize: 20,
+                                        }}>
+                                        Important
+                                    </SemiBoldText>
+                                </View>
 
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    placeholder="Women only event"
-                                    editable={false}
-                                />
-                                <Switch
-                                    style={{position: "absolute", right: 0}}
-                                    onValueChange={() =>
-                                        this.setState({
-                                            isWomenOnly: !this.state
-                                                .isWomenOnly,
-                                        })
-                                    }
-                                    value={this.state.isWomenOnly}
-                                />
-                            </View>
+                                <View>
+                                    <TextInput
+                                        placeholder="Number of spots available"
+                                        name="numSpots"
+                                        keyboardType="number-pad"
+                                        showError={
+                                            this.state.submitPressed &&
+                                            !this.state.numSpots
+                                        }
+                                        errorText={
+                                            spotCount <= 0
+                                                ? "Must have at least 1 spot available"
+                                                : null
+                                        }
+                                        onChange={this.onChangeSpotsAvail}
+                                        returnKeyType="done"
+                                        onSubmitEditing={() =>
+                                            Keyboard.dismiss()
+                                        }
+                                        value={this.state.numSpots}
+                                    />
+                                </View>
 
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    placeholder="Photo ID required"
-                                    editable={false}
-                                />
-                                <Switch
-                                    style={{position: "absolute", right: 0}}
-                                    onValueChange={() =>
-                                        this.setState({
-                                            isIDReq: !this.state.isIDReq,
-                                        })
-                                    }
-                                    value={this.state.isIDReq}
-                                />
-                            </View>
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    placeholder="This is a physical activity"
-                                    editable={false}
-                                />
-                                <Switch
-                                    style={{position: "absolute", right: 0}}
-                                    onValueChange={() =>
-                                        this.setState({
-                                            isPhysical: !this.state.isPhysical,
-                                        })
-                                    }
-                                    value={this.state.isPhysical}
-                                />
-                            </View>
-                            <View style={{flexDirection: "row"}}>
-                                <TextInput
-                                    style={{fontSize: 13}}
-                                    placeholder={
-                                        "Additional information will be \nprovided by email"
-                                    }
-                                    editable={false}
-                                    multiline
-                                />
-                                <Switch
-                                    style={{position: "absolute", right: 0}}
-                                    onValueChange={() =>
-                                        this.setState({
-                                            isAdditionalInfo: !this.state
-                                                .isAdditionalInfo,
-                                        })
-                                    }
-                                    value={this.state.isAdditionalInfo}
-                                />
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        placeholder="Women only event"
+                                        editable={false}
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isWomenOnly: !this.state
+                                                    .isWomenOnly,
+                                            })
+                                        }
+                                        value={this.state.isWomenOnly}
+                                    />
+                                </View>
+
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        placeholder="Photo ID required"
+                                        editable={false}
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isIDReq: !this.state.isIDReq,
+                                            })
+                                        }
+                                        value={this.state.isIDReq}
+                                    />
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        placeholder="This is a physical activity"
+                                        editable={false}
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isPhysical: !this.state
+                                                    .isPhysical,
+                                            })
+                                        }
+                                        value={this.state.isPhysical}
+                                    />
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        style={{fontSize: 13}}
+                                        placeholder={
+                                            "Additional information will be \nprovided by email"
+                                        }
+                                        editable={false}
+                                        multiline
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isAdditionalInfo: !this.state
+                                                    .isAdditionalInfo,
+                                            })
+                                        }
+                                        value={this.state.isAdditionalInfo}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </ScrollView>
