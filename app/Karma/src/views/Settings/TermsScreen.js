@@ -1,5 +1,7 @@
 import React, {Component} from "react";
-import {View, Text} from "react-native";
+import {SafeAreaView, View, Text} from "react-native";
+import PageHeader from "../../components/PageHeader";
+import Styles from "../../styles/Styles";
 
 class TermsScreen extends Component {
     static navigationOptions = {
@@ -8,14 +10,9 @@ class TermsScreen extends Component {
 
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                <Text>Terms</Text>
-            </View>
+            <SafeAreaView style={[Styles.container, Styles.ph24]}>
+                <PageHeader title="Terms"/>
+            </SafeAreaView>
         );
     }
 }

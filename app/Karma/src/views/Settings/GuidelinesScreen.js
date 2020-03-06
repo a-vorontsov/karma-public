@@ -1,5 +1,8 @@
 import React, {Component} from "react";
-import {View, Text} from "react-native";
+import {SafeAreaView, View, Text} from "react-native";
+import PageHeader from "../../components/PageHeader";
+import Styles from "../../styles/Styles";
+
 
 class GuidelinesScreen extends Component {
     static navigationOptions = {
@@ -8,14 +11,9 @@ class GuidelinesScreen extends Component {
 
     render() {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                <Text>Community Guidelines</Text>
-            </View>
+            <SafeAreaView style={[Styles.container, Styles.ph24]}>
+                <PageHeader title="Community Guidelines"/>
+            </SafeAreaView>
         );
     }
 }

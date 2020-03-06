@@ -3,7 +3,7 @@ import {SafeAreaView, View, Text} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 
-class PrivacyScreen extends Component {
+class EmailSettingsScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
@@ -11,10 +11,10 @@ class PrivacyScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <Text>Privacy</Text>
+                <PageHeader title="Email Settings"/>
             </SafeAreaView>
         );
     }
 }
 
-export default PrivacyScreen;
+export default EmailSettingsScreen;

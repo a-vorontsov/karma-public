@@ -30,7 +30,7 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("ReportProblem")}
                         />
                         <SettingsButton
                             title="About KARMA"
@@ -55,12 +55,12 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("EmailSettings")}
                         />
                         <SettingsButton
                             title="Log Out"
                             icon={icons.logout}
-                            onPress={() => navigate("Activities")}
+                            onPress={() => navigate("LogOut")}
                         />
                     </View>
                 </ScrollView>

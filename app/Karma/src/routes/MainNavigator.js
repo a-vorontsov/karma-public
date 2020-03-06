@@ -12,15 +12,21 @@ import TermsScreen from "../views/Settings/TermsScreen";
 import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
 import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
+import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
+import LogOutScreen from "../views/Settings/LogOutScreen";
+import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
 
 const SettingsNavigator = createStackNavigator(
     {
         SettingsMenu: {screen: SettingsMenuScreen},
+        ReportProblem: {screen: ReportProblemScreen},
         AboutKarma: {screen: AboutKarmaScreen},
         Guidelines: {screen: GuidelinesScreen},
         Privacy: {screen: PrivacyScreen},
         Terms: {screen: TermsScreen},
+        EmailSettings: {screen: EmailSettingsScreen},
+        LogOut: {screen: LogOutScreen}
     },
     {
         headerMode: "none",
