@@ -9,7 +9,7 @@ import {
     StatusBar,
     Switch,
     Animated,
-    FlatList,
+    Picker,
     Keyboard,
     Alert,
 } from "react-native";
@@ -25,7 +25,6 @@ import {GradientButton} from "../components/buttons";
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
-import TimeSlot from "../components/activity/TimeSlot";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 
@@ -46,6 +45,7 @@ export default class CreateActivityScreen extends React.Component {
             isStartDateVisible: false,
             isEndDateVisible: false,
             slots: [""],
+            numSlots: "",
             submitPressed: false,
             minEndDate: new Date(),
         };
@@ -115,9 +115,31 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
+    onChangeSlotsAvail = event => {
+        const {name, text} = event;
+        let number = parseInt(text);
+        //limit the max number of slots to 100
+        if(number > 100){
+
+            let limited = text.slice(0, -1);
+
+            if(name === "numPad"){
+                this.setState({
+                    [name]: "" + limited
+                })
+            }
+            
+        }
+        else{
+            this.setState({
+                [name] : text
+            })
+        }    
+    }
+
     onChangeText = event => {
         const {name, text} = event;
-
+        
         this.setState({[name]: text});
     };
 
@@ -236,7 +258,7 @@ export default class CreateActivityScreen extends React.Component {
                                             source={require("../assets/images/general-logos/photo-logo.png")}
                                         />
                                     </PhotoUpload>
-
+                                    
                                     <TouchableOpacity
                                         style={SignUpStyles.uploadButton}
                                         onPress={() =>
@@ -365,19 +387,6 @@ export default class CreateActivityScreen extends React.Component {
                                     </View>
                                 </Animated.View>
                             )}
-                            {/** TIME SLOTS */}
-                            <FlatList
-                                data={this.state.slots}
-                                renderItem={({item, index}) => (
-                                    <View style={{width: FORM_WIDTH}}>
-                                        {index === 0 ? (
-                                            <SemiBoldText
-                                                style={{
-                                                    fontSize: 15,
-                                                }}>
-                                                Slot Time(s) (optional)
-                                            </SemiBoldText>
-                                        ) : null}
 
                                         <View
                                             style={{alignItems: "flex-start"}}>
@@ -444,17 +453,14 @@ export default class CreateActivityScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                <SemiBoldText style={{fontSize: 15}}>
-                                    Address
-                                </SemiBoldText>
                                 <TextInput
                                     inputRef={ref => (this.address = ref)}
-                                    style={{marginTop: 0, fontSize: 13}}
+                                    
                                     placeholder={
-                                        "Please leave this blank if you will be sending this via email once a volunteer has confirmed"
+                                        "Address"
                                     }
                                     onChange={this.onChangeText}
-                                    multiline
+                                    
                                 />
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -504,6 +510,7 @@ export default class CreateActivityScreen extends React.Component {
                                     Important
                                 </SemiBoldText>
                             </View>
+                            
                             <View>
                                 <TextInput
                                     placeholder="Number of slots available"
@@ -513,11 +520,31 @@ export default class CreateActivityScreen extends React.Component {
                                         this.state.submitPressed &&
                                         !this.state.numSlots
                                     }
-                                    onChange={this.onChangeText}
+                                    onChange={this.onChangeSlotsAvail}
                                     returnKeyType="done"
                                     onSubmitEditing={() => Keyboard.dismiss()}
+                                    value={this.state.numSlots}
                                 />
                             </View>
+
+                            
+                            {this.state.isSlotOption && (
+                                <Animated.View>
+                                    <View>
+                                        <DatePicker
+                                            mode="datetime"
+                                            onDateChange={date =>
+                                                this.setDateValue(
+                                                    date,
+                                                    "endDate",
+                                                )
+                                            }
+                                            minimumDate={this.state.minEndDate}
+                                            minuteInterval={15}
+                                        />
+                                    </View>
+                                </Animated.View>
+                            )}
                             <View style={{flexDirection: "row"}}>
                                 <TextInput
                                     placeholder="Women only event"
