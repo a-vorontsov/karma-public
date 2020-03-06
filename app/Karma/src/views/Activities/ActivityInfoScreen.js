@@ -20,6 +20,7 @@ import PageHeader from "../../components/PageHeader";
 import {GradientButton, Button} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBarCustom from "../../components/ProgressBarCustom";
+import Communications from 'react-native-communications';
 
 const carouselEntries = [{individual: true}];
 
@@ -308,7 +309,8 @@ class ActivityInfoScreen extends Component {
                             }}>
                             <TouchableOpacity
                                 style={styles.contactButton}
-                                activeOpacity={0.9}>
+                                activeOpacity={0.9}
+                                onPress={() => Communications.phonecall(phoneNumbers[0].number, true)}>
                                 <RegularText
                                     style={{
                                         fontSize: 18,
@@ -319,7 +321,8 @@ class ActivityInfoScreen extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.contactButton}
-                                activeOpacity={0.9}>
+                                activeOpacity={0.9}
+                                onPress={() => Communications.email(['emailAddress1', 'emailAddress2'],null,null,'My Subject','My body text')}>
                                 <RegularText
                                     style={{
                                         fontSize: 18,

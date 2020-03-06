@@ -61,7 +61,7 @@ class ProfileScreen extends Component {
     };
 
     render() {
-        const navigate = this.props.navigation;
+        const {navigate} = this.props.navigation;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -100,7 +100,7 @@ class ProfileScreen extends Component {
                             <TouchableOpacity
                                 onPress={() => navigate("SettingsMenu")}>
                                 <Image
-                                    onPress={() => navigate("Settings")}
+                                    onPress={() => navigate("SettingsMenu")}
                                     source={icons.cog}
                                     style={{
                                         height: 25,

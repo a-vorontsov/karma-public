@@ -17,6 +17,7 @@
     "@react-navigation/material-top-tabs": "^5.1.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-communications": "^2.2.1",
     "react-native-date-picker": "^2.7.6",
     "react-native-device-info": "^5.5.2",
     "react-native-fs": "^2.16.4",

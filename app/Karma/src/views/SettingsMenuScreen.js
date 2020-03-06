@@ -24,9 +24,9 @@ class SettingsMenuScreen extends Component {
         const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
+                <PageHeader title="Settings"/>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={Styles.fullMinHeight}>
-                        <PageHeader title="Settings" />
+                    <View style={Styles.ph24}>
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
