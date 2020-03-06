@@ -53,6 +53,7 @@ class ActivityInfoScreen extends Component {
                         {
                             alignItems: "flex-start",
                             height: 0.08 * SCREEN_HEIGHT,
+                            maxHeight: 0.15 * SCREEN_HEIGHT,
                             justifyContent: "flex-start",
                             marginTop: hasNotch()
                                 ? 40
@@ -64,14 +65,13 @@ class ActivityInfoScreen extends Component {
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <PageHeader />
                     </View>
-                    <View style={{marginBottom: 20, flexDirection: "row"}}>
+                    <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap',}}>
                         <RegularText
                             style={[
                                 Styles.pv16,
                                 {fontSize: 25, fontWeight: "500"},
                             ]}>
-                            Activity Name Activity NameActivity NameActivity
-                            NameActivity NameActivity NameActivity Name
+                            Activity Name Activity
                         </RegularText>
                     </View>
                 </View>
