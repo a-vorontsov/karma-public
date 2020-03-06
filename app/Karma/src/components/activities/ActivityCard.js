@@ -19,6 +19,19 @@ const icons = {
 
 const ActivityCard = props => {
     const navigation = useNavigation();
+
+    setFav = handlePress => {
+        return (favorited = false);
+    };
+    
+    _renderTruncatedFooter = handlePress => {
+        return (
+            <Text style={{color: "#00A8A6", marginTop: 5}} onPress={() =>navigation.navigate("ActivityInfo")}>
+                READ MORE
+            </Text>
+        );
+    };
+
     return (
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>
@@ -147,16 +160,5 @@ const ActivityCard = props => {
     );
 };
 
-setFav = handlePress => {
-    return (favorited = false);
-};
-
-_renderTruncatedFooter = handlePress => {
-    return (
-        <Text style={{color: "#00A8A6", marginTop: 5}} onPress={handlePress}>
-            READ MORE
-        </Text>
-    );
-};
 
 export default ActivityCard;
