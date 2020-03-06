@@ -8,6 +8,7 @@ const individualRepository = require("../../models/databaseRepositories/individu
 const eventSorter = require("../../modules/sorting/event");
 const paginator = require("../../modules/pagination");
 const eventSignupRoute = require("../eventSignup");
+const eventFavouriteRoute = require("../eventFavourite");
 
 /**
  * Endpoint called whenever a user creates a new event.
@@ -193,7 +194,7 @@ router.get("/", async (req, res) => {
     const userId = req.query.userId;
     const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status != 200) {
+    if (checkUserIdResult.status !== 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
@@ -283,7 +284,7 @@ router.get("/causes", async (req, res) => {
     const userId = req.query.userId;
     const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status != 200) {
+    if (checkUserIdResult.status !== 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
@@ -315,7 +316,7 @@ router.get("/causes", async (req, res) => {
 router.get("/favourites", async (req, res) => {
     const userId = req.query.userId;
     const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status != 200) {
+    if (checkUserIdResult.status !== 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
@@ -347,7 +348,7 @@ router.get("/favourites", async (req, res) => {
 router.get("/going", async (req, res) => {
     const userId = req.query.userId;
     const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status != 200) {
+    if (checkUserIdResult.status !== 200) {
         return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
     }
     const user = checkUserIdResult.user;
@@ -411,11 +412,11 @@ router.get("/:id", async (req, res) => {
             address: address,
         });
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 });
 
 router.use("/", eventSignupRoute);
+router.use("/", eventFavouriteRoute);
 
 module.exports = router;
