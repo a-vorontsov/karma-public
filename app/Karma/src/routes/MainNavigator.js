@@ -7,10 +7,16 @@ import UserSignUpScreen from "../views/UserSignUpScreen";
 import OrgSignUpScreen from "../views/OrgSignUpScreen";
 import AboutScreen from "../views/AboutScreen";
 import ContactInfoScreen from "../views/ContactInfoScreen";
-import PrivacyScreen from "../views/PrivacyScreen";
-import TermsScreen from "../views/TermsScreen";
-import SettingsMenuScreen from "../views/SettingsMenuScreen";
+import PrivacyScreen from "../views/Settings/PrivacyScreen";
+import TermsScreen from "../views/Settings/TermsScreen";
+import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
+import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
+import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
+import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
+import LogOutScreen from "../views/Settings/LogOutScreen";
+import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
+
 
 const MainNavigator = createStackNavigator(
     {
