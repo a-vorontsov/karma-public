@@ -41,44 +41,44 @@ class AboutScreen extends React.Component {
     goToPrevious() {
         this.props.navigation.goBack();
     }
-    createIndividual(){
+    createIndividual() {
         const individual = {
-            userId:1,
-            firstName:"TODO", // TODO
-            middleNames:"TODO", // TODO
-            surName:"TODO", // TODO
+            userId: 1,
+            firstName: "TODO", // TODO
+            middleNames: "TODO", // TODO
+            surName: "TODO", // TODO
             dateOfBirth: this.state.date,
             gender: this.state.gender,
-            addressLine1:"TODO", // TODO
+            addressLine1: "TODO", // TODO
             addressLine2: "TODO", // TODO
             townCity: "TODO", // TODO
             countryState: "TODO", // TODO
             postCode: "TODO", // TODO
-            phoneNumber:"213123421" // TODO
-        }
+            phoneNumber: "213123421", // TODO
+        };
         return individual;
     }
     async goToNext() {
         if (this.state.genderSelected && this.state.dateSelected) {
             const individual = this.createIndividual();
             await request
-            .post("http://localhost:8000/register/individual")
-            .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...individual,
-            })
-            .then(res => {
-                console.log(res.body);
-                this.props.navigation.navigate("PickCauses", {
-                    photo: this.state.photo,
-                    gender: this.state.gender,
-                    date: this.state.date,
+                .post("http://localhost:8000/register/individual")
+                .send({
+                    authToken: "ffa234124",
+                    userId: "1",
+                    ...individual,
+                })
+                .then(res => {
+                    console.log(res.body);
+                    this.props.navigation.navigate("PickCauses", {
+                        photo: this.state.photo,
+                        gender: this.state.gender,
+                        date: this.state.date,
+                    });
+                })
+                .catch(er => {
+                    console.log(er.message);
                 });
-            })
-            .catch(er => {
-                console.log(er.message);
-            });
         } else if (this.state.genderSelected && !this.state.dateSelected) {
             this.setState({
                 dateSelected: false,
@@ -103,7 +103,12 @@ class AboutScreen extends React.Component {
     }
 
     setGender(selectedGender) {
-        const genderCharacter = (selectedGender === 'male')? 'm': (selectedGender === 'female')? 'f' : 'x'
+        const genderCharacter =
+            selectedGender === "male"
+                ? "m"
+                : selectedGender === "female"
+                ? "f"
+                : "x";
         this.setState({
             gender: genderCharacter,
             genderSelected: true,
