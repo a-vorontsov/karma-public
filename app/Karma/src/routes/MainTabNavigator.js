@@ -45,7 +45,7 @@ const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
-        SettingsMenu:{screen: SettingsMenuScreen},
+        SettingsMenu: {screen: SettingsMenuScreen},
         Settings: SettingsNavigator,
     },
     {

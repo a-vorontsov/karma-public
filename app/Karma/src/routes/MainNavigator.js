@@ -1,6 +1,4 @@
-import {
-    createStackNavigator
-} from "react-navigation-stack";
+import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
 import WelcomeScreen from "../views/WelcomeScreen";
@@ -20,51 +18,51 @@ import LogOutScreen from "../views/Settings/LogOutScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
 
-
-const MainNavigator = createStackNavigator({
-    Welcome: {
-        screen: WelcomeScreen
-    },
-    InitSignup: {
-        screen: InitSignUpScreen
-    },
-    UserSignUp: {
-        screen: UserSignUpScreen
-    },
-    OrgSignUp: {
-        screen: OrgSignUpScreen
-    },
-    About: {
-        screen: AboutScreen
-    },
-    ContactInfo: {
-        screen: ContactInfoScreen
-    },
-    Tab: MainTabNavigator,
-    Privacy: {
-        screen: PrivacyScreen
-    },
-    Terms: {
-        screen: TermsScreen
-    },
-    SettingsMenu: {
-        screen: SettingsMenuScreen
-    },
-    PickCauses: {
-        screen: PickCausesScreen
-    },
-}, {
-    headerMode: "none",
-    defaultNavigationOptions: {
-        cardStyle: {
-            backgroundColor: Colours.backgroundWhite,
+const MainNavigator = createStackNavigator(
+    {
+        Welcome: {
+            screen: WelcomeScreen,
+        },
+        InitSignup: {
+            screen: InitSignUpScreen,
+        },
+        UserSignUp: {
+            screen: UserSignUpScreen,
+        },
+        OrgSignUp: {
+            screen: OrgSignUpScreen,
+        },
+        About: {
+            screen: AboutScreen,
+        },
+        ContactInfo: {
+            screen: ContactInfoScreen,
+        },
+        Tab: MainTabNavigator,
+        Privacy: {
+            screen: PrivacyScreen,
+        },
+        Terms: {
+            screen: TermsScreen,
+        },
+        SettingsMenu: {
+            screen: SettingsMenuScreen,
+        },
+        PickCauses: {
+            screen: PickCausesScreen,
         },
     },
-}, );
+    {
+        headerMode: "none",
+        defaultNavigationOptions: {
+            cardStyle: {
+                backgroundColor: Colours.backgroundWhite,
+            },
+        },
+    },
+);
 
-MainNavigator.navigationOptions = ({
-    navigation
-}) => {
+MainNavigator.navigationOptions = ({navigation}) => {
     let tabBarVisible = true;
     return {
         tabBarVisible,

@@ -6,31 +6,39 @@ import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
+import Button from "../components/buttons/TextButton";
+const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             causes: [],
+            selectedCauses: [],
         };
-        const causes = [
-            {name: "animals", title: "Animals"},
-            {name: "arts", title: "Arts & Culture"},
-            {name: "community", title: "Community"},
-            {name: "conservation", title: "Conservation"},
-            {name: "crisis", title: "Crisis"},
-            {name: "education", title: "Education"},
-            {name: "energy", title: "Energy"},
-            {name: "equality", title: "Equality"},
-            {name: "food", title: "Food"},
-            {name: "health", title: "Health"},
-            {name: "homelessness", title: "Homelessness"},
-            {name: "peace", title: "Peace & Justice"},
-            {name: "poverty", title: "Poverty"},
-            {name: "refugees", title: "Refugees"},
-            {name: "religious", title: "Religious"},
-        ];
-        this.state.causes = causes;
+        this.selectCauses = this.selectCauses.bind(this);
+    }
+    async componentDidMount() {
+        try {
+            const response = await request.get("http://localhost:8000/causes");
+            console.log(response.body);
+            this.setState({
+                causes: response.body,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectCauses(){
+        console.log(this.state.selectedCauses);
+        // request.post('http://localhost:8000/user/1/causes')
+        // .send({authToken:"ffa234124",userId:"22",causes:this.state.selectedCauses})
+        // .then((res)=>{
+        //    console.log(res);
+        // })
+        // .catch((er)=>{
+        //     console.log(er);
+        // });
     }
     render() {
         const {causes} = this.state;
@@ -49,7 +57,7 @@ export default class PickCausesScreen extends React.Component {
                         <>
                             <CausePicker
                                 causes={causes}
-                                onChange={items => console.log(items)}
+                                onChange={items => this.state.selectedCauses = items}
                             />
                         </>
                     </View>
@@ -61,7 +69,7 @@ export default class PickCausesScreen extends React.Component {
                         Styles.pv16,
                         Styles.bgWhite,
                     ]}>
-                    <GradientButton title="Next" />
+                    <GradientButton title="Next" onPress={()=> this.selectCauses()}  />
                 </View>
             </SafeAreaView>
         );
