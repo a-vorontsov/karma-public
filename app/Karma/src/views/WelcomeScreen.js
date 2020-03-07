@@ -51,6 +51,7 @@ class WelcomeScreen extends Component {
                             />
 
                             <TextButton
+                                onPress={() => navigate("Profile")}
                                 title="Already have an account? Login"
                                 styles={[
                                     Styles.white,
