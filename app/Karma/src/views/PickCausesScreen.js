@@ -22,7 +22,7 @@ export default class PickCausesScreen extends React.Component {
         try {
             const response = await request.get("http://localhost:8000/causes");
             this.setState({
-                causes: response.body,
+                causes: response.body.data,
             });
         } catch (error) {
             console.log(error);
