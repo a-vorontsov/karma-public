@@ -9,7 +9,7 @@ import MainNavigator from "./src/routes/MainNavigator";
 const AppNavigator = createSwitchNavigator(
     {
         Splash: {
-            getScreen: () => require("./src/views/WelcomeScreen").default,
+            getScreen: () => require("./src/views/CreateActivityScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,
