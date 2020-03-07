@@ -54,7 +54,7 @@ export default class CreateActivityScreen extends React.Component {
         this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
-    createEvent(){
+    createEvent() {
         const event = {
             address: {
                 address_1: "Line 1",
@@ -63,13 +63,13 @@ export default class CreateActivityScreen extends React.Component {
                 city: "LDN",
                 region: "LDN again",
                 lat: 0.3,
-                long: 100.50
+                long: 100.5,
             }, //TODO
             name: this.state.title,
             women_only: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
             address_visible: this.state.isAddressVisible,
-            minimum_age: 18,    //TODO
+            minimum_age: 18, //TODO
             photo_id: this.state.isIDReq,
             physical: this.state.isPhysical,
             add_info: this.state.isAdditionalInfo,
@@ -177,7 +177,7 @@ export default class CreateActivityScreen extends React.Component {
      * Submits activity information and
      * goes back to Profile page
      */
-     submit = async () => {
+    submit = async () => {
         const {navigate} = this.props.navigation;
 
         this.setState({
@@ -196,22 +196,20 @@ export default class CreateActivityScreen extends React.Component {
         const event = this.createEvent();
         // send a request to update the db with the new event
         await request
-         .post("http://localhost:8000/event")
-         .send({
-             authToken: "ffa234124",
-             userId: "1",
-             ...event,
-         })
-         .then(res => {
-             console.log(res.body);
-             navigate("Profile");
-         })
-         .catch(er => {
-             console.log(er.message);
-         });
-
+            .post("http://localhost:8000/event")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...event,
+            })
+            .then(res => {
+                console.log(res.body);
+                navigate("Profile");
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
     };
-
 
     render() {
         let spotCount = this.state.numSpots
@@ -475,7 +473,7 @@ export default class CreateActivityScreen extends React.Component {
                                     <TextInput
                                         placeholder="team-team@gmail.com"
                                         style={{marginTop: 0}}
-                                        editable = "false"
+                                        editable="false"
                                     />
                                 </View>
                                 <View style={{width: FORM_WIDTH}}>
