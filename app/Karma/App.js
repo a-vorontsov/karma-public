@@ -1,4 +1,4 @@
-import React from "react";
+mimport React from "react";
 import {createSwitchNavigator, createAppContainer} from "react-navigation";
 
 import {SafeAreaProvider} from "react-native-safe-area-context";
@@ -10,7 +10,7 @@ const AppNavigator = createSwitchNavigator(
     {
         Splash: {
             getScreen: () =>
-                require("./src/views/CreateActivityScreen").default,
+                require("./src/views/WelcomeScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,
