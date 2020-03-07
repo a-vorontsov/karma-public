@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, TextInput} from "react-native";
+import {TextInput, View, StyleSheet} from "react-native";
+import {RegularText} from "./text";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 
@@ -22,6 +23,7 @@ class TInput extends Component {
                     style={[inputStyle, this.props.style]}
                     placeholder={this.props.placeholder}
                     autoCapitalize={this.props.autoCapitalize}
+                    autoCompleteType={this.props.autoCompleteType}
                     returnKeyType={
                         this.props.returnKeyType
                             ? this.props.returnKeyType
@@ -35,16 +37,17 @@ class TInput extends Component {
                     onSubmitEditing={this.props.onSubmitEditing}
                     blurOnSubmit={false}
                     autoCorrect={false}
+                    onBlur={this.props.onBlur}
                     secureTextEntry={this.props.secureTextEntry}
                     editable={this.props.editable}
                     value={this.props.value}
                 />
                 {this.props.showError ? (
-                    <Text style={Styles.error}>
+                    <RegularText style={Styles.error}>
                         {this.props.errorText !== undefined
                             ? this.props.errorText
                             : defaultError}
-                    </Text>
+                    </RegularText>
                 ) : null}
             </View>
         );
