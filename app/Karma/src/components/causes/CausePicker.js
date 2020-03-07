@@ -12,10 +12,9 @@ export default class CausePicker extends React.Component {
         this.onPress = this.onPress.bind(this);
     }
     onPress(item) {
-
         const newItems = this.state.items;
-        console.log(newItems);
-        const index = newItems.indexOf(item);
+        const ids = [...newItems.map(item => item.id)];
+        const index = ids.indexOf(item.id);
         if (index === -1) {
             newItems.push(item);
         } else {
@@ -32,10 +31,10 @@ export default class CausePicker extends React.Component {
         return (
             <View style={CauseStyles.container}>
                 {causes.map(c => {
-                    const selected = items.includes(c.id);
+                    const selected = items.some(item => item.id === c.id);
                     return (
                         <CauseItem
-                            key={c.name}
+                            key={c.id}
                             cause={c}
                             selected={selected}
                             onPress={this.onPress}

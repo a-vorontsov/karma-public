@@ -21,7 +21,7 @@ export default class PickCausesScreen extends React.Component {
     async componentDidMount() {
         try {
             const response = await request.get("http://localhost:8000/causes");
-            console.log(response.body);
+            // console.log(response.body);
             this.setState({
                 causes: response.body,
             });
@@ -29,16 +29,20 @@ export default class PickCausesScreen extends React.Component {
             console.log(error);
         }
     }
-    async selectCauses(){
-        console.log(this.state.selectedCauses);
-        // request.post('http://localhost:8000/user/1/causes')
-        // .send({authToken:"ffa234124",userId:"22",causes:this.state.selectedCauses})
-        // .then((res)=>{
-        //    console.log(res);
-        // })
-        // .catch((er)=>{
-        //     console.log(er);
-        // });
+    async selectCauses() {
+        await request
+            .post("http://localhost:8000/user/1/causes")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                causes: this.state.selectedCauses,
+            })
+            .then(res => {
+                console.log(res.body.data);
+            })
+            .catch(er => {
+                console.log(er);
+            });
     }
     render() {
         const {causes} = this.state;
@@ -57,7 +61,9 @@ export default class PickCausesScreen extends React.Component {
                         <>
                             <CausePicker
                                 causes={causes}
-                                onChange={items => this.state.selectedCauses = items}
+                                onChange={items =>
+                                    (this.state.selectedCauses = items)
+                                }
                             />
                         </>
                     </View>
@@ -69,7 +75,10 @@ export default class PickCausesScreen extends React.Component {
                         Styles.pv16,
                         Styles.bgWhite,
                     ]}>
-                    <GradientButton title="Next" onPress={()=> this.selectCauses()}  />
+                    <GradientButton
+                        title="Next"
+                        onPress={() => this.selectCauses()}
+                    />
                 </View>
             </SafeAreaView>
         );

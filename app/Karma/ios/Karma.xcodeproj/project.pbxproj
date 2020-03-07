@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* KarmaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KarmaTests.m */; };
 		0255F33CC9344CCF81FFC36A /* calendar-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = C64583044F814041A747D2DA /* calendar-dark.png */; };
+		03EE61D5F578A2B7A098B4D0 /* libPods-KarmaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 583339F86A324E1010F15ED7 /* libPods-KarmaTests.a */; };
 		0640BCCBC14D4B90A1E43CE2 /* fav-outline-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 42FDE6F26FC3401081BB186F /* fav-outline-profile.png */; };
 		064D3F8F404042DA9951B491 /* profile-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC259518994F87ACE92548 /* profile-on.png */; };
 		068CA317CC324579A95F75F0 /* K-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 573A9FCD44DA4F20A43F5EC7 /* K-logo.png */; };
@@ -18,6 +19,7 @@
 		0A1213ACA4684A91BE65D327 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50487623CCD247CA9993D0A7 /* OpenSans-Light.ttf */; };
 		0D1C1271A1C943CD927F14C4 /* favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 76A11DEBFE004C2DA29F2148 /* favourite.png */; };
 		124A12A04DFB419EA6F100B4 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D0974B2C743439F887A4ACD /* OpenSans-ExtraBold.ttf */; };
+		12822277F8E9744C0AF63892 /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9B1745984EFF391C164F761 /* libPods-Karma.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -55,7 +57,6 @@
 		4EA2DBABEE3A4E88BF5A3631 /* notifications-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 2031117E858444C8BCF15100 /* notifications-off.png */; };
 		5111262618EF4016866F3FEA /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB1BC531BCDB42DA9920123F /* OpenSans-ExtraBoldItalic.ttf */; };
 		5626B3E596C8438DB29AD785 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9057C318805149C1B5855EBF /* OpenSans-Regular.ttf */; };
-		57F337F476487D67DB97CFAC /* libPods-Karma-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 978F19C50C583EFCA72078F3 /* libPods-Karma-tvOSTests.a */; };
 		5A23B998046C4F63BF52F7E2 /* location-logo(low res).png in Resources */ = {isa = PBXBuildFile; fileRef = C70894D985DD417DA8D70854 /* location-logo(low res).png */; };
 		5AD2358A2F71412FAB454F58 /* edit-grey.png in Resources */ = {isa = PBXBuildFile; fileRef = D4F0CF029BE84F28BB918B60 /* edit-grey.png */; };
 		6075DB91589140838E39E2E7 /* conservation.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D3F18685C35400B96674DB3 /* conservation.png */; };
@@ -65,8 +66,8 @@
 		70BF2E8E90814DF3B7D424B9 /* equality-white.png in Resources */ = {isa = PBXBuildFile; fileRef = DF29802BDABA44E0A547AB76 /* equality-white.png */; };
 		75504B6D633B41FDBF680CF3 /* photo-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F108DF40FBF440D98A0706B7 /* photo-logo.png */; };
 		762B4416BA31433F96B891A7 /* peace.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E98666635D541E0B42B725A /* peace.png */; };
-		7D04F2B792A6FD9C4A24C5D4 /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E213F2C5AF4B7C21CF6B72 /* libPods-Karma.a */; };
-		81421936B55B0100C3020D12 /* libPods-KarmaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B380F83233554421AD10F9 /* libPods-KarmaTests.a */; };
+		7B746A2F61B460A42562BCCA /* libPods-Karma-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1066792E15D17FC52E48E870 /* libPods-Karma-tvOS.a */; };
+		7CA5979C312EED286EBE64BE /* libPods-Karma-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9A57CB9C71B13880FD7A70E /* libPods-Karma-tvOSTests.a */; };
 		861B20B124BB455FB2112C13 /* clock-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B81A2BD2A7F741D0AB2C6079 /* clock-logo.png */; };
 		8AB3DB9F6DFA48918D5326C2 /* calendar-light.png in Resources */ = {isa = PBXBuildFile; fileRef = B0418FD5754C4DB8804857F4 /* calendar-light.png */; };
 		8D98ACACBE54496891AB403D /* facebook-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B285398E4B74E8D81E75545 /* facebook-logo.png */; };
@@ -81,7 +82,6 @@
 		A4532E474BBE4DD68D8A01D0 /* notifications-on.png in Resources */ = {isa = PBXBuildFile; fileRef = B6C74C1CC8EF4161B2AED400 /* notifications-on.png */; };
 		AA6BEBBBC1634AC792C8ED83 /* linkedin-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BCC6474D9E8E4AD08E51DD19 /* linkedin-logo.png */; };
 		B07BC85F0DFC45A6840062D4 /* homelessness.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CED3B5B0BE64C12B46913E3 /* homelessness.png */; };
-		B2FA060139A3DF396EC34F35 /* libPods-Karma-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338EEFADD688FC8C914D773B /* libPods-Karma-tvOS.a */; };
 		B49C9E60907B41E2BC7739BF /* peace-white.png in Resources */ = {isa = PBXBuildFile; fileRef = D83B20281B894E0188D53868 /* peace-white.png */; };
 		B4EDCED7023444EAA518E514 /* photo-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F7484B5207147C19DE7C778 /* photo-plus.png */; };
 		BA0E389598DE435B828B69D1 /* refugees.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F029EA8FA4206B6B66B03 /* refugees.png */; };
@@ -128,10 +128,12 @@
 		00E356EE1AD99517003FC87E /* KarmaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KarmaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* KarmaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KarmaTests.m; sourceTree = "<group>"; };
-		0166F9D4BCAD1DA76C085B63 /* Pods-Karma.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma.release.xcconfig"; path = "Target Support Files/Pods-Karma/Pods-Karma.release.xcconfig"; sourceTree = "<group>"; };
+		024D447AF32F9BB9E690DD6B /* Pods-Karma.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma.release.xcconfig"; path = "Target Support Files/Pods-Karma/Pods-Karma.release.xcconfig"; sourceTree = "<group>"; };
 		065E7647E0854B15AC310B25 /* globe.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = globe.png; path = "../src/assets/images/general-logos/globe.png"; sourceTree = "<group>"; };
 		0681029F6035404A8BD713DE /* energy-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "energy-white.png"; path = "../src/assets/images/causes-logos/white/energy-white.png"; sourceTree = "<group>"; };
+		0D296F602DC150D4A19C6EB4 /* Pods-Karma.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma.debug.xcconfig"; path = "Target Support Files/Pods-Karma/Pods-Karma.debug.xcconfig"; sourceTree = "<group>"; };
 		0F486C8B91BC4999BC1B42F5 /* profile-off.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "profile-off.png"; path = "../src/assets/images/nav-bar/profile-off.png"; sourceTree = "<group>"; };
+		1066792E15D17FC52E48E870 /* libPods-Karma-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Karma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Karma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Karma/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Karma/AppDelegate.m; sourceTree = "<group>"; };
@@ -144,18 +146,15 @@
 		2031117E858444C8BCF15100 /* notifications-off.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "notifications-off.png"; path = "../src/assets/images/nav-bar/notifications-off.png"; sourceTree = "<group>"; };
 		204B9FB2C60849C9AC498105 /* animals-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "animals-white.png"; path = "../src/assets/images/causes-logos/white/animals-white.png"; sourceTree = "<group>"; };
 		24E1AA1C63B047E7AD47A5EF /* JuliusSansOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "JuliusSansOne-Regular.ttf"; path = "../src/assets/fonts/JuliusSansOne-Regular.ttf"; sourceTree = "<group>"; };
-		29E213F2C5AF4B7C21CF6B72 /* libPods-Karma.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* Karma-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Karma-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Karma-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Karma-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		32160B7AC4201829BB5C1B75 /* Pods-Karma.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma.debug.xcconfig"; path = "Target Support Files/Pods-Karma/Pods-Karma.debug.xcconfig"; sourceTree = "<group>"; };
+		31E1699D46D663FB803819EE /* Pods-Karma-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Karma-tvOSTests/Pods-Karma-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		330D5FB5D75C4A4BBA72FBAB /* conservation-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "conservation-white.png"; path = "../src/assets/images/causes-logos/white/conservation-white.png"; sourceTree = "<group>"; };
-		338EEFADD688FC8C914D773B /* libPods-Karma-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33D6EF79EC764F34B2C38266 /* KARMA-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "KARMA-logo.png"; path = "../src/assets/images/general-logos/KARMA-logo.png"; sourceTree = "<group>"; };
 		34AC259518994F87ACE92548 /* profile-on.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "profile-on.png"; path = "../src/assets/images/nav-bar/profile-on.png"; sourceTree = "<group>"; };
+		34F61C28761E36BF7F9ECB67 /* Pods-KarmaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KarmaTests.release.xcconfig"; path = "Target Support Files/Pods-KarmaTests/Pods-KarmaTests.release.xcconfig"; sourceTree = "<group>"; };
 		3710C17041EA4CBA8A87A67F /* energy.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = energy.png; path = "../src/assets/images/causes-logos/energy.png"; sourceTree = "<group>"; };
 		37A3DD9C28554D4887FB9EEF /* energy.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = energy.png; path = "../src/assets/images/causes-logos/energy.png"; sourceTree = "<group>"; };
-		387454F6D7F179E6D99F5C1D /* Pods-KarmaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KarmaTests.debug.xcconfig"; path = "Target Support Files/Pods-KarmaTests/Pods-KarmaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		38AF2AA3F642AAD9B6AF84EA /* Pods-Karma-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Karma-tvOSTests/Pods-Karma-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3BD226D532F54D04AD05FE13 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBoldItalic.ttf"; path = "../src/assets/fonts/OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		3CED3B5B0BE64C12B46913E3 /* homelessness.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = homelessness.png; path = "../src/assets/images/causes-logos/homelessness.png"; sourceTree = "<group>"; };
 		3DFF1B5DF18B4784B5DC4BB3 /* circle-grey.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "circle-grey.png"; path = "../src/assets/images/general-logos/circle-grey.png"; sourceTree = "<group>"; };
@@ -163,23 +162,24 @@
 		42FDE6F26FC3401081BB186F /* fav-outline-profile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "fav-outline-profile.png"; path = "../src/assets/images/general-logos/fav-outline-profile.png"; sourceTree = "<group>"; };
 		43F61F7E3D0244A787553738 /* food-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "food-white.png"; path = "../src/assets/images/causes-logos/white/food-white.png"; sourceTree = "<group>"; };
 		4CEEE27D95D44C7995383CBB /* poverty-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "poverty-white.png"; path = "../src/assets/images/causes-logos/white/poverty-white.png"; sourceTree = "<group>"; };
+		4FFFC2E205F0DD53333ABEFC /* Pods-Karma-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Karma-tvOS/Pods-Karma-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		50487623CCD247CA9993D0A7 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../src/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		5175CF6D76544695AA6F69F5 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-BoldItalic.ttf"; path = "../src/assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		520076A4241B4310ACD470F7 /* new_cause.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = new_cause.png; path = "../src/assets/images/general-logos/new_cause.png"; sourceTree = "<group>"; };
 		55AF47E4FC49458F87008C23 /* causes-on.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "causes-on.png"; path = "../src/assets/images/nav-bar/causes-on.png"; sourceTree = "<group>"; };
-		55FE7ADB945A08F27BCBB082 /* Pods-KarmaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KarmaTests.release.xcconfig"; path = "Target Support Files/Pods-KarmaTests/Pods-KarmaTests.release.xcconfig"; sourceTree = "<group>"; };
 		573A9FCD44DA4F20A43F5EC7 /* K-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "K-logo.png"; path = "../src/assets/images/settings-logos/K-logo.png"; sourceTree = "<group>"; };
 		57DCE8D03842460CACEB8CD3 /* fav-outline-activities.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "fav-outline-activities.png"; path = "../src/assets/images/general-logos/fav-outline-activities.png"; sourceTree = "<group>"; };
 		58099CD8276B43669D4757D3 /* light_share.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = light_share.png; path = "../src/assets/images/general-logos/light_share.png"; sourceTree = "<group>"; };
+		583339F86A324E1010F15ED7 /* libPods-KarmaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KarmaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9D47AC36FF4924A26752B0 /* hands-heart.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "hands-heart.png"; path = "../src/assets/images/general-logos/hands-heart.png"; sourceTree = "<group>"; };
 		5C9EBF9DF7384A4BA7CB98E9 /* education-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "education-white.png"; path = "../src/assets/images/causes-logos/white/education-white.png"; sourceTree = "<group>"; };
+		5CE47DDEB91C12F4818163E3 /* Pods-Karma-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Karma-tvOS/Pods-Karma-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		5E2F450A090CDB53DD13F494 /* Pods-KarmaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KarmaTests.debug.xcconfig"; path = "Target Support Files/Pods-KarmaTests/Pods-KarmaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5F17B02CDA9E4805970A746E /* poverty.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = poverty.png; path = "../src/assets/images/causes-logos/poverty.png"; sourceTree = "<group>"; };
 		61B310D2618647418AFA196B /* cross.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = cross.png; path = "../src/assets/images/general-logos/cross.png"; sourceTree = "<group>"; };
 		629F029EA8FA4206B6B66B03 /* refugees.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = refugees.png; path = "../src/assets/images/causes-logos/refugees.png"; sourceTree = "<group>"; };
 		644FF9CA012E4C899BA321B0 /* activities-off.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "activities-off.png"; path = "../src/assets/images/nav-bar/activities-off.png"; sourceTree = "<group>"; };
-		6453AA500B64D06EA93D6CE2 /* Pods-Karma-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Karma-tvOS/Pods-Karma-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		6461F262F58E4297B2CB591B /* arts-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "arts-white.png"; path = "../src/assets/images/causes-logos/white/arts-white.png"; sourceTree = "<group>"; };
-		676AA01131F99E522B6C3707 /* Pods-Karma-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Karma-tvOS/Pods-Karma-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6796543B6B0F42F4A49AEF36 /* rectangle-blue.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "rectangle-blue.png"; path = "../src/assets/images/general-logos/rectangle-blue.png"; sourceTree = "<group>"; };
 		6B337A8DE3074B43A57D9D8F /* twitter-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "twitter-logo.png"; path = "../src/assets/images/general-logos/twitter-logo.png"; sourceTree = "<group>"; };
 		74A31087188445868653D80B /* export-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "export-logo.png"; path = "../src/assets/images/general-logos/export-logo.png"; sourceTree = "<group>"; };
@@ -196,14 +196,12 @@
 		935CACDF553645DD93015537 /* cog.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = cog.png; path = "../src/assets/images/general-logos/cog.png"; sourceTree = "<group>"; };
 		93641783BE514916933424F5 /* education.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = education.png; path = "../src/assets/images/causes-logos/education.png"; sourceTree = "<group>"; };
 		973D4042727E4537AA28CFD2 /* guidelines.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = guidelines.png; path = "../src/assets/images/settings-logos/guidelines.png"; sourceTree = "<group>"; };
-		978F19C50C583EFCA72078F3 /* libPods-Karma-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99A3EC475C9247BD8E03D4C7 /* activities-on.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "activities-on.png"; path = "../src/assets/images/nav-bar/activities-on.png"; sourceTree = "<group>"; };
 		9B285398E4B74E8D81E75545 /* facebook-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "facebook-logo.png"; path = "../src/assets/images/general-logos/facebook-logo.png"; sourceTree = "<group>"; };
 		9E98666635D541E0B42B725A /* peace.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = peace.png; path = "../src/assets/images/causes-logos/peace.png"; sourceTree = "<group>"; };
 		9EE705E116E54DD9866CC753 /* crisis-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "crisis-white.png"; path = "../src/assets/images/causes-logos/white/crisis-white.png"; sourceTree = "<group>"; };
 		9F6B3E92FBC842B6BAE81317 /* copy-link.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "copy-link.png"; path = "../src/assets/images/general-logos/copy-link.png"; sourceTree = "<group>"; };
 		A1E9DA88843F45CBAA2D89C2 /* badges-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "badges-logo.png"; path = "../src/assets/images/general-logos/badges-logo.png"; sourceTree = "<group>"; };
-		A2B380F83233554421AD10F9 /* libPods-KarmaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KarmaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A58B44034AE04C139233AC0E /* terms.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = terms.png; path = "../src/assets/images/settings-logos/terms.png"; sourceTree = "<group>"; };
 		A69D3385F86F45BA86093520 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-LightItalic.ttf"; path = "../src/assets/fonts/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		A7A7C78E9611476E9B709CE7 /* animals.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = animals.png; path = "../src/assets/images/causes-logos/animals.png"; sourceTree = "<group>"; };
@@ -221,18 +219,20 @@
 		C70894D985DD417DA8D70854 /* location-logo(low res).png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "location-logo(low res).png"; path = "../src/assets/images/general-logos/location-logo(low res).png"; sourceTree = "<group>"; };
 		C8F7B14B5C0F4F4C81C382E9 /* heart-red.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "heart-red.png"; path = "../src/assets/images/general-logos/heart-red.png"; sourceTree = "<group>"; };
 		CE046DB621C841ED8520679F /* health-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "health-white.png"; path = "../src/assets/images/causes-logos/white/health-white.png"; sourceTree = "<group>"; };
+		D098BD431569EA17E84500D7 /* Pods-Karma-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Karma-tvOSTests/Pods-Karma-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1BD23DB6891418E8FAAC165 /* refugees-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "refugees-white.png"; path = "../src/assets/images/causes-logos/white/refugees-white.png"; sourceTree = "<group>"; };
 		D38E72D2AF78447FA1F83BEE /* equality.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = equality.png; path = "../src/assets/images/causes-logos/equality.png"; sourceTree = "<group>"; };
 		D43C56FA30D74FB2B780C8AC /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../src/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		D4F0CF029BE84F28BB918B60 /* edit-grey.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "edit-grey.png"; path = "../src/assets/images/general-logos/edit-grey.png"; sourceTree = "<group>"; };
 		D66FF12FA23647229021A1B1 /* religious.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = religious.png; path = "../src/assets/images/causes-logos/religious.png"; sourceTree = "<group>"; };
 		D83B20281B894E0188D53868 /* peace-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "peace-white.png"; path = "../src/assets/images/causes-logos/white/peace-white.png"; sourceTree = "<group>"; };
-		D8B457EA6724252CBB640D97 /* Pods-Karma-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Karma-tvOSTests/Pods-Karma-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		D9A57CB9C71B13880FD7A70E /* libPods-Karma-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB1BC531BCDB42DA9920123F /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		DD737F3125E74D709048C510 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		DF29802BDABA44E0A547AB76 /* equality-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "equality-white.png"; path = "../src/assets/images/causes-logos/white/equality-white.png"; sourceTree = "<group>"; };
 		E5B6404CBDC24E8F8D52D41A /* edit-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "edit-white.png"; path = "../src/assets/images/general-logos/edit-white.png"; sourceTree = "<group>"; };
 		E7AF2563171245898592D2A6 /* health.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = health.png; path = "../src/assets/images/causes-logos/health.png"; sourceTree = "<group>"; };
+		E9B1745984EFF391C164F761 /* libPods-Karma.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC88241CB95249239F5174AD /* photo-plus-background.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "photo-plus-background.png"; path = "../src/assets/images/general-logos/photo-plus-background.png"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -252,7 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81421936B55B0100C3020D12 /* libPods-KarmaTests.a in Frameworks */,
+				03EE61D5F578A2B7A098B4D0 /* libPods-KarmaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +260,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D04F2B792A6FD9C4A24C5D4 /* libPods-Karma.a in Frameworks */,
+				12822277F8E9744C0AF63892 /* libPods-Karma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2FA060139A3DF396EC34F35 /* libPods-Karma-tvOS.a in Frameworks */,
+				7B746A2F61B460A42562BCCA /* libPods-Karma-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +276,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57F337F476487D67DB97CFAC /* libPods-Karma-tvOSTests.a in Frameworks */,
+				7CA5979C312EED286EBE64BE /* libPods-Karma-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,10 +319,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				29E213F2C5AF4B7C21CF6B72 /* libPods-Karma.a */,
-				338EEFADD688FC8C914D773B /* libPods-Karma-tvOS.a */,
-				978F19C50C583EFCA72078F3 /* libPods-Karma-tvOSTests.a */,
-				A2B380F83233554421AD10F9 /* libPods-KarmaTests.a */,
+				E9B1745984EFF391C164F761 /* libPods-Karma.a */,
+				1066792E15D17FC52E48E870 /* libPods-Karma-tvOS.a */,
+				D9A57CB9C71B13880FD7A70E /* libPods-Karma-tvOSTests.a */,
+				583339F86A324E1010F15ED7 /* libPods-KarmaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -466,14 +466,14 @@
 		93BB05B43AC79CEAB49930CE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				32160B7AC4201829BB5C1B75 /* Pods-Karma.debug.xcconfig */,
-				0166F9D4BCAD1DA76C085B63 /* Pods-Karma.release.xcconfig */,
-				676AA01131F99E522B6C3707 /* Pods-Karma-tvOS.debug.xcconfig */,
-				6453AA500B64D06EA93D6CE2 /* Pods-Karma-tvOS.release.xcconfig */,
-				38AF2AA3F642AAD9B6AF84EA /* Pods-Karma-tvOSTests.debug.xcconfig */,
-				D8B457EA6724252CBB640D97 /* Pods-Karma-tvOSTests.release.xcconfig */,
-				387454F6D7F179E6D99F5C1D /* Pods-KarmaTests.debug.xcconfig */,
-				55FE7ADB945A08F27BCBB082 /* Pods-KarmaTests.release.xcconfig */,
+				0D296F602DC150D4A19C6EB4 /* Pods-Karma.debug.xcconfig */,
+				024D447AF32F9BB9E690DD6B /* Pods-Karma.release.xcconfig */,
+				5CE47DDEB91C12F4818163E3 /* Pods-Karma-tvOS.debug.xcconfig */,
+				4FFFC2E205F0DD53333ABEFC /* Pods-Karma-tvOS.release.xcconfig */,
+				31E1699D46D663FB803819EE /* Pods-Karma-tvOSTests.debug.xcconfig */,
+				D098BD431569EA17E84500D7 /* Pods-Karma-tvOSTests.release.xcconfig */,
+				5E2F450A090CDB53DD13F494 /* Pods-KarmaTests.debug.xcconfig */,
+				34F61C28761E36BF7F9ECB67 /* Pods-KarmaTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -485,7 +485,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KarmaTests" */;
 			buildPhases = (
-				A32B41C73EA59AA7EF4CD10C /* [CP] Check Pods Manifest.lock */,
+				A824EA149480B8934CFADEF7 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -504,13 +504,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Karma" */;
 			buildPhases = (
-				9C9DDC7CDC3D813535A21A21 /* [CP] Check Pods Manifest.lock */,
+				32343EFD4F4CB308E584D1C8 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				35FF4EC32DFB2E68CC60E307 /* [CP] Copy Pods Resources */,
+				05295E38D61912F5AB4101DE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -525,7 +525,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Karma-tvOS" */;
 			buildPhases = (
-				EA8E80B0514DCF26640C2549 /* [CP] Check Pods Manifest.lock */,
+				AA147E0A6CCAC06D2A0C1B95 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -545,7 +545,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Karma-tvOSTests" */;
 			buildPhases = (
-				96E46BEDF8045AA04CE11D7A /* [CP] Check Pods Manifest.lock */,
+				4484C09AF2E6D8F6941D8B1F /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -743,21 +743,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		35FF4EC32DFB2E68CC60E307 /* [CP] Copy Pods Resources */ = {
+		05295E38D61912F5AB4101DE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -805,29 +791,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Karma/Pods-Karma-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		96E46BEDF8045AA04CE11D7A /* [CP] Check Pods Manifest.lock */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "Bundle React Native Code And Images";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Karma-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		9C9DDC7CDC3D813535A21A21 /* [CP] Check Pods Manifest.lock */ = {
+		32343EFD4F4CB308E584D1C8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -849,7 +827,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A32B41C73EA59AA7EF4CD10C /* [CP] Check Pods Manifest.lock */ = {
+		4484C09AF2E6D8F6941D8B1F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Karma-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A824EA149480B8934CFADEF7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -871,7 +871,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EA8E80B0514DCF26640C2549 /* [CP] Check Pods Manifest.lock */ = {
+		AA147E0A6CCAC06D2A0C1B95 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -998,7 +998,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 387454F6D7F179E6D99F5C1D /* Pods-KarmaTests.debug.xcconfig */;
+			baseConfigurationReference = 5E2F450A090CDB53DD13F494 /* Pods-KarmaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 67GK22U2T4;
@@ -1022,7 +1022,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55FE7ADB945A08F27BCBB082 /* Pods-KarmaTests.release.xcconfig */;
+			baseConfigurationReference = 34F61C28761E36BF7F9ECB67 /* Pods-KarmaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1043,7 +1043,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32160B7AC4201829BB5C1B75 /* Pods-Karma.debug.xcconfig */;
+			baseConfigurationReference = 0D296F602DC150D4A19C6EB4 /* Pods-Karma.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1064,7 +1064,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0166F9D4BCAD1DA76C085B63 /* Pods-Karma.release.xcconfig */;
+			baseConfigurationReference = 024D447AF32F9BB9E690DD6B /* Pods-Karma.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1084,7 +1084,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 676AA01131F99E522B6C3707 /* Pods-Karma-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 5CE47DDEB91C12F4818163E3 /* Pods-Karma-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1112,7 +1112,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6453AA500B64D06EA93D6CE2 /* Pods-Karma-tvOS.release.xcconfig */;
+			baseConfigurationReference = 4FFFC2E205F0DD53333ABEFC /* Pods-Karma-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1140,7 +1140,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38AF2AA3F642AAD9B6AF84EA /* Pods-Karma-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 31E1699D46D663FB803819EE /* Pods-Karma-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1167,7 +1167,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8B457EA6724252CBB640D97 /* Pods-Karma-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = D098BD431569EA17E84500D7 /* Pods-Karma-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
