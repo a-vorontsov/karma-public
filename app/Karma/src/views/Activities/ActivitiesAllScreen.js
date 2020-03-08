@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 
 const {width, height} = Dimensions.get("window");

@@ -1,8 +1,8 @@
 import React from "react";
 
-import {InfoBar} from "../buttons";
+import {GradientButton, InfoBar} from "../buttons";
 import {View, Image, Text, StyleSheet} from "react-native";
-import {RegularText} from "../text";
+import {RegularText, SemiBoldText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
@@ -202,9 +202,10 @@ const ActivityCard = props => {
                     </ReadMore>
                 </View>
             </View>
+        </View>
         );
     }
-}
+
 
 const styles = StyleSheet.create({
     dateText: {

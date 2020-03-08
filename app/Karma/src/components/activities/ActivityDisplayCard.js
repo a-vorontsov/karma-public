@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View, Image, Text, TouchableOpacity} from "react-native";
+import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
@@ -77,41 +77,33 @@ class ActivityDisplayCard extends React.Component {
                                 {props.activity.name}
                             </RegularText>
                         </View>
-                        <RegularText
-                            style={{
-                                fontSize: 15,
-                                color: Colours.lightGrey,
-                                fontWeight: "500",
-                            }}>
-                            {props.activity.location}
-                        </RegularText>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItem: "flex-end",
+                            justifyContent: "flex-end",
+                        }}>
+                        <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                            <Image
+                                source={icons.share}
+                                style={{
+                                    alignSelf: "flex-end",
+                                    width: 30,
+                                    height: 30,
+                                }}
+                                resizeMode="contain"
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
-                <View
-                    style={{
-                        flex: 1,
-                        alignItem: "flex-end",
-                        justifyContent: "flex-end",
-                    }}>
-                    <TouchableOpacity style={{alignSelf: "flex-end"}}>
-                        <Image
-                            source={icons.share}
-                            style={{
-                                alignSelf: "flex-end",
-                                width: 30,
-                                height: 30,
-                            }}
-                            resizeMode="contain"
+                <View style={CarouselStyles.itemContainer3}>
+                    <View style={[CarouselStyles.item3]}>
+                        <ActivityCard
+                            activity={props.activity}
+                            favorited={props.favorited}
                         />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={CarouselStyles.itemContainer3}>
-                <View style={[CarouselStyles.item3]}>
-                    <ActivityCard
-                        activity={props.activity}
-                        favorited={props.favorited}
-                    />
+                    </View>
                 </View>
             </View>
         );
