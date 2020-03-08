@@ -20,7 +20,7 @@ import {RegularText, SemiBoldText} from "../components/text";
 
 import {GradientButton} from "../components/buttons";
 
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");

@@ -1,7 +1,6 @@
 import React from "react";
-import Styles from "../styles/Styles";
+import Styles from "../../styles/Styles";
 import TextInput from "./TextInput";
-import Config from "react-native-config";
 import {Keyboard, View} from "react-native";
 
 const POSTCODE_REGEX = /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})$/;
@@ -29,13 +28,16 @@ export default class AddressInput extends React.Component {
     }
     passUpState() {
         const {address1, address2, city, region, postcode} = this.state;
-        this.props.onUpdate({
-            address1,
-            address2,
-            city,
-            region,
-            postcode,
-        });
+        if (address1 && city && region && postcode) {
+            this.props.onChange({
+                address1,
+                address2,
+                city,
+                region,
+                postcode,
+                valid: true,
+            });
+        }
     }
     onChangeText(event) {
         const {name, text} = event;

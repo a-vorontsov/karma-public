@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import CheckBox from "../components/CheckBox";
 import {ScrollView} from "react-native-gesture-handler";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import {RegularText, SubTitleText} from "../components/text";

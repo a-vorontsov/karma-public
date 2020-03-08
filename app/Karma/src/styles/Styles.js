@@ -50,7 +50,7 @@ const Styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     fullMinHeight: {
-        minHeight: SCREEN_HEIGHT,
+        minHeight: SCREEN_HEIGHT - StatusBar.currentHeight,
     },
     p8: {
         padding: 8,

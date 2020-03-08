@@ -23,7 +23,7 @@ import DatePicker from "react-native-date-picker";
 import {RegularText, SemiBoldText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
@@ -302,9 +302,9 @@ export default class OrgSignUpScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.state.isRegDateVisible && 
+                            {this.state.isRegDateVisible &&
                             (
- 
+
                                 <View>
                                     <DatePicker
                                         mode="date"

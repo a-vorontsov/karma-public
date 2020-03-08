@@ -16,7 +16,7 @@ import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import Colours from "../styles/Colours";
 
 const {width, height} = Dimensions.get("window");
