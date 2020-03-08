@@ -24,17 +24,19 @@ const PageHeader = props => {
                     flexDirection: "row",
                     alignItems: "center",
                 }}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image
-                        style={{
-                            flex: 1,
-                            width: 24,
-                            height: 24,
-                            resizeMode: "contain",
-                        }}
-                        source={require("../assets/images/general-logos/back-arrow.png")}
-                    />
-                </TouchableOpacity>
+                {props.disableBack ? null : (
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Image
+                            style={{
+                                flex: 1,
+                                width: 24,
+                                height: 24,
+                                resizeMode: "contain",
+                            }}
+                            source={require("../assets/images/general-logos/back-arrow.png")}
+                        />
+                    </TouchableOpacity>
+                )}
                 <RegularText
                     style={{
                         fontSize: 24,

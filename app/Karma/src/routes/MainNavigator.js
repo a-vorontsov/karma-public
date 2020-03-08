@@ -16,6 +16,7 @@ import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
 import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
 import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
 import LogOutScreen from "../views/Settings/LogOutScreen";
+import NotificationsScreen from "../views/NotificationsScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
@@ -58,6 +59,9 @@ const MainNavigator = createStackNavigator(
         },
         CreateActivity: {
             screen: CreateActivityScreen,
+        },
+        Notifications: {
+            screen: NotificationsScreen,
         },
     },
     {
