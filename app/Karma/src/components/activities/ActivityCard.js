@@ -71,11 +71,7 @@ const ActivityCard = props => {
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>
                 <Image
-                    source={
-                        Math.random() >= 0.5 // TODO - use real data
-                            ? require("../../assets/images/general-logos/hands-heart.png")
-                            : require("../../assets/images/general-logos/globe.png")
-                    }
+                    source={{uri: `https://picsum.photos/seed/${Math.random()}/800/200`}}
                     style={{
                         flex: 1,
                         width: null,

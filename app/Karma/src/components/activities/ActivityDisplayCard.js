@@ -64,7 +64,7 @@ class ActivityDisplayCard extends React.Component {
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    Name
+                                    {props.activity.name}
                                 </RegularText>
                                 <Image />
                             </View>
@@ -74,7 +74,7 @@ class ActivityDisplayCard extends React.Component {
                                     color: Colours.lightGrey,
                                     fontWeight: "500",
                                 }}>
-                                {props.activity.name}
+                                {props.activity.location}
                             </RegularText>
                         </View>
                     </View>
