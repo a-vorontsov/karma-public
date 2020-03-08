@@ -15,32 +15,42 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
  * Any data that does not need to be updated can and should be
  * left out from the POST request to avoid unnecessary computation.<br/>
  * URL example: POST http://localhost:8000/profile/edit/
- * @param {Integer} req.body.userId
- * @param {boolean} req.body.isIndividual please specify true if the user is an indiv, otherwise set to false
- * @param {any} req.body.valueToBeChanged a value / variable that's to be changed on the user's profile<br/>
- * Here are some examples of an appropriate request json:
-<pre>
+ * @param {number} req.body.userId the user's id, as in every request
+ * @param {string} req.body.authToken the user's valid authToken, as in every request
+ * @param {object} req.body.data.user if anything for user has changed
+ * @param {object} req.body.data.individual if anything for indiv prof has changed
+ * @param {object} req.body.data.organisation if anything for org prof has changed
+ * @param {object} req.body Here are some examples of an appropriate request json:
+<pre><code>
     // example 1 (user wishes to change username, phoneNumber)
-  [
-    "userId": 123,
-    "authToken": "secureToken",
-    "isIndividual": true,
-    "username": "newUserName",
-    "phoneNumber": "newPhoneNumber",
-  ]
+    &#123;
+        "userId": 123,
+        "authToken": "secureToken",
+        "data": &#123;
+            "user": &#123;
+                "username": "newUserName",
+            &#125;
+            "individual": &#123;
+                "phoneNumber": "newPhoneNumber",
+            &#125;
+        &#125;
+    &#125;
     // if this is all that the user changed, only send this much
 
     // example 2 (org moved HQ)
-  [
-    "userId": 123,
-    "authToken": "secureToken",
-    "isIndividual": false,
-    "phoneNumber": "newPhoneNumber",
-    "addressLine1": "newAddressLine1",
-    "postCode": "newPostCode",
-  ]
+    &#123;
+        "userId": 123,
+        "authToken": "secureToken",
+        "data": &#123;
+            "organisation": &#123;
+                "phoneNumber": "newPhoneNumber",
+                "addressLine1": "newAddressLine1",
+                "postCode": "newPostCode",
+            &#125;
+        &#125;
+    &#125;
     // if city/country did not change, this is all that needs to be sent
-</pre>
+</  code></pre>
  * @returns
  *  status: 200, description: Success, go to view profile endpoint to GET updated record.<br/>
  *  status: 500, description: error <br/><br/><br/><br/>
@@ -49,65 +59,66 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
-        if (req.body.username !== undefined) {
-            await userRepo.updateUsername(req.body.userId, req.body.username);
+        // update user profile if specified in request
+        if (req.body.data.user !== undefined) {
+            await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
-        // update individual / organisation profile
-        if (req.body.isIndividual === true) {
+        // update individual OR organisation profile if specified in request
+        if (req.body.data.individual !== undefined) {
             const indivResult = await indivRepo.findByUserID(req.body.userId);
             const individual = indivResult.rows[0];
             const indivCopy = {...individual};
 
             const addressResult = await addressRepo.findById(individual.address_id);
-            await updateAddress(req, addressResult.rows[0]);
+            await updateAddress(req.body.data.individual, addressResult.rows[0]);
 
-            if (req.body.firstName === undefined) {
-                individual.firstname = req.body.firstName;
+            if (req.body.data.individual.firstName !== undefined) {
+                individual.firstname = req.body.data.individual.firstName;
             }
-            if (req.body.surName === undefined) {
-                individual.lastname = req.body.surName;
+            if (req.body.data.individual.surName !== undefined) {
+                individual.lastname = req.body.data.individual.surName;
             }
-            if (req.body.phoneNumber === undefined) {
-                individual.phone = req.body.phoneNumber;
+            if (req.body.data.individual.phoneNumber !== undefined) {
+                individual.phone = req.body.data.individual.phoneNumber;
             }
-            if (req.body.gender === undefined) {
-                individual.gender = req.body.gender;
+            if (req.body.data.individual.gender !== undefined) {
+                individual.gender = req.body.data.individual.gender;
             }
 
             if (individual !== indivCopy) {
                 await indivRepo.update(individual);
             }
-        } else {
+        } else if (req.body.data.organisation !== undefined) {
             const orgResult = await orgRepo.findByUserID(req.body.userId);
             const organisation = orgResult.rows[0];
             const orgCopy = {...organisation};
 
             const addressResult = await addressRepo.findById(organisation.address_id);
-            await updateAddress(req, addressResult.rows[0]);
+            await updateAddress(req.body.data.organisation, addressResult.rows[0]);
 
-            if (req.body.name === undefined) {
-                organisation.org_name = req.body.name;
+            if (req.body.data.organisation.name !== undefined) {
+                organisation.org_name = req.body.data.organisation.name;
             }
-            if (req.body.organisationNumber === undefined) {
-                organisation.org_number = req.body.organisationNumber;
+            if (req.body.data.organisation.organisationNumber !== undefined) {
+                organisation.org_number = req.body.data.organisation.organisationNumber;
             }
-            if (req.body.organisationType === undefined) {
-                organisation.org_type = req.body.organisationType;
+            if (req.body.data.organisation.organisationType !== undefined) {
+                organisation.org_type = req.body.data.organisation.organisationType;
             }
-            if (req.body.pocFirstName === undefined) {
-                organisation.poc_firstname = req.body.pocFirstName;
+            if (req.body.data.organisation.pocFirstName !== undefined) {
+                organisation.poc_firstname = req.body.data.organisation.pocFirstName;
             }
-            if (req.body.pocLastName === undefined) {
-                organisation.poc_lastname = req.body.pocLastName;
+            if (req.body.data.organisation.pocLastName !== undefined) {
+                organisation.poc_lastname = req.body.data.organisation.pocLastName;
             }
-            if (req.body.phoneNumber === undefined) {
-                organisation.phone = req.body.phoneNumber;
+            if (req.body.data.organisation.phoneNumber !== undefined) {
+                organisation.phone = req.body.data.organisation.phoneNumber;
             }
-            if (req.body.lowIncome === undefined) {
-                organisation.low_income = req.body.lowIncome;
+            if (req.body.data.organisation.lowIncome !== undefined) {
+                organisation.low_income = req.body.data.organisation.lowIncome;
             }
-            if (req.body.exempt === undefined) {
-                organisation.exempt = req.body.exempt;
+            if (req.body.data.organisation.exempt !== undefined) {
+                organisation.exempt = req.body.data.organisation.exempt;
             }
 
             if (organisation !== orgCopy) {
@@ -127,25 +138,26 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 /**
  * Update address if any update params are specified
  * in request object.
- * @param {Object} req
+ * @param {Object} profile individual or organisation object in request
  * @param {Object} address
  */
-async function updateAddress(req, address) {
+async function updateAddress(profile, address) {
     const addressObj = {...address};
-    if (req.body.addressLine1 === undefined) {
-        addressObj.address_1 = req.body.addressLine1;
+
+    if (profile.addressLine1 !== undefined ) {
+        addressObj.address_1 = req.body.data.individual.addressLine1;
     }
-    if (req.body.addressLine2 === undefined) {
-        addressObj.address_2 = req.body.addressLine2;
+    if (profile.addressLine2 !== undefined ) {
+        addressObj.address_2 = req.body.data.individual.addressLine2;
     }
-    if (req.body.postCode === undefined) {
-        addressObj.postcode = req.body.postCode;
+    if (profile.postCode !== undefined ) {
+        addressObj.postcode = profile.postCode;
     }
-    if (req.body.townCity === undefined) {
-        addressObj.city = req.body.townCity;
+    if (profile.townCity !== undefined ) {
+        addressObj.city = profile.townCity;
     }
-    if (req.body.countryState === undefined) {
-        addressObj.region = req.body.countryState;
+    if (profile.countryState !== undefined ) {
+        addressObj.region = profile.countryState;
     }
 
     if (addressObj !== address) {
@@ -154,3 +166,4 @@ async function updateAddress(req, address) {
 }
 
 module.exports = router;
+
