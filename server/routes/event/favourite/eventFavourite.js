@@ -4,7 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
-const favouriteRepository = require("../models/databaseRepositories/favouriteRepository");
+const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>

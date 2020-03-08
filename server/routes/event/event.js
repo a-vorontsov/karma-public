@@ -7,13 +7,14 @@ const router = express.Router();
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const util = require("../../util/util");
-const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
-const individualRepository = require("../../models/databaseRepositories/individualRepository");
-const eventSorter = require("../../modules/sorting/event");
-const paginator = require("../../modules/pagination");
-const eventSignupRoute = require("../eventSignup");
-const eventFavouriteRoute = require("../eventFavourite");
+const eventSignupRoute = require("./signup/eventSignup");
+const eventFavouriteRoute = require("./favourite/eventFavourite");
+const eventSelectRoute = require("./select/eventSelect");
 const validation = require("../../modules/validation");
+
+router.use("/", eventSignupRoute);
+router.use("/", eventFavouriteRoute);
+router.use("/", eventSelectRoute);
 
 /**
  * Endpoint called whenever a user creates a new event.<br/>
@@ -22,26 +23,29 @@ const validation = require("../../modules/validation");
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
 {
-    "address": {
-        "address1": "Line 1",
-        "address2": "Line 2",
-        "postcode": "14 aa",
-        "city": "LDN",
-        "region": "LDN again",
-        "lat": 0.3,
-        "long": 100.50
-    },
-    "name": "event",
-    "womenOnly": true,
-    "spots": 3,
-    "addressVisible": true,
-    "minimumAge": 16,
-    "photoId": true,
-    "physical": true,
-    "addInfo": true,
-    "content": "fun event yay",
-    "date": "2004-10-19 10:23:54",
-    "userId": 3
+    "message": "New event created!"
+    "data": {
+        "address": {
+            "address1": "Line 1",
+            "address2": "Line 2",
+            "postcode": "14 aa",
+            "city": "LDN",
+            "region": "LDN again",
+            "lat": 0.3,
+            "long": 100.50
+        },
+        "name": "event",
+        "womenOnly": true,
+        "spots": 3,
+        "addressVisible": true,
+        "minimumAge": 16,
+        "photoId": true,
+        "physical": true,
+        "addInfo": true,
+        "content": "fun event yay",
+        "date": "2004-10-19 10:23:54",
+        "userId": 3
+    }
  }
  </pre>
  * "address" can be substituted with "addressId: {Integer}" in which case the existing address is reused.
@@ -70,7 +74,7 @@ router.post("/", async (req, res) => {
                 return res
                     .status(400)
                     .send(
-                        "Event creation limit reached; user has already created 3 events this month.",
+                        {message: "Event creation limit reached; user has already created 3 events this month."},
                     );
             }
         }
@@ -144,263 +148,11 @@ router.post("/update/:id", (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
-
-/**
- * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
- * route {GET} /event
- * @param {Number} req.query.userId - ID of user logged in
- * @param {Array} req.query.filter - all filters required as an array of strings
- * @returns {Object}
- *  status: 200, description: Array of all event objects sorted by time
- *  and distance from the user (distance measured in miles), along with pagination information as follows:
- <pre>
- {
-  "meta": {
-     "currentPage": 2,
-       "pageCount": 1,
-       "pageSize": 2,
-       "count": 4
-   },
-   "data": [
-       {
-           "eventId": 1,
-           "name": "Community help centre",
-           "womenOnly": false,
-           "spots": 3,
-           "addressVisible": true,
-           "minimumAge": 18,
-           "photoId": false,
-           "physical": false,
-           "addInfo": true,
-           "content": "help people at the community help centre because help is good",
-           "date": "2020-03-25T19:10:00.000Z",
-           "eventCreatorId": 1,
-           "address1": "nearby road",
-           "address2": null,
-           "postcode": "whatever",
-           "city": "London",
-           "region": null,
-           "lat": 51.4161220,
-           "long": -0.1866410,
-            "distance": 0.18548890708299523
-       },
-       {
-           "eventId": 2,
-           "name": "Picking up trash",
-           "womenOnly": false,
-           "spots": 5,
-           "addressVisible": true,
-           "minimumAge": 18,
-           "photoId": false,
-           "physical": false,
-           "addInfo": true,
-           "content": "small class to teach other people how to pick themselves up",
-           "date": "2020-03-25T19:10:00.000Z",
-           "eventCreatorId": 1,
-           "address1": "uni road",
-           "address2": null,
-           "postcode": "whatever",
-           "city": "London",
-           "region": null,
-           "lat": 51.5114070,
-           "long": -0.1159050,
-           "distance": 7.399274608089304
-       }
-   ]
- }
- </pre>
- *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
- *  status: 404, description: if userID doesnt belong to any user <br/>
- *  status: 500, description: Most probably a database error occured
- *  @function
- *  @name Get "All" Activites tab
- */
-router.get("/", async (req, res) => {
-    const userId = req.query.userId;
-    const filters = req.query.filter;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
-    }
-    const user = checkUserIdResult.user;
-    eventRepository
-        .getEventsWithLocation(filters)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) return res.status(404).send("No events");
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).json(paginator.getPageData(req, events));
-        })
-        .catch(err => res.status(500).send(err));
-});
-
-/**
- * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
- * route {GET} event/causes
- * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!womenOnly&filter[]=physical
- * @param {Integer} req.query.userId - ID of user logged in
- * @param {Array} req.query.filter - all filters required as an array of strings
- * @returns {any}
- *  status: 200, description: Array of all event objects grouped by causes that were selected by user <br/>
- *  Each cause group is sorted by time and distance from the user (distance measured in miles) as follows:
- *  <pre>
-{
-"peace": [
-        {
-            "id": 3,
-            "name": "Staying at Home",
-            "addressId": 1,
-            "womenOnly": false,
-            "spots": 1,
-            "addressVisible": true,
-            "minimumAge": 18,
-            "photoId": false,
-            "addInfo": false,
-            "content": "sleeping at home",
-            "date": "2020-03-25T19:10:00.000Z",
-            "causeId": 3,
-            "causeName": "peace",
-            "causeDescription": "not dealing with people",
-            "eventCreatorId": 1,
-            "address1": "pincot road",
-            "address2": null,
-            "postcode": "SW19 2LF",
-            "city": "London",
-            "region": null,
-            "lat": 51.4149160,
-            "long": -0.1904870,
-            "distance": 0
-        }
-    ],
-    "gardening": [
-        {
-            "id": 1,
-            "name": "Close to Home",
-            "addressId": 3,
-            "womenOnly": false,
-            "spots": 3,
-            "addressVisible": true,
-            "minimumAge": 18,
-            "photoId": false,
-            "addInfo": false,
-            "content": "very very close from home",
-            "date": "2020-03-25T19:10:00.000Z",
-            "causeId": 1,
-            "causeName": "gardening",
-            "causeDescription": "watering plants and dat",
-            "eventCreatorId": 1,
-            "address1": "nearby road",
-            "address2": null,
-            "postcode": "whatever",
-            "city": "London",
-            "region": null,
-            "lat": 51.4161220,
-            "long": -0.1866410,
-            "distance": 0.18548890708299523
-        }
-    ]
-}
- *  status: 400, description: if userID param is not specified or in wrong format/NaN
- *  status: 404, description: if userID doesnt belong to any user
- *  status: 500, description: Most probably a database error occured
- *  @function
- *  @name Get "Causes" Activites tab
- *  */
-router.get("/causes", async (req, res) => {
-    const userId = req.query.userId;
-    const filters = req.query.filter;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
-    }
-    const user = checkUserIdResult.user;
-    selectedCauseRepository
-        .findEventsSelectedByUser(userId, filters)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) {
-                return res.status(404).send("No causes selected by user");
-            }
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).json(eventSorter.groupByCause(events));
-        })
-        .catch(err => res.status(500).send(err));
-});
-
-/**
- * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
- * route {GET} event/favourites
- * @param {Number} req.query.userId - ID of user logged in
- * @returns
- *  status: 200, description: Array of all event objects favourited by the user <br/>
- *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
- *  status: 404, description: if userID doesnt belong to any user <br/>
- *  status: 500, description: Most probably a database error occured
- *  @function
- *  @name Get "Favourites" Activites tab
- *  */
-router.get("/favourites", async (req, res) => {
-    const userId = req.query.userId;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
-    }
-    const user = checkUserIdResult.user;
-    individualRepository
-        .findFavouriteEvents(userId)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) {
-                return res.status(404).send("No events favourited by user");
-            }
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).json(events);
-        })
-        .catch(err => res.status(500).send(err));
-});
-
-/**
- * Endpoint called when "Going" tab is pressed in Activities homepage <br/>
- * route {GET} event/going
- * @param {Integer} req.query.userId - ID of user logged in
- * @returns
- *  status: 200, description: Array of all event objects that user is going to <br/>
- *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
- *  status: 404, description: if userID doesnt belong to any user <br/>
- *  status: 500, description: Most probably a database error occured
- *  @function
- *  @name Get "Going" Activites tab
- *  */
-router.get("/going", async (req, res) => {
-    const userId = req.query.userId;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send(checkUserIdResult.message);
-    }
-    const user = checkUserIdResult.user;
-    individualRepository
-        .findGoingEvents(userId)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) {
-                return res.status(404).send("User not going to any events");
-            }
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).json(events);
-        })
-        .catch(err => res.status(500).send(err));
-});
-
 /**
  * Endpoint called whenever a user requests information about an event.
  * URL example: GET http://localhost:8000/event/5
- * @param {Integer} id - id of requested event.
- * @returns {any}
+ * @param {Number} id - id of requested event.
+ * @returns {object}
  *  status: 200, description: Information regarding the event containing the same properties as this example
  <pre>
  {
@@ -449,8 +201,5 @@ router.get("/:id", async (req, res) => {
         res.status(500).send(e);
     }
 });
-
-router.use("/", eventSignupRoute);
-router.use("/", eventFavouriteRoute);
 
 module.exports = router;

@@ -1,13 +1,13 @@
 const request = require('supertest');
-const app = require('../app');
-const testHelpers = require("../test/testHelpers");
-const util = require("../util/util");
-const signupRepository = require("../models/databaseRepositories/signupRepository");
-const eventRepository = require("../models/databaseRepositories/eventRepository");
+const app = require('../../../app');
+const testHelpers = require("../../../test/testHelpers");
+const util = require("../../../util/util");
+const signupRepository = require("../../../models/databaseRepositories/signupRepository");
+const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 
-jest.mock("../models/databaseRepositories/eventRepository");
-jest.mock("../models/databaseRepositories/signupRepository");
-jest.mock("../util/util");
+jest.mock("../../../models/databaseRepositories/eventRepository");
+jest.mock("../../../models/databaseRepositories/signupRepository");
+jest.mock("../../../util/util");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
