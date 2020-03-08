@@ -20,10 +20,6 @@ const icons = {
 const ActivityCard = props => {
     const navigation = useNavigation();
 
-    setFav = handlePress => {
-        return (favorited = false);
-    };
-
     _renderTruncatedFooter = handlePress => {
         return (
             <Text
@@ -95,7 +91,7 @@ const ActivityCard = props => {
                                         resizeMode: "contain",
                                         marginRight: 10,
                                     }}
-                                    onPress={this.setFav(!props.favorited)}
+                                    // onPress={this.setFav(!props.favorited)}
                                 />
                             </TouchableOpacity>
                         </View>
