@@ -17,18 +17,21 @@ import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import TextInput from "../components/TextInput";
+import EditableText from "../components/EditableText";
 import Colours from "../styles/Colours";
 
-const {width} = Dimensions.get("window");
-const formWidth = 0.8 * width;
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
+const formWidth = 0.8 * SCREEN_WIDTH;
+const HALF = formWidth/2;
+
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
-    badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     calendar: require("../assets/images/general-logos/calendar-dark.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     new_cause: require("../assets/images/general-logos/new_cause.png"),
-    ribbon: require("../assets/images/general-logos/k-ribbon.png"),
+    ribbon: require("../assets/images/general-logos/ribbon.png"),
+    orange_circle: require("../assets/images/general-logos/orange-circle.png")
 };
 
 class ProfileEditScreen extends Component {
@@ -37,6 +40,12 @@ class ProfileEditScreen extends Component {
         this.state = {
             womenOnlyValue: false,
             distance: 90,
+            name: "Edit",
+            username: "Username",
+            location: "Location",
+            bio: "this is your bio lorem ipsum and such",
+            causes: ["Cause1", "Cause2"],
+            points: 1
         };
         this.onChangeText = this.onChangeText.bind(this);
     }
@@ -63,7 +72,7 @@ class ProfileEditScreen extends Component {
                             flex: 1,
                             backgroundColor: Colours.blue,
                             height: 45,
-                            width: width,
+                            width: SCREEN_WIDTH,
                             flexDirection: "row",
                         }}
                     />
@@ -72,7 +81,7 @@ class ProfileEditScreen extends Component {
                             style={{
                                 flex: 1,
                                 backgroundColor: Colours.blue,
-                                width: width,
+                                width: SCREEN_WIDTH,
                                 justifyContent: "flex-start",
                                 flexDirection: "row-reverse",
                             }}>
@@ -93,7 +102,7 @@ class ProfileEditScreen extends Component {
                                 flex: 1,
                                 backgroundColor: Colours.blue,
                                 height: 160,
-                                width: width,
+                                width: SCREEN_WIDTH,
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 paddingRight: 30,
@@ -122,19 +131,24 @@ class ProfileEditScreen extends Component {
                                 />
                             </PhotoUpload>
                             <View>
-                                <RegularText style={styles.nameText}>
-                                    EDIT
-                                </RegularText>
+                                <View style={{width: HALF}}>
+                                    <EditableText 
+                                        text={this.state.name} 
+                                        style={[styles.nameText, {position:"absolute", top: -35}]} 
+                                        onChange={val => this.setState({ name: val })}/>
+                                </View>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                     }}>
-                                    <Text style={styles.usernameText}>
-                                        Username
-                                    </Text>
-                                    <Text style={styles.locationText}>
-                                        Location
-                                    </Text>
+                                    <EditableText 
+                                        text={this.state.username} 
+                                        style={styles.usernameText} 
+                                        onChange={val => this.setState({ username: val })}/>
+                                    <EditableText 
+                                        text={this.state.location} 
+                                        style={styles.locationText} 
+                                        onChange={val => this.setState({ location: val })}/>
                                 </View>
                                 <View
                                     style={{
@@ -142,11 +156,7 @@ class ProfileEditScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                    <View style={styles.pointContainer}>
-                                        <Image
-                                            source={icons.badge}
-                                            style={{height: 60, width: 60}}
-                                        />
+                                    <View style={[styles.pointContainer]}>
                                         <Image
                                             source={icons.ribbon}
                                             style={{
@@ -155,6 +165,14 @@ class ProfileEditScreen extends Component {
                                                 position: "absolute",
                                             }}
                                         />
+                                        <Image
+                                            source={icons.orange_circle}
+                                            style={{height: 25, width: 25, left: 45, top: -8, position:"absolute"}}
+                                        />
+                                        <RegularText
+                                            source={icons.orange_circle}
+                                            style={{color: Colours.white, height: 25, width: 25, left: 53, top: -5, position:"absolute"}}
+                                        >{this.state.points}</RegularText>
                                     </View>
                                     <TouchableOpacity>
                                         <Image
@@ -255,33 +273,14 @@ class ProfileEditScreen extends Component {
                                         />
                                     </View>
                                 </View>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "flex-end",
-                                        justifyContent: "flex-end",
-                                    }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Bio
-                                    </RegularText>
-                                </View>
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        flexDirection: "row",
-                                        justifyContent: "center",
-                                    }}>
-                                    <TextInput
-                                        inputRef={ref => (this.bio = ref)}
-                                        placeholder="this is your bio"
-                                        autoCapitalize="none"
-                                        onChange={this.onChangeText}
-                                        name="bio"
-                                        onSubmitEditing={() =>
-                                            this.password.focus()
-                                        }
-                                        showError={false}
-                                    />
+                                <RegularText style={styles.bioHeader}>
+                                    Bio
+                                </RegularText>
+                                <View style={{flexWrap: "wrap"}}>
+                                    <EditableText 
+                                        text={this.state.bio} 
+                                        style={styles.contentText} 
+                                        onChange={val => this.setState({ bio: val })}/>
                                 </View>
                                 <View
                                     style={{
@@ -308,20 +307,16 @@ class ProfileEditScreen extends Component {
                         </View>
                         <View
                             style={{
-                                flex: 5,
+                                height: 0.08 * SCREEN_HEIGHT,
+                                justifyContent: "flex-end",
+                                alignItems: "center",
+                                marginBottom: 30,
                                 backgroundColor: Colours.white,
-                                paddingVertical: 25,
                             }}>
-                            <View
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}>
-                                <GradientButton
+                            <View style={{width: formWidth}}>
+                                <GradientButton 
                                     onPress={() => navigate("Profile")}
-                                    title="Update"
-                                    width={350}
-                                />
+                                    title="Update" />
                             </View>
                         </View>
                     </SafeAreaView>
