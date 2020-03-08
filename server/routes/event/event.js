@@ -91,7 +91,7 @@ router.post("/", async (req, res) => {
         const eventResult = await eventRepository.insert(event);
         res.status(200).send({
             message: "Event created successfully",
-            data: eventResult.rows[0]
+            data: eventResult.rows[0],
         });
     } catch (e) {
         console.log(e);
@@ -138,7 +138,7 @@ router.post("/", async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", async(req, res) => {
+router.post("/update/:id", async (req, res) => {
     const address = req.body.address;
     const event = req.body;
     const validationResult = validation.validateEvent(event);
@@ -157,7 +157,7 @@ router.post("/update/:id", async(req, res) => {
         res.status(200).send({
             message: "Event updated successfully",
             data: updateEventResult.rows[0],
-        })
+        });
     } catch (e) {
         console.log(e);
         res.status(500).send({message: e.message});
@@ -217,7 +217,7 @@ router.get("/:id", async (req, res) => {
             data: {
                 ...event,
                 address: address,
-            }
+            },
         });
     } catch (e) {
         console.log(e);

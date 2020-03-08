@@ -117,7 +117,7 @@ router.post('/:event_id/signUp/update', async (req, res) => {
         const signupRequest = req.body;
         signupRequest.event_id = event_id;
         const signupResult = await signupRepository.update(signupRequest);
-        res.status(200).send({message: "Signup updated successfully", data: {signup: signupResult.rows[0]},});
+        res.status(200).send({message: "Signup updated successfully", data: {signup: signupResult.rows[0]}});
     } catch (e) {
         console.log("Error while updating signup: " + e.message);
         res.status(500).send({

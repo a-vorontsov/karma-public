@@ -104,7 +104,7 @@ router.get("/", async (req, res) => {
             res.status(200).send({
                 message: "Events fetched successfully",
                 data: paginator.getPageData(req, events),
-            })
+            });
         })
         .catch(err => res.status(500).send({message: err.message}));
 });
@@ -203,7 +203,7 @@ router.get("/causes", async (req, res) => {
             eventSorter.sortByDistanceFromUser(events, user);
             res.status(200).send({
                 message: "Events fetched successfully",
-                data: eventSorter.groupByCause(events)
+                data: eventSorter.groupByCause(events),
             });
         })
         .catch(err => res.status(500).send({message: err.message}));
@@ -233,7 +233,7 @@ router.get("/favourites", async (req, res) => {
         .then(result => {
             const events = result.rows;
             if (events.length === 0) {
-                return res.status(404).send({message:"No events favourited by user"});
+                return res.status(404).send({message: "No events favourited by user"});
             }
             eventSorter.sortByTime(events);
             eventSorter.sortByDistanceFromUser(events, user);
