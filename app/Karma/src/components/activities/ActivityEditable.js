@@ -24,6 +24,8 @@ const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
     dots: require("../../assets/images/general-logos/triple-dot-blue.png"),
+    calendar: require("../../assets/images/general-logos/calendar-light.png"),
+    location: require("../../assets/images/general-logos/location-logo.png"),
 };
 
 const ActivityEditable = props => {
@@ -113,11 +115,69 @@ const ActivityEditable = props => {
                         Activity Name
                     </RegularText>
                 </View>
+                <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "flex-start",
+                            }}>
+                            <Image
+                                source={icons.calendar}
+                                style={{
+                                    alignSelf: "flex-start",
+                                    justifyContent: "center",
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 10,
+                                }}
+                                resizeMode="contain"
+                            />
+                            <View>
+                                <RegularText
+                                    style={{
+                                        fontSize: 18,
+                                        color: Colours.black,
+                                        fontWeight: "500",
+                                    }}>
+                                    Full Date
+                                </RegularText>
+                                <RegularText
+                                    style={{
+                                        fontSize: 15,
+                                        color: Colours.lightGrey,
+                                        fontWeight: "500",
+                                    }}>
+                                    Full Time
+                                </RegularText>
+                            </View>
+                        </View>
+                        <View style={[Styles.pv16, {flexDirection: "row"}]}>
+                            <Image
+                                source={icons.location}
+                                style={{
+                                    alignSelf: "flex-start",
+                                    justifyContent: "center",
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 10,
+                                }}
+                                resizeMode="contain"
+                            />
+                            <View>
+                                <RegularText
+                                    style={{
+                                        fontSize: 18,
+                                        color: Colours.black,
+                                        fontWeight: "500",
+                                    }}>
+                                    Full Location
+                                </RegularText>
+                            </View>
+                        </View>
             </View>
         </View>
-                </View>
-            </View>
         </View>
+    </View>
+</View>
     );
 };
 
