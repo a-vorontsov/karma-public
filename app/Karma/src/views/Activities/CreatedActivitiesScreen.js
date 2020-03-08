@@ -30,9 +30,11 @@ class CreatedActivitiesScreen extends Component {
                 <SafeAreaView style={[Styles.ph24, Styles.pv8]}>
                     <PageHeader title="Your Activities" />
                 </SafeAreaView>
-                <ScrollView>
-                    <ActivityEditable />
-                    <ActivityEditable />
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
+                        <ActivityEditable />
+                        <ActivityEditable />
+                    </View>
                 </ScrollView>
             </View>
         );
