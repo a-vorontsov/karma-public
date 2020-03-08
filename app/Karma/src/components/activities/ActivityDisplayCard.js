@@ -52,7 +52,7 @@ const ActivityDisplayCard = props => {
                                     color: Colours.black,
                                     fontWeight: "500",
                                 }}>
-                                Name
+                                {props.activity.name}
                             </RegularText>
                             <Image />
                         </View>
@@ -62,7 +62,7 @@ const ActivityDisplayCard = props => {
                                 color: Colours.lightGrey,
                                 fontWeight: "500",
                             }}>
-                            Location
+                            {props.activity.location}
                         </RegularText>
                     </View>
                 </View>
@@ -87,7 +87,7 @@ const ActivityDisplayCard = props => {
             </View>
             <View style={CarouselStyles.itemContainer3}>
                 <View style={[CarouselStyles.item3]}>
-                    <ActivityCard favorited={props.favorited} />
+                    <ActivityCard activity={props.activity} favorited={props.favorited} />
                 </View>
             </View>
         </View>

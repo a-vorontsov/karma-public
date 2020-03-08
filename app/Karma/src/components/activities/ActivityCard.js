@@ -17,6 +17,28 @@ const icons = {
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+
+function getMonthName(date, long=false) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    var name = monthNames[date.getMonth()];
+    if(!long){
+        name = name.substring(0,3);
+    };
+    return name;
+}
+
 const ActivityCard = props => {
     const navigation = useNavigation();
 
@@ -39,7 +61,7 @@ const ActivityCard = props => {
             <View style={[Styles.pb24, Styles.bottom]}>
                 <Image
                     source={
-                        props.individual
+                        Math.random() >= 0.5 // TODO - use real data
                             ? require("../../assets/images/general-logos/hands-heart.png")
                             : require("../../assets/images/general-logos/globe.png")
                     }
@@ -86,7 +108,7 @@ const ActivityCard = props => {
                         color: "white",
                     }}>
                     {" "}
-                    MON
+                    {props.activity.date.getDate()}
                 </RegularText>
                 <RegularText
                     style={{
@@ -101,15 +123,15 @@ const ActivityCard = props => {
                         color: "white",
                     }}>
                     {" "}
-                    DAY
+                    {getMonthName(props.activity.date)}
                 </RegularText>
                 <View>
                     <View
                         style={{
                             flexDirection: "row",
                         }}>
-                        <InfoBar title="TIME" image={icons.clock} />
-                        <InfoBar title="0 SPOTS LEFT" image={icons.people} />
+                        <InfoBar title={formatAMPM(props.activity.date)} image={icons.clock} />
+                        <InfoBar title={`${props.activity.remaining_spots} SPOTS LEFT`} image={icons.people} />
                         <View
                             style={{
                                 flex: 1,
@@ -140,21 +162,14 @@ const ActivityCard = props => {
                             fontSize: 20,
                             marginVertical: 8,
                         }}>
-                        Activity Name
+                        {props.activity.name}
                     </RegularText>
                 </View>
                 <View>
                     <ReadMore
                         numberOfLines={2}
                         renderTruncatedFooter={this._renderTruncatedFooter}>
-                        <RegularText>
-                            Activity description, consectetur adip isicing elit,
-                            sed do eiusm ut labore et dolore magna aliqua
-                            consectetur adip isicing elit, sed do eiusm ut
-                            labore et dolore magna aliqua consectetur adip
-                            isicing elit, sed do eiusm ut labore et dolore magna
-                            aliqua
-                        </RegularText>
+                        <RegularText>{props.activity.description}</RegularText>
                     </ReadMore>
                 </View>
             </View>
