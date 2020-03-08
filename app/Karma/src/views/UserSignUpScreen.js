@@ -58,7 +58,6 @@ class SignUpScreen extends React.Component {
         return user;
     }
     signUserUp = async () => {
-        console.log("pressed");
         const user = this.createUser();
         await request
             .post("http://localhost:8000/register/user")
