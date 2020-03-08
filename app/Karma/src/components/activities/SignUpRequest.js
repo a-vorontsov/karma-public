@@ -24,21 +24,21 @@ export default class SignUpRequest extends React.Component {
                         </RegularText>
                     </TouchableOpacity>
                     <View style={{flexDirection:"row", justifyContent: "space-evenly"}}>
-                        <TouchableOpacity style={{width: 50, justifyContent:"center", alignItems:"flex-end"}}>
+                        <TouchableOpacity style={{width: 30, paddingRight: 15, justifyContent:"flex-end", alignItems: "flex-end"}}>
                             <Image
                                 source={icons.check}
-                                style={{height:30, alignSelf:"center"}}
-                                resizeMode="contain"
                                 // onPress={() => APPROVE}
+                                style={{height:30, alignSelf: "center", justifyContent:"flex-end"}}
+                                resizeMode="contain"
                             />
                         </TouchableOpacity>
                         <View style={{width:50}}></View>
-                        <TouchableOpacity style={{width: 50, justifyContent:"flex-end", alignItems:"center"}}>
+                        <TouchableOpacity style={{width: 30, paddingRight: 15, justifyContent:"flex-end", alignItems: "flex-end"}}>
                             <Image
                                 source={icons.cancel}
-                                style={{height:25, alignSelf:"center"}}
+                                // onPress={() => DISAPPROVE}
+                                style={{height:30, alignSelf: "center", justifyContent:"flex-end"}}
                                 resizeMode="contain"
-                                // onPress={() => APPROVE}
                             />
                         </TouchableOpacity>
                     </View>

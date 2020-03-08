@@ -10,6 +10,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Switch,
+    StatusBar
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
