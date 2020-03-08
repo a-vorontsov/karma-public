@@ -12,11 +12,6 @@ import PrivacyScreen from "../views/Settings/PrivacyScreen";
 import TermsScreen from "../views/Settings/TermsScreen";
 import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import CreateActivityScreen from "../views/CreateActivityScreen";
-import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
-import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
-import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
-import LogOutScreen from "../views/Settings/LogOutScreen";
-import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 

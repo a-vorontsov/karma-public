@@ -6,9 +6,7 @@ import {
     Platform,
     Dimensions,
     StatusBar,
-    Picker,
     Image,
-    Keyboard,
     Alert,
     StyleSheet,
 } from "react-native";
@@ -143,7 +141,6 @@ export default class OrgSignUpScreen extends React.Component {
             this.state.submitPressed &&
             (!this.state.isExempt && !this.state.isLowIncome);
 
-        const {navigate} = this.props.navigation;
         const data = [
             {value: "NGO (Non-Government Organisation"},
             {value: "Charity Option 1"},
@@ -302,9 +299,7 @@ export default class OrgSignUpScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.state.isRegDateVisible &&
-                            (
-
+                            {this.state.isRegDateVisible && (
                                 <View>
                                     <DatePicker
                                         mode="date"
@@ -406,8 +401,8 @@ export default class OrgSignUpScreen extends React.Component {
                                             console.log(
                                                 "Image base64 string: ",
                                                 avatar,
-                                            ),
-                                                this.setPhoto(avatar);
+                                            );
+                                            this.setPhoto(avatar);
                                         }
                                     }}>
                                     <Image
