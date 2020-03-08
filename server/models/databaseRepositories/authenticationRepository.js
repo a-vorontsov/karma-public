@@ -3,7 +3,7 @@ const db = require("../../database/connection");
 const insert = (authentication) => {
     const query = "INSERT INTO authentication(token, expiry_date, creation_date, user_id) VALUES ($1, $2, $3, $4)" +
         "RETURNING *"; // returns passed authentication with it's id set to corresponding id in database
-    const params = [authentication.token, authentication.expiry_date, authentication.creation_date, authentication.user_id];
+    const params = [authentication.token, authentication.expiryDate, authentication.creationDate, authentication.userId];
     return db.query(query, params);
 };
 

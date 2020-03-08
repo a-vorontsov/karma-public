@@ -49,8 +49,8 @@ const registration6 = {
 };
 
 const address = {
-    address_1: "221B Baker St",
-    address_2: "Marleybone",
+    address1: "221B Baker St",
+    address2: "Marleybone",
     postcode: "NW1 6XE",
     city: "London",
     region: "Greater London",
@@ -60,18 +60,18 @@ const address = {
 
 const event = {
     name: "event",
-    address_id: -1,
-    women_only: true,
+    addressId: -1,
+    womenOnly: true,
     spots: 3,
-    address_visible: true,
-    minimum_age: 16,
-    photo_id: true,
+    addressVisible: true,
+    minimumAge: 16,
+    photoId: true,
     physical: true,
-    add_info: true,
+    addInfo: true,
     content: "fun event yay",
     date: "2004-10-19 10:23:54",
-    user_id: -1,
-    creation_date: "2019-10-19 10:23:54",
+    userId: -1,
+    creationDate: "2019-10-19 10:23:54",
 };
 
 
