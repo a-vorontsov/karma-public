@@ -16,7 +16,7 @@ export default class SignUpRequest extends React.Component {
         return (
             <View style={[Styles.pv8, Styles.ph8]}>
                 <View
-                style={[Styles.pv8, {flex: 1, flexDirection: "row",  alignItems: "flex-start", justifyContent: "space-between", backgroundColor:Colours.white, borderWidth: 3, borderColor: Colours.grey}]}
+                style={[Styles.pv8, {flexDirection: "row",  alignItems: "flex-start", justifyContent: "space-between", backgroundColor:Colours.white, borderWidth: 3, borderColor: Colours.grey}]}
                 activeOpacity={0.9}>
                     <TouchableOpacity style={{width: 150}}>
                         <RegularText style={[Styles.ph8, {fontSize:20}]}>
