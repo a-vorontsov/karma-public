@@ -8,6 +8,7 @@ import Colours from "../../styles/Colours";
 import {NavigationEvents} from "react-navigation";
 import {useNavigation} from "react-navigation-hooks";
 import Styles from "../../styles/Styles";
+import Communications from "react-native-communications";
 import {
     Menu,
     MenuOptions,
@@ -54,7 +55,16 @@ const ActivityEditable = props => {
                                 <MenuOption onSelect={() => navigation.navigate("ViewSignUps")}>
                                     <RegularText style={styles.settingsText}>View Sign Ups</RegularText>
                                 </MenuOption>
-                                <MenuOption onSelect={() => navigation.navigate("MessageAttendees")}>
+                                <MenuOption onSelect={() =>
+                                    Communications.email(
+                                        null,
+                                        null,
+                                        // BCC – array of recipients
+                                        ["emailAddress1", "emailAddress2"],
+                                        null,
+                                        null,
+                                    )
+                                }>
                                     <RegularText style={styles.settingsText}>Message Attendees</RegularText>
                                 </MenuOption>
                                 <MenuOption onSelect={() => alert(`Are you sure you want to delete?`)}>

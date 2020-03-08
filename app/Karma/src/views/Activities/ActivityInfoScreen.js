@@ -334,11 +334,11 @@ class ActivityInfoScreen extends Component {
                                 activeOpacity={0.9}
                                 onPress={() =>
                                     Communications.email(
-                                        ["emailAddress1", "emailAddress2"],
+                                        ["emailAddress1"],
                                         null,
                                         null,
-                                        "My Subject",
-                                        "My body text",
+                                        "About Your Karma Activity",
+                                        null,
                                     )
                                 }>
                                 <RegularText
