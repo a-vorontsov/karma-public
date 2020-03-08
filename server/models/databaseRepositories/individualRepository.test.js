@@ -16,9 +16,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    userExample1.email = "";
-    individual.addressId = -1;
-    individual.userId = -1;
     return testHelpers.clearDatabase();
 });
 
