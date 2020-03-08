@@ -20,7 +20,7 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/K-logo.png");
 
-function loadAboutData(screen) {
+function loadAboutText(screen) {
     request
         .post("https://baconipsum.com/api/?type=meat-and-filler")
         .then(res => {
@@ -44,7 +44,7 @@ class AboutKarmaScreen extends Component {
         this.state = {
             aboutText: "Loading...",
         };
-        loadAboutData(this);
+        loadAboutText(this);
     }
 
     render() {
