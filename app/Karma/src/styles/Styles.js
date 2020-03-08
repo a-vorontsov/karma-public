@@ -26,6 +26,9 @@ const Styles = StyleSheet.create({
     center: {
         marginHorizontal: "auto",
     },
+    formWidth: {
+        width: 0.8*SCREEN_WIDTH,
+    },
     vcenter: {
         flex: 2,
         justifyContent: "center",
