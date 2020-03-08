@@ -5,19 +5,17 @@ const addressRepository = require("./addressRepository");
 const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 
-const registration = testHelpers.registration;
-const user = testHelpers.user;
-const address = testHelpers.address;
-const organisation = testHelpers.organisation;
+let registration, user, address, organisation;
 
 beforeEach(() => {
+    registration = testHelpers.getRegistrationExample1();
+    user = testHelpers.getUserExample1();
+    address = testHelpers.getAddress();
+    organisation = testHelpers.getOrganisation();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
-    organisation.addressId = -1;
-    organisation.userId = -1;
     return testHelpers.clearDatabase();
 });
 

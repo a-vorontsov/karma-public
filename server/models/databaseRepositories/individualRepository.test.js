@@ -5,26 +5,27 @@ const addressRepository = require("./addressRepository");
 const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 
-const registration = testHelpers.registration;
-const user = testHelpers.user;
-const address = testHelpers.address;
-const individual = testHelpers.individual;
+let registrationExample1, userExample1, address, individual;
 
 beforeEach(() => {
+    registrationExample1 = testHelpers.getRegistrationExample1();
+    userExample1 = testHelpers.getUserExample1();
+    address = testHelpers.getAddress();
+    individual = testHelpers.getIndividual();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
+    userExample1.email = "";
     individual.addressId = -1;
     individual.userId = -1;
     return testHelpers.clearDatabase();
 });
 
 test('insert individual and findById individual work', async () => {
-    const insertRegistrationRepository = await registrationRepository.insert(registration);
-    user.email = insertRegistrationRepository.rows[0].email;
-    const insertUserResult = await userRepository.insert(user);
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
     const insertAddressResult = await addressRepository.insert(address);
     individual.addressId = insertAddressResult.rows[0].id;
     individual.userId = insertUserResult.rows[0].id;
