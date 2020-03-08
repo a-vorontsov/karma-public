@@ -48,7 +48,7 @@ class SignUpScreen extends React.Component {
         return PASSWORD_REGEX.test(this.state.password);
     };
 
-    createUser(){
+    createUser() {
         const user = {
             email: this.state.email,
             username: this.state.username,
@@ -74,7 +74,6 @@ class SignUpScreen extends React.Component {
             .catch(er => {
                 console.log(er.message);
             });
-
     };
 
     render() {
