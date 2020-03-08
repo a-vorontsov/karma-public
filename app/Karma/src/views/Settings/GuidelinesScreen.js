@@ -6,15 +6,15 @@ import {RegularText} from "../../components/text";
 
 const request = require("superagent");
 
-const logo = require("../../assets/images/settings-logos/K-logo.png");
+const logo = require("../../assets/images/settings-logos/guidelines.png");
 
-function loadAboutData(screen) {
+function loadGuidelines(screen) {
     request
         .post("https://baconipsum.com/api/?type=meat-and-filler")
         .then(res => {
             console.log(res.body);
             screen.setState({
-                aboutText: res.body,
+                guidelinesText: res.body,
             });
         })
         .catch(er => {
@@ -30,9 +30,9 @@ class GuidelinesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            aboutText: "Loading...",
+            guidelinesText: "Loading...",
         };
-        loadAboutData(this);
+        loadGuidelines(this);
     }
 
     render() {
@@ -52,7 +52,7 @@ class GuidelinesScreen extends Component {
                 </View>
                 <View style={Styles.ph24}>
                     <RegularText style={Styles.pb11}>
-                            {this.state.aboutText}
+                            {this.state.guidelinesText}
                     </RegularText>
                 </View>
             </SafeAreaView>
