@@ -80,7 +80,7 @@ test('requesting users signed up to an event works', async () => {
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(1);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject([{
+    expect(response.body.data.users).toMatchObject([{
         signedUpUser1,
         signedUpUser2
     }]);
@@ -97,7 +97,7 @@ test('requesting users signed up to an event that doesnt exist returns event doe
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("No event with specified id");
+    expect(response.body.message).toBe("No event with specified id");
 });
 
 test('requesting users signed up to an event with wrong id format returns id format is wrong response', async () => {
@@ -111,5 +111,5 @@ test('requesting users signed up to an event with wrong id format returns id for
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("ID specified is in wrong format");
+    expect(response.body.message).toBe("ID specified is in wrong format");
 });

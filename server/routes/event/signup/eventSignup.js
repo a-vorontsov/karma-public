@@ -30,7 +30,7 @@ router.post('/:event_id/signUp', async (req, res) => {
         const signupRequest = req.body;
         signupRequest.event_id = event_id;
         const signupResult = await signupRepository.insert(signupRequest);
-        res.status(200).send(signupResult);
+        res.status(200).send({message: "Signed up for event successfully", data: signupResult.rows[0]});
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
         res.status(500).send({
@@ -42,9 +42,9 @@ router.post('/:event_id/signUp', async (req, res) => {
 /**
  * Endpoint called to get all users signed up to an event.<br/>
  * URL example: GET http://localhost:8000/event/1/signUp
- * @param {Integer} req.params.event_id - id of the event.
+ * @param {Number} req.params.event_id - id of the event.
  * @returns
- *  status: 200, description: Array of all users signed up with necessary details<br/>
+ *  status: 200, description: Array of all users signed up with necessary details named users<br/>
  *  status: 400, description: Event id not specified or specified in wrong format<br/>
  *  status: 404, description: No event with id specified found or no users signed up<br/>
  *  status: 500, description: DB error
@@ -55,14 +55,14 @@ router.get('/:event_id/signUp', async (req, res) => {
     const event_id = req.params.event_id;
     const checkEventIdResult = await util.checkEventId(event_id);
     if (checkEventIdResult.status !== 200) {
-        return res.status(checkEventIdResult.status).send(checkEventIdResult.message);
+        return res.status(checkEventIdResult.status).send({message: checkEventIdResult.message});
     }
     signupRepository.findUsersSignedUp(event_id)
         .then(result => {
-            if (result.rows.length === 0) return res.status(404).send("No users signed up for this event");
-            res.status(200).json(result.rows);
+            if (result.rows.length === 0) return res.status(404).send({message: "No users signed up for this event"});
+            res.status(200).send({message: "Signed up users fetched successfully", data: {users: result.rows}});
         })
-        .catch(err => res.status(500).send(err));
+        .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**
@@ -75,7 +75,7 @@ router.get('/:event_id/signUp', async (req, res) => {
   }
  </pre>
  * @returns
- *  status: 200, description: The signup object created<br/>
+ *  status: 200, description: Array of all events signed up to named 'events'<br/>
  *  status: 500, description: DB error
  *  @name See signup history
  *  @function
@@ -86,7 +86,7 @@ router.get('/signUp/history', async (req, res) => {
         const signups = await signupRepository.findAllByIndividualId(individual_id);
         const signedUpEvents = signups.rows.map(s => s.event_id)
             .map(async e => await eventRepository.findById(e));
-        res.status(200).send(signedUpEvents);
+        res.status(200).send({message: "History fetched successfully", data: {events: signedUpEvents.rows}});
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
         res.status(500).send({
@@ -117,7 +117,7 @@ router.post('/:event_id/signUp/update', async (req, res) => {
         const signupRequest = req.body;
         signupRequest.event_id = event_id;
         const signupResult = await signupRepository.update(signupRequest);
-        res.status(200).send(signupResult);
+        res.status(200).send({message: "Signup updated successfully", data: {signup: signupResult.rows[0]},});
     } catch (e) {
         console.log("Error while updating signup: " + e.message);
         res.status(500).send({
