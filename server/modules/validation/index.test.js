@@ -1,8 +1,8 @@
 const validation = require("./index.js");
 const testHelpers = require("../../test/testHelpers");
 
-const event = testHelpers.event;
-const address = testHelpers.address;
+const event = testHelpers.getEvent();
+const address = testHelpers.getAddress();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};

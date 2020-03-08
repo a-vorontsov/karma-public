@@ -7,7 +7,6 @@ import Colours from "../styles/Colours";
 import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
 import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScreen";
 import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
-import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
@@ -19,6 +18,7 @@ import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
 import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
 import LogOutScreen from "../views/Settings/LogOutScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
+import PickCausesScreen from "../views/PickCausesScreen";
 
 const SettingsNavigator = createStackNavigator(
     {
@@ -45,7 +45,8 @@ const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
-        SettingsMenu:{screen: SettingsMenuScreen},
+        PickCauses: {screen: PickCausesScreen},
+        SettingsMenu: {screen: SettingsMenuScreen},
         Settings: SettingsNavigator,
     },
     {
@@ -95,7 +96,7 @@ const MainTabNavigator = createBottomTabNavigator(
             },
         },
         Causes: {
-            screen: CausesScreen,
+            screen: PickCausesScreen,
             navigationOptions: {
                 tabBarLabel: "Causes",
                 tabBarIcon: ({focused}) =>

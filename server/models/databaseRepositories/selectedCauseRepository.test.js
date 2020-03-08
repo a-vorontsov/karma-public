@@ -4,24 +4,23 @@ const causeRepository = require("./causeRepository");
 const userRepository = require("./userRepository");
 const registrationRepository = require("./registrationRepository");
 
-
-const registration = testHelpers.registration3;
-const cause = testHelpers.cause;
-const user = testHelpers.user3;
+let registrationExample3, cause, userExample3;
 
 beforeEach(() => {
+    registrationExample3 = testHelpers.getRegistrationExample3();
+    cause = testHelpers.getCause();
+    userExample3 = testHelpers.getUserExample3();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
     return testHelpers.clearDatabase();
 });
 
 test('insert works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
-    const insertUserResult = await userRepository.insert(user);
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample3);
+    userExample3.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample3);
     const insertCauseResult = await causeRepository.insert(cause)
     const userId = insertUserResult.rows[0].id;
     const causeId = insertCauseResult.rows[0].id;
@@ -32,9 +31,9 @@ test('insert works', async () => {
     });
 });
 test('find works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
-    const insertUserResult = await userRepository.insert(user);
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample3);
+    userExample3.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample3);
     const insertCauseResult = await causeRepository.insert(cause)
     const userId = insertUserResult.rows[0].id;
     const causeId = insertCauseResult.rows[0].id;

@@ -23,6 +23,7 @@ import Colours from "../styles/Colours";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth/2;
+
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
@@ -114,8 +115,8 @@ class ProfileEditScreen extends Component {
                                         console.log(
                                             "Image base64 string: ",
                                             avatar,
-                                        ),
-                                            this.setPhoto(avatar);
+                                        );
+                                        this.setPhoto(avatar);
                                     }
                                 }}>
                                 <Image
@@ -290,7 +291,8 @@ class ProfileEditScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Causes
                                     </RegularText>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => navigate("PickCauses")}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{

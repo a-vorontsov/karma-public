@@ -136,8 +136,8 @@ class ProfileScreen extends Component {
                                         console.log(
                                             "Image base64 string: ",
                                             avatar,
-                                        ),
-                                            this.setPhoto(avatar);
+                                        );
+                                        this.setPhoto(avatar);
                                     }
                                 }}>
                                 <Image
@@ -222,7 +222,6 @@ class ProfileScreen extends Component {
                                     onPress={() => navigate("CreateActivity")}
                                     title="Create Activity"
                                     width={350}
-                                    onPress={() => navigate("CreateActivity")}
                                 />
                             </View>
                             <View
@@ -232,49 +231,6 @@ class ProfileScreen extends Component {
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                 }}>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                    }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Activity
-                                    </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit")
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Availability:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Activity Date:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Women Only:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        Y/N
-                                    </RegularText>
-                                </View>
                                 <View
                                     style={{
                                         flexDirection: "row",

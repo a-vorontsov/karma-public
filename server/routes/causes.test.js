@@ -28,7 +28,7 @@ test('getting all causes works', async () => {
     });
     const response = await request(app).get("/causes");
     expect(causeRepository.findAll).toHaveBeenCalledTimes(1);
-    expect(response.body).toMatchObject([{
+    expect(response.body.data).toMatchObject([{
         ...cause,
         id: 1,
     }]);
