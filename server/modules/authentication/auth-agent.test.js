@@ -238,8 +238,10 @@ const anyRequest6 = {
 const logInReq = {
     userId: null,
     authToken: null,
-    email: "email",
-    password: "password",
+    data: {
+        email: "email",
+        password: "password",
+    }
 };
 
 const owasp = require("owasp-password-strength-test");
@@ -258,11 +260,12 @@ test("valid and expired token working", async () => {
     insertIndiv.address_id = addressId;
     const insertIndividualResult = await indivRepo.insert(insertIndiv);
 
-    logInReq.email = user.email;
+    logInReq.data.email = user.email;
     const logInResponse = await request(app)
         .post("/signin/password")
         .send(logInReq)
         .redirects(0);
+
     const validToken = logInResponse.body.authToken;
     const verifyValidToken = await authAgent.isValidToken(userId, validToken);
     expect(verifyValidToken.isValidToken).toBe(true);
@@ -274,7 +277,6 @@ test("valid and expired token working", async () => {
         .send(anyRequest6)
         .redirects(0);
 
-    // console.log(response);
     expect(response.body.message).toBe("Found individual profile for user.");
     expect(response.statusCode).toBe(200);
 
@@ -295,7 +297,6 @@ test("valid and expired token working", async () => {
         .send(anyRequest6)
         .redirects(1);
 
-    // console.log(response);
     expect(response2.body.message).toBe("Expired token");
     expect(response2.statusCode).toBe(400);
 

@@ -18,7 +18,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  * @route {POST} /signin/email
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
- * @param {object} req.body.data.user the user input values for their user account
+ * @param {string} req.body.data.email input email address of the user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
