@@ -51,10 +51,10 @@ test("getting all events works", async () => {
     const response = await request(app).get("/event?userId=1");
     expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body.data).toMatchObject([eventWithLocation, eventWithLocation2]);
+    expect(response.body.data.events).toMatchObject([eventWithLocation, eventWithLocation2]);
 });
 
-test("getting physical events only works", async () => {
+test("getting only physical events works", async () => {
     util.checkUserId.mockResolvedValue({
         status: 200,
         user: {
@@ -69,7 +69,7 @@ test("getting physical events only works", async () => {
     const response = await request(app).get("/event?userId=1&filter[]=physical");
     expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body.data).toMatchObject([physicalEvent]);
+    expect(response.body.data.events).toMatchObject([physicalEvent]);
 });
 
 test("getting women only events works", async () => {
@@ -87,7 +87,7 @@ test("getting women only events works", async () => {
     const response = await request(app).get("/event?userId=1&filter[]=womenOnly");
     expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body.data).toMatchObject([womenOnlyEvent]);
+    expect(response.body.data.events).toMatchObject([womenOnlyEvent]);
 });
 
 test("getting events grouped by causes selected by user works", async () => {
@@ -105,7 +105,7 @@ test("getting events grouped by causes selected by user works", async () => {
     const response = await request(app).get("/event/causes?userId=1");
     expect(selectedCauseRepository.findEventsSelectedByUser).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject({
+    expect(response.body.data).toMatchObject({
         peace: [{
             ...eventWithLocation,
         }],
@@ -130,7 +130,7 @@ test("getting events favourited by user works", async () => {
     const response = await request(app).get("/event/favourites?userId=1");
     expect(individualRepository.findFavouriteEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject(
+    expect(response.body.data.events).toMatchObject(
         [eventWithLocation, eventWithLocation2],
     );
 });
@@ -150,7 +150,7 @@ test("getting events user is going to works", async () => {
     const response = await request(app).get("/event/going?userId=1");
     expect(individualRepository.findGoingEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject(
+    expect(response.body.data.events).toMatchObject(
         [eventWithLocation, eventWithLocation2],
     );
 });
