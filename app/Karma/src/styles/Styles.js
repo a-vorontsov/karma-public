@@ -195,6 +195,15 @@ const Styles = StyleSheet.create({
         width: "100%",
         bottom: 0,
     },
+    progressBar: {
+        flexDirection: "row",
+        height: 20,
+
+        backgroundColor: `${Colours.lightGrey}`,
+        borderColor: "transparent",
+
+        borderRadius: 10,
+    },
 });
 
 export default Styles;

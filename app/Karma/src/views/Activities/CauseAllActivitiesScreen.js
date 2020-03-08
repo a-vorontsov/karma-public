@@ -1,13 +1,9 @@
 import React, {Component} from "react";
-import {View, Dimensions} from "react-native";
+import {View} from "react-native";
 import Styles from "../../styles/Styles";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import PageHeader from "../../components/PageHeader";
-import {RegularText} from "../../components/text";
 import {SafeAreaView} from "react-navigation";
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 class CauseAllActivitiesScreen extends Component {
     static navigationOptions = {

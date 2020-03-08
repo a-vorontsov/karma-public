@@ -18,10 +18,10 @@ async function registerEmail(email) {
     }
     await regRepo.insert({
         email: email,
-        email_flag: 0,
-        id_flag: 0,
-        phone_flag: 0,
-        sign_up_flag: 0,
+        emailFlag: 0,
+        idFlag: 0,
+        phoneFlag: 0,
+        signUpFlag: 0,
     });
 }
 
@@ -56,10 +56,10 @@ async function registerUser(email, username, password) {
     await userRepo.insert({
         email: email,
         username: username,
-        password_hash: hashedPassword,
+        passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        date_registered: "2016-06-22 19:10:25-07", // TODO:
+        dateRegistered: "2016-06-22 19:10:25-07", // TODO:
     });
     const userResult = await userRepo.findByEmail(email);
     return userResult.rows[0].id;
@@ -97,9 +97,9 @@ async function registerIndividual(userId, title, firstName, middleNames, surName
         lastname: surName,
         phone: phoneNumber,
         banned: false,
-        user_id: userId,
-        picture_id: null, // TODO:
-        address_id: addressId,
+        userId: userId,
+        pictureId: null, // TODO:
+        addressId: addressId,
         birthday: dateOfBirth,
         gender: gender,
     });
@@ -148,19 +148,19 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
     const addressId = addressResult.rows[0].id;
 
     await orgRepo.insert({
-        org_name: name,
-        org_number: organisationNumber,
-        org_type: organisationType,
-        poc_firstname: pocFirstName,
-        poc_lastname: pocLastName,
+        orgName: name,
+        orgNumber: organisationNumber,
+        orgType: organisationType,
+        pocFirstname: pocFirstName,
+        pocLastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        org_register_date: "2016-06-22 19:10:25-07", // TODO:
-        low_income: lowIncome,
+        orgRegisterDate: "2016-06-22 19:10:25-07", // TODO:
+        lowIncome: lowIncome,
         exempt: exempt,
-        picture_id: null, // TODO:
-        user_id: userId,
-        address_id: addressId,
+        pictureId: null, // TODO:
+        userId: userId,
+        addressId: addressId,
     });
 
     await setSignUpFlagTrue(userId);
@@ -177,8 +177,8 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
  */
 async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
     return await addressRepo.insert({
-        address_1: addressLine1,
-        address_2: addressLine2,
+        address1: addressLine1,
+        address2: addressLine2,
         postcode: postCode,
         city: townCity,
         region: countryState,
@@ -190,7 +190,7 @@ async function registerAddress(addressLine1, addressLine2, townCity, countryStat
 /**
  * Return true if password is correct for given
  * user. The user is specified by their userId address.
- * @param {integer} userId
+ * @param {Number} userId
  * @param {string} inputPassword
  * @return {boolean} true if password is correct
  * @throws {error} if user with userId not found
@@ -229,7 +229,7 @@ function isCorrectPassword(user, inputPassword) {
     if (user === undefined) {
         throw new Error("User by given email/id not found");
     }
-    return (user.password_hash === digest.hashPassWithSaltInHex(inputPassword, user.salt));
+    return (user.passwordHash === digest.hashPassWithSaltInHex(inputPassword, user.salt));
 }
 
 /**
