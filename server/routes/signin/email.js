@@ -16,9 +16,19 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  * a HTTP response will be sent based on the user's
  * registration status.
  * @route {POST} /signin/email
- * @param {HTTP} req
- * @param {HTTP} res
- * @param {string} email the user's email address
+ * @param {number} req.body.userId since no userId yet, null here
+ * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {object} req.body.data.user the user input values for their user account
+ * @param {object} req.body Here is an example of an appropriate request json:
+<pre><code>
+    &#123;
+        "userId": null,
+        "authToken": null,
+        "data": &#123;
+            "email": "paul&#64;karma.com",
+        &#125;
+    &#125;
+</code></pre>
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if user/request already authenticated, 400 - already auth<br/>
  * - if user fully registered, 200 - goto login<br/>
@@ -33,9 +43,9 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        if (!(await regStatus.emailExists(req.body.email))) {
+        if (!(await regStatus.emailExists(req.body.data.email))) {
             try {
-                await userAgent.registerEmail(req.body.email);
+                await userAgent.registerEmail(req.body.data.email);
                 res.status(400).send({
                     message: "Email did not exist. Email successfully recorded, go to email verification screen.",
                 });
@@ -44,19 +54,19 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     message: "Email did not exist. Error in recording user's email in database. Please see error message: " + e.message,
                 });
             }
-        } else if (!(await regStatus.isEmailVerified(req.body.email))) {
+        } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
             res.status(400).send({
                 message: "Email exists but unverified. Goto email verification screen.",
             });
-        } else if (!(await regStatus.userAccountExists(req.body.email))) {
+        } else if (!(await regStatus.userAccountExists(req.body.data.email))) {
             res.status(400).send({
                 message: "Email verified, but no user account. Goto user registration screen.",
             });
-        } else if (await regStatus.isPartlyRegistered(req.body.email)) {
+        } else if (await regStatus.isPartlyRegistered(req.body.data.email)) {
             res.status(400).send({
                 message: "User account registered, but no indiv/org profile. Aks for password and then goto indiv/org selection screen.",
             });
-        } else if (await regStatus.isFullyRegisteredByEmail(req.body.email)) {
+        } else if (await regStatus.isFullyRegisteredByEmail(req.body.data.email)) {
             res.status(200).send({
                 message: "Fully registered. Goto login screen.",
             });
@@ -66,9 +76,9 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             const regRecord = [];
             const userRecord = [];
             try {
-                const regResult = await regRepo.findByEmail(req.body.email);
+                const regResult = await regRepo.findByEmail(req.body.data.email);
                 regRecord = regResult.rows[0];
-                const userResult = await userRepo.findByEmail(req.body.email);
+                const userResult = await userRepo.findByEmail(req.body.data.email);
                 userRecord = userResult.rows[0];
             } catch (e) {
                 userRecord = e.message;

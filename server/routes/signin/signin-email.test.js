@@ -11,7 +11,7 @@ const user4 = testHelpers.user4;
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
     return testHelpers.clearDatabase();
 });
 
@@ -21,7 +21,11 @@ afterEach(() => {
 });
 
 const signInEmailRequest = {
-    email: "test4@gmail.com",
+    userId: null,
+    authToken: null,
+    data: {
+        email: "test4@gmail.com",
+    }
 };
 
 test("sign-in with email works", async () => {

@@ -20,13 +20,11 @@ const owasp = require("owasp-password-strength-test");
  * operation. It will contain the new user's id following a
  * successful registration.
  * @route {POST} /register/user
- * @param {HTTP} req
- * @param {HTTP} res
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {object} req.body.data.user the user input values for their user account
  * @param {object} req.body Here is an example of an appropriate request json:
- <pre><code>
+<pre><code>
     &#123;
         "userId": null,
         "authToken": null,
