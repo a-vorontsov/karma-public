@@ -3,23 +3,23 @@ const resetRepository = require("./resetRepository");
 const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 
-const user = testHelpers.user;
-const registration = testHelpers.registration;
+let userExample1, registrationExample1;
 
 beforeEach(() => {
+    userExample1 = testHelpers.getUserExample1();
+    registrationExample1 = testHelpers.getRegistrationExample1();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
     return testHelpers.clearDatabase();
 
 });
 
 test('insert token and find token work', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
-    const insertUserResult = await userRepository.insert(user);
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
     const userId = insertUserResult.rows[0].id;
     const insertTokenResult = await resetRepository.insertResetToken(userId, "333333");
     const findTokenResult = await resetRepository.findResetToken(userId);

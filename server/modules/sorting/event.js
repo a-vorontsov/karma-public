@@ -30,7 +30,7 @@ const groupBy = key => array =>
             [obj[key]]: (objectsByKeyValue[obj[key]] || []).concat(obj),
         }), {},
     );
-const groupByCause = groupBy('cause_name');
+const groupByCause = groupBy('causeName');
 
 module.exports = {
     sortByTime: sortByTime,

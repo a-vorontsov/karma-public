@@ -57,8 +57,8 @@ export default class CreateActivityScreen extends React.Component {
     createEvent() {
         const event = {
             address: {
-                address_1: "Line 1",
-                address_2: "Line 2",
+                address1: "Line 1",
+                address2: "Line 2",
                 postcode: "14 aa",
                 city: "LDN",
                 region: "LDN again",
@@ -66,17 +66,17 @@ export default class CreateActivityScreen extends React.Component {
                 long: 100.5,
             }, //TODO
             name: this.state.title,
-            women_only: this.state.isWomenOnly,
+            womenOnly: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
-            address_visible: this.state.isAddressVisible,
-            minimum_age: 18, //TODO
-            photo_id: this.state.isIDReq,
+            addressVisible: this.state.isAddressVisible,
+            minimumAge: 18, //TODO
+            photoId: this.state.isIDReq,
             physical: this.state.isPhysical,
-            add_info: this.state.isAdditionalInfo,
+            addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            user_id: 72, //TODO
-            creation_date: new Date(), //returns current date
+            userId: 72, //TODO
+            creationDate: new Date(), //returns current date
         };
         return event;
     }

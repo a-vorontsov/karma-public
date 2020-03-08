@@ -4,41 +4,39 @@ const testHelpers = require("../../test/testHelpers");
 const userRepository = require("./userRepository");
 const registrationRepository = require("./registrationRepository");
 
-const registration = testHelpers.registration;
-const address = testHelpers.address;
-const event = testHelpers.event;
-const user = testHelpers.user;
+let registrationExample1, address, event, userExample1;
 
 beforeEach(() => {
+    registrationExample1 = testHelpers.getRegistrationExample1();
+    address = testHelpers.getAddress();
+    event = testHelpers.getEvent();
+    userExample1 = testHelpers.getUserExample1();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
-    event.address_id = -1;
-    event.user_id = -1;
     return testHelpers.clearDatabase();
 });
 
 test('insert and findById work', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
-    const insertUserResult = await userRepository.insert(user);
-    event.address_id = insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
     const insertEventResult = await eventRepository.insert(event);
     const findEventResult = await eventRepository.findById(insertEventResult.rows[0].id);
     expect(findEventResult.rows[0]).toMatchObject(insertEventResult.rows[0]);
 });
 
 test('events update works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
-    const insertUserResult = await userRepository.insert(user);
-    event.address_id = insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
 
     const insertEventResult = await eventRepository.insert(event);
     const insertedEvent = insertEventResult.rows[0];
@@ -49,12 +47,12 @@ test('events update works', async () => {
 });
 
 test('findAllByUserId works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
-    const insertUserResult = await userRepository.insert(user);
-    event.address_id =  insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
 
     const insertEventResult1 = await eventRepository.insert(event);
     const insertedEvent1 = insertEventResult1.rows[0];
@@ -66,22 +64,22 @@ test('findAllByUserId works', async () => {
 });
 
 test('findAllByUserIdLastMonth works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
     const insertAddressResult = await addressRepository.insert(address);
-    const insertUserResult = await userRepository.insert(user);
-    event.address_id =  insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
 
     const fiveDaysAgo = new Date();
     fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-    event.creation_date = fiveDaysAgo;
+    event.creationDate = fiveDaysAgo;
     const insertEventResult1 = await eventRepository.insert(event);
     const insertedEvent1 = insertEventResult1.rows[0];
 
     const yearAgo = new Date();
     yearAgo.setDate(yearAgo.getDate() - 365);
-    event.creation_date = yearAgo;
+    event.creationDate = yearAgo;
     await eventRepository.insert(event);
 
     const findAllByUserIdLastMonthResult = await eventRepository.findAllByUserIdLastMonth(insertUserResult.rows[0].id);

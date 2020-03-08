@@ -36,7 +36,6 @@ export default class InitSignupScreen extends React.Component {
         );
     };
     render() {
-        const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={Styles.container}>
                 <View style={[Styles.pt16, Styles.ph24]}>
