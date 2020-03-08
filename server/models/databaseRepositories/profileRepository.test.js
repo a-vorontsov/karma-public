@@ -5,21 +5,18 @@ const profileRepository = require("./profileRepository");
 const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 
-const registration = testHelpers.registration;
-const user = testHelpers.user;
-const individual = testHelpers.individual;
-const profile = testHelpers.profile;
-const address = testHelpers.address;
+let registration, user, individual, profile, address;
 
 beforeEach(() => {
+    registration = testHelpers.getRegistrationExample1();
+    user = testHelpers.getUserExample1();
+    individual = testHelpers.getIndividual();
+    profile = testHelpers.getProfile();
+    address = testHelpers.getAddress();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    user.email = "";
-    individual.id = -1;
-    individual.userId = -1;
-    profile.individualId = -1;
     return testHelpers.clearDatabase();
 });
 
