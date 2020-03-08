@@ -16,6 +16,7 @@
     "@react-navigation/bottom-tabs": "^5.0.5",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-code-input": "^1.0.6",
     "react-native-date-picker": "^2.7.6",
     "react-native-device-info": "^5.5.2",
     "react-native-fs": "^2.16.4",
