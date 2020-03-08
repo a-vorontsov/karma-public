@@ -38,6 +38,16 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  * - if partly reg (only user acc), 400 - goto indiv/org reg<br/>
  * - if none of the above, 500 - reg & user object as JSON<br/>
  * - if invalid query, 500 - error message
+ * An example response:
+ <pre><code>
+    &#123;
+        "message:"
+        "data": &#123;
+            isVerified
+            isSignedUp
+        &#125;
+    &#125;
+</code></pre>
  * @name Sign-in with email
  * @function
  */
@@ -47,7 +57,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             try {
                 await userAgent.registerEmail(req.body.data.email);
                 res.status(400).send({
-                    message: "Email did not exist. Email successfully recorded, go to email verification screen.",
+                    message: "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
                 });
             } catch (e) {
                 res.status(500).send({

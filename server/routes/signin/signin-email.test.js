@@ -35,7 +35,7 @@ test("sign-in with email works", async () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "Email did not exist. Email successfully recorded, go to email verification screen.",
+        "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
 });
 
