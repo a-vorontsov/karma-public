@@ -27,7 +27,7 @@ router.post('/:eventId/favourite', async (req, res) => {
         const favouriteRequest = req.body;
         favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.insert(favouriteRequest);
-        res.status(200).send({message: "Favourite added successfully", data: favouriteResult.rows[0]});
+        res.status(200).send({message: "Favourite added successfully", data: {favourite: favouriteResult.rows[0]}});
     } catch (e) {
         console.log("Error while favouriting event: " + e.message);
         res.status(500).send({message: e.message});
@@ -55,7 +55,7 @@ router.post('/:eventId/favourite/delete', async (req, res) => {
         const favouriteRequest = req.body;
         favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.remove(favouriteRequest);
-        res.status(200).send({message: "Event unfavourited successfully", data: favouriteResult.rows[0]});
+        res.status(200).send({message: "Event unfavourited successfully", data: {favourite: favouriteResult.rows[0]}});
     } catch (e) {
         console.log("Error while updating favourite: " + e.message);
         res.status(500).send({message: e.message});

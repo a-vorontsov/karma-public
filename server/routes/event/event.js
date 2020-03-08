@@ -25,26 +25,28 @@ router.use("/", eventSelectRoute);
 {
     "message": "New event created",
     "data": {
-        "address": {
-            "address1": "Line 1",
-            "address2": "Line 2",
-            "postcode": "14 aa",
-            "city": "LDN",
-            "region": "LDN again",
-            "lat": 0.3,
-            "long": 100.50
-        },
-        "name": "event",
-        "womenOnly": true,
-        "spots": 3,
-        "addressVisible": true,
-        "minimumAge": 16,
-        "photoId": true,
-        "physical": true,
-        "addInfo": true,
-        "content": "fun event yay",
-        "date": "2004-10-19 10:23:54",
-        "userId": 3
+        "event": {
+            "address": {
+                "address1": "Line 1",
+                "address2": "Line 2",
+                "postcode": "14 aa",
+                "city": "LDN",
+                "region": "LDN again",
+                "lat": 0.3,
+                "long": 100.50
+            },
+            "name": "event",
+            "womenOnly": true,
+            "spots": 3,
+            "addressVisible": true,
+            "minimumAge": 16,
+            "photoId": true,
+            "physical": true,
+            "addInfo": true,
+            "content": "fun event yay",
+            "date": "2004-10-19 10:23:54",
+            "userId": 3
+        }
     }
  }
  </pre>
@@ -91,7 +93,7 @@ router.post("/", async (req, res) => {
         const eventResult = await eventRepository.insert(event);
         res.status(200).send({
             message: "Event created successfully",
-            data: eventResult.rows[0],
+            data: {event: eventResult.rows[0]},
         });
     } catch (e) {
         console.log(e);
@@ -107,27 +109,29 @@ router.post("/", async (req, res) => {
 {
     "message": "Event updated successfully",
     "data": {
-        "address": {
-            "id": 5,
-            "address1": "Line 1",
-            "address2": "Line 2",
-            "postcode": "14 aa",
-            "city": "LDN",
-            "region": "LDN again",
-            "lat": 0.3,
-            "long": 100.50
-        },
-        "name": "event",
-        "womenOnly": true,
-        "spots": 3,
-        "addressVisible": true,
-        "minimumAge": 16,
-        "photoId": true,
-        "physical": true,
-        "addInfo": true,
-        "content": "fun event yay",
-        "date": "2004-10-19 10:23:54",
-        "userId": 3
+        "event": {
+            "address": {
+                "id": 5,
+                "address1": "Line 1",
+                "address2": "Line 2",
+                "postcode": "14 aa",
+                "city": "LDN",
+                "region": "LDN again",
+                "lat": 0.3,
+                "long": 100.50
+            },
+            "name": "event",
+            "womenOnly": true,
+            "spots": 3,
+            "addressVisible": true,
+            "minimumAge": 16,
+            "photoId": true,
+            "physical": true,
+            "addInfo": true,
+            "content": "fun event yay",
+            "date": "2004-10-19 10:23:54",
+            "userId": 3
+        }
     }
  }
  </pre>
@@ -156,7 +160,7 @@ router.post("/update/:id", async (req, res) => {
         const updateEventResult = await eventRepository.update(event);
         res.status(200).send({
             message: "Event updated successfully",
-            data: updateEventResult.rows[0],
+            data: {event: updateEventResult.rows[0]},
         });
     } catch (e) {
         console.log(e);
@@ -174,28 +178,30 @@ router.post("/update/:id", async (req, res) => {
  {
     "message": "Event fetched successfully",
     "data": {
-        "id": 7,
-        "name": "event",
-        "addressId": 24,
-        "womenOnly": true,
-        "spots": 3,
-        "addressVisible": true,
-        "minimumAge": 16,
-        "photoId": true,
-        "physical": true,
-        "addInfo": true,
-        "content": "fun event yay",
-        "date": "2004-10-19T09:23:54.000Z",
-        "userId": 27,
-        "address": {
-            "id": 24,
-            "address1": "221B Baker St",
-            "address2": "Marleybone",
-            "postcode": "NW1 6XE",
-            "city": "London",
-            "region": "Greater London",
-            "lat": 51.5237740,
-            "long": -0.1585340
+        "event": {
+            "id": 7,
+            "name": "event",
+            "addressId": 24,
+            "womenOnly": true,
+            "spots": 3,
+            "addressVisible": true,
+            "minimumAge": 16,
+            "photoId": true,
+            "physical": true,
+            "addInfo": true,
+            "content": "fun event yay",
+            "date": "2004-10-19T09:23:54.000Z",
+            "userId": 27,
+            "address": {
+                "id": 24,
+                "address1": "221B Baker St",
+                "address2": "Marleybone",
+                "postcode": "NW1 6XE",
+                "city": "London",
+                "region": "Greater London",
+                "lat": 51.5237740,
+                "long": -0.1585340
+            }
         }
     }
 }
@@ -215,8 +221,10 @@ router.get("/:id", async (req, res) => {
         res.status(200).send({
             message: "Event fetched successfully",
             data: {
-                ...event,
-                address: address,
+                event: {
+                    ...event,
+                    address: address,
+                },
             },
         });
     } catch (e) {

@@ -30,7 +30,7 @@ router.post('/:event_id/signUp', async (req, res) => {
         const signupRequest = req.body;
         signupRequest.event_id = event_id;
         const signupResult = await signupRepository.insert(signupRequest);
-        res.status(200).send({message: "Signed up for event successfully", data: signupResult.rows[0]});
+        res.status(200).send({message: "Signed up for event successfully", data: {signup: signupResult.rows[0]}});
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
         res.status(500).send({
