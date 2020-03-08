@@ -1,3 +1,24 @@
+-- DELETE ALL DATA --
+
+DELETE FROM profile;
+DELETE FROM sign_up;
+DELETE FROM favourite;
+DELETE FROM event_cause;
+DELETE FROM organisation;
+DELETE FROM individual;
+DELETE FROM event;
+DELETE FROM complaint;
+DELETE FROM authentication;
+DELETE FROM selected_cause;
+DELETE FROM report_user;
+DELETE FROM setting;
+DELETE FROM reset;
+DELETE FROM "user";
+DELETE FROM registration;
+DELETE FROM cause;
+DELETE FROM information;
+DELETE FROM address;
+
 ALTER SEQUENCE address_id_seq RESTART WITH 1;
 
 -- Address --
