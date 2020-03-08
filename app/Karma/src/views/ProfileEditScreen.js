@@ -293,7 +293,7 @@ class ProfileEditScreen extends Component {
                                         Causes
                                     </RegularText>
                                     <TouchableOpacity
-                                    onPress={() => navigate("PickCauses")}>
+                                        onPress={() => navigate("PickCauses")}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{

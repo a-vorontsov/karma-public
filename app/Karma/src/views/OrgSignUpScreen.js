@@ -302,9 +302,7 @@ export default class OrgSignUpScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.state.isRegDateVisible && 
-                            (
- 
+                            {this.state.isRegDateVisible && (
                                 <View>
                                     <DatePicker
                                         mode="date"

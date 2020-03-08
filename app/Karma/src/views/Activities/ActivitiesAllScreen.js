@@ -48,7 +48,12 @@ class ActivitiesAllScreen extends Component {
         return (
             <View>
                 {activities.map(activity => {
-                    return <ActivityDisplayCard activity={activity} key={activity.id}/>;
+                    return (
+                        <ActivityDisplayCard
+                            activity={activity}
+                            key={activity.id}
+                        />
+                    );
                 })}
             </View>
         );
