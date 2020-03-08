@@ -10,6 +10,7 @@ import CreatedActivitiesScreen from "../views/Activities/CreatedActivitiesScreen
 import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
 import ActivityEditScreen from "../views/Activities/ActivityEditScreen";
 import Attendees from "../views/Activities/Attendees";
+import MessageAttendeesScreen from "../views/Activities/MessageAttendeesScreen";
 import SignUpRequests from "../views/Activities/SignUpRequests";
 import ViewSignUpsScreen from "../views/Activities/ViewSignUpsScreen";
 import CausesScreen from "../views/CausesScreen";
@@ -56,7 +57,8 @@ const ProfileNavigator = createStackNavigator(
         ActivityEdit: {screen: ActivityEditScreen},
         ViewSignUps: {screen: ViewSignUpsScreen},
         Attendees: {screen: Attendees},
-        SignUpRequests: {screen: SignUpRequests}
+        SignUpRequests: {screen: SignUpRequests},
+        MessageAttendees: {screen: MessageAttendeesScreen}
     },
     {
         headerMode: "none",
