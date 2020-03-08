@@ -13,15 +13,11 @@ import {useNavigation} from "react-navigation-hooks";
 const carouselEntries = [{individual: true}, {individual: false}];
 
 class ActivityCauseCarousel extends React.Component {
-    navigation = useNavigation();
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard
-                        individual={item.individual}
-                        signedup={false}
-                    />
+                    <ActivityCard activity={item} signedup={false} />
                 </View>
             </View>
         );
@@ -63,7 +59,7 @@ class ActivityCauseCarousel extends React.Component {
                         ref={c => {
                             this._carousel = c;
                         }}
-                        data={carouselEntries}
+                        data={this.props.activities}
                         removeClippedSubviews={false}
                         renderItem={this._renderItem}
                         sliderWidth={sliderWidth}
@@ -133,4 +129,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityCauseCarousel;
+export default props => {
+    const navigation = useNavigation();
+    return <ActivityCauseCarousel {...props} navigation={navigation} />;
+};

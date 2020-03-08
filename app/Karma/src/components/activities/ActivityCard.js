@@ -82,103 +82,50 @@ const ActivityCard = props => {
                 />
                 <Image
                     source={props.signedup ? null : icons.signup}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        right: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
+                    style={styles.icon}
                 />
                 <Image
                     source={icons.date}
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 5,
-                        height: 50,
-                        width: 50,
-                        resizeMode: "contain",
-                    }}
+                    style={[styles.icon, {left: 5}]}
                 />
-                <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 5,
-                        left: 1,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
-                    {" "}
-                    {props.activity.date.getDate()}
+                <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
+                    {` ${props.activity.date.getDate()}`}
                 </RegularText>
-                <RegularText
-                    style={{
-                        position: "absolute",
-                        top: 25,
-                        left: 0,
-                        height: 50,
-                        width: 50,
-                        fontSize: 20,
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "white",
-                    }}>
-                    {" "}
-                    {getMonthName(props.activity.date)}
+                <RegularText style={styles.dateText}>
+                    {`  ${getMonthName(props.activity.date)}`}
                 </RegularText>
                 <View>
                     <View
                         style={{
                             flexDirection: "row",
                         }}>
+                        <InfoBar title={` ${formatAMPM(props.activity.date)}`} image={icons.clock} />
                         <InfoBar
-                            title={formatAMPM(props.activity.date)}
-                            image={icons.clock}
-                        />
-                        <InfoBar
-                            title={`${
-                                props.activity.remaining_spots
-                            } SPOTS LEFT`}
+                            title={`${props.activity.remaining_spots} SPOTS LEFT`}
                             image={icons.people}
                         />
                         <View
                             style={{
-                                flexDirection: "row",
+                                flex: 1,
+                                alignItems: "flex-end",
+                                justifyContent: "flex-end",
                             }}>
-                            <InfoBar title="TIME" image={icons.clock} />
-                            <InfoBar
-                                title="0 SPOTS LEFT"
-                                image={icons.people}
-                            />
-                            <View
-                                style={{
-                                    flex: 1,
-                                    alignItems: "flex-end",
-                                    justifyContent: "flex-end",
-                                }}>
-                                <TouchableOpacity style={{alignSelf: "center"}}>
-                                    <Image
-                                        source={
-                                            props.favorited
-                                                ? icons.fave_inactive
-                                                : icons.fave_active
-                                        }
-                                        style={{
-                                            width: 30,
-                                            height: 30,
-                                            resizeMode: "contain",
-                                            marginRight: 10,
-                                        }}
-                                        // onPress={this.setFav(!props.favorited)}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity style={{alignSelf: "center"}}>
+                                <Image
+                                    source={
+                                        props.favorited
+                                            ? icons.fave_inactive
+                                            : icons.fave_active
+                                    }
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        resizeMode: "contain",
+                                        marginRight: 10,
+                                    }}
+                                    // onPress={this.setFav(!props.favorited)}
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <RegularText
@@ -199,8 +146,8 @@ const ActivityCard = props => {
                 </View>
             </View>
         </View>
-        );
-    }
+    );
+}
 
 
 const styles = StyleSheet.create({
@@ -227,5 +174,5 @@ const styles = StyleSheet.create({
 
 export default props => {
     const navigation = useNavigation();
-    return <ActivityCard {...props} navigation={navigation} />;
+    return <ActivityCard {...props} navigation={navigation}/>;
 };
