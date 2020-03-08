@@ -20,7 +20,7 @@ const validation = require("../../modules/validation");
     "receiverId": 2
  }
  </pre>
- * @returns
+ * @returns {Object}
  *  status: 200, description: The notification object created with its id.<br/>
  *  status: 400, description: The notification object was not in the right format.
  *  status: 500, description: DB error
@@ -71,11 +71,12 @@ router.post("/", async (req, res) => {
  * Endpoint called whenever a user wants to see all current notifications for a UserId.<br/>
  * URL example: GET http://localhost:8000/notification?userId=6
  * @param {Number} req.query.userId - ID of user
- * @returns
+ * @returns {Object}
  *  status: 200, description: An array of notification objects containing the userIds.<br/>
  *  status: 400, description: The userId is not an integer.
  *  status: 500, description: DB error
- *  {
+ *<pre>
+   {
     "message": "Notifications fetched successfully.",
     "data": {
         "notifications": {
@@ -90,6 +91,7 @@ router.post("/", async (req, res) => {
         }
     }
  }
+ </pre>
  *  @name Get notifications
  *  @function
  */
