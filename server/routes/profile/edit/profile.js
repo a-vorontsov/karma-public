@@ -50,7 +50,7 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
         &#125;
     &#125;
     // if city/country did not change, this is all that needs to be sent
-</  code></pre>
+</code></pre>
  * @returns
  *  status: 200, description: Success, go to view profile endpoint to GET updated record.<br/>
  *  status: 500, description: error <br/><br/><br/><br/>
