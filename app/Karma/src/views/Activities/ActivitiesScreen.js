@@ -1,18 +1,14 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
-    Dimensions,
     KeyboardAvoidingView,
     SafeAreaView,
-    Image,
     ScrollView,
     TouchableOpacity,
-    Switch,
+    Platform,
 } from "react-native";
 import {RegularText} from "../../components/text";
-import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
 import ActivitiesAllScreen from "./ActivitiesAllScreen";
 import ActivitiesCausesScreen from "./ActivitiesCausesScreen";

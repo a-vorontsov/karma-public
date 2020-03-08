@@ -1,6 +1,6 @@
 const db = require("../database/connection");
 
-const registration = {
+const registrationExample1 = {
     email: "test@gmail.com",
     emailFlag: 0,
     idFlag: 0,
@@ -8,7 +8,9 @@ const registration = {
     signUpFlag: 0,
 };
 
-const registration2 = {
+const getRegistrationExample1 = () => ({...registrationExample1});
+
+const registrationExample2 = {
     email: "test2@gmail.com",
     emailFlag: 0,
     idFlag: 0,
@@ -16,7 +18,9 @@ const registration2 = {
     signUpFlag: 0,
 };
 
-const registration3 = {
+const getRegistrationExample2 = () => ({...registrationExample2});
+
+const registrationExample3 = {
     email: "test3@gmail.com",
     emailFlag: 0,
     idFlag: 0,
@@ -24,7 +28,9 @@ const registration3 = {
     signUpFlag: 0,
 };
 
-const registration4 = {
+const getRegistrationExample3 = () => ({...registrationExample3});
+
+const registrationExample4 = {
     email: "test4@gmail.com",
     emailFlag: 0,
     idFlag: 0,
@@ -32,7 +38,9 @@ const registration4 = {
     signUpFlag: 0,
 };
 
-const registration5 = {
+const getRegistrationExample4 = () => ({...registrationExample4});
+
+const registrationExample5 = {
     email: "test4@gmail.com",
     emailFlag: 1,
     idFlag: 0,
@@ -40,13 +48,17 @@ const registration5 = {
     signUpFlag: 0,
 };
 
-const registration6 = {
+const getRegistrationExample5 = () => ({...registrationExample5});
+
+const registrationExample6 = {
     email: "test4@gmail.com",
     emailFlag: 1,
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 1,
 };
+
+const getRegistrationExample6 = () => ({...registrationExample6});
 
 const address = {
     address1: "221B Baker St",
@@ -57,6 +69,9 @@ const address = {
     lat: 51.523774,
     long: -0.158534,
 };
+
+const getAddress = () => ({...address});
+
 
 const event = {
     name: "event",
@@ -74,8 +89,9 @@ const event = {
     creationDate: "2019-10-19 10:23:54",
 };
 
+const getEvent = () => ({...event});
 
-const user = {
+const userExample1 = {
     email: "test@gmail.com",
     username: "test1",
     passwordHash: "password",
@@ -84,21 +100,28 @@ const user = {
     dateRegistered: "2016-06-22 19:10:25-07",
 };
 
-const authentication = {
+const getUserExample1 = () => ({...userExample1});
+
+
+const authenticationExample1 = {
     token: "thisIsASecureToken",
     expiryDate: "2020-01-22 19:10:25-07",
     creationDate: "2020-01-10 19:10:25-07",
     userId: -1,
 };
 
-const authentication2 = {
+const getAuthenticationExample1 = () => ({...authenticationExample1});
+
+const authenticationExample2 = {
     token: "thisIsANonSecureToken",
     expiryDate: "2020-01-10 19:10:25-07",
     creationDate: "2019-12-23 19:10:25-07",
     userId: -1,
 };
 
-const user2 = {
+const getAuthenticationExample2 = () => ({...authenticationExample2});
+
+const userExample2 = {
     email: "test2@gmail.com",
     username: "test2",
     passwordHash: "password",
@@ -107,7 +130,9 @@ const user2 = {
     dateRegistered: "2016-06-22 19:10:25-07",
 };
 
-const user3 = {
+const getUserExample2 = () => ({...userExample2});
+
+const userExample3 = {
     email: "test3@gmail.com",
     username: "test3",
     passwordHash: "password",
@@ -116,7 +141,9 @@ const user3 = {
     dateRegistered: "2016-06-22 19:10:25-07",
 };
 
-const user4 = {
+const getUserExample3 = () => ({...userExample3});
+
+const userExample4 = {
     email: "test4@gmail.com",
     username: "test4",
     passwordHash: "bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32",
@@ -124,6 +151,8 @@ const user4 = {
     salt: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
     dateRegistered: "2016-06-22 19:10:25-07",
 };
+
+const getUserExample4 = () => ({...userExample4});
 
 const individual = {
 
@@ -138,12 +167,16 @@ const individual = {
     gender: 'M',
 };
 
+const getIndividual = () => ({...individual});
+
 const profile = {
     individualId: -1,
     karmaPoints: 134,
     bio: "tstest xlkhtle",
     womenOnly: false,
 };
+
+const getProfile = () => ({...profile});
 
 const organisation = {
 
@@ -162,10 +195,15 @@ const organisation = {
     addressId: -1,
 };
 
+const getOrganisation = () => ({...organisation});
+
 const cause = {
     name: "cause1",
     description: "description of cause1",
+    title: "test",
 };
+
+const getCause = () => ({...cause});
 
 const signUp = {
     individualId: -1,
@@ -173,12 +211,16 @@ const signUp = {
     confirmed: true,
 };
 
+const getSignUp = () => ({...signUp});
+
 const favourite = {
     individualId: -1,
     eventId: -1,
 };
 
-const eventWithLocation1 = {
+const getFavourite = () => ({...favourite});
+
+const eventWithLocationExample1 = {
     id: 3,
     name: "Staying at Home",
     addressId: 1,
@@ -203,7 +245,9 @@ const eventWithLocation1 = {
     long: "-0.1904870",
 };
 
-const eventWithLocation2 = {
+const getEventWithLocationExample1 = () => ({...eventWithLocationExample1});
+
+const eventWithLocationExample2 = {
     id: 1,
     name: "Close to Home",
     addressId: 3,
@@ -227,6 +271,8 @@ const eventWithLocation2 = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
+const getEventWithLocationExample2 = () => ({...eventWithLocationExample2});
 
 const womenOnlyEvent = {
     id: 4,
@@ -252,6 +298,8 @@ const womenOnlyEvent = {
     lat: "51.4161220",
     long: "-0.1866410",
 };
+
+const getWomenOnlyEvent = () => ({...womenOnlyEvent});
 
 const physicalEvent = {
     id: 5,
@@ -279,7 +327,9 @@ const physicalEvent = {
     long: "-0.1866410",
 };
 
-const signedUpUser1 = {
+const getPhysicalEvent = () => ({...physicalEvent});
+
+const signedUpUserExample1 = {
     eventId: 1,
     individualId: 1,
     confirmed: true,
@@ -290,7 +340,10 @@ const signedUpUser1 = {
     username: "test1",
     dateRegistered: "2016-06-22T18:10:25.000Z",
 };
-const signedUpUser2 = {
+
+const getSignedUpUserExample1 = () => ({...signedUpUserExample1});
+
+const signedUpUserExample2 = {
     eventId: 1,
     individualId: 2,
     confirmed: true,
@@ -302,20 +355,26 @@ const signedUpUser2 = {
     dateRegistered: "2016-06-22T18:10:25.000Z",
 };
 
-const reset1 = {
+const getSignedUpUserExample2 = () => ({...signedUpUserExample2});
+
+const resetExample1 = {
     userId: 1,
     passwordToken: "123456",
 };
-const reset2 = {
+
+const getResetExample1 = () => ({...resetExample1});
+
+const resetExample2 = {
     userId: 1,
     passwordToken: "234567",
 };
 
-const clearCauses = async () => {
-    await db.query("DELETE FROM cause");
-};
+const getResetExample2 = () => ({...resetExample2});
 
 const clearDatabase = async () => {
+    await db.query("DELETE FROM complaint");
+    await db.query("DELETE FROM report_user");
+    await db.query("DELETE FROM setting");
     await db.query("DELETE FROM profile");
     await db.query("DELETE FROM sign_up");
     await db.query("DELETE FROM favourite");
@@ -329,37 +388,37 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM \"user\"");
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
+    await db.query("DELETE FROM address");
 };
 
 module.exports = {
-    address: address,
-    registration: registration,
-    registration2: registration2,
-    authentication: authentication,
-    authentication2: authentication2,
-    registration3: registration3,
-    registration4: registration4,
-    registration5: registration5,
-    registration6: registration6,
-    event: event,
-    cause: cause,
-    user: user,
-    user2: user2,
-    user3: user3,
-    user4: user4,
-    individual: individual,
-    profile: profile,
-    organisation: organisation,
-    signUp: signUp,
+    getAddress: getAddress,
+    getAuthenticationExample1: getAuthenticationExample1,
+    getAuthenticationExample2: getAuthenticationExample2,
+    getRegistrationExample1: getRegistrationExample1,
+    getRegistrationExample2: getRegistrationExample2,
+    getRegistrationExample3: getRegistrationExample3,
+    getRegistrationExample4: getRegistrationExample4,
+    getRegistrationExample5: getRegistrationExample5,
+    getRegistrationExample6: getRegistrationExample6,
+    getEvent: getEvent,
+    getCause: getCause,
+    getSignUp: getSignUp,
+    getUserExample1: getUserExample1,
+    getUserExample2: getUserExample2,
+    getUserExample3: getUserExample3,
+    getUserExample4: getUserExample4,
+    getIndividual: getIndividual,
+    getProfile: getProfile,
+    getOrganisation: getOrganisation,
+    getSignedUpUserExample1: getSignedUpUserExample1,
+    getSignedUpUserExample2: getSignedUpUserExample2,
+    getResetExample1: getResetExample1,
+    getResetExample2: getResetExample2,
+    getEventWithLocationExample1: getEventWithLocationExample1,
+    getEventWithLocationExample2: getEventWithLocationExample2,
+    getWomenOnlyEvent: getWomenOnlyEvent,
+    getFavourite: getFavourite,
+    getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
-    clearCauses: clearCauses,
-    eventWithLocation1: eventWithLocation1,
-    eventWithLocation2: eventWithLocation2,
-    womenOnlyEvent: womenOnlyEvent,
-    physicalEvent: physicalEvent,
-    favourite: favourite,
-    signedUpUser1: signedUpUser1,
-    signedUpUser2: signedUpUser2,
-    reset1: reset1,
-    reset2: reset2,
 };

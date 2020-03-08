@@ -1,15 +1,5 @@
 import React from "react";
-import {
-    View,
-    Text,
-    Image,
-    Alert,
-    StyleSheet,
-    Dimensions,
-    Platform,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-} from "react-native";
+import {Image} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
 import {createStackNavigator} from "react-navigation-stack";
 import ActivitiesScreen from "./src/views/ActivitiesScreen";
@@ -35,7 +25,7 @@ const ProfileNavigator = createStackNavigator(
     },
 );
 
-export default (MainTabNavigator = createBottomTabNavigator(
+const MainTabNavigator = createBottomTabNavigator(
     {
         Activities: {
             screen: ActivitiesScreen,
@@ -128,4 +118,6 @@ export default (MainTabNavigator = createBottomTabNavigator(
             },
         },
     },
-));
+);
+
+export default MainTabNavigator;

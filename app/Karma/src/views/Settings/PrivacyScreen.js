@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text} from "react-native";
-import PageHeader from "../../components/PageHeader";
+import {SafeAreaView, Text} from "react-native";
 import Styles from "../../styles/Styles";
 
 class PrivacyScreen extends Component {
