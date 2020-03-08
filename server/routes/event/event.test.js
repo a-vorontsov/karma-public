@@ -24,10 +24,6 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-const eventWithLocation = testHelpers.eventWithLocation1;
-const eventWithLocation2 = testHelpers.eventWithLocation2;
-const womenOnlyEvent = testHelpers.womenOnlyEvent;
-const physicalEvent = testHelpers.physicalEvent;
 const address = testHelpers.address;
 const event = testHelpers.event;
 event.organizationId = 1;
@@ -47,7 +43,7 @@ test("creating event with known address works", async () => {
     expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);
-    expect(response.body).toMatchObject({
+    expect(response.body.data).toMatchObject({
         ...event,
         id: 1,
     });
@@ -79,7 +75,7 @@ test("updating events works", async () => {
     expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.update).toHaveBeenCalledTimes(1);
     expect(addressRepository.update).toHaveBeenCalledTimes(1);
-    expect(response.body).toMatchObject({
+    expect(response.body.data).toMatchObject({
         ...event,
         id: 3,
     });
@@ -103,7 +99,7 @@ test("requesting specific event data works", async () => {
     expect(eventRepository.findById).toHaveBeenCalledWith("3");
     expect(addressRepository.findById).toHaveBeenCalledWith(event.addressId);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject({
+    expect(response.body.data).toMatchObject({
         ...event,
         id: 3,
     });
@@ -150,7 +146,7 @@ test("creating event with no addressId creates new address and event", async () 
     expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(1);
-    expect(response.body).toMatchObject({
+    expect(response.body.data).toMatchObject({
         ...event,
         id: 1,
     });

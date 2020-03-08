@@ -23,7 +23,7 @@ router.use("/", eventSelectRoute);
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
 {
-    "message": "New event created!"
+    "message": "New event created",
     "data": {
         "address": {
             "address1": "Line 1",
@@ -61,8 +61,10 @@ router.post("/", async (req, res) => {
         const event = req.body;
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length !== 0) {
-            res.status(400).send(validationResult.errors);
-            return;
+            return res.status(400).send({
+                message: "Input validation failed",
+                errors: validationResult.errors,
+            });
         }
 
         const isIndividual = await util.isIndividual(event.userId);
@@ -87,10 +89,13 @@ router.post("/", async (req, res) => {
 
         event.creationDate = new Date();
         const eventResult = await eventRepository.insert(event);
-        res.status(200).send(eventResult.rows[0]);
+        res.status(200).send({
+            message: "Event created successfully",
+            data: eventResult.rows[0]
+        });
     } catch (e) {
         console.log(e);
-        res.status(500).send(e);
+        res.status(500).send({message: e.message});
     }
 });
 
@@ -100,27 +105,30 @@ router.post("/", async (req, res) => {
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
 {
-    "address": {
-        "id": 5,
-        "address1": "Line 1",
-        "address2": "Line 2",
-        "postcode": "14 aa",
-        "city": "LDN",
-        "region": "LDN again",
-        "lat": 0.3,
-        "long": 100.50
-    },
-    "name": "event",
-    "womenOnly": true,
-    "spots": 3,
-    "addressVisible": true,
-    "minimumAge": 16,
-    "photoId": true,
-    "physical": true,
-    "addInfo": true,
-    "content": "fun event yay",
-    "date": "2004-10-19 10:23:54",
-    "userId": 3
+    "message": "Event updated successfully",
+    "data": {
+        "address": {
+            "id": 5,
+            "address1": "Line 1",
+            "address2": "Line 2",
+            "postcode": "14 aa",
+            "city": "LDN",
+            "region": "LDN again",
+            "lat": 0.3,
+            "long": 100.50
+        },
+        "name": "event",
+        "womenOnly": true,
+        "spots": 3,
+        "addressVisible": true,
+        "minimumAge": 16,
+        "photoId": true,
+        "physical": true,
+        "addInfo": true,
+        "content": "fun event yay",
+        "date": "2004-10-19 10:23:54",
+        "userId": 3
+    }
  }
  </pre>
  * Note that address must have an id.
@@ -130,22 +138,30 @@ router.post("/", async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", (req, res) => {
+router.post("/update/:id", async(req, res) => {
     const address = req.body.address;
     const event = req.body;
     const validationResult = validation.validateEvent(event);
     if (validationResult.errors.length !== 0) {
-        res.status(400).send(validationResult.errors);
-        return;
+        return res.status(400).send({
+            message: "Input validation failed",
+            errors: validationResult.errors,
+        });
     }
 
     event.addressId = address.id;
     event.id = req.params.id;
-    addressRepository
-        .update(address)
-        .then(_ => eventRepository.update(event))
-        .then(eventResult => res.status(200).send(eventResult.rows[0]))
-        .catch(err => res.status(500).send(err));
+    try {
+        await addressRepository.update(address);
+        const updateEventResult = await eventRepository.update(event);
+        res.status(200).send({
+            message: "Event updated successfully",
+            data: updateEventResult.rows[0],
+        })
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({message: e.message});
+    }
 });
 
 /**
@@ -156,28 +172,31 @@ router.post("/update/:id", (req, res) => {
  *  status: 200, description: Information regarding the event containing the same properties as this example
  <pre>
  {
-    "id": 7,
-    "name": "event",
-    "addressId": 24,
-    "womenOnly": true,
-    "spots": 3,
-    "addressVisible": true,
-    "minimumAge": 16,
-    "photoId": true,
-    "physical": true,
-    "addInfo": true,
-    "content": "fun event yay",
-    "date": "2004-10-19T09:23:54.000Z",
-    "userId": 27,
-    "address": {
-        "id": 24,
-        "address1": "221B Baker St",
-        "address2": "Marleybone",
-        "postcode": "NW1 6XE",
-        "city": "London",
-        "region": "Greater London",
-        "lat": 51.5237740,
-        "long": -0.1585340
+    "message": "Event fetched successfully",
+    "data": {
+        "id": 7,
+        "name": "event",
+        "addressId": 24,
+        "womenOnly": true,
+        "spots": 3,
+        "addressVisible": true,
+        "minimumAge": 16,
+        "photoId": true,
+        "physical": true,
+        "addInfo": true,
+        "content": "fun event yay",
+        "date": "2004-10-19T09:23:54.000Z",
+        "userId": 27,
+        "address": {
+            "id": 24,
+            "address1": "221B Baker St",
+            "address2": "Marleybone",
+            "postcode": "NW1 6XE",
+            "city": "London",
+            "region": "Greater London",
+            "lat": 51.5237740,
+            "long": -0.1585340
+        }
     }
 }
  </pre>
@@ -194,11 +213,15 @@ router.get("/:id", async (req, res) => {
         const addressResult = await addressRepository.findById(event.addressId);
         const address = addressResult.rows[0];
         res.status(200).send({
-            ...event,
-            address: address,
+            message: "Event fetched successfully",
+            data: {
+                ...event,
+                address: address,
+            }
         });
     } catch (e) {
-        res.status(500).send(e);
+        console.log(e);
+        res.status(500).send({message: e.message});
     }
 });
 
