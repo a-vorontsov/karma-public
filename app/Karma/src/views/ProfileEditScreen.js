@@ -292,7 +292,8 @@ class ProfileEditScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Causes
                                     </RegularText>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                    onPress={() => navigate("PickCauses")}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{

@@ -220,49 +220,6 @@ class ProfileScreen extends Component {
                                 <View
                                     style={{
                                         flexDirection: "row",
-                                    }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Activity
-                                    </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit")
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Availability:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Activity Date:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Women Only:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        Y/N
-                                    </RegularText>
-                                </View>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
                                         alignItems: "flex-end",
                                         justifyContent: "flex-end",
                                     }}>
