@@ -73,12 +73,12 @@ test('confirming correct token works', async () => {
         rows: [{
                 ...reset2,
                 id: 2,
-                expiry_date: dateTime,
+                expiryDate: dateTime,
             },
             {
                 ...reset1,
                 id: 1,
-                expiry_date: new Date(),
+                expiryDate: new Date(),
             }
         ],
     });
@@ -107,12 +107,12 @@ test('confirming correct token but not latest does not work', async () => {
         rows: [{
                 ...reset2,
                 id: 2,
-                expiry_date: dateTime,
+                expiryDate: dateTime,
             },
             {
                 ...reset1,
                 id: 1,
-                expiry_date: new Date(),
+                expiryDate: new Date(),
             }
         ],
     })
@@ -141,7 +141,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
         rows: [{
             ...reset1,
             id: 1,
-            expiry_date: dateTime,
+            expiryDate: dateTime,
         }],
     })
     const response = await request(app)
@@ -169,7 +169,7 @@ test('confirming expired token returns token expired response', async () => {
         rows: [{
             ...reset1,
             id: 1,
-            expiry_date: dateTime,
+            expiryDate: dateTime,
         }],
     })
     const response = await request(app)

@@ -19,6 +19,7 @@ import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
 import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
 import LogOutScreen from "../views/Settings/LogOutScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
+import PickCausesScreen from "../views/PickCausesScreen";
 
 const SettingsNavigator = createStackNavigator(
     {
@@ -45,7 +46,8 @@ const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
-        SettingsMenu: {screen: SettingsMenuScreen},
+        PickCauses: {screen: PickCausesScreen},
+        SettingsMenu:{screen: SettingsMenuScreen},
         Settings: SettingsNavigator,
     },
     {
@@ -95,7 +97,7 @@ const MainTabNavigator = createBottomTabNavigator(
             },
         },
         Causes: {
-            screen: CausesScreen,
+            screen: PickCausesScreen,
             navigationOptions: {
                 tabBarLabel: "Causes",
                 tabBarIcon: ({focused}) =>

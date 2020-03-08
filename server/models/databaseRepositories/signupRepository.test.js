@@ -19,13 +19,13 @@ beforeEach(() => {
 
 afterEach(() => {
     user.email = "";
-    individual.address_id = -1;
-    individual.user_id = -1;
+    individual.addressId = -1;
+    individual.userId = -1;
     user.email = "";
-    event.address_id = -1;
-    event.user_id = -1;
-    signUp.event_id = -1;
-    signUp.individual_id = -1;
+    event.addressId = -1;
+    event.userId = -1;
+    signUp.eventId = -1;
+    signUp.individualId = -1;
     return testHelpers.clearDatabase();
 });
 
@@ -34,16 +34,16 @@ test('inserting and finding works', async () => {
     user.email = insertRegistrationRepository.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertAddressResult = await addressRepository.insert(address);
-    individual.address_id = insertAddressResult.rows[0].id;
-    individual.user_id = insertUserResult.rows[0].id;
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
 
-    event.address_id = insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
     const insertEventResult = await eventRepository.insert(event);
 
-    signUp.event_id = insertEventResult.rows[0].id;
-    signUp.individual_id = insertIndividualResult.rows[0].id;
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
     const insertSignupResult = await signupRepository.insert(signUp);
 
     const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
@@ -59,16 +59,16 @@ test('updating works', async () => {
     user.email = insertRegistrationRepository.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertAddressResult = await addressRepository.insert(address);
-    individual.address_id = insertAddressResult.rows[0].id;
-    individual.user_id = insertUserResult.rows[0].id;
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
 
-    event.address_id = insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
     const insertEventResult = await eventRepository.insert(event);
 
-    signUp.event_id = insertEventResult.rows[0].id;
-    signUp.individual_id = insertIndividualResult.rows[0].id;
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
     const insertSignupResult = await signupRepository.insert(signUp);
 
     signUp.confirmed = !signUp.confirmed;
@@ -82,16 +82,16 @@ test('inserting and finding users signed up to an event works', async () => {
     user.email = insertRegistrationRepository.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertAddressResult = await addressRepository.insert(address);
-    individual.address_id = insertAddressResult.rows[0].id;
-    individual.user_id = insertUserResult.rows[0].id;
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
 
-    event.address_id = insertAddressResult.rows[0].id;
-    event.user_id = insertUserResult.rows[0].id;
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
     const insertEventResult = await eventRepository.insert(event);
 
-    signUp.event_id = insertEventResult.rows[0].id;
-    signUp.individual_id = insertIndividualResult.rows[0].id;
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
     const insertSignupResult = await signupRepository.insert(signUp);
 
     const findResult = await signupRepository.findUsersSignedUp(insertEventResult.rows[0].id);

@@ -64,19 +64,19 @@ const checkUserId = async (userId) => {
     return result;
 };
 
-const checkEventId = async (event_id) => {
+const checkEventId = async (eventId) => {
     const result = {};
-    if (!event_id) {
+    if (!eventId) {
         result.status = 400;
         result.message = "Event ID not defined";
         return result;
     }
-    if (isNaN(event_id)) {
+    if (isNaN(eventId)) {
         result.status = 400;
         result.message = "ID specified is in wrong format";
         return result;
     }
-    const eventResult = await eventRepository.findById(event_id);
+    const eventResult = await eventRepository.findById(eventId);
     const event = eventResult.rows[0];
     if (!event) {
         result.status = 404;

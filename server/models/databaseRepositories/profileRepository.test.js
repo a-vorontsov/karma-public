@@ -18,8 +18,8 @@ beforeEach(() => {
 afterEach(() => {
     user.email = "";
     individual.id = -1;
-    individual.user_id = -1;
-    profile.individual_id = -1;
+    individual.userId = -1;
+    profile.individualId = -1;
     return testHelpers.clearDatabase();
 });
 
@@ -29,10 +29,10 @@ test('insert profile and findById profile work', async () => {
     user.email = insertRegistrationResult.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertAddressResult = await addressRepository.insert(address);
-    individual.address_id = insertAddressResult.rows[0].id;
-    individual.user_id = insertUserResult.rows[0].id;
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
     const insertIndividualResult = await individualRepository.insert(individual);
-    profile.individual_id = insertIndividualResult.rows[0].id;
+    profile.individualId = insertIndividualResult.rows[0].id;
     const insertProfileResult = await profileRepository.insert(profile);
     const findProfileResult = await profileRepository.findById(insertProfileResult.rows[0].id);
     expect(insertProfileResult.rows[0]).toMatchObject(findProfileResult.rows[0]);
