@@ -10,9 +10,9 @@ const userAgent = require("../../modules/authentication/user-agent");
  * This is the fourth step of the signup flow (after user
  * registration and selection of individual reg).
  * The user inputs their formal name, address, DOB,
- * address, gender as well as their phone number.
+ * address, gender as well as their phone number.<br/>
  * The HTTP request object must also contain the user's ID
- * number for identification.
+ * number for identification.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
  * @route {POST} /register/individual

@@ -86,19 +86,23 @@ test("viewing individual profile works", async () => {
 
 const ogranisationRegistrationRequest = {
     userId: 420,
-    organisationNumber: "69",
-    name: "Karma org",
-    addressLine1: "Karma str",
-    addressLine2: "n",
-    organisationType: "c",
-    lowIncome: "no",
-    exempt: "no",
-    pocFirstName: "Paul",
-    pocLastName: "Muller",
-    townCity: "London",
-    countryState: "UK",
-    postCode: "WC 23",
-    phoneNumber: "+44343525",
+    data: {
+        organisation: {
+            organisationNumber: "69",
+            name: "Karma org",
+            addressLine1: "Karma str",
+            addressLine2: "n",
+            organisationType: "c",
+            lowIncome: "no",
+            exempt: "no",
+            pocFirstName: "Paul",
+            pocLastName: "Muller",
+            townCity: "London",
+            countryState: "UK",
+            postCode: "WC 23",
+            phoneNumber: "+44343525",
+        }
+    }
 };
 
 test("viewing org profile works", async () => {
@@ -123,10 +127,10 @@ test("viewing org profile works", async () => {
         "Found organisation profile for user.",
     );
     expect(profileResponse.body.data.individual.postCode).toBe(
-        ogranisationRegistrationRequest.postCode,
+        ogranisationRegistrationRequest.data.organisation.postCode,
     );
     expect(profileResponse.body.data.individual.organisationNumber).toBe(
-        ogranisationRegistrationRequest.organisationNumber,
+        ogranisationRegistrationRequest.data.organisation.organisationNumber,
     );
     expect(profileResponse.body.data.user.username).toBe(user.username);
     expect(profileResponse.body.data.user.email).toBe(registration.email);
