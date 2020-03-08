@@ -52,7 +52,11 @@ async function requireNoAuthentication(req, res, next) {
     }
     const userId = req.body.userId;
     const authToken = req.body.authToken;
-    if (userId === undefined || authToken === undefined || authToken === null) {
+    if (userId === undefined) {
+        res.redirect("/error/nouserid");
+    } else if (authToken === undefined) {
+        res.redirect("/error/noauthtoken");
+    } else if (userId === null || authToken === null) {
         next(); // for performance reasons logic is separated
     } else if ((await isValidToken(userId, authToken)).isValidToken) {
         res.redirect("/error/alreadyauthenticated");

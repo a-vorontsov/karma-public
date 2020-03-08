@@ -236,6 +236,8 @@ const anyRequest6 = {
 };
 
 const logInReq = {
+    userId: null,
+    authToken: null,
     email: "email",
     password: "password",
 };

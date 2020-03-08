@@ -10,9 +10,9 @@ jest.mock("owasp-password-strength-test");
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
-    registerUserRequest.confirmPassword = "new_plaintext";
-    registerUserRequest.email = "test4@gmail.com";
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+    registerUserRequest.data.user.confirmPassword = "new_plaintext";
+    registerUserRequest.data.user.email = "test4@gmail.com";
     return testHelpers.clearDatabase();
 });
 
@@ -22,10 +22,16 @@ afterEach(() => {
 });
 
 const registerUserRequest = {
-    password: "new_plaintext",
-    confirmPassword: "new_plaintext",
-    email: "test4@gmail.com",
-    username: "userNamesArePointless",
+    userId: null,
+    authToken: null,
+    data: {
+        user: {
+            password: "new_plaintext",
+            confirmPassword: "new_plaintext",
+            email: "test4@gmail.com",
+            username: "userNamesArePointless",
+        }
+    }
 };
 
 test("user registration works", async () => {
@@ -68,20 +74,6 @@ test("weak password fails", async () => {
     expect(response.body.message).toBe("Weak password.");
 });
 
-test("confirm password mismatch rejected", async () => {
-    await regRepo.insert(registration);
-    owasp.test.mockReturnValue({strong: true});
-    registerUserRequest.confirmPassword = "mistyped";
-
-    const response = await request(app)
-        .post("/register/user")
-        .send(registerUserRequest);
-
-    expect(owasp.test).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe("Passwords do not match.");
-});
-
 test("duplicate user registration fails", async () => {
     await regRepo.insert(registration);
     owasp.test.mockReturnValue({strong: true});
@@ -107,7 +99,7 @@ test("duplicate user registration fails", async () => {
 test("invalid email fails", async () => {
     await regRepo.insert(registration);
     owasp.test.mockReturnValue({strong: false});
-    registerUserRequest.email = "invalid@email.com";
+    registerUserRequest.data.user.email = "invalid@email.com";
 
     const response = await request(app)
         .post("/register/user")

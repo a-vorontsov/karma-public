@@ -20,9 +20,8 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.organisation the user input values for their profile
- * @param {object} req.body Here are some examples of an appropriate request json:
+ * @param {object} req.body Here is an example of an appropriate request json:
  <pre><code>
-    // example 1 (user wishes to change username, phoneNumber)
     &#123;
         "userId": 123,
         "authToken": "secureToken",
@@ -31,6 +30,7 @@ const userAgent = require("../../modules/authentication/user-agent");
                 "name": "WWF",
                 "organisationNumber": "123",
                 "phoneNumber": "0723423423",
+                "addressLine1" "7 Queen Lane",
                 [...]
             &#125;
         &#125;
