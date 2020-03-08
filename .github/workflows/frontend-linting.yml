@@ -33,4 +33,4 @@ jobs:
 
       - name: run ESLint
         working-directory: ./app/Karma
-        run: npm run lint
+        run: npx eslint ./
