@@ -13,7 +13,10 @@ export default class CauseItem extends React.Component {
     }
     onPress() {
         const {cause} = this.props;
-        this.props.onPress(cause.name);
+        this.props.onPress({
+            name: cause.name,
+            id: cause.id,
+        });
     }
     render() {
         const {cause, selected} = this.props;
