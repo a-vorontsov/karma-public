@@ -33,7 +33,7 @@ export default class SignUpRequest extends React.Component {
                             />
                         </TouchableOpacity>
                         <View style={{width:50}}></View>
-                        <TouchableOpacity style={{width: 30, paddingRight: 25, justifyContent:"flex-end", alignItems: "flex-end"}}>
+                        <TouchableOpacity style={{width: 30, paddingRight: 27, justifyContent:"flex-end", alignItems: "flex-end"}}>
                             <Image
                                 source={icons.cancel}
                                 // onPress={() => DISAPPROVE}
