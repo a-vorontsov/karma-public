@@ -19,7 +19,7 @@ import ActivityCard from "../../components/activities/ActivityCard";
 import PageHeader from "../../components/PageHeader";
 import {GradientButton, Button} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
-import ProgressBarCustom from "../../components/ProgressBarCustom";
+import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
 
 const carouselEntries = [{individual: true}];
@@ -216,9 +216,11 @@ class ActivityInfoScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "space-between",
                                     }}>
-                                    <ProgressBarCustom />
-                                    <RegularText>
-                                        3/4 Spots Available
+                                        <View style={{width: HALF+(HALF/3)}}>
+                                            <ProgressBar current={3} max={4}/>
+                                        </View>
+                                    <RegularText style={{fontSize: 16}}>
+                                        3/4 SPOTS TAKEN
                                     </RegularText>
                                 </View>
                             </View>
