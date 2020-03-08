@@ -3,7 +3,7 @@ const db = require("../../database/connection");
 const insert = (user) => {
     const query = "INSERT INTO \"user\"(email, username, password_hash, verified, salt, date_registered) VALUES ($1, $2, $3, $4, $5, $6)" +
         "RETURNING *"; // returns passed user with it's id set to corresponding id in database
-    const params = [user.email, user.username, user.password_hash, user.verified, user.salt, user.date_registered];
+    const params = [user.email, user.username, user.passwordHash, user.verified, user.salt, user.dateRegistered];
     return db.query(query, params);
 };
 
@@ -36,9 +36,9 @@ const findByUsername = (username) => {
     return db.query(query, [username]);
 };
 
-const updatePassword = (userId, hashedPassword) => {
+const updatePassword = (userId, passwordHash) => {
     const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
-    const params = [userId, hashedPassword];
+    const params = [userId, passwordHash];
     return db.query(query, params);
 };
 

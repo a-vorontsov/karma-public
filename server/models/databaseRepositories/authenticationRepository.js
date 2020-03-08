@@ -17,14 +17,14 @@ const findAll = () => {
     return db.query(query);
 };
 
-const findAllByUserID = (user_id) => {
+const findAllByUserID = (userId) => {
     const query = "SELECT * FROM authentication WHERE user_id=$1";
-    return db.query(query, [user_id]);
+    return db.query(query, [userId]);
 };
 
-const findLatestByUserID = (user_id) => {
+const findLatestByUserID = (userId) => {
     const query = "SELECT * FROM authentication WHERE user_id=$1 ORDER BY creation_date DESC LIMIT 1";
-    return db.query(query, [user_id]);
+    return db.query(query, [userId]);
 };
 
 module.exports = {
