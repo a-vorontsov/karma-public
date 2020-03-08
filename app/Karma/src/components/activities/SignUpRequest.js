@@ -6,7 +6,7 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 
-export default class AttendeeButton extends React.Component {
+export default class SignUpRequest extends React.Component {
     render() {
         const {user} = this.props;
         return (

@@ -54,6 +54,9 @@ const ActivityEditable = props => {
                                 <MenuOption onSelect={() => navigation.navigate("ViewSignUps")}>
                                     <RegularText style={styles.settingsText}>View Sign Ups</RegularText>
                                 </MenuOption>
+                                <MenuOption onSelect={() => navigation.navigate("ViewSignUps")}>
+                                    <RegularText style={styles.settingsText}>Message Attendees</RegularText>
+                                </MenuOption>
                                 <MenuOption onSelect={() => alert(`Are you sure you want to delete?`)}>
                                     <RegularText style={styles.settingsText}>Delete Activity</RegularText>
                                 </MenuOption>
