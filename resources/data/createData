@@ -1,0 +1,2 @@
+#!/bin/bash
+psql karma-db < KarmaData.sql
