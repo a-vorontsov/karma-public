@@ -12,7 +12,7 @@ const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 const DATA = [
     {
-        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+        id: "1",
         title: "has sent you a message",
         org: "Ya",
         logo: require("../assets/images/general-logos/linkedin-logo.png"),
@@ -20,14 +20,49 @@ const DATA = [
         showReply: 1,
     },
     {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+        id: "2",
         title: "has confirmed you can attend the event named ",
         org: "Yah",
         logo: require("../assets/images/general-logos/back-arrow.png"),
         weeks_ago: 2,
     },
     {
+        id: "3",
+        title: "Third Item",
+        org: "Yeet",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 1,
+    },
+    {
+        id: "4",
+        title: "Third Item",
+        org: "Yeet",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 2,
+    },
+    {
+        id: "5",
+        title: "Third Item",
+        org: "Yeet",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 1,
+    },
+    {
         id: "58694a0f-3da1-471f-bd96-145571e29d72",
+        title: "Third Item",
+        org: "Yeet",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 5,
+    },
+    {
+        id: "58694a0aaf-3da1-471f-bd96-145571e29d72",
+        title: "Third Item",
+        org: "Yeet",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 1,
+    },
+    {
+        id: "58694a0fd-3da1-471f-bd96-145571e29d72",
         title: "Third Item",
         org: "Yeet",
         logo: require("../assets/images/general-logos/photo-logo.png"),
@@ -45,12 +80,19 @@ function compare(a, b) {
     return 0;
 }
 
+/**
+ * Adds flags to the notifications events depending on whether
+ * a time stamp should be shown
+ */
 function addTimeStamps() {
+    DATA.sort(compare);
+
     let currentWeeksAgo = DATA[0].weeks_ago;
     for (let i = 0; i < DATA.length - 1; i++) {
-        if (i == 0) {
+        if (i === 0) {
             DATA[i].showTimeStamp = 1;
-        } else if (DATA[i + 1].weeks_ago != currentWeeksAgo) {
+        } else if (DATA[i + 1].weeks_ago !== currentWeeksAgo) {
+            currentWeeksAgo = DATA[i + 1].weeks_ago;
             DATA[i + 1].showTimeStamp = 1;
         }
     }
@@ -62,7 +104,6 @@ class NotificationsScreen extends Component {
     };
 
     render() {
-        DATA.sort(compare);
         addTimeStamps();
         return (
             <View style={Styles.container}>

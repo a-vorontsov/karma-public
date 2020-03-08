@@ -1,6 +1,11 @@
 import React, {Component} from "react";
 import {View, Image, Dimensions, Text} from "react-native";
-import {RegularText, BoldText, LinkText, SemiBoldText} from "../components/text";
+import {
+    RegularText,
+    BoldText,
+    LinkText,
+    SemiBoldText,
+} from "../components/text";
 import Styles from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -23,6 +28,7 @@ export default class NotificationItem extends Component {
                     {
                         width: FORM_WIDTH,
                         flexDirection: "row",
+                        paddingTop: 10,
                         paddingBottom: 10,
                     },
                 ]}>
@@ -52,7 +58,9 @@ export default class NotificationItem extends Component {
                     </Text>
                     {data.showReply ? (
                         <TouchableOpacity>
-                            <SemiBoldText style={{color: Colours.blue}}>Reply</SemiBoldText>
+                            <SemiBoldText style={{color: Colours.blue}}>
+                                Reply
+                            </SemiBoldText>
                         </TouchableOpacity>
                     ) : (
                         undefined
