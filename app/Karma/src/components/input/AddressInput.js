@@ -27,8 +27,8 @@ export default class AddressInput extends React.Component {
         });
     }
     passUpState() {
-        const {address1, address2, city, region, postcode} = this.state;
-        if (address1 && city && region && postcode) {
+        const {address1, address2, city, region, postcode, correctPostCode} = this.state;
+        if (address1 && city && region && correctPostCode) {
             this.props.onChange({
                 address1,
                 address2,
