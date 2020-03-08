@@ -333,7 +333,7 @@ router.get("/causes", async (req, res) => {
 /**
  * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
  * route {GET} event/favourites
- * @param {Integer} req.query.userId - ID of user logged in
+ * @param {Number} req.query.userId - ID of user logged in
  * @returns
  *  status: 200, description: Array of all event objects favourited by the user <br/>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
