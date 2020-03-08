@@ -19,7 +19,7 @@ import Styles from "../styles/Styles";
 import TextInput from "../components/TextInput";
 import Colours from "../styles/Colours";
 
-const {width, height} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
@@ -106,8 +106,8 @@ class ProfileEditScreen extends Component {
                                         console.log(
                                             "Image base64 string: ",
                                             avatar,
-                                        ),
-                                            this.setPhoto(avatar);
+                                        );
+                                        this.setPhoto(avatar);
                                     }
                                 }}>
                                 <Image
@@ -293,7 +293,7 @@ class ProfileEditScreen extends Component {
                                         Causes
                                     </RegularText>
                                     <TouchableOpacity
-                                    onPress={() => navigate("PickCauses")}>
+                                        onPress={() => navigate("PickCauses")}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{

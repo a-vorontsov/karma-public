@@ -201,7 +201,7 @@ const Styles = StyleSheet.create({
 
         backgroundColor: `${Colours.lightGrey}`,
         borderColor: "transparent",
-        
+
         borderRadius: 10,
     },
 });

@@ -23,7 +23,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
-const {width, height} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
@@ -129,8 +129,8 @@ class ProfileScreen extends Component {
                                         console.log(
                                             "Image base64 string: ",
                                             avatar,
-                                        ),
-                                            this.setPhoto(avatar);
+                                        );
+                                        this.setPhoto(avatar);
                                     }
                                 }}>
                                 <Image
@@ -207,7 +207,6 @@ class ProfileScreen extends Component {
                                     onPress={() => navigate("CreateActivity")}
                                     title="Create Activity"
                                     width={350}
-                                    onPress={() => navigate("CreateActivity")}
                                 />
                             </View>
                             <View
