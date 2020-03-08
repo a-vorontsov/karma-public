@@ -65,8 +65,8 @@ router.post('/confirm', async (req, res) => {
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No token sent to " + email);
 
-            const tokenSent = result.rows[0].password_token;
-            const expiryDate = result.rows[0].expiry_date;
+            const tokenSent = result.rows[0].passwordToken;
+            const expiryDate = result.rows[0].expiryDate;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
                 res.status(200).send("Token accepted");

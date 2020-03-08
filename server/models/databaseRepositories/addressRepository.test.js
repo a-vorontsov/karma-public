@@ -1,9 +1,10 @@
 const addressRepository = require("./addressRepository");
 const testHelpers = require("../../test/testHelpers");
 
-const address = testHelpers.address;
+let address;
 
 beforeEach(() => {
+    address = testHelpers.getAddress();
     return testHelpers.clearDatabase();
 });
 
