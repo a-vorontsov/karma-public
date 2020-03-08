@@ -20,18 +20,21 @@ afterEach(() => {
 
 const registerIndividualRequest = {
     userId: 666,
-    title: "Mr.",
-    firstName: "Paul",
-    middleNames: "",
-    surName: "Muller",
-    dateOfBirth: "1998-10-09",
-    gender: "M",
-    phoneNumber: "+435958934",
-    addressLine1: "abc str",
-    addressLine2: "nop",
-    townCity: "London",
-    countryState: "UK",
-    postCode: "NW1 6XE",
+    data: {
+        individual: {
+            title: "Mr.",
+            firstName: "Paul",
+            surName: "Muller",
+            dateOfBirth: "1998-10-09",
+            gender: "M",
+            phoneNumber: "+435958934",
+            addressLine1: "abc str",
+            addressLine2: "nop",
+            townCity: "London",
+            countryState: "UK",
+            postCode: "NW1 6XE",
+        }
+    }
 };
 
 const profileViewRequest = {
@@ -59,22 +62,22 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
     );
-    expect(profileResponse.body.data.individual.postCode).toBe(registerIndividualRequest.postCode);
+    expect(profileResponse.body.data.individual.postCode).toBe(registerIndividualRequest.data.individual.postCode);
     expect(profileResponse.body.data.individual.firstName).toBe(
-        registerIndividualRequest.firstName,
+        registerIndividualRequest.data.individual.firstName,
     );
     expect(profileResponse.body.data.individual.surName).toBe(
-        registerIndividualRequest.surName,
+        registerIndividualRequest.data.individual.surName,
     );
     expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
-        Date(registerIndividualRequest.dateOfBirth)
+        Date(registerIndividualRequest.data.individual.dateOfBirth)
     );
-    expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.gender);
+    expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.data.individual.gender);
     expect(profileResponse.body.data.individual.phoneNumber).toBe(
-        registerIndividualRequest.phoneNumber,
+        registerIndividualRequest.data.individual.phoneNumber,
     );
     expect(profileResponse.body.data.individual.addressLine1).toBe(
-        registerIndividualRequest.addressLine1,
+        registerIndividualRequest.data.individual.addressLine1,
     );
     expect(profileResponse.body.data.user.username).toBe(user.username);
     expect(profileResponse.body.data.user.email).toBe(registration.email);

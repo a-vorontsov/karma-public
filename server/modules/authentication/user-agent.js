@@ -72,7 +72,6 @@ async function registerUser(email, username, password) {
  * @param {integer} userId
  * @param {string} title
  * @param {string} firstName
- * @param {string} middleNames // TODO: not in DB
  * @param {string} surName
  * @param {Date} dateOfBirth
  * @param {string} gender
@@ -85,7 +84,7 @@ async function registerUser(email, username, password) {
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender,
+async function registerIndividual(userId, title, firstName, surName, dateOfBirth, gender,
     addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");

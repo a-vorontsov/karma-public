@@ -47,7 +47,6 @@ router.post("/", async (req, res) => {
             req.body.userId,
             req.body.data.individual.title,
             req.body.data.individual.firstName,
-            req.body.data.individual.middleNames,
             req.body.data.individual.surName,
             req.body.data.individual.dateOfBirth,
             req.body.data.individual.gender,

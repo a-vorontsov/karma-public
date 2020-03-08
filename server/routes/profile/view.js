@@ -63,7 +63,6 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             const indivToSend = {
                 registrationDate: user.date_registered,
                 firstName: individual.firstname,
-                middleNames: "TODO:",
                 surName: individual.lastname,
                 dateOfBirth: individual.birthday,
                 gender: individual.gender,
