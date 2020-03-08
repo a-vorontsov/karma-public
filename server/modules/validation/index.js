@@ -40,7 +40,6 @@ const addressSchema = {
 };
 
 
-
 const eventSchema = {
     "id": "/Event",
     "type": "object",
@@ -72,11 +71,11 @@ const notificationSchema = {
         "id": {"type": "number"},
         "type": {"type": "string"},
         "message": {"type": "string"},
-        "timestamp_sent": {"type": "date-time"},
-        "sender_id": {"type": "number", "minimum": 0},
-        "receiver_id": {"type": "number", "minimum": 0},
+        "timestampSent": {"type": "date-time"},
+        "senderId": {"type": "number"},
+        "receiverId": {"type": "number"},
     },
-    "required": ["type", "message", "sender_id", "receiver_id"],
+    "required": ["type", "message", "senderId", "receiverId"],
 };
 
 validator.addSchema(addressSchema, "/Address");

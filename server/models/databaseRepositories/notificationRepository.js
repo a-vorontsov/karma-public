@@ -2,7 +2,7 @@ const db = require("../../database/connection");
 
 const insert = (notification) => {
     const query = "INSERT INTO notification(type, message, timestamp_sent, sender_id, receiver_id) VALUES ($1, $2, $3, $4, $5) " +
-        "RETURNING *"; // returns passed address with it's id set to corresponding id in database
+        "RETURNING *"; // returns passed notification with its id set to corresponding id in database
     const params = [notification.type, notification.message, notification.timestampSent, notification.senderId, notification.receiverId];
     return db.query(query, params);
 };

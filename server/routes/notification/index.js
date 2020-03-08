@@ -17,13 +17,28 @@ const validation = require("../../modules/validation");
     "type": "Cancellation",
     "message": "This event is cancelled thanks",
     "senderId": 1,
-    "receiverId": 2,
+    "receiverId": 2
  }
  </pre>
  * @returns
  *  status: 200, description: The notification object created with its id.<br/>
  *  status: 400, description: The notification object was not in the right format.
  *  status: 500, description: DB error
+ *   <pre>
+ {
+    "message": "Notification created successfully.",
+    "data": {
+        "notification": {
+            "id": 1,
+            "type": "Cancel",
+            "message": "This is a message.",
+            "timestampSent": "2019-02-02 00:00:00"
+            "senderId": 1,
+            "receiverId": 2
+        }
+    }
+ }
+ </pre>
  *  @name Create new notification
  *  @function
  */
@@ -38,14 +53,13 @@ router.post("/", async (req, res) => {
             });
             return;
         }
-
         notification.timestampSent = new Date();
         const notificationResult = await notificationRepository.insert(notification);
         res.status(200).send({
             message: "Notification created successfully.",
             data: {
-                notification: [notificationResult.rows[0]]
-            }
+                notification: notificationResult.rows[0],
+            },
         });
     } catch (e) {
         console.log(e);
@@ -61,6 +75,21 @@ router.post("/", async (req, res) => {
  *  status: 200, description: An array of notification objects containing the userIds.<br/>
  *  status: 400, description: The userId is not an integer.
  *  status: 500, description: DB error
+ *  {
+    "message": "Notifications fetched successfully.",
+    "data": {
+        "notifications": {
+            "notification": {
+            "id": 1,
+            "type": "Cancel",
+            "message": "This is a message.",
+            "timestampSent": "2019-02-02 00:00:00"
+            "senderId": 1,
+            "receiverId": 2
+            }
+        }
+    }
+ }
  *  @name Get notifications
  *  @function
  */
@@ -75,8 +104,8 @@ router.get("/", async (req, res) => {
         res.status(200).send({
             message: "Notifications fetched successfully.",
             data: {
-                notifications: [notificationResult.rows]
-            }
+                notifications: notificationResult.rows,
+            },
         });
     } catch (e) {
         console.log(e);
