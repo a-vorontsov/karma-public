@@ -6,9 +6,9 @@ const insert = (event) => {
         "photo_id, physical, add_info, content, date, user_id, creation_date) " +
         "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) " +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
-    const params = [event.name, event.address_id, event.women_only, event.spots, event.address_visible,
-        event.minimum_age, event.photo_id, event.physical, event.add_info, event.content, event.date, event.user_id,
-        event.creation_date,
+    const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
+        event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
+        event.creationDate,
     ];
     return db.query(query, params);
 };
@@ -40,9 +40,9 @@ const update = (event) => {
         "minimum_age = $6, photo_id = $7, physical = $8, add_info = $9, content = $10, " +
         "date = $11, user_id = $12, creation_date = $13 WHERE id = $14" +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
-    const params = [event.name, event.address_id, event.women_only, event.spots, event.address_visible,
-        event.minimum_age, event.photo_id, event.physical, event.add_info, event.content, event.date, event.user_id,
-        event.creation_date, event.id,
+    const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
+        event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
+        event.creationDate, event.id,
     ];
     return db.query(query, params);
 };
@@ -53,10 +53,6 @@ const getEventsWithLocation = (filters) => {
         "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
         "from address right join event on id(address) = address_id" + whereClause;
     return db.query(query);
-    if (queryResult.rowCount === 0) {
-        throw Error(`No event with these filters exists`);
-    }
-    return queryResult;
 };
 module.exports = {
     insert: insert,

@@ -6,8 +6,8 @@ const insert = (individual) => {
         "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)" +
         "RETURNING *"; // returns passed user with it's id set to corresponding id in database
     const params = [individual.firstname, individual.lastname, individual.phone,
-        individual.banned, individual.user_id, individual.picture_id,
-        individual.address_id, individual.birthday, individual.gender,
+        individual.banned, individual.userId, individual.pictureId,
+        individual.addressId, individual.birthday, individual.gender,
     ];
     return db.query(query, params);
 };
@@ -22,22 +22,24 @@ const findAll = () => {
     return db.query(query);
 };
 
-const findByUserID = (user_id) => {
+const findByUserID = (userId) => {
     const query = "SELECT * FROM individual WHERE user_id=$1";
-    return db.query(query, [user_id]);
+    return db.query(query, [userId]);
 };
 
 const findFavouriteEvents = (userId) => {
-    const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
-        "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
-        "from favourite left join event on event_id = id(event) left join address on id(address) = address_id where individual_id = $1";
+    const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
+        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id as eventCreatorId, " +
+        "address1, address2, postcode, city, region, lat, long " +
+        "FROM favourite LEFT JOIN event ON event_id = id(event) left join address on id(address) = address_id where individual_id = $1";
     return db.query(query, [userId]);
 };
 
 const findGoingEvents = (userId) => {
-    const query = "select id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
-        "physical,add_info,content,date,user_id as event_creator_id,address_1,address_2,postcode,city,region,lat,long " +
-        "from sign_up left join event on event_id = id(event)" +
+    const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
+        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id as eventCreatorId, " +
+        "address1, address2, postcode, city, region, lat, long " +
+        "FROM sign_up left join event on event_id = id(event)" +
         "left join address on id(address) = address_id where individual_id = $1 and confirmed = true";
     return db.query(query, [userId]);
 };

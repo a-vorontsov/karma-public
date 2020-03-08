@@ -34,8 +34,8 @@ const womenOnlyEvent = testHelpers.womenOnlyEvent;
 const physicalEvent = testHelpers.physicalEvent;
 const address = testHelpers.address;
 const event = testHelpers.event;
-event.organization_id = 1;
-event.address_id = 1;
+event.organizationId = 1;
+event.addressId = 1;
 
 test("creating event with known address works", async () => {
     eventRepository.insert.mockResolvedValue({
@@ -105,7 +105,7 @@ test("requesting specific event data works", async () => {
 
     expect(eventRepository.findById).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledWith("3");
-    expect(addressRepository.findById).toHaveBeenCalledWith(event.address_id);
+    expect(addressRepository.findById).toHaveBeenCalledWith(event.addressId);
     expect(response.statusCode).toBe(200);
     expect(response.body).toMatchObject({
         ...event,
@@ -126,13 +126,13 @@ test("error returned when user tries to exceed monthly event creation limit", as
     expect(response.statusCode).toBe(400);
 });
 
-test("creating event with no address_id creates new address and event", async () => {
+test("creating event with no addressId creates new address and event", async () => {
     util.isIndividual.mockResolvedValue(false);
     const eventNoAddressId = {
         ...event,
         address: address,
     };
-    delete eventNoAddressId.address_id;
+    delete eventNoAddressId.addressId;
     const mockAddress = {
         ...address,
         id: 1,
@@ -209,7 +209,7 @@ test("getting women only events works", async () => {
   eventRepository.getEventsWithLocation.mockResolvedValue({
     rows: [womenOnlyEvent]
   });
-  const response = await request(app).get("/event?userId=1&filter[]=women_only");
+  const response = await request(app).get("/event?userId=1&filter[]=womenOnly");
   expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
   expect(response.statusCode).toBe(200);
   expect(response.body.data).toMatchObject([womenOnlyEvent]);

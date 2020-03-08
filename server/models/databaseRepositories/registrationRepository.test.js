@@ -29,9 +29,9 @@ test('find all registrations', async () => {
 test('registration update works', async () => {
     const insertRegistrationResult = await registrationRepository.insert(registration);
     const insertedRegistration = insertRegistrationResult.rows[0];
-    insertedRegistration.email_flag = 1;
-    insertedRegistration.id_flag = 1;
-    insertedRegistration.phone_flag = 1;
+    insertedRegistration.emailFlag = 1;
+    insertedRegistration.idFlag = 1;
+    insertedRegistration.phoneFlag = 1;
 
     const updateRegistrationResult = await registrationRepository.update(insertedRegistration);
     expect(updateRegistrationResult.rows[0]).toMatchObject(insertedRegistration);
