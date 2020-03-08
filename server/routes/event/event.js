@@ -22,20 +22,39 @@ router.use("/", eventSelectRoute);
  * URL example: POST http://localhost:8000/event/
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
-{
+ {
+    "address": {
+        "address1": "Line 1",
+        "address2": "Line 2",
+        "postcode": "14 aa",
+        "city": "LDN",
+        "region": "LDN again",
+        "lat": 0.3,
+        "long": 100.50
+    },
+    "name": "event",
+    "womenOnly": true,
+    "spots": 3,
+    "addressVisible": true,
+    "minimumAge": 16,
+    "photoId": true,
+    "physical": true,
+    "addInfo": true,
+    "content": "fun event yay",
+    "date": "2004-10-19 10:23:54",
+    "userId": 3
+ }
+ </pre>
+ * "address" can be substituted with <pre>"addressId: {Integer}"</pre> in which case the existing address is reused.
+ * @returns {object}
+ *  status: 200, description: The event object created with its id and addressId set to the ones stored in the database<br/>
+ <pre>
+ {
     "message": "New event created",
     "data": {
         "event": {
-            "address": {
-                "address1": "Line 1",
-                "address2": "Line 2",
-                "postcode": "14 aa",
-                "city": "LDN",
-                "region": "LDN again",
-                "lat": 0.3,
-                "long": 100.50
-            },
             "name": "event",
+            "addressId": 5,
             "womenOnly": true,
             "spots": 3,
             "addressVisible": true,
@@ -45,14 +64,12 @@ router.use("/", eventSelectRoute);
             "addInfo": true,
             "content": "fun event yay",
             "date": "2004-10-19 10:23:54",
-            "userId": 3
+            "userId": 3,
+            "creationDate": "2019-10-19 10:23:54"
         }
     }
  }
  </pre>
- * "address" can be substituted with "addressId: {Integer}" in which case the existing address is reused.
- * @returns
- *  status: 200, description: The event object created with it's id and addressId set to the ones stored in the database<br/>
  *  status: 400, description: User has reached their monthly event creation limit.<br/>
  *  status: 500, description: DB error
  *  @name Create new event
@@ -106,21 +123,40 @@ router.post("/", async (req, res) => {
  * URL example: POST http://localhost:8000/event/update/5
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
-{
-    "message": "Event updated successfully",
+ {
+    "address": {
+        "id": 5,
+        "address1": "Line 1",
+        "address2": "Line 2",
+        "postcode": "14 aa",
+        "city": "LDN",
+        "region": "LDN again",
+        "lat": 0.3,
+        "long": 100.50
+    },
+    "name": "event",
+    "womenOnly": true,
+    "spots": 3,
+    "addressVisible": true,
+    "minimumAge": 16,
+    "photoId": true,
+    "physical": true,
+    "addInfo": true,
+    "content": "fun event yay",
+    "date": "2004-10-19 10:23:54",
+    "userId": 3
+ }
+ </pre>
+ * Note that address must have an id.
+ * @returns {object}
+ *  status: 200, description: The updated event object.<br/>
+ <pre>
+ {
+    "message": "New event created",
     "data": {
         "event": {
-            "address": {
-                "id": 5,
-                "address1": "Line 1",
-                "address2": "Line 2",
-                "postcode": "14 aa",
-                "city": "LDN",
-                "region": "LDN again",
-                "lat": 0.3,
-                "long": 100.50
-            },
             "name": "event",
+            "addressId": 5,
             "womenOnly": true,
             "spots": 3,
             "addressVisible": true,
@@ -130,14 +166,12 @@ router.post("/", async (req, res) => {
             "addInfo": true,
             "content": "fun event yay",
             "date": "2004-10-19 10:23:54",
-            "userId": 3
+            "userId": 3,
+            "creationDate": "2019-10-19 10:23:54"
         }
     }
  }
  </pre>
- * Note that address must have an id.
- * @returns
- *  status: 200, description: The event object updated event object.<br/>
  *  status: 500, description: DB error
  *  @function
  *  @name Update event

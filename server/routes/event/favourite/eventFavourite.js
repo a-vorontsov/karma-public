@@ -15,8 +15,19 @@ const favouriteRepository = require("../../../models/databaseRepositories/favour
     "individualId": "3"
   }
  </pre>
- * @returns
- *  status: 200, description: The favourite object that is created <br/>
+ * @returns {Object}
+ *  status: 200, description: The favourite object that is created<br/>
+ <pre>
+ {
+    "message": "Favourite added successfully",
+    "data": {
+        "favourite": {
+            "individualId": 7,
+            "eventId": 11,
+        }
+    }
+}
+ </pre>
  *  status: 500, description: DB error
  *  @name Favourite an event
  *  @function
@@ -43,8 +54,19 @@ router.post('/:eventId/favourite', async (req, res) => {
     "individualId": "3"
   }
  </pre>
- * @returns
+ * @returns {Object}
  *  status: 200, description: The favourite object deleted<br/>
+ <pre>
+ {
+    "message": "Favourite added successfully",
+    "data": {
+        "favourite": {
+            "individualId": 7,
+            "eventId": 11,
+        }
+    }
+ }
+ </pre>
  *  status: 500, description: DB error
  *  @name Delete favourite status for event
  *  @function

@@ -115,7 +115,7 @@ router.get("/", async (req, res) => {
  * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!womenOnly&filter[]=physical
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - all filters required as an array of strings
- * @returns {any}
+ * @returns {Object}
  *  status: 200, description: Array of all event objects grouped by causes that were selected by user <br/>
  *  Each cause group is sorted by time and distance from the user (distance measured in miles) as follows:
  *  <pre>
@@ -213,8 +213,61 @@ router.get("/causes", async (req, res) => {
  * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
  * route {GET} event/favourites
  * @param {Number} req.query.userId - ID of user logged in
- * @returns
- *  status: 200, description: res.data: Array of all event objects favourited by the user named 'events'<br/>
+ * @returns {Object}
+ *  status: 200, description: res.data: Array of all event objects favourited by the user<br/>
+ <pre>
+ {
+  message:"All activities successfully fetched",
+  "data": {
+       "events": [
+           {
+               "eventId": 1,
+               "name": "Community help centre",
+               "womenOnly": false,
+               "spots": 3,
+               "addressVisible": true,
+               "minimumAge": 18,
+               "photoId": false,
+               "physical": false,
+               "addInfo": true,
+               "content": "help people at the community help centre because help is good",
+               "date": "2020-03-25T19:10:00.000Z",
+               "eventCreatorId": 1,
+               "address1": "nearby road",
+               "address2": null,
+               "postcode": "whatever",
+               "city": "London",
+               "region": null,
+               "lat": 51.4161220,
+               "long": -0.1866410,
+                "distance": 0.18548890708299523
+           },
+           {
+               "eventId": 2,
+               "name": "Picking up trash",
+               "womenOnly": false,
+               "spots": 5,
+               "addressVisible": true,
+               "minimumAge": 18,
+               "photoId": false,
+               "physical": false,
+               "addInfo": true,
+               "content": "small class to teach other people how to pick themselves up",
+               "date": "2020-03-25T19:10:00.000Z",
+               "eventCreatorId": 1,
+               "address1": "uni road",
+               "address2": null,
+               "postcode": "whatever",
+               "city": "London",
+               "region": null,
+               "lat": 51.5114070,
+               "long": -0.1159050,
+               "distance": 7.399274608089304
+           }
+       ]
+   }
+ }
+ </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: if userID doesnt belong to any user <br/>
  *  status: 500, description: Most probably a database error occured
@@ -246,8 +299,61 @@ router.get("/favourites", async (req, res) => {
  * Endpoint called when "Going" tab is pressed in Activities homepage <br/>
  * route {GET} event/going
  * @param {Number} req.query.userId - ID of user logged in
- * @returns
- *  status: 200, description: Array of all event objects that user is going to named 'events'<br/>
+ * @returns {Object}
+ *  status: 200, description: Array of all event objects that user is going to<br/>
+ <pre>
+ {
+  message:"All activities successfully fetched",
+  "data": {
+       "events": [
+           {
+               "eventId": 1,
+               "name": "Community help centre",
+               "womenOnly": false,
+               "spots": 3,
+               "addressVisible": true,
+               "minimumAge": 18,
+               "photoId": false,
+               "physical": false,
+               "addInfo": true,
+               "content": "help people at the community help centre because help is good",
+               "date": "2020-03-25T19:10:00.000Z",
+               "eventCreatorId": 1,
+               "address1": "nearby road",
+               "address2": null,
+               "postcode": "whatever",
+               "city": "London",
+               "region": null,
+               "lat": 51.4161220,
+               "long": -0.1866410,
+                "distance": 0.18548890708299523
+           },
+           {
+               "eventId": 2,
+               "name": "Picking up trash",
+               "womenOnly": false,
+               "spots": 5,
+               "addressVisible": true,
+               "minimumAge": 18,
+               "photoId": false,
+               "physical": false,
+               "addInfo": true,
+               "content": "small class to teach other people how to pick themselves up",
+               "date": "2020-03-25T19:10:00.000Z",
+               "eventCreatorId": 1,
+               "address1": "uni road",
+               "address2": null,
+               "postcode": "whatever",
+               "city": "London",
+               "region": null,
+               "lat": 51.5114070,
+               "long": -0.1159050,
+               "distance": 7.399274608089304
+           }
+       ]
+   }
+ }
+ </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: if userID doesnt belong to any user <br/>
  *  status: 500, description: Most probably a database error occured
