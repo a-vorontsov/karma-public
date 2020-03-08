@@ -46,7 +46,7 @@ export default class ContactInfoScreen extends React.Component {
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="always">
-                        <View style={Styles.fullMinHeight}>
+                        <View>
                             <View>
                                 <PageHeader title="Contact Info" />
                                 <SubTitleText style={{fontSize: normalise(26)}}>
