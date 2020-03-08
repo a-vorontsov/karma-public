@@ -165,6 +165,7 @@ const organisation = {
 const cause = {
     name: "cause1",
     description: "description of cause1",
+    title: "test",
 };
 
 const signUp = {
@@ -311,11 +312,10 @@ const reset2 = {
     password_token: "234567",
 };
 
-const clearCauses = async () => {
-    await db.query("DELETE FROM cause");
-};
-
 const clearDatabase = async () => {
+    await db.query("DELETE FROM complaint");
+    await db.query("DELETE FROM report_user");
+    await db.query("DELETE FROM setting");
     await db.query("DELETE FROM profile");
     await db.query("DELETE FROM sign_up");
     await db.query("DELETE FROM favourite");
@@ -353,7 +353,6 @@ module.exports = {
     organisation: organisation,
     signUp: signUp,
     clearDatabase: clearDatabase,
-    clearCauses: clearCauses,
     eventWithLocation1: eventWithLocation1,
     eventWithLocation2: eventWithLocation2,
     womenOnlyEvent: womenOnlyEvent,
