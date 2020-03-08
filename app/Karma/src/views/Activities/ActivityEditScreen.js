@@ -245,50 +245,6 @@ class ActivityEditScreen extends Component {
                             eiusm ut labore et dolore magna aliqua sed do eiusm
                             ut labore et dolore magna aliqua
                         </RegularText>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                paddingVertical: 10,
-                            }}>
-                            <TouchableOpacity
-                                style={styles.contactButton}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    Communications.phonecall(
-                                        phoneNumbers[0].number,
-                                        true,
-                                    )
-                                }>
-                                <RegularText
-                                    style={{
-                                        fontSize: 18,
-                                        color: Colours.white,
-                                    }}>
-                                    CALL
-                                </RegularText>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.contactButton}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    Communications.email(
-                                        ["emailAddress1", "emailAddress2"],
-                                        null,
-                                        null,
-                                        "My Subject",
-                                        "My body text",
-                                    )
-                                }>
-                                <RegularText
-                                    style={{
-                                        fontSize: 18,
-                                        color: Colours.white,
-                                    }}>
-                                    EMAIL
-                                </RegularText>
-                            </TouchableOpacity>
-                        </View>
                         <View style={{flexDirection:"row"}}>
                             <RegularText style={styles.headerText}>
                                 Where

@@ -8,6 +8,12 @@ import Colours from "../../styles/Colours";
 import {NavigationEvents} from "react-navigation";
 import {useNavigation} from "react-navigation-hooks";
 import Styles from "../../styles/Styles";
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+  } from 'react-native-popup-menu';
 
 const carouselEntries = [{individual: true}];
 const {width, height} = Dimensions.get("window");
@@ -32,8 +38,27 @@ const ActivityEditable = props => {
                 <View
                     style={{
                     }}>
-                    <TouchableOpacity onPress={() => navigation.navigate("ActivityEdit")}>
-                       <Image source={icons.dots} style={{width:40, height:40, marginRight:20, marginBottom: 10}} resizeMode="contain"/>
+                    {/* <TouchableOpacity onPress={() => navigation.navigate("ActivityEdit")}> */}
+                    <TouchableOpacity>
+                        <Menu>
+                            <MenuTrigger>
+                                <Image source={icons.dots} style={{width:40, height:40, marginRight:20, marginBottom: 10}} resizeMode="contain"/>
+                            </MenuTrigger>
+                            <MenuOptions>
+                                <MenuOption onSelect={() => alert(`Share`)}>
+                                    <RegularText style={styles.settingsText}>Share Activity</RegularText>
+                                </MenuOption>
+                                <MenuOption onSelect={() => navigation.navigate("ActivityEdit")}>
+                                    <RegularText style={styles.settingsText}>Edit Activity</RegularText>
+                                </MenuOption>
+                                <MenuOption onSelect={() => navigation.navigate("ViewSignUps")}>
+                                    <RegularText style={styles.settingsText}>View Sign Ups</RegularText>
+                                </MenuOption>
+                                <MenuOption onSelect={() => alert(`Are you sure you want to delete?`)}>
+                                    <RegularText style={styles.settingsText}>Delete Activity</RegularText>
+                                </MenuOption>
+                            </MenuOptions>
+                       </Menu>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -94,6 +119,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "500",
         color: "white",
+    },
+    settingsText: {
+        fontSize: 15
+
     },
     icon: {
         position: "absolute",

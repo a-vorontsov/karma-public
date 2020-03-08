@@ -9,6 +9,9 @@ import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScre
 import CreatedActivitiesScreen from "../views/Activities/CreatedActivitiesScreen";
 import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
 import ActivityEditScreen from "../views/Activities/ActivityEditScreen";
+import Attendees from "../views/Activities/Attendees";
+import SignUpRequests from "../views/Activities/SignUpRequests";
+import ViewSignUpsScreen from "../views/Activities/ViewSignUpsScreen";
 import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
@@ -50,7 +53,10 @@ const ProfileNavigator = createStackNavigator(
         SettingsMenu:{screen: SettingsMenuScreen},
         Settings: SettingsNavigator,
         CreatedActivities: {screen: CreatedActivitiesScreen},
-        ActivityEdit: {screen: ActivityEditScreen}
+        ActivityEdit: {screen: ActivityEditScreen},
+        ViewSignUps: {screen: ViewSignUpsScreen},
+        Attendees: {screen: Attendees},
+        SignUpRequests: {screen: SignUpRequests}
     },
     {
         headerMode: "none",
