@@ -23,12 +23,12 @@ test('insert works', async () => {
     user.email = insertRegistrationResult.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertCauseResult = await causeRepository.insert(cause)
-    const user_id = insertUserResult.rows[0].id;
-    const cause_id = insertCauseResult.rows[0].id;
-    const insertResult = await selectedCauseRepository.insert(user_id, cause_id);
+    const userId = insertUserResult.rows[0].id;
+    const causeId = insertCauseResult.rows[0].id;
+    const insertResult = await selectedCauseRepository.insert(userId, causeId);
     expect(insertResult.rows[0]).toMatchObject({
-        'user_id': user_id,
-        'cause_id': cause_id
+        userId: userId,
+        causeId: causeId
     });
 });
 test('find works', async () => {
@@ -36,12 +36,12 @@ test('find works', async () => {
     user.email = insertRegistrationResult.rows[0].email;
     const insertUserResult = await userRepository.insert(user);
     const insertCauseResult = await causeRepository.insert(cause)
-    const user_id = insertUserResult.rows[0].id;
-    const cause_id = insertCauseResult.rows[0].id;
-    const insertResult = await selectedCauseRepository.insert(user_id, cause_id);
-    const findResult = await selectedCauseRepository.find(user_id, cause_id);
-    const findByCauseIdResult = await selectedCauseRepository.findByCauseId(cause_id);
-    const findByUserIdResult = await selectedCauseRepository.findByUserId(user_id);
+    const userId = insertUserResult.rows[0].id;
+    const causeId = insertCauseResult.rows[0].id;
+    const insertResult = await selectedCauseRepository.insert(userId, causeId);
+    const findResult = await selectedCauseRepository.find(userId, causeId);
+    const findByCauseIdResult = await selectedCauseRepository.findByCauseId(causeId);
+    const findByUserIdResult = await selectedCauseRepository.findByUserId(userId);
     expect(findResult.rows[0]).toMatchObject(insertResult.rows[0]);
     expect(findByCauseIdResult.rows[0]).toMatchObject(insertResult.rows[0]);
     expect(findByUserIdResult.rows[0]).toMatchObject(insertResult.rows[0]);

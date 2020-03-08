@@ -22,6 +22,13 @@ const deleteUnselected = (userID, causes) => {
     return db.query(query, params);
 };
 
+const unselectAll = (userID) => {
+    const query = "DELETE FROM selected_cause WHERE user_id = $1" +
+        "RETURNING *"; // returns deleted selected causes
+    const params = [userID];
+    return db.query(query, params);
+};
+
 const deleteMultiple = (userID, causes) => {
     const query = "DELETE FROM selected_cause WHERE cause_id IN (SELECT * FROM unnest($2::int[])) AND user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
@@ -36,10 +43,6 @@ const findByUserId = (userId) => {
 const findByCauseId = (causeId) => {
     const query = "SELECT * FROM selected_cause WHERE cause_id=$1";
     return db.query(query, [causeId]);
-    if (queryResult.rowCount === 0) {
-        throw Error(`No causes for causeID ${causeId} exists`);
-    }
-    return queryResult;
 };
 const find = (userID, causeID) => {
     const query = "SELECT * FROM selected_cause WHERE user_id = $1 AND cause_id=$2";
@@ -71,4 +74,5 @@ module.exports = {
     findByCauseId: findByCauseId,
     findEventsSelectedByUser: findEventsSelectedByUser,
     find: find,
+    unselectAll: unselectAll,
 };

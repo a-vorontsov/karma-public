@@ -21,7 +21,7 @@ test('update works', async () => {
     const insertAddressResult = await addressRepository.insert(address);
     const insertedAddress = insertAddressResult.rows[0];
     insertedAddress.city = "Tallinn";
-    insertedAddress.lat = "15.3000000";
+    insertedAddress.lat = 15.3;
     const updateEventResult = await addressRepository.update(insertedAddress);
     expect(updateEventResult.rows[0]).toMatchObject(insertedAddress);
 });

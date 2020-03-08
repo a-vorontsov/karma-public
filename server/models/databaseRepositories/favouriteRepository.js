@@ -1,0 +1,38 @@
+const db = require("../../database/connection");
+
+const insert = (favourite) => {
+    const query = "INSERT INTO favourite VALUES ($1, $2) " +
+        "RETURNING *"; // returns inserted row
+    const params = [favourite.individualId, favourite.eventId];
+    return db.query(query, params);
+};
+
+const findAllByIndividualId = (individualId) => {
+    const query = "SELECT * FROM favourite WHERE individual_id=$1";
+    return db.query(query, [individualId]);
+};
+
+const findAllByEventId = (eventId) => {
+    const query = "SELECT * FROM favourite WHERE event_id=$1";
+    return db.query(query, [eventId]);
+};
+
+const find = (individualId, eventId) => {
+    const query = "SELECT * FROM favourite WHERE individual_id = $1 AND event_id=$2";
+    const params = [individualId, eventId];
+    return db.query(query, params);
+};
+
+const remove = (favourite) => {
+    const query = "DELETE FROM favourite WHERE individual_id=$1 AND event_id=$2 RETURNING *";
+    const params = [favourite.individualId, favourite.eventId];
+    return db.query(query, params);
+};
+
+module.exports = {
+    insert: insert,
+    findAllByIndividualId: findAllByIndividualId,
+    findAllByEventId: findAllByEventId,
+    find: find,
+    remove: remove,
+};
