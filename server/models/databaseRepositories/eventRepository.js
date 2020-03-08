@@ -42,7 +42,7 @@ const update = (event) => {
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
     const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
         event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
-        event.creationDate, event.id
+        event.creationDate, event.id,
     ];
     return db.query(query, params);
 };
