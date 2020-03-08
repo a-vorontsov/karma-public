@@ -29,8 +29,8 @@ const findLatestByUserID = (user_id) => {
 
 const updateAllExpiratonsForUser = (userId, expirationDate) => {
     const query =
-    'UPDATE "authentication" SET expiry_date = $2 WHERE user_id = $1 RETURNING *';
-    const params = [userId, expirationDate];
+    'UPDATE "authentication" SET expiry_date = $1 WHERE user_id = $2 RETURNING *';
+    const params = [expirationDate, userId];
     return db.query(query, params);
 };
 

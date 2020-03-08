@@ -37,22 +37,22 @@ const findByUsername = (username) => {
 };
 
 const updatePassword = (userId, hashedPassword, salt) => {
-    const query = "UPDATE \"user\" SET password_hash = $2, salt = $3 WHERE id = $1 RETURNING *";
-    const params = [userId, hashedPassword, salt];
+    const query = "UPDATE \"user\" SET password_hash = $1, salt = $2 WHERE id = $3 RETURNING *";
+    const params = [hashedPassword, salt, userId];
     return db.query(query, params);
 };
 
 const updateVerificationStatus = (userId, isVerified) => {
     const query =
-    'UPDATE "user" SET verified = $2 WHERE id = $1 RETURNING *';
-    const params = [userId, isVerified];
+    'UPDATE "user" SET verified = $1 WHERE id = $2 RETURNING *';
+    const params = [isVerified, userId];
     return db.query(query, params);
 };
 
 const updateUsername = (userId, username) => {
     const query =
-    'UPDATE "user" SET username = $2 WHERE id = $1 RETURNING *';
-    const params = [userId, username];
+    'UPDATE "user" SET username = $1 WHERE id = $2 RETURNING *';
+    const params = [username, userId];
     return db.query(query, params);
 };
 
