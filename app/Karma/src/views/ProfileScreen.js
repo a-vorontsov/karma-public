@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {GradientButton} from "../components/buttons";
+import {GradientButton, Button, TransparentButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -207,6 +207,21 @@ class ProfileScreen extends Component {
                                     onPress={() => navigate("CreateActivity")}
                                     title="Create Activity"
                                     width={350}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    paddingTop: 15
+                                }}>
+                                <TransparentButton
+                                    title="View Your Activities"
+                                    size={15}
+                                    ph={40}
+                                    onPress={() =>
+                                        navigate("CreatedActivities")
+                                    }
                                 />
                             </View>
                             <View

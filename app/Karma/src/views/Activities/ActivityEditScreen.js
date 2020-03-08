@@ -1,28 +1,36 @@
 import React, {Component} from "react";
 import {
     View,
+    Text,
     StyleSheet,
     Dimensions,
+    KeyboardAvoidingView,
+    SafeAreaView,
     Image,
     ScrollView,
-    StatusBar,
     TouchableOpacity,
+    Switch,
+    StatusBar
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
+import CarouselStyles from "../../styles/CarouselStyles";
+import ActivityCard from "../../components/activities/ActivityCard";
 import PageHeader from "../../components/PageHeader";
-import {GradientButton} from "../../components/buttons";
+import {GradientButton, Button} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBarCustom from "../../components/ProgressBarCustom";
 import Communications from "react-native-communications";
+
+const carouselEntries = [{individual: true}];
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 const HALF = FORM_WIDTH / 2;
 
 const icons = {
-    share: require("../../assets/images/general-logos/export-logo.png"),
+    edit: require("../../assets/images/general-logos/edit-grey.png"),
     profile: require("../../assets/images/general-logos/globe.png"),
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
     fave_active: require("../../assets/images/general-logos/heart-red.png"),
@@ -32,13 +40,12 @@ const icons = {
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
-class ActivityInfoScreen extends Component {
+class ActivityEditScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
 
     render() {
-        const phoneNumbers = [];
         return (
             <View style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
@@ -54,25 +61,10 @@ class ActivityInfoScreen extends Component {
                                 ? 40
                                 : StatusBar.currentHeight,
                             backgroundColor: Colours.white,
-                            marginBottom: 20,
                         },
                     ]}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader />
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            flex: 1,
-                            flexWrap: "wrap",
-                        }}>
-                        <RegularText
-                            style={[
-                                Styles.pv16,
-                                {fontSize: 25, fontWeight: "500"},
-                            ]}>
-                            Activity Name Activity
-                        </RegularText>
+                        <PageHeader title="Edit Activity" />
                     </View>
                 </View>
 
@@ -86,48 +78,19 @@ class ActivityInfoScreen extends Component {
                             flexDirection: "row",
                             alignItems: "center",
                         }}>
-                        <Image
-                            source={icons.profile}
+                        <View
                             style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 75,
-                                paddingHorizontal: 24,
-                            }}
-                            resizeMode="cover"
-                        />
-                        <View style={{alignItems: "center"}}>
-                            <View
-                                style={{
-                                    alignItems: "flex-start",
-                                    marginLeft: 15,
-                                }}>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyItems: "flex-start",
-                                    }}>
-                                    <RegularText
-                                        style={{
-                                            fontSize: 20,
-                                            color: Colours.black,
-                                            fontWeight: "500",
-                                        }}>
-                                        Name
-                                    </RegularText>
-                                    <Image />
-                                </View>
+                                alignItems: "flex-start",
+                            }}>
                                 <RegularText
                                     style={{
-                                        fontSize: 15,
-                                        color: Colours.lightGrey,
+                                        fontSize: 20,
+                                        color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    Location
+                                    Activity Name
                                 </RegularText>
                             </View>
-                        </View>
                         <View
                             style={{
                                 flex: 1,
@@ -136,11 +99,11 @@ class ActivityInfoScreen extends Component {
                             }}>
                             <TouchableOpacity style={{alignSelf: "flex-end"}}>
                                 <Image
-                                    source={icons.share}
+                                    source={icons.edit}
                                     style={{
                                         alignSelf: "flex-end",
-                                        width: 30,
-                                        height: 30,
+                                        width: 25,
+                                        height: 25,
                                     }}
                                     resizeMode="contain"
                                 />
@@ -156,54 +119,11 @@ class ActivityInfoScreen extends Component {
                                 style={{
                                     flex: 1,
                                     width: null,
-                                    height: 200,
+                                    height: 190,
                                     marginBottom: 10,
                                 }}
                                 resizeMode="cover"
                             />
-                            <Image
-                                source={icons.date}
-                                style={{
-                                    position: "absolute",
-                                    top: 5,
-                                    left: 5,
-                                    height: 50,
-                                    width: 50,
-                                    resizeMode: "contain",
-                                }}
-                            />
-                            <Image
-                                source={icons.grey_circle}
-                                style={{
-                                    position: "absolute",
-                                    top: 5,
-                                    right: 5,
-                                    height: 50,
-                                    width: 50,
-                                    resizeMode: "contain",
-                                }}
-                            />
-                            <Image
-                                source={icons.fave_active}
-                                style={{
-                                    position: "absolute",
-                                    top: 16,
-                                    right: 15,
-                                    height: 30,
-                                    width: 30,
-                                    resizeMode: "contain",
-                                }}
-                            />
-                            <RegularText
-                                style={[styles.dateText, {top: 5, left: 0}]}>
-                                {" "}
-                                DAY
-                            </RegularText>
-                            <RegularText
-                                style={[styles.dateText, {top: 25, left: 0}]}>
-                                {" "}
-                                MON
-                            </RegularText>
                             <View>
                                 <View
                                     style={{
@@ -279,74 +199,71 @@ class ActivityInfoScreen extends Component {
 
                     {/* INFORMATION */}
                     <View
-                        style={[
-                            Styles.ph24,
-                            Styles.pv16,
-                            {backgroundColor: Colours.backgroundWhite},
-                        ]}>
-                        <RegularText style={styles.headerText}>
-                            What Will Volunteers Do?
-                        </RegularText>
-                        <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
-                        </RegularText>
-                        <RegularText style={styles.headerText}>
-                            Who to Contact
-                        </RegularText>
-                        <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
-                        </RegularText>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                paddingVertical: 10,
-                            }}>
-                            <TouchableOpacity
-                                style={styles.contactButton}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    Communications.phonecall(
-                                        phoneNumbers[0].number,
-                                        true,
-                                    )
-                                }>
-                                <RegularText
-                                    style={{
-                                        fontSize: 18,
-                                        color: Colours.white,
-                                    }}>
-                                    CALL
-                                </RegularText>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.contactButton}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    Communications.email(
-                                        ["emailAddress1"],
-                                        null,
-                                        null,
-                                        "About Your Karma Activity",
-                                        null,
-                                    )
-                                }>
-                                <RegularText
-                                    style={{
-                                        fontSize: 18,
-                                        color: Colours.white,
-                                    }}>
-                                    EMAIL
-                                </RegularText>
-                            </TouchableOpacity>
+                        style={[Styles.ph24, Styles.pv16, {backgroundColor: Colours.backgroundWhite}]}>
+                        <View style={{flexDirection:"row"}}>
+                            <RegularText style={styles.headerText}>
+                                What Will Volunteers Do?
+                            </RegularText>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                    <Image
+                                        source={icons.edit}
+                                        style={{width: 25,height: 25,}}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <RegularText style={styles.headerText}>
-                            Where
+                        <RegularText>
+                            sed do eiusm ut labore et dolore magna aliqua sed do
+                            eiusm ut labore et dolore magna aliqua sed do eiusm
+                            ut labore et dolore magna aliqua
                         </RegularText>
+                        <View style={{flexDirection:"row"}}>
+                            <RegularText style={styles.headerText}>
+                                Who to Contact
+                            </RegularText>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                    <Image
+                                        source={icons.edit}
+                                        style={{width: 25,height: 25,}}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <RegularText>
+                            sed do eiusm ut labore et dolore magna aliqua sed do
+                            eiusm ut labore et dolore magna aliqua sed do eiusm
+                            ut labore et dolore magna aliqua
+                        </RegularText>
+                        <View style={{flexDirection:"row"}}>
+                            <RegularText style={styles.headerText}>
+                                Where
+                            </RegularText>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                    <Image
+                                        source={icons.edit}
+                                        style={{width: 25,height: 25,}}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                         <RegularText>
                             sed do eiusm ut labore et dolore magna aliqua sed do
                             eiusm ut labore et dolore magna aliqua sed do eiusm
@@ -361,9 +278,24 @@ class ActivityInfoScreen extends Component {
                                 alignSelf: "center",
                             }}
                         />
-                        <RegularText style={styles.headerText}>
-                            Important
-                        </RegularText>
+                        <View style={{flexDirection:"row"}}>
+                            <RegularText style={styles.headerText}>
+                                Important
+                            </RegularText>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                    <Image
+                                        source={icons.edit}
+                                        style={{width: 25,height: 25,}}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                         <RegularText>
                             sed do eiusm ut labore et dolore magna aliqua sed do
                             eiusm ut labore et dolore magna aliqua sed do eiusm
@@ -417,4 +349,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityInfoScreen;
+export default ActivityEditScreen;
