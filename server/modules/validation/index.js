@@ -39,6 +39,8 @@ const addressSchema = {
     "required": ["address1", "address2", "postcode", "city", "region", "lat", "long"],
 };
 
+
+
 const eventSchema = {
     "id": "/Event",
     "type": "object",
@@ -63,8 +65,23 @@ const eventSchema = {
         "physical", "addInfo", "content", "date", "userId"],
 };
 
+const notificationSchema = {
+    "id": "/Notification",
+    "type": "object",
+    "properties": {
+        "id": {"type": "number"},
+        "type": {"type": "string"},
+        "message": {"type": "string"},
+        "timestamp_sent": {"type": "date-time"},
+        "sender_id": {"type": "number", "minimum": 0},
+        "receiver_id": {"type": "number", "minimum": 0},
+    },
+    "required": ["type", "message", "sender_id", "receiver_id"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
+validator.addSchema(notificationSchema, "/Notification");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
@@ -74,7 +91,12 @@ const validateEvent = (event) => {
     return validator.validate(event, eventSchema);
 };
 
+const validateNotification = (notification) => {
+    return validator.validate(notification, notificationSchema);
+};
+
 module.exports = {
     validateAddress: validateAddress,
     validateEvent: validateEvent,
+    validateNotification: validateNotification,
 };
