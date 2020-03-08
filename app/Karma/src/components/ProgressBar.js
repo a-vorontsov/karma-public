@@ -21,7 +21,7 @@ export default class ProgressBar extends Component {
                     style={[
                         StyleSheet.absoluteFill,
                         {
-                            backgroundColor: Colours.green,
+                            backgroundColor: Colours.blue,
                             width: `${progress}%`,
                             borderRadius: 10,
                         },
