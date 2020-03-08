@@ -1,6 +1,10 @@
 // following this example https://node-postgres.com/guides/project-structure
-const {Pool} = require('pg');
-const types = require('pg').types;
+const pg = require('pg');
+const pgCamelCase = require('pg-camelcase');
+const {Pool} = pg;
+const types = pg.types;
+
+pgCamelCase.inject(pg);
 types.setTypeParser(1700, 'text', parseFloat); // converts Postgres numeric types to js Numbers
 
 

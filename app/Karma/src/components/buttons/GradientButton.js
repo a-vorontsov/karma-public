@@ -1,14 +1,11 @@
 import React from "react";
 
-import {Dimensions, TouchableOpacity} from "react-native";
+import {TouchableOpacity} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 export default class GradientButton extends React.Component {
     render() {

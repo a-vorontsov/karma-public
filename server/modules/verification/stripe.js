@@ -21,7 +21,7 @@ async function uploadFile(userId) {
                 },
             },
             {
-                stripeAccount: "{{" + process.env.STRIPE_ACC_userId + "}}",
+                stripeAccount: "{{" + process.env.STRIPE_ACC_ID + "}}",
             },
         );
     } catch (e) {

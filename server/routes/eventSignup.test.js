@@ -9,7 +9,14 @@ jest.mock("../models/databaseRepositories/eventRepository");
 jest.mock("../models/databaseRepositories/signupRepository");
 jest.mock("../util/util");
 
+let signUp, event, signedUpUserExample1, signedUpUserExample2;
 beforeEach(() => {
+    signUp = testHelpers.getSignUp();
+    event = testHelpers.getEvent();
+    signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
+    signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
+    event.organization_id = 1;
+    event.address_id = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -17,14 +24,6 @@ afterEach(() => {
     jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
-
-const signUp = testHelpers.signUp;
-const event = testHelpers.event;
-const signedUpUser1 = testHelpers.signedUpUser1;
-const signedUpUser2 = testHelpers.signedUpUser2;
-event.organization_id = 1;
-event.address_id = 1;
-
 
 test('creating signup works', async () => {
     signupRepository.insert.mockResolvedValue({
@@ -71,8 +70,8 @@ test('requesting users signed up to an event works', async () => {
     });
     signupRepository.findUsersSignedUp.mockResolvedValue({
         rows: [{
-            signedUpUser1,
-            signedUpUser2
+            signedUpUser1: signedUpUserExample1,
+            signedUpUser2: signedUpUserExample2
         }], // 2 users
     });
     const response = await request(app).get("/event/1/signUp");
@@ -81,8 +80,8 @@ test('requesting users signed up to an event works', async () => {
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body).toMatchObject([{
-        signedUpUser1,
-        signedUpUser2
+        signedUpUser1: signedUpUserExample1,
+        signedUpUser2: signedUpUserExample2
     }]);
 });
 

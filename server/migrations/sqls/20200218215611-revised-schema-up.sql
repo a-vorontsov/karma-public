@@ -5,11 +5,11 @@
 CREATE TABLE address
 (
     id serial NOT NULL,
-    address_1 varchar(32) NOT NULL,
-    address_2 varchar(32) NULL,
-    postcode varchar(32) NOT NULL,
-    city varchar(32) NOT NULL,
-    region varchar(32) NULL,
+    address_1 varchar(64) NOT NULL,
+    address_2 varchar(64) NULL,
+    postcode varchar(64) NOT NULL,
+    city varchar(64) NOT NULL,
+    region varchar(64) NULL,
     lat decimal(10,7) NOT NULL,
     long decimal(10,7) NOT NULL,
     CONSTRAINT address_pk PRIMARY KEY (id)
@@ -33,8 +33,9 @@ CREATE TABLE authentication
     CREATE TABLE cause
     (
         id serial NOT NULL,
-        name varchar(32) NOT NULL,
-        description varchar(32) NOT NULL,
+        name varchar(64) NOT NULL,
+        description varchar(512) NOT NULL,
+        title varchar(512) NOT NULL,
         CONSTRAINT cause_pk PRIMARY KEY (id)
     );
 
@@ -42,8 +43,8 @@ CREATE TABLE authentication
     CREATE TABLE complaint
     (
         id serial NOT NULL,
-        type varchar(32) NOT NULL,
-        message varchar(32) NOT NULL,
+        type varchar(64) NOT NULL,
+        message varchar(512) NOT NULL,
         user_id int NOT NULL,
         CONSTRAINT complaint_pk PRIMARY KEY (id)
     );
@@ -52,7 +53,7 @@ CREATE TABLE authentication
     CREATE TABLE event
     (
         id serial NOT NULL,
-        name varchar(32) NOT NULL,
+        name varchar(127) NOT NULL,
         address_id int NOT NULL,
         women_only boolean NOT NULL,
         spots int NOT NULL,
@@ -88,9 +89,9 @@ CREATE TABLE authentication
     CREATE TABLE individual
     (
         id serial NOT NULL,
-        firstname varchar(32) NOT NULL,
-        lastname varchar(32) NOT NULL,
-        phone varchar(32) NOT NULL,
+        firstname varchar(64) NOT NULL,
+        lastname varchar(64) NOT NULL,
+        phone varchar(64) NOT NULL,
         banned boolean NOT NULL,
         user_id int NOT NULL,
         picture_id int NULL,
@@ -103,7 +104,7 @@ CREATE TABLE authentication
     -- Table: information
     CREATE TABLE information
     (
-        type varchar(32) NOT NULL,
+        type varchar(64) NOT NULL,
         content text NOT NULL,
         CONSTRAINT information_pk PRIMARY KEY (type)
     );
@@ -112,8 +113,8 @@ CREATE TABLE authentication
     CREATE TABLE notification
     (
         id serial NOT NULL,
-        type varchar(32) NOT NULL,
-        message varchar(32) NOT NULL,
+        type varchar(64) NOT NULL,
+        message varchar(512) NOT NULL,
         timestamp_sent timestamp NOT NULL,
         sender_id int NOT NULL,
         receiver_id int NOT NULL,
@@ -124,12 +125,12 @@ CREATE TABLE authentication
     CREATE TABLE organisation
     (
         id serial NOT NULL,
-        org_name varchar(32) NOT NULL,
-        org_number varchar(32) NOT NULL,
-        org_type varchar(32) NOT NULL,
-        poc_firstname varchar(32) NOT NULL,
-        poc_lastname varchar(32) NOT NULL,
-        phone varchar(32) NOT NULL,
+        org_name varchar(64) NOT NULL,
+        org_number varchar(64) NOT NULL,
+        org_type varchar(64) NOT NULL,
+        poc_firstname varchar(64) NOT NULL,
+        poc_lastname varchar(64) NOT NULL,
+        phone varchar(64) NOT NULL,
         banned boolean NOT NULL,
         org_register_date date NOT NULL,
         low_income boolean NOT NULL,
@@ -159,7 +160,7 @@ CREATE TABLE authentication
             id serial NOT NULL,
             individual_id int NOT NULL,
             karma_points int NOT NULL DEFAULT 0,
-            bio varchar(32) NULL,
+            bio text NULL,
             women_only boolean NOT NULL,
             CONSTRAINT profile_pk PRIMARY KEY (id)
         );
@@ -167,7 +168,7 @@ CREATE TABLE authentication
         -- Table: registration
         CREATE TABLE registration
         (
-            email varchar(32) NOT NULL,
+            email varchar(64) NOT NULL,
             email_flag int NOT NULL,
             id_flag int NOT NULL,
             phone_flag int NOT NULL,
@@ -180,8 +181,8 @@ CREATE TABLE authentication
         (
             id serial NOT NULL,
             user_reported int NOT NULL,
-            type varchar(32) NOT NULL,
-            message varchar(32) NOT NULL,
+            type varchar(512) NOT NULL,
+            message varchar(512) NOT NULL,
             user_reporting int NOT NULL,
             CONSTRAINT report_user_pk PRIMARY KEY (id)
         );
@@ -226,14 +227,12 @@ CREATE TABLE authentication
         CREATE TABLE "user"
         (
             id serial NOT NULL,
-            email varchar(32) NOT NULL,
+            email varchar(64) NOT NULL,
             username varchar(64) NOT NULL,
             password_hash varchar(64) NOT NULL,
             verified boolean NOT NULL,
             salt varchar(64) NOT NULL,
             date_registered timestamp NOT NULL,
-            CONSTRAINT user_ak_1 UNIQUE (username)
-            NOT DEFERRABLE  INITIALLY IMMEDIATE,
                         CONSTRAINT user_ak_2 UNIQUE
             (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
                         CONSTRAINT user_pk PRIMARY KEY

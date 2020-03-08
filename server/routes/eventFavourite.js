@@ -12,7 +12,7 @@ const favouriteRepository = require("../models/databaseRepositories/favouriteRep
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individual_id": "3"
+    "individualId": "3"
   }
  </pre>
  * @returns
@@ -21,11 +21,11 @@ const favouriteRepository = require("../models/databaseRepositories/favouriteRep
  *  @name Favourite an event
  *  @function
  */
-router.post('/:event_id/favourite', async (req, res) => {
+router.post('/:eventId/favourite', async (req, res) => {
     try {
-        const event_id = req.params.event_id;
+        const eventId = req.params.eventId;
         const favouriteRequest = req.body;
-        favouriteRequest.event_id = event_id;
+        favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.insert(favouriteRequest);
         res.status(200).send(favouriteResult);
     } catch (e) {
@@ -40,7 +40,7 @@ router.post('/:event_id/favourite', async (req, res) => {
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individual_id": "3"
+    "individualId": "3"
   }
  </pre>
  * @returns
@@ -49,11 +49,11 @@ router.post('/:event_id/favourite', async (req, res) => {
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:event_id/favourite/delete', async (req, res) => {
+router.post('/:eventId/favourite/delete', async (req, res) => {
     try {
-        const event_id = req.params.event_id;
+        const eventId = req.params.eventId;
         const favouriteRequest = req.body;
-        favouriteRequest.event_id = event_id;
+        favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.remove(favouriteRequest);
         res.status(200).send(favouriteResult);
     } catch (e) {
