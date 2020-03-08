@@ -37,6 +37,20 @@ const owasp = require("owasp-password-strength-test");
         &#125;
     &#125;
 </code></pre>
+ * @return {HTTP} one of the following HTTP responses:<br/>
+ * - if success, 200 - success, userId == new user's id<br/>
+ * - if password != confirmPassword, 400 - passwords don't match<br/>
+ * - if password is not strong enough, 400 - passStrengthTest errors<br/>
+ * - if registration failed, 400 - error of operation<br/>
+ *   (e.x. if email does not exist)
+ * Here is an example return object on success:
+<pre><code>
+    &#123;
+        "userId": 123,
+        "authToken": "secureAuthTokenForUser123",
+        "message": "User registration successful. Goto individual/org registration selection",
+    &#125;
+</code></pre>
  * @name Register user
  * @function
  */
@@ -50,9 +64,11 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     } else {
         try {
             const userId = await userAgent.registerUser(req.body.data.user.email, req.body.data.user.username, req.body.data.user.password);
+            const authToken = await authAgent.logIn(userId);
             res.status(200).send({
                 message: "User registration successful. Goto individual/org registration selection",
                 userId: userId,
+                authToken: authToken,
             });
         } catch (e) {
             res.status(400).send({
