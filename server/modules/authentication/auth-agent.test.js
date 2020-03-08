@@ -2,6 +2,8 @@ const authAgent = require("./auth-agent");
 const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const indivRepo = require("../../models/databaseRepositories/individualRepository");
+const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const request = require("supertest");
 const app = require("../../app");
@@ -247,6 +249,12 @@ test("valid and expired token working", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
+    const insertAddressResult = await addressRepo.insert(testHelpers.address);
+    const addressId = insertAddressResult.rows[0].id;
+    const insertIndiv = testHelpers.individual;
+    insertIndiv.user_id = userId;
+    insertIndiv.address_id = addressId;
+    const insertIndividualResult = await indivRepo.insert(insertIndiv);
 
     logInReq.email = user.email;
     const logInResponse = await request(app)
@@ -260,12 +268,12 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/")
+        .get("/profile/view")
         .send(anyRequest6)
         .redirects(0);
 
     // console.log(response);
-    expect(response.body.message).toBe("Welcome to the Karma app.");
+    expect(response.body.message).toBe("Found individual profile for user.");
     expect(response.statusCode).toBe(200);
 
     const responseOfPost = await request(app)
@@ -281,7 +289,7 @@ test("valid and expired token working", async () => {
     // second pair of requests
 
     const response2 = await request(app)
-        .get("/")
+        .get("/profile/view")
         .send(anyRequest6)
         .redirects(1);
 
