@@ -59,25 +59,25 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
     );
-    expect(profileResponse.body.postCode).toBe(registerIndividualRequest.postCode);
-    expect(profileResponse.body.firstName).toBe(
+    expect(profileResponse.body.data.individual.postCode).toBe(registerIndividualRequest.postCode);
+    expect(profileResponse.body.data.individual.firstName).toBe(
         registerIndividualRequest.firstName,
     );
-    expect(profileResponse.body.surName).toBe(
+    expect(profileResponse.body.data.individual.surName).toBe(
         registerIndividualRequest.surName,
     );
-    expect(profileResponse.body.dateOfBirth).toBe(
-        Date(registerIndividualRequest.dateOfBirth),
+    expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
+        Date(registerIndividualRequest.dateOfBirth)
     );
-    expect(profileResponse.body.gender).toBe(registerIndividualRequest.gender);
-    expect(profileResponse.body.phoneNumber).toBe(
+    expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.gender);
+    expect(profileResponse.body.data.individual.phoneNumber).toBe(
         registerIndividualRequest.phoneNumber,
     );
-    expect(profileResponse.body.addressLine1).toBe(
+    expect(profileResponse.body.data.individual.addressLine1).toBe(
         registerIndividualRequest.addressLine1,
     );
-    expect(profileResponse.body.username).toBe(user.username);
-    expect(profileResponse.body.email).toBe(registration.email);
+    expect(profileResponse.body.data.user.username).toBe(user.username);
+    expect(profileResponse.body.data.user.email).toBe(registration.email);
     expect(profileResponse.statusCode).toBe(200);
 });
 
@@ -119,14 +119,14 @@ test("viewing org profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
     );
-    expect(profileResponse.body.postCode).toBe(
+    expect(profileResponse.body.data.individual.postCode).toBe(
         ogranisationRegistrationRequest.postCode,
     );
-    expect(profileResponse.body.organisationNumber).toBe(
+    expect(profileResponse.body.data.individual.organisationNumber).toBe(
         ogranisationRegistrationRequest.organisationNumber,
     );
-    expect(profileResponse.body.username).toBe(user.username);
-    expect(profileResponse.body.email).toBe(registration.email);
+    expect(profileResponse.body.data.user.username).toBe(user.username);
+    expect(profileResponse.body.data.user.email).toBe(registration.email);
     expect(profileResponse.statusCode).toBe(200);
 });
 
@@ -137,7 +137,7 @@ test("viewing profile without user account works", async () => {
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
-        "Cannot read property 'address_id' of undefined",
+        "Cannot read property 'username' of undefined",
     );
 });
 
