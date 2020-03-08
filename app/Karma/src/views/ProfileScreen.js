@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {GradientButton} from "../components/buttons";
+import {GradientButton, Button, TransparentButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -23,7 +23,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
-const {width, height} = Dimensions.get("window");
+const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
@@ -32,7 +32,8 @@ const icons = {
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
-    ribbon: require("../assets/images/general-logos/k-ribbon.png"),
+    ribbon: require("../assets/images/general-logos/ribbon.png"),
+    orange_circle: require("../assets/images/general-logos/orange-circle.png")
 };
 
 class ProfileScreen extends Component {
@@ -40,6 +41,12 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             activeSlide: 0,
+            name: "Name",
+            username: "Username",
+            location: "Location",
+            bio: "this is your bio lorem ipsum and such",
+            causes: ["Cause1", "Cause2"],
+            points: 1
         };
     }
 
@@ -129,8 +136,8 @@ class ProfileScreen extends Component {
                                         console.log(
                                             "Image base64 string: ",
                                             avatar,
-                                        ),
-                                            this.setPhoto(avatar);
+                                        );
+                                        this.setPhoto(avatar);
                                     }
                                 }}>
                                 <Image
@@ -146,17 +153,17 @@ class ProfileScreen extends Component {
                             </PhotoUpload>
                             <View>
                                 <RegularText style={styles.nameText}>
-                                    Name
+                                    {this.state.name}
                                 </RegularText>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                     }}>
                                     <Text style={styles.usernameText}>
-                                        Username
+                                        {this.state.username}
                                     </Text>
                                     <Text style={styles.locationText}>
-                                        Location
+                                        {this.state.location}
                                     </Text>
                                 </View>
                                 <View
@@ -178,6 +185,14 @@ class ProfileScreen extends Component {
                                                 position: "absolute",
                                             }}
                                         />
+                                        <Image
+                                            source={icons.orange_circle}
+                                            style={{height: 25, width: 25, left: 45, top: -8, position:"absolute"}}
+                                        />
+                                        <RegularText
+                                            source={icons.orange_circle}
+                                            style={{color: Colours.white, height: 25, width: 25, left: 53, top: -5, position:"absolute"}}
+                                        >{this.state.points}</RegularText>
                                     </View>
                                     <TouchableOpacity>
                                         <Image
@@ -207,7 +222,21 @@ class ProfileScreen extends Component {
                                     onPress={() => navigate("CreateActivity")}
                                     title="Create Activity"
                                     width={350}
-                                    onPress={() => navigate("CreateActivity")}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    paddingTop: 15
+                                }}>
+                                <TransparentButton
+                                    title="View Your Activities"
+                                    size={15}
+                                    ph={40}
+                                    onPress={() =>
+                                        navigate("CreatedActivities")
+                                    }
                                 />
                             </View>
                             <View
@@ -217,49 +246,6 @@ class ProfileScreen extends Component {
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                 }}>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                    }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Activity
-                                    </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit")
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Availability:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Activity Date:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        DATES
-                                    </RegularText>
-                                </View>
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <RegularText style={styles.contentText}>
-                                        Women Only:
-                                    </RegularText>
-                                    <RegularText style={styles.answerText}>
-                                        Y/N
-                                    </RegularText>
-                                </View>
                                 <View
                                     style={{
                                         flexDirection: "row",
