@@ -7,7 +7,6 @@ import Colours from "../styles/Colours";
 import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
 import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScreen";
 import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
-import CausesScreen from "../views/CausesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
@@ -47,7 +46,7 @@ const ProfileNavigator = createStackNavigator(
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
         PickCauses: {screen: PickCausesScreen},
-        SettingsMenu:{screen: SettingsMenuScreen},
+        SettingsMenu: {screen: SettingsMenuScreen},
         Settings: SettingsNavigator,
     },
     {

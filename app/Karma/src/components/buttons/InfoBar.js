@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity, StyleSheet, Image, View} from "react-native";
+import {StyleSheet, Image, View} from "react-native";
 import {RegularText} from "../text";
 
 export default class InfoBar extends React.Component {
