@@ -3,71 +3,63 @@ const testHelpers = require("../../test/testHelpers");
 const registrationRepository = require("./registrationRepository");
 const authenticationRepository = require("./authenticationRepository");
 
-const user = testHelpers.user;
-const user2 = testHelpers.user2;
-const registration = testHelpers.registration;
-const registration2 = testHelpers.registration2;
-const authentication = testHelpers.authentication;
-const authentication2 = testHelpers.authentication2;
-
-
+let userExample1, userExample2, registrationExample1, registrationExample2, authenticationExample1, authenticationExample2;
 beforeEach(() => {
+    userExample1 = testHelpers.getUserExample1();
+    userExample2 = testHelpers.getUserExample2();
+    registrationExample1 = testHelpers.getRegistrationExample1();
+    registrationExample2 = testHelpers.getRegistrationExample2();
+    authenticationExample1 = testHelpers.getAuthenticationExample1();
+    authenticationExample2 = testHelpers.getAuthenticationExample2();
     return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    authentication.userId = -1;
-    authentication2.userId = -1;
-    authentication.creationDate = "2016-06-22 19:10:25-07";
-    authentication2.creationDate = "2018-06-22 19:10:25-07";
-    user.email = "";
-    user2.email = "";
     return testHelpers.clearDatabase();
-
 });
 
-test('insert authentication and findById authentication work', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    user.email = insertRegistrationResult.rows[0].email;
-    const insertUserResult = await userRepository.insert(user);
-    authentication.userId = insertUserResult.rows[0].id;
-    const insertAuthenticationResult = await authenticationRepository.insert(authentication);
+test('insert authenticationExample1 and findById authenticationExample1 work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    authenticationExample1.userId = insertUserResult.rows[0].id;
+    const insertAuthenticationResult = await authenticationRepository.insert(authenticationExample1);
     const findAuthenticationResult = await authenticationRepository.findById(insertAuthenticationResult.rows[0].id);
     expect(insertAuthenticationResult.rows[0]).toMatchObject(findAuthenticationResult.rows[0]);
 });
 
 test('find all authentications', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
-    const insertRegistrationResult2 = await registrationRepository.insert(registration2);
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    const insertRegistrationResult2 = await registrationRepository.insert(registrationExample2);
 
-    user.email = insertRegistrationResult.rows[0].email;
-    user2.email = insertRegistrationResult2.rows[0].email;
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    userExample2.email = insertRegistrationResult2.rows[0].email;
 
-    const insertUserResult1 = await userRepository.insert(user);
-    const insertUserResult2 = await userRepository.insert(user2);
+    const insertUserResult1 = await userRepository.insert(userExample1);
+    const insertUserResult2 = await userRepository.insert(userExample2);
 
-    authentication.userId = insertUserResult1.rows[0].id;
-    authentication2.userId = insertUserResult2.rows[0].id;
-    const insertAuthenticationResult1 = await authenticationRepository.insert(authentication);
-    const insertAuthenticationResult2 = await authenticationRepository.insert(authentication2);
+    authenticationExample1.userId = insertUserResult1.rows[0].id;
+    authenticationExample2.userId = insertUserResult2.rows[0].id;
+    const insertAuthenticationResult1 = await authenticationRepository.insert(authenticationExample1);
+    const insertAuthenticationResult2 = await authenticationRepository.insert(authenticationExample2);
     const findAuthenticationResult = await authenticationRepository.findAll();
     expect(insertAuthenticationResult1.rows[0]).toMatchObject(findAuthenticationResult.rows[0]);
     expect(insertAuthenticationResult2.rows[0]).toMatchObject(findAuthenticationResult.rows[1]);
 });
 
 test('find most recent auth token', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registration);
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
 
-    user.email = insertRegistrationResult.rows[0].email;
+    userExample1.email = insertRegistrationResult.rows[0].email;
 
-    const insertUserResult1 = await userRepository.insert(user);
+    const insertUserResult1 = await userRepository.insert(userExample1);
     const currentUserID = insertUserResult1.rows[0].id;
-    authentication.userId = currentUserID;
-    authentication2.userId = currentUserID;
-    authentication.creationDate = "2016-06-22 19:10:25-07";
-    authentication2.creationDate = "2018-06-22 19:10:25-07";
-    await authenticationRepository.insert(authentication);
-    const insertAuthenticationResult2 = await authenticationRepository.insert(authentication2);
+    authenticationExample1.userId = currentUserID;
+    authenticationExample2.userId = currentUserID;
+    authenticationExample1.creationDate = "2016-06-22 19:10:25-07";
+    authenticationExample2.creationDate = "2018-06-22 19:10:25-07";
+    await authenticationRepository.insert(authenticationExample1);
+    const insertAuthenticationResult2 = await authenticationRepository.insert(authenticationExample2);
     const findLatestAuthenticationResult = await authenticationRepository.findLatestByUserID(currentUserID);
     expect(findLatestAuthenticationResult.rows[0]).toMatchObject(insertAuthenticationResult2.rows[0]);
     expect(findLatestAuthenticationResult.rowCount).toBe(1);

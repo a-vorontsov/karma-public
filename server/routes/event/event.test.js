@@ -19,7 +19,17 @@ jest.mock("../../util/util");
 jest.mock("../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 
+let eventWithLocation, eventWithLocation2, womenOnlyEvent, physicalEvent, address, event;
+
 beforeEach(() => {
+    eventWithLocation = testHelpers.getEventWithLocationExample1();
+    eventWithLocation2 = testHelpers.getEventWithLocationExample2();
+    womenOnlyEvent = testHelpers.getWomenOnlyEvent();
+    physicalEvent = testHelpers.getPhysicalEvent();
+    address = testHelpers.getAddress();
+    event = testHelpers.getEvent();
+    event.organizationId = 1;
+    event.addressId = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -27,15 +37,6 @@ afterEach(() => {
     jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
-
-const eventWithLocation = testHelpers.eventWithLocation1;
-const eventWithLocation2 = testHelpers.eventWithLocation2;
-const womenOnlyEvent = testHelpers.womenOnlyEvent;
-const physicalEvent = testHelpers.physicalEvent;
-const address = testHelpers.address;
-const event = testHelpers.event;
-event.organizationId = 1;
-event.addressId = 1;
 
 test("creating event with known address works", async () => {
     eventRepository.insert.mockResolvedValue({

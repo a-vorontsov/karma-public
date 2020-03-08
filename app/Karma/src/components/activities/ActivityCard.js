@@ -1,8 +1,8 @@
 import React from "react";
 
-import {GradientButton, InfoBar} from "../buttons";
-import {View, Image, Text} from "react-native";
-import {RegularText, SemiBoldText} from "../text";
+import {InfoBar} from "../buttons";
+import {View, Image, Text, StyleSheet} from "react-native";
+import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
@@ -54,14 +54,14 @@ const ActivityCard = props => {
     const navigation = useNavigation();
 
     setFav = handlePress => {
-        return (favorited = false);
+        return false;
     };
 
     _renderTruncatedFooter = handlePress => {
         return (
             <Text
                 style={{color: "#00A8A6", marginTop: 5}}
-                onPress={() => navigation.navigate("ActivityInfo")}>
+                onPress={() => this.navigation.navigate("ActivityInfo")}>
                 READ MORE
             </Text>
         );
@@ -153,26 +153,36 @@ const ActivityCard = props => {
                         />
                         <View
                             style={{
-                                flex: 1,
-                                alignItems: "flex-end",
-                                justifyContent: "flex-end",
+                                flexDirection: "row",
                             }}>
-                            <TouchableOpacity style={{alignSelf: "center"}}>
-                                <Image
-                                    source={
-                                        props.favorited
-                                            ? icons.fave_inactive
-                                            : icons.fave_active
-                                    }
-                                    style={{
-                                        width: 30,
-                                        height: 30,
-                                        resizeMode: "contain",
-                                        marginRight: 10,
-                                    }}
-                                    onPress={this.setFav(!props.favorited)}
-                                />
-                            </TouchableOpacity>
+                            <InfoBar title="TIME" image={icons.clock} />
+                            <InfoBar
+                                title="0 SPOTS LEFT"
+                                image={icons.people}
+                            />
+                            <View
+                                style={{
+                                    flex: 1,
+                                    alignItems: "flex-end",
+                                    justifyContent: "flex-end",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "center"}}>
+                                    <Image
+                                        source={
+                                            props.favorited
+                                                ? icons.fave_inactive
+                                                : icons.fave_active
+                                        }
+                                        style={{
+                                            width: 30,
+                                            height: 30,
+                                            resizeMode: "contain",
+                                            marginRight: 10,
+                                        }}
+                                        // onPress={this.setFav(!props.favorited)}
+                                    />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                     <RegularText
@@ -192,8 +202,33 @@ const ActivityCard = props => {
                     </ReadMore>
                 </View>
             </View>
-        </View>
-    );
-};
+        );
+    }
+}
 
-export default ActivityCard;
+const styles = StyleSheet.create({
+    dateText: {
+        position: "absolute",
+        top: 25,
+        left: 0,
+        height: 50,
+        width: 50,
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "500",
+        color: "white",
+    },
+    icon: {
+        position: "absolute",
+        top: 5,
+        right: 5,
+        height: 50,
+        width: 50,
+        resizeMode: "contain",
+    },
+});
+
+export default props => {
+    const navigation = useNavigation();
+    return <ActivityCard {...props} navigation={navigation} />;
+};

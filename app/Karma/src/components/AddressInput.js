@@ -1,7 +1,6 @@
 import React from "react";
 import Styles from "../styles/Styles";
 import TextInput from "./TextInput";
-import Config from "react-native-config";
 import {Keyboard, View} from "react-native";
 
 const POSTCODE_REGEX = /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})$/;
