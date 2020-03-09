@@ -7,11 +7,10 @@ module.exports = {
         const count = data.length;
         const paginatedData = data.slice(offset, offset + limit);
         const paginationInfo = paginate(currentPage, count, paginatedData);
-        const result = {
+        return {
             meta: paginationInfo,
-            data: paginatedData,
+            events: paginatedData,
         };
-        return result;
     },
 };
 

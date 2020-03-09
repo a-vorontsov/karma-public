@@ -1,11 +1,11 @@
 const request = require('supertest');
-const app = require('../app');
-const testHelpers = require("../test/testHelpers");
+const app = require('../../../app');
+const testHelpers = require("../../../test/testHelpers");
 
-const favouriteRepository = require("../models/databaseRepositories/favouriteRepository");
+const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 
-jest.mock("../models/databaseRepositories/eventRepository");
-jest.mock("../models/databaseRepositories/favouriteRepository");
+jest.mock("../../../models/databaseRepositories/eventRepository");
+jest.mock("../../../models/databaseRepositories/favouriteRepository");
 
 let favourite, event;
 
