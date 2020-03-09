@@ -207,7 +207,7 @@ class AboutScreen extends React.Component {
                                 placeholder="Last Name"
                                 name="lname"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() => this.username.focus()}
+                                onSubmitEditing={() => this.dob.focus()}
                                 showError={
                                     this.state.firstOpen
                                         ? false
@@ -218,6 +218,7 @@ class AboutScreen extends React.Component {
                             <SubTitleText>When is your birthday?</SubTitleText>
                             <View style={{alignItems: "center"}}>
                                 <DatePicker
+                                    name = "dob"
                                     fadeToColor="none"
                                     mode="date"
                                     date={this.state.date}
