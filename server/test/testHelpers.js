@@ -8,6 +8,16 @@ const registrationExample1 = {
     signUpFlag: 0,
 };
 
+const notification = {
+    type: "Cancel",
+    message: "Cancel Cancel",
+    timestampSent: new Date(),
+    senderId: -1,
+    receiverId: -1,
+};
+
+const getNotification = () => ({...notification});
+
 const getRegistrationExample1 = () => ({...registrationExample1});
 
 const registrationExample2 = {
@@ -372,6 +382,7 @@ const resetExample2 = {
 const getResetExample2 = () => ({...resetExample2});
 
 const clearDatabase = async () => {
+    await db.query("DELETE FROM notification");
     await db.query("DELETE FROM complaint");
     await db.query("DELETE FROM report_user");
     await db.query("DELETE FROM setting");
@@ -421,4 +432,5 @@ module.exports = {
     getFavourite: getFavourite,
     getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
+    getNotification: getNotification,
 };
