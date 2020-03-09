@@ -42,6 +42,8 @@ app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
 app.use("/error/unauthorised", require("./routes/error/unauthorised"));
 app.use("/error/tokenexpired", require("./routes/error/tokenExpired"));
 
+app.use("/notification", require("./routes/notification"));
+
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));
 app.use("/event", require("./routes/event/event"));
