@@ -18,12 +18,11 @@ import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
 
-import {RegularText, SemiBoldText, BoldText} from "../components/text";
+import {RegularText, SemiBoldText, BoldText, SubTitleText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
-
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -220,7 +219,7 @@ export default class OrgSignUpScreen extends React.Component {
                                 }
                             />
                             <TextInput
-                                placeholder="First Name"
+                                placeholder="Point of Contact First Name"
                                 name="fname"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.lname.focus()}
@@ -233,7 +232,7 @@ export default class OrgSignUpScreen extends React.Component {
 
                             <TextInput
                                 inputRef={ref => (this.lname = ref)}
-                                placeholder="Last Name"
+                                placeholder="Point of Contact Last Name"
                                 name="lname"
                                 onChange={this.onChangeText}
                                 showError={

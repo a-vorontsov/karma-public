@@ -13,7 +13,7 @@ import {useNavigation} from "react-navigation-hooks";
 const carouselEntries = [{individual: true}, {individual: false}];
 
 class ActivityCauseCarousel extends React.Component {
-    navigation = useNavigation();
+    navigation = this.props.navigation;
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
