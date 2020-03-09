@@ -37,9 +37,10 @@ export default class PickCausesScreen extends React.Component {
             })
             .then(res => {
                 console.log(res.body.data);
+                this.props.navigation.navigate("Activities");
             })
             .catch(er => {
-                console.log(er);
+                Alert.alert("Server Error", err.message);
             });
     }
     render() {
