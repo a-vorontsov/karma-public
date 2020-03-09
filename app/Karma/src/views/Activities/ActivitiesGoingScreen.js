@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
+import {RegularText} from "../../components/text";
 
 const request = require("superagent");
 
@@ -19,8 +20,8 @@ class ActivitiesGoingScreen extends Component {
 
     fetchAllActivities() {
         request
-            .get("http://localhost:8000/event")
-            .query({userId: 1, Page: 1, pageSize: 2})
+            .get("http://localhost:8000/event/going")
+            .query({userId: 1})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data;
@@ -36,14 +37,18 @@ class ActivitiesGoingScreen extends Component {
     render() {
         return (
             <View>
-                {this.state.activities.map(activity => {
-                    return (
-                        <ActivityDisplayCard
-                            activity={activity}
-                            key={activity.id}
-                        />
-                    );
-                })}
+                {this.state.activities.length > 0 ? (
+                    this.state.activities.map(activity => {
+                        return (
+                            <ActivityDisplayCard
+                                activity={activity}
+                                key={activity.id}
+                            />
+                        );
+                    })
+                ) : (
+                    <RegularText>You have not selected any activities to attend</RegularText>
+                )}
             </View>
         );
     }

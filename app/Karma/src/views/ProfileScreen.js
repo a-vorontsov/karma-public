@@ -75,8 +75,8 @@ class ProfileScreen extends Component {
 
     fetchAllActivities() {
         request
-            .get("http://localhost:8000/event")
-            .query({userId: 1, Page: 1, pageSize: 2})
+            .get("http://localhost:8000/event/going")
+            .query({userId: 1})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data;
@@ -360,7 +360,9 @@ class ProfileScreen extends Component {
                                 }}>
                                 <TouchableOpacity>
                                     <RegularText style={styles.bioHeader}>
-                                        Upcoming Events
+                                        {this.state.activities.length > 0
+                                            ? "Upcoming Events"
+                                            : "No Upcoming Events"}
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
