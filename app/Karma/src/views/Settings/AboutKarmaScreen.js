@@ -54,14 +54,13 @@ class AboutKarmaScreen extends Component {
                     <PageHeader title="About Karma" />
                 </View>
                 <View style={Styles.ph24}>
-                    <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: 30,
-                    }}>
-                    <Image
-                        source={logo}
-                    />
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            margin: 30,
+                        }}>
+                        <Image source={logo} />
                     </View>
                     <RegularText style={Styles.pb11}>
                         {this.state.aboutText}

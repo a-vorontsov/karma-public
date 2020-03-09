@@ -41,18 +41,17 @@ class GuidelinesScreen extends Component {
                 <View style={Styles.ph24}>
                     <PageHeader title="Community Guidelines" />
                 </View>
-                <View style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    margin: 30,
-                }}>
-                    <Image
-                        source={logo}
-                    />
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: 30,
+                    }}>
+                    <Image source={logo} />
                 </View>
                 <View style={Styles.ph24}>
                     <RegularText style={Styles.pb11}>
-                            {this.state.guidelinesText}
+                        {this.state.guidelinesText}
                     </RegularText>
                 </View>
             </SafeAreaView>

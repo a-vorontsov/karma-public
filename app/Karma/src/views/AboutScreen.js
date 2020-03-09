@@ -30,7 +30,6 @@ class AboutScreen extends React.Component {
             lname: "",
             photo: null,
             gender: null,
-            genderSelected: false,
             dateSelected: false,
             date: new Date(),
             minYear: new Date().getFullYear() - 18,
@@ -42,15 +41,46 @@ class AboutScreen extends React.Component {
     };
 
     onChangeText = event => {
-        console.log("before : " + this.state.fname);
         const {name, text} = event;
         this.setState({[name]: text});
-        console.log("after : " + this.state.fname);
     };
 
-    goToPrevious() {
-        this.props.navigation.goBack();
-    }
+    setGender(selectedGender) {
+        const genderCharacter =
+            selectedGender === "male"
+                ? "m"
+                : selectedGender === "female"
+                ? "f"
+                : "x";
+        this.setState({
+            gender: genderCharacter,
+            genderSelected: true,
+        });
+    };
+
+    setPhoto(selectedPhoto) {
+        this.setState({
+            photo: selectedPhoto,
+        });
+    };
+
+    uploadPhoto(selectedPhoto) {
+        if (selectedPhoto != null) {
+            Alert.alert("Success!", "Your new photo has been uploaded.");
+        } else {
+            Alert.alert("Error", "Please upload a photo.");
+        }
+    };
+
+    setDate(selectedDate) {
+        this.setState({date: selectedDate});
+        if (selectedDate.getFullYear() <= this.state.minYear) {
+            this.setState({dateSelected: true});
+        } else {
+            this.setState({dateSelected: false});
+        }
+    };
+
     createIndividual() {
         const individual = {
             userId: 1, // TODO
@@ -66,91 +96,43 @@ class AboutScreen extends React.Component {
             phoneNumber: "213123421", // TODO
         };
         return individual;
-    }
+    };
+
+    goToPrevious() {
+        this.props.navigation.goBack();
+    };
+
     async goToNext() {
-        const{genderSelected,dateSelected} = this.state;
-        if (genderSelected && dateSelected) {
-            const individual = this.createIndividual();
-            await request
-                .post("http://localhost:8000/register/individual")
-                .send({
-                    authToken: "ffa234124",
-                    userId: "1",
-                    ...individual,
-                })
-                .then(res => {
-                    console.log(res.body);
-                    this.props.navigation.navigate("PickCauses", {
-                        photo: this.state.photo,
-                        gender: this.state.gender,
-                        date: this.state.date,
-                    });
-                })
-                .catch(er => {
-                    console.log(er.message);
-                });
-        } else if (genderSelected && dateSelected) {
-            this.setState({
-                dateSelected: false,
-            });
-        } else if (genderSelected && dateSelected) {
-            this.setState({
-                genderSelected: false,
-            });
-        } else {
-            this.setState({
-                genderSelected: false,
-                dateSelected: false,
-            });
-        }
-        !genderSelected &&
-            Alert.alert("Error", "Please select a gender.");
+        const {gender, dateSelected} = this.state;
+        !gender && Alert.alert("Error", "Please select a gender.");
+        (fname === "") && Alert.alert("Error", "Please input your first name.");
+        (lname === "") && Alert.alert("Error", "Please input your last name.");
         !dateSelected &&
             Alert.alert(
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
-    }
 
-    setGender(selectedGender) {
-        const genderCharacter =
-            selectedGender === "male"
-                ? "m"
-                : selectedGender === "female"
-                ? "f"
-                : "x";
-        this.setState({
-            gender: genderCharacter,
-            genderSelected: true,
-        });
-    }
-
-    setPhoto(selectedPhoto) {
-        this.setState({
-            photo: selectedPhoto,
-        });
-    }
-
-    uploadPhoto(selectedPhoto) {
-        if (selectedPhoto != null) {
-            Alert.alert("Success!", "Your new photo has been uploaded.");
-        } else {
-            Alert.alert("Error", "Please upload a photo.");
-        }
-    }
-
-    setDate(selectedDate) {
-        this.setState({date: selectedDate});
-        if (selectedDate.getFullYear() <= this.state.minYear) {
-            this.setState({
-                dateSelected: true,
+        const individual = this.createIndividual();
+        await request
+            .post("http://localhost:8000/register/individual")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...individual,
+            })
+            .then(res => {
+                console.log(res.body);
+                this.props.navigation.navigate("PickCauses", {
+                    photo: this.state.photo,
+                    gender: this.state.gender,
+                    date: this.state.date,
+                });
+            })
+            .catch(err => {
+                Alert.alert(err.message);
             });
-        } else {
-            this.setState({
-                dateSelected: false,
-            });
-        }
-    }
+    };
 
     render() {
         return (
@@ -209,31 +191,29 @@ class AboutScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <TextInput
-                                    placeholder="First Name"
-                                    name="fname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.lname.focus()}
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.fname
-                                    }
-                                />
+                                placeholder="First Name"
+                                name="fname"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.lname.focus()}
+                                showError={
+                                    this.state.firstOpen
+                                        ? false
+                                        : !this.state.fname
+                                }
+                            />
 
-                                <TextInput
-                                    inputRef={ref => (this.lname = ref)}
-                                    placeholder="Last Name"
-                                    name="lname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() =>
-                                        this.username.focus()
-                                    }
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.lname
-                                    }
-                                />
+                            <TextInput
+                                inputRef={ref => (this.lname = ref)}
+                                placeholder="Last Name"
+                                name="lname"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.username.focus()}
+                                showError={
+                                    this.state.firstOpen
+                                        ? false
+                                        : !this.state.lname
+                                }
+                            />
 
                             <SubTitleText>When is your birthday?</SubTitleText>
                             <View style={{alignItems: "center"}}>

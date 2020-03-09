@@ -10,7 +10,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Switch,
-    StatusBar
+    StatusBar,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
@@ -82,15 +82,15 @@ class ActivityEditScreen extends Component {
                             style={{
                                 alignItems: "flex-start",
                             }}>
-                                <RegularText
-                                    style={{
-                                        fontSize: 20,
-                                        color: Colours.black,
-                                        fontWeight: "500",
-                                    }}>
-                                    Activity Name
-                                </RegularText>
-                            </View>
+                            <RegularText
+                                style={{
+                                    fontSize: 20,
+                                    color: Colours.black,
+                                    fontWeight: "500",
+                                }}>
+                                Activity Name
+                            </RegularText>
+                        </View>
                         <View
                             style={{
                                 flex: 1,
@@ -199,8 +199,12 @@ class ActivityEditScreen extends Component {
 
                     {/* INFORMATION */}
                     <View
-                        style={[Styles.ph24, Styles.pv16, {backgroundColor: Colours.backgroundWhite}]}>
-                        <View style={{flexDirection:"row"}}>
+                        style={[
+                            Styles.ph24,
+                            Styles.pv16,
+                            {backgroundColor: Colours.backgroundWhite},
+                        ]}>
+                        <View style={{flexDirection: "row"}}>
                             <RegularText style={styles.headerText}>
                                 What Will Volunteers Do?
                             </RegularText>
@@ -209,10 +213,11 @@ class ActivityEditScreen extends Component {
                                     flex: 1,
                                     justifyContent: "center",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "flex-end"}}>
                                     <Image
                                         source={icons.edit}
-                                        style={{width: 25,height: 25,}}
+                                        style={{width: 25, height: 25}}
                                         resizeMode="contain"
                                     />
                                 </TouchableOpacity>
@@ -223,7 +228,7 @@ class ActivityEditScreen extends Component {
                             eiusm ut labore et dolore magna aliqua sed do eiusm
                             ut labore et dolore magna aliqua
                         </RegularText>
-                        <View style={{flexDirection:"row"}}>
+                        <View style={{flexDirection: "row"}}>
                             <RegularText style={styles.headerText}>
                                 Who to Contact
                             </RegularText>
@@ -232,10 +237,11 @@ class ActivityEditScreen extends Component {
                                     flex: 1,
                                     justifyContent: "center",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "flex-end"}}>
                                     <Image
                                         source={icons.edit}
-                                        style={{width: 25,height: 25,}}
+                                        style={{width: 25, height: 25}}
                                         resizeMode="contain"
                                     />
                                 </TouchableOpacity>
@@ -246,7 +252,7 @@ class ActivityEditScreen extends Component {
                             eiusm ut labore et dolore magna aliqua sed do eiusm
                             ut labore et dolore magna aliqua
                         </RegularText>
-                        <View style={{flexDirection:"row"}}>
+                        <View style={{flexDirection: "row"}}>
                             <RegularText style={styles.headerText}>
                                 Where
                             </RegularText>
@@ -255,10 +261,11 @@ class ActivityEditScreen extends Component {
                                     flex: 1,
                                     justifyContent: "center",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "flex-end"}}>
                                     <Image
                                         source={icons.edit}
-                                        style={{width: 25,height: 25,}}
+                                        style={{width: 25, height: 25}}
                                         resizeMode="contain"
                                     />
                                 </TouchableOpacity>
@@ -278,7 +285,7 @@ class ActivityEditScreen extends Component {
                                 alignSelf: "center",
                             }}
                         />
-                        <View style={{flexDirection:"row"}}>
+                        <View style={{flexDirection: "row"}}>
                             <RegularText style={styles.headerText}>
                                 Important
                             </RegularText>
@@ -287,10 +294,11 @@ class ActivityEditScreen extends Component {
                                     flex: 1,
                                     justifyContent: "center",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "flex-end"}}>
                                     <Image
                                         source={icons.edit}
-                                        style={{width: 25,height: 25,}}
+                                        style={{width: 25, height: 25}}
                                         resizeMode="contain"
                                     />
                                 </TouchableOpacity>
