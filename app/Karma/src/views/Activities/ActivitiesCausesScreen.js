@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Styles from "../../styles/Styles";
+import {RegularText} from "../../components/text";
 
 const request = require("superagent");
 
@@ -37,8 +38,18 @@ class ActivitiesCausesScreen extends Component {
 
     render() {
         return (
-            <View style={Styles.ph24}>
-                <ActivityCauseCarousel activities={this.state.activities} />
+            <View>
+                {
+                    this.state.activities.length > 0 ? (
+                    <View style={Styles.ph24}>
+                        <ActivityCauseCarousel
+                            activities={this.state.activities}
+                        />
+                    </View>
+                ) : (
+                    <RegularText>Could not find any activities</RegularText>
+                ) // REFRESH BUTTON
+                }
             </View>
         );
     }

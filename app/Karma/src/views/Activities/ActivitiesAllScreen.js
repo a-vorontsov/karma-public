@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
+import {RegularText} from "../../components/text";
 
 const request = require("superagent");
 
@@ -39,14 +40,18 @@ class ActivitiesAllScreen extends Component {
     render() {
         return (
             <View>
-                {this.state.activities.map(activity => {
-                    return (
-                        <ActivityDisplayCard
-                            activity={activity}
-                            key={activity.id}
-                        />
-                    );
-                })}
+                {this.state.activities.length > 0 ? (
+                    this.state.activities.map(activity => {
+                        return (
+                            <ActivityDisplayCard
+                                activity={activity}
+                                key={activity.id}
+                            />
+                        );
+                    })
+                ) : (
+                    <RegularText>Could not find any activities</RegularText> // REFRESH BUTTON
+                )}
             </View>
         );
     }
