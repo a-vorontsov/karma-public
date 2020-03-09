@@ -18,7 +18,7 @@ import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
 
-import {RegularText, SemiBoldText, BoldText, SubTitleText} from "../components/text";
+import {RegularText, SemiBoldText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";

@@ -8,7 +8,6 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "./ActivityCard";
 import Colours from "../../styles/Colours";
-import {useNavigation} from "react-navigation-hooks";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 
