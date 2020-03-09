@@ -24,6 +24,7 @@ import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
 
+const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const TEXT_COLOUR = "#7F7F7F";
@@ -39,11 +40,9 @@ export default class OrgSignUpScreen extends React.Component {
             orgType: "",
             orgName: "",
             charityNumber: "",
+            fname: "",
+            lname: "",
             regDate: "",
-            email: "",
-            password: "",
-            confPassword: "",
-            hidePassword: true,
             isLowIncome: false,
             isExempt: false,
             photo: null,
@@ -74,9 +73,6 @@ export default class OrgSignUpScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-    isValidPassword = () => {
-        return PASSWORD_REGEX.test(this.state.password);
-    };
 
     setPhoto(selectedPhoto) {
         this.setState({
@@ -92,50 +88,50 @@ export default class OrgSignUpScreen extends React.Component {
         }
     }
 
-    getPasswordError = () => {
-        let isValid = this.isValidPassword(this.state.password);
-        let err;
-        if (isValid) {
-            if (this.state.password !== this.state.confPassword) {
-                err = "Passwords must match";
-            }
-        } else {
-            if (!this.state.password && this.state.confPassword) {
-                err = "Passwords must match";
-            } else {
-                err = "Passwords must be at least 8 chars (upper/lower/digit)";
-            }
+    createOrganisation(){
+        const organisation = {
+            userId: "1",    //TODO
+            organisationNumber: this.state.charityNumber,
+            name: this.state.orgName,
+            organisationType: this.state.orgType,
+            lowIncome: this.state.isLowIncome,
+            exempt: this.state.isExempt,
+            pocFirstName: this.state.fname,
+            pocLastName:this.state.lname,
+            addressLine1:"line1",   //TODO
+            addressLine2:"line2",   //TODO
+            townCity:"TODO",    //TODO
+            countryState:"TODO",    //TODO
+            postCode:"TODO",    //TODO
+            phoneNumber:"TODO", //TODO
         }
-        return err;
-    };
-
-    submit = () => {
+        return organisation;
+    }
+    submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (
-            !this.state.orgName ||
-            !this.state.password ||
-            !this.state.confPassword
-        ) {
-            return;
-        }
+        if (!this.state.orgName || !this.state.password || !this.state.confPassword) return
+        if (!this.state.charityNumber && (!this.state.isExempt && !this.state.isLowIncome)) return
 
-        if (
-            !this.state.charityNumber &&
-            (!this.state.isExempt && !this.state.isLowIncome)
-        ) {
-            return;
-        }
-        navigate("About");
+        const org = this.createOrganisation();
+        console.log(org);
+        await request
+            .post("http://localhost:8000/register/organisation")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...org,
+            })
+            .then(res => {
+                console.log(res.body);
+                navigate("About");
+            })
+            .catch(err => {
+                Alert.alert("Server Error", err.message);
+            });
     };
 
     render() {
-        const passwordError = this.getPasswordError();
-
-        const showPasswordError =
-            !this.state.password ||
-            this.state.password !== this.state.confPassword ||
-            !this.isValidPassword();
 
         const showDateError =
             this.state.submitPressed &&
@@ -217,57 +213,29 @@ export default class OrgSignUpScreen extends React.Component {
                                 }
                             />
                             <TextInput
-                                placeholder="team-team@gmail.com"
-                                editable={false}
+                                placeholder="First Name"
+                                name="fname"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.lname.focus()}
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.fname
+                                        : false
+                                }
                             />
-                            {/** PASSWORD FIELDS */}
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                }}>
-                                <TextInput
-                                    inputRef={ref => (this.password = ref)}
-                                    placeholder="Password"
-                                    secureTextEntry={this.state.hidePassword}
-                                    onChange={this.onChangeText}
-                                    blurOnSubmit={false}
-                                    onSubmitEditing={() =>
-                                        this.confirmPassword.focus()
-                                    }
-                                    name="password"
-                                    showError={
-                                        this.state.submitPressed
-                                            ? showPasswordError
-                                            : false
-                                    }
-                                    errorText={
-                                        !this.state.password ? undefined : ""
-                                    }
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    width: FORM_WIDTH,
-                                    flexDirection: "row",
-                                }}>
-                                <TextInput
-                                    inputRef={ref =>
-                                        (this.confirmPassword = ref)
-                                    }
-                                    placeholder="Confirm Password"
-                                    secureTextEntry={this.state.hidePassword}
-                                    onChange={this.onChangeText}
-                                    blurOnSubmit={false}
-                                    name="confPassword"
-                                    onSubmitEditing={() => this.regDate.focus()}
-                                    showError={
-                                        this.state.submitPressed
-                                            ? showPasswordError
-                                            : false
-                                    }
-                                    errorText={passwordError}
-                                />
-                            </View>
+
+                            <TextInput
+                                inputRef={ref => (this.lname = ref)}
+                                placeholder="Last Name"
+                                name="lname"
+                                onChange={this.onChangeText}
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.lname
+                                        : false
+                                }
+                            />
+
                             {/** DATE INPUT */}
                             <View>
                                 <TouchableOpacity
