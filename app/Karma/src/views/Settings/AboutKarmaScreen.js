@@ -1,20 +1,8 @@
 import React, {Component} from "react";
-import {
-    View,
-    Image,
-    Alert,
-    StyleSheet,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-    Platform,
-    SafeAreaView,
-    Text,
-} from "react-native";
+import {View, Image, SafeAreaView} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
-import {ScrollView} from "react-native-gesture-handler";
 import {RegularText} from "../../components/text";
-import SettingsButton from "../../components/buttons/SettingsButton";
 
 const request = require("superagent");
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text, Image} from "react-native";
+import {SafeAreaView, View, Image} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";

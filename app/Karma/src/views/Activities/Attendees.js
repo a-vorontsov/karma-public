@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text} from "react-native";
+import {SafeAreaView, View} from "react-native";
 import Styles from "../../styles/Styles";
 import AttendeeButton from "../../components/activities/AttendeeButton";
 

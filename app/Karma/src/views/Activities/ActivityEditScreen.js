@@ -12,7 +12,7 @@ import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
 import PageHeader from "../../components/PageHeader";
-import {GradientButton, Button} from "../../components/buttons";
+import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBarCustom from "../../components/ProgressBarCustom";
 

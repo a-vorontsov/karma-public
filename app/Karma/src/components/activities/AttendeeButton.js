@@ -5,7 +5,6 @@ import {TouchableOpacity, View, Image} from "react-native";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
-import ProfileScreen from "../../views/ProfileScreen";
 import Communications from "react-native-communications";
 
 const icons = {

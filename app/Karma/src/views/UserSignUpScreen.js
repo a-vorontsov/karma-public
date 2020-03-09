@@ -4,6 +4,7 @@ import {
     View,
     StyleSheet,
     Keyboard,
+    Alert,
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,

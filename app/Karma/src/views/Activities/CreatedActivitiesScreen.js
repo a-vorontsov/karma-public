@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Dimensions} from "react-native";
+import {View} from "react-native";
 import Styles from "../../styles/Styles";
 import ActivityEditable from "../../components/activities/ActivityEditable";
 import PageHeader from "../../components/PageHeader";
