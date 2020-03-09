@@ -1,5 +1,5 @@
 import React from "react";
-import {View, ScrollView} from "react-native";
+import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import PageHeader from "../components/PageHeader";
 import {SubTitleText} from "../components/text";
