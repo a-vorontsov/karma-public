@@ -28,8 +28,6 @@ const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const TEXT_COLOUR = "#7F7F7F";
-//at least 8 characters with one upper, lower and a digit
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
@@ -73,7 +71,6 @@ export default class OrgSignUpScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-
     setPhoto(selectedPhoto) {
         this.setState({
             photo: selectedPhoto,
@@ -88,30 +85,41 @@ export default class OrgSignUpScreen extends React.Component {
         }
     }
 
-    createOrganisation(){
+    createOrganisation() {
         const organisation = {
-            userId: "1",    //TODO
+            userId: "1", //TODO
             organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
             lowIncome: this.state.isLowIncome,
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
-            pocLastName:this.state.lname,
-            addressLine1:"line1",   //TODO
-            addressLine2:"line2",   //TODO
-            townCity:"TODO",    //TODO
-            countryState:"TODO",    //TODO
-            postCode:"TODO",    //TODO
-            phoneNumber:"TODO", //TODO
-        }
+            pocLastName: this.state.lname,
+            addressLine1: "line1", //TODO
+            addressLine2: "line2", //TODO
+            townCity: "TODO", //TODO
+            countryState: "TODO", //TODO
+            postCode: "TODO", //TODO
+            phoneNumber: "TODO", //TODO
+        };
         return organisation;
     }
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (!this.state.orgName || !this.state.password || !this.state.confPassword) return
-        if (!this.state.charityNumber && (!this.state.isExempt && !this.state.isLowIncome)) return
+        if (
+            !this.state.orgName ||
+            !this.state.password ||
+            !this.state.confPassword
+        ) {
+            return;
+        }
+        if (
+            !this.state.charityNumber &&
+            (!this.state.isExempt && !this.state.isLowIncome)
+        ) {
+            return;
+        }
 
         const org = this.createOrganisation();
         console.log(org);
@@ -132,7 +140,6 @@ export default class OrgSignUpScreen extends React.Component {
     };
 
     render() {
-
         const showDateError =
             this.state.submitPressed &&
             (!this.state.isExempt && !this.state.isLowIncome);
