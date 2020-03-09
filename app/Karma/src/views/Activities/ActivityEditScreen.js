@@ -1,29 +1,20 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
-    KeyboardAvoidingView,
-    SafeAreaView,
     Image,
     ScrollView,
     TouchableOpacity,
-    Switch,
     StatusBar,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
-import CarouselStyles from "../../styles/CarouselStyles";
-import ActivityCard from "../../components/activities/ActivityCard";
 import PageHeader from "../../components/PageHeader";
 import {GradientButton, Button} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBarCustom from "../../components/ProgressBarCustom";
-import Communications from "react-native-communications";
-
-const carouselEntries = [{individual: true}];
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;

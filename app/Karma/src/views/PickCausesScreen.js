@@ -6,7 +6,6 @@ import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
-import Button from "../components/buttons/TextButton";
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {

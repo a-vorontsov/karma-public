@@ -103,7 +103,7 @@ class AboutScreen extends React.Component {
     }
 
     async goToNext() {
-        const {gender, dateSelected} = this.state;
+        const {gender, dateSelected, fname, lname} = this.state;
         !gender && Alert.alert("Error", "Please select a gender.");
         fname === "" && Alert.alert("Error", "Please input your first name.");
         lname === "" && Alert.alert("Error", "Please input your last name.");

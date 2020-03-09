@@ -3,16 +3,13 @@ import React from "react";
 import {
     View,
     Image,
-    Text,
     Dimensions,
     TouchableOpacity,
     StyleSheet,
 } from "react-native";
 import {RegularText, SemiBoldText} from "../text";
-import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
-import {NavigationEvents} from "react-navigation";
 import {useNavigation} from "react-navigation-hooks";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
@@ -22,10 +19,6 @@ import {
     MenuOption,
     MenuTrigger,
 } from "react-native-popup-menu";
-
-const carouselEntries = [{individual: true}];
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),

@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {SafeAreaView, View, Text} from "react-native";
-import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
-import {RegularText} from "../../components/text";
 import SignUpRequest from "../../components/activities/SignUpRequest";
 
 class SignUpRequests extends Component {
