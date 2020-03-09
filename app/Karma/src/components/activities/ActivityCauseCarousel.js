@@ -17,7 +17,7 @@ class ActivityCauseCarousel extends React.Component {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard activity={item} signedup={false} />
+                    <ActivityCard activity={item} key={item.id} signedup={false} />
                 </View>
             </View>
         );

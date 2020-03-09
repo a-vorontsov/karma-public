@@ -17,18 +17,20 @@ const icons = {
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
-function formatAMPM(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? "pm" : "am";
+function formatAMPM(d) {
+    let date = new Date(d);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? "0" + minutes : minutes;
-    var strTime = hours + ":" + minutes + " " + ampm;
+    let strTime = hours + ":" + minutes + " " + ampm;
     return strTime;
 }
 
-function getMonthName(date, long = false) {
+function getMonthName(d, long = false) {
+    let date = new Date(d);
     const monthNames = [
         "January",
         "February",
@@ -66,7 +68,6 @@ const ActivityCard = props => {
             </Text>
         );
     };
-
     return (
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>
@@ -89,7 +90,7 @@ const ActivityCard = props => {
                     style={[styles.icon, {left: 5}]}
                 />
                 <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
-                    {` ${props.activity.date.getDate()}`}
+                    {` ${new Date(props.activity.date).getDate()}`}
                 </RegularText>
                 <RegularText style={styles.dateText}>
                     {`  ${getMonthName(props.activity.date)}`}
@@ -99,9 +100,12 @@ const ActivityCard = props => {
                         style={{
                             flexDirection: "row",
                         }}>
-                        <InfoBar title={` ${formatAMPM(props.activity.date)}`} image={icons.clock} />
                         <InfoBar
-                            title={`${props.activity.remaining_spots} SPOTS LEFT`}
+                            title={` ${formatAMPM(props.activity.date)}`}
+                            image={icons.clock}
+                        />
+                        <InfoBar
+                            title={`${props.activity.spots} Spots Left`}
                             image={icons.people}
                         />
                         <View
@@ -141,7 +145,7 @@ const ActivityCard = props => {
                     <ReadMore
                         numberOfLines={2}
                         renderTruncatedFooter={this._renderTruncatedFooter}>
-                        <RegularText>{props.activity.description}</RegularText>
+                        <RegularText>{props.activity.content}</RegularText>
                     </ReadMore>
                 </View>
             </View>
