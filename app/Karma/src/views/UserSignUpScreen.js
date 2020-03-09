@@ -25,8 +25,6 @@ class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fname: "",
-            lname: "",
             email: "team-team@gmail.com",
             username: "",
             password: "",
@@ -101,33 +99,6 @@ class SignUpScreen extends React.Component {
 
                             {/** form content **/}
                             <View>
-                                <TextInput
-                                    placeholder="First Name"
-                                    name="fname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.lname.focus()}
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.fname
-                                    }
-                                />
-
-                                <TextInput
-                                    inputRef={ref => (this.lname = ref)}
-                                    placeholder="Last Name"
-                                    name="lname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() =>
-                                        this.username.focus()
-                                    }
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.lname
-                                    }
-                                />
-
                                 <View>
                                     <TextInput
                                         placeholder={this.state.email}

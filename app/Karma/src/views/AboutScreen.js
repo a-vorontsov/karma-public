@@ -11,6 +11,7 @@ import {
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
+import TextInput from "../components/TextInput";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
@@ -25,6 +26,8 @@ class AboutScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            fname: "",
+            lname: "",
             photo: null,
             gender: null,
             genderSelected: false,
@@ -38,15 +41,21 @@ class AboutScreen extends React.Component {
         headerShown: false,
     };
 
+    onChangeText = event => {
+        console.log("before : " + this.state.fname);
+        const {name, text} = event;
+        this.setState({[name]: text});
+        console.log("after : " + this.state.fname);
+    };
+
     goToPrevious() {
         this.props.navigation.goBack();
     }
     createIndividual() {
         const individual = {
-            userId: 1,
-            firstName: "TODO", // TODO
-            middleNames: "TODO", // TODO
-            surName: "TODO", // TODO
+            userId: 1, // TODO
+            firstName: this.state.fname,
+            surName: this.state.lname,
             dateOfBirth: this.state.date,
             gender: this.state.gender,
             addressLine1: "TODO", // TODO
@@ -59,7 +68,8 @@ class AboutScreen extends React.Component {
         return individual;
     }
     async goToNext() {
-        if (this.state.genderSelected && this.state.dateSelected) {
+        const{genderSelected,dateSelected} = this.state;
+        if (genderSelected && dateSelected) {
             const individual = this.createIndividual();
             await request
                 .post("http://localhost:8000/register/individual")
@@ -79,11 +89,11 @@ class AboutScreen extends React.Component {
                 .catch(er => {
                     console.log(er.message);
                 });
-        } else if (this.state.genderSelected && !this.state.dateSelected) {
+        } else if (genderSelected && dateSelected) {
             this.setState({
                 dateSelected: false,
             });
-        } else if (!this.state.genderSelected && this.state.dateSelected) {
+        } else if (genderSelected && dateSelected) {
             this.setState({
                 genderSelected: false,
             });
@@ -93,9 +103,9 @@ class AboutScreen extends React.Component {
                 dateSelected: false,
             });
         }
-        !this.state.genderSelected &&
+        !genderSelected &&
             Alert.alert("Error", "Please select a gender.");
-        !this.state.dateSelected &&
+        !dateSelected &&
             Alert.alert(
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
@@ -198,6 +208,32 @@ class AboutScreen extends React.Component {
                                     </RegularText>
                                 </TouchableOpacity>
                             </View>
+                            <TextInput
+                                    placeholder="First Name"
+                                    name="fname"
+                                    onChange={this.onChangeText}
+                                    onSubmitEditing={() => this.lname.focus()}
+                                    showError={
+                                        this.state.firstOpen
+                                            ? false
+                                            : !this.state.fname
+                                    }
+                                />
+
+                                <TextInput
+                                    inputRef={ref => (this.lname = ref)}
+                                    placeholder="Last Name"
+                                    name="lname"
+                                    onChange={this.onChangeText}
+                                    onSubmitEditing={() =>
+                                        this.username.focus()
+                                    }
+                                    showError={
+                                        this.state.firstOpen
+                                            ? false
+                                            : !this.state.lname
+                                    }
+                                />
 
                             <SubTitleText>When is your birthday?</SubTitleText>
                             <View style={{alignItems: "center"}}>
