@@ -124,7 +124,7 @@ export default class OrgSignUpScreen extends React.Component {
             })
             .then(res => {
                 console.log(res.body);
-                navigate("About");
+                navigate("PickCauses");
             })
             .catch(err => {
                 Alert.alert("Server Error", err.message);
