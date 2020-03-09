@@ -56,13 +56,13 @@ class AboutScreen extends React.Component {
             gender: genderCharacter,
             genderSelected: true,
         });
-    };
+    }
 
     setPhoto(selectedPhoto) {
         this.setState({
             photo: selectedPhoto,
         });
-    };
+    }
 
     uploadPhoto(selectedPhoto) {
         if (selectedPhoto != null) {
@@ -70,7 +70,7 @@ class AboutScreen extends React.Component {
         } else {
             Alert.alert("Error", "Please upload a photo.");
         }
-    };
+    }
 
     setDate(selectedDate) {
         this.setState({date: selectedDate});
@@ -79,7 +79,7 @@ class AboutScreen extends React.Component {
         } else {
             this.setState({dateSelected: false});
         }
-    };
+    }
 
     createIndividual() {
         const individual = {
@@ -96,17 +96,17 @@ class AboutScreen extends React.Component {
             phoneNumber: "213123421", // TODO
         };
         return individual;
-    };
+    }
 
     goToPrevious() {
         this.props.navigation.goBack();
-    };
+    }
 
     async goToNext() {
         const {gender, dateSelected} = this.state;
         !gender && Alert.alert("Error", "Please select a gender.");
-        (fname === "") && Alert.alert("Error", "Please input your first name.");
-        (lname === "") && Alert.alert("Error", "Please input your last name.");
+        fname === "" && Alert.alert("Error", "Please input your first name.");
+        lname === "" && Alert.alert("Error", "Please input your last name.");
         !dateSelected &&
             Alert.alert(
                 "Error",
@@ -132,7 +132,7 @@ class AboutScreen extends React.Component {
             .catch(err => {
                 Alert.alert(err.message);
             });
-    };
+    }
 
     render() {
         return (

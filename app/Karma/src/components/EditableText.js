@@ -1,8 +1,5 @@
 import React, {Component} from "react";
 import {TextInput, View, StyleSheet} from "react-native";
-import {RegularText} from "./text";
-import Styles from "../styles/Styles";
-import SignUpStyles from "../styles/SignUpStyles";
 
 class EditableText extends Component {
     constructor(props) {
