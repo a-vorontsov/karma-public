@@ -74,7 +74,7 @@ class ActivityDisplayCard extends React.Component {
                                     color: Colours.lightGrey,
                                     fontWeight: "500",
                                 }}>
-                                {props.activity.location}
+                                {props.activity.city}, {props.activity.postcode}
                             </RegularText>
                         </View>
                     </View>

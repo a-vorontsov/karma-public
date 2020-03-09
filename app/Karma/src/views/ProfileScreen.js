@@ -38,6 +38,8 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
+const request = require("superagent");
+
 const activities = [
     {
         name: "Christmas Carols",
@@ -62,18 +64,36 @@ class ProfileScreen extends Component {
             bio: "this is your bio lorem ipsum and such",
             causes: ["Cause1", "Cause2"],
             points: 1,
+            activities: [],
         };
+        this.fetchAllActivities();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
+    fetchAllActivities() {
+        request
+            .get("http://localhost:8000/event")
+            .query({userId: 1, Page: 1, pageSize: 2})
+            .then(result => {
+                console.log(result.body.data);
+                let activities = result.body.data;
+                this.setState({
+                    activities,
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
+    }
+
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard activity={item} signedup={false} />
+                    <ActivityCard activity={item} signedup={false} key={item.id}/>
                 </View>
             </View>
         );
@@ -369,7 +389,7 @@ class ProfileScreen extends Component {
                                     ref={c => {
                                         this._carousel = c;
                                     }}
-                                    data={activities}
+                                    data={this.state.activities}
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}

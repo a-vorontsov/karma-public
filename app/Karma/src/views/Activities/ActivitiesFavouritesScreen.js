@@ -2,38 +2,41 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 
-var activities = [
-    {
-        name: "Litter Picking",
-        id: 50,
-        location: "Waterloo Bridge, London",
-        available_spots: 25,
-        remaining_spots: 20,
-        date: new Date("2020-03-15T11:00:22.000Z"),
-        description:
-            "#LitterHeroes is our way of supporting everyone who wants to do their bit to create a better environment on their doorstep and anyone who is already making a difference.",
-    },
-    {
-        name: "Charity Run",
-        id: 10,
-        location: "Greenwich, London",
-        available_spots: 15,
-        remaining_spots: 12,
-        date: new Date("2020-06-07T18:20:00.000Z"),
-        description:
-            "Running for charity is a great way to be part of something truly worthwhile. Take on a fun run, 5K, 10K or even a marathon - it gives you focus, inspiration and motivation to get over the finish line as well as the chance to raise funds for your chosen charity. Find an event, join the team and become a charity runner today!",
-    },
-];
+const request = require("superagent");
 
 class ActivitiesFavouritesScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activities: [],
+        };
+        this.fetchAllActivities();
+    }
+
     static navigationOptions = {
         headerShown: false,
     };
 
+    fetchAllActivities() {
+        request
+            .get("http://localhost:8000/event")
+            .query({userId: 1, Page: 1, pageSize: 2})
+            .then(result => {
+                console.log(result.body.data);
+                let activities = result.body.data;
+                this.setState({
+                    activities,
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
+    }
+
     render() {
         return (
             <View>
-                {activities.map(activity => {
+                {this.state.activities.map(activity => {
                     return (
                         <ActivityDisplayCard
                             activity={activity}
