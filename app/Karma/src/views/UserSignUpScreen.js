@@ -69,8 +69,8 @@ class SignUpScreen extends React.Component {
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("About");
             })
-            .catch(er => {
-                console.log(er.message);
+            .catch(err => {
+                Alert.alert("Server Error", err.message);
             });
     };
 

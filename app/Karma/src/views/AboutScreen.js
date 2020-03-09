@@ -130,7 +130,7 @@ class AboutScreen extends React.Component {
                 });
             })
             .catch(err => {
-                Alert.alert(err.message);
+                Alert.alert("Server Error", err.message);
             });
     }
 
