@@ -218,7 +218,7 @@ class AboutScreen extends React.Component {
                             <SubTitleText>When is your birthday?</SubTitleText>
                             <View style={{alignItems: "center"}}>
                                 <DatePicker
-                                    name = "dob"
+                                    name="dob"
                                     fadeToColor="none"
                                     mode="date"
                                     date={this.state.date}
