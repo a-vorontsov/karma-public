@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextInput, View, StyleSheet} from "react-native";
+import {TextInput, View} from "react-native";
 
 class EditableText extends Component {
     constructor(props) {
@@ -23,7 +23,5 @@ class EditableText extends Component {
         );
     }
 }
-
-//const styles = StyleSheet.create({});
 
 export default EditableText;
