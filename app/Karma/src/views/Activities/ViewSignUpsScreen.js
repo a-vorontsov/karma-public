@@ -1,5 +1,11 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView} from "react-native";
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
@@ -14,9 +20,11 @@ class ViewSignUpsScreen extends Component {
             display: Attendees,
         };
     }
+
     static navigationOptions = {
         headerShown: false,
     };
+
     setScreen(selectedScreen) {
         this.setState({
             display: selectedScreen,
@@ -29,67 +37,63 @@ class ViewSignUpsScreen extends Component {
                 <View style={Styles.ph24}>
                     <PageHeader title="Activity Sign Ups" />
                 </View>
-                <View style={{paddingBottom: 30, paddingHorizontal: 24, paddingTop: 20}}>
-                        <View
-                            style={{
-                                flex: 1,
-                                height: 50,
-                                paddingBottom: 10,
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                            }}>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this.setScreen(Attendees)
-                                }
+                <View
+                    style={{
+                        paddingBottom: 30,
+                        paddingHorizontal: 24,
+                        paddingTop: 20,
+                    }}>
+                    <View
+                        style={{
+                            flex: 1,
+                            height: 50,
+                            paddingBottom: 10,
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                        }}>
+                        <TouchableOpacity
+                            onPress={() => this.setScreen(Attendees)}
+                            style={
+                                this.state.display === Attendees
+                                    ? styles.navButtonActive
+                                    : styles.navButtonInactive
+                            }>
+                            <RegularText
                                 style={
                                     this.state.display === Attendees
-                                        ? styles.navButtonActive
-                                        : styles.navButtonInactive
+                                        ? styles.navTextActive
+                                        : styles.navTextInactive
                                 }>
-                                <RegularText
-                                    style={
-                                        this.state.display ===
-                                        Attendees
-                                            ? styles.navTextActive
-                                            : styles.navTextInactive
-                                    }>
-                                    Attendees
-                                </RegularText>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this.setScreen(SignUpRequests)
-                                }
+                                Attendees
+                            </RegularText>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.setScreen(SignUpRequests)}
+                            style={
+                                this.state.display === SignUpRequests
+                                    ? styles.navButtonActive
+                                    : styles.navButtonInactive
+                            }>
+                            <RegularText
                                 style={
-                                    this.state.display ===
-                                    SignUpRequests
-                                        ? styles.navButtonActive
-                                        : styles.navButtonInactive
+                                    this.state.display === SignUpRequests
+                                        ? styles.navTextActive
+                                        : styles.navTextInactive
                                 }>
-                                <RegularText
-                                    style={
-                                        this.state.display ===
-                                        SignUpRequests
-                                            ? styles.navTextActive
-                                            : styles.navTextInactive
-                                    }>
-                                    Requests
-                                </RegularText>
-                            </TouchableOpacity>
-                        </View>
+                                Requests
+                            </RegularText>
+                        </TouchableOpacity>
                     </View>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View
-                            style={{flex: 1, marginTop: 10, marginBottom: 100}}>
-                            <this.state.display />
-                        </View>
-                    </ScrollView>
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
+                        <this.state.display />
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     header: {

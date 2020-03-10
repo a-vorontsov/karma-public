@@ -47,7 +47,9 @@ class ActivitiesGoingScreen extends Component {
                         );
                     })
                 ) : (
-                    <RegularText>You have not selected any activities to attend</RegularText>
+                    <RegularText>
+                        You have not selected any activities to attend
+                    </RegularText>
                 )}
             </View>
         );

@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import {
-    View,
-    StyleSheet,
     Dimensions,
     Image,
     ScrollView,
     StatusBar,
+    StyleSheet,
     TouchableOpacity,
+    View,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
@@ -44,10 +44,14 @@ class ActivityInfoScreen extends Component {
             full_date: "Full Date",
             full_time: "Full Time",
             full_location: "Full Location",
-            description: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            contact: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            where: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            important: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua"
+            description:
+                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            contact:
+                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            where:
+                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            important:
+                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
         };
     }
 
@@ -228,11 +232,15 @@ class ActivityInfoScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "space-between",
                                     }}>
-                                        <View style={{width: HALF+(HALF/3)}}>
-                                            <ProgressBar current={this.state.spots_taken} max={this.state.spots}/>
-                                        </View>
+                                    <View style={{width: HALF + HALF / 3}}>
+                                        <ProgressBar
+                                            current={this.state.spots_taken}
+                                            max={this.state.spots}
+                                        />
+                                    </View>
                                     <RegularText style={{fontSize: 16}}>
-                                        {this.state.spots_taken}/{this.state.spots} SPOTS TAKEN
+                                        {this.state.spots_taken}/
+                                        {this.state.spots} SPOTS TAKEN
                                     </RegularText>
                                 </View>
                             </View>
@@ -307,15 +315,11 @@ class ActivityInfoScreen extends Component {
                         <RegularText style={styles.headerText}>
                             What Will Volunteers Do?
                         </RegularText>
-                        <RegularText>
-                            {this.state.description}
-                        </RegularText>
+                        <RegularText>{this.state.description}</RegularText>
                         <RegularText style={styles.headerText}>
                             Who to Contact
                         </RegularText>
-                        <RegularText>
-                            {this.state.contact}
-                        </RegularText>
+                        <RegularText>{this.state.contact}</RegularText>
                         <View
                             style={{
                                 flexDirection: "row",

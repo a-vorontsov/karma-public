@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 import {
-    View,
-    Text,
-    StyleSheet,
     Dimensions,
+    Image,
     KeyboardAvoidingView,
     SafeAreaView,
-    Image,
     ScrollView,
+    StyleSheet,
+    Text,
     TouchableOpacity,
+    View,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {GradientButton, Button, TransparentButton} from "../components/buttons";
+import {GradientButton, TransparentButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -21,11 +21,8 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
-import ActivityDisplayCard from "../components/activities/ActivityDisplayCard";
-import ActivityCauseCarousel from "../components/activities/ActivityCauseCarousel";
 
-const carouselEntries = [{individual: true}, {individual: false}];
-const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
@@ -35,23 +32,10 @@ const icons = {
     edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     ribbon: require("../assets/images/general-logos/ribbon.png"),
-    orange_circle: require("../assets/images/general-logos/orange-circle.png")
+    orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
 const request = require("superagent");
-
-const activities = [
-    {
-        name: "Christmas Carols",
-        id: 60,
-        location: "Eiffel Tower, Paris",
-        available_spots: 10,
-        remaining_spots: 7,
-        date: new Date("2020-05-06T13:15:00.000Z"),
-        description:
-            "Our traditional Carol Service will be on December 15 at 7pm at Église Saint Esprit at 5, Rue Roquepine, 75008 followed by mulled wine and minced pies back at Saint Michael’s. On the same day, at 10:45 in the morning, we will have an all-age Nativity service at Saint Michael’s, involving the children. Both will be invitational events which we hope your friends and family will enjoy with you.",
-    },
-];
 
 class ProfileScreen extends Component {
     constructor(props) {
@@ -93,7 +77,11 @@ class ProfileScreen extends Component {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard activity={item} signedup={false} key={item.id}/>
+                    <ActivityCard
+                        activity={item}
+                        signedup={false}
+                        key={item.id}
+                    />
                 </View>
             </View>
         );
@@ -219,7 +207,13 @@ class ProfileScreen extends Component {
                                         />
                                         <Image
                                             source={icons.orange_circle}
-                                            style={{height: 25, width: 25, left: 45, top: -8, position: "absolute"}}
+                                            style={{
+                                                height: 25,
+                                                width: 25,
+                                                left: 45,
+                                                top: -8,
+                                                position: "absolute",
+                                            }}
                                         />
                                         <RegularText
                                             source={icons.orange_circle}
@@ -229,9 +223,10 @@ class ProfileScreen extends Component {
                                                 width: 25,
                                                 left: 53,
                                                 top: -5,
-                                                position: "absolute"
-                                            }}
-                                        >{this.state.points}</RegularText>
+                                                position: "absolute",
+                                            }}>
+                                            {this.state.points}
+                                        </RegularText>
                                     </View>
                                     <TouchableOpacity>
                                         <Image
@@ -267,7 +262,7 @@ class ProfileScreen extends Component {
                                 style={{
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    paddingTop: 15
+                                    paddingTop: 15,
                                 }}>
                                 <TransparentButton
                                     title="View Your Activities"

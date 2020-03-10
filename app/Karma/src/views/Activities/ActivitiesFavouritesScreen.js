@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextInput, Text, View} from "react-native";
+import {View} from "react-native";
 import {RegularText} from "../../components/text";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 
@@ -47,7 +47,9 @@ class ActivitiesFavouritesScreen extends Component {
                         );
                     })
                 ) : (
-                    <RegularText>You haven't favourited any activities yet</RegularText>
+                    <RegularText>
+                        You haven't favourited any activities yet
+                    </RegularText>
                 )}
             </View>
         );

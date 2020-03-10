@@ -1,12 +1,9 @@
 import React, {Component} from "react";
-import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
+import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 
 const request = require("superagent");
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 class ActivitiesAllScreen extends Component {
     constructor(props) {

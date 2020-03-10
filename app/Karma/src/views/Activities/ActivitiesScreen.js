@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import {
-    View,
-    StyleSheet,
     KeyboardAvoidingView,
+    Platform,
     SafeAreaView,
     ScrollView,
+    StyleSheet,
     TouchableOpacity,
-    Platform,
+    View,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
