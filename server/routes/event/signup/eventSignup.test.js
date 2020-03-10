@@ -1,15 +1,22 @@
 const request = require('supertest');
-const app = require('../app');
-const testHelpers = require("../test/testHelpers");
-const util = require("../util/util");
-const signupRepository = require("../models/databaseRepositories/signupRepository");
-const eventRepository = require("../models/databaseRepositories/eventRepository");
+const app = require('../../../app');
+const testHelpers = require("../../../test/testHelpers");
+const util = require("../../../util/util");
+const signupRepository = require("../../../models/databaseRepositories/signupRepository");
+const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 
-jest.mock("../models/databaseRepositories/eventRepository");
-jest.mock("../models/databaseRepositories/signupRepository");
-jest.mock("../util/util");
+jest.mock("../../../models/databaseRepositories/eventRepository");
+jest.mock("../../../models/databaseRepositories/signupRepository");
+jest.mock("../../../util/util");
 
+let signUp, event, signedUpUserExample1, signedUpUserExample2;
 beforeEach(() => {
+    signUp = testHelpers.getSignUp();
+    event = testHelpers.getEvent();
+    signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
+    signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
+    event.organization_id = 1;
+    event.address_id = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -17,14 +24,6 @@ afterEach(() => {
     jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
-
-const signUp = testHelpers.signUp;
-const event = testHelpers.event;
-const signedUpUser1 = testHelpers.signedUpUser1;
-const signedUpUser2 = testHelpers.signedUpUser2;
-event.organization_id = 1;
-event.address_id = 1;
-
 
 test('creating signup works', async () => {
     signupRepository.insert.mockResolvedValue({
@@ -71,8 +70,8 @@ test('requesting users signed up to an event works', async () => {
     });
     signupRepository.findUsersSignedUp.mockResolvedValue({
         rows: [{
-            signedUpUser1,
-            signedUpUser2
+            signedUpUser1: signedUpUserExample1,
+            signedUpUser2: signedUpUserExample2
         }], // 2 users
     });
     const response = await request(app).get("/event/1/signUp");
@@ -80,9 +79,9 @@ test('requesting users signed up to an event works', async () => {
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(1);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject([{
-        signedUpUser1,
-        signedUpUser2
+    expect(response.body.data.users).toMatchObject([{
+        signedUpUser1: signedUpUserExample1,
+        signedUpUser2: signedUpUserExample2
     }]);
 });
 
@@ -97,7 +96,7 @@ test('requesting users signed up to an event that doesnt exist returns event doe
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("No event with specified id");
+    expect(response.body.message).toBe("No event with specified id");
 });
 
 test('requesting users signed up to an event with wrong id format returns id format is wrong response', async () => {
@@ -111,5 +110,5 @@ test('requesting users signed up to an event with wrong id format returns id for
     expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("ID specified is in wrong format");
+    expect(response.body.message).toBe("ID specified is in wrong format");
 });

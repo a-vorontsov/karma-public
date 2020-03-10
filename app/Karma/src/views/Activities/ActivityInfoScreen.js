@@ -1,28 +1,21 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
-    KeyboardAvoidingView,
-    SafeAreaView,
     Image,
     ScrollView,
+    StatusBar,
     TouchableOpacity,
-    Switch,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
-import CarouselStyles from "../../styles/CarouselStyles";
-import ActivityCard from "../../components/activities/ActivityCard";
 import PageHeader from "../../components/PageHeader";
-import {GradientButton, Button} from "../../components/buttons";
+import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
-import ProgressBarCustom from "../../components/ProgressBarCustom";
+import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
-
-const carouselEntries = [{individual: true}];
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -40,11 +33,30 @@ const icons = {
 };
 
 class ActivityInfoScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            spots_taken: 3,
+            spots: 4,
+            activity_name: "Activity Name",
+            org_name: "Name",
+            location: "Location",
+            full_date: "Full Date",
+            full_time: "Full Time",
+            full_location: "Full Location",
+            description: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            contact: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            where: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            important: "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua"
+        };
+    }
+
     static navigationOptions = {
         headerShown: false,
     };
 
     render() {
+        const phoneNumbers = [];
         return (
             <View style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
@@ -77,7 +89,7 @@ class ActivityInfoScreen extends Component {
                                 Styles.pv16,
                                 {fontSize: 25, fontWeight: "500"},
                             ]}>
-                            Activity Name Activity
+                            {this.state.activity_name}
                         </RegularText>
                     </View>
                 </View>
@@ -120,7 +132,7 @@ class ActivityInfoScreen extends Component {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        Name
+                                        {this.state.org_name}
                                     </RegularText>
                                     <Image />
                                 </View>
@@ -130,7 +142,7 @@ class ActivityInfoScreen extends Component {
                                         color: Colours.lightGrey,
                                         fontWeight: "500",
                                     }}>
-                                    Location
+                                    {this.state.location}
                                 </RegularText>
                             </View>
                         </View>
@@ -216,9 +228,11 @@ class ActivityInfoScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "space-between",
                                     }}>
-                                    <ProgressBarCustom />
-                                    <RegularText>
-                                        3/4 Spots Available
+                                        <View style={{width: HALF+(HALF/3)}}>
+                                            <ProgressBar current={this.state.spots_taken} max={this.state.spots}/>
+                                        </View>
+                                    <RegularText style={{fontSize: 16}}>
+                                        {this.state.spots_taken}/{this.state.spots} SPOTS TAKEN
                                     </RegularText>
                                 </View>
                             </View>
@@ -246,7 +260,7 @@ class ActivityInfoScreen extends Component {
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    Full Date
+                                    {this.state.full_date}
                                 </RegularText>
                                 <RegularText
                                     style={{
@@ -254,7 +268,7 @@ class ActivityInfoScreen extends Component {
                                         color: Colours.lightGrey,
                                         fontWeight: "500",
                                     }}>
-                                    Full Time
+                                    {this.state.full_time}
                                 </RegularText>
                             </View>
                         </View>
@@ -277,7 +291,7 @@ class ActivityInfoScreen extends Component {
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    Full Location
+                                    {this.state.full_location}
                                 </RegularText>
                             </View>
                         </View>
@@ -294,17 +308,13 @@ class ActivityInfoScreen extends Component {
                             What Will Volunteers Do?
                         </RegularText>
                         <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
+                            {this.state.description}
                         </RegularText>
                         <RegularText style={styles.headerText}>
                             Who to Contact
                         </RegularText>
                         <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
+                            {this.state.contact}
                         </RegularText>
                         <View
                             style={{
@@ -334,11 +344,11 @@ class ActivityInfoScreen extends Component {
                                 activeOpacity={0.9}
                                 onPress={() =>
                                     Communications.email(
-                                        ["emailAddress1", "emailAddress2"],
+                                        ["emailAddress1"],
                                         null,
                                         null,
-                                        "My Subject",
-                                        "My body text",
+                                        "About Your Karma Activity",
+                                        null,
                                     )
                                 }>
                                 <RegularText

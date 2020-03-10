@@ -4,7 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
-const favouriteRepository = require("../models/databaseRepositories/favouriteRepository");
+const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
@@ -12,24 +12,35 @@ const favouriteRepository = require("../models/databaseRepositories/favouriteRep
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individual_id": "3"
+    "individualId": "3"
   }
  </pre>
- * @returns
- *  status: 200, description: The favourite object is created <br/>
+ * @returns {Object}
+ *  status: 200, description: The favourite object that is created<br/>
+ <pre>
+ {
+    "message": "Favourite added successfully",
+    "data": {
+        "favourite": {
+            "individualId": 7,
+            "eventId": 11,
+        }
+    }
+}
+ </pre>
  *  status: 500, description: DB error
  *  @name Favourite an event
  *  @function
  */
-router.post('/:event_id/favourite', async (req, res) => {
+router.post('/:eventId/favourite', async (req, res) => {
     try {
-        const event_id = req.params.event_id;
+        const eventId = req.params.eventId;
         const favouriteRequest = req.body;
-        favouriteRequest.event_id = event_id;
+        favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.insert(favouriteRequest);
-        res.status(200).send(favouriteResult);
+        res.status(200).send({message: "Favourite added successfully", data: {favourite: favouriteResult.rows[0]}});
     } catch (e) {
-        console.log("Error while favouring event: " + e.message);
+        console.log("Error while favouriting event: " + e.message);
         res.status(500).send({message: e.message});
     }
 });
@@ -40,22 +51,33 @@ router.post('/:event_id/favourite', async (req, res) => {
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individual_id": "3"
+    "individualId": "3"
   }
  </pre>
- * @returns
+ * @returns {Object}
  *  status: 200, description: The favourite object deleted<br/>
+ <pre>
+ {
+    "message": "Favourite added successfully",
+    "data": {
+        "favourite": {
+            "individualId": 7,
+            "eventId": 11,
+        }
+    }
+ }
+ </pre>
  *  status: 500, description: DB error
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:event_id/favourite/delete', async (req, res) => {
+router.post('/:eventId/favourite/delete', async (req, res) => {
     try {
-        const event_id = req.params.event_id;
+        const eventId = req.params.eventId;
         const favouriteRequest = req.body;
-        favouriteRequest.event_id = event_id;
+        favouriteRequest.eventId = eventId;
         const favouriteResult = await favouriteRepository.remove(favouriteRequest);
-        res.status(200).send(favouriteResult);
+        res.status(200).send({message: "Event unfavourited successfully", data: {favourite: favouriteResult.rows[0]}});
     } catch (e) {
         console.log("Error while updating favourite: " + e.message);
         res.status(500).send({message: e.message});

@@ -6,11 +6,8 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
 const userAgent = require("../../../modules/authentication/user-agent");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
-
 jest.mock("owasp-password-strength-test");
-
+let user, registration;
 const changePasswordRequest = {
     userId: 1,
     oldPassword: "password",
@@ -19,6 +16,8 @@ const changePasswordRequest = {
 };
 
 beforeEach(() => {
+    user = testHelpers.getUserExample4();
+    registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     changePasswordRequest.oldPassword = "password";

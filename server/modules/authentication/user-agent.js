@@ -19,10 +19,10 @@ async function registerEmail(email) {
     }
     await regRepo.insert({
         email: email,
-        email_flag: 0,
-        id_flag: 0,
-        phone_flag: 0,
-        sign_up_flag: 0,
+        emailFlag: 0,
+        idFlag: 0,
+        phoneFlag: 0,
+        signUpFlag: 0,
     });
 }
 
@@ -58,7 +58,7 @@ async function registerUser(email, username, password) {
     await userRepo.insert({
         email: email,
         username: username,
-        password_hash: hashedPassword,
+        passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
         date_registered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
@@ -98,9 +98,9 @@ async function registerIndividual(userId, title, firstName, surName, dateOfBirth
         lastname: surName,
         phone: phoneNumber,
         banned: false,
-        user_id: userId,
-        picture_id: null, // TODO:
-        address_id: addressId,
+        userId: userId,
+        pictureId: null, // TODO:
+        addressId: addressId,
         birthday: dateOfBirth,
         gender: gender,
     });
@@ -149,19 +149,19 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
     const addressId = addressResult.rows[0].id;
 
     await orgRepo.insert({
-        org_name: name,
-        org_number: organisationNumber,
-        org_type: organisationType,
-        poc_firstname: pocFirstName,
-        poc_lastname: pocLastName,
+        orgName: name,
+        orgNumber: organisationNumber,
+        orgType: organisationType,
+        pocFirstname: pocFirstName,
+        pocLastname: pocLastName,
         phone: phoneNumber,
         banned: false,
         org_register_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         low_income: lowIncome,
         exempt: exempt,
-        picture_id: null, // TODO:
-        user_id: userId,
-        address_id: addressId,
+        pictureId: null, // TODO:
+        userId: userId,
+        addressId: addressId,
     });
 
     await setSignUpFlagTrue(userId);
@@ -178,8 +178,8 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
  */
 async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
     return await addressRepo.insert({
-        address_1: addressLine1,
-        address_2: addressLine2,
+        address1: addressLine1,
+        address2: addressLine2,
         postcode: postCode,
         city: townCity,
         region: countryState,
@@ -230,7 +230,7 @@ function isCorrectPassword(user, inputPassword) {
     if (user === undefined) {
         throw new Error("User by given email/id not found");
     }
-    return (user.password_hash === digest.hashPassWithSaltInHex(inputPassword, user.salt));
+    return (user.passwordHash === digest.hashPassWithSaltInHex(inputPassword, user.salt));
 }
 
 /**

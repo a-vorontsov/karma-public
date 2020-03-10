@@ -16,18 +16,15 @@ router.post('/:id/causes', (req, res) => {
     if (!userId) {
         return res.status(400).send("No user id was specified");
     }
-    const resultObject = {};
     // get all ids of causes selected
     const ids = [...causes.map(cause => cause.id)];
     // update db
-    selectedCauseRepository.insertMultiple(userId, ids)
+    selectedCauseRepository.unselectAll(userId, ids)
         .then(result => {
-            resultObject.inserted = result.rows;
-            return selectedCauseRepository.deleteUnselected(userId, ids);
+            return selectedCauseRepository.insertMultiple(userId, ids);
         })
-        .then(deleteResult =>{
-            resultObject.deleted = deleteResult.rows;
-            res.status(200).send(resultObject);
+        .then(insertResult =>{
+            res.status(200).send({data: insertResult.rows});
         })
         .catch(err => res.status(500).send(err));
 });

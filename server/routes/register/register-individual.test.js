@@ -4,10 +4,11 @@ const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
+let user, registration;
 
 beforeEach(() => {
+    user = testHelpers.getUserExample4();
+    registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     return testHelpers.clearDatabase();
 });

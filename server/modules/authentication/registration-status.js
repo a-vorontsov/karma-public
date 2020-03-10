@@ -30,7 +30,7 @@ async function isEmailVerified(email) {
     if (regRecord === undefined) {
         throw new Error("Registration record with given email does not exist");
     }
-    return regRecord.email_flag;
+    return regRecord.emailFlag;
 }
 
 /**
@@ -85,7 +85,7 @@ async function isFullyRegisteredByEmail(email) {
     if (regRecord === undefined) {
         throw new Error("Registration record with given email does not exist");
     }
-    return regRecord.sign_up_flag;
+    return regRecord.signUpFlag;
 }
 
 /**

@@ -30,6 +30,8 @@ app.use("/error/alreadyauthenticated", require("./routes/error/alreadyAuthentica
 app.use("/error/customerror", require("./routes/error/customError"));
 app.use("/error/usernotfound", require("./routes/error/userNotFound"));
 
+app.use("/notification", require("./routes/notification"));
+
 app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));
 app.use("/event", require("./routes/event/event"));

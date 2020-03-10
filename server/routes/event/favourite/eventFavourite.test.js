@@ -1,14 +1,19 @@
 const request = require('supertest');
-const app = require('../app');
-const testHelpers = require("../test/testHelpers");
+const app = require('../../../app');
+const testHelpers = require("../../../test/testHelpers");
 
-const favouriteRepository = require("../models/databaseRepositories/favouriteRepository");
-const eventRepository = require("../models/databaseRepositories/eventRepository");
+const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 
-jest.mock("../models/databaseRepositories/eventRepository");
-jest.mock("../models/databaseRepositories/favouriteRepository");
+jest.mock("../../../models/databaseRepositories/eventRepository");
+jest.mock("../../../models/databaseRepositories/favouriteRepository");
+
+let favourite, event;
 
 beforeEach(() => {
+    favourite = testHelpers.getFavourite();
+    event = testHelpers.getEvent();
+    event.organizationId = 1;
+    event.addressId = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -16,12 +21,6 @@ afterEach(() => {
     jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
-
-const favourite = testHelpers.favourite;
-const event = testHelpers.event;
-event.organization_id = 1;
-event.address_id = 1;
-
 
 test('creating favourite works', async () => {
     favouriteRepository.insert.mockResolvedValue({

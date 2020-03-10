@@ -17,7 +17,7 @@ const causeRepository = require("../models/databaseRepositories/causeRepository"
  */
 router.get('/', (req, res) => {
     causeRepository.findAll()
-        .then(result => res.status(200).json(result.rows))
+        .then(result => res.status(200).json({data: result.rows}))
         .catch(err => res.status(500).send(err));
 });
 
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
     causeRepository.findById(id)
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No cause with given id");
-            res.status(200).json(result.rows);
+            res.status(200).json({data: result.rows});
         })
         .catch(err => res.status(500).send(err));
 });
