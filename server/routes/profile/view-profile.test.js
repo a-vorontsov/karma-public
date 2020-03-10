@@ -24,7 +24,7 @@ const registerIndividualRequest = {
         individual: {
             title: "Mr.",
             firstName: "Paul",
-            surName: "Muller",
+            lastName: "Muller",
             dateOfBirth: "1998-10-09",
             gender: "M",
             phoneNumber: "+435958934",
@@ -66,8 +66,8 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.body.data.individual.firstName).toBe(
         registerIndividualRequest.data.individual.firstName,
     );
-    expect(profileResponse.body.data.individual.surName).toBe(
-        registerIndividualRequest.data.individual.surName,
+    expect(profileResponse.body.data.individual.lastName).toBe(
+        registerIndividualRequest.data.individual.lastName,
     );
     expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
         Date(registerIndividualRequest.data.individual.dateOfBirth)

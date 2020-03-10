@@ -75,8 +75,8 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             if (req.body.data.individual.firstName !== undefined) {
                 individual.firstname = req.body.data.individual.firstName;
             }
-            if (req.body.data.individual.surName !== undefined) {
-                individual.lastname = req.body.data.individual.surName;
+            if (req.body.data.individual.lastName !== undefined) {
+                individual.lastname = req.body.data.individual.lastName;
             }
             if (req.body.data.individual.phoneNumber !== undefined) {
                 individual.phone = req.body.data.individual.phoneNumber;

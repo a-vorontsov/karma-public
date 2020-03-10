@@ -23,7 +23,7 @@ const registerIndividualRequest = {
         individual: {
             title: "Mr.",
             firstName: "Paul",
-            surName: "Muller",
+            lastName: "Muller",
             dateOfBirth: "1998-10-09",
             gender: "M",
             phoneNumber: "+435958934",
