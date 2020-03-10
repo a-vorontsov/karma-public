@@ -4,11 +4,9 @@ import {
     TouchableOpacity,
     StatusBar,
     Platform,
-    Text,
     Image,
     KeyboardAvoidingView,
     Keyboard,
-    SegmentedControlIOSComponent
 } from "react-native";
 import { RegularText } from "../components/text";
 import TextInput from "../components/TextInput"
@@ -23,8 +21,6 @@ class WelcomeScreen extends Component {
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,
-            isRecognised: false,
-            isVerified: false,
             emailInput:"",
             passInput:"",
             emailSubmitted: false,
@@ -36,20 +32,27 @@ class WelcomeScreen extends Component {
             isCodeValid:false,
 
         };
+        
+        // methods that use setState()
         this.popUpEmail = this.popUpEmail.bind(this);
+        this.checkEmail = this.checkEmail.bind(this);
         this.popUpPassword = this.popUpPassword.bind(this);
         this.checkPass = this.checkPass.bind(this);
         this.popUpCode = this.popUpCode.bind(this);
         this.checkCode = this.checkCode.bind(this);
 
     }
+
     onChangeText = event => {
         const { name, text } = event;
         this.setState({ [name]: text });
     };
 
+    // show email text field
      popUpEmail() {
-        return (
+        // if(showCode){
+        //     this.setState({showCode:false})}       
+             return (
             <TextInput name="emailInput" 
                 placeholder="Please enter your email" 
                 autoFocus={true} 
@@ -57,36 +60,46 @@ class WelcomeScreen extends Component {
                 showError={this.state.showEmailError && !this.isValidEmail()} 
                 errorText={"Please enter a valid email."} 
                 onChange={this.onChangeText} 
-                onSubmitEditing={() => {this.setState({emailSubmitted: true}); this.checkEmail}} 
+                onSubmitEditing={() => {this.setState({emailSubmitted: true})}} // calls checkEmail function
                 />
         );
     }
-
+    
+    // check if email is of a valid format
     isValidEmail(){
-        const invalidEmail = validate({from: this.state.emailInput}, emailConstraints)
+        const invalidEmail = validate({from: this.state.emailInput}, emailConstraints) 
+        // invalidEmail == undefined if email is correct 
         return !invalidEmail
     }
 
+    // checks if email is in DB
     checkEmail(){
         this.setState({emailSubmitted:false})
-            const isValidEmail = this.isValidEmail()
+        const isValidEmail = this.isValidEmail()
+        // email is of a valid format
            if(isValidEmail){
-               if(this.state.emailInput==="P@y.c" ){ // old user
-                
-                    this.setState({showPassField:true, showCode:false, showEmailError:false})
+               // returning user
+               if(this.state.emailInput==="P@y.c" ){ 
+                this.setState({showPassField:true, showCode:false, showEmailError:false})
                }
-               else if(this.state.emailInput !=="P@y.c"){ // new user
-                   //send email code
-                    this.popUpCode()
+               // new user
+               else if(this.state.emailInput !=="P@y.c"){ 
+                   //send email code TO DO BACKEND
+                   // show code field
+                    
                     this.setState({showPassField:false, showCode:true, showEmailError:false})
                }
            }
-           else if(!isValidEmail){ // wrong email
+            // email is of invalid format
+            else if(!isValidEmail){ 
                 this.setState({showPassField:false, showCode:false, showEmailError:true})
            }
     }
 
-    popUpPassword() { // to change ur password option visible always
+    // display password field
+    popUpPassword() { 
+        // if(showCode){
+        //  this.setState({showCode:false})}
         return (
             <>
             {/* password field */}
@@ -111,32 +124,41 @@ class WelcomeScreen extends Component {
         )
     }
 
+    // verify password is correct
     checkPass(){
+        // if password correct
         if(this.state.passInput === "owo"){
             this.setState({isValidPass:true})
         }
         else{
+            // password incorrect
+            // show error message
             this.setState({isValidPass:false})
             this.setState({showPassError:true})
            }
         }
     
     getForgotPassword(){
+        // remove the password field
         if(this.state.showPassField){
             this.setState({showPassField: false})
         }
+        // toggle show code field flag
         if(this.state.showCode){
             this.setState({showCode: false})
 
         }
-        return this.popUpCode()   
+        else{
+        // display code field
+             return this.popUpCode() 
+        }  
     }
 
+    // display code field
     popUpCode() {  
         return(    
          <CodeInput
             ref="codeInputRef2"
-            secureTextEntry
             keyboardType="numeric"
             codeLength={6}
             autoFocus={false}
@@ -149,32 +171,22 @@ class WelcomeScreen extends Component {
           )
     }
 
+    // verify code is correct
     checkCode(code){
+        // code correct
         if(code == "123456"){
             console.log("yay!!!")
             this.setState({isCodeValid:true})
         }
         else{
+            // code incorrect 
             this.setState({isCodeValid:false})
             console.log(";////")
            
         }
     }
-    isSignUpPressed: false,
-    isForgotPassPressed: false,
-    isRecognised: false,
-    isVerified: false,
-    emailInput:"",
-    passInput:"",
-    emailSubmitted: false,
-    showEmailError: false,
-    showPassError: false,
-    showPassField: false,
-    showCode: false,
-    isValidPass: false,
-    isCodeValid:false,
+
     render() {
-       //TODO: console.log("show code: ", this.state.showCode, " isCodeValid: ", this.state.isCodeValid, " showPassField: ", this.state.showPassField, " isCodeValid: ", this.state.isCodeValid )
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
@@ -206,7 +218,6 @@ class WelcomeScreen extends Component {
                         {this.state.isForgotPassPressed ? this.getForgotPassword() : null}
 
                     </View>
-                  
                 </KeyboardAvoidingView>
                 <View
                     style={{
@@ -230,7 +241,7 @@ class WelcomeScreen extends Component {
 
 export default WelcomeScreen;
 
-
+// for email verification
 export const emailConstraints = {
     from: {
         // Email is required
