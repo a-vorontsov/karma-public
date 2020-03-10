@@ -2,9 +2,9 @@ const request = require("supertest");
 const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/eventService");
+const eventService = require("../../modules/event/eventService");
 
-jest.mock("../../modules/eventService");
+jest.mock("../../modules/event/eventService");
 jest.mock("../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 

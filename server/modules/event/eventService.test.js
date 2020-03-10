@@ -1,5 +1,5 @@
 const testHelpers = require("../../test/testHelpers");
-const eventService = require("./");
+const eventService = require("./eventService");
 
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const addressRepository = require("../../models/databaseRepositories/addressRepository");

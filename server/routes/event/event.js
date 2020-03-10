@@ -11,7 +11,7 @@ const eventSelectRoute = require("./select/eventSelect");
 
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/eventService/");
+const eventService = require("../../modules/event/eventService");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
