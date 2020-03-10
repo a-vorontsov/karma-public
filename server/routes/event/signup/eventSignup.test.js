@@ -15,8 +15,8 @@ beforeEach(() => {
     event = testHelpers.getEvent();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
     signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
-    event.organization_id = 1;
-    event.address_id = 1;
+    event.organizationId = 1;
+    event.addressId = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -56,7 +56,7 @@ test('requesting event history works', async () => {
         rows: [{}, {}, {}], // 3 events
     });
     const response = await request(app).get("/event/signUp/history").send({
-        individual_id: 5
+        individualId: 5
     });
 
     expect(signupRepository.findAllByIndividualId).toHaveBeenCalledTimes(1);

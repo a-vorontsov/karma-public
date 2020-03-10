@@ -8,8 +8,8 @@ const authRepo = require("../../models/databaseRepositories/authenticationReposi
 const request = require("supertest");
 const app = require("../../app");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
+const user = testHelpers.getUserExample4();
+const registration = testHelpers.getRegistrationExample4();
 
 beforeEach(() => {
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
@@ -253,11 +253,11 @@ test("valid and expired token working", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const insertAddressResult = await addressRepo.insert(testHelpers.address);
+    const insertAddressResult = await addressRepo.insert(testHelpers.getAddress());
     const addressId = insertAddressResult.rows[0].id;
-    const insertIndiv = testHelpers.individual;
-    insertIndiv.user_id = userId;
-    insertIndiv.address_id = addressId;
+    const insertIndiv = testHelpers.getIndividual();
+    insertIndiv.userId = userId;
+    insertIndiv.addressId = addressId;
     const insertIndividualResult = await indivRepo.insert(insertIndiv);
 
     logInReq.data.email = user.email;

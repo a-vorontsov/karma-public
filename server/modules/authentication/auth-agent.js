@@ -90,7 +90,7 @@ async function isValidToken(userId, authToken) {
             isValidToken: false,
             error: "Invalid token",
         });
-    } else if (tokenRecord.expiry_date <= Date.now()) {
+    } else if (tokenRecord.expiryDate <= Date.now()) {
         return ({
             isValidToken: false,
             error: "Expired token",
@@ -116,12 +116,12 @@ async function logIn(userId) {
             userId,
             digest.generateSecureSaltInHex(),
         ),
-        expiry_date: date.format(
+        expiryDate: date.format(
             date.addMinutes(new Date(), 15),
             "YYYY-MM-DD HH:mm:ss",
         ), // TODO: token renewal
-        creation_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
-        user_id: userId,
+        creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        userId: userId,
     });
     return tokenResult.rows[0].token;
 }

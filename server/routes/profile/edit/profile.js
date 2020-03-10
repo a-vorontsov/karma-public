@@ -69,7 +69,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const individual = indivResult.rows[0];
             const indivCopy = {...individual};
 
-            const addressResult = await addressRepo.findById(individual.address_id);
+            const addressResult = await addressRepo.findById(individual.addressId);
             await updateAddress(req.body.data.individual, addressResult.rows[0]);
 
             if (req.body.data.individual.firstName !== undefined) {
@@ -93,29 +93,29 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const organisation = orgResult.rows[0];
             const orgCopy = {...organisation};
 
-            const addressResult = await addressRepo.findById(organisation.address_id);
+            const addressResult = await addressRepo.findById(organisation.addressId);
             await updateAddress(req.body.data.organisation, addressResult.rows[0]);
 
             if (req.body.data.organisation.name !== undefined) {
-                organisation.org_name = req.body.data.organisation.name;
+                organisation.orgName = req.body.data.organisation.name;
             }
             if (req.body.data.organisation.organisationNumber !== undefined) {
-                organisation.org_number = req.body.data.organisation.organisationNumber;
+                organisation.orgNumber = req.body.data.organisation.organisationNumber;
             }
             if (req.body.data.organisation.organisationType !== undefined) {
-                organisation.org_type = req.body.data.organisation.organisationType;
+                organisation.orgType = req.body.data.organisation.organisationType;
             }
             if (req.body.data.organisation.pocFirstName !== undefined) {
-                organisation.poc_firstname = req.body.data.organisation.pocFirstName;
+                organisation.pocFirstname = req.body.data.organisation.pocFirstName;
             }
             if (req.body.data.organisation.pocLastName !== undefined) {
-                organisation.poc_lastname = req.body.data.organisation.pocLastName;
+                organisation.pocLastname = req.body.data.organisation.pocLastName;
             }
             if (req.body.data.organisation.phoneNumber !== undefined) {
                 organisation.phone = req.body.data.organisation.phoneNumber;
             }
             if (req.body.data.organisation.lowIncome !== undefined) {
-                organisation.low_income = req.body.data.organisation.lowIncome;
+                organisation.lowIncome = req.body.data.organisation.lowIncome;
             }
             if (req.body.data.organisation.exempt !== undefined) {
                 organisation.exempt = req.body.data.organisation.exempt;
@@ -145,10 +145,10 @@ async function updateAddress(profile, address) {
     const addressObj = {...address};
 
     if (profile.addressLine1 !== undefined ) {
-        addressObj.address_1 = req.body.data.individual.addressLine1;
+        addressObj.address1 = req.body.data.individual.addressLine1;
     }
     if (profile.addressLine2 !== undefined ) {
-        addressObj.address_2 = req.body.data.individual.addressLine2;
+        addressObj.address2 = req.body.data.individual.addressLine2;
     }
     if (profile.postCode !== undefined ) {
         addressObj.postcode = profile.postCode;

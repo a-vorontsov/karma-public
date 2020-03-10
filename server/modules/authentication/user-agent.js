@@ -61,7 +61,7 @@ async function registerUser(email, username, password) {
         passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        date_registered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     });
     const userResult = await userRepo.findByEmail(email);
     return userResult.rows[0].id;
@@ -156,8 +156,8 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         pocLastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        org_register_date: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
-        low_income: lowIncome,
+        orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        lowIncome: lowIncome,
         exempt: exempt,
         pictureId: null, // TODO:
         userId: userId,

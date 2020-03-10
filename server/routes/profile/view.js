@@ -57,17 +57,17 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
 
-            const addressResult = await addressRepo.findById(individual.address_id);
+            const addressResult = await addressRepo.findById(individual.addressId);
             const address = addressResult.rows[0];
 
             const indivToSend = {
-                registrationDate: user.date_registered,
+                registrationDate: user.dateRegistered,
                 firstName: individual.firstname,
                 lastName: individual.lastname,
                 dateOfBirth: individual.birthday,
                 gender: individual.gender,
-                addressLine1: address.address_1,
-                addressLine2: address.address_2,
+                addressLine1: address.address1,
+                addressLine2: address.address2,
                 townCity: address.city,
                 countryState: address.region,
                 postCode: address.postcode,
@@ -85,20 +85,20 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             const orgResult = await orgRepo.findByUserID(req.body.userId);
             const organisation = orgResult.rows[0];
 
-            const addressResult = await addressRepo.findById(organisation.address_id);
+            const addressResult = await addressRepo.findById(organisation.addressId);
             const address = addressResult.rows[0];
 
             const orgToSend = {
-                registrationDate: user.date_registered,
-                organisationNumber: organisation.org_number,
-                name: organisation.org_name,
-                organisationType: organisation.org_type,
-                lowIncome: organisation.low_income,
+                registrationDate: user.dateRegistered,
+                organisationNumber: organisation.orgNumber,
+                name: organisation.orgName,
+                organisationType: organisation.orgType,
+                lowIncome: organisation.lowIncome,
                 exempt: organisation.exempt,
-                pocFirstName: organisation.poc_firstname,
-                pocLastName: organisation.poc_lastname,
-                addressLine1: address.address_1,
-                addressLine2: address.address_2,
+                pocFirstName: organisation.pocFirstname,
+                pocLastName: organisation.pocLastname,
+                addressLine1: address.address1,
+                addressLine2: address.address2,
                 townCity: address.city,
                 countryState: address.region,
                 postCode: address.postcode,

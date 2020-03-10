@@ -4,8 +4,8 @@ const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration5;
+const user = testHelpers.getUserExample4();
+const registration = testHelpers.getRegistrationExample5();
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
@@ -160,6 +160,6 @@ test("viewing profile without indiv or org account works", async () => {
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
-        "Cannot read property 'address_id' of undefined",
+        "Cannot read property 'addressId' of undefined",
     );
 });
