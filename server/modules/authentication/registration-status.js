@@ -30,7 +30,7 @@ async function isEmailVerified(email) {
     if (regRecord === undefined) {
         throw new Error("Registration record with given email does not exist");
     }
-    return regRecord.email_flag;
+    return regRecord.emailFlag;
 }
 
 /**
@@ -85,7 +85,7 @@ async function isFullyRegisteredByEmail(email) {
     if (regRecord === undefined) {
         throw new Error("Registration record with given email does not exist");
     }
-    return regRecord.sign_up_flag;
+    return regRecord.signUpFlag;
 }
 
 /**
@@ -96,7 +96,7 @@ async function isFullyRegisteredByEmail(email) {
  * This throws an error if the provided userId
  * is not found, therefore this should only be
  * called after emailExists has been checked.
- * @param {integer} userId
+ * @param {number} userId
  * @return {boolean} true if fully registered
  * @throws {error} if useId is not found
  * @throws {error} if failed query

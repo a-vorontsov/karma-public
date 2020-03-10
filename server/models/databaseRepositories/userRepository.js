@@ -3,7 +3,7 @@ const db = require("../../database/connection");
 const insert = (user) => {
     const query = "INSERT INTO \"user\"(email, username, password_hash, verified, salt, date_registered) VALUES ($1, $2, $3, $4, $5, $6)" +
         "RETURNING *"; // returns passed user with it's id set to corresponding id in database
-    const params = [user.email, user.username, user.password_hash, user.verified, user.salt, user.date_registered];
+    const params = [user.email, user.username, user.passwordHash, user.verified, user.salt, user.dateRegistered];
     return db.query(query, params);
 };
 
@@ -36,12 +36,30 @@ const findByUsername = (username) => {
     return db.query(query, [username]);
 };
 
-const updatePassword = (userId, hashedPassword) => {
-    const query = "UPDATE \"user\" SET password_hash = $2 WHERE id = $1 RETURNING *";
-    const params = [userId, hashedPassword];
+const updatePassword = (userId, hashedPassword, salt) => {
+    const query = "UPDATE \"user\" SET password_hash = $1, salt = $2 WHERE id = $3 RETURNING *";
+    const params = [hashedPassword, salt, userId];
     return db.query(query, params);
 };
 
+const updateVerificationStatus = (userId, isVerified) => {
+    const query =
+    'UPDATE "user" SET verified = $1 WHERE id = $2 RETURNING *';
+    const params = [isVerified, userId];
+    return db.query(query, params);
+};
+
+const updateUsername = (userId, username) => {
+    const query =
+    'UPDATE "user" SET username = $1 WHERE id = $2 RETURNING *';
+    const params = [username, userId];
+    return db.query(query, params);
+};
+
+const findIdFromEmail = (email) => {
+    const query = "SELECT id FROM \"user\" WHERE email = $1";
+    return db.query(query, [email]);
+};
 module.exports = {
     insert: insert,
     findById: findById,
@@ -51,4 +69,7 @@ module.exports = {
     findByEmail: findByEmail,
     findByUsername: findByUsername,
     updatePassword: updatePassword,
+    updateVerificationStatus: updateVerificationStatus,
+    updateUsername: updateUsername,
+    findIdFromEmail: findIdFromEmail,
 };

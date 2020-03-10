@@ -1,16 +1,8 @@
 import React from "react";
-import {
-    View,
-    SafeAreaView,
-    Dimensions,
-    TouchableOpacity,
-    Image,
-} from "react-native";
-import {RegularText} from "../components/text";
+import {Image, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "react-navigation-hooks";
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
+import {RegularText} from "../components/text";
+import Colours from "../styles/Colours";
 
 const PageHeader = props => {
     const navigation = useNavigation();
@@ -18,7 +10,11 @@ const PageHeader = props => {
     return (
         <View>
             <View style={{paddingTop: 24}} />
-            <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                }}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image
                         style={{
@@ -34,7 +30,7 @@ const PageHeader = props => {
                     style={{
                         fontSize: 24,
                         fontWeight: "600",
-                        color: "grey",
+                        color: Colours.black,
                         paddingLeft: 16,
                     }}>
                     {title}

@@ -32,7 +32,7 @@ class WelcomeScreen extends Component {
             isCodeValid:false,
 
         };
-        
+
         // methods that use setState()
         this.popUpEmail = this.popUpEmail.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
@@ -51,24 +51,24 @@ class WelcomeScreen extends Component {
     // show email text field
      popUpEmail() {
         // if(showCode){
-        //     this.setState({showCode:false})}       
+        //     this.setState({showCode:false})}
              return (
-            <TextInput name="emailInput" 
-                placeholder="Please enter your email" 
-                autoFocus={true} 
-                style={[WelcomeScreenStyles.text, Styles.formWidth]} 
-                showError={this.state.showEmailError && !this.isValidEmail()} 
-                errorText={"Please enter a valid email."} 
-                onChange={this.onChangeText} 
+            <TextInput name="emailInput"
+                placeholder="Please enter your email"
+                autoFocus={true}
+                style={[WelcomeScreenStyles.text, Styles.formWidth]}
+                showError={this.state.showEmailError && !this.isValidEmail()}
+                errorText={"Please enter a valid email."}
+                onChange={this.onChangeText}
                 onSubmitEditing={() => {this.setState({emailSubmitted: true})}} // calls checkEmail function
                 />
         );
     }
-    
+
     // check if email is of a valid format
     isValidEmail(){
-        const invalidEmail = validate({from: this.state.emailInput}, emailConstraints) 
-        // invalidEmail == undefined if email is correct 
+        const invalidEmail = validate({from: this.state.emailInput}, emailConstraints)
+        // invalidEmail == undefined if email is correct
         return !invalidEmail
     }
 
@@ -79,37 +79,37 @@ class WelcomeScreen extends Component {
         // email is of a valid format
            if(isValidEmail){
                // returning user
-               if(this.state.emailInput==="P@y.c" ){ 
+               if(this.state.emailInput==="P@y.c" ){
                 this.setState({showPassField:true, showCode:false, showEmailError:false})
                }
                // new user
-               else if(this.state.emailInput !=="P@y.c"){ 
+               else if(this.state.emailInput !=="P@y.c"){
                    //send email code TO DO BACKEND
                    // show code field
-                    
+
                     this.setState({showPassField:false, showCode:true, showEmailError:false})
                }
            }
             // email is of invalid format
-            else if(!isValidEmail){ 
+            else if(!isValidEmail){
                 this.setState({showPassField:false, showCode:false, showEmailError:true})
            }
     }
 
     // display password field
-    popUpPassword() { 
+    popUpPassword() {
         // if(showCode){
         //  this.setState({showCode:false})}
         return (
             <>
             {/* password field */}
-            <TextInput name="passInput" 
-                placeholder="Please enter your password" 
-                style={[WelcomeScreenStyles.text, Styles.formWidth]} 
-                secureTextEntry={true} 
-                showError={this.state.showPassError && !this.state.isValidPass} 
-                errorText={"Please enter the correct password."}  
-                autoFocus={true} 
+            <TextInput name="passInput"
+                placeholder="Please enter your password"
+                style={[WelcomeScreenStyles.text, Styles.formWidth]}
+                secureTextEntry={true}
+                showError={this.state.showPassError && !this.state.isValidPass}
+                errorText={"Please enter the correct password."}
+                autoFocus={true}
                 onChange={this.onChangeText}
                 onSubmitEditing= {this.checkPass}/>
 
@@ -137,7 +137,7 @@ class WelcomeScreen extends Component {
             this.setState({showPassError:true})
            }
         }
-    
+
     getForgotPassword(){
         // remove the password field
         if(this.state.showPassField){
@@ -150,13 +150,13 @@ class WelcomeScreen extends Component {
         }
         else{
         // display code field
-             return this.popUpCode() 
-        }  
+             return this.popUpCode()
+        }
     }
 
     // display code field
-    popUpCode() {  
-        return(    
+    popUpCode() {
+        return(
          <CodeInput
             ref="codeInputRef2"
             keyboardType="numeric"
@@ -179,10 +179,10 @@ class WelcomeScreen extends Component {
             this.setState({isCodeValid:true})
         }
         else{
-            // code incorrect 
+            // code incorrect
             this.setState({isCodeValid:false})
             console.log(";////")
-           
+
         }
     }
 
@@ -217,6 +217,24 @@ class WelcomeScreen extends Component {
                         {this.state.showCode ? this.popUpCode() : null}
                         {this.state.isForgotPassPressed ? this.getForgotPassword() : null}
 
+                    <View style={Styles.bottom}>
+                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                            <TransparentButton
+                                onPress={() => navigate("InitSignup")}
+                                white
+                                title="Sign Up"
+                            />
+
+                            <TextButton
+                                onPress={() => navigate("Profile")}
+                                title="Already have an account? Login"
+                                styles={[
+                                    Styles.white,
+                                    Styles.medium,
+                                    Styles.pt16,
+                                ]}
+                            />
+                        </View>
                     </View>
                 </KeyboardAvoidingView>
                 <View
