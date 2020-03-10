@@ -4,6 +4,7 @@ import {
     View,
     StyleSheet,
     Keyboard,
+    Alert,
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
@@ -18,15 +19,13 @@ import Colours from "../styles/Colours";
 
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
-
+const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fname: "",
-            lname: "",
             email: "team-team@gmail.com",
             username: "",
             password: "",
@@ -48,17 +47,32 @@ class SignUpScreen extends React.Component {
         return PASSWORD_REGEX.test(this.state.password);
     };
 
-    signUserUp = () => {
-        const {
-            fname,
-            lname,
-            email,
-            username,
-            password,
-            confPassword,
-        } = this.state;
-        this.setState({firstOpen: false});
-        this.props.navigation.navigate("About");
+    createUser() {
+        const user = {
+            email: this.state.email,
+            username: this.state.username,
+            password: this.state.password,
+            confirmPassword: this.state.confPassword,
+        };
+        return user;
+    }
+    signUserUp = async () => {
+        const user = this.createUser();
+        await request
+            .post("http://localhost:8000/register/user")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...user,
+            })
+            .then(res => {
+                console.log(res.body);
+                this.setState({firstOpen: false});
+                this.props.navigation.navigate("About");
+            })
+            .catch(err => {
+                Alert.alert("Server Error", err.message);
+            });
     };
 
     render() {
@@ -86,33 +100,6 @@ class SignUpScreen extends React.Component {
 
                             {/** form content **/}
                             <View>
-                                <TextInput
-                                    placeholder="First Name"
-                                    name="fname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.lname.focus()}
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.fname
-                                    }
-                                />
-
-                                <TextInput
-                                    inputRef={ref => (this.lname = ref)}
-                                    placeholder="Last Name"
-                                    name="lname"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() =>
-                                        this.username.focus()
-                                    }
-                                    showError={
-                                        this.state.firstOpen
-                                            ? false
-                                            : !this.state.lname
-                                    }
-                                />
-
                                 <View>
                                     <TextInput
                                         placeholder={this.state.email}

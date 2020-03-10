@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
     KeyboardAvoidingView,
@@ -16,13 +15,12 @@ import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
-import TextInput from "../components/TextInput";
 import EditableText from "../components/EditableText";
 import Colours from "../styles/Colours";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
-const HALF = formWidth/2;
+const HALF = formWidth / 2;
 
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
@@ -31,7 +29,7 @@ const icons = {
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     new_cause: require("../assets/images/general-logos/new_cause.png"),
     ribbon: require("../assets/images/general-logos/ribbon.png"),
-    orange_circle: require("../assets/images/general-logos/orange-circle.png")
+    orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
 class ProfileEditScreen extends Component {
@@ -45,7 +43,7 @@ class ProfileEditScreen extends Component {
             location: "Location",
             bio: "this is your bio lorem ipsum and such",
             causes: ["Cause1", "Cause2"],
-            points: 1
+            points: 1,
         };
         this.onChangeText = this.onChangeText.bind(this);
     }
@@ -134,8 +132,14 @@ class ProfileEditScreen extends Component {
                                 <View style={{width: HALF}}>
                                     <EditableText
                                         text={this.state.name}
-                                        style={[styles.nameText, {position:"absolute", top: -35}]}
-                                        onChange={val => this.setState({ name: val })}/>
+                                        style={[
+                                            styles.nameText,
+                                            {position: "absolute", top: -35},
+                                        ]}
+                                        onChange={val =>
+                                            this.setState({name: val})
+                                        }
+                                    />
                                 </View>
                                 <View
                                     style={{
@@ -144,11 +148,17 @@ class ProfileEditScreen extends Component {
                                     <EditableText
                                         text={this.state.username}
                                         style={styles.usernameText}
-                                        onChange={val => this.setState({ username: val })}/>
+                                        onChange={val =>
+                                            this.setState({username: val})
+                                        }
+                                    />
                                     <EditableText
                                         text={this.state.location}
                                         style={styles.locationText}
-                                        onChange={val => this.setState({ location: val })}/>
+                                        onChange={val =>
+                                            this.setState({location: val})
+                                        }
+                                    />
                                 </View>
                                 <View
                                     style={{
@@ -167,12 +177,26 @@ class ProfileEditScreen extends Component {
                                         />
                                         <Image
                                             source={icons.orange_circle}
-                                            style={{height: 25, width: 25, left: 45, top: -8, position:"absolute"}}
+                                            style={{
+                                                height: 25,
+                                                width: 25,
+                                                left: 45,
+                                                top: -8,
+                                                position: "absolute",
+                                            }}
                                         />
                                         <RegularText
                                             source={icons.orange_circle}
-                                            style={{color: Colours.white, height: 25, width: 25, left: 53, top: -5, position:"absolute"}}
-                                        >{this.state.points}</RegularText>
+                                            style={{
+                                                color: Colours.white,
+                                                height: 25,
+                                                width: 25,
+                                                left: 53,
+                                                top: -5,
+                                                position: "absolute",
+                                            }}>
+                                            {this.state.points}
+                                        </RegularText>
                                     </View>
                                     <TouchableOpacity>
                                         <Image
@@ -280,7 +304,10 @@ class ProfileEditScreen extends Component {
                                     <EditableText
                                         text={this.state.bio}
                                         style={styles.contentText}
-                                        onChange={val => this.setState({ bio: val })}/>
+                                        onChange={val =>
+                                            this.setState({bio: val})
+                                        }
+                                    />
                                 </View>
                                 <View
                                     style={{
@@ -316,7 +343,8 @@ class ProfileEditScreen extends Component {
                             <View style={{width: formWidth}}>
                                 <GradientButton
                                     onPress={() => navigate("Profile")}
-                                    title="Update" />
+                                    title="Update"
+                                />
                             </View>
                         </View>
                     </SafeAreaView>

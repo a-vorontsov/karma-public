@@ -6,7 +6,7 @@ const accounts = [];
 
 /**
  * Upload an identity document picture
- * @param {Integer} userId
+ * @param {number} userId
  */
 async function uploadFile(userId) {
     let file = "";
@@ -38,7 +38,7 @@ async function uploadFile(userId) {
 
 /**
  * Upload an identity document picture
- * @param {Integer} userId
+ * @param {number} userId
  * @return {boolean} true if verified
  */
 function updateAccount(userId) {

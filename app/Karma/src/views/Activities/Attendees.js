@@ -1,8 +1,6 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text} from "react-native";
-import PageHeader from "../../components/PageHeader";
+import {SafeAreaView, View} from "react-native";
 import Styles from "../../styles/Styles";
-import { RegularText } from "../../components/text";
 import AttendeeButton from "../../components/activities/AttendeeButton";
 
 class Attendees extends Component {
@@ -14,10 +12,10 @@ class Attendees extends Component {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph16}>
-                    <AttendeeButton user="Sten"></AttendeeButton>
-                    <AttendeeButton user="Paul"></AttendeeButton>
-                    <AttendeeButton user="Mariam"></AttendeeButton>
-                    <AttendeeButton user="Usman"></AttendeeButton>
+                    <AttendeeButton user="Sten" />
+                    <AttendeeButton user="Paul" />
+                    <AttendeeButton user="Mariam" />
+                    <AttendeeButton user="Usman" />
                 </View>
             </SafeAreaView>
         );

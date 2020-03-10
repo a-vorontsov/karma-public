@@ -20,19 +20,23 @@ afterEach(() => {
 
 const ogranisationRegistrationRequest = {
     userId: 420,
-    organisationNumber: "69",
-    name: "Karma org",
-    addressLine1: "Karma str",
-    addressLine2: "n",
-    organisationType: "c",
-    lowIncome: "no",
-    exempt: "no",
-    pocFirstName: "Paul",
-    pocLastName: "Muller",
-    townCity: "London",
-    countryState: "UK",
-    postCode: "WC 23",
-    phoneNumber: "+44343525",
+    data: {
+        organisation: {
+            organisationNumber: "69",
+            name: "Karma org",
+            addressLine1: "Karma str",
+            addressLine2: "n",
+            organisationType: "c",
+            lowIncome: "no",
+            exempt: "no",
+            pocFirstName: "Paul",
+            pocLastName: "Muller",
+            townCity: "London",
+            countryState: "UK",
+            postCode: "WC 23",
+            phoneNumber: "+44343525",
+        }
+    }
 };
 
 test("ogranisation registration works", async () => {

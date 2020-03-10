@@ -41,7 +41,7 @@ test('requesting reset password token works', async () => {
     const response = await request(app)
         .post("/signin/forgot")
         .send({
-            email: "test@gmail.com"
+            email: "test@gmail.com",
         });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
@@ -116,7 +116,7 @@ test('confirming correct token but not latest does not work', async () => {
                 expiryDate: new Date(),
             }
         ],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -144,7 +144,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             id: 1,
             expiryDate: dateTime,
         }],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -172,7 +172,7 @@ test('confirming expired token returns token expired response', async () => {
             id: 1,
             expiryDate: dateTime,
         }],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -214,7 +214,7 @@ test('confirming token not sent to email returns no token sent response', async 
     });
     resetRepository.findResetToken.mockResolvedValue({
         rows: [],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
