@@ -87,7 +87,7 @@ router.post("/", async (req, res) => {
         const eventCreationResult = await eventService.createNewEvent(event);
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
-        console.log(e);
+        console.log("Event creation failed: " + e);
         return httpUtil.sendGenericError(e);
     }
 });
@@ -161,7 +161,7 @@ router.post("/update/:id", async (req, res) => {
         const eventUpdateResult = await eventService.updateEvent(event);
         return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
-        console.log(e);
+        console.log("Event updating failed: " + e);
         return httpUtil.sendGenericError(e);
     }
 });
@@ -214,7 +214,7 @@ router.get("/:id", async (req, res) => {
         const getEventResult = await eventService.getEventData(id);
         return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
-        console.log(e);
+        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
         return httpUtil.sendGenericError(e);
     }
 });

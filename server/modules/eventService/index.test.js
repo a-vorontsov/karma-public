@@ -22,6 +22,7 @@ afterEach(() => {
 });
 
 test("creating event with known address works", async () => {
+    util.checkUserId.mockResolvedValue({status: 200});
     util.isIndividual.mockResolvedValue(false);
     event.addressId = 1;
     eventRepository.insert.mockResolvedValue({
@@ -44,6 +45,7 @@ test("creating event with known address works", async () => {
 });
 
 test("creating event with no addressId creates new address and event", async () => {
+    util.checkUserId.mockResolvedValue({status: 200});
     util.isIndividual.mockResolvedValue(false);
     const eventNoAddressId = {
         ...event,
@@ -128,12 +130,21 @@ test("requesting specific event data works", async () => {
 });
 
 test("error returned when user tries to exceed monthly event creation limit", async () => {
+    util.checkUserId.mockResolvedValue({status: 200});
     util.isIndividual.mockResolvedValue(true);
-    eventRepository.findAllByUserId.mockResolvedValue({
+    eventRepository.findAllByUserIdLastMonth.mockResolvedValue({
         rows: [{}, {}, {}, {}],
     }); // 4 events
 
     const createEventResult = await eventService.createNewEvent(event);
+    expect(createEventResult.message).toBe("Event creation limit reached; user has already created 3 events this month.");
+    expect(createEventResult.status).toBe(400);
+});
 
+test("requests with invalid userIds rejected", async () => {
+    util.checkUserId.mockResolvedValue({status: 400, message: "Invalid userId specified."});
+
+    const createEventResult = await eventService.createNewEvent(event);
+    expect(createEventResult.message).toBe("Invalid userId specified.");
     expect(createEventResult.status).toBe(400);
 });

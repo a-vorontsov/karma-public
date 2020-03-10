@@ -10,9 +10,7 @@ const sendResult = (result, httpResponse) => {
         .send({message: result.message, data: result.data});
 };
 
-const sendGenericError = (error, httpResponse) => {
-    return httpResponse.status(500).send({message: error.message});
-};
+const sendGenericError = (error, httpResponse) => httpResponse.status(500).send({message: error.message});
 
 module.exports = {
     sendValidationErrors,

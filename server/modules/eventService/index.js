@@ -2,10 +2,21 @@ const addressRepository = require("../../models/databaseRepositories/addressRepo
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const util = require("../../util/util");
 
+/**
+ * Creates a new event to be added to the database.
+ * @param {object} event A valid event, an address inside the event object or addressId set to an existing address,
+ * a valid userId inside the event object.
+ * Fails if userId is invalid, user has exceeded their monthly event creation limit, or database calls fail.
+ */
 const createNewEvent = async (event) => {
+    const userIdCheckResponse = await util.checkUserId(event.userId);
+    if (userIdCheckResponse.status !== 200) {
+        return userIdCheckResponse;
+    }
+
     const isIndividual = await util.isIndividual(event.userId);
     if (isIndividual) {
-        const existingUserEvents = await eventRepository.findAllByUserId(event.userId);
+        const existingUserEvents = await eventRepository.findAllByUserIdLastMonth(event.userId);
         if (existingUserEvents.rows.length >= 3) {
             return {status: 400, message: "Event creation limit reached; user has already created 3 events this month."};
         }
@@ -25,6 +36,11 @@ const createNewEvent = async (event) => {
     });
 };
 
+/**
+ * Updates an event that already exists in the database.
+ * @param {object} event A valid event, an address object inside the event object.
+ * Fails if database calls fail.
+ */
 const updateEvent = async (event) => {
     const address = event.address;
     event.addressId = address.id;
@@ -37,6 +53,11 @@ const updateEvent = async (event) => {
     });
 };
 
+/**
+ * Gets data about an event that already exists in the database.
+ * @param {Number} id Id of the event to be fetched.
+ * Fails if database calls fail.
+ */
 const getEventData = async (id) => {
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
