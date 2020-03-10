@@ -27,7 +27,7 @@ const Styles = StyleSheet.create({
         marginHorizontal: "auto",
     },
     formWidth: {
-        width: 0.8*SCREEN_WIDTH,
+        width: 0.8 * SCREEN_WIDTH,
     },
     vcenter: {
         flex: 2,

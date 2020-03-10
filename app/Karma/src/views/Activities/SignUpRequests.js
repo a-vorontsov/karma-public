@@ -5,7 +5,6 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import SignUpRequest from "../../components/activities/SignUpRequest";
 
-
 class SignUpRequests extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -15,11 +14,11 @@ class SignUpRequests extends Component {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph16}>
-                    <SignUpRequest user="Petra"></SignUpRequest>
-                    <SignUpRequest user="Fin"></SignUpRequest>
-                    <SignUpRequest user="Houssam"></SignUpRequest>
-                    <SignUpRequest user="Sasha"></SignUpRequest>
-                    <SignUpRequest user="Daniel"></SignUpRequest>
+                    <SignUpRequest user="Petra" />
+                    <SignUpRequest user="Fin" />
+                    <SignUpRequest user="Houssam" />
+                    <SignUpRequest user="Sasha" />
+                    <SignUpRequest user="Daniel" />
                 </View>
             </SafeAreaView>
         );

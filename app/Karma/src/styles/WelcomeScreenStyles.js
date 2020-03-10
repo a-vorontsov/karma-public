@@ -1,5 +1,4 @@
-import {
-    StyleSheet,} from "react-native";
+import {StyleSheet} from "react-native";
 
 const WelcomeScreenStyles = StyleSheet.create({
     container: {

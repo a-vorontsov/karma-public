@@ -5,7 +5,7 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 
 import MainTabNavigator from "./src/routes/MainTabNavigator";
 import MainNavigator from "./src/routes/MainNavigator";
-import { MenuProvider } from 'react-native-popup-menu';
+import {MenuProvider} from "react-native-popup-menu";
 
 const AppNavigator = createSwitchNavigator(
     {

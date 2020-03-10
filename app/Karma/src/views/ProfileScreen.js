@@ -33,7 +33,7 @@ const icons = {
     edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     ribbon: require("../assets/images/general-logos/ribbon.png"),
-    orange_circle: require("../assets/images/general-logos/orange-circle.png")
+    orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
 class ProfileScreen extends Component {
@@ -46,7 +46,7 @@ class ProfileScreen extends Component {
             location: "Location",
             bio: "this is your bio lorem ipsum and such",
             causes: ["Cause1", "Cause2"],
-            points: 1
+            points: 1,
         };
     }
 
@@ -187,12 +187,26 @@ class ProfileScreen extends Component {
                                         />
                                         <Image
                                             source={icons.orange_circle}
-                                            style={{height: 25, width: 25, left: 45, top: -8, position:"absolute"}}
+                                            style={{
+                                                height: 25,
+                                                width: 25,
+                                                left: 45,
+                                                top: -8,
+                                                position: "absolute",
+                                            }}
                                         />
                                         <RegularText
                                             source={icons.orange_circle}
-                                            style={{color: Colours.white, height: 25, width: 25, left: 53, top: -5, position:"absolute"}}
-                                        >{this.state.points}</RegularText>
+                                            style={{
+                                                color: Colours.white,
+                                                height: 25,
+                                                width: 25,
+                                                left: 53,
+                                                top: -5,
+                                                position: "absolute",
+                                            }}>
+                                            {this.state.points}
+                                        </RegularText>
                                     </View>
                                     <TouchableOpacity>
                                         <Image
@@ -228,7 +242,7 @@ class ProfileScreen extends Component {
                                 style={{
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    paddingTop: 15
+                                    paddingTop: 15,
                                 }}>
                                 <TransparentButton
                                     title="View Your Activities"
