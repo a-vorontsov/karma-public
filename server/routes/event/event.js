@@ -44,7 +44,7 @@ const validation = require("../../modules/validation");
     "user_id": 3
  }
  </pre>
- * "address" can be substituted with "address_id: {Integer}" in which case the existing address is reused.
+ * "address" can be substituted with "address_id: {number}" in which case the existing address is reused.
  * @returns
  *  status: 200, description: The event object created with it's id and address_id set to the ones stored in the database<br/>
  *  status: 400, description: User has reached their monthly event creation limit.<br/>
@@ -149,7 +149,7 @@ router.post("/update/:id", (req, res) => {
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
  * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!women_only&filter[]=physical<br/>
  * route {GET} /event
- * @param {Integer} req.query.userId - ID of user logged in
+ * @param {number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - all filters required as an array of strings
  * @returns {Object}
  *  status: 200, description: Array of all event objects sorted by time
@@ -240,7 +240,7 @@ router.get("/", async (req, res) => {
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
  * route {GET} event/causes
  * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!women_only&filter[]=physical
- * @param {Integer} req.query.userId - ID of user logged in
+ * @param {number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - all filters required as an array of strings
  * @returns {any}
  *  status: 200, description: Array of all event objects grouped by causes that were selected by user <br/>
@@ -333,7 +333,7 @@ router.get("/causes", async (req, res) => {
 /**
  * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
  * route {GET} event/favourites
- * @param {Integer} req.query.userId - ID of user logged in
+ * @param {number} req.query.userId - ID of user logged in
  * @returns
  *  status: 200, description: Array of all event objects favourited by the user <br/>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
@@ -366,7 +366,7 @@ router.get("/favourites", async (req, res) => {
 /**
  * Endpoint called when "Going" tab is pressed in Activities homepage <br/>
  * route {GET} event/going
- * @param {Integer} req.query.userId - ID of user logged in
+ * @param {number} req.query.userId - ID of user logged in
  * @returns
  *  status: 200, description: Array of all event objects that user is going to <br/>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
@@ -399,7 +399,7 @@ router.get("/going", async (req, res) => {
 /**
  * Endpoint called whenever a user requests information about an event.
  * URL example: GET http://localhost:8000/event/5
- * @param {Integer} id - id of requested event.
+ * @param {number} id - id of requested event.
  * @returns {any}
  *  status: 200, description: Information regarding the event containing the same properties as this example
  <pre>

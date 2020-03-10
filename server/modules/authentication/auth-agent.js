@@ -73,7 +73,7 @@ async function requireNoAuthentication(req, res, next) {
  * the database and to be not expired.
  * If no token is found for specified user or
  * user is not found, a custom error is returned.
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} authToken
  */
 async function isValidToken(userId, authToken) {
@@ -106,7 +106,7 @@ async function isValidToken(userId, authToken) {
 /**
  * Log user in: initialise an authToken valid
  * for 15 minutes for given user and return it.
- * @param {integer} userId
+ * @param {number} userId
  * @return {string} authToken valid for 15 minutes
  * @throws {error} if failed query
  */
@@ -129,7 +129,7 @@ async function logIn(userId) {
 /**
  * Log user out: set their
  * auth token(s) expired.
- * @param {integer} userId
+ * @param {number} userId
  * @throws {error} if failed query
  */
 async function logOut(userId) {

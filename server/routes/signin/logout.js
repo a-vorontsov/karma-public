@@ -14,7 +14,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * This logs out the user by setting their current authToken
  * expired and therefore ending their session.
  * @route {GET} /logout
- * @param {Integer} req.body.userId
+ * @param {number} req.body.userId
  * @param {String} req.body.authToken
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if successful logout, 200 - successfully logged out<br/>

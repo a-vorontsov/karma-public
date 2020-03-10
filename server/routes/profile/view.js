@@ -13,7 +13,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 /**
  * Endpoint called whenever a user wishes to view their profile.<br/>
  * URL example: GET http://localhost:8000/profile/view/
- * @param {Integer} req.body.userId
+ * @param {number} req.body.userId
  * @param {String} req.body.authToken
  * @returns
  * status: 400, description: error - for example an undefined indicating missing profile <br/>

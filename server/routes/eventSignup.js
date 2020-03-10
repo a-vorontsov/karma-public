@@ -42,7 +42,7 @@ router.post('/:event_id/signUp', async (req, res) => {
 /**
  * Endpoint called to get all users signed up to an event.<br/>
  * URL example: GET http://localhost:8000/event/1/signUp
- * @param {Integer} req.params.event_id - id of the event.
+ * @param {number} req.params.event_id - id of the event.
  * @returns
  *  status: 200, description: Array of all users signed up with necessary details<br/>
  *  status: 400, description: Event id not specified or specified in wrong format<br/>

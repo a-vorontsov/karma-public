@@ -32,7 +32,7 @@ async function registerEmail(email) {
  * @param {string} email
  * @param {string} username
  * @param {string} password
- * @return {integer} id of new user
+ * @return {number} id of new user
  * @throws {error} if registration record not found
  * @throws {error} if already registered
  * @throws {error} if invalid query
@@ -69,7 +69,7 @@ async function registerUser(email, username, password) {
 
 /**
  * Register a new individual.
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} title
  * @param {string} firstName
  * @param {string} surName
@@ -114,7 +114,7 @@ async function registerIndividual(userId, title, firstName, surName, dateOfBirth
  * A full registration means having a user account
  * and either an individual or an organisation account
  * recorded in the database.
- * @param {integer} userId
+ * @param {number} userId
  */
 async function setSignUpFlagTrue(userId) {
     const userResult = await userRepo.findById(userId);
@@ -124,7 +124,7 @@ async function setSignUpFlagTrue(userId) {
 
 /**
  * Register a new organisation
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} organisationNumber //TODO: string?
  * @param {string} name
  * @param {string} addressLine1
@@ -174,7 +174,7 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
  * @param {string} townCity
  * @param {string} countryState
  * @param {string} postCode
- * @return {integer} addressId
+ * @return {number} addressId
  */
 async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
     return await addressRepo.insert({
@@ -191,7 +191,7 @@ async function registerAddress(addressLine1, addressLine2, townCity, countryStat
 /**
  * Return true if password is correct for given
  * user. The user is specified by their userId address.
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} inputPassword
  * @return {boolean} true if password is correct
  * @throws {error} if user with userId not found
@@ -237,7 +237,7 @@ function isCorrectPassword(user, inputPassword) {
  * Update password for given user.
  * This also updates the salt for
  * this user.
- * @param {Integer} userId
+ * @param {number} userId
  * @param {String} password
  * @throws {error} if invalid query
  */
@@ -253,7 +253,7 @@ async function updatePassword(userId, password) {
 /**
  * Get userId of user specified by email address.
  * @param {string} email
- * @return {integer} userId
+ * @return {number} userId
  * @throws {error} if user is not found
  * @throws {error} if invalid query
  */

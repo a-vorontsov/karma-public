@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 /**
  * Gets a cause specified by id.<br/>
  * URL example: GET http://localhost:8000/causes/3
- * @param {integer} req.params.id - ID of the cause required
+ * @param {number} req.params.id - ID of the cause required
  * @returns
  *  status: 200, description: cause object with given id <br/>
  *  status: 400, description: if ID param is not specified or in wrong format/NaN <br/>
