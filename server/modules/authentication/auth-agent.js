@@ -13,7 +13,7 @@ const date = require("date-and-time");
  * @param {HTTP} next
  */
 async function requireAuthentication(req, res, next) {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == 1) {
+    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
         next();
         return;
     }
