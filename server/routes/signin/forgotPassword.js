@@ -8,6 +8,7 @@ const randomize = require('randomatic');
 const mailSender = require('../../modules/mailSender');
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const util = require("../../util/util");
+const verifToken = require("../../modules/verification/token");
 
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
@@ -27,14 +28,7 @@ router.post('/', async (req, res) => {
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
-    const user = checkEmailResult.user;
-    // generate 6 digit code
-    const token = randomize('0', 6);
-    // update the db
-    resetRepository.insertResetToken(user.id, token)
-        .then(() => mailSender.sendToken(email, token))
-        .then(() => res.status(200).send("Code sent successfully to " + email))
-        .catch(err => res.status(500).send(err));
+    return verifToken.sendResetToken(checkEmailResult.user.id, email, res);
 });
 
 /**
@@ -61,7 +55,7 @@ router.post('/confirm', async (req, res) => {
     }
     if (!tokenRecieved) return res.status(400).send("Token not defined");
 
-    resetRepository.findResetToken(checkEmailResult.user.id)
+    resetRepository.findLatestByUserID(checkEmailResult.user.id)
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No token sent to " + email);
 
