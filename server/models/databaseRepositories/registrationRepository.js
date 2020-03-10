@@ -9,11 +9,30 @@ const insert = (registration) => {
     return db.query(query, params);
 };
 
-const insertEmailTokenPair = (email, verificationToken, expiryDate) => {
-    const query = "INSERT INTO registration(email, verification_token, expiry_date) VALUES ($1, $2, $3)" +
-        "RETURNING *"; // returns passed registration table with it's id set to corresponding id in database
-    const params = [email, verificationToken, expiryDate];
-    return db.query(query, params);
+/**
+ * Insert an email verification token and expiry date pair into
+ * a registration record. If a user re-requests the token, i.e.
+ * if a reg-record already exists for them, their existing
+ * record is updated with the new token-expiry pair.
+ * This resets the registration flags to their default state
+ * and therefore should never be called if a user is already
+ * fully registered.
+ * @param {string} email
+ * @param {string} verificationToken
+ * @param {date} expiryDate
+ */
+const insertEmailTokenPair = async (email, verificationToken, expiryDate) => {
+    const emailTokenPair = {
+        email: email,
+        emailFlag: 0,
+        idFlag: 0,
+        phoneFlag: 0,
+        signUpFlag: 0,
+        verificationToken: verificationToken,
+        expiryDate: expiryDate,
+    };
+    const regResult = await findByEmail(email);
+    return ((regResult.rows.length === 0) ? insert(emailTokenPair) : update(emailTokenPair));
 };
 
 const update = (registration) => {

@@ -18,7 +18,7 @@ async function registerEmail(email) {
     if (await regStatus.emailExists(email)) {
         throw new Error("Invalid operation: email already exists.");
     }
-    await tokenSender.sendAndStoreEmailVerificationToken(email);
+    await tokenSender.storeAndSendEmailVerificationToken(email);
 }
 
 /**

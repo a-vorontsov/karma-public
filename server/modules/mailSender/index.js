@@ -10,6 +10,8 @@ const transporter = nodemailer.createTransport({
 
 /**
  * Send a custom email asynchronously, returning a promise.
+ * The sending of the email is skipped if in .env the
+ * SKIP_MAIL_SENDING_FOR_TESTING flag is set to true.
  * @param {string} email
  * @param {string} subject
  * @param {string} text
