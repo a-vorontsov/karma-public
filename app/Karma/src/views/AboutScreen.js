@@ -141,10 +141,10 @@ class AboutScreen extends React.Component {
                     style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
+                    <PageHeader title="About" />
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
-                                <PageHeader title="About" />
                                 <SubTitleText style={{fontSize: normalise(26)}}>
                                     Tell us about yourself
                                 </SubTitleText>
@@ -196,6 +196,11 @@ class AboutScreen extends React.Component {
                                 name="fname"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.lname.focus()}
+                                showError={
+                                    this.state.firstOpen
+                                        ? false
+                                        : !this.state.fname
+                                }
                             />
 
                             <TextInput
@@ -204,6 +209,11 @@ class AboutScreen extends React.Component {
                                 name="lname"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.dob.focus()}
+                                showError={
+                                    this.state.firstOpen
+                                        ? false
+                                        : !this.state.lname
+                                }
                             />
 
                             <SubTitleText>When is your birthday?</SubTitleText>
