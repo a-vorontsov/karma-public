@@ -4,8 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-const randomize = require('randomatic');
-const mailSender = require('../../modules/mailSender');
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const util = require("../../util/util");
 const verifToken = require("../../modules/verification/token");

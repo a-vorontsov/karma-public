@@ -23,6 +23,11 @@ async function registerEmail(email) {
         idFlag: 0,
         phoneFlag: 0,
         signUpFlag: 0,
+        verificationToken: "123456", // TODO: verify token
+        expiryDate: date.format(
+            date.addMinutes(new Date(), 5),
+            "YYYY-MM-DD HH:mm:ss",
+        ),
     });
 }
 

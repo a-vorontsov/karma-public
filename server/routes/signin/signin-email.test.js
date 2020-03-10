@@ -33,10 +33,10 @@ test("sign-in with email works", async () => {
         .post("/signin/email")
         .send(signInEmailRequest);
 
-    expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
+    expect(response.statusCode).toBe(400);
 });
 
 test("sign-in with unverified email works", async () => {
@@ -46,10 +46,10 @@ test("sign-in with unverified email works", async () => {
         .post("/signin/email")
         .send(signInEmailRequest);
 
-    expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
         "Email exists but unverified. Goto email verification screen.",
     );
+    expect(response.statusCode).toBe(400);
 });
 
 test("sign-in with verified email works", async () => {

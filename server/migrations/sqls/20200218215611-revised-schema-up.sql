@@ -173,6 +173,8 @@ CREATE TABLE authentication
             id_flag int NOT NULL,
             phone_flag int NOT NULL,
             sign_up_flag int NOT NULL,
+            verification_token varchar(64) NOT NULL,
+            expiry_date timestamp NOT NULL,
             CONSTRAINT registration_pk PRIMARY KEY (email)
         );
 
