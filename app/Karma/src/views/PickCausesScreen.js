@@ -1,5 +1,5 @@
 import React from "react";
-import {View, ScrollView} from "react-native";
+import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import PageHeader from "../components/PageHeader";
 import {SubTitleText} from "../components/text";
@@ -37,9 +37,10 @@ export default class PickCausesScreen extends React.Component {
             })
             .then(res => {
                 console.log(res.body.data);
+                this.props.navigation.navigate("Activities");
             })
-            .catch(er => {
-                console.log(er);
+            .catch(err => {
+                Alert.alert("Server Error", err.message);
             });
     }
     render() {

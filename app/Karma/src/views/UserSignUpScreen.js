@@ -16,7 +16,6 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
-
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 const request = require("superagent");
@@ -68,7 +67,7 @@ class SignUpScreen extends React.Component {
             .then(res => {
                 console.log(res.body);
                 this.setState({firstOpen: false});
-                this.props.navigation.navigate("About");
+                this.props.navigation.navigate("InitSignup");
             })
             .catch(err => {
                 Alert.alert("Server Error", err.message);
