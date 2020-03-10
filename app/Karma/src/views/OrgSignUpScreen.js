@@ -167,8 +167,16 @@ export default class OrgSignUpScreen extends React.Component {
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <SubTitleText style={[Styles.ph24, {paddingLeft: 40, paddingVertical:-15, fontSize: normalise(26)}]}>
-                                Create a new account
+                        <SubTitleText
+                            style={[
+                                Styles.ph24,
+                                {
+                                    paddingLeft: 40,
+                                    paddingVertical: -15,
+                                    fontSize: normalise(26),
+                                },
+                            ]}>
+                            Create a new account
                         </SubTitleText>
                         <View
                             style={{
@@ -364,7 +372,7 @@ export default class OrgSignUpScreen extends React.Component {
                                 <PhotoUpload
                                     containerStyle={{
                                         alignItems: "center",
-                                        paddingRight:30
+                                        paddingRight: 30,
                                     }}
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
