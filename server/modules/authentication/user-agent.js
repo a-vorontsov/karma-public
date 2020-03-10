@@ -5,6 +5,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
 const individualRepo = require("../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const date = require("date-and-time");
 
 /**
  * Register a new record in the registration table.
@@ -31,7 +32,7 @@ async function registerEmail(email) {
  * @param {string} email
  * @param {string} username
  * @param {string} password
- * @return {integer} id of new user
+ * @return {number} id of new user
  * @throws {error} if registration record not found
  * @throws {error} if already registered
  * @throws {error} if invalid query
@@ -48,18 +49,19 @@ async function registerUser(email, username, password) {
         "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
     }
 
-    const secureSalt = digest.getSecureSaltInHex();
+    const secureSalt = digest.generateSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
         secureSalt,
     );
+
     await userRepo.insert({
         email: email,
         username: username,
         passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        dateRegistered: "2016-06-22 19:10:25-07", // TODO:
+        dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     });
     const userResult = await userRepo.findByEmail(email);
     return userResult.rows[0].id;
@@ -67,10 +69,9 @@ async function registerUser(email, username, password) {
 
 /**
  * Register a new individual.
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} title
  * @param {string} firstName
- * @param {string} middleNames // TODO: not in DB
  * @param {string} surName
  * @param {Date} dateOfBirth
  * @param {string} gender
@@ -83,7 +84,7 @@ async function registerUser(email, username, password) {
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerIndividual(userId, title, firstName, middleNames, surName, dateOfBirth, gender,
+async function registerIndividual(userId, title, firstName, surName, dateOfBirth, gender,
     addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
@@ -113,7 +114,7 @@ async function registerIndividual(userId, title, firstName, middleNames, surName
  * A full registration means having a user account
  * and either an individual or an organisation account
  * recorded in the database.
- * @param {integer} userId
+ * @param {number} userId
  */
 async function setSignUpFlagTrue(userId) {
     const userResult = await userRepo.findById(userId);
@@ -123,7 +124,7 @@ async function setSignUpFlagTrue(userId) {
 
 /**
  * Register a new organisation
- * @param {integer} userId
+ * @param {number} userId
  * @param {string} organisationNumber //TODO: string?
  * @param {string} name
  * @param {string} addressLine1
@@ -155,7 +156,7 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
         pocLastname: pocLastName,
         phone: phoneNumber,
         banned: false,
-        orgRegisterDate: "2016-06-22 19:10:25-07", // TODO:
+        orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         lowIncome: lowIncome,
         exempt: exempt,
         pictureId: null, // TODO:
@@ -173,7 +174,7 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
  * @param {string} townCity
  * @param {string} countryState
  * @param {string} postCode
- * @return {integer} addressId
+ * @return {number} addressId
  */
 async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
     return await addressRepo.insert({
@@ -190,7 +191,7 @@ async function registerAddress(addressLine1, addressLine2, townCity, countryStat
 /**
  * Return true if password is correct for given
  * user. The user is specified by their userId address.
- * @param {Number} userId
+ * @param {number} userId
  * @param {string} inputPassword
  * @return {boolean} true if password is correct
  * @throws {error} if user with userId not found
@@ -236,22 +237,23 @@ function isCorrectPassword(user, inputPassword) {
  * Update password for given user.
  * This also updates the salt for
  * this user.
- * @param {Integer} userId
+ * @param {number} userId
  * @param {String} password
  * @throws {error} if invalid query
  */
 async function updatePassword(userId, password) {
+    const secureSalt = digest.generateSecureSaltInHex();
     const hashedPassword = digest.hashPassWithSaltInHex(
         password,
-        digest.getSecureSaltInHex(),
+        secureSalt,
     );
-    await userRepo.updatePassword(userId, hashedPassword);
+    await userRepo.updatePassword(userId, hashedPassword, secureSalt);
 }
 
 /**
  * Get userId of user specified by email address.
  * @param {string} email
- * @return {integer} userId
+ * @return {number} userId
  * @throws {error} if user is not found
  * @throws {error} if invalid query
  */

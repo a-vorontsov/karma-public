@@ -19,6 +19,7 @@ import Colours from "../styles/Colours";
 const request = require("superagent");
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
+const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
