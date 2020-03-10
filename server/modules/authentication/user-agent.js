@@ -26,7 +26,7 @@ async function registerEmail(email) {
         verificationToken: "123456", // TODO: verify token
         expiryDate: date.format(
             date.addMinutes(new Date(), 5),
-            "YYYY-MM-DD HH:mm:ss",
+            "YYYY-MM-DD HH:mm:ss", true,
         ),
     });
 }

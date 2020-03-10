@@ -10,7 +10,7 @@ const registrationExample1 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 
@@ -35,7 +35,7 @@ const registrationExample2 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 
@@ -50,7 +50,7 @@ const registrationExample3 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 
@@ -65,7 +65,7 @@ const registrationExample4 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 
@@ -80,7 +80,7 @@ const registrationExample5 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 
@@ -95,7 +95,7 @@ const registrationExample6 = {
     verificationToken: "123456",
     expiryDate: date.format(
         date.addMinutes(new Date(), 5),
-        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
 

@@ -118,7 +118,7 @@ async function logIn(userId) {
         ),
         expiryDate: date.format(
             date.addMinutes(new Date(), 15),
-            "YYYY-MM-DD HH:mm:ss",
+            "YYYY-MM-DD HH:mm:ss", true,
         ), // TODO: token renewal
         creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         userId: userId,

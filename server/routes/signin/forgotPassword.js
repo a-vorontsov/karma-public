@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const util = require("../../util/util");
-const verifToken = require("../../modules/verification/token");
+const tokenSender = require("../../modules/verification/tokenSender");
 
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
@@ -26,7 +26,16 @@ router.post('/', async (req, res) => {
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
-    return verifToken.sendResetToken(checkEmailResult.user.id, email, res);
+    try {
+        await tokenSender.sendPasswordResetToken(checkEmailResult.user.id, email);
+        res.status(200).send({
+            message: "Code sent successfully to " + email,
+        });
+    } catch (e) {
+        res.status(500).send({
+            message: e.message,
+        });
+    }
 });
 
 /**
