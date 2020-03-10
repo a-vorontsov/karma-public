@@ -78,9 +78,20 @@ const notificationSchema = {
     "required": ["type", "message", "senderId", "receiverId"],
 };
 
+const favouriteSchema = {
+    "id": "/Favourite",
+    "type": "object",
+    "properties": {
+        "individualId": {"type": "number"},
+        "eventId": {"type": "number"},
+    },
+    "required": ["individualId", "eventId"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
+validator.addSchema(favouriteSchema, "/Favourite");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
@@ -94,8 +105,13 @@ const validateNotification = (notification) => {
     return validator.validate(notification, notificationSchema);
 };
 
+const validateFavourite = (favourite) => {
+    return validator.validate(favourite, favouriteSchema);
+};
+
 module.exports = {
-    validateAddress: validateAddress,
-    validateEvent: validateEvent,
-    validateNotification: validateNotification,
+    validateAddress,
+    validateEvent,
+    validateNotification,
+    validateFavourite,
 };

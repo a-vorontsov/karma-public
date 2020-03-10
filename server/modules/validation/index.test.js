@@ -3,6 +3,7 @@ const testHelpers = require("../../test/testHelpers");
 
 const event = testHelpers.getEvent();
 const address = testHelpers.getAddress();
+const favourite = testHelpers.getFavourite();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};
@@ -32,4 +33,17 @@ test("incorrect addresses rejected", () => {
     expect(validation.validateEvent(incorrectEvent).errors.length).toBe(2);
     delete incorrectEvent.womenOnly;
     expect(validation.validateEvent(incorrectEvent).errors.length).toBe(3);
+});
+
+test("correct favourites accepted", () => {
+    const correctFavourite = {...favourite};
+    expect(validation.validateFavourite(correctFavourite).errors.length).toBe(0);
+});
+
+test("incorrect addresses rejected", () => {
+    const inCorrectFavourite = {...favourite};
+    inCorrectFavourite.eventId = "Fifteen";
+    expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(1);
+    inCorrectFavourite.individualId = null;
+    expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(2);
 });
