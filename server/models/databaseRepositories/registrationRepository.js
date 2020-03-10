@@ -9,6 +9,13 @@ const insert = (registration) => {
     return db.query(query, params);
 };
 
+const insertEmailTokenPair = (email, verificationToken, expiryDate) => {
+    const query = "INSERT INTO registration(email, verification_token, expiry_date) VALUES ($1, $2, $3)" +
+        "RETURNING *"; // returns passed registration table with it's id set to corresponding id in database
+    const params = [email, verificationToken, expiryDate];
+    return db.query(query, params);
+};
+
 const update = (registration) => {
     const query = "UPDATE registration SET email_flag = $2, id_flag = $3, phone_flag = $4, " +
     "sign_up_flag = $5, verification_token = $6, expiry_date = $7 " +
@@ -37,6 +44,7 @@ const updateSignUpFlag = (email) => {
 
 module.exports = {
     insert: insert,
+    insertEmailTokenPair: insertEmailTokenPair,
     update: update,
     findAll: findAll,
     findByEmail: findByEmail,

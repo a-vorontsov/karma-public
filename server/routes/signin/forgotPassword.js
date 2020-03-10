@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
     try {
-        await tokenSender.sendPasswordResetToken(checkEmailResult.user.id, email);
+        await tokenSender.sendAndStorePasswordResetToken(checkEmailResult.user.id, email);
         res.status(200).send({
             message: "Code sent successfully to " + email,
         });

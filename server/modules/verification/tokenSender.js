@@ -4,13 +4,16 @@ const date = require("date-and-time");
 const resetRepo = require("../../models/databaseRepositories/resetRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
-const sendPasswordResetToken = async (userId, email) => {
+const sendAndStorePasswordResetToken = async (userId, email) => {
     const customSubject = "Reset Password Verification Code";
-    await sendAndStoreVerificationToken(60, resetRepo.insertResetToken, userId, customSubject, email);
+    const validMinutes = 60;
+    await sendAndStoreVerificationToken(validMinutes, resetRepo.insertResetToken, userId, customSubject, email);
 };
 
-const sendEmailVerificationToken = async (email) => {
+const sendAndStoreEmailVerificationToken = async (email) => {
     const customSubject = "Reset Password Verification Code";
+    const validMinutes = 15;
+    await sendAndStoreVerificationToken(validMinutes, regRepo.insertEmailTokenPair, email, customSubject, email);
 };
 
 const sendAndStoreVerificationToken = async (validMinutes, dbUpdateFunction, dbId, customSubject, toEmail) => {
@@ -30,5 +33,6 @@ const sendAndStoreVerificationToken = async (validMinutes, dbUpdateFunction, dbI
 };
 
 module.exports = {
-    sendPasswordResetToken: sendPasswordResetToken,
+    sendAndStorePasswordResetToken: sendAndStorePasswordResetToken,
+    sendAndStoreEmailVerificationToken: sendAndStoreEmailVerificationToken,
 };
