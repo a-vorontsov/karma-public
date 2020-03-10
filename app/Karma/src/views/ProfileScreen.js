@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {GradientButton, Button, TransparentButton} from "../components/buttons";
+import {GradientButton, TransparentButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -23,7 +23,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
-const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),

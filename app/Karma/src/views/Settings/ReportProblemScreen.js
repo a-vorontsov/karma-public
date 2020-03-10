@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {
     SafeAreaView,
     View,
-    Text,
     Image,
     Dimensions,
     Keyboard,
@@ -11,16 +10,16 @@ import {
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-import {TextButton, TransparentButton} from "../../components/buttons";
+import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import TextInput from "../../components/TextInput";
 import Colours from "../../styles/Colours";
 
-const request = require("superagent");
+//const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = SCREEN_WIDTH - 45;
 
 const problemTypes = [

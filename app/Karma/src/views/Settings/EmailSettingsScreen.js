@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text, Image, Switch} from "react-native";
+import {SafeAreaView, View, Image, Switch} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import TextInput from "../../components/TextInput";
 
-const request = require("superagent");
+//const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/email.png");
 

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
     KeyboardAvoidingView,
@@ -16,7 +15,6 @@ import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
-import TextInput from "../components/TextInput";
 import EditableText from "../components/EditableText";
 import Colours from "../styles/Colours";
 

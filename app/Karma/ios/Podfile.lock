@@ -292,7 +292,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
 
 EXTERNAL SOURCES:
@@ -393,7 +393,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
-  react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
+  react-native-date-picker: 142a75882184791d3afa3a7a3c3085e1d70496c9
   react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
   react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392

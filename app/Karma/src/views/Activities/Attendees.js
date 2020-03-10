@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text} from "react-native";
-import PageHeader from "../../components/PageHeader";
+import {SafeAreaView, View} from "react-native";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import AttendeeButton from "../../components/activities/AttendeeButton";
