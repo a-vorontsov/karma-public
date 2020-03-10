@@ -23,6 +23,7 @@ import {GradientButton} from "../components/buttons";
 import TextInput from "../components/TextInput";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
+const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 
@@ -53,7 +54,32 @@ export default class CreateActivityScreen extends React.Component {
         this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
-
+    createEvent() {
+        const event = {
+            address: {
+                address1: "Line 1",
+                address2: "Line 2",
+                postcode: "14 aa",
+                city: "LDN",
+                region: "LDN again",
+                lat: 0.3,
+                long: 100.5,
+            }, //TODO
+            name: this.state.title,
+            womenOnly: this.state.isWomenOnly,
+            spots: Number(this.state.numSpots),
+            addressVisible: this.state.isAddressVisible,
+            minimumAge: 18, //TODO
+            photoId: this.state.isIDReq,
+            physical: this.state.isPhysical,
+            addInfo: this.state.isAdditionalInfo,
+            content: this.state.eventDesc,
+            date: this.state.startDate,
+            userId: 72, //TODO
+            creationDate: new Date(), //returns current date
+        };
+        return event;
+    }
     uploadPhoto(selectedPhoto) {
         if (selectedPhoto != null) {
             Alert.alert("Success!", "Your new photo has been uploaded.");
@@ -151,7 +177,7 @@ export default class CreateActivityScreen extends React.Component {
      * Submits activity information and
      * goes back to Profile page
      */
-    submit = () => {
+    submit = async () => {
         const {navigate} = this.props.navigation;
 
         this.setState({
@@ -167,8 +193,22 @@ export default class CreateActivityScreen extends React.Component {
         ) {
             return;
         }
-
-        navigate("Profile");
+        const event = this.createEvent();
+        // send a request to update the db with the new event
+        await request
+            .post("http://localhost:8000/event")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...event,
+            })
+            .then(res => {
+                console.log(res.body);
+                navigate("Profile");
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
     };
 
     render() {
@@ -433,6 +473,7 @@ export default class CreateActivityScreen extends React.Component {
                                     <TextInput
                                         placeholder="team-team@gmail.com"
                                         style={{marginTop: 0}}
+                                        editable="false"
                                     />
                                 </View>
                                 <View style={{width: FORM_WIDTH}}>
