@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
     res.status(400).send({
-        message: "Sent authToken exired.",
+        message: "User already authenticated.",
     });
 });
 

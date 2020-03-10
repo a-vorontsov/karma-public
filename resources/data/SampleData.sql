@@ -138,7 +138,6 @@ ALTER SEQUENCE cause_id_seq RESTART WITH 1;
 INSERT INTO "cause" (name,
                      description,
                      title)
-
 VALUES ('animals','Morbi accumsan laoreet ipsum. Curabitur','Animals'),
        ('arts','quis, pede. Suspendisse dui. Fusce','Arts & Culture'),
        ('community','purus, accumsan interdum libero dui','Community'),

@@ -27,10 +27,18 @@ const findLatestByUserID = (userId) => {
     return db.query(query, [userId]);
 };
 
+const updateAllExpirationsForUser = (userId, expirationDate) => {
+    const query =
+    'UPDATE "authentication" SET expiry_date = $1 WHERE user_id = $2 RETURNING *';
+    const params = [expirationDate, userId];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert: insert,
     findById: findById,
     findAll: findAll,
     findAllByUserID: findAllByUserID,
     findLatestByUserID: findLatestByUserID,
+    updateAllExpirationsForUser: updateAllExpirationsForUser,
 };
