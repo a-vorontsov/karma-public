@@ -12,13 +12,13 @@ import {
 } from "react-native";
 import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
-import Styles from "../styles/Styles";
+import Styles, {normalise} from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
 
-import {RegularText, SemiBoldText, BoldText} from "../components/text";
+import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
@@ -155,26 +155,21 @@ export default class OrgSignUpScreen extends React.Component {
                 <View
                     style={{
                         alignItems: "center",
-                        height: 0.1 * SCREEN_HEIGHT,
+                        height: 0.08 * SCREEN_HEIGHT,
                         justifyContent: "flex-start",
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <PageHeader title="Sign Up" />
-
-                        <SemiBoldText
-                            style={{
-                                color: "#01a7a6",
-                                fontSize: 25,
-                            }}>
-                            Create a new account
-                        </SemiBoldText>
                     </View>
                 </View>
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView showsVerticalScrollIndicator={false}>
+                        <SubTitleText style={[Styles.ph24, {paddingLeft: 40, paddingVertical:-15, fontSize: normalise(26)}]}>
+                                Create a new account
+                        </SubTitleText>
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,
@@ -369,6 +364,7 @@ export default class OrgSignUpScreen extends React.Component {
                                 <PhotoUpload
                                     containerStyle={{
                                         alignItems: "center",
+                                        paddingRight:30
                                     }}
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
