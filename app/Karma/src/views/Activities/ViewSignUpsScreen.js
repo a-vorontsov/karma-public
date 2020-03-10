@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {
     SafeAreaView,
-    View,
+    ScrollView,
     StyleSheet,
     TouchableOpacity,
-    ScrollView,
+    View,
 } from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
@@ -20,9 +20,11 @@ class ViewSignUpsScreen extends Component {
             display: Attendees,
         };
     }
+
     static navigationOptions = {
         headerShown: false,
     };
+
     setScreen(selectedScreen) {
         this.setState({
             display: selectedScreen,

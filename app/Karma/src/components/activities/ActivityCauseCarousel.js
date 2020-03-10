@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../../components/text";
 import CarouselStyles, {
     itemWidth2,
@@ -9,7 +9,6 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "./ActivityCard";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
-const carouselEntries = [{individual: true}, {individual: false}];
 
 class ActivityCauseCarousel extends React.Component {
     navigation = this.props.navigation;
@@ -17,7 +16,11 @@ class ActivityCauseCarousel extends React.Component {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard activity={item} key={item.id} signedup={false} />
+                    <ActivityCard
+                        activity={item}
+                        key={item.id}
+                        signedup={false}
+                    />
                 </View>
             </View>
         );

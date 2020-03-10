@@ -1,15 +1,12 @@
 import React, {Component} from "react";
 import {
-    View,
-    StyleSheet,
     KeyboardAvoidingView,
+    Platform,
     SafeAreaView,
     ScrollView,
+    StyleSheet,
     TouchableOpacity,
-    Platform,
-    Image,
-    Switch,
-    Dimensions,
+    View,
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import Modal, {ModalContent} from "react-native-modals";

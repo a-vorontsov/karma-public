@@ -20,7 +20,7 @@ export default class TransparentButton extends React.Component {
                 activeOpacity={0.9}>
                 <RegularText
                     style={[
-                        {fontSize: size, paddingHorizontal: paddingHz},
+                        {fontSize: size, paddingHorizontal: ph},
                         white ? Styles.white : Styles.green,
                     ]}>
                     {title}
@@ -30,6 +30,6 @@ export default class TransparentButton extends React.Component {
     }
     static defaultProps = {
         size: 20,
-        paddingHz: 0,
+        ph: 0,
     };
 }

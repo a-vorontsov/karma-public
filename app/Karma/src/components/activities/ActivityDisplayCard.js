@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View, Image, Text, Dimensions, TouchableOpacity} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";

@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import {
-    View,
-    Text,
-    StyleSheet,
     Dimensions,
+    Image,
     KeyboardAvoidingView,
     SafeAreaView,
-    Image,
     ScrollView,
+    StyleSheet,
+    Text,
     TouchableOpacity,
+    View,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
@@ -21,10 +21,7 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
-import ActivityDisplayCard from "../components/activities/ActivityDisplayCard";
-import ActivityCauseCarousel from "../components/activities/ActivityCauseCarousel";
 
-const carouselEntries = [{individual: true}, {individual: false}];
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
@@ -39,19 +36,6 @@ const icons = {
 };
 
 const request = require("superagent");
-
-const activities = [
-    {
-        name: "Christmas Carols",
-        id: 60,
-        location: "Eiffel Tower, Paris",
-        available_spots: 10,
-        remaining_spots: 7,
-        date: new Date("2020-05-06T13:15:00.000Z"),
-        description:
-            "Our traditional Carol Service will be on December 15 at 7pm at Église Saint Esprit at 5, Rue Roquepine, 75008 followed by mulled wine and minced pies back at Saint Michael’s. On the same day, at 10:45 in the morning, we will have an all-age Nativity service at Saint Michael’s, involving the children. Both will be invitational events which we hope your friends and family will enjoy with you.",
-    },
-];
 
 class ProfileScreen extends Component {
     constructor(props) {
@@ -93,7 +77,11 @@ class ProfileScreen extends Component {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
-                    <ActivityCard activity={item} signedup={false} key={item.id}/>
+                    <ActivityCard
+                        activity={item}
+                        signedup={false}
+                        key={item.id}
+                    />
                 </View>
             </View>
         );

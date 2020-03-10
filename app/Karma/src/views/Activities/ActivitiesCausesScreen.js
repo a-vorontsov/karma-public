@@ -39,8 +39,7 @@ class ActivitiesCausesScreen extends Component {
     render() {
         return (
             <View>
-                {
-                    this.state.activities.length > 0 ? (
+                {this.state.activities.length > 0 ? (
                     <View style={Styles.ph24}>
                         <ActivityCauseCarousel
                             activities={this.state.activities}

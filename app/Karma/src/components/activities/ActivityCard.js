@@ -1,8 +1,8 @@
 import React from "react";
 
-import {GradientButton, InfoBar} from "../buttons";
-import {View, Image, Text, StyleSheet} from "react-native";
-import {RegularText, SemiBoldText} from "../text";
+import {InfoBar} from "../buttons";
+import {Image, StyleSheet, Text, View} from "react-native";
+import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
@@ -55,11 +55,11 @@ function getMonthName(d, long = false) {
 const ActivityCard = props => {
     const navigation = useNavigation();
 
-    setFav = handlePress => {
+    const setFav = handlePress => {
         return false;
     };
 
-    _renderTruncatedFooter = handlePress => {
+    const renderTruncatedFooter = handlePress => {
         return (
             <Text
                 style={{color: "#00A8A6", marginTop: 5}}
@@ -72,7 +72,9 @@ const ActivityCard = props => {
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>
                 <Image
-                    source={{uri: `https://picsum.photos/seed/${Math.random()}/800/200`}}
+                    source={{
+                        uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                    }}
                     style={{
                         flex: 1,
                         width: null,
@@ -85,10 +87,7 @@ const ActivityCard = props => {
                     source={props.signedup ? null : icons.signup}
                     style={styles.icon}
                 />
-                <Image
-                    source={icons.date}
-                    style={[styles.icon, {left: 5}]}
-                />
+                <Image source={icons.date} style={[styles.icon, {left: 5}]} />
                 <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
                     {` ${new Date(props.activity.date).getDate()}`}
                 </RegularText>
@@ -151,8 +150,7 @@ const ActivityCard = props => {
             </View>
         </View>
     );
-}
-
+};
 
 const styles = StyleSheet.create({
     dateText: {
@@ -178,5 +176,5 @@ const styles = StyleSheet.create({
 
 export default props => {
     const navigation = useNavigation();
-    return <ActivityCard {...props} navigation={navigation}/>;
+    return <ActivityCard {...props} navigation={navigation} />;
 };
