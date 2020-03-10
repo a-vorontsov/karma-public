@@ -154,7 +154,7 @@ class AboutScreen extends React.Component {
                                 </RegularText>
                             </View>
 
-                            <View style={[styles.header, {paddingRight:20}]}>
+                            <View style={[styles.header, {paddingRight: 20}]}>
                                 <PhotoUpload
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
