@@ -4,13 +4,14 @@
 
 const express = require("express");
 const router = express.Router();
-const addressRepository = require("../../models/databaseRepositories/addressRepository");
-const eventRepository = require("../../models/databaseRepositories/eventRepository");
-const util = require("../../util/util");
+
 const eventSignupRoute = require("./signup/eventSignup");
 const eventFavouriteRoute = require("./favourite/eventFavourite");
 const eventSelectRoute = require("./select/eventSelect");
+
+const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
+const eventService = require("../../modules/eventService/");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -79,42 +80,15 @@ router.post("/", async (req, res) => {
     try {
         const event = req.body;
         const validationResult = validation.validateEvent(event);
-        if (validationResult.errors.length !== 0) {
-            return res.status(400).send({
-                message: "Input validation failed",
-                errors: validationResult.errors,
-            });
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
         }
 
-        const isIndividual = await util.isIndividual(event.userId);
-        if (isIndividual) {
-            const existingUserEvents = await eventRepository.findAllByUserId(
-                event.userId,
-            );
-            if (existingUserEvents.rows.length >= 3) {
-                return res
-                    .status(400)
-                    .send(
-                        {message: "Event creation limit reached; user has already created 3 events this month."},
-                    );
-            }
-        }
-
-        if (!req.body.addressId) {
-            // address doesn't exist in database yet
-            const addressResult = await addressRepository.insert(event.address);
-            event.addressId = addressResult.rows[0].id;
-        }
-
-        event.creationDate = new Date();
-        const eventResult = await eventRepository.insert(event);
-        res.status(200).send({
-            message: "Event created successfully",
-            data: {event: eventResult.rows[0]},
-        });
+        const eventCreationResult = await eventService.createNewEvent(event);
+        return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
-        console.log(e);
-        res.status(500).send({message: e.message});
+        console.log("Event creation failed: " + e);
+        return httpUtil.sendGenericError(e);
     }
 });
 
@@ -177,28 +151,18 @@ router.post("/", async (req, res) => {
  *  @name Update event
  */
 router.post("/update/:id", async (req, res) => {
-    const address = req.body.address;
-    const event = req.body;
-    const validationResult = validation.validateEvent(event);
-    if (validationResult.errors.length !== 0) {
-        return res.status(400).send({
-            message: "Input validation failed",
-            errors: validationResult.errors,
-        });
-    }
-
-    event.addressId = address.id;
-    event.id = req.params.id;
     try {
-        await addressRepository.update(address);
-        const updateEventResult = await eventRepository.update(event);
-        res.status(200).send({
-            message: "Event updated successfully",
-            data: {event: updateEventResult.rows[0]},
-        });
+        const event = {...req.body, id: Number.parseInt(req.params.id)};
+        const validationResult = validation.validateEvent(event);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const eventUpdateResult = await eventService.updateEvent(event);
+        return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
-        console.log(e);
-        res.status(500).send({message: e.message});
+        console.log("Event updating failed: " + e);
+        return httpUtil.sendGenericError(e);
     }
 });
 
@@ -246,24 +210,12 @@ router.post("/update/:id", async (req, res) => {
  *  */
 router.get("/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-
-        const eventResult = await eventRepository.findById(id);
-        const event = eventResult.rows[0];
-        const addressResult = await addressRepository.findById(event.addressId);
-        const address = addressResult.rows[0];
-        res.status(200).send({
-            message: "Event fetched successfully",
-            data: {
-                event: {
-                    ...event,
-                    address: address,
-                },
-            },
-        });
+        const id = Number.parseInt(req.params.id);
+        const getEventResult = await eventService.getEventData(id);
+        return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
-        console.log(e);
-        res.status(500).send({message: e.message});
+        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        return httpUtil.sendGenericError(e);
     }
 });
 

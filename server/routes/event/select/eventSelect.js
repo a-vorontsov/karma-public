@@ -1,5 +1,5 @@
 /**
- * @module Select-Event
+ * @module Event-Select
  */
 
 const express = require('express');

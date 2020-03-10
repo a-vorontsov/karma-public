@@ -21,7 +21,6 @@ module.exports = {
     "quotes": 0,
     "arrow-parens": 0,
     "max-len": ["error", {"code": 140}],
-    "camelcase" : 0,
   },
   "ignorePatterns": ["migrations/", "*.test.js", "out/"],
 
