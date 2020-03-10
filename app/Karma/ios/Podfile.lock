@@ -394,10 +394,10 @@ SPEC CHECKSUMS:
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
   react-native-date-picker: 142a75882184791d3afa3a7a3c3085e1d70496c9
-  react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
-  react-native-image-resizer: b718335229b7be37c809bf9ed81d7a066fbfd2dd
-  react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
-  react-native-slider: b2f361499888302147205f17f6fffa921a7bda70
+  react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
+  react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
+  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
+  react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -408,8 +408,8 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNCMaskedView: 90dd32f5b786bd562e876e1421ea77c700cbf71e
-  RNDeviceInfo: 67607dfe9cfbed105838144c40187a8392aa404d
+  RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
+  RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f

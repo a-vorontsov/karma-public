@@ -1,20 +1,8 @@
 import React, {Component} from "react";
-import {
-    View,
-    Image,
-    Alert,
-    StyleSheet,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-    Platform,
-    SafeAreaView,
-    Text,
-} from "react-native";
+import {View, Image, SafeAreaView} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
-import {ScrollView} from "react-native-gesture-handler";
 import {RegularText} from "../../components/text";
-import SettingsButton from "../../components/buttons/SettingsButton";
 
 const request = require("superagent");
 
@@ -54,14 +42,13 @@ class AboutKarmaScreen extends Component {
                     <PageHeader title="About Karma" />
                 </View>
                 <View style={Styles.ph24}>
-                    <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: 30,
-                    }}>
-                    <Image
-                        source={logo}
-                    />
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            margin: 30,
+                        }}>
+                        <Image source={logo} />
                     </View>
                     <RegularText style={Styles.pb11}>
                         {this.state.aboutText}

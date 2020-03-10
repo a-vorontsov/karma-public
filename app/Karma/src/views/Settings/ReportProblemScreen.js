@@ -1,18 +1,25 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Text, Image, Dimensions, Keyboard, TouchableWithoutFeedback} from "react-native";
+import {
+    SafeAreaView,
+    View,
+    Image,
+    Dimensions,
+    Keyboard,
+    TouchableWithoutFeedback,
+} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-import {TextButton, TransparentButton} from "../../components/buttons";
+import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import TextInput from "../../components/TextInput";
 import Colours from "../../styles/Colours";
 
-const request = require("superagent");
+//const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = SCREEN_WIDTH - 45;
 
 const problemTypes = [
@@ -33,7 +40,9 @@ class ReportProblemScreen extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <TouchableWithoutFeedback
+                onPress={Keyboard.dismiss}
+                accessible={false}>
                 <SafeAreaView style={[Styles.container, Styles.ph24]}>
                     <View style={Styles.ph24}>
                         <PageHeader title="Report a Problem" />
@@ -65,8 +74,8 @@ class ReportProblemScreen extends Component {
                                 (this.problemDescriptionInput = ref)
                             }
                             placeholder="I encountered X on screen Y..."
-                            returnKeyType='next'
-                            onChange={()=>{}}
+                            returnKeyType="next"
+                            onChange={() => {}}
                             onChangeText={this.onChangeText}
                             onKeyPress={this.onKeyPress}
                             onSubmitEditing={Keyboard.dismiss()}
@@ -83,13 +92,12 @@ class ReportProblemScreen extends Component {
                             }}
                             name="problemDescriptionInput"
                         />
-                        <RegularText style={[Styles.pb24, {color: Colours.grey}]}>
+                        <RegularText
+                            style={[Styles.pb24, {color: Colours.grey}]}>
                             When you submit a report, we may contact you at:
                         </RegularText>
                         <TextInput
-                            inputRef={ref =>
-                                (this.userEmailInput = ref)
-                            }
+                            inputRef={ref => (this.userEmailInput = ref)}
                             placeholder="team-team@gmail.com"
                             name="userEmailInput"
                             editable={false}
@@ -97,18 +105,14 @@ class ReportProblemScreen extends Component {
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
                                 onPress={() => null}
-                                onChange={()=>{}}
-                                styles={[
-                                    Styles.white,
-                                    {color: Colours.blue}
-                                ]}
+                                onChange={() => {}}
+                                styles={[Styles.white, {color: Colours.blue}]}
                                 title="Submit Bug Report"
                             />
                         </View>
                     </View>
-        </SafeAreaView>
+                </SafeAreaView>
             </TouchableWithoutFeedback>
-
         );
     }
 }
