@@ -132,4 +132,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityCauseCarousel;
+export default props => {
+    const navigation = useNavigation();
+    return <ActivityCauseCarousel {...props} navigation={navigation} />;
+};
