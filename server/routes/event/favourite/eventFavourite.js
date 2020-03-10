@@ -4,7 +4,11 @@
 
 const express = require('express');
 const router = express.Router();
-const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
+
+const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
+const httpUtil = require("../../../util/httpUtil");
+const validation = require("../../../modules/validation");
+
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
@@ -34,14 +38,17 @@ const favouriteRepository = require("../../../models/databaseRepositories/favour
  */
 router.post('/:eventId/favourite', async (req, res) => {
     try {
-        const eventId = req.params.eventId;
-        const favouriteRequest = req.body;
-        favouriteRequest.eventId = eventId;
-        const favouriteResult = await favouriteRepository.insert(favouriteRequest);
-        res.status(200).send({message: "Favourite added successfully", data: {favourite: favouriteResult.rows[0]}});
+        const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const validationResult = validation.validateFavourite(favouriteRequest);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const favouriteResult = await eventFavouriteService.createEventFavourite(favouriteRequest);
+        return httpUtil.sendResult(favouriteResult, res);
     } catch (e) {
         console.log("Error while favouriting event: " + e.message);
-        res.status(500).send({message: e.message});
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -73,14 +80,17 @@ router.post('/:eventId/favourite', async (req, res) => {
  */
 router.post('/:eventId/favourite/delete', async (req, res) => {
     try {
-        const eventId = req.params.eventId;
-        const favouriteRequest = req.body;
-        favouriteRequest.eventId = eventId;
-        const favouriteResult = await favouriteRepository.remove(favouriteRequest);
-        res.status(200).send({message: "Event unfavourited successfully", data: {favourite: favouriteResult.rows[0]}});
+        const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const validationResult = validation.validateFavourite(deleteFavouriteRequest);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const deleteFavouriteResult = await eventFavouriteService.deleteEventFavourite(deleteFavouriteRequest);
+        return httpUtil.sendResult(deleteFavouriteResult, res);
     } catch (e) {
-        console.log("Error while updating favourite: " + e.message);
-        res.status(500).send({message: e.message});
+        console.log("Error while unfavouriting event: " + e.message);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
