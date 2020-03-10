@@ -26,6 +26,9 @@ const MainNavigator = createStackNavigator(
         Welcome: {
             screen: WelcomeScreen,
         },
+        Notifications: {
+            screen: NotificationsScreen,
+        },
         InitSignup: {
             screen: InitSignUpScreen,
         },
@@ -60,9 +63,7 @@ const MainNavigator = createStackNavigator(
         CreateActivity: {
             screen: CreateActivityScreen,
         },
-        Notifications: {
-            screen: NotificationsScreen,
-        },
+       
     },
     {
         headerMode: "none",

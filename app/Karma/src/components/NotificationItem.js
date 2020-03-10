@@ -53,10 +53,10 @@ export default class NotificationItem extends Component {
 
                         <RegularText>{" " + data.title}</RegularText>
                         <RegularText style={SignUpStyles.text}>
-                            {" " + data.weeks_ago + "d"}
+                            {" " + 7 * data.weeks_ago + "d"}
                         </RegularText>
                     </Text>
-                    {data.showReply ? (
+                    {data.type === "messageSent" ? (
                         <TouchableOpacity>
                             <SemiBoldText style={{color: Colours.blue}}>
                                 Reply

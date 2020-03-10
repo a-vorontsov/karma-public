@@ -17,7 +17,7 @@ const DATA = [
         org: "Ya",
         logo: require("../assets/images/general-logos/linkedin-logo.png"),
         weeks_ago: 1,
-        showReply: 1,
+        type: "messageSent",
     },
     {
         id: "2",
@@ -31,20 +31,21 @@ const DATA = [
         title: "Third Item",
         org: "Yeet",
         logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 1,
+        weeks_ago: 5,
     },
     {
         id: "4",
-        title: "Third Item",
+        title: "Lemon Item",
         org: "Yeet",
         logo: require("../assets/images/general-logos/photo-logo.png"),
         weeks_ago: 2,
+        type: "hasConfirmed",
     },
     {
         id: "5",
-        title: "Third Item",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
+        title: "Le Item",
+        org: "The PEER Center",
+        logo: require("../assets/images/general-logos/photo-plus.png"),
         weeks_ago: 1,
     },
     {
@@ -53,6 +54,7 @@ const DATA = [
         org: "Yeet",
         logo: require("../assets/images/general-logos/photo-logo.png"),
         weeks_ago: 5,
+        type: "messageSent",
     },
     {
         id: "58694a0aaf-3da1-471f-bd96-145571e29d72",
@@ -63,10 +65,17 @@ const DATA = [
     },
     {
         id: "58694a0fd-3da1-471f-bd96-145571e29d72",
-        title: "Third Item",
+        title: "Lemon",
         org: "Yeet",
         logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 1,
+        weeks_ago: 69,
+    },
+    {
+        id: "58dd694a0fd-3da1-471f-bd96-145571e29d72",
+        title: "gsdgd",
+        org: "yoteeee",
+        logo: require("../assets/images/general-logos/photo-logo.png"),
+        weeks_ago: 23,
     },
 ];
 
@@ -89,12 +98,29 @@ function addTimeStamps() {
 
     let currentWeeksAgo = DATA[0].weeks_ago;
     for (let i = 0; i < DATA.length - 1; i++) {
+        //only set time stamp flags for notifs younger than two months
+        if (currentWeeksAgo > 8) {
+            continue;
+        }
+
         if (i === 0) {
             DATA[i].showTimeStamp = 1;
         } else if (DATA[i + 1].weeks_ago !== currentWeeksAgo) {
             currentWeeksAgo = DATA[i + 1].weeks_ago;
             DATA[i + 1].showTimeStamp = 1;
         }
+    }
+}
+
+function getTimeStamp(timeStamp) {
+    if (timeStamp === 1) {
+        return "This Week";
+    } else if (timeStamp <= 4) {
+        return "This Month";
+    } else if (timeStamp <= 8) {
+        return "Two Months ago";
+    } else {
+        return "More than two months ago";
     }
 }
 
@@ -120,7 +146,7 @@ class NotificationsScreen extends Component {
                     <View
                         style={{
                             width: SCREEN_WIDTH,
-                            backgroundColor: Colours.lighterGrey,
+                            backgroundColor: Colours.lightestGrey,
                             height: SCREEN_HEIGHT,
                         }}>
                         <View
@@ -138,8 +164,9 @@ class NotificationsScreen extends Component {
                                             <View>
                                                 {item.showTimeStamp ? (
                                                     <BoldText>
-                                                        {item.weeks_ago +
-                                                            " weeks ago"}
+                                                        {getTimeStamp(
+                                                            item.weeks_ago,
+                                                        )}
                                                     </BoldText>
                                                 ) : (
                                                     undefined
