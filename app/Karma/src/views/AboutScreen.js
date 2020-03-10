@@ -148,13 +148,13 @@ class AboutScreen extends React.Component {
                                 <SubTitleText style={{fontSize: normalise(26)}}>
                                     Tell us about yourself
                                 </SubTitleText>
-                                <RegularText style={Styles.pb8}>
+                                <RegularText style={Styles.pb16}>
                                     Charities need to know this information
                                     about volunteers.
                                 </RegularText>
                             </View>
 
-                            <View style={styles.header}>
+                            <View style={[styles.header, {paddingRight:20}]}>
                                 <PhotoUpload
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
@@ -190,6 +190,7 @@ class AboutScreen extends React.Component {
                                     </RegularText>
                                 </TouchableOpacity>
                             </View>
+                            <SubTitleText>What is your name?</SubTitleText>
                             <TextInput
                                 placeholder="First Name"
                                 name="fname"
