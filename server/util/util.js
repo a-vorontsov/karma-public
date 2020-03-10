@@ -99,7 +99,7 @@ const isValidToken = async (tokenResult, inputToken) => {
     if (tokenResult.rows.length === 0) {
         return ({
             isValidToken: false,
-            error: "No token found for user, or user does not exist.",
+            error: "No token found, or user/email does not exist.",
         });
     }
     const tokenRecord = tokenResult.rows[0];

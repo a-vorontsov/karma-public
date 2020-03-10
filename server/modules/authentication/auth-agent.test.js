@@ -50,7 +50,7 @@ test("isValidToken works", async () => {
 
     const isValidResult = await authAgent.isValidToken(userId, "abc");
     expect(isValidResult.isValidToken).toBe(false);
-    expect(isValidResult.error).toBe("No token found for user, or user does not exist.");
+    expect(isValidResult.error).toBe("No token found, or user/email does not exist.");
     // insertion
     const authToken = await authAgent.logIn(userId);
     const authResult = await authRepo.findLatestByUserID(userId);
@@ -181,7 +181,7 @@ test("non-existent user detected", async () => {
         .send(anyRequest4)
         .redirects(1);
 
-    expect(response.body.message).toBe("No token found for user, or user does not exist.");
+    expect(response.body.message).toBe("No token found, or user/email does not exist.");
     expect(response.statusCode).toBe(400);
 
     const responseOfPost = await request(app)
@@ -189,7 +189,7 @@ test("non-existent user detected", async () => {
         .send(anyRequest4)
         .redirects(1);
 
-    expect(responseOfPost.body.message).toBe("No token found for user, or user does not exist.");
+    expect(responseOfPost.body.message).toBe("No token found, or user/email does not exist.");
     expect(responseOfPost.statusCode).toBe(400);
 });
 
