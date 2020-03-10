@@ -16,7 +16,6 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
-const request = require("superagent");
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 const request = require("superagent");
