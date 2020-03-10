@@ -133,7 +133,7 @@ async function logIn(userId) {
  * @throws {error} if failed query
  */
 async function logOut(userId) {
-    await authRepo.updateAllExpiratonsForUser(
+    await authRepo.updateAllExpirationsForUser(
         userId,
         date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     );
