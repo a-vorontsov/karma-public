@@ -7,8 +7,18 @@ const transporter = nodemailer.createTransport({
         pass: `${process.env.EMAIL_PASSWORD}`,
     },
 });
-module.exports = {
-    sendEmail: (email, subject, text) => {
+
+/**
+ * Send a custom email asynchronously, returning a promise.
+ * @param {string} email
+ * @param {string} subject
+ * @param {string} text
+ */
+const sendEmail = async (email, subject, text) => {
+    if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
+        return;
+    }
+    return new Promise((resolve, reject) => {
         const mailOptions = {
             from: `${process.env.EMAIL_ADDRESS}`,
             to: `${email}`,
@@ -16,32 +26,33 @@ module.exports = {
             text: text,
         };
         console.log(`Sending mail to ${email}`);
-        transporter.sendMail(mailOptions, (err, response) => {
+        transporter.sendMail(mailOptions, function(err, info) {
             if (err) {
                 throw new Error(err.message);
             } else {
-                console.log(`Email sent to ${email}`);
+                console.log(`Email sent to ${email} ` + info.response);
+                resolve(true);
             }
         });
-    },
-    sendBugReport: (email, report) => {
-        const mailOptions = {
-            from: `${email}`,
-            to: `${process.env.EMAIL_ADDRESS}`,
-            subject: "Bug Report",
-            text: `Bug report from ${email}: ${report}`,
-        };
-        console.log(
-            `Sending bug report from ${email} to ${process.env.EMAIL_ADDRESS}`,
-        );
-        transporter.sendMail(mailOptions, (err, response) => {
-            if (err) {
-                throw new Error(err.message);
-            } else {
-                console.log(
-                    `Bug report from ${email} to ${process.env.EMAIL_ADDRESS} sent successfully.`,
-                );
-            }
-        });
-    },
+    });
+};
+
+/**
+ * Send a bug report email asynchronously to the bug report
+ * email address specified in .env. This sets the sender
+ * of the email to be the server email address, but the
+ * user's email is specified in the body of the email.
+ * @param {string} email the user input contact email address
+ * @param {string} report the user input bug report
+ */
+const sendBugReport = async (email, report) => {
+    const toEmail = process.env.BUG_REPORT_EMAIL_ADDRESS;
+    const subject = "Bug Report";
+    const text = `Bug report from ${email}: ${report}`;
+    await sendEmail(toEmail, subject, text);
+};
+
+module.exports = {
+    sendEmail: sendEmail,
+    sendBugReport: sendBugReport,
 };

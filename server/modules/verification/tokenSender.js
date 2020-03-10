@@ -26,7 +26,7 @@ const sendAndStoreVerificationToken = async (validMinutes, dbUpdateFunction, dbI
     // update the db
     await dbUpdateFunction(dbId, token, expiryDate);
     // specify email params
-    const text = "K-" + token + "is your karma verification code";
+    const text = "K-" + token + " is your karma verification code";
     const subject = customSubject;
     // send email with token
     await mailSender.sendEmail(toEmail, subject, text);

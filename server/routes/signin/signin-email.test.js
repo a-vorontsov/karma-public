@@ -12,6 +12,7 @@ beforeEach(() => {
     user4 = testHelpers.getUserExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+    process.env.SKIP_MAIL_SENDING_FOR_TESTING = 1;
     return testHelpers.clearDatabase();
 });
 
