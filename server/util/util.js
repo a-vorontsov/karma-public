@@ -88,6 +88,38 @@ const checkEventId = async (eventId) => {
     return result;
 };
 
+/**
+ * Check if input token is valid compared to
+ * tokenResult - result of db query.
+ * @param {object} tokenResult
+ * @param {any} inputToken
+ * @return {object} isValidToken, error
+ */
+const isValidToken = async (tokenResult, inputToken) => {
+    if (tokenResult.rows.length === 0) {
+        return ({
+            isValidToken: false,
+            error: "No token found for user, or user does not exist.",
+        });
+    }
+    const tokenRecord = tokenResult.rows[0];
+    if (tokenRecord.token !== inputToken) {
+        return ({
+            isValidToken: false,
+            error: "Invalid token",
+        });
+    } else if (tokenRecord.expiryDate <= Date.now()) {
+        return ({
+            isValidToken: false,
+            error: "Expired token",
+        });
+    } else {
+        return ({
+            isValidToken: true,
+            error: null,
+        });
+    }
+};
 
 module.exports = {
     isIndividual: isIndividual,
@@ -95,4 +127,5 @@ module.exports = {
     checkUserId: checkUserId,
     checkEventId: checkEventId,
     checkEmail: checkEmail,
+    isValidToken: isValidToken,
 };

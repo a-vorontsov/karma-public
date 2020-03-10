@@ -20,6 +20,7 @@ app.use("/register/individual", require("./routes/register/individual"));
 app.use("/register/organisation", require("./routes/register/organisation"));
 app.use("/logout", require("./routes/signin/logout"));
 
+app.use("/verify/email", require("./routes/verify/email"));
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
