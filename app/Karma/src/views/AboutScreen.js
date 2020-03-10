@@ -196,11 +196,6 @@ class AboutScreen extends React.Component {
                                 name="fname"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.lname.focus()}
-                                showError={
-                                    this.state.firstOpen
-                                        ? false
-                                        : !this.state.fname
-                                }
                             />
 
                             <TextInput
@@ -209,11 +204,6 @@ class AboutScreen extends React.Component {
                                 name="lname"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.dob.focus()}
-                                showError={
-                                    this.state.firstOpen
-                                        ? false
-                                        : !this.state.lname
-                                }
                             />
 
                             <SubTitleText>When is your birthday?</SubTitleText>
