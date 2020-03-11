@@ -48,7 +48,7 @@ test("sign-in with unverified email works", async () => {
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
-        "Email exists but unverified. Goto email verification screen.",
+        "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
     );
     expect(response.statusCode).toBe(400);
 });

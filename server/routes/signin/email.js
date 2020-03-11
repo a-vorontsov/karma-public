@@ -7,6 +7,7 @@ const router = express.Router();
 const authAgent = require("../../modules/authentication/auth-agent");
 const regStatus = require("../../modules/authentication/registration-status");
 const userAgent = require("../../modules/authentication/user-agent");
+const tokenSender = require("../../modules/verification/tokenSender");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 
@@ -43,7 +44,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
     &#123;
         "message:" // textual explanation of scenario
         "data": &#123;
-            "isEmailVerified": // if email is recorded and verified
+            "isEmailVerified": // if email is recorded and verified. If false, user has been sent a token
             "isSignedUp": false, // if user is registered (email & password) but they don't have a full profile
             "isFullySignedUp": false, // user is fully registered. go to login
         &#125;
@@ -87,8 +88,9 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 });
             }
         } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
+            await tokenSender.storeAndSendEmailVerificationToken(req.body.data.email);
             res.status(400).send({
-                message: "Email exists but unverified. Goto email verification screen.",
+                message: "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
                 data: {
                     isEmailVerified: false,
                     isSignedUp: false,
