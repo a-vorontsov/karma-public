@@ -41,7 +41,9 @@ test('requesting reset password token works', async () => {
     const response = await request(app)
         .post("/signin/forgot")
         .send({
-            email: "test@gmail.com",
+            data: {
+                email: "test@gmail.com",
+            },
         });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
@@ -53,7 +55,11 @@ test('requesting reset password token works', async () => {
 test('requesting reset password token with no email does not work', async () => {
     const response = await request(app)
         .post("/signin/forgot")
-        .send({});
+        .send({
+            data: {
+
+            }
+        });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(0);

@@ -11,7 +11,7 @@ const tokenSender = require("../../modules/verification/tokenSender");
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
  * URL example: POST http://localhost:8000/signin/forgot
- * @param {String} req.body.email - Email of the user
+ * @param {String} req.body.data.email - Email of the user
  * @returns
  *  status: 200, description: Token sent successfully. Valid for use 1 hour from sending <br/>
  *  status: 400, description: Email not specified in request body <br/>
@@ -21,7 +21,7 @@ const tokenSender = require("../../modules/verification/tokenSender");
  *  @function
  */
 router.post('/', async (req, res) => {
-    const email = req.body.email;
+    const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
