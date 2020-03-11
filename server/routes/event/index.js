@@ -40,6 +40,7 @@ router.use("/", eventSelectRoute);
             "content": "fun event yay",
             "date": "2004-10-19T09:23:54.000Z",
             "userId": 27,
+            "spotsRemaining": 1,
             "address": {
                 "id": 24,
                 "address1": "221B Baker St",

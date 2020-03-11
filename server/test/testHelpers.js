@@ -248,7 +248,7 @@ const getCause = () => ({...cause});
 
 const signUp = {
     individualId: -1,
-    eventId: -1,
+    eventId: 3,
     confirmed: true,
 };
 
