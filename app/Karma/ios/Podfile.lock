@@ -393,12 +393,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
-  react-native-date-picker: 142a75882184791d3afa3a7a3c3085e1d70496c9
-<<<<<<< HEAD
-  react-native-image-picker: e0b118c84e76f590a9d918baf06b0b043cbc5212
-=======
-  react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
->>>>>>> 85d527f7428fa27b2dccbebf9112678988d9315e
+  react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
+  react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
   react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
@@ -412,11 +408,7 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-<<<<<<< HEAD
-  RNCMaskedView: e5b99bc191945f157adeede68da9d424462de177
-=======
-  RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
->>>>>>> 85d527f7428fa27b2dccbebf9112678988d9315e
+  RNCMaskedView: 90dd32f5b786bd562e876e1421ea77c700cbf71e
   RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
@@ -427,8 +419,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6835d7cd99e885a3cdd639de81c7f9d2ee057404
 
-<<<<<<< HEAD
 COCOAPODS: 1.7.4
-=======
-COCOAPODS: 1.8.4
->>>>>>> 85d527f7428fa27b2dccbebf9112678988d9315e
