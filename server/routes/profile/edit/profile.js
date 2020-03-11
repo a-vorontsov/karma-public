@@ -1,5 +1,5 @@
 /**
- * @module Edit-profile
+ * @module Profile-edit
  */
 
 const express = require("express");

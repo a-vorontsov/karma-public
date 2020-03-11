@@ -1,5 +1,5 @@
 /**
- * @module Register-user
+ * @module Sign-up-user
  */
 
 const express = require("express");
@@ -19,7 +19,7 @@ const owasp = require("owasp-password-strength-test");
  * A HTTP response is generated based on the outcome of the
  * operation. It will contain the new user's id following a
  * successful registration.
- * @route {POST} /register/user
+ * @route {POST} /signup/user
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {object} req.body.data.user the user input values for their user account
@@ -51,7 +51,7 @@ const owasp = require("owasp-password-strength-test");
         "message": "User registration successful. Goto individual/org registration selection",
     &#125;
 </code></pre>
- * @name Register user
+ * @name Sign-up user
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {

@@ -1,5 +1,5 @@
 /**
- * @module Register-organisation
+ * @module Sign-up-organisation
  */
 
 const express = require("express");
@@ -16,7 +16,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * authentication.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /register/organisation
+ * @route {POST} /signup/organisation
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.organisation the user input values for their profile
@@ -43,7 +43,7 @@ const userAgent = require("../../modules/authentication/user-agent");
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if success, 200 - organisation registration successful<br/>
  * - if registration failed, 400 - error == exception
- * @name Register organisation
+ * @name Sign-up organisation
  * @function
  */
 router.post("/", async (req, res) => {

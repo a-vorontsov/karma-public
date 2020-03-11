@@ -15,9 +15,9 @@ app.use(methodOverride("_method"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/forgot", require("./routes/signin/forgotPassword"));
-app.use("/register/user", require("./routes/register/user"));
-app.use("/register/individual", require("./routes/register/individual"));
-app.use("/register/organisation", require("./routes/register/organisation"));
+app.use("/signup/user", require("./routes/signup/user"));
+app.use("/signup/individual", require("./routes/signup/individual"));
+app.use("/signup/organisation", require("./routes/signup/organisation"));
 app.use("/logout", require("./routes/signin/logout"));
 
 app.use("/verify/email", require("./routes/verify/email"));

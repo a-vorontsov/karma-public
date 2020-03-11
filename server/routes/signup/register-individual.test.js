@@ -18,68 +18,67 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-const ogranisationRegistrationRequest = {
-    userId: 420,
+const registerIndividualRequest = {
+    userId: 666,
     data: {
-        organisation: {
-            organisationNumber: "69",
-            name: "Karma org",
-            organisationType: "c",
-            lowIncome: "no",
-            exempt: "no",
-            pocFirstName: "Paul",
-            pocLastName: "Muller",
+        individual: {
+            title: "Mr.",
+            firstName: "Paul",
+            lastName: "Muller",
+            dateOfBirth: "1998-10-09",
+            gender: "M",
+            phoneNumber: "+435958934",
             address: {
-                addressLine1: "Karma str",
-                addressLine2: "n",
+                addressLine1: "abc str",
+                addressLine2: "nop",
                 townCity: "London",
                 countryState: "UK",
-                postCode: "WC 23",
+                postCode: "NW1 6XE",
             },
-            phoneNumber: "+44343525",
         }
     }
 };
 
-test("ogranisation registration works", async () => {
+test("individual registration works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
-    ogranisationRegistrationRequest.userId = insertUserResult.rows[0].id;
+    registerIndividualRequest.userId = insertUserResult.rows[0].id;
 
     const response = await request(app)
-        .post("/register/organisation")
-        .send(ogranisationRegistrationRequest);
+        .post("/signup/individual")
+        .send(registerIndividualRequest);
 
-    expect(response.body.message).toBe("Organisation registration successful.");
     expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe("Individual registration successful.");
 });
 
+
 test("individual reg with wrong userId fails", async () => {
-    ogranisationRegistrationRequest.userId = 99999;
+    registerIndividualRequest.userId = 99999;
 
     const response = await request(app)
-        .post("/register/organisation")
-        .send(ogranisationRegistrationRequest);
+        .post("/signup/individual")
+        .send(registerIndividualRequest);
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe("User with given ID does not exist");
 });
 
-test("duplicate ogranisation registration fails", async () => {
+test("duplicate individual reg fails", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
-    ogranisationRegistrationRequest.userId = insertUserResult.rows[0].id;
+    registerIndividualRequest.userId = insertUserResult.rows[0].id;
 
     const response = await request(app)
-        .post("/register/organisation")
-        .send(ogranisationRegistrationRequest);
+        .post("/signup/individual")
+        .send(registerIndividualRequest);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe("Organisation registration successful.");
+    expect(response.body.message).toBe("Individual registration successful.");
 
     const duplicateResponse = await request(app)
-        .post("/register/organisation")
-        .send(ogranisationRegistrationRequest);
+        .post("/signup/individual")
+        .send(registerIndividualRequest);
 
     expect(duplicateResponse.statusCode).toBe(400);
     expect(duplicateResponse.body.message).toBe("Invalid operation: already fully registered.");

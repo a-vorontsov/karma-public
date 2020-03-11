@@ -40,7 +40,7 @@ test("user registration works", async () => {
     owasp.test.mockReturnValue({strong: true});
 
     const response = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -54,7 +54,7 @@ test("weak password fails", async () => {
     owasp.test.mockReturnValue({strong: false});
 
     const response = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -67,7 +67,7 @@ test("weak password fails", async () => {
     owasp.test.mockReturnValue({strong: false});
 
     const response = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -80,7 +80,7 @@ test("duplicate user registration fails", async () => {
     owasp.test.mockReturnValue({strong: true});
 
     const response = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -89,7 +89,7 @@ test("duplicate user registration fails", async () => {
     expect(response.body.userId).toBeGreaterThan(-1);
 
     const duplicateResponse = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(2);
@@ -103,7 +103,7 @@ test("invalid email fails", async () => {
     registerUserRequest.data.user.email = "invalid@email.com";
 
     const response = await request(app)
-        .post("/register/user")
+        .post("/signup/user")
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);

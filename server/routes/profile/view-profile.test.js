@@ -50,7 +50,7 @@ test("viewing individual profile works", async () => {
     registerIndividualRequest.userId = userId;
 
     const response = await request(app)
-        .post("/register/individual")
+        .post("/signup/individual")
         .send(registerIndividualRequest);
 
     expect(response.body.message).toBe("Individual registration successful.");
@@ -116,7 +116,7 @@ test("viewing org profile works", async () => {
     ogranisationRegistrationRequest.userId = userId;
 
     const response = await request(app)
-        .post("/register/organisation")
+        .post("/signup/organisation")
         .send(ogranisationRegistrationRequest);
 
     expect(response.body.message).toBe("Organisation registration successful.");
