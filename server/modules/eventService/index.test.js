@@ -2,17 +2,20 @@ const testHelpers = require("../../test/testHelpers");
 const eventService = require("./");
 
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
+const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const util = require("../../util/util");
 
 
 jest.mock("../../models/databaseRepositories/eventRepository");
 jest.mock("../../models/databaseRepositories/addressRepository");
+jest.mock("../../models/databaseRepositories/signupRepository");
 jest.mock("../../util/util");
 
-let address, event;
+let address, event, signUp;
 
 beforeEach(() => {
+    signUp = testHelpers.getSignUp();
     address = testHelpers.getAddress();
     event = testHelpers.getEvent();
 });
@@ -107,10 +110,17 @@ test("updating events works", async () => {
 });
 
 test("requesting specific event data works", async () => {
+    event.spotsRemaining = NaN;
     eventRepository.findById.mockResolvedValue({
         rows: [{
             ...event,
             id: 3,
+        }],
+    });
+    signUpRepository.findAllByEventId.mockResolvedValue({
+        rows: [{
+            ...signUp,
+            id: 1,
         }],
     });
     addressRepository.findById.mockResolvedValue({
@@ -119,10 +129,12 @@ test("requesting specific event data works", async () => {
 
     const getEventResult = await eventService.getEventData(3);
 
+    expect(signUpRepository.findAllByEventId).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledWith(3);
     expect(addressRepository.findById).toHaveBeenCalledWith(event.addressId);
-    expect(getEventResult.data.event).toMatchObject({
+    expect(getEventResult.data.event).toStrictEqual({
+        address: address,
         ...event,
         id: 3,
     });
