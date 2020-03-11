@@ -196,7 +196,7 @@ class WelcomeScreen extends Component {
     // verify code is correct
     checkCode(code) {
         // code correct
-        if (code == "123456") {
+        if (code === "123456") {
             console.log("yay!!!");
             this.setState({isCodeValid: true});
         } else {
@@ -259,13 +259,14 @@ class WelcomeScreen extends Component {
                         marginBottom: 40,
                     }}>
                     <TouchableOpacity
-                        style={[WelcomeScreenStyles.button, { marginBottom: 20 }]}
-                        onPress={() => this.state.emailInput === "" ? 
-                                        this.setState({ isSignUpPressed: true })
-                                        : navigate("InitSignup")
-                            }
-                        >
-                        <RegularText style={[WelcomeScreenStyles.text, { fontSize: 20 }]}>
+                        style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
+                        onPress={() =>
+                            this.state.emailInput === ""
+                                ? this.setState({isSignUpPressed: true})
+                                : navigate("InitSignup")
+                        }>
+                        <RegularText
+                            style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
                             Sign Up
                         </RegularText>
                     </TouchableOpacity>
