@@ -187,6 +187,7 @@ class WelcomeScreen extends Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
@@ -228,7 +229,11 @@ class WelcomeScreen extends Component {
                     }}>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, { marginBottom: 20 }]}
-                        onPress={() => this.setState({ isSignUpPressed: true })}>
+                        onPress={() => this.state.emailInput === "" ? 
+                                        this.setState({ isSignUpPressed: true })
+                                        : navigate("InitSignup")
+                            }
+                        >
                         <RegularText style={[WelcomeScreenStyles.text, { fontSize: 20 }]}>
                             Sign Up
                         </RegularText>
