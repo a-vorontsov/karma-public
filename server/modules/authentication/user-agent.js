@@ -74,8 +74,7 @@ async function registerIndividual(userId, individual) {
         throw new Error("Invalid operation: already fully registered.");
     }
 
-    const addressResult = await registerAddress(individual.address);
-    const addressId = addressResult.rows[0].id;
+    const addressId = await registerAddress(individual.address);
 
     await individualRepo.insert({
         firstname: individual.firstName,
@@ -117,8 +116,7 @@ async function registerOrg(userId, organisation) {
         throw new Error("Invalid operation: already fully registered.");
     }
 
-    const addressResult = await registerAddress(organisation.address);
-    const addressId = addressResult.rows[0].id;
+    const addressId = await registerAddress(organisation.address);
 
     await orgRepo.insert({
         orgName: organisation.name,
@@ -145,7 +143,7 @@ async function registerOrg(userId, organisation) {
  * @return {number} addressId
  */
 async function registerAddress(address) {
-    return await addressRepo.insert({
+    return (await addressRepo.insert({
         address1: address.addressLine1,
         address2: address.addressLine2,
         postcode: address.postCode,
@@ -153,7 +151,7 @@ async function registerAddress(address) {
         region: address.countryState,
         lat: 0, // TODO: compute here?
         long: 0,
-    });
+    })).rows[0].id;
 }
 
 /**
@@ -240,4 +238,5 @@ module.exports = {
     isCorrectPasswordByEmail: isCorrectPasswordByEmail,
     updatePassword: updatePassword,
     getUserId: getUserId,
+    registerAddress: registerAddress,
 };

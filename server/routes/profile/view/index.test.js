@@ -86,7 +86,7 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.statusCode).toBe(200);
 });
 
-const ogranisationRegistrationRequest = {
+const organisationRegistrationRequest = {
     userId: 420,
     data: {
         organisation: {
@@ -113,11 +113,11 @@ test("viewing org profile works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    ogranisationRegistrationRequest.userId = userId;
+    organisationRegistrationRequest.userId = userId;
 
     const response = await request(app)
         .post("/signup/organisation")
-        .send(ogranisationRegistrationRequest);
+        .send(organisationRegistrationRequest);
 
     expect(response.body.message).toBe("Organisation registration successful.");
     expect(response.statusCode).toBe(200);
@@ -131,10 +131,10 @@ test("viewing org profile works", async () => {
         "Found organisation profile for user.",
     );
     expect(profileResponse.body.data.individual.address.postCode).toBe(
-        ogranisationRegistrationRequest.data.organisation.address.postCode,
+        organisationRegistrationRequest.data.organisation.address.postCode,
     );
     expect(profileResponse.body.data.individual.organisationNumber).toBe(
-        ogranisationRegistrationRequest.data.organisation.organisationNumber,
+        organisationRegistrationRequest.data.organisation.organisationNumber,
     );
     expect(profileResponse.body.data.user.username).toBe(user.username);
     expect(profileResponse.body.data.user.email).toBe(registration.email);

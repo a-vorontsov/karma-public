@@ -140,29 +140,33 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 /**
  * Update address if any update params are specified
  * in request object.
- * @param {Object} profile individual or organisation object in request
- * @param {Object} address
+ * @param {Object} address in request body
+ * @param {Object} storedAddress in db
  */
-async function updateAddress(profile, address) {
-    const addressObj = {...address};
-
-    if (profile.addressLine1 !== undefined ) {
-        addressObj.address1 = profile.addressLine1;
-    }
-    if (profile.addressLine2 !== undefined ) {
-        addressObj.address2 = profile.addressLine2;
-    }
-    if (profile.postCode !== undefined ) {
-        addressObj.postcode = profile.postCode;
-    }
-    if (profile.townCity !== undefined ) {
-        addressObj.city = profile.townCity;
-    }
-    if (profile.countryState !== undefined ) {
-        addressObj.region = profile.countryState;
+async function updateAddress(address, storedAddress) {
+    if (address === undefined) {
+        return;
     }
 
-    if (addressObj !== address) {
+    const addressObj = {...storedAddress};
+
+    if (address.addressLine1 !== undefined ) {
+        addressObj.address1 = address.addressLine1;
+    }
+    if (address.addressLine2 !== undefined ) {
+        addressObj.address2 = address.addressLine2;
+    }
+    if (address.postCode !== undefined ) {
+        addressObj.postcode = address.postCode;
+    }
+    if (address.townCity !== undefined ) {
+        addressObj.city = address.townCity;
+    }
+    if (address.countryState !== undefined ) {
+        addressObj.region = address.countryState;
+    }
+
+    if (addressObj !== storedAddress) {
         await addressRepo.update(addressObj);
     }
 }
