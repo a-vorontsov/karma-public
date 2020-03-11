@@ -224,7 +224,6 @@ class ProfileEditScreen extends Component {
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                 }}>
-
                                 <RegularText style={styles.bioHeader}>
                                     Bio
                                 </RegularText>
