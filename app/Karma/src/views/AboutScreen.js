@@ -20,6 +20,7 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
+import AddressInput from "../components/AddressInput";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -142,7 +143,7 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView style={{marginBottom:100}} showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
@@ -236,6 +237,14 @@ class AboutScreen extends React.Component {
                                 ]}
                                 onValue={value => this.setGender(value)}
                             />
+
+                            <SubTitleText>Where do you live?</SubTitleText>
+                            <RegularText style={Styles.pb24}>
+                                    This is for us to help you find the most compatible events with you. 
+                                    This information will not be shared with charities.
+                                </RegularText>
+                            <AddressInput/>
+
                             <GradientButton
                                 onPress={() => this.goToNext()}
                                 title="Next"

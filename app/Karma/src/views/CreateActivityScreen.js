@@ -17,6 +17,8 @@ import PhotoUpload from "react-native-photo-upload";
 import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
 import {RegularText, SemiBoldText} from "../components/text";
+import Colours from "../styles/Colours";
+import AddressInput from "../components/AddressInput";
 
 import {GradientButton} from "../components/buttons";
 
@@ -476,16 +478,13 @@ export default class CreateActivityScreen extends React.Component {
                                         editable="false"
                                     />
                                 </View>
-                                <View style={{width: FORM_WIDTH}}>
-                                    <SemiBoldText
-                                        style={{
-                                            alignItems: "flex-start",
-                                            fontSize: 20,
-                                        }}>
-                                        Important
-                                    </SemiBoldText>
-                                </View>
-
+                                <SemiBoldText
+                                    style={{
+                                        alignItems: "flex-start",
+                                        fontSize: 20,
+                                    }}>
+                                    Important
+                                </SemiBoldText>
                                 <View>
                                     <TextInput
                                         placeholder="Number of spots available"
@@ -577,6 +576,14 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAdditionalInfo}
                                     />
                                 </View>
+                                <SemiBoldText
+                                    style={{
+                                        alignItems: "flex-start",
+                                        fontSize: 20,
+                                    }}>
+                                    What is the location?
+                                </SemiBoldText>
+                                <AddressInput/>
                             </View>
                         </View>
                     </ScrollView>

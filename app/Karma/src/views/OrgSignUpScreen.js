@@ -17,6 +17,8 @@ import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
+import AddressInput from "../components/AddressInput";
+import Colours from "../styles/Colours";
 
 import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
@@ -288,6 +290,13 @@ export default class OrgSignUpScreen extends React.Component {
                                     />
                                 </View>
                             )}
+
+                            {/* ADDRESS */}
+                            <View>
+                                <RegularText style={{color: Colours.blue, fontSize: 20, paddingVertical: 10}}>What is your organisation's address?</RegularText>
+                                <AddressInput/>
+                            </View>
+
                             {/** EXEMPTION REASONS */}
                             <View style={{width: FORM_WIDTH}}>
                                 <BoldText style={SignUpStyles.text}>
