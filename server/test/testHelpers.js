@@ -254,6 +254,17 @@ const signUp = {
 
 const getSignUp = () => ({...signUp});
 
+const bugReport = {
+    userId: null,
+    authToken: null,
+    data: {
+        email: "test@gmail.com",
+        report: "I can't date with this app.",
+    },
+};
+
+const getBugReport = () => ({...bugReport});
+
 const favourite = {
     individualId: -1,
     eventId: -1,
@@ -464,4 +475,5 @@ module.exports = {
     getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
     getNotification: getNotification,
+    getBugReport: getBugReport,
 };

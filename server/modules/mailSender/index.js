@@ -26,7 +26,7 @@ const sendEmail = async (email, subject, text) => {
         };
         if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
             const result = {
-                success: true,
+                status: 200,
                 info: "testing",
                 message: `Email sent to ${email}`,
             };
@@ -35,14 +35,14 @@ const sendEmail = async (email, subject, text) => {
             transporter.sendMail(mailOptions, function(err, info) {
                 if (err) {
                     const result = {
-                        success: false,
+                        status: 500,
                         info: err,
                         message: `Email sending failed to ${email}`,
                     };
                     resolve(result);
                 } else {
                     const result = {
-                        success: true,
+                        status: 200,
                         info: info,
                         message: `Email sent to ${email}`,
                     };

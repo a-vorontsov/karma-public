@@ -16,7 +16,7 @@ test("mail-sending works", async () => {
         return;
     }
     const sendResult = await mailSender.sendEmail(mailOptions.email, mailOptions.subject, mailOptions.text);
-    expect(sendResult.success).toBe(true);
+    expect(sendResult.status).toBe(200);
     expect(sendResult.message).toBe("Email sent to " + mailOptions.email);
 });
 
@@ -25,12 +25,12 @@ test("bug report sending works", async () => {
         return;
     }
     const sendResult = await mailSender.sendBugReport(mailOptions.email, mailOptions.text);
-    expect(sendResult.success).toBe(true);
+    expect(sendResult.status).toBe(200);
     expect(sendResult.message).toBe("Email sent to " + process.env.BUG_REPORT_EMAIL_ADDRESS);
 });
 
 test("sending to invalid email fails as expected", async () => {
     const sendResult = await mailSender.sendEmail("invalidemailaddress", mailOptions.text);
-    expect(sendResult.success).toBe(false);
+    expect(sendResult.status).toBe(500);
     expect(sendResult.message).toBe("Email sending failed to invalidemailaddress");
 });

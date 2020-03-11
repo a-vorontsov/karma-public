@@ -5,6 +5,7 @@
 const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
+const httpUtil = require("../../util/httpUtil");
 
 /**
  * Attempt send a bug report to admin email account.
@@ -44,12 +45,10 @@ const mailSender = require("../../modules/mailSender/index");
  */
 router.post("/", async (req, res) => {
     try {
-        mailSender.sendBugReport(req.body.data.email, req.body.data.report);
-        res.status(200).send({
-            message: "Bug report sent.",
-        });
+        const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
+        httpUtil.sendResult(result, res);
     } catch (e) {
-        res.status(400).send({
+        res.status(500).send({
             message: e.message,
         });
     }
