@@ -169,10 +169,10 @@ CREATE TABLE authentication
         CREATE TABLE registration
         (
             email varchar(64) NOT NULL,
-            email_flag int NOT NULL DEFAULT 0,
-            id_flag int NOT NULL DEFAULT 0,
-            phone_flag int NOT NULL DEFAULT 0,
-            sign_up_flag int NOT NULL DEFAULT 0,
+            email_flag int NOT NULL,
+            id_flag int NOT NULL,
+            phone_flag int NOT NULL,
+            sign_up_flag int NOT NULL,
             verification_token varchar(64) NOT NULL,
             expiry_date timestamp NOT NULL,
             CONSTRAINT registration_pk PRIMARY KEY (email)
