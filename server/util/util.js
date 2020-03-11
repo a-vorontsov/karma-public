@@ -93,9 +93,10 @@ const checkEventId = async (eventId) => {
  * tokenResult - result of db query.
  * @param {object} tokenResult
  * @param {any} inputToken
+ * @param {string} tokenVarName variable name of token
  * @return {object} isValidToken, error
  */
-const isValidToken = async (tokenResult, inputToken) => {
+const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
     if (tokenResult.rows.length === 0) {
         return ({
             isValidToken: false,
@@ -103,7 +104,7 @@ const isValidToken = async (tokenResult, inputToken) => {
         });
     }
     const tokenRecord = tokenResult.rows[0];
-    if (tokenRecord.token !== inputToken) {
+    if (tokenRecord[tokenVarName] !== inputToken) {
         return ({
             isValidToken: false,
             error: "Invalid token",

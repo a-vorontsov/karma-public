@@ -79,7 +79,7 @@ async function requireNoAuthentication(req, res, next) {
  */
 async function isValidToken(userId, authToken) {
     const tokenResult = await authRepo.findLatestByUserID(userId);
-    return util.isValidToken(tokenResult, authToken);
+    return util.isValidToken(tokenResult, authToken, "token");
 }
 
 /**

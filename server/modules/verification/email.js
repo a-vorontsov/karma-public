@@ -10,11 +10,11 @@ const util = require("../../util/util");
  * @return {object} isValidToken, error
  */
 const isValidToken = async (email, token) => {
-    const regResult = regRepo.findByEmail(email);
-    const isValidResult = await util.isValidToken(regResult, token);
+    const regResult = await regRepo.findByEmail(email);
+    const isValidResult = await util.isValidToken(regResult, token, "verificationToken");
     if (isValidResult.isValidToken) {
         const regRecord = regResult.rows[0];
-        regRecord.emailFlag = true;
+        regRecord.emailFlag = 1;
         await regRepo.update(regRecord);
     }
     return isValidResult;
