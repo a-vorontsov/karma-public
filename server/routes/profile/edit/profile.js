@@ -43,15 +43,17 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
         "authToken": "secureToken",
         "data": &#123;
             "organisation": &#123;
-                "phoneNumber": "newPhoneNumber",
-                "addressLine1": "newAddressLine1",
-                "postCode": "newPostCode",
+                "phoneNumber": "newLandlineNo.",
+                "address:" {
+                    "addressLine1": "newAddressLine1",
+                    "postCode": "newPostCode",
+                }
             &#125;
         &#125;
     &#125;
     // if city/country did not change, this is all that needs to be sent
 </code></pre>
- * @returns
+ * @returns {object}
  *  status: 200, description: Success, go to view profile endpoint to GET updated record.<br/>
  *  status: 500, description: error <br/><br/><br/><br/>
  *  @name Edit profile
@@ -70,7 +72,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const indivCopy = {...individual};
 
             const addressResult = await addressRepo.findById(individual.addressId);
-            await updateAddress(req.body.data.individual, addressResult.rows[0]);
+            await updateAddress(req.body.data.individual.address, addressResult.rows[0]);
 
             if (req.body.data.individual.firstName !== undefined) {
                 individual.firstname = req.body.data.individual.firstName;
@@ -94,7 +96,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const orgCopy = {...organisation};
 
             const addressResult = await addressRepo.findById(organisation.addressId);
-            await updateAddress(req.body.data.organisation, addressResult.rows[0]);
+            await updateAddress(req.body.data.organisation.address, addressResult.rows[0]);
 
             if (req.body.data.organisation.name !== undefined) {
                 organisation.orgName = req.body.data.organisation.name;
@@ -145,10 +147,10 @@ async function updateAddress(profile, address) {
     const addressObj = {...address};
 
     if (profile.addressLine1 !== undefined ) {
-        addressObj.address1 = req.body.data.individual.addressLine1;
+        addressObj.address1 = profile.addressLine1;
     }
     if (profile.addressLine2 !== undefined ) {
-        addressObj.address2 = req.body.data.individual.addressLine2;
+        addressObj.address2 = profile.addressLine2;
     }
     if (profile.postCode !== undefined ) {
         addressObj.postcode = profile.postCode;
