@@ -12,7 +12,7 @@ router.post('/create', (req, res) => {
     }
 });
 
-router.get('/check', authAgent.checkAuthenticated, (req, res) => {
+router.get('/check', authAgent.requireAuthentication, (req, res) => {
     try {
         stripeVerification.updateAccount(req.user.id);
         res.status(200).send({message: "Identity verified for user {" + req.user.id +"}."});

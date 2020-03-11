@@ -27,7 +27,7 @@ const Styles = StyleSheet.create({
         marginHorizontal: "auto",
     },
     formWidth: {
-        width: 0.8*SCREEN_WIDTH,
+        width: 0.8 * SCREEN_WIDTH,
     },
     vcenter: {
         flex: 2,
@@ -53,7 +53,7 @@ const Styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     fullMinHeight: {
-        minHeight: SCREEN_HEIGHT - StatusBar.currentHeight,
+        minHeight: SCREEN_HEIGHT,
     },
     p8: {
         padding: 8,
@@ -192,6 +192,20 @@ const Styles = StyleSheet.create({
     bottom: {
         flex: 1,
         justifyContent: "flex-end",
+    },
+    stickyBottom: {
+        position: "absolute",
+        width: "100%",
+        bottom: 0,
+    },
+    progressBar: {
+        flexDirection: "row",
+        height: 20,
+
+        backgroundColor: `${Colours.lightGrey}`,
+        borderColor: "transparent",
+
+        borderRadius: 10,
     },
 });
 

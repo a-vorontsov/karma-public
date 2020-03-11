@@ -11,11 +11,11 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * application.</br>
  * No special parameters need to be provided, but userId and
  * authToken must be present, as in any other request.</br>
- * This logs out the user by destroying their current authToken
- * and therefore ending their session.
+ * This logs out the user by setting their current authToken
+ * expired and therefore ending their session.
  * @route {GET} /logout
- * @param {HTTP} req
- * @param {HTTP} res
+ * @param {number} req.body.userId
+ * @param {String} req.body.authToken
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if successful logout, 200 - successfully logged out<br/>
  * - if user is not authenticated when calling this endpoint (why
@@ -24,7 +24,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * @name Log-out
  * @function
  */
-router.get("/", authAgent.checkAuthenticated, async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         authAgent.logOut(req.body.userId);
         res.status(200).send({

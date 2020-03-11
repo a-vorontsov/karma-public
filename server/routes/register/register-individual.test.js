@@ -4,10 +4,11 @@ const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
+let user, registration;
 
 beforeEach(() => {
+    user = testHelpers.getUserExample4();
+    registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     return testHelpers.clearDatabase();
 });
@@ -19,18 +20,21 @@ afterEach(() => {
 
 const registerIndividualRequest = {
     userId: 666,
-    title: "Mr.",
-    firstName: "Paul",
-    middleNames: "",
-    surName: "Muller",
-    dateOfBirth: "1998-10-09",
-    gender: "M",
-    phoneNumber: "+435958934",
-    addressLine1: "abc str",
-    addressLine2: "nop",
-    townCity: "London",
-    countryState: "UK",
-    postCode: "NW1 6XE",
+    data: {
+        individual: {
+            title: "Mr.",
+            firstName: "Paul",
+            lastName: "Muller",
+            dateOfBirth: "1998-10-09",
+            gender: "M",
+            phoneNumber: "+435958934",
+            addressLine1: "abc str",
+            addressLine2: "nop",
+            townCity: "London",
+            countryState: "UK",
+            postCode: "NW1 6XE",
+        }
+    }
 };
 
 test("individual registration works", async () => {

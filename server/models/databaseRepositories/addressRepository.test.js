@@ -1,9 +1,10 @@
 const addressRepository = require("./addressRepository");
 const testHelpers = require("../../test/testHelpers");
 
-const address = testHelpers.address;
+let address;
 
 beforeEach(() => {
+    address = testHelpers.getAddress();
     return testHelpers.clearDatabase();
 });
 
@@ -21,7 +22,7 @@ test('update works', async () => {
     const insertAddressResult = await addressRepository.insert(address);
     const insertedAddress = insertAddressResult.rows[0];
     insertedAddress.city = "Tallinn";
-    insertedAddress.lat = "15.3000000";
+    insertedAddress.lat = 15.3;
     const updateEventResult = await addressRepository.update(insertedAddress);
     expect(updateEventResult.rows[0]).toMatchObject(insertedAddress);
 });

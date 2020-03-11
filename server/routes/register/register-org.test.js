@@ -4,10 +4,11 @@ const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
+let user, registration;
 
 beforeEach(() => {
+    user = testHelpers.getUserExample4();
+    registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     return testHelpers.clearDatabase();
 });
@@ -19,19 +20,23 @@ afterEach(() => {
 
 const ogranisationRegistrationRequest = {
     userId: 420,
-    organisationNumber: "69",
-    name: "Karma org",
-    addressLine1: "Karma str",
-    addressLine2: "n",
-    organisationType: "c",
-    lowIncome: "no",
-    exempt: "no",
-    pocFirstName: "Paul",
-    pocLastName: "Muller",
-    townCity: "London",
-    countryState: "UK",
-    postCode: "WC 23",
-    phoneNumber: "+44343525",
+    data: {
+        organisation: {
+            organisationNumber: "69",
+            name: "Karma org",
+            addressLine1: "Karma str",
+            addressLine2: "n",
+            organisationType: "c",
+            lowIncome: "no",
+            exempt: "no",
+            pocFirstName: "Paul",
+            pocLastName: "Muller",
+            townCity: "London",
+            countryState: "UK",
+            postCode: "WC 23",
+            phoneNumber: "+44343525",
+        }
+    }
 };
 
 test("ogranisation registration works", async () => {

@@ -4,12 +4,10 @@ const testHelpers = require("../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
 const userRepo = require("../../../models/databaseRepositories/userRepository");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-
-const user = testHelpers.user4;
-const registration = testHelpers.registration4;
+const userAgent = require("../../../modules/authentication/user-agent");
 
 jest.mock("owasp-password-strength-test");
-
+let user, registration;
 const changePasswordRequest = {
     userId: 1,
     oldPassword: "password",
@@ -18,6 +16,8 @@ const changePasswordRequest = {
 };
 
 beforeEach(() => {
+    user = testHelpers.getUserExample4();
+    registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     changePasswordRequest.oldPassword = "password";
@@ -37,6 +37,8 @@ test('changing password works', async () => {
 
     changePasswordRequest.userId = insertUserResult.rows[0].id;
 
+    expect(await userAgent.isCorrectPasswordById(changePasswordRequest.userId, changePasswordRequest.oldPassword)).toBe(true);
+
     owasp.test.mockReturnValue({strong: true});
     const response = await request(app)
         .post("/profile/edit/password")
@@ -45,6 +47,24 @@ test('changing password works', async () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("Password successfully updated.");
+    expect(
+        await userAgent.isCorrectPasswordById(
+            changePasswordRequest.userId,
+            changePasswordRequest.newPassword,
+        ),
+    ).toBe(true);
+    expect(
+        await userAgent.isCorrectPasswordById(
+            changePasswordRequest.userId,
+            changePasswordRequest.confirmPassword,
+        ),
+    ).toBe(true);
+    expect(
+        await userAgent.isCorrectPasswordByEmail(
+            registration.email,
+            changePasswordRequest.newPassword,
+        ),
+    ).toBe(true);
 });
 
 

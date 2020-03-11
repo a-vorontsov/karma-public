@@ -6,7 +6,7 @@ const accounts = [];
 
 /**
  * Upload an identity document picture
- * @param {Integer} userId
+ * @param {number} userId
  */
 async function uploadFile(userId) {
     let file = "";
@@ -21,7 +21,7 @@ async function uploadFile(userId) {
                 },
             },
             {
-                stripeAccount: "{{" + process.env.STRIPE_ACC_userId + "}}",
+                stripeAccount: "{{" + process.env.STRIPE_ACC_ID + "}}",
             },
         );
     } catch (e) {
@@ -38,7 +38,7 @@ async function uploadFile(userId) {
 
 /**
  * Upload an identity document picture
- * @param {Integer} userId
+ * @param {number} userId
  * @return {boolean} true if verified
  */
 function updateAccount(userId) {
