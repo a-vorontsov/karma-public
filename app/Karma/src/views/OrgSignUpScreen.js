@@ -293,8 +293,15 @@ export default class OrgSignUpScreen extends React.Component {
 
                             {/* ADDRESS */}
                             <View>
-                                <RegularText style={{color: Colours.blue, fontSize: 20, paddingVertical: 10}}>What is your organisation's address?</RegularText>
-                                <AddressInput/>
+                                <RegularText
+                                    style={{
+                                        color: Colours.blue,
+                                        fontSize: 20,
+                                        paddingVertical: 10,
+                                    }}>
+                                    What is your organisation's address?
+                                </RegularText>
+                                <AddressInput />
                             </View>
 
                             {/** EXEMPTION REASONS */}

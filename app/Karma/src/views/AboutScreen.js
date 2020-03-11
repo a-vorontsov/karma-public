@@ -143,7 +143,9 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
-                    <ScrollView style={{marginBottom:100}} showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        style={{marginBottom: 100}}
+                        showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
@@ -240,10 +242,11 @@ class AboutScreen extends React.Component {
 
                             <SubTitleText>Where do you live?</SubTitleText>
                             <RegularText style={Styles.pb24}>
-                                    This is for us to help you find the most compatible events with you. 
-                                    This information will not be shared with charities.
-                                </RegularText>
-                            <AddressInput/>
+                                This is for us to help you find the most
+                                compatible events with you. This information
+                                will not be shared with charities.
+                            </RegularText>
+                            <AddressInput />
 
                             <GradientButton
                                 onPress={() => this.goToNext()}

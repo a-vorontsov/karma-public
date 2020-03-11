@@ -583,7 +583,7 @@ export default class CreateActivityScreen extends React.Component {
                                     }}>
                                     What is the location?
                                 </SemiBoldText>
-                                <AddressInput/>
+                                <AddressInput />
                             </View>
                         </View>
                     </ScrollView>
