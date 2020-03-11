@@ -18,20 +18,21 @@ afterEach(() => {
     jest.clearAllMocks();
 });
 
-test("event creation endpoint works", async () => {
-    eventService.createNewEvent.mockResolvedValue({
+test("event updating endpoint works", async () => {
+    eventService.updateEvent.mockResolvedValue({
         status: 200,
-        message: "Event created successfully",
+        message: "Event updated successfully",
         data: {eventWithLocation},
     });
 
+    const eventId = 3;
     const response = await request(app)
-        .post("/event/create")
+        .post(`/event/update/${eventId}`)
         .send(eventWithLocation);
 
-    expect(response.body.message).toBe("Event created successfully");
     expect(validation.validateEvent).toHaveBeenCalledTimes(1);
-    expect(eventService.createNewEvent).toHaveBeenCalledTimes(1);
+    expect(eventService.updateEvent).toHaveBeenCalledTimes(1);
+    expect(eventService.updateEvent).toHaveBeenCalledWith({...eventWithLocation, id: eventId});
     expect(response.body.data).toMatchObject({
         eventWithLocation
     });

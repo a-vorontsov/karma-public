@@ -35,6 +35,7 @@ app.use("/causes/user", require("./routes/causes/user"));
 
 app.use("/event", require("./routes/event"));
 app.use("/event/create", require("./routes/event/create"));
+app.use("/event/update", require("./routes/event/update"));
 // TODO:
 
 app.use("/profile/view", require("./routes/profile/view"));
