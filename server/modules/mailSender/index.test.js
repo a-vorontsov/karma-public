@@ -12,7 +12,7 @@ mailOptions = {
 }
 
 test("mail-sending works", async () => {
-    if (process.env.RUN_ALL_TESTS == false) {
+    if (process.env.RUN_ALL_TESTS != true) {
         return;
     }
     const sendResult = await mailSender.sendEmail(mailOptions.email, mailOptions.subject, mailOptions.text);
@@ -21,7 +21,7 @@ test("mail-sending works", async () => {
 });
 
 test("bug report sending works", async () => {
-    if (process.env.RUN_ALL_TESTS == false) {
+    if (process.env.RUN_ALL_TESTS != true) {
         return;
     }
     const sendResult = await mailSender.sendBugReport(mailOptions.email, mailOptions.text);
