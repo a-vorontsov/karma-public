@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
+import Styles from "../../styles/Styles";
 
 const request = require("superagent");
 
@@ -47,9 +48,11 @@ class ActivitiesGoingScreen extends Component {
                         );
                     })
                 ) : (
-                    <RegularText>
-                        You have not selected any activities to attend
-                    </RegularText>
+                    <View style={Styles.ph24}>
+                        <RegularText>
+                            You have not selected any activities to attend (Refresh)
+                        </RegularText>
+                    </View>
                 )}
             </View>
         );

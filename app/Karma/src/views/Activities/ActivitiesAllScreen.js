@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
+import Styles from "../../styles/Styles";
 
 const request = require("superagent");
 
@@ -47,7 +48,9 @@ class ActivitiesAllScreen extends Component {
                         );
                     })
                 ) : (
-                    <RegularText>Could not find any activities</RegularText> // REFRESH BUTTON
+                    <View style={Styles.ph24}>
+                        <RegularText>Could not find any activities (Refresh)</RegularText>
+                    </View>
                 )}
             </View>
         );

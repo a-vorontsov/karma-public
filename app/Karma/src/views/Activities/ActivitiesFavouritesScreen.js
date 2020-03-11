@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import {RegularText} from "../../components/text";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
+import Styles from "../../styles/Styles";
 
 const request = require("superagent");
 
@@ -47,9 +48,12 @@ class ActivitiesFavouritesScreen extends Component {
                         );
                     })
                 ) : (
-                    <RegularText>
-                        You haven't favourited any activities yet
-                    </RegularText>
+                    <View style={Styles.ph24}>
+                        <RegularText>
+                            {" "}
+                            You haven't favourited any activities yet (Refresh)
+                        </RegularText>
+                    </View>
                 )}
             </View>
         );

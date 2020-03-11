@@ -10,7 +10,7 @@ class ActivitiesCausesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activities: [],
+            activitiesByCause: [],
             activeSlide: 0,
         };
         this.fetchAllActivities();
@@ -18,13 +18,13 @@ class ActivitiesCausesScreen extends Component {
 
     fetchAllActivities() {
         request
-            .get("http://localhost:8000/event")
-            .query({userId: 1, Page: 1, pageSize: 2})
+            .get("http://localhost:8000/event/causes")
+            .query({userId: 1})
             .then(result => {
                 console.log(result.body.data);
-                let activities = result.body.data;
+                let activitiesByCause = result.body.data;
                 this.setState({
-                    activities,
+                    activitiesByCause,
                 });
             })
             .catch(er => {
@@ -38,17 +38,23 @@ class ActivitiesCausesScreen extends Component {
 
     render() {
         return (
-            <View>
-                {this.state.activities.length > 0 ? (
-                    <View style={Styles.ph24}>
-                        <ActivityCauseCarousel
-                            activities={this.state.activities}
-                        />
-                    </View>
+            <View style={Styles.ph24}>
+                {this.state.activitiesByCause.length > 0 ? (
+                    Object.entries(this.state.activitiesByCause).map(
+                        ([cause, activities]) => {
+                            return (
+                                <ActivityCauseCarousel
+                                    cause={cause}
+                                    activities={activities}
+                                />
+                            );
+                        },
+                    )
                 ) : (
-                    <RegularText>Could not find any activities</RegularText>
-                ) // REFRESH BUTTON
-                }
+                    <RegularText>
+                        Could not find any activities (Refresh)
+                    </RegularText>
+                )}
             </View>
         );
     }

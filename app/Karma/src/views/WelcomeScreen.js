@@ -268,9 +268,29 @@ class WelcomeScreen extends Component {
                             style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
                             Sign Up
                         </RegularText>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                    </View>
+
+                    <View style={Styles.bottom}>
+                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                            <TransparentButton
+                                onPress={() => navigate("Activities")}
+                                white
+                                title="Sign Up"
+                            />
+
+                            <TextButton
+                                onPress={() => navigate("Profile")}
+                                title="Already have an account? Login"
+                                styles={[
+                                    Styles.white,
+                                    Styles.medium,
+                                    Styles.pt16,
+                                ]}
+                            />
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
         );
     }
 }
