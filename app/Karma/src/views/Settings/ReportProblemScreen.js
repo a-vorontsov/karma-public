@@ -12,7 +12,7 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
-import TextInput from "../../components/TextInput";
+import {TextInput} from "../../components/input";
 import Colours from "../../styles/Colours";
 
 //const request = require("superagent");

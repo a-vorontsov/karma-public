@@ -50,7 +50,7 @@ export default class PickCausesScreen extends React.Component {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={[Styles.ph24, {marginBottom: 82}]}>
-                    <View style={Styles.fullMinHeight}>
+                    <View>
                         <>
                             <PageHeader title="Causes" />
                             <SubTitleText style={{fontSize: normalise(24)}}>
