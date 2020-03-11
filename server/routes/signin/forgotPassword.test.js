@@ -92,8 +92,10 @@ test('confirming correct token works', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "234567",
+            data: {
+                email: "test@gmail.com",
+                token: "234567",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -126,8 +128,10 @@ test('confirming correct token but not latest does not work', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -154,8 +158,10 @@ test('confirming incorrect token returns incorrect token response', async () => 
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "incorrect token",
+            data: {
+                email: "test@gmail.com",
+                token: "incorrect token",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -182,8 +188,10 @@ test('confirming expired token returns token expired response', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -203,7 +211,9 @@ test('confirming with no token specified returns token not defined response', as
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
+            data: {
+                email: "test@gmail.com",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -224,8 +234,10 @@ test('confirming token not sent to email returns no token sent response', async 
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
     expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);

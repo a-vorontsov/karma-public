@@ -41,8 +41,8 @@ router.post('/', async (req, res) => {
 /**
  * Endpoint called whenever a user writes in the token they recieved and click submit.<br/>
  * URL example: POST http://localhost:8000/signin/forgot
- * @param {String} req.body.email - Email of the user
- * @param {String} req.body.token - Token input by user
+ * @param {String} req.body.data.email - Email of the user
+ * @param {String} req.body.data.token - Token input by user
  * @returns
  *  status: 200, description: Token is accepted <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
@@ -54,8 +54,8 @@ router.post('/', async (req, res) => {
  *  @function
  */
 router.post('/confirm', async (req, res) => {
-    const tokenRecieved = req.body.token;
-    const email = req.body.email;
+    const tokenRecieved = req.body.data.token;
+    const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
