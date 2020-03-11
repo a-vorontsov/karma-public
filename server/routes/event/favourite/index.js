@@ -1,5 +1,5 @@
 /**
- * @module Favourite-Event
+ * @module Event-Favourite
  */
 
 const express = require('express');

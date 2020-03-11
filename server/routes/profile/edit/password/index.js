@@ -1,5 +1,5 @@
 /**
- * @module Change-password
+ * @module Profile-Edit-Password
  */
 
 const express = require("express");
@@ -38,7 +38,7 @@ const owasp = require("owasp-password-strength-test");
         &#125;
     &#125;
 </code></pre>
- * @name Change password
+ * @name Edit password
  * @function
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {

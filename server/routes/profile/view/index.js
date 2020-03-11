@@ -1,5 +1,5 @@
 /**
- * @module Profile-view
+ * @module Profile-View
  */
 
 const express = require("express");

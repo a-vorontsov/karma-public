@@ -1,5 +1,5 @@
 /**
- * @module Sign-up-individual
+ * @module Sign-up-Individual
  */
 
 const express = require("express");
@@ -42,7 +42,7 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if success, 200 - individual registration successful<br/>
  * - if registration failed, 400 - error == exception
- * @name Sign-up individual
+ * @name Sign-up Individual
  * @function
  */
 router.post("/", async (req, res) => {

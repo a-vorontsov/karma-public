@@ -1,5 +1,5 @@
 /**
- * @module Sign-in-email
+ * @module Sign-in-Email
  */
 
 const express = require("express");
@@ -61,7 +61,7 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
         &#125;
     &#125;
 </code></pre>
- * @name Sign-in with email
+ * @name Sign-in with Email
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {

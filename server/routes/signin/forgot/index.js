@@ -1,5 +1,5 @@
 /**
- * @module Sign-in-forgotPassword
+ * @module Sign-in-Forgot
  */
 
 const express = require('express');

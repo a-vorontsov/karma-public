@@ -1,5 +1,5 @@
 /**
- * @module Verify-email
+ * @module Verify-Email
  */
 
 const express = require("express");
@@ -35,7 +35,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * - if token !== token in DB, 400 - invalid token
  * - if token expired, 400 - expired token
  * - server error, 500 - error message
- * @name Verify-email
+ * @name Verify Email
  * @function
  */
 router.post('/', authAgent.requireNoAuthentication, async (req, res) => {

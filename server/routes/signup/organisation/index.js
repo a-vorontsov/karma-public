@@ -1,5 +1,5 @@
 /**
- * @module Sign-up-organisation
+ * @module Sign-up-Organisation
  */
 
 const express = require("express");
@@ -43,7 +43,7 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if success, 200 - organisation registration successful<br/>
  * - if registration failed, 400 - error == exception
- * @name Sign-up organisation
+ * @name Sign-up Organisation
  * @function
  */
 router.post("/", async (req, res) => {

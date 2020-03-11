@@ -1,5 +1,5 @@
 /**
- * @module Sign-up-user
+ * @module Sign-up-User
  */
 
 const express = require("express");
@@ -51,7 +51,7 @@ const owasp = require("owasp-password-strength-test");
         "message": "User registration successful. Goto individual/org registration selection",
     &#125;
 </code></pre>
- * @name Sign-up user
+ * @name Sign-up User
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {

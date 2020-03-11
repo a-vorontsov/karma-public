@@ -1,5 +1,5 @@
 /**
- * @module Sign-in-password
+ * @module Sign-in-Password
  */
 
 const express = require("express");
@@ -43,7 +43,7 @@ const userAgent = require("../../../modules/authentication/user-agent");
         "message": "Successful authentication with email & password.",
     &#125;
 </code></pre>
- * @name Sign-in with password
+ * @name Sign-in with Password
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
