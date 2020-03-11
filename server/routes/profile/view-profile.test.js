@@ -28,11 +28,13 @@ const registerIndividualRequest = {
             dateOfBirth: "1998-10-09",
             gender: "M",
             phoneNumber: "+435958934",
-            addressLine1: "abc str",
-            addressLine2: "nop",
-            townCity: "London",
-            countryState: "UK",
-            postCode: "NW1 6XE",
+            address: {
+                addressLine1: "abc str",
+                addressLine2: "nop",
+                townCity: "London",
+                countryState: "UK",
+                postCode: "NW1 6XE",
+            }
         }
     }
 };
@@ -62,7 +64,7 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
     );
-    expect(profileResponse.body.data.individual.postCode).toBe(registerIndividualRequest.data.individual.postCode);
+    expect(profileResponse.body.data.individual.address.postCode).toBe(registerIndividualRequest.data.individual.address.postCode);
     expect(profileResponse.body.data.individual.firstName).toBe(
         registerIndividualRequest.data.individual.firstName,
     );
@@ -76,8 +78,8 @@ test("viewing individual profile works", async () => {
     expect(profileResponse.body.data.individual.phoneNumber).toBe(
         registerIndividualRequest.data.individual.phoneNumber,
     );
-    expect(profileResponse.body.data.individual.addressLine1).toBe(
-        registerIndividualRequest.data.individual.addressLine1,
+    expect(profileResponse.body.data.individual.address.addressLine1).toBe(
+        registerIndividualRequest.data.individual.address.addressLine1,
     );
     expect(profileResponse.body.data.user.username).toBe(user.username);
     expect(profileResponse.body.data.user.email).toBe(registration.email);
@@ -90,16 +92,18 @@ const ogranisationRegistrationRequest = {
         organisation: {
             organisationNumber: "69",
             name: "Karma org",
-            addressLine1: "Karma str",
-            addressLine2: "n",
             organisationType: "c",
             lowIncome: "no",
             exempt: "no",
             pocFirstName: "Paul",
             pocLastName: "Muller",
-            townCity: "London",
-            countryState: "UK",
-            postCode: "WC 23",
+            address: {
+                addressLine1: "Karma str",
+                addressLine2: "n",
+                townCity: "London",
+                countryState: "UK",
+                postCode: "WC 23",
+            },
             phoneNumber: "+44343525",
         }
     }
@@ -126,8 +130,8 @@ test("viewing org profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
     );
-    expect(profileResponse.body.data.individual.postCode).toBe(
-        ogranisationRegistrationRequest.data.organisation.postCode,
+    expect(profileResponse.body.data.individual.address.postCode).toBe(
+        ogranisationRegistrationRequest.data.organisation.address.postCode,
     );
     expect(profileResponse.body.data.individual.organisationNumber).toBe(
         ogranisationRegistrationRequest.data.organisation.organisationNumber,

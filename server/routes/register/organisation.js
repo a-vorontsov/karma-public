@@ -30,8 +30,12 @@ const userAgent = require("../../modules/authentication/user-agent");
                 "name": "WWF",
                 "organisationNumber": "123",
                 "phoneNumber": "0723423423",
-                "addressLine1" "7 Queen Lane",
                 [...]
+                address: {
+                    "addressLine1": "7 Queen Lane",
+                    "postCode": "WC 123",
+                    [...]
+                }
             &#125;
         &#125;
     &#125;
@@ -44,21 +48,26 @@ const userAgent = require("../../modules/authentication/user-agent");
  */
 router.post("/", async (req, res) => {
     try {
+        const organisation = {
+            organisationNumber: req.body.data.organisation.organisationNumber,
+            name: req.body.data.organisation.name,
+            organisationType: req.body.data.organisation.organisationType,
+            lowIncome: req.body.data.organisation.lowIncome,
+            exempt: req.body.data.organisation.exempt,
+            pocFirstName: req.body.data.organisation.pocFirstName,
+            pocLastName: req.body.data.organisation.pocLastName,
+            address: {
+                addressLine1: req.body.data.organisation.address.addressLine1,
+                addressLine2: req.body.data.organisation.address.addressLine2,
+                townCity: req.body.data.organisation.address.townCity,
+                countryState: req.body.data.organisation.address.countryState,
+                postCode: req.body.data.organisation.address.postCode,
+            },
+            phoneNumber: req.body.data.organisation.phoneNumber,
+        };
         await userAgent.registerOrg(
             req.body.userId,
-            req.body.data.organisation.organisationNumber,
-            req.body.data.organisation.name,
-            req.body.data.organisation.addressLine1,
-            req.body.data.organisation.addressLine2,
-            req.body.data.organisation.organisationType,
-            req.body.data.organisation.lowIncome,
-            req.body.data.organisation.exempt,
-            req.body.data.organisation.pocFirstName,
-            req.body.data.organisation.pocLastName,
-            req.body.data.organisation.townCity,
-            req.body.data.organisation.countryState,
-            req.body.data.organisation.postCode,
-            req.body.data.organisation.phoneNumber,
+            organisation,
         );
         res.status(200).send({
             message: "Organisation registration successful.",

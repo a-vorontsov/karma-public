@@ -15,7 +15,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
  * URL example: GET http://localhost:8000/profile/view/
  * @param {number} req.body.userId
  * @param {String} req.body.authToken
- * @returns
+ * @returns {object}
  * status: 400, description: error - for example an undefined indicating missing profile <br/>
  * status: 200, description: A message variable stating successfully
  * finding the user's individual or organisation profile, as well as,<br/>
@@ -31,9 +31,13 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
             &#125;
             "individual:" &#123;
                 "firstName": "Paul",
-                "addressLine1": "1 Queen Str.",
                 "banned": true,
                 [...]
+                "address:" {
+                    "addressLine1": "1 Queen Str.",
+                    "postCode": "NW 123",
+                    [...]
+                }
             &#125;
         &#125;
     &#125;
@@ -66,13 +70,15 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 lastName: individual.lastname,
                 dateOfBirth: individual.birthday,
                 gender: individual.gender,
-                addressLine1: address.address1,
-                addressLine2: address.address2,
-                townCity: address.city,
-                countryState: address.region,
-                postCode: address.postcode,
                 phoneNumber: individual.phone,
                 banned: individual.banned,
+                address: {
+                    addressLine1: address.address1,
+                    addressLine2: address.address2,
+                    townCity: address.city,
+                    countryState: address.region,
+                    postCode: address.postcode,
+                },
             };
             res.status(200).send({
                 message: "Found individual profile for user.",
@@ -97,13 +103,15 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 exempt: organisation.exempt,
                 pocFirstName: organisation.pocFirstname,
                 pocLastName: organisation.pocLastname,
-                addressLine1: address.address1,
-                addressLine2: address.address2,
-                townCity: address.city,
-                countryState: address.region,
-                postCode: address.postcode,
                 phoneNumber: organisation.phone,
                 banned: organisation.banned,
+                address: {
+                    addressLine1: address.address1,
+                    addressLine2: address.address2,
+                    townCity: address.city,
+                    countryState: address.region,
+                    postCode: address.postcode,
+                },
             };
             res.status(200).send({
                 message: "Found organisation profile for user.",

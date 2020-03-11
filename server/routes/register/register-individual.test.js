@@ -28,11 +28,13 @@ const registerIndividualRequest = {
             dateOfBirth: "1998-10-09",
             gender: "M",
             phoneNumber: "+435958934",
-            addressLine1: "abc str",
-            addressLine2: "nop",
-            townCity: "London",
-            countryState: "UK",
-            postCode: "NW1 6XE",
+            address: {
+                addressLine1: "abc str",
+                addressLine2: "nop",
+                townCity: "London",
+                countryState: "UK",
+                postCode: "NW1 6XE",
+            },
         }
     }
 };

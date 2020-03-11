@@ -29,8 +29,12 @@ const userAgent = require("../../modules/authentication/user-agent");
                 "title": "Mr.",
                 "firstName": "Paul",
                 "lastName": "Test",
-                "addressLine1" "7 Queen Lane",
                 [...]
+                address: {
+                    "addressLine1": "7 Queen Lane",
+                    "postCode": "WC 123",
+                    [...]
+                }
             &#125;
         &#125;
     &#125;
@@ -43,19 +47,24 @@ const userAgent = require("../../modules/authentication/user-agent");
  */
 router.post("/", async (req, res) => {
     try {
+        const individual = {
+            title: req.body.data.individual.title,
+            firstName: req.body.data.individual.firstName,
+            lastName: req.body.data.individual.lastName,
+            dateOfBirth: req.body.data.individual.dateOfBirth,
+            gender: req.body.data.individual.gender,
+            address: {
+                addressLine1: req.body.data.individual.address.addressLine1,
+                addressLine2: req.body.data.individual.address.addressLine2,
+                townCity: req.body.data.individual.address.townCity,
+                countryState: req.body.data.individual.address.countryState,
+                postCode: req.body.data.individual.address.postCode,
+            },
+            phoneNumber: req.body.data.individual.phoneNumber,
+        };
         await userAgent.registerIndividual(
             req.body.userId,
-            req.body.data.individual.title,
-            req.body.data.individual.firstName,
-            req.body.data.individual.lastName,
-            req.body.data.individual.dateOfBirth,
-            req.body.data.individual.gender,
-            req.body.data.individual.addressLine1,
-            req.body.data.individual.addressLine2,
-            req.body.data.individual.townCity,
-            req.body.data.individual.countryState,
-            req.body.data.individual.postCode,
-            req.body.data.individual.phoneNumber,
+            individual,
         );
         res.status(200).send({
             message: "Individual registration successful.",

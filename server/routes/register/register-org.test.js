@@ -24,16 +24,18 @@ const ogranisationRegistrationRequest = {
         organisation: {
             organisationNumber: "69",
             name: "Karma org",
-            addressLine1: "Karma str",
-            addressLine2: "n",
             organisationType: "c",
             lowIncome: "no",
             exempt: "no",
             pocFirstName: "Paul",
             pocLastName: "Muller",
-            townCity: "London",
-            countryState: "UK",
-            postCode: "WC 23",
+            address: {
+                addressLine1: "Karma str",
+                addressLine2: "n",
+                townCity: "London",
+                countryState: "UK",
+                postCode: "WC 23",
+            },
             phoneNumber: "+44343525",
         }
     }
@@ -48,8 +50,8 @@ test("ogranisation registration works", async () => {
         .post("/register/organisation")
         .send(ogranisationRegistrationRequest);
 
-    expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("Organisation registration successful.");
+    expect(response.statusCode).toBe(200);
 });
 
 test("individual reg with wrong userId fails", async () => {
