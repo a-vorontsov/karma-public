@@ -17,7 +17,7 @@ const mailSender = require("../../modules/mailSender/index");
  * @param {string} req.body.authToken can be anything
  * @param {object} req.body.data.email user input email address
  * @param {object} req.body.data.report user input bug report
- * @param {object} req.body Here is an example of an appropriate request json:
+ * @param {object} req.body Here are some examples of an appropriate request json:
 <pre><code>
     &#123;
         "userId": 123,
@@ -27,8 +27,16 @@ const mailSender = require("../../modules/mailSender/index");
             "report": "I can't date",
         &#125;
     &#125;
+    &#123;
+        "userId": null,
+        "authToken": null,
+        "data": &#123;
+            "email": "icantlogin@gmail.com",
+            "report": "I can't sign-in to the app and don't receive a token. Fix pls!",
+        &#125;
+    &#125;
 </code></pre>
- * @return {HTTP} one of the following HTTP responses:<br/>
+ * @return {object} one of the following HTTP responses:<br/>
  * - if email successfully sent, 200 - bug report sent<br/>
  * - if any error, 400 - error msg from mailSender module
  * @name Send bug report

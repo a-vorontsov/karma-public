@@ -11,7 +11,7 @@ const causeRepository = require("../../models/databaseRepositories/causeReposito
  * URL example: GET http://localhost:8000/causes
  * @returns
  *  status: 200, description: Array of all cause objects<br/>
- *  status: 500, description: Most probably a database error occured
+ *  status: 500, description: Most probably a database error occurred
  *  @name Get all causes
  *  @function
  */
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
  *  status: 200, description: cause object with given id <br/>
  *  status: 400, description: if ID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: no cause was found in DB with ID <br/>
- *  status: 500, description: Most probably a database error occured
+ *  status: 500, description: Most probably a database error occurred
  *  @name Get by ID
  *  @function
  */
