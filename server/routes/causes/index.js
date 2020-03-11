@@ -4,7 +4,7 @@
 
 const express = require('express');
 const router = express.Router();
-const causeRepository = require("../models/databaseRepositories/causeRepository");
+const causeRepository = require("../../models/databaseRepositories/causeRepository");
 
 /**
  * Gets all causes.<br/>

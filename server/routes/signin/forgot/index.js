@@ -4,9 +4,9 @@
 
 const express = require('express');
 const router = express.Router();
-const resetRepository = require("../../models/databaseRepositories/resetRepository");
-const util = require("../../util/util");
-const tokenSender = require("../../modules/verification/tokenSender");
+const resetRepository = require("../../../models/databaseRepositories/resetRepository");
+const util = require("../../../util/util");
+const tokenSender = require("../../../modules/verification/tokenSender");
 
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>

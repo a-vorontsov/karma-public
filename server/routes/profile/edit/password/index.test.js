@@ -1,10 +1,10 @@
 const request = require('supertest');
-const app = require('../../../app');
-const testHelpers = require("../../../test/testHelpers");
+const app = require("../../../../app");
+const testHelpers = require("../../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const userAgent = require("../../../modules/authentication/user-agent");
+const userRepo = require("../../../../models/databaseRepositories/userRepository");
+const regRepo = require("../../../../models/databaseRepositories/registrationRepository");
+const userAgent = require("../../../../modules/authentication/user-agent");
 
 jest.mock("owasp-password-strength-test");
 let user, registration;

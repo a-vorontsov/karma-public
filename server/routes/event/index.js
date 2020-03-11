@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const eventSignupRoute = require("./signup/eventSignup");
-const eventFavouriteRoute = require("./favourite/eventFavourite");
+const eventFavouriteRoute = require("./favourite");
 const eventSelectRoute = require("./select/eventSelect");
 
 const httpUtil = require("../../util/httpUtil");

@@ -4,8 +4,8 @@
 
 const express = require("express");
 const router = express.Router();
-const emailVerification = require("../../modules/verification/email");
-const authAgent = require("../../modules/authentication/auth-agent");
+const emailVerification = require("../../../modules/verification/email");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * This is the second step of the signup flow.<br/>

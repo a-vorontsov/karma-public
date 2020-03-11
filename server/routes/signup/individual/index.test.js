@@ -1,8 +1,8 @@
 const request = require("supertest");
-const app = require("../../app");
-const testHelpers = require("../../test/testHelpers");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const app = require("../../../app");
+const testHelpers = require("../../../test/testHelpers");
+const userRepo = require("../../../models/databaseRepositories/userRepository");
+const regRepo = require("../../../models/databaseRepositories/registrationRepository");
 
 let user, registration;
 

@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../modules/authentication/user-agent");
+const userAgent = require("../../../modules/authentication/user-agent");
 
 /**
  * This is the fourth step of the signup flow (after user

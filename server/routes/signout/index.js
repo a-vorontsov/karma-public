@@ -1,5 +1,5 @@
 /**
- * @module Log-out
+ * @module Sign-out
  */
 
 const express = require("express");
@@ -7,13 +7,13 @@ const router = express.Router();
 const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
- * Endpoint called whenever a user wishes to log out from the
+ * Endpoint called whenever a user wishes to sign-out from the
  * application.</br>
  * No special parameters need to be provided, but userId and
  * authToken must be present, as in any other request.</br>
  * This logs out the user by setting their current authToken
  * expired and therefore ending their session.
- * @route {GET} /logout
+ * @route {GET} /signout
  * @param {number} req.body.userId
  * @param {String} req.body.authToken
  * @return {HTTP} one of the following HTTP responses:<br/>
@@ -21,7 +21,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * - if user is not authenticated when calling this endpoint (why
  * would they), 403 - user not authorised<br/>
  * - in case of any other error, 500 - error message
- * @name Log-out
+ * @name Sign-out
  * @function
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const selectedCauseRepository = require("../models/databaseRepositories/selectedCauseRepository");
+const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 
 /**
  * gets called when user selects causes
@@ -28,4 +28,5 @@ router.post('/:id/causes', (req, res) => {
         })
         .catch(err => res.status(500).send(err));
 });
+
 module.exports = router;

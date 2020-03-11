@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const twilioVerification = require('../../modules/verification/twilio');
+const twilioVerification = require('../../../modules/verification/twilio');
 
 router.post('/create', (req, res) => {
     try {

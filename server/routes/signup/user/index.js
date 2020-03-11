@@ -4,8 +4,8 @@
 
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../modules/authentication/user-agent");
-const authAgent = require("../../modules/authentication/auth-agent");
+const userAgent = require("../../../modules/authentication/user-agent");
+const authAgent = require("../../../modules/authentication/auth-agent");
 const owasp = require("owasp-password-strength-test");
 
 /**

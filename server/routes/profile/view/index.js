@@ -4,11 +4,11 @@
 
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const authAgent = require("../../../modules/authentication/auth-agent");
+const userRepo = require("../../../models/databaseRepositories/userRepository");
+const indivRepo = require("../../../models/databaseRepositories/individualRepository");
+const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
+const addressRepo = require("../../../models/databaseRepositories/addressRepository");
 
 /**
  * Endpoint called whenever a user wishes to view their profile.<br/>

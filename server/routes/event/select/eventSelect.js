@@ -14,7 +14,7 @@ const paginator = require("../../../modules/pagination");
 
 /**
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
+ * URL example: http://localhost:8000/event?userId=1&amp;currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
  * route {GET} /event
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - all filters required as an array of strings
@@ -81,7 +81,7 @@ const paginator = require("../../../modules/pagination");
  }
  </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
- *  status: 404, description: if userID doesnt belong to any user <br/>
+ *  status: 404, description: if userID doesn't belong to any user <br/>
  *  status: 500, description: Most probably a database error occurred
  *  @function
  *  @name Get "All" Activities tab

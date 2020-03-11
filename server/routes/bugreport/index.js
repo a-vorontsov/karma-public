@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const mailSender = require("../modules/mailSender/index");
+const mailSender = require("../../modules/mailSender/index");
 
 /**
  * Attempt send a bug report to admin email account.
