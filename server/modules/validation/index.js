@@ -78,9 +78,20 @@ const notificationSchema = {
     "required": ["type", "message", "senderId", "receiverId"],
 };
 
+const informationSchema = {
+    "id": "/Information",
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "content": {"type": "string"},
+    },
+    "required": ["type", "content"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
+validator.addSchema(informationSchema, "/Information");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
@@ -94,8 +105,13 @@ const validateNotification = (notification) => {
     return validator.validate(notification, notificationSchema);
 };
 
+const validateInformation = (information) => {
+    return validator.validate(information, informationSchema);
+};
+
 module.exports = {
     validateAddress: validateAddress,
     validateEvent: validateEvent,
     validateNotification: validateNotification,
+    validateInformation: validateInformation,
 };
