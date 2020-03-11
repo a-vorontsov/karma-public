@@ -24,12 +24,7 @@ app.use("/verify/email", require("./routes/verify/email"));
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
-app.use("/error/nouserid", require("./routes/error/noUserId"));
-app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
-app.use("/error/unauthorised", require("./routes/error/unauthorised"));
-app.use("/error/alreadyauthenticated", require("./routes/error/alreadyAuthenticated"));
-app.use("/error/customerror", require("./routes/error/customError"));
-app.use("/error/usernotfound", require("./routes/error/userNotFound"));
+app.use("/error", require("./routes/error"));
 
 app.use("/notification", require("./routes/notification"));
 

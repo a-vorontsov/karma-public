@@ -2,6 +2,8 @@ const authRepo = require("../../models/databaseRepositories/authenticationReposi
 const digest = require("./digest");
 const date = require("date-and-time");
 const util = require("../../util/util");
+const httpUtil = require("../../util/httpUtil");
+const httpErr = require("../../util/httpErrors");
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -21,17 +23,17 @@ async function requireAuthentication(req, res, next) {
     const userId = req.body.userId;
     const authToken = req.body.authToken;
     if (userId === undefined) {
-        res.redirect("/error/nouserid");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
     } else if (authToken === undefined) {
-        res.redirect("/error/noauthtoken");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     } else if (authToken === null || userId === null) {
-        res.redirect("/error/unauthorised");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
     } else {
         const isValid = await isValidToken(userId, authToken);
         if (isValid.isValidToken) {
             next();
         } else {
-            res.redirect("/error/customerror/?err=" + isValid.error);
+            httpUtil.sendErrorWithRedirect(401, isValid.error, res);
         }
     }
 }
@@ -54,9 +56,9 @@ async function requireNoAuthentication(req, res, next) {
     const userId = req.body.userId;
     const authToken = req.body.authToken;
     if (userId === undefined) {
-        res.redirect("/error/nouserid");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
     } else if (authToken === undefined) {
-        res.redirect("/error/noauthtoken");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     } else if (userId === null || authToken === null) {
         next(); // for performance reasons logic is separated
     } else if ((await isValidToken(userId, authToken)).isValidToken) {
