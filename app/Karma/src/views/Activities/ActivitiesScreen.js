@@ -7,19 +7,37 @@ import {
     ScrollView,
     TouchableOpacity,
     Platform,
+    Image,
+    Switch,
+    Dimensions
 } from "react-native";
+import Slider from "@react-native-community/slider";
+import Modal, { ModalContent, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import ActivitiesAllScreen from "./ActivitiesAllScreen";
 import ActivitiesCausesScreen from "./ActivitiesCausesScreen";
 import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
+import Styles from "../../styles/Styles";
+
+const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
+const formWidth = 0.8 * SCREEN_WIDTH;
+const HALF = formWidth / 2;
+
+const icons = {
+    filter: require("../../assets/images/general-logos/filter.png"),
+    calendar: require("../../assets/images/general-logos/calendar-dark.png"),
+};
 
 class ActivitiesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            womenOnlyValue: false,
+            distance: 90,
             display: ActivitiesAllScreen,
+            visible: false
         };
     }
 
@@ -39,7 +57,7 @@ class ActivitiesScreen extends Component {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
-                    <View style={{paddingTop: 24, paddingHorizontal: 24}}>
+                    <View style={{flexDirection: "row", justifyContent:"space-between", paddingTop: 24, paddingLeft: 24}}>
                         <RegularText
                             style={{
                                 fontSize: 24,
@@ -50,6 +68,97 @@ class ActivitiesScreen extends Component {
                             }}>
                             Activities
                         </RegularText>
+                        <TouchableOpacity
+                            style={{alignSelf:"center"}}
+                            onPress={() => {
+                                this.setState({ visible: true });
+                              }}>
+                            <Image 
+                                source={icons.filter}
+                                style={{height:25, alignSelf: "center"}}
+                                resizeMode="contain"
+                                />
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Modal
+                            visible={this.state.visible}
+                            modalTitle={<ModalTitle title="Your Settings" />}
+                            height={SCREEN_HEIGHT*0.5}
+                            width={formWidth}
+                            onTouchOutside={() => {
+                            this.setState({ visible: false });
+                            }}>
+                            <ModalContent>
+                                {/* AVAILABILITY */}
+                                <View style={{flexDirection:"row", alignItems:"center"}}>
+                                    <RegularText style={styles.contentText}>
+                                        Availability:
+                                    </RegularText>
+                                    <View style={styles.leftItem}>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={icons.calendar}
+                                                style={{
+                                                    width: 25,
+                                                    height: 25,
+                                                    resizeMode: "contain",
+                                                }}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+
+                                {/* DISTANCE */}
+                                    <View
+                                        style={{flex: 1, flexDirection: "row"}}>
+                                        <RegularText style={styles.contentText}>
+                                            Distance
+                                        </RegularText>
+                                        <View style={styles.leftItem}>
+                                            <RegularText
+                                                style={styles.contentText}>
+                                                {this.state.distance} Miles
+                                            </RegularText>
+                                        </View>
+                                    </View>
+                                    <Slider
+                                        style={styles.slider}
+                                        value={this.state.distance}
+                                        minimumValue={0}
+                                        maximumValue={100}
+                                        step={1}
+                                        thumbTintColor={Colours.blue}
+                                        minimumTrackTintColor="#A9DCDF"
+                                        onSlidingComplete={val =>
+                                            this.setState({distance: val})
+                                        }
+                                    />
+
+                                {/* WOMEN ONLY */}
+                                    <RegularText style={styles.contentText}>
+                                        Women Only Activities:
+                                    </RegularText>
+                                    <View style={styles.leftItem}>
+                                        <Switch
+                                            style={styles.switch}
+                                            value={this.state.womenOnlyValue}
+                                            trackColor={{
+                                                true: "#A9DCDF",
+                                                false: Colours.grey,
+                                            }}
+                                            thumbColor={Colours.grey}
+                                            onChange={prevState =>
+                                                this.setState({
+                                                    womenOnlyValue: !prevState.womenOnlyValue,
+                                                })
+                                            }
+                                        />
+                                    </View>
+
+                            </ModalContent>
+                        </Modal>
                     </View>
                     <View style={{paddingBottom: 30, paddingHorizontal: 24}}>
                         <View
@@ -190,6 +299,29 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "700",
         color: Colours.white,
+    },
+    contentText: {
+        fontSize: 18,
+        color: Colours.grey,
+        paddingVertical: 20,
+    },
+    editContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        borderColor: "transparent",
+        borderBottomColor: Colours.lightGrey,
+        borderWidth: 1.5,
+    },
+    pointContainer: {
+        flex: 1,
+    },
+    leftItem: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
     },
 });
 
