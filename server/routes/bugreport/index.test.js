@@ -12,6 +12,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+    jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
 
@@ -34,4 +35,22 @@ test('bug report sending works', async () => {
     expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
     expect(response.body.message).toBe("Email sent to " + bugReport.data.email);
     expect(response.status).toBe(200);
+});
+
+test('bug report endpoint gives correct response if mail-sending fails', async () => {
+
+    mailSender.sendBugReport.mockResolvedValue(
+        result = {
+            status: 500,
+            info: "info",
+            message: `Email sending failed to ${bugReport.data.email}`,
+        },
+    );
+    const response = await request(app)
+        .post("/bugreport")
+        .send(bugReport);
+
+    expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Email sending failed to " + bugReport.data.email);
+    expect(response.status).toBe(500);
 });
