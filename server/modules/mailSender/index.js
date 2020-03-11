@@ -17,9 +17,6 @@ const transporter = nodemailer.createTransport({
  * @param {string} text
  */
 const sendEmail = async (email, subject, text) => {
-    if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
-        return;
-    }
     return new Promise((resolve, reject) => {
         const mailOptions = {
             from: `${process.env.EMAIL_ADDRESS}`,
@@ -27,15 +24,32 @@ const sendEmail = async (email, subject, text) => {
             subject: subject,
             text: text,
         };
-        console.log(`Sending mail to ${email}`);
-        transporter.sendMail(mailOptions, function(err, info) {
-            if (err) {
-                throw new Error(err.message);
-            } else {
-                console.log(`Email sent to ${email} ` + info.response);
-                resolve(true);
-            }
-        });
+        if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
+            const result = {
+                success: true,
+                info: "testing",
+                message: `Email sent to ${email}`,
+            };
+            resolve(result);
+        } else {
+            transporter.sendMail(mailOptions, function(err, info) {
+                if (err) {
+                    const result = {
+                        success: false,
+                        info: err,
+                        message: `Email sending failed to ${email}`,
+                    };
+                    resolve(result);
+                } else {
+                    const result = {
+                        success: true,
+                        info: info,
+                        message: `Email sent to ${email}`,
+                    };
+                    resolve(result);
+                }
+            });
+        }
     });
 };
 
@@ -51,7 +65,7 @@ const sendBugReport = async (email, report) => {
     const toEmail = process.env.BUG_REPORT_EMAIL_ADDRESS;
     const subject = "Bug Report";
     const text = `Bug report from ${email}: ${report}`;
-    await sendEmail(toEmail, subject, text);
+    return sendEmail(toEmail, subject, text);
 };
 
 module.exports = {

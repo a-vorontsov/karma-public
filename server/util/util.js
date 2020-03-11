@@ -121,6 +121,17 @@ const isValidToken = async (tokenResult, inputToken) => {
     }
 };
 
+/**
+ * Sleep n milliseconds.
+ * @param {number} ms
+ * @return {Promise}
+ */
+const sleep = async (ms) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+};
+
 module.exports = {
     isIndividual: isIndividual,
     isOrganisation: isOrganisation,
@@ -128,4 +139,5 @@ module.exports = {
     checkEventId: checkEventId,
     checkEmail: checkEmail,
     isValidToken: isValidToken,
+    sleep: sleep,
 };
