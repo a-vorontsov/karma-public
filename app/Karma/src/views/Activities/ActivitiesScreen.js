@@ -20,6 +20,9 @@ import ActivitiesCausesScreen from "./ActivitiesCausesScreen";
 import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import Styles from "../../styles/Styles";
+import DatepickerRange from 'react-native-range-datepicker';
+import Calendar from "../../components/Calendar";
+import { Button, TransparentButton} from "../../components/buttons";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -36,8 +39,13 @@ class ActivitiesScreen extends Component {
         this.state = {
             womenOnlyValue: false,
             distance: 90,
+            startDate: "13052017",
+            untilDate: "26062017",
+            isStartDateVisible: false,
+            isEndDateVisible: false,
             display: ActivitiesAllScreen,
-            visible: false
+            visible: false,
+            calendarVisible: false,
         };
     }
 
@@ -64,7 +72,6 @@ class ActivitiesScreen extends Component {
                                 fontWeight: "600",
                                 color: Colours.black,
                                 paddingLeft: 16,
-                                paddingBottom: 10,
                             }}>
                             Activities
                         </RegularText>
@@ -75,16 +82,18 @@ class ActivitiesScreen extends Component {
                               }}>
                             <Image 
                                 source={icons.filter}
-                                style={{height:25, alignSelf: "center"}}
+                                style={{height:25, alignSelf: "center", marginRight:-7}}
                                 resizeMode="contain"
                                 />
                         </TouchableOpacity>
                     </View>
+
+                    {/* FILTER MODAL */}
                     <View>
                         <Modal
                             visible={this.state.visible}
-                            modalTitle={<ModalTitle title="Your Settings" />}
-                            height={SCREEN_HEIGHT*0.5}
+                            // modalTitle={<ModalTitle style={[styles.contentText, {color:Colours.blue}]} title="Your Filters" />}
+                            height={this.state.calendarVisible ? SCREEN_HEIGHT*0.5 : SCREEN_HEIGHT*0.4}
                             width={formWidth}
                             onTouchOutside={() => {
                             this.setState({ visible: false });
@@ -96,7 +105,8 @@ class ActivitiesScreen extends Component {
                                         Availability:
                                     </RegularText>
                                     <View style={styles.leftItem}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                        onPress={() => {this.setState({ calendarVisible: true })}}>
                                             <Image
                                                 source={icons.calendar}
                                                 style={{
@@ -107,15 +117,27 @@ class ActivitiesScreen extends Component {
                                             />
                                         </TouchableOpacity>
                                     </View>
-
+                                </View>
+                                { this.state.calendarVisible &&
+                                <View style={{flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
+                                    <View>
+                                        <Calendar/>
+                                    </View>
+                                    <View style={{flexDirection:"row", justifyContent:"space-evenly"}}>
+                                        <Button size={15} ph={20} title={"Set Dates"} onPress={() => {this.setState({ calendarVisible: false })}}/>
+                                        {/* <TransparentButton size={15} ph={5} title={"Reset"}/> */}
+                                    </View>
                                 </View>
 
+                                }
+
                                 {/* DISTANCE */}
-                                    <View
-                                        style={{flex: 1, flexDirection: "row"}}>
-                                        <RegularText style={styles.contentText}>
-                                            Distance
-                                        </RegularText>
+                                { !this.state.calendarVisible &&
+                                <View>
+                                    <View style={{flexDirection:"row", alignItems:"center"}}>
+                                    <RegularText style={styles.contentText}>
+                                        Distance
+                                    </RegularText>
                                         <View style={styles.leftItem}>
                                             <RegularText
                                                 style={styles.contentText}>
@@ -135,8 +157,12 @@ class ActivitiesScreen extends Component {
                                             this.setState({distance: val})
                                         }
                                     />
+                                </View>
+                                }
 
                                 {/* WOMEN ONLY */}
+                                { !this.state.calendarVisible &&
+                                <View style={{flexDirection:"row", alignItems:"center", paddingBottom:10}}>
                                     <RegularText style={styles.contentText}>
                                         Women Only Activities:
                                     </RegularText>
@@ -156,10 +182,21 @@ class ActivitiesScreen extends Component {
                                             }
                                         />
                                     </View>
+                                </View>
+                                }
+                                { !this.state.calendarVisible &&
+                                <Button 
+                                    size={15} 
+                                    title={"Update"} 
+                                    onPress={() => {
+                                    this.setState({ visible: false });
+                                  }}/>}
 
                             </ModalContent>
                         </Modal>
                     </View>
+
+                    {/* NAVIGATION TAB */}
                     <View style={{paddingBottom: 30, paddingHorizontal: 24}}>
                         <View
                             style={{
