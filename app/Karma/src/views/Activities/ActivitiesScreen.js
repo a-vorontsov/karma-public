@@ -14,9 +14,6 @@ import {
 import Slider from "@react-native-community/slider";
 import Modal, {
     ModalContent,
-    ModalTitle,
-    ModalFooter,
-    ModalButton,
 } from "react-native-modals";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
@@ -24,10 +21,8 @@ import ActivitiesAllScreen from "./ActivitiesAllScreen";
 import ActivitiesCausesScreen from "./ActivitiesCausesScreen";
 import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
-import Styles from "../../styles/Styles";
-import DatepickerRange from "react-native-range-datepicker";
 import Calendar from "../../components/Calendar";
-import {Button, TransparentButton} from "../../components/buttons";
+import {Button} from "../../components/buttons";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -44,10 +39,6 @@ class ActivitiesScreen extends Component {
         this.state = {
             womenOnlyValue: false,
             distance: 90,
-            startDate: "13052017",
-            untilDate: "26062017",
-            isStartDateVisible: false,
-            isEndDateVisible: false,
             display: ActivitiesAllScreen,
             visible: false,
             calendarVisible: false,
@@ -107,7 +98,6 @@ class ActivitiesScreen extends Component {
                     <View>
                         <Modal
                             visible={this.state.visible}
-                            // modalTitle={<ModalTitle style={[styles.contentText, {color:Colours.blue}]} title="Your Filters" />}
                             height={
                                 this.state.calendarVisible
                                     ? SCREEN_HEIGHT * 0.5
@@ -170,7 +160,6 @@ class ActivitiesScreen extends Component {
                                                     });
                                                 }}
                                             />
-                                            {/* <TransparentButton size={15} ph={5} title={"Reset"}/> */}
                                         </View>
                                     </View>
                                 )}

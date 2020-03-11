@@ -5,7 +5,6 @@ import Colours from "../styles/Colours";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
-const HALF = formWidth / 2;
 
 export default class Calendar extends Component {
     constructor(props) {
