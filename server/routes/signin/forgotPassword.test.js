@@ -10,7 +10,12 @@ jest.mock("../../models/databaseRepositories/resetRepository");
 jest.mock("../../models/databaseRepositories/userRepository");
 jest.mock("../../modules/mailSender");
 
+let user, reset1, reset2;
+
 beforeEach(() => {
+    user = testHelpers.getUserExample1();
+    reset1 = testHelpers.getResetExample1();
+    reset2 = testHelpers.getResetExample2();
     return testHelpers.clearDatabase();
 });
 
@@ -18,10 +23,6 @@ afterEach(() => {
     jest.clearAllMocks();
     return testHelpers.clearDatabase();
 });
-
-const user = testHelpers.user;
-const reset1 = testHelpers.reset1;
-const reset2 = testHelpers.reset2;
 
 test('requesting reset password token works', async () => {
     resetRepository.insertResetToken.mockResolvedValue({
@@ -40,7 +41,7 @@ test('requesting reset password token works', async () => {
     const response = await request(app)
         .post("/signin/forgot")
         .send({
-            email: "test@gmail.com"
+            email: "test@gmail.com",
         });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
@@ -115,7 +116,7 @@ test('confirming correct token but not latest does not work', async () => {
                 expiryDate: new Date(),
             }
         ],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -143,7 +144,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             id: 1,
             expiryDate: dateTime,
         }],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -171,7 +172,7 @@ test('confirming expired token returns token expired response', async () => {
             id: 1,
             expiryDate: dateTime,
         }],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
@@ -213,7 +214,7 @@ test('confirming token not sent to email returns no token sent response', async 
     });
     resetRepository.findResetToken.mockResolvedValue({
         rows: [],
-    })
+    });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({

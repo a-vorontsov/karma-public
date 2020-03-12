@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity} from "react-native";
+import {Text, TouchableOpacity} from "react-native";
 
 const MainButton = props => (
     <TouchableOpacity

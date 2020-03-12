@@ -1,17 +1,8 @@
 import React from "react";
-import {
-    View,
-    SafeAreaView,
-    Dimensions,
-    TouchableOpacity,
-    Image,
-} from "react-native";
-import {RegularText} from "../components/text";
+import {Image, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "react-navigation-hooks";
+import {RegularText} from "../components/text";
 import Colours from "../styles/Colours";
-
-const {width, height} = Dimensions.get("window");
-const formWidth = 0.8 * width;
 
 const PageHeader = props => {
     const navigation = useNavigation();

@@ -4,14 +4,14 @@ const testHelpers = require("../../test/testHelpers");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 
-const registration4 = testHelpers.registration4;
-const registration5 = testHelpers.registration5;
-const registration6 = testHelpers.registration6;
-const user4 = testHelpers.user4;
-
+let registrationExample4, registrationExample5, registrationExample6, user4;
 beforeEach(() => {
+    registrationExample1 = testHelpers.getRegistrationExample4();
+    registrationExample2 = testHelpers.getRegistrationExample5();
+    registrationExample6 = testHelpers.getRegistrationExample6();
+    user4 = testHelpers.getUserExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
     return testHelpers.clearDatabase();
 });
 
@@ -21,7 +21,11 @@ afterEach(() => {
 });
 
 const signInEmailRequest = {
-    email: "test4@gmail.com",
+    userId: null,
+    authToken: null,
+    data: {
+        email: "test4@gmail.com",
+    }
 };
 
 test("sign-in with email works", async () => {
@@ -31,12 +35,12 @@ test("sign-in with email works", async () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "Email did not exist. Email successfully recorded, go to email verification screen.",
+        "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
 });
 
 test("sign-in with unverified email works", async () => {
-    await regRepo.insert(registration4);
+    await regRepo.insert(registrationExample1);
 
     const response = await request(app)
         .post("/signin/email")
@@ -49,7 +53,7 @@ test("sign-in with unverified email works", async () => {
 });
 
 test("sign-in with verified email works", async () => {
-    await regRepo.insert(registration5);
+    await regRepo.insert(registrationExample2);
 
     const response = await request(app)
         .post("/signin/email")
@@ -62,7 +66,7 @@ test("sign-in with verified email works", async () => {
 });
 
 test("sign-in with verified email but no registration works", async () => {
-    await regRepo.insert(registration6);
+    await regRepo.insert(registrationExample6);
 
     const response = await request(app)
         .post("/signin/email")
@@ -75,7 +79,7 @@ test("sign-in with verified email but no registration works", async () => {
 });
 
 test("sign-in with partial registration works", async () => {
-    await regRepo.insert(registration5);
+    await regRepo.insert(registrationExample2);
     await userRepo.insert(user4);
 
     const response = await request(app)
@@ -89,7 +93,7 @@ test("sign-in with partial registration works", async () => {
 });
 
 test("sign-in with full registration works", async () => {
-    await regRepo.insert(registration6);
+    await regRepo.insert(registrationExample6);
     await userRepo.insert(user4);
 
     const response = await request(app)

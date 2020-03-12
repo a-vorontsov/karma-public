@@ -17,14 +17,14 @@ const causeRepository = require("../models/databaseRepositories/causeRepository"
  */
 router.get('/', (req, res) => {
     causeRepository.findAll()
-        .then(result => res.status(200).json(result.rows))
+        .then(result => res.status(200).json({data: result.rows}))
         .catch(err => res.status(500).send(err));
 });
 
 /**
  * Gets a cause specified by id.<br/>
  * URL example: GET http://localhost:8000/causes/3
- * @param {integer} req.params.id - ID of the cause required
+ * @param {number} req.params.id - ID of the cause required
  * @returns
  *  status: 200, description: cause object with given id <br/>
  *  status: 400, description: if ID param is not specified or in wrong format/NaN <br/>
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
     causeRepository.findById(id)
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No cause with given id");
-            res.status(200).json(result.rows);
+            res.status(200).json({data: result.rows});
         })
         .catch(err => res.status(500).send(err));
 });

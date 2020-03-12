@@ -6,31 +6,27 @@ import {
     Platform,
     Dimensions,
     StatusBar,
-    Picker,
     Image,
-    Keyboard,
     Alert,
     StyleSheet,
 } from "react-native";
 import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
-import Styles from "../styles/Styles";
+import Styles, {normalise} from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
 
-import {RegularText, SemiBoldText, BoldText} from "../components/text";
+import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import TextInput from "../components/TextInput";
 import {GradientButton} from "../components/buttons";
-
+const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const TEXT_COLOUR = "#7F7F7F";
-//at least 8 characters with one upper, lower and a digit
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
@@ -41,11 +37,9 @@ export default class OrgSignUpScreen extends React.Component {
             orgType: "",
             orgName: "",
             charityNumber: "",
+            fname: "",
+            lname: "",
             regDate: "",
-            email: "",
-            password: "",
-            confPassword: "",
-            hidePassword: true,
             isLowIncome: false,
             isExempt: false,
             photo: null,
@@ -76,10 +70,6 @@ export default class OrgSignUpScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-    isValidPassword = () => {
-        return PASSWORD_REGEX.test(this.state.password);
-    };
-
     setPhoto(selectedPhoto) {
         this.setState({
             photo: selectedPhoto,
@@ -94,24 +84,26 @@ export default class OrgSignUpScreen extends React.Component {
         }
     }
 
-    getPasswordError = () => {
-        let isValid = this.isValidPassword(this.state.password);
-        let err;
-        if (isValid) {
-            if (this.state.password !== this.state.confPassword) {
-                err = "Passwords must match";
-            }
-        } else {
-            if (!this.state.password && this.state.confPassword) {
-                err = "Passwords must match";
-            } else {
-                err = "Passwords must be at least 8 chars (upper/lower/digit)";
-            }
-        }
-        return err;
-    };
-
-    submit = () => {
+    createOrganisation() {
+        const organisation = {
+            userId: "1", //TODO
+            organisationNumber: this.state.charityNumber,
+            name: this.state.orgName,
+            organisationType: this.state.orgType,
+            lowIncome: this.state.isLowIncome,
+            exempt: this.state.isExempt,
+            pocFirstName: this.state.fname,
+            pocLastName: this.state.lname,
+            addressLine1: "line1", //TODO
+            addressLine2: "line2", //TODO
+            townCity: "TODO", //TODO
+            countryState: "TODO", //TODO
+            postCode: "TODO", //TODO
+            phoneNumber: "TODO", //TODO
+        };
+        return organisation;
+    }
+    submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
         if (
@@ -121,29 +113,36 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-
         if (
             !this.state.charityNumber &&
             (!this.state.isExempt && !this.state.isLowIncome)
         ) {
             return;
         }
-        navigate("About");
+
+        const org = this.createOrganisation();
+        console.log(org);
+        await request
+            .post("http://localhost:8000/register/organisation")
+            .send({
+                authToken: "ffa234124",
+                userId: "1",
+                ...org,
+            })
+            .then(res => {
+                console.log(res.body);
+                navigate("PickCauses");
+            })
+            .catch(err => {
+                Alert.alert("Server Error", err.message);
+            });
     };
 
     render() {
-        const passwordError = this.getPasswordError();
-
-        const showPasswordError =
-            !this.state.password ||
-            this.state.password !== this.state.confPassword ||
-            !this.isValidPassword();
-
         const showDateError =
             this.state.submitPressed &&
             (!this.state.isExempt && !this.state.isLowIncome);
 
-        const {navigate} = this.props.navigation;
         const data = [
             {value: "NGO (Non-Government Organisation"},
             {value: "Charity Option 1"},
@@ -156,26 +155,29 @@ export default class OrgSignUpScreen extends React.Component {
                 <View
                     style={{
                         alignItems: "center",
-                        height: 0.1 * SCREEN_HEIGHT,
+                        height: 0.08 * SCREEN_HEIGHT,
                         justifyContent: "flex-start",
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
                         <PageHeader title="Sign Up" />
-
-                        <SemiBoldText
-                            style={{
-                                color: "#01a7a6",
-                                fontSize: 25,
-                            }}>
-                            Create a new account
-                        </SemiBoldText>
                     </View>
                 </View>
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView showsVerticalScrollIndicator={false}>
+                        <SubTitleText
+                            style={[
+                                Styles.ph24,
+                                {
+                                    paddingLeft: 40,
+                                    paddingVertical: -15,
+                                    fontSize: normalise(26),
+                                },
+                            ]}>
+                            Create a new account
+                        </SubTitleText>
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,
@@ -220,57 +222,29 @@ export default class OrgSignUpScreen extends React.Component {
                                 }
                             />
                             <TextInput
-                                placeholder="team-team@gmail.com"
-                                editable={false}
+                                placeholder="Point of Contact First Name"
+                                name="fname"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.lname.focus()}
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.fname
+                                        : false
+                                }
                             />
-                            {/** PASSWORD FIELDS */}
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                }}>
-                                <TextInput
-                                    inputRef={ref => (this.password = ref)}
-                                    placeholder="Password"
-                                    secureTextEntry={this.state.hidePassword}
-                                    onChange={this.onChangeText}
-                                    blurOnSubmit={false}
-                                    onSubmitEditing={() =>
-                                        this.confirmPassword.focus()
-                                    }
-                                    name="password"
-                                    showError={
-                                        this.state.submitPressed
-                                            ? showPasswordError
-                                            : false
-                                    }
-                                    errorText={
-                                        !this.state.password ? undefined : ""
-                                    }
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    width: FORM_WIDTH,
-                                    flexDirection: "row",
-                                }}>
-                                <TextInput
-                                    inputRef={ref =>
-                                        (this.confirmPassword = ref)
-                                    }
-                                    placeholder="Confirm Password"
-                                    secureTextEntry={this.state.hidePassword}
-                                    onChange={this.onChangeText}
-                                    blurOnSubmit={false}
-                                    name="confPassword"
-                                    onSubmitEditing={() => this.regDate.focus()}
-                                    showError={
-                                        this.state.submitPressed
-                                            ? showPasswordError
-                                            : false
-                                    }
-                                    errorText={passwordError}
-                                />
-                            </View>
+
+                            <TextInput
+                                inputRef={ref => (this.lname = ref)}
+                                placeholder="Point of Contact Last Name"
+                                name="lname"
+                                onChange={this.onChangeText}
+                                showError={
+                                    this.state.submitPressed
+                                        ? !this.state.lname
+                                        : false
+                                }
+                            />
+
                             {/** DATE INPUT */}
                             <View>
                                 <TouchableOpacity
@@ -302,9 +276,7 @@ export default class OrgSignUpScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.state.isRegDateVisible && 
-                            (
- 
+                            {this.state.isRegDateVisible && (
                                 <View>
                                     <DatePicker
                                         mode="date"
@@ -400,14 +372,15 @@ export default class OrgSignUpScreen extends React.Component {
                                 <PhotoUpload
                                     containerStyle={{
                                         alignItems: "center",
+                                        paddingRight: 30,
                                     }}
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
                                             console.log(
                                                 "Image base64 string: ",
                                                 avatar,
-                                            ),
-                                                this.setPhoto(avatar);
+                                            );
+                                            this.setPhoto(avatar);
                                         }
                                     }}>
                                     <Image

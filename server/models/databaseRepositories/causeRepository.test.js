@@ -1,10 +1,10 @@
 const testHelpers = require("../../test/testHelpers");
-const selectedCauseRepository = require("./selectedCauseRepository");
 const causeRepository = require("./causeRepository");
 
-const cause = testHelpers.cause;
+let cause;
 
 beforeEach(() => {
+    cause = testHelpers.getCause();
     return testHelpers.clearDatabase();
 });
 

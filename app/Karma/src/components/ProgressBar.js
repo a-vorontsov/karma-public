@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Animated, Text, StyleSheet} from "react-native";
+import {View, StyleSheet} from "react-native";
 import Styles from "../styles/Styles";
 import Colours from "../styles/Colours";
 
@@ -21,7 +21,7 @@ export default class ProgressBar extends Component {
                     style={[
                         StyleSheet.absoluteFill,
                         {
-                            backgroundColor: Colours.green,
+                            backgroundColor: Colours.blue,
                             width: `${progress}%`,
                             borderRadius: 10,
                         },

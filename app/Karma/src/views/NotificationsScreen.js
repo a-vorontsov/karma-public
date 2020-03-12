@@ -1,136 +1,148 @@
 import React, {Component} from "react";
-import {View, Text, StatusBar, Dimensions, FlatList} from "react-native";
+import {View, Text, StatusBar, Dimensions} from "react-native";
 import Styles from "../styles/Styles";
 import PageHeader from "../components/PageHeader";
 import {hasNotch} from "react-native-device-info";
-import {RegularText, BoldText} from "../components/text";
+import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
+import { ScrollView } from "react-native-gesture-handler";
+const request = require("superagent");
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
-const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
+const FORM_WIDTH = 0.85 * SCREEN_WIDTH;
 
-const DATA = [
-    {
-        id: "1",
-        title: "has sent you a message",
-        org: "Ya",
-        logo: require("../assets/images/general-logos/linkedin-logo.png"),
-        weeks_ago: 1,
-        type: "messageSent",
-    },
-    {
-        id: "2",
-        title: "has confirmed you can attend the event named ",
-        org: "Yah",
-        logo: require("../assets/images/general-logos/back-arrow.png"),
-        weeks_ago: 2,
-    },
-    {
-        id: "3",
-        title: "Third Item",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 5,
-    },
-    {
-        id: "4",
-        title: "Lemon Item",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 2,
-        type: "hasConfirmed",
-    },
-    {
-        id: "5",
-        title: "Le Item",
-        org: "The PEER Center",
-        logo: require("../assets/images/general-logos/photo-plus.png"),
-        weeks_ago: 1,
-    },
-    {
-        id: "58694a0f-3da1-471f-bd96-145571e29d72",
-        title: "Third Item",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 5,
-        type: "messageSent",
-    },
-    {
-        id: "58694a0aaf-3da1-471f-bd96-145571e29d72",
-        title: "Third Item",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 1,
-    },
-    {
-        id: "58694a0fd-3da1-471f-bd96-145571e29d72",
-        title: "Lemon",
-        org: "Yeet",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 69,
-    },
-    {
-        id: "58dd694a0fd-3da1-471f-bd96-145571e29d72",
-        title: "gsdgd",
-        org: "yoteeee",
-        logo: require("../assets/images/general-logos/photo-logo.png"),
-        weeks_ago: 23,
-    },
-];
-
+/**
+ * Sorts array by most recent notification first
+ */
 function compare(a, b) {
-    if (a.weeks_ago < b.weeks_ago) {
-        return -1;
-    }
-    if (a.weeks_ago > b.weeks_ago) {
+    if (a.timestampSent < b.timestampSent) {
+
         return 1;
+    } else if (a.timestampSent > b.timestampSent) {
+        return -1;
     }
     return 0;
 }
 
-/**
- * Adds flags to the notifications events depending on whether
- * a time stamp should be shown
- */
-function addTimeStamps() {
-    DATA.sort(compare);
-
-    let currentWeeksAgo = DATA[0].weeks_ago;
-    for (let i = 0; i < DATA.length - 1; i++) {
-        //only set time stamp flags for notifs younger than two months
-        if (currentWeeksAgo > 8) {
-            continue;
-        }
-
-        if (i === 0) {
-            DATA[i].showTimeStamp = 1;
-        } else if (DATA[i + 1].weeks_ago !== currentWeeksAgo) {
-            currentWeeksAgo = DATA[i + 1].weeks_ago;
-            DATA[i + 1].showTimeStamp = 1;
-        }
-    }
-}
-
-function getTimeStamp(timeStamp) {
-    if (timeStamp === 1) {
-        return "This Week";
-    } else if (timeStamp <= 4) {
-        return "This Month";
-    } else if (timeStamp <= 8) {
-        return "Two Months ago";
-    } else {
-        return "More than two months ago";
-    }
-}
-
 class NotificationsScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            notifications: [],
+            hasNotifications: false,
+            userId: 1,
+            weekNotifications: [],
+            monthNotifications: [],
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const response = await request.get(
+                "http://localhost:8000/notification?userId=" +
+                    this.state.userId,
+            );
+            this.setState({
+                notifications: response.body.data.notifications,
+            });
+
+            this.getNotifications();
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getDaysBetween = (d1, d2) => {
+        var diff = Math.abs(d1.getTime() - d2.getTime());
+        return diff / (1000 * 60 * 60 * 24);
+    };
+
+    /**
+     * Only displays notifications that the user/org has
+     * received rather than sent
+     */
+    getNotifications = () => {
+        const {notifications} = this.state;
+
+        let received = [];
+
+        //get all received notifications
+        notifications.forEach(n => {
+            if (n.receiverId == this.state.userId) {
+                received.push(n);
+            }
+        });
+        console.log(received);
+        received.sort(compare);
+        console.log(received);
+        let weekNotifications = [];
+
+        let monthNotifications = [];
+
+        //get notifications for the month and week
+        received.forEach(r => {
+            let timestamp = new Date(r.timestampSent);
+            let curDate = new Date();
+
+            let daysAgo = Math.ceil(this.getDaysBetween(curDate, timestamp));
+           
+            if (daysAgo <= 7) {
+                r.daysAgo = daysAgo;
+                weekNotifications.push(r);
+
+            }
+
+            if (daysAgo <= 31) {
+               
+                r.daysAgo = daysAgo;
+                monthNotifications.push(r);
+            }
+        });
+
+        
+
+        let hasNotifications = monthNotifications.length > 0;
+
+        this.setState({
+            hasNotifications: hasNotifications,
+            weekNotifications: weekNotifications,
+            monthNotifications: monthNotifications,
+        });
+
+    };
+
+    _renderMonthNotifications = () => {
+        const {monthNotifications} = this.state;
+
+        return monthNotifications.map(n => {
+            return <NotificationItem notification={n} />;
+        });
+
+    };
+
+    _renderWeekNotifications = () => {
+        const {weekNotifications} = this.state;
+
+        if (weekNotifications.length === 0){
+            return (
+                <SemiBoldText style={[Styles.pb16, {alignSelf: "center"}]}>
+                    No new notifications this week
+                </SemiBoldText>
+            );
+        }
+
+        return weekNotifications.map(n => {
+            return <NotificationItem notification={n} />;
+        });
     };
 
     render() {
-        addTimeStamps();
+        const {hasNotifications} = this.state;
+        
         return (
             <View style={Styles.container}>
                 <View style={{alignItems: "center"}}>
@@ -154,30 +166,29 @@ class NotificationsScreen extends Component {
                                 width: FORM_WIDTH,
                                 alignSelf: "center",
                                 paddingTop: 20,
+                                flex:1,
+                                
                             }}>
-                            <FlatList
-                                data={DATA}
-                                style={{height: SCREEN_HEIGHT}}
-                                renderItem={({item}) => (
-                                    <>
-                                        {
-                                            <View>
-                                                {item.showTimeStamp ? (
-                                                    <BoldText>
-                                                        {getTimeStamp(
-                                                            item.weeks_ago,
-                                                        )}
-                                                    </BoldText>
-                                                ) : (
-                                                    undefined
-                                                )}
+                            {hasNotifications ?
+                            ( 
+                                <ScrollView>
+                                    <SemiBoldText style={[Styles.pb16]}>
+                                        This Week
+                                    </SemiBoldText>
+                                    {this._renderWeekNotifications()}
+                                    <SemiBoldText style={[Styles.pb16]}>
+                                        This Month
+                                    </SemiBoldText>
+                                    {this._renderMonthNotifications()}
+                                </ScrollView>
+                            ) : (
+                                <View style={{flex:1}}>
+                                <RegularText style={{alignSelf:"center", fontSize:20}}>No notifications found</RegularText>
+                                
+                                </View>
+                            )
+                        }
 
-                                                <NotificationItem data={item} />
-                                            </View>
-                                        }
-                                    </>
-                                )}
-                            />
                         </View>
                     </View>
                 </View>
