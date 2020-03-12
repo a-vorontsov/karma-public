@@ -6,7 +6,6 @@ import {
     Platform,
     Image,
     KeyboardAvoidingView,
-    Keyboard,
 } from "react-native";
 import {RegularText} from "../components/text";
 import TextInput from "../components/TextInput";
@@ -180,7 +179,7 @@ class WelcomeScreen extends Component {
     popUpCode() {
         return (
             <CodeInput
-                ref="codeInputRef2"
+                ref={ref => (this.codeInputRef2 = ref)}
                 keyboardType="numeric"
                 codeLength={6}
                 autoFocus={false}
