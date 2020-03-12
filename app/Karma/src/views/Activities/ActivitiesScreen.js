@@ -7,7 +7,6 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
-    Platform,
     Image,
     Switch,
     Dimensions,

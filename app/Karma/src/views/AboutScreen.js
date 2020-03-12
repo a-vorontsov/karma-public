@@ -20,7 +20,7 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
-import AddressInput from "../components/AddressInput";
+import AddressInput from "../components/input/AddressInput";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
