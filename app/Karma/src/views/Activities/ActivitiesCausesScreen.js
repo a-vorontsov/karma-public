@@ -21,8 +21,10 @@ class ActivitiesCausesScreen extends Component {
             .get("http://localhost:8000/event/causes")
             .query({userId: 1})
             .then(result => {
-                console.log(result.body.data);
-                let activitiesByCause = result.body.data;
+                console.log("CAUSES DATA: ");
+                console.log(result.text);
+                let activitiesByCause = JSON.parse(result.text);
+                console.log(activitiesByCause);
                 this.setState({
                     activitiesByCause,
                 });
@@ -39,7 +41,7 @@ class ActivitiesCausesScreen extends Component {
     render() {
         return (
             <View style={Styles.ph24}>
-                {this.state.activitiesByCause.length > 0 ? (
+                {Object.keys(this.state.activitiesByCause).length > 0 ? (
                     Object.entries(this.state.activitiesByCause).map(
                         ([cause, activities]) => {
                             return (

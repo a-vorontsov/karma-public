@@ -41,7 +41,7 @@ class ActivityCauseCarousel extends React.Component {
                     }}>
                     <TouchableOpacity>
                         <RegularText style={styles.causeHeader}>
-                            Cause Name
+                            {this.props.cause}
                         </RegularText>
                     </TouchableOpacity>
                     <TouchableOpacity
