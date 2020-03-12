@@ -11,7 +11,7 @@ import {
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";

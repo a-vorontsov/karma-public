@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from "react-native";
+import Colours from "./Colours";
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -15,50 +16,47 @@ const SignUpStyles = StyleSheet.create({
     subheaderText: {
         fontSize: 25,
         fontWeight: "bold",
-        fontFamily: "Arial",
+        fontFamily: "OpenSans-Regular",
         textAlignVertical: "top",
         textAlign: "left",
         paddingTop: 20,
         paddingBottom: 25,
-        color: "#3bbfb2",
+        color: Colours.cyan,
     },
-
     textInput: {
         width: FORM_WIDTH,
         height: 45,
         borderColor: "transparent",
-        borderBottomColor: "#D3D3D3",
+        borderBottomColor: Colours.lightGrey,
         borderWidth: 1.5,
         marginTop: 5,
         marginBottom: 20,
         fontSize: 20,
-        color: "#7F7F7F",
+        color: Colours.grey,
         fontFamily: "OpenSans-Regular",
     },
     checkBox: {
         paddingRight: 20,
     },
-
     text: {
-        color: "#7F7F7F",
+        color: Colours.grey,
     },
-
     linkColour: {
-        color: "#3bbfb2",
+        color: Colours.cyan,
     },
     errorMessage: {
-        borderBottomColor: "#e81f10",
+        borderBottomColor: Colours.red,
         marginBottom: 10,
     },
     errorText: {
-        color: "#e81f10",
+        color: Colours.red,
     },
     uploadButton: {
         height: 50,
         width: 200,
         backgroundColor: "transparent",
         borderWidth: 2,
-        borderColor: "#D3D3D3",
+        borderColor: Colours.lightGrey,
         borderRadius: 30,
         flexDirection: "row",
         alignItems: "center",

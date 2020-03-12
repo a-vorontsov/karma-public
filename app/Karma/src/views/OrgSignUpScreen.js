@@ -23,7 +23,7 @@ import Colours from "../styles/Colours";
 import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");

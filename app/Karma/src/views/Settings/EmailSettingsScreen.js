@@ -4,7 +4,7 @@ import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
-import TextInput from "../../components/TextInput";
+import {TextInput} from "../../components/input";
 
 //const request = require("superagent");
 

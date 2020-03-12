@@ -22,7 +22,7 @@ import AddressInput from "../components/AddressInput";
 
 import {GradientButton} from "../components/buttons";
 
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 const request = require("superagent");
