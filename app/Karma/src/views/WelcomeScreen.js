@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import TextInput from "../components/TextInput";
+import TextInput from "../components/input/TextInput";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
