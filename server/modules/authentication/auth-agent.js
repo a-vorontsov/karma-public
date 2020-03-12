@@ -62,7 +62,7 @@ async function requireNoAuthentication(req, res, next) {
     } else if (userId === null || authToken === null) {
         next(); // for performance reasons logic is separated
     } else if ((await isValidToken(userId, authToken)).isValidToken) {
-        res.redirect("/error/alreadyauthenticated");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
     } else {
         next();
     }
