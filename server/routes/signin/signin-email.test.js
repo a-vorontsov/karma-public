@@ -12,6 +12,7 @@ beforeEach(() => {
     user4 = testHelpers.getUserExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+    process.env.SKIP_MAIL_SENDING_FOR_TESTING = 1;
     return testHelpers.clearDatabase();
 });
 
@@ -33,10 +34,10 @@ test("sign-in with email works", async () => {
         .post("/signin/email")
         .send(signInEmailRequest);
 
-    expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
+    expect(response.statusCode).toBe(400);
 });
 
 test("sign-in with unverified email works", async () => {
@@ -46,10 +47,10 @@ test("sign-in with unverified email works", async () => {
         .post("/signin/email")
         .send(signInEmailRequest);
 
-    expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "Email exists but unverified. Goto email verification screen.",
+        "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
     );
+    expect(response.statusCode).toBe(400);
 });
 
 test("sign-in with verified email works", async () => {

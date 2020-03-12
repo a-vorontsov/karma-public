@@ -4,15 +4,14 @@
 
 const express = require('express');
 const router = express.Router();
-const randomize = require('randomatic');
-const mailSender = require('../../modules/mailSender');
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const util = require("../../util/util");
+const tokenSender = require("../../modules/verification/tokenSender");
 
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
  * URL example: POST http://localhost:8000/signin/forgot
- * @param {String} req.body.email - Email of the user
+ * @param {String} req.body.data.email - Email of the user
  * @returns
  *  status: 200, description: Token sent successfully. Valid for use 1 hour from sending <br/>
  *  status: 400, description: Email not specified in request body <br/>
@@ -22,26 +21,28 @@ const util = require("../../util/util");
  *  @function
  */
 router.post('/', async (req, res) => {
-    const email = req.body.email;
+    const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
-    const user = checkEmailResult.user;
-    // generate 6 digit code
-    const token = randomize('0', 6);
-    // update the db
-    resetRepository.insertResetToken(user.id, token)
-        .then(() => mailSender.sendToken(email, token))
-        .then(() => res.status(200).send("Code sent successfully to " + email))
-        .catch(err => res.status(500).send(err));
+    try {
+        await tokenSender.storeAndSendPasswordResetToken(checkEmailResult.user.id, email);
+        res.status(200).send({
+            message: "Code sent successfully to " + email,
+        });
+    } catch (e) {
+        res.status(500).send({
+            message: e.message,
+        });
+    }
 });
 
 /**
  * Endpoint called whenever a user writes in the token they recieved and click submit.<br/>
  * URL example: POST http://localhost:8000/signin/forgot
- * @param {String} req.body.email - Email of the user
- * @param {String} req.body.token - Token input by user
+ * @param {String} req.body.data.email - Email of the user
+ * @param {String} req.body.data.token - Token input by user
  * @returns
  *  status: 200, description: Token is accepted <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
@@ -53,15 +54,15 @@ router.post('/', async (req, res) => {
  *  @function
  */
 router.post('/confirm', async (req, res) => {
-    const tokenRecieved = req.body.token;
-    const email = req.body.email;
+    const tokenRecieved = req.body.data.token;
+    const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
     if (!tokenRecieved) return res.status(400).send("Token not defined");
 
-    resetRepository.findResetToken(checkEmailResult.user.id)
+    resetRepository.findLatestByUserID(checkEmailResult.user.id)
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No token sent to " + email);
 
