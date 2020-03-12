@@ -31,38 +31,22 @@ class WelcomeScreen extends Component {
             isValidPass: false,
             isCodeValid: false,
         };
-
+        StatusBar.setBarStyle("dark-content");
+        if (Platform.OS === "android") {
+            StatusBar.setBackgroundColor(Colours.backgroundWhite);
+        }
         // methods that use setState()
-        this.popUpEmail = this.popUpEmail.bind(this);
+
         this.checkEmail = this.checkEmail.bind(this);
-        this.popUpPassword = this.popUpPassword.bind(this);
         this.checkPass = this.checkPass.bind(this);
         this.popUpCode = this.popUpCode.bind(this);
         this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
+        this.PasswordInput = this.PasswordInput.bind(this);
+        this.EmailInput = this.EmailInput.bind(this);
     }
-    onSignUpPressed(){
-        const {navigate} = this.props.navigation;
-        console.log("ehreeeee");
-        this.state.emailInput === ""
-        ? this.setState({isSignUpPressed: true})
-        : navigate("InitSignup")
-    }
-    onSubmitEmail(){
-        console.log("here");
-        this.setState({emailSubmitted: true});
-    }
-
-    onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
-    };
-
-    // show email text field
-    popUpEmail() {
-        // if(showCode){
-        //     this.setState({showCode:false})}
+    EmailInput(props) {
         return (
             <TextInput
                 name="emailInput"
@@ -76,6 +60,58 @@ class WelcomeScreen extends Component {
             />
         );
     }
+
+    // display password field
+    PasswordInput() {
+        // if(showCode){
+        //  this.setState({showCode:false})}
+        return (
+            <>
+                {/* password field */}
+                <TextInput
+                    name="passInput"
+                    placeholder="Please enter your password"
+                    style={[WelcomeScreenStyles.text, Styles.formWidth]}
+                    secureTextEntry={true}
+                    showError={
+                        this.state.showPassError && !this.state.isValidPass
+                    }
+                    errorText={"Please enter the correct password."}
+                    autoFocus={true}
+                    onChange={this.onChangeText}
+                    onSubmitEditing={this.checkPass}
+                />
+
+                {/* forgot password button*/}
+                <TouchableOpacity
+                    style={[
+                        {textAlign: "right", flex: 1, alignSelf: "flex-end"},
+                    ]}
+                    onPress={() => this.setState({isForgotPassPressed: true})}>
+                    <RegularText
+                        style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
+                        Forgot Password?
+                    </RegularText>
+                </TouchableOpacity>
+            </>
+        );
+    }
+
+    onSignUpPressed() {
+        const {navigate} = this.props.navigation;
+        this.state.emailInput === ""
+            ? this.setState({isSignUpPressed: true})
+            : navigate("InitSignup");
+    }
+    onSubmitEmail() {
+        this.setState({emailSubmitted: true});
+        this.checkEmail();
+    }
+
+    onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
+    };
 
     // check if email is of a valid format
     isValidEmail() {
@@ -123,41 +159,6 @@ class WelcomeScreen extends Component {
         }
     }
 
-    // display password field
-    popUpPassword() {
-        // if(showCode){
-        //  this.setState({showCode:false})}
-        return (
-            <>
-                {/* password field */}
-                <TextInput
-                    name="passInput"
-                    placeholder="Please enter your password"
-                    style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                    secureTextEntry={true}
-                    showError={
-                        this.state.showPassError && !this.state.isValidPass
-                    }
-                    errorText={"Please enter the correct password."}
-                    autoFocus={true}
-                    onChange={this.onChangeText}
-                    onSubmitEditing={this.checkPass}
-                />
-
-                {/* forgot password button*/}
-                <TouchableOpacity
-                    style={[
-                        {textAlign: "right", flex: 1, alignSelf: "flex-end"},
-                    ]}
-                    onPress={() => this.setState({isForgotPassPressed: true})}>
-                    <RegularText
-                        style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
-                        Forgot Password?
-                    </RegularText>
-                </TouchableOpacity>
-            </>
-        );
-    }
 
     // verify password is correct
     checkPass() {
@@ -217,23 +218,6 @@ class WelcomeScreen extends Component {
     }
 
     render() {
-        StatusBar.setBarStyle("dark-content");
-        if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor(Colours.backgroundWhite);
-        }
-        let emailInput;
-        if(this.state.isSignUpPressed){
-            emailInput = <TextInput
-            name="emailInput"
-            placeholder="Please enter your email"
-            autoFocus={true}
-            style={[WelcomeScreenStyles.text, Styles.formWidth]}
-            showError={this.state.showEmailError && !this.isValidEmail()}
-            errorText={"Please enter a valid email."}
-            onChange={this.onChangeText}
-            onSubmitEditing={this.onSubmitEmail} // calls checkEmail function
-        />
-        }
         return (
             <View style={WelcomeScreenStyles.container}>
                 <View style={{flex: 2, justifyContent: "center"}}>
@@ -255,7 +239,7 @@ class WelcomeScreen extends Component {
                         lorem ipsum
                     </RegularText>
                 </View>
-                {emailInput}
+
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -265,9 +249,8 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
-
-                        {this.state.emailSubmitted ? this.checkEmail() : null}
-                        {this.state.showPassField ? this.popUpPassword() : null}
+                        {this.state.isSignUpPressed && this.EmailInput()}
+                        {this.state.showPassField && this.PasswordInput()}
                         {this.state.showCode ? this.popUpCode() : null}
                         {this.state.isForgotPassPressed
                             ? this.getForgotPassword()
