@@ -12,9 +12,7 @@ import {
     Dimensions,
 } from "react-native";
 import Slider from "@react-native-community/slider";
-import Modal, {
-    ModalContent,
-} from "react-native-modals";
+import Modal, {ModalContent} from "react-native-modals";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import ActivitiesAllScreen from "./ActivitiesAllScreen";
