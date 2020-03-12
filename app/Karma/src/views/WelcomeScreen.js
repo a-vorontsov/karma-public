@@ -221,6 +221,19 @@ class WelcomeScreen extends Component {
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
+        let emailInput;
+        if(this.state.isSignUpPressed){
+            emailInput = <TextInput
+            name="emailInput"
+            placeholder="Please enter your email"
+            autoFocus={true}
+            style={[WelcomeScreenStyles.text, Styles.formWidth]}
+            showError={this.state.showEmailError && !this.isValidEmail()}
+            errorText={"Please enter a valid email."}
+            onChange={this.onChangeText}
+            onSubmitEditing={this.onSubmitEmail} // calls checkEmail function
+        />
+        }
         return (
             <View style={WelcomeScreenStyles.container}>
                 <View style={{flex: 2, justifyContent: "center"}}>
@@ -242,6 +255,7 @@ class WelcomeScreen extends Component {
                         lorem ipsum
                     </RegularText>
                 </View>
+                {emailInput}
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -251,7 +265,7 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
-                        {this.state.isSignUpPressed ? this.popUpEmail() : null}
+
                         {this.state.emailSubmitted ? this.checkEmail() : null}
                         {this.state.showPassField ? this.popUpPassword() : null}
                         {this.state.showCode ? this.popUpCode() : null}
@@ -260,6 +274,7 @@ class WelcomeScreen extends Component {
                             : null}
                     </View>
                 </KeyboardAvoidingView>
+
                 <View
                     style={{
                         flex: 1,
