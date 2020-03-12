@@ -26,6 +26,7 @@ class WelcomeScreen extends Component {
             showPassField: false,
             showCode: false,
             isCodeValid: false,
+            buttonText: "Sign Up/ Log In"
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -36,6 +37,7 @@ class WelcomeScreen extends Component {
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
         this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
+        this.baseState = this.state;
     }
 
     onInputChange = (name, value) => {
@@ -64,9 +66,13 @@ class WelcomeScreen extends Component {
 
     onSignUpPressed() {
         const {navigate} = this.props.navigation;
-        this.state.emailInput === ""
-            ? this.setState({isSignUpPressed: true})
-            : navigate("InitSignup");
+        if(this.state.emailInput === ""){
+            this.setState({isSignUpPressed: true});
+            //this.setState(this.baseState)
+        }else{
+            this.setState(this.baseState)
+            //navigate("InitSignup");
+        }
     }
 
     onChangeText = event => {
@@ -83,6 +89,7 @@ class WelcomeScreen extends Component {
                     showPassField: true,
                     showCode: false,
                     showEmailError: false,
+                    buttonText:"Log In"
                 });
             }
             // new user
@@ -94,6 +101,7 @@ class WelcomeScreen extends Component {
                     showPassField: false,
                     showCode: true,
                     showEmailError: false,
+                    buttonText:"Sign Up"
                 });
             }
         }
@@ -233,7 +241,7 @@ class WelcomeScreen extends Component {
                         onPress={this.onSignUpPressed}>
                         <RegularText
                             style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
-                            Sign Up/ Login
+                            {this.state.buttonText}
                         </RegularText>
                     </TouchableOpacity>
                 </View>
