@@ -8,10 +8,9 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {EmailInput, PasswordInput} from "../components/input";
+import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
-import CodeInput from "react-native-code-input";
 import Colours from "../styles/Colours";
 
 class WelcomeScreen extends Component {
@@ -36,7 +35,6 @@ class WelcomeScreen extends Component {
         // methods that use setState()
 
         this.checkPass = this.checkPass.bind(this);
-        this.popUpCode = this.popUpCode.bind(this);
         this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
@@ -44,15 +42,14 @@ class WelcomeScreen extends Component {
     }
 
     onInputChange = (name, value) => {
-        this.setState({[name]: value});
         this.setState({
+            [name]: value,
             showCode: false,
             isForgotPassPressed: false,
             showPassError: false,
         });
-        console.log("I am Parent component. I got", value, "from my child.");
     };
-    
+
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -64,14 +61,14 @@ class WelcomeScreen extends Component {
         this.setState({showPassField: false});
         //show code
         this.setState({showCode: true});
-    };
+    }
 
     onSignUpPressed() {
         const {navigate} = this.props.navigation;
         this.state.emailInput === ""
             ? this.setState({isSignUpPressed: true})
             : navigate("InitSignup");
-    };
+    }
 
     onChangeText = event => {
         const {name, text} = event;
@@ -125,41 +122,16 @@ class WelcomeScreen extends Component {
         }
     }
 
-    // display code field
-    popUpCode() {
-        console.log("popping up code");
-        return (
-            <View>
-                <RegularText style={Styles.pb24}>
-                    {this.state.isForgotPassPressed
-                        ? "Please enter the 6 digit code sent to your recovery email."
-                        : "Please enter your email verification code below."}
-                </RegularText>
-                <CodeInput
-                    ref={ref => (this.codeInputRef2 = ref)}
-                    keyboardType="number-pad"
-                    codeLength={6}
-                    autoFocus={false}
-                    inputPosition="center"
-                    size={50}
-                    onFulfill={code => this.checkCode(code)}
-                    containerStyle={{marginTop: 30}}
-                    codeInputStyle={{borderWidth: 1.5}}
-                />
-            </View>
-        );
-    }
-
     // verify code is correct
     checkCode(code) {
         // code correct
         if (code === "123456") {
-            console.log("yay!!!");
+            console.log("correct code");
             this.setState({isCodeValid: true});
         } else {
             // code incorrect
             this.setState({isCodeValid: false});
-            console.log(";////");
+            console.log("incorrect code");
         }
     }
 
@@ -222,7 +194,17 @@ class WelcomeScreen extends Component {
                             />
                         )}
 
-                        {this.state.showCode ? this.popUpCode() : null}
+                        {/* 6-Digit Code Field*/}
+                        {this.state.showCode && (
+                            <SignInCodeInput
+                                onFulfill={this.checkCode}
+                                text={
+                                    this.state.isForgotPassPressed
+                                        ? "Please enter the 6 digit code sent to your recovery email."
+                                        : "Please enter your email verification code below."
+                                }
+                            />
+                        )}
                     </View>
                 </KeyboardAvoidingView>
 

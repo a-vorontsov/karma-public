@@ -1,5 +1,4 @@
 import React from "react";
-import {Keyboard} from "react-native";
 import TextInput from "./TextInput";
 const validate = require("validate.js");
 
