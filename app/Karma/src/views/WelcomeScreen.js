@@ -13,7 +13,6 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
 import Colours from "../styles/Colours";
-const validate = require("validate.js");
 
 class WelcomeScreen extends Component {
     constructor(props) {
@@ -36,25 +35,25 @@ class WelcomeScreen extends Component {
         }
         // methods that use setState()
 
-        this.checkEmail = this.checkEmail.bind(this);
         this.checkPass = this.checkPass.bind(this);
         this.popUpCode = this.popUpCode.bind(this);
         this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
+        this.onForgotPasswordPressed = this.onForgotPasswordPressed.bind(this);
         this.PasswordInput = this.PasswordInput.bind(this);
     }
 
     onInputChange = value => {
         this.setState({
-            emailInput: value
+            emailInput: value,
+            showCode: false,
+            isForgotPassPressed: false,
         });
         console.log("I am Parent component. I got", value, "from my child.");
       };
     // display password field
     PasswordInput() {
-        // if(showCode){
-        //  this.setState({showCode:false})}
         return (
             <>
                 {/* password field */}
@@ -77,7 +76,7 @@ class WelcomeScreen extends Component {
                     style={[
                         {textAlign: "right", flex: 1, alignSelf: "flex-end"},
                     ]}
-                    onPress={() => this.setState({isForgotPassPressed: true})}>
+                    onPress={this.onForgotPasswordPressed}>
                     <RegularText
                         style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
                         Forgot Password?
@@ -87,27 +86,27 @@ class WelcomeScreen extends Component {
         );
     }
 
+    onForgotPasswordPressed(){
+        this.setState({isForgotPassPressed: true})
+        // remove the password field
+        this.setState({showPassField: false});
+        //show code
+        this.setState({showCode: true});
+    };
+
     onSignUpPressed() {
         const {navigate} = this.props.navigation;
         this.state.emailInput === ""
             ? this.setState({isSignUpPressed: true})
             : navigate("InitSignup");
-    }
-    onSubmitEmail(isValid) {
-        // this.setState({emailSubmitted: true});
-        this.checkEmail(isValid);
-    }
+    };
 
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
     };
 
-    // checks if email is in DB
-    checkEmail(isValid) {
-
-        // this.setState({emailSubmitted: false});
-        // const isValidEmail = this.isValidEmail();
+    onSubmitEmail(isValid) {
         // email is of a valid format
         if (isValid) {
             // returning user
@@ -131,7 +130,7 @@ class WelcomeScreen extends Component {
             }
         }
         // email is of invalid format
-        else if (!isValid) {
+        else{
             this.setState({
                 showPassField: false,
                 showCode: false,
@@ -139,7 +138,6 @@ class WelcomeScreen extends Component {
             });
         }
     }
-
 
     // verify password is correct
     checkPass() {
@@ -154,35 +152,26 @@ class WelcomeScreen extends Component {
         }
     }
 
-    getForgotPassword() {
-        // remove the password field
-        if (this.state.showPassField) {
-            this.setState({showPassField: false});
-        }
-        // toggle show code field flag
-        if (this.state.showCode) {
-            this.setState({showCode: false});
-        } else {
-            // display code field
-            return this.popUpCode();
-        }
-    }
-
     // display code field
     popUpCode() {
         console.log("popping up code");
         return (
-            <CodeInput
-                ref={ref => (this.codeInputRef2 = ref)}
-                keyboardType="numeric"
-                codeLength={6}
-                autoFocus={false}
-                inputPosition="center"
-                size={50}
-                onFulfill={code => this.checkCode(code)}
-                containerStyle={{marginTop: 30}}
-                codeInputStyle={{borderWidth: 1.5}}
-            />
+            <View>
+                <RegularText style={Styles.pb24}>
+                   {this.state.isForgotPassPressed ? "Please enter the 6 digit code sent to your recovery email."  : "Please enter your email verification code below." }
+                </RegularText>
+                <CodeInput
+                    ref={ref => (this.codeInputRef2 = ref)}
+                    keyboardType="number-pad"
+                    codeLength={6}
+                    autoFocus={false}
+                    inputPosition="center"
+                    size={50}
+                    onFulfill={code => this.checkCode(code)}
+                    containerStyle={{marginTop: 30}}
+                    codeInputStyle={{borderWidth: 1.5}}
+                />
+            </View>
         );
     }
 
@@ -231,18 +220,16 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
+
+                        {this.state.isSignUpPressed &&
                         <EmailInput
                         onChange={this.onInputChange}
                         style={[WelcomeScreenStyles.text, Styles.formWidth]}
                         onSubmitEditing={this.onSubmitEmail}
                         showEmailError = {this.state.showEmailError}
-                        />
-                        {/*this.state.isSignUpPressed && */}
+                        />}
                         {this.state.showPassField && this.PasswordInput()}
                         {this.state.showCode ? this.popUpCode() : null}
-                        {this.state.isForgotPassPressed
-                            ? this.getForgotPassword()
-                            : null}
                     </View>
                 </KeyboardAvoidingView>
 
@@ -268,12 +255,3 @@ class WelcomeScreen extends Component {
 }
 
 export default WelcomeScreen;
-
-// for email verification
-export const emailConstraints = {
-    from: {
-        // Email is required
-        presence: true,
-        email: true,
-    },
-};
