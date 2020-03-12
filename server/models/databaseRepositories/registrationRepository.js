@@ -20,6 +20,7 @@ const insert = (registration) => {
  * @param {string} email
  * @param {string} verificationToken
  * @param {date} expiryDate
+ * // TODO: pass object
  */
 const storeEmailTokenPair = async (email, verificationToken, expiryDate) => {
     const emailTokenPair = {
