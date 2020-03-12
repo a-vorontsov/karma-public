@@ -23,7 +23,6 @@ class WelcomeScreen extends Component {
             isForgotPassPressed: false,
             emailInput: "",
             passInput: "",
-            emailSubmitted: false,
             showEmailError: false,
             showPassError: false,
             showPassField: false,
@@ -95,7 +94,7 @@ class WelcomeScreen extends Component {
             : navigate("InitSignup");
     }
     onSubmitEmail(isValid) {
-        this.setState({emailSubmitted: true});
+        // this.setState({emailSubmitted: true});
         this.checkEmail(isValid);
     }
 
@@ -103,16 +102,6 @@ class WelcomeScreen extends Component {
         const {name, text} = event;
         this.setState({[name]: text});
     };
-
-    // check if email is of a valid format
-    isValidEmail() {
-        const invalidEmail = validate(
-            {from: this.state.emailInput},
-            emailConstraints,
-        );
-        // invalidEmail == undefined if email is correct
-        return !invalidEmail;
-    }
 
     // checks if email is in DB
     checkEmail(isValid) {

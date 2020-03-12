@@ -20,16 +20,18 @@ export default class EmailInput extends React.Component {
         );
         // invalidEmail == undefined if email is correct
         return !invalidEmail;
-    }
+    };
+
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
-        // this.setState({isValid:this.isValidEmail()})
         this.props.onChange(text);
     };
+
     onSubmitEditing = ()=>{
         this.props.onSubmitEditing(this.isValidEmail());
-    }
+    };
+
     render() {
         return (
             <TextInput
@@ -40,7 +42,7 @@ export default class EmailInput extends React.Component {
                 showError={this.props.showEmailError && !this.isValidEmail()}
                 errorText={"Please enter a valid email."}
                 onChange={this.onChangeText}
-                onSubmitEditing={this.onSubmitEditing} // calls checkEmail function
+                onSubmitEditing={this.onSubmitEditing}
             />
         );
     }
