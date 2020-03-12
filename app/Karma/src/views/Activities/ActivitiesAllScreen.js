@@ -49,7 +49,9 @@ class ActivitiesAllScreen extends Component {
                     })
                 ) : (
                     <View style={Styles.ph24}>
-                        <RegularText>Could not find any activities (Refresh)</RegularText>
+                        <RegularText>
+                            Could not find any activities (Refresh)
+                        </RegularText>
                     </View>
                 )}
             </View>
