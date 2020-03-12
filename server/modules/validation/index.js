@@ -88,10 +88,22 @@ const favouriteSchema = {
     "required": ["individualId", "eventId"],
 };
 
+const signupSchema = {
+    "id": "/Signup",
+    "type": "object",
+    "properties": {
+        "individualId": {"type": "number"},
+        "eventId": {"type": "number"},
+        "confirmed": {"type": "boolean"},
+    },
+    "required": ["individualId", "confirmed"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
 validator.addSchema(favouriteSchema, "/Favourite");
+validator.addSchema(signupSchema, "/Signup");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
@@ -109,9 +121,14 @@ const validateFavourite = (favourite) => {
     return validator.validate(favourite, favouriteSchema);
 };
 
+const validateSignup = (signup) => {
+    return validator.validate(signup, signupSchema);
+};
+
 module.exports = {
     validateAddress,
     validateEvent,
     validateNotification,
     validateFavourite,
+    validateSignup,
 };
