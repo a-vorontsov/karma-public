@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {TextInput, EmailInput} from "../components/input";
+import {TextInput, EmailInput, PasswordInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
@@ -40,53 +40,23 @@ class WelcomeScreen extends Component {
         this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
-        this.onForgotPasswordPressed = this.onForgotPasswordPressed.bind(this);
-        this.PasswordInput = this.PasswordInput.bind(this);
+        this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
     }
 
-    onInputChange = value => {
+    onInputChange = (name,value) => {
+        this.setState({[name]: value});
         this.setState({
-            emailInput: value,
             showCode: false,
             isForgotPassPressed: false,
         });
         console.log("I am Parent component. I got", value, "from my child.");
       };
-    // display password field
-    PasswordInput() {
-        return (
-            <>
-                {/* password field */}
-                <TextInput
-                    name="passInput"
-                    placeholder="Please enter your password"
-                    style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                    secureTextEntry={true}
-                    showError={
-                        this.state.showPassError && !this.state.isValidPass
-                    }
-                    errorText={"Please enter the correct password."}
-                    autoFocus={true}
-                    onChange={this.onChangeText}
-                    onSubmitEditing={this.checkPass}
-                />
+      onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
+    };
 
-                {/* forgot password button*/}
-                <TouchableOpacity
-                    style={[
-                        {textAlign: "right", flex: 1, alignSelf: "flex-end"},
-                    ]}
-                    onPress={this.onForgotPasswordPressed}>
-                    <RegularText
-                        style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
-                        Forgot Password?
-                    </RegularText>
-                </TouchableOpacity>
-            </>
-        );
-    }
-
-    onForgotPasswordPressed(){
+    onForgotPassPressed(){
         this.setState({isForgotPassPressed: true})
         // remove the password field
         this.setState({showPassField: false});
@@ -221,6 +191,7 @@ class WelcomeScreen extends Component {
                             marginBottom: 40,
                         }}>
 
+                        {/* Email Field*/}
                         {this.state.isSignUpPressed &&
                         <EmailInput
                         onChange={this.onInputChange}
@@ -228,7 +199,18 @@ class WelcomeScreen extends Component {
                         onSubmitEditing={this.onSubmitEmail}
                         showEmailError = {this.state.showEmailError}
                         />}
-                        {this.state.showPassField && this.PasswordInput()}
+
+                        {/* Passowrd Field*/}
+                        {this.state.showPassField &&
+                        <PasswordInput
+                        style={[WelcomeScreenStyles.text, Styles.formWidth]}
+                        onChange={this.onInputChange}
+                        onSubmitEditing={this.checkPass}
+                        onForgotPassPressed={this.onForgotPassPressed}
+                        showPassError = {this.state.showPassError}
+                        />
+                        }
+
                         {this.state.showCode ? this.popUpCode() : null}
                     </View>
                 </KeyboardAvoidingView>
@@ -245,7 +227,7 @@ class WelcomeScreen extends Component {
                         onPress={this.onSignUpPressed}>
                         <RegularText
                             style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
-                            Sign Up
+                            Sign Up/ Login
                         </RegularText>
                     </TouchableOpacity>
                 </View>

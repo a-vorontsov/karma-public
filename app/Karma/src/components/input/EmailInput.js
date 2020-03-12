@@ -25,7 +25,7 @@ export default class EmailInput extends React.Component {
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
-        this.props.onChange(text);
+        this.props.onChange(name,text);
     };
 
     onSubmitEditing = ()=>{
