@@ -1,6 +1,6 @@
-import React from "react";;
+import React from "react";
 import TextInput from "./TextInput";
-import {RegularText} from "../text"
+import {RegularText} from "../text";
 import {TouchableOpacity} from "react-native";
 import WelcomeScreenStyles from "../../styles/WelcomeScreenStyles";
 export default class PasswordInput extends React.Component {
@@ -14,7 +14,7 @@ export default class PasswordInput extends React.Component {
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
-        this.props.onChange(name,text);
+        this.props.onChange(name, text);
     };
 
     render() {

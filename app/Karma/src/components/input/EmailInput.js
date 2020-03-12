@@ -20,15 +20,15 @@ export default class EmailInput extends React.Component {
         );
         // invalidEmail == undefined if email is correct
         return !invalidEmail;
-    };
+    }
 
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
-        this.props.onChange(name,text);
+        this.props.onChange(name, text);
     };
 
-    onSubmitEditing = ()=>{
+    onSubmitEditing = () => {
         this.props.onSubmitEditing(this.isValidEmail());
     };
 

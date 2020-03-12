@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {TextInput, EmailInput, PasswordInput} from "../components/input";
+import {EmailInput, PasswordInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
@@ -43,21 +43,23 @@ class WelcomeScreen extends Component {
         this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
     }
 
-    onInputChange = (name,value) => {
+    onInputChange = (name, value) => {
         this.setState({[name]: value});
         this.setState({
             showCode: false,
             isForgotPassPressed: false,
+            showPassError: false,
         });
         console.log("I am Parent component. I got", value, "from my child.");
-      };
-      onChangeText = event => {
+    };
+    
+    onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
     };
 
-    onForgotPassPressed(){
-        this.setState({isForgotPassPressed: true})
+    onForgotPassPressed() {
+        this.setState({isForgotPassPressed: true});
         // remove the password field
         this.setState({showPassField: false});
         //show code
@@ -100,7 +102,7 @@ class WelcomeScreen extends Component {
             }
         }
         // email is of invalid format
-        else{
+        else {
             this.setState({
                 showPassField: false,
                 showCode: false,
@@ -114,6 +116,7 @@ class WelcomeScreen extends Component {
         // if password correct
         if (this.state.passInput === "owo") {
             this.setState({isValidPass: true});
+            console.log("correct pass");
         } else {
             // password incorrect
             // show error message
@@ -128,7 +131,9 @@ class WelcomeScreen extends Component {
         return (
             <View>
                 <RegularText style={Styles.pb24}>
-                   {this.state.isForgotPassPressed ? "Please enter the 6 digit code sent to your recovery email."  : "Please enter your email verification code below." }
+                    {this.state.isForgotPassPressed
+                        ? "Please enter the 6 digit code sent to your recovery email."
+                        : "Please enter your email verification code below."}
                 </RegularText>
                 <CodeInput
                     ref={ref => (this.codeInputRef2 = ref)}
@@ -190,26 +195,32 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
-
                         {/* Email Field*/}
-                        {this.state.isSignUpPressed &&
-                        <EmailInput
-                        onChange={this.onInputChange}
-                        style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                        onSubmitEditing={this.onSubmitEmail}
-                        showEmailError = {this.state.showEmailError}
-                        />}
+                        {this.state.isSignUpPressed && (
+                            <EmailInput
+                                onChange={this.onInputChange}
+                                style={[
+                                    WelcomeScreenStyles.text,
+                                    Styles.formWidth,
+                                ]}
+                                onSubmitEditing={this.onSubmitEmail}
+                                showEmailError={this.state.showEmailError}
+                            />
+                        )}
 
                         {/* Passowrd Field*/}
-                        {this.state.showPassField &&
-                        <PasswordInput
-                        style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                        onChange={this.onInputChange}
-                        onSubmitEditing={this.checkPass}
-                        onForgotPassPressed={this.onForgotPassPressed}
-                        showPassError = {this.state.showPassError}
-                        />
-                        }
+                        {this.state.showPassField && (
+                            <PasswordInput
+                                style={[
+                                    WelcomeScreenStyles.text,
+                                    Styles.formWidth,
+                                ]}
+                                onChange={this.onInputChange}
+                                onSubmitEditing={this.checkPass}
+                                onForgotPassPressed={this.onForgotPassPressed}
+                                showPassError={this.state.showPassError}
+                            />
+                        )}
 
                         {this.state.showCode ? this.popUpCode() : null}
                     </View>
