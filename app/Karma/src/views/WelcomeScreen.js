@@ -25,15 +25,12 @@ class WelcomeScreen extends Component {
             showPassError: false,
             showPassField: false,
             showCode: false,
-            isValidPass: false,
             isCodeValid: false,
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
-        // methods that use setState()
-
         this.checkPass = this.checkPass.bind(this);
         this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
@@ -59,6 +56,8 @@ class WelcomeScreen extends Component {
         this.setState({isForgotPassPressed: true});
         // remove the password field
         this.setState({showPassField: false});
+        //send 6 digit code to email through forgot password route
+
         //show code
         this.setState({showCode: true});
     }
@@ -87,7 +86,7 @@ class WelcomeScreen extends Component {
                 });
             }
             // new user
-            else if (this.state.emailInput !== "P@y.c") {
+            else {
                 //send email code TO DO BACKEND
                 // show code field
 
@@ -124,14 +123,28 @@ class WelcomeScreen extends Component {
 
     // verify code is correct
     checkCode(code) {
-        // code correct
-        if (code === "123456") {
-            console.log("correct code");
-            this.setState({isCodeValid: true});
+        if (this.state.isForgotPassPressed) {
+            // check with forgotPassword route
+            // code correct
+            if (code === "123456") {
+                console.log("correct code");
+                this.setState({isCodeValid: true});
+            } else {
+                // code incorrect
+                this.setState({isCodeValid: false});
+                console.log("incorrect code");
+            }
         } else {
-            // code incorrect
-            this.setState({isCodeValid: false});
-            console.log("incorrect code");
+            //check with register route
+            // code correct
+            if (code === "123456") {
+                console.log("correct code");
+                this.setState({isCodeValid: true});
+            } else {
+                // code incorrect
+                this.setState({isCodeValid: false});
+                console.log("incorrect code");
+            }
         }
     }
 
