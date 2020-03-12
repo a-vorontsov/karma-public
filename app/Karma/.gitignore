@@ -59,5 +59,6 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 /ios/Karma.xcodeproj/project.pbxproj
+*.pbxproj
 yarn.lock
 .env
