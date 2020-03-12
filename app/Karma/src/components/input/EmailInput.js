@@ -1,12 +1,14 @@
 import React from "react";
 import {Keyboard} from "react-native";
 import TextInput from "./TextInput";
+const validate = require("validate.js");
 
 export default class EmailInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             emailInput: "",
+            isValid: false,
         };
     }
 
@@ -22,20 +24,32 @@ export default class EmailInput extends React.Component {
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
+        // this.setState({isValid:this.isValidEmail()})
+        this.props.onChange(text);
     };
+    onSubmitEditing = ()=>{
+        this.props.onSubmitEditing(this.isValidEmail());
+    }
     render() {
-        const {onSubmitEditing} = this.props;
         return (
             <TextInput
                 name="emailInput"
                 placeholder="Please enter your email"
                 autoFocus={true}
-                style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                showError={this.state.showEmailError && !this.isValidEmail()}
+                style={this.props.style}
+                showError={this.props.showEmailError && !this.isValidEmail()}
                 errorText={"Please enter a valid email."}
                 onChange={this.onChangeText}
-                onSubmitEditing={this.onSubmitEmail} // calls checkEmail function
+                onSubmitEditing={this.onSubmitEditing} // calls checkEmail function
             />
         );
     }
 }
+// for email verification
+export const emailConstraints = {
+    from: {
+        // Email is required
+        presence: true,
+        email: true,
+    },
+};

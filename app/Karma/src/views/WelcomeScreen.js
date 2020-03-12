@@ -8,13 +8,13 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import {TextInput} from "../components/input";
+import {TextInput, EmailInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
 import Colours from "../styles/Colours";
+const validate = require("validate.js");
 
-var validate = require("validate.js");
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -44,23 +44,14 @@ class WelcomeScreen extends Component {
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
         this.PasswordInput = this.PasswordInput.bind(this);
-        this.EmailInput = this.EmailInput.bind(this);
-    }
-    EmailInput(props) {
-        return (
-            <TextInput
-                name="emailInput"
-                placeholder="Please enter your email"
-                autoFocus={true}
-                style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                showError={this.state.showEmailError && !this.isValidEmail()}
-                errorText={"Please enter a valid email."}
-                onChange={this.onChangeText}
-                onSubmitEditing={this.onSubmitEmail} // calls checkEmail function
-            />
-        );
     }
 
+    onInputChange = value => {
+        this.setState({
+            emailInput: value
+        });
+        console.log("I am Parent component. I got", value, "from my child.");
+      };
     // display password field
     PasswordInput() {
         // if(showCode){
@@ -103,9 +94,9 @@ class WelcomeScreen extends Component {
             ? this.setState({isSignUpPressed: true})
             : navigate("InitSignup");
     }
-    onSubmitEmail() {
+    onSubmitEmail(isValid) {
         this.setState({emailSubmitted: true});
-        this.checkEmail();
+        this.checkEmail(isValid);
     }
 
     onChangeText = event => {
@@ -124,11 +115,12 @@ class WelcomeScreen extends Component {
     }
 
     // checks if email is in DB
-    checkEmail() {
-        this.setState({emailSubmitted: false});
-        const isValidEmail = this.isValidEmail();
+    checkEmail(isValid) {
+
+        // this.setState({emailSubmitted: false});
+        // const isValidEmail = this.isValidEmail();
         // email is of a valid format
-        if (isValidEmail) {
+        if (isValid) {
             // returning user
             if (this.state.emailInput === "P@y.c") {
                 this.setState({
@@ -150,7 +142,7 @@ class WelcomeScreen extends Component {
             }
         }
         // email is of invalid format
-        else if (!isValidEmail) {
+        else if (!isValid) {
             this.setState({
                 showPassField: false,
                 showCode: false,
@@ -189,6 +181,7 @@ class WelcomeScreen extends Component {
 
     // display code field
     popUpCode() {
+        console.log("popping up code");
         return (
             <CodeInput
                 ref={ref => (this.codeInputRef2 = ref)}
@@ -249,7 +242,13 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
-                        {this.state.isSignUpPressed && this.EmailInput()}
+                        <EmailInput
+                        onChange={this.onInputChange}
+                        style={[WelcomeScreenStyles.text, Styles.formWidth]}
+                        onSubmitEditing={this.onSubmitEmail}
+                        showEmailError = {this.state.showEmailError}
+                        />
+                        {/*this.state.isSignUpPressed && */}
                         {this.state.showPassField && this.PasswordInput()}
                         {this.state.showCode ? this.popUpCode() : null}
                         {this.state.isForgotPassPressed

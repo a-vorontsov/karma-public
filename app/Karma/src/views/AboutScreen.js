@@ -88,6 +88,8 @@ class AboutScreen extends React.Component {
     }
 
     createIndividual() {
+        console.log(this.state.addressLine1);
+        console.log("hereee");
         const individual = {
             userId: 1, // TODO
             firstName: this.state.fname,
