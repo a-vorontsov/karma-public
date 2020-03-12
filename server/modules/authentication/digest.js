@@ -5,7 +5,7 @@ const crypto = require("crypto");
  * (256-bits) and return value in hex.
  * @return {hex} 32-byte salt in hex
  */
-function getSecureSaltInHex() {
+function generateSecureSaltInHex() {
     return crypto.randomBytes(32).toString("hex");
 }
 
@@ -14,7 +14,7 @@ function getSecureSaltInHex() {
  * (256-bits) and return value in Base64.
  * @return {base64} 32-byte salt in base64
  */
-function getSecureSaltInBase64() {
+function generateSecureSaltInBase64() {
     return crypto.randomBytes(32).toString("base64");
 }
 
@@ -26,10 +26,7 @@ function getSecureSaltInBase64() {
  * @return {hex} 32-byte hash in hex
  */
 function hashPassWithSaltInHex(password, secureSalt) {
-    return crypto
-        .createHash("sha256")
-        .update(password + secureSalt)
-        .digest("hex");
+    return hashVarargInHex(password, secureSalt);
 }
 
 /**
@@ -40,15 +37,49 @@ function hashPassWithSaltInHex(password, secureSalt) {
  * @return {base64} 32-byte hash in Base64
  */
 function hashPassWithSaltInBase64(password, secureSalt) {
+    return hashVarargInBase64(password, secureSalt);
+}
+
+/**
+ * Hash a variable number of arguments concatenated
+ * with the SHA-256 crypto standard hash function and
+ * return result in hex.
+ * @param  {...any} args
+ * @return {digest} Sha-256 hash in hex
+ */
+function hashVarargInHex(...args) {
+    return hashInput(args.join("")).digest("hex");
+}
+
+/**
+ * Hash a variable number of arguments concatenated
+ * with the SHA-256 crypto standard hash function and
+ * return result in Base64.
+ * @param  {...any} args
+ * @return {digest} Sha-256 hash in Base64
+ */
+function hashVarargInBase64(...args) {
+    return hashInput(args.join("")).digest("base64");
+}
+
+/**
+ * Hash a variable number of arguments concatenated
+ * with the SHA-256 crypto standard hash function and
+ * return result.
+ * @param  {any} input
+ * @return {digest} Sha-256 hash
+ */
+function hashInput(input) {
     return crypto
         .createHash("sha256")
-        .update(password + secureSalt)
-        .digest("base64");
+        .update(input);
 }
 
 module.exports = {
-    getSecureSaltInHex: getSecureSaltInHex,
-    getSecureSaltInBase64: getSecureSaltInBase64,
+    generateSecureSaltInHex: generateSecureSaltInHex,
+    generateSecureSaltInBase64: generateSecureSaltInBase64,
     hashPassWithSaltInHex: hashPassWithSaltInHex,
     hashPassWithSaltInBase64: hashPassWithSaltInBase64,
+    hashVarargInHex: hashVarargInHex,
+    hashVarargInBase64: hashVarargInBase64,
 };

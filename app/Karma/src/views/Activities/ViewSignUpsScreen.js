@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {
     SafeAreaView,
-    ScrollView,
+    View,
     StyleSheet,
     TouchableOpacity,
-    View,
+    ScrollView,
 } from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";

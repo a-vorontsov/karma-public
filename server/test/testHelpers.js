@@ -8,6 +8,23 @@ const registrationExample1 = {
     signUpFlag: 0,
 };
 
+const notification = {
+    type: "Cancel",
+    message: "Cancel Cancel",
+    timestampSent: new Date(),
+    senderId: -1,
+    receiverId: -1,
+};
+
+const getNotification = () => ({...notification});
+
+const information = {
+    type: "privacyPolicy",
+    content: "We won't steal your data!",
+};
+
+const getInformation = () => ({...information});
+
 const getRegistrationExample1 = () => ({...registrationExample1});
 
 const registrationExample2 = {
@@ -147,7 +164,7 @@ const userExample4 = {
     email: "test4@gmail.com",
     username: "test4",
     passwordHash: "bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32",
-    verified: true,
+    verified: false,
     salt: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
     dateRegistered: "2016-06-22 19:10:25-07",
 };
@@ -207,7 +224,7 @@ const getCause = () => ({...cause});
 
 const signUp = {
     individualId: -1,
-    eventId: -1,
+    eventId: 3,
     confirmed: true,
 };
 
@@ -372,6 +389,7 @@ const resetExample2 = {
 const getResetExample2 = () => ({...resetExample2});
 
 const clearDatabase = async () => {
+    await db.query("DELETE FROM notification");
     await db.query("DELETE FROM complaint");
     await db.query("DELETE FROM report_user");
     await db.query("DELETE FROM setting");
@@ -389,6 +407,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
     await db.query("DELETE FROM address");
+    await db.query("DELETE FROM information");
 };
 
 module.exports = {
@@ -421,4 +440,6 @@ module.exports = {
     getFavourite: getFavourite,
     getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
+    getNotification: getNotification,
+    getInformation: getInformation,
 };

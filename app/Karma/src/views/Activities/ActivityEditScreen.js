@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import {
+    View,
+    StyleSheet,
     Dimensions,
     Image,
     ScrollView,
     StatusBar,
     StyleSheet,
     TouchableOpacity,
-    View,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";

@@ -1,4 +1,3 @@
-const db = require("../../database/connection");
 const userRepository = require("./userRepository");
 const organisationRepository = require("./organisationRepository");
 const addressRepository = require("./addressRepository");

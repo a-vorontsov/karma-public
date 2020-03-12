@@ -42,6 +42,7 @@
 		31F6B0AFAEB941D0AB8664F3 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F5289B4F09453EABB1A549 /* food.png */; };
 		322E498EF5174948BB28B553 /* arts-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461F262F58E4297B2CB591B /* arts-white.png */; };
 		33ED5C3CE34A49F5A06A86F1 /* animals-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 204B9FB2C60849C9AC498105 /* animals-white.png */; };
+		33ED657EB48581594E64B971 /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0042C5240AB0D7A21D883DA3 /* libPods-Karma.a */; };
 		358D523281BB465B910D8C76 /* password-tick 12.25.23.png in Resources */ = {isa = PBXBuildFile; fileRef = A90630EDB2564BB0A96E998E /* password-tick 12.25.23.png */; };
 		385C031BEE4D4F1186361192 /* fav-outline-activities.png in Resources */ = {isa = PBXBuildFile; fileRef = 57DCE8D03842460CACEB8CD3 /* fav-outline-activities.png */; };
 		3A7A133D4BBD4D189BBABE89 /* community.png in Resources */ = {isa = PBXBuildFile; fileRef = F961A0732F184A7E8A98C5F7 /* community.png */; };
@@ -59,6 +60,7 @@
 		5A23B998046C4F63BF52F7E2 /* location-logo(low res).png in Resources */ = {isa = PBXBuildFile; fileRef = C70894D985DD417DA8D70854 /* location-logo(low res).png */; };
 		5AD2358A2F71412FAB454F58 /* edit-grey.png in Resources */ = {isa = PBXBuildFile; fileRef = D4F0CF029BE84F28BB918B60 /* edit-grey.png */; };
 		6075DB91589140838E39E2E7 /* conservation.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D3F18685C35400B96674DB3 /* conservation.png */; };
+		6594EB0BF5B521367DF58B30 /* libPods-Karma-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03ABA101F09F3D5703276372 /* libPods-Karma-tvOS.a */; };
 		694A1FD98BE14209866C1035 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD737F3125E74D709048C510 /* OpenSans-Bold.ttf */; };
 		6BC7E812A89340B78B097320 /* cog.png in Resources */ = {isa = PBXBuildFile; fileRef = 935CACDF553645DD93015537 /* cog.png */; };
 		6DB83561F3BD4827B2938180 /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE5209D15F4587B29A7C8A /* email.png */; };
@@ -149,6 +151,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0042C5240AB0D7A21D883DA3 /* libPods-Karma.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* KarmaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KarmaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };

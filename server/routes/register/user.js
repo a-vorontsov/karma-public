@@ -5,6 +5,7 @@
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../modules/authentication/user-agent");
+const authAgent = require("../../modules/authentication/auth-agent");
 const owasp = require("owasp-password-strength-test");
 
 /**
@@ -19,38 +20,55 @@ const owasp = require("owasp-password-strength-test");
  * operation. It will contain the new user's id following a
  * successful registration.
  * @route {POST} /register/user
- * @param {HTTP} req
- * @param {HTTP} res
- * @param {string} email
- * @param {string} username
- * @param {string} password
- * @param {string} confirmPassword
+ * @param {number} req.body.userId since no userId yet, null here
+ * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {object} req.body.data.user the user input values for their user account
+ * @param {object} req.body Here is an example of an appropriate request json:
+<pre><code>
+    &#123;
+        "userId": null,
+        "authToken": null,
+        "data": &#123;
+            "user": &#123;
+                "email": "paul&#64;karma.com",
+                "username": "Paul",
+                "password": "securePass123!",
+            &#125;
+        &#125;
+    &#125;
+</code></pre>
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if success, 200 - success, userId == new user's id<br/>
  * - if password != confirmPassword, 400 - passwords don't match<br/>
  * - if password is not strong enough, 400 - passStrengthTest errors<br/>
  * - if registration failed, 400 - error of operation<br/>
  *   (e.x. if email does not exist)
+ * Here is an example return object on success:
+<pre><code>
+    &#123;
+        "userId": 123,
+        "authToken": "secureAuthTokenForUser123",
+        "message": "User registration successful. Goto individual/org registration selection",
+    &#125;
+</code></pre>
  * @name Register user
  * @function
  */
-router.post("/", async (req, res) => {
-    const passStrengthTest = owasp.test(req.body.password);
-    if (req.body.password !== req.body.confirmPassword) {
-        res.status(400).send({
-            message: "Passwords do not match.",
-        });
-    } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
+router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+    const passStrengthTest = owasp.test(req.body.data.user.password);
+    if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
         res.status(400).send({
             message: "Weak password.",
             errors: passStrengthTest.errors,
         });
     } else {
         try {
-            const userId = await userAgent.registerUser(req.body.email, req.body.username, req.body.password);
+            const userId = await userAgent.registerUser(req.body.data.user.email, req.body.data.user.username, req.body.data.user.password);
+            const authToken = await authAgent.logIn(userId);
             res.status(200).send({
                 message: "User registration successful. Goto individual/org registration selection",
                 userId: userId,
+                authToken: authToken,
             });
         } catch (e) {
             res.status(400).send({
