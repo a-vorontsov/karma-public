@@ -21,9 +21,7 @@ class ActivitiesCausesScreen extends Component {
             .get("http://localhost:8000/event/causes")
             .query({userId: 1})
             .then(result => {
-                console.log("CAUSES DATA: ");
-                console.log(result.text);
-                let activitiesByCause = JSON.parse(result.text);
+                let activitiesByCause = result.body;
                 console.log(activitiesByCause);
                 this.setState({
                     activitiesByCause,

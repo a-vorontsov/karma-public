@@ -7,6 +7,9 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
+    Image,
+    Switch,
+    Dimensions,
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import Modal, {ModalContent} from "react-native-modals";

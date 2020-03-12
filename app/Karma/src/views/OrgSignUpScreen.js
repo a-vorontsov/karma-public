@@ -17,7 +17,7 @@ import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
-import AddressInput from "../components/AddressInput";
+import AddressInput from "../components/input/AddressInput";
 import Colours from "../styles/Colours";
 
 import {RegularText, SubTitleText, BoldText} from "../components/text";
