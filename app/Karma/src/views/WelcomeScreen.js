@@ -9,7 +9,7 @@ import {
     Keyboard,
 } from "react-native";
 import {RegularText} from "../components/text";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
@@ -40,6 +40,19 @@ class WelcomeScreen extends Component {
         this.checkPass = this.checkPass.bind(this);
         this.popUpCode = this.popUpCode.bind(this);
         this.checkCode = this.checkCode.bind(this);
+        this.onSubmitEmail = this.onSubmitEmail.bind(this);
+        this.onSignUpPressed = this.onSignUpPressed.bind(this);
+    }
+    onSignUpPressed(){
+        const {navigate} = this.props.navigation;
+        console.log("ehreeeee");
+        this.state.emailInput === ""
+        ? this.setState({isSignUpPressed: true})
+        : navigate("InitSignup")
+    }
+    onSubmitEmail(){
+        console.log("here");
+        this.setState({emailSubmitted: true});
     }
 
     onChangeText = event => {
@@ -60,9 +73,7 @@ class WelcomeScreen extends Component {
                 showError={this.state.showEmailError && !this.isValidEmail()}
                 errorText={"Please enter a valid email."}
                 onChange={this.onChangeText}
-                onSubmitEditing={() => {
-                    this.setState({emailSubmitted: true});
-                }} // calls checkEmail function
+                onSubmitEditing={this.onSubmitEmail} // calls checkEmail function
             />
         );
     }
@@ -207,7 +218,6 @@ class WelcomeScreen extends Component {
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
@@ -260,11 +270,7 @@ class WelcomeScreen extends Component {
                     }}>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
-                        onPress={() =>
-                            this.state.emailInput === ""
-                                ? this.setState({isSignUpPressed: true})
-                                : navigate("InitSignup")
-                        }>
+                        onPress={this.onSignUpPressed}>
                         <RegularText
                             style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
                             Sign Up

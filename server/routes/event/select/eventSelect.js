@@ -189,6 +189,7 @@ router.get("/causes", async (req, res) => {
     const filters = req.query.filter;
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status !== 200) {
+        console.log("here");
         return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
     }
     const user = checkUserIdResult.user;
