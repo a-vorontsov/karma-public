@@ -6,7 +6,6 @@ import {
     Image,
     ScrollView,
     StatusBar,
-    StyleSheet,
     TouchableOpacity,
 } from "react-native";
 import {RegularText} from "../../components/text";
