@@ -48,7 +48,7 @@ test("sign-in with unverified email works", async () => {
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
-        "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
+        "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
     );
     expect(response.statusCode).toBe(400);
 });
@@ -62,7 +62,7 @@ test("sign-in with verified email works", async () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "Email verified, but no user account. Goto user registration screen.",
+        "Email verified, but no user account. Go to user registration screen.",
     );
 });
 
@@ -75,7 +75,7 @@ test("sign-in with verified email but no registration works", async () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "Email verified, but no user account. Goto user registration screen.",
+        "Email verified, but no user account. Go to user registration screen.",
     );
 });
 
@@ -89,7 +89,7 @@ test("sign-in with partial registration works", async () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe(
-        "User account registered, but no indiv/org profile. Aks for password and then goto indiv/org selection screen.",
+        "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
     );
 });
 
@@ -102,5 +102,5 @@ test("sign-in with full registration works", async () => {
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe("Fully registered. Goto login screen.");
+    expect(response.body.message).toBe("Fully registered. Go to login screen.");
 });

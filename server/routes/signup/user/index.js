@@ -48,7 +48,7 @@ const owasp = require("owasp-password-strength-test");
     &#123;
         "userId": 123,
         "authToken": "secureAuthTokenForUser123",
-        "message": "User registration successful. Goto individual/org registration selection",
+        "message": "User registration successful. Go to individual/org registration selection",
     &#125;
 </code></pre>
  * @name Sign-up User
@@ -66,7 +66,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             const userId = await userAgent.registerUser(req.body.data.user.email, req.body.data.user.username, req.body.data.user.password);
             const authToken = await authAgent.logIn(userId);
             res.status(200).send({
-                message: "User registration successful. Goto individual/org registration selection",
+                message: "User registration successful. Go to individual/org registration selection",
                 userId: userId,
                 authToken: authToken,
             });

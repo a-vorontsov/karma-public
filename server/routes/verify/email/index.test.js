@@ -163,7 +163,7 @@ test("email verification works", async () => {
         .send(signInEmailRequest);
 
     expect(secondResponse.body.message).toBe(
-        "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
+        "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
     );
     expect(secondResponse.statusCode).toBe(400);
 
@@ -178,8 +178,6 @@ test("email verification works", async () => {
 
     expect(verifyResponse2.body.message).toBe("Invalid token");
     expect(verifyResponse2.statusCode).toBe(400);
-
-    // console.log("oldToken-" + token + " newToken-" + token2);
 
     // sending new token
     verifyEmailRequest.data.token = token2;

@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const emailVerification = require("../../../modules/verification/email");
 const authAgent = require("../../../modules/authentication/auth-agent");
+const httpUtil = require("../../../util/httpUtil");
 
 /**
  * This is the second step of the signup flow.<br/>
@@ -30,7 +31,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 </code></pre>
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if user/request already authenticated, 400 - already auth<br/>
- * - email successfully verified, 200 - goto registration<br/>
+ * - email successfully verified, 200 - go to registration<br/>
  * - if email != exist in DB, 400 - no token/email found<br/>
  * - if token !== token in DB, 400 - invalid token
  * - if token expired, 400 - expired token
@@ -51,9 +52,7 @@ router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
             });
         }
     } catch (e) {
-        res.status(500).send({
-            message: e.message,
-        });
+        httpUtil.sendGenericError(e, res);
     }
 });
 

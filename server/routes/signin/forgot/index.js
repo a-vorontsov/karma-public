@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
 const util = require("../../../util/util");
+const httpUtil = require("../../../util/httpUtil");
 const tokenSender = require("../../../modules/verification/tokenSender");
 
 /**
@@ -32,9 +33,7 @@ router.post('/', async (req, res) => {
             message: "Code sent successfully to " + email,
         });
     } catch (e) {
-        res.status(500).send({
-            message: e.message,
-        });
+        httpUtil.sendGenericError(e, res);
     }
 });
 

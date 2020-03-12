@@ -32,11 +32,11 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
 </code></pre>
  * @return {HTTP} one of the following HTTP responses:<br/>
  * - if user/request already authenticated, 400 - already auth<br/>
- * - if user fully registered, 200 - goto login<br/>
- * - if email != exist, store email in DB, 400 - goto email verif<br/>
+ * - if user fully registered, 200 - go to login<br/>
+ * - if email != exist, store email in DB, 400 - go to email verif<br/>
  * - if email != exist & store email FAILED, 500 - error of DB insert<br/>
- * - if email verif, but user unregistered, 400 - goto reg<br/>
- * - if partly reg (only user acc), 400 - goto indiv/org reg<br/>
+ * - if email verif, but user unregistered, 400 - go to reg<br/>
+ * - if partly reg (only user acc), 400 - go to indiv/org reg<br/>
  * - if none of the above, 500 - reg & user object as JSON<br/>
  * - if invalid query, 500 - error message<br/><br/>
  * Response variables explained
@@ -90,7 +90,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
             await tokenSender.storeAndSendEmailVerificationToken(req.body.data.email);
             res.status(400).send({
-                message: "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
+                message: "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
                 data: {
                     isEmailVerified: false,
                     isSignedUp: false,
@@ -99,7 +99,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             });
         } else if (!(await regStatus.userAccountExists(req.body.data.email))) {
             res.status(400).send({
-                message: "Email verified, but no user account. Goto user registration screen.",
+                message: "Email verified, but no user account. Go to user registration screen.",
                 data: {
                     isEmailVerified: true,
                     isSignedUp: false,
@@ -108,7 +108,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             });
         } else if (await regStatus.isPartlyRegistered(req.body.data.email)) {
             res.status(400).send({
-                message: "User account registered, but no indiv/org profile. Aks for password and then goto indiv/org selection screen.",
+                message: "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
                 data: {
                     isEmailVerified: true,
                     isSignedUp: true,
@@ -117,7 +117,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             });
         } else if (await regStatus.isFullyRegisteredByEmail(req.body.data.email)) {
             res.status(200).send({
-                message: "Fully registered. Goto login screen.",
+                message: "Fully registered. Go to login screen.",
                 data: {
                     isEmailVerified: true,
                     isSignedUp: true,
