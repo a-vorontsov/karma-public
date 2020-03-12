@@ -61,7 +61,7 @@ router.post('/confirm', async (req, res) => {
     }
     if (!tokenRecieved) return res.status(400).send("Token not defined");
 
-    resetRepository.findLatestByUserID(checkEmailResult.user.id)
+    resetRepository.findLatestByUserId(checkEmailResult.user.id)
         .then(result => {
             if (result.rows.length === 0) return res.status(404).send("No token sent to " + email);
 
