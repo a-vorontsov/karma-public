@@ -6,6 +6,7 @@ const individualRepo = require("../../models/databaseRepositories/individualRepo
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const date = require("date-and-time");
+const tokenSender = require("../verification/tokenSender");
 
 /**
  * Register a new record in the registration table.
@@ -17,13 +18,7 @@ async function registerEmail(email) {
     if (await regStatus.emailExists(email)) {
         throw new Error("Invalid operation: email already exists.");
     }
-    await regRepo.insert({
-        email: email,
-        emailFlag: 0,
-        idFlag: 0,
-        phoneFlag: 0,
-        signUpFlag: 0,
-    });
+    await tokenSender.storeAndSendEmailVerificationToken(email);
 }
 
 /**

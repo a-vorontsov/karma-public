@@ -37,11 +37,13 @@ test('requesting reset password token works', async () => {
             id: 1,
         }],
     });
-    mailSender.sendToken.mockResolvedValue();
+    mailSender.sendEmail.mockResolvedValue();
     const response = await request(app)
         .post("/signin/forgot")
         .send({
-            email: "test@gmail.com",
+            data: {
+                email: "test@gmail.com",
+            },
         });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
@@ -53,7 +55,11 @@ test('requesting reset password token works', async () => {
 test('requesting reset password token with no email does not work', async () => {
     const response = await request(app)
         .post("/signin/forgot")
-        .send({});
+        .send({
+            data: {
+
+            }
+        });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(0);
@@ -70,7 +76,7 @@ test('confirming correct token works', async () => {
             id: 1,
         }],
     });
-    resetRepository.findResetToken.mockResolvedValue({
+    resetRepository.findLatestByUserID.mockResolvedValue({
         rows: [{
                 ...reset2,
                 id: 2,
@@ -86,10 +92,12 @@ test('confirming correct token works', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "234567",
+            data: {
+                email: "test@gmail.com",
+                token: "234567",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.text).toMatch("Token accepted");
@@ -104,7 +112,7 @@ test('confirming correct token but not latest does not work', async () => {
             id: 1,
         }],
     });
-    resetRepository.findResetToken.mockResolvedValue({
+    resetRepository.findLatestByUserID.mockResolvedValue({
         rows: [{
                 ...reset2,
                 id: 2,
@@ -120,10 +128,12 @@ test('confirming correct token but not latest does not work', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Tokens did not match");
@@ -138,7 +148,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             id: 1,
         }],
     });
-    resetRepository.findResetToken.mockResolvedValue({
+    resetRepository.findLatestByUserID.mockResolvedValue({
         rows: [{
             ...reset1,
             id: 1,
@@ -148,10 +158,12 @@ test('confirming incorrect token returns incorrect token response', async () => 
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "incorrect token",
+            data: {
+                email: "test@gmail.com",
+                token: "incorrect token",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Tokens did not match");
@@ -166,7 +178,7 @@ test('confirming expired token returns token expired response', async () => {
             id: 1,
         }],
     });
-    resetRepository.findResetToken.mockResolvedValue({
+    resetRepository.findLatestByUserID.mockResolvedValue({
         rows: [{
             ...reset1,
             id: 1,
@@ -176,10 +188,12 @@ test('confirming expired token returns token expired response', async () => {
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Token expired");
@@ -197,9 +211,11 @@ test('confirming with no token specified returns token not defined response', as
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
+            data: {
+                email: "test@gmail.com",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(0);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(400);
     expect(response.text).toMatch("Token not defined");
@@ -212,16 +228,18 @@ test('confirming token not sent to email returns no token sent response', async 
             id: 1,
         }],
     });
-    resetRepository.findResetToken.mockResolvedValue({
+    resetRepository.findLatestByUserID.mockResolvedValue({
         rows: [],
     });
     const response = await request(app)
         .post("/signin/forgot/confirm")
         .send({
-            email: "test@gmail.com",
-            token: "123456",
+            data: {
+                email: "test@gmail.com",
+                token: "123456",
+            }
         });
-    expect(resetRepository.findResetToken).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(404);
     expect(response.text).toMatch("No token sent to test@gmail.com");

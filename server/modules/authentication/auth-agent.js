@@ -1,6 +1,7 @@
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const digest = require("./digest");
 const date = require("date-and-time");
+const util = require("../../util/util");
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -78,29 +79,7 @@ async function requireNoAuthentication(req, res, next) {
  */
 async function isValidToken(userId, authToken) {
     const tokenResult = await authRepo.findLatestByUserID(userId);
-    if (tokenResult.rows.length === 0) {
-        return ({
-            isValidToken: false,
-            error: "No token found for user, or user does not exist.",
-        });
-    }
-    const tokenRecord = tokenResult.rows[0];
-    if (tokenRecord.token !== authToken) {
-        return ({
-            isValidToken: false,
-            error: "Invalid token",
-        });
-    } else if (tokenRecord.expiryDate <= Date.now()) {
-        return ({
-            isValidToken: false,
-            error: "Expired token",
-        });
-    } else {
-        return ({
-            isValidToken: true,
-            error: null,
-        });
-    }
+    return util.isValidToken(tokenResult, authToken, "token");
 }
 
 /**
@@ -118,7 +97,7 @@ async function logIn(userId) {
         ),
         expiryDate: date.format(
             date.addMinutes(new Date(), 15),
-            "YYYY-MM-DD HH:mm:ss",
+            "YYYY-MM-DD HH:mm:ss", true,
         ), // TODO: token renewal
         creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         userId: userId,

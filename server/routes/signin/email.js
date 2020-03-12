@@ -7,6 +7,7 @@ const router = express.Router();
 const authAgent = require("../../modules/authentication/auth-agent");
 const regStatus = require("../../modules/authentication/registration-status");
 const userAgent = require("../../modules/authentication/user-agent");
+const tokenSender = require("../../modules/verification/tokenSender");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 
@@ -37,14 +38,26 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
  * - if email verif, but user unregistered, 400 - goto reg<br/>
  * - if partly reg (only user acc), 400 - goto indiv/org reg<br/>
  * - if none of the above, 500 - reg & user object as JSON<br/>
- * - if invalid query, 500 - error message
+ * - if invalid query, 500 - error message<br/><br/>
+ * Response variables explained
+ <pre><code>
+    &#123;
+        "message:" // textual explanation of scenario
+        "data": &#123;
+            "isEmailVerified": // if email is recorded and verified. If false, user has been sent a token
+            "isSignedUp": false, // if user is registered (email & password) but they don't have a full profile
+            "isFullySignedUp": false, // user is fully registered. go to login
+        &#125;
+    &#125;
+</code></pre>
  * An example response:
  <pre><code>
     &#123;
-        "message:"
+        "message:" "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
         "data": &#123;
-            isVerified
-            isSignedUp
+            "isEmailVerified": false,
+            "isSignedUp": false,
+            "isFullySignedUp": false,
         &#125;
     &#125;
 </code></pre>
@@ -58,27 +71,58 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 await userAgent.registerEmail(req.body.data.email);
                 res.status(400).send({
                     message: "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
+                    data: {
+                        isEmailVerified: false,
+                        isSignedUp: false,
+                        isFullySignedUp: false,
+                    },
                 });
             } catch (e) {
                 res.status(500).send({
                     message: "Email did not exist. Error in recording user's email in database. Please see error message: " + e.message,
+                    data: {
+                        isEmailVerified: false,
+                        isSignedUp: false,
+                        isFullySignedUp: false,
+                    },
                 });
             }
         } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
+            await tokenSender.storeAndSendEmailVerificationToken(req.body.data.email);
             res.status(400).send({
-                message: "Email exists but unverified. Goto email verification screen.",
+                message: "Email exists but unverified. The user has been sent a new verification token. Goto email verification screen.",
+                data: {
+                    isEmailVerified: false,
+                    isSignedUp: false,
+                    isFullySignedUp: false,
+                },
             });
         } else if (!(await regStatus.userAccountExists(req.body.data.email))) {
             res.status(400).send({
                 message: "Email verified, but no user account. Goto user registration screen.",
+                data: {
+                    isEmailVerified: true,
+                    isSignedUp: false,
+                    isFullySignedUp: false,
+                },
             });
         } else if (await regStatus.isPartlyRegistered(req.body.data.email)) {
             res.status(400).send({
                 message: "User account registered, but no indiv/org profile. Aks for password and then goto indiv/org selection screen.",
+                data: {
+                    isEmailVerified: true,
+                    isSignedUp: true,
+                    isFullySignedUp: false,
+                },
             });
         } else if (await regStatus.isFullyRegisteredByEmail(req.body.data.email)) {
             res.status(200).send({
                 message: "Fully registered. Goto login screen.",
+                data: {
+                    isEmailVerified: true,
+                    isSignedUp: true,
+                    isFullySignedUp: true,
+                },
             });
         } else {
             // try to construct the records in the registration and user
