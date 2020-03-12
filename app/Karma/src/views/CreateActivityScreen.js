@@ -51,6 +51,11 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: false,
             minEndDate: new Date(),
             minSlotDate: new Date(),
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
@@ -71,6 +76,11 @@ export default class CreateActivityScreen extends React.Component {
             womenOnly: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
             addressVisible: this.state.isAddressVisible,
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             minimumAge: 18, //TODO
             photoId: this.state.isIDReq,
             physical: this.state.isPhysical,

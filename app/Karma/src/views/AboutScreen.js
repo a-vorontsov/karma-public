@@ -34,6 +34,11 @@ class AboutScreen extends React.Component {
             dateSelected: false,
             date: new Date(),
             minYear: new Date().getFullYear() - 18,
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
     }
 
@@ -89,11 +94,11 @@ class AboutScreen extends React.Component {
             surName: this.state.lname,
             dateOfBirth: this.state.date,
             gender: this.state.gender,
-            addressLine1: "TODO", // TODO
-            addressLine2: "TODO", // TODO
-            townCity: "TODO", // TODO
-            countryState: "TODO", // TODO
-            postCode: "TODO", // TODO
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             phoneNumber: "213123421", // TODO
         };
         return individual;

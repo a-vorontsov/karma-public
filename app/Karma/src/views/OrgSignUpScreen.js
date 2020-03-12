@@ -47,6 +47,11 @@ export default class OrgSignUpScreen extends React.Component {
             photo: null,
             submitPressed: false,
             isRegDateVisible: false,
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
     }
 
@@ -96,11 +101,11 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            addressLine1: "line1", //TODO
-            addressLine2: "line2", //TODO
-            townCity: "TODO", //TODO
-            countryState: "TODO", //TODO
-            postCode: "TODO", //TODO
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             phoneNumber: "TODO", //TODO
         };
         return organisation;
