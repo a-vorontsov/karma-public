@@ -21,7 +21,7 @@ const insert = (registration) => {
  * @param {string} verificationToken
  * @param {date} expiryDate
  */
-const insertEmailTokenPair = async (email, verificationToken, expiryDate) => {
+const storeEmailTokenPair = async (email, verificationToken, expiryDate) => {
     const emailTokenPair = {
         email: email,
         emailFlag: 0,
@@ -63,7 +63,7 @@ const updateSignUpFlag = (email) => {
 
 module.exports = {
     insert: insert,
-    insertEmailTokenPair: insertEmailTokenPair,
+    storeEmailTokenPair: storeEmailTokenPair,
     update: update,
     findAll: findAll,
     findByEmail: findByEmail,

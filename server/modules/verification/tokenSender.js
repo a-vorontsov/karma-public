@@ -26,7 +26,7 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
 const storeAndSendEmailVerificationToken = async (email) => {
     const customSubject = "Reset Password Verification Code";
     const validMinutes = 15;
-    await storeAndSendVerificationToken(validMinutes, regRepo.insertEmailTokenPair, email, customSubject, email);
+    await storeAndSendVerificationToken(validMinutes, regRepo.storeEmailTokenPair, email, customSubject, email);
 };
 
 /**
