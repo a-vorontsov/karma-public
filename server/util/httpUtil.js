@@ -12,7 +12,7 @@ const sendResult = (result, httpResponse) => {
 
 const sendGenericError = (error, httpResponse) => httpResponse.status(500).send({message: error.message});
 
-const sendBuiltInError = (httpError) => httpResponse.status(httpError.status).send({message: httpError.message});
+const sendBuiltInError = (httpError, httpResponse) => httpResponse.status(httpError.status).send({message: httpError.message});
 
 const sendErrorWithRedirect = (status, message, httpResponse) => {
     httpResponse.redirect("/error/?status=" + status + "&message=" + message);

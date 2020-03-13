@@ -48,9 +48,7 @@ router.post("/", async (req, res) => {
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
     } catch (e) {
-        res.status(500).send({
-            message: e.message,
-        });
+        httpUtil.sendGenericError(e, res);
     }
 });
 
