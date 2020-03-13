@@ -47,6 +47,8 @@ app.use("/profile/view", require("./routes/profile/view"));
 app.use("/profile/edit/password", require("./routes/profile/edit/change-password"));
 app.use("/bugreport", require("./routes/bugreport"));
 
+app.use("/admin", require("./routes/admin"));
+
 // import OAuth routes and dependencies if applicable
 if (process.env.ENABLE_OAUTH === "1") {
     const passport = require("passport");
