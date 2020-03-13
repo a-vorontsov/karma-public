@@ -15,8 +15,9 @@ const transporter = nodemailer.createTransport({
  * @param {string} email
  * @param {string} subject
  * @param {string} text
+ * @return {Promise}
  */
-const sendEmail = async (email, subject, text) => {
+const sendEmail = (email, subject, text) => {
     return new Promise((resolve, reject) => {
         const mailOptions = {
             from: process.env.EMAIL_ADDRESS,
@@ -60,8 +61,9 @@ const sendEmail = async (email, subject, text) => {
  * user's email is specified in the body of the email.
  * @param {string} email the user input contact email address
  * @param {string} report the user input bug report
+ * @return {Promise}
  */
-const sendBugReport = async (email, report) => {
+const sendBugReport = (email, report) => {
     const toEmail = process.env.BUG_REPORT_EMAIL_ADDRESS;
     const subject = "Bug Report";
     const text = "Bug report from " + email + ": " + report;
