@@ -13,6 +13,7 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import CodeInput from "react-native-code-input";
 import Colours from "../styles/Colours";
+import {TransparentButton, TextButton} from "../components/buttons";
 
 var validate = require("validate.js");
 class WelcomeScreen extends Component {
@@ -263,34 +264,30 @@ class WelcomeScreen extends Component {
                             this.state.emailInput === ""
                                 ? this.setState({isSignUpPressed: true})
                                 : navigate("InitSignup")
-                        }>
-                        <RegularText
-                            style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
-                            Sign Up
-                        </RegularText>
-                    </View>
+                        }
+                    />
+                    <RegularText
+                        style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
+                        Sign Up
+                    </RegularText>
+                </View>
 
-                    <View style={Styles.bottom}>
-                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
-                            <TransparentButton
-                                onPress={() => navigate("Activities")}
-                                white
-                                title="Sign Up"
-                            />
+                <View style={Styles.bottom}>
+                    <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                        <TransparentButton
+                            onPress={() => navigate("Activities")}
+                            white
+                            title="Sign Up"
+                        />
 
-                            <TextButton
-                                onPress={() => navigate("Profile")}
-                                title="Already have an account? Login"
-                                styles={[
-                                    Styles.white,
-                                    Styles.medium,
-                                    Styles.pt16,
-                                ]}
-                            />
-                        </View>
+                        <TextButton
+                            onPress={() => navigate("Profile")}
+                            title="Already have an account? Login"
+                            styles={[Styles.white, Styles.medium, Styles.pt16]}
+                        />
                     </View>
-                </SafeAreaView>
-            </LinearGradient>
+                </View>
+            </View>
         );
     }
 }
