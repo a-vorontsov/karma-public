@@ -156,7 +156,7 @@ class WelcomeScreen extends Component {
 
     // verify password is correct
     async checkPass() {
-        // if password correct
+        const {navigate} = this.props.navigation;
         await request
                 .post("http://localhost:8000/signin/password")
                 .send({
@@ -164,25 +164,23 @@ class WelcomeScreen extends Component {
                     userId: null,
                     data: {
                         email: this.state.emailInput,
+                        password:this.state.passInput,
                     },
                 })
                 .then(res => {
+                    // if password correct
                     console.log(res.status);
                     console.log(res.body);
+                    this.setState({isValidPass: true});
+                    console.log("correct pass");
+                    navigate("PickCauses");
+                    return;
                 })
                 .catch(err => {
                     console.log(err.message);
+                    this.setState({isValidPass: false});
+                    this.setState({showPassError: true});
                 });
-
-        if (this.state.passInput === "owo") {
-            this.setState({isValidPass: true});
-            console.log("correct pass");
-        } else {
-            // password incorrect
-            // show error message
-            this.setState({isValidPass: false});
-            this.setState({showPassError: true});
-        }
     }
 
     // verify code is correct
