@@ -1,8 +1,8 @@
 const request = require("supertest");
-const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
+const app = require("../../app");
+const testHelpers = require("../../test/testHelpers");
+const userRepo = require("../../models/databaseRepositories/userRepository");
+const regRepo = require("../../models/databaseRepositories/registrationRepository");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();
@@ -58,7 +58,7 @@ test("viewing individual profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(profileViewRequest);
 
     expect(profileResponse.body.message).toBe(
@@ -124,7 +124,7 @@ test("viewing org profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(profileViewRequest);
 
     expect(profileResponse.body.message).toBe(
@@ -143,7 +143,7 @@ test("viewing org profile works", async () => {
 
 test("viewing profile without user account works", async () => {
     const profileResponse = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(profileViewRequest);
 
     expect(profileResponse.statusCode).toBe(400);
@@ -159,7 +159,7 @@ test("viewing profile without indiv or org account works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(profileViewRequest);
 
     expect(profileResponse.statusCode).toBe(400);

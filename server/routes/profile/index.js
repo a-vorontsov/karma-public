@@ -1,18 +1,18 @@
 /**
- * @module Profile-View
+ * @module Profile
  */
 
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
+const authAgent = require("../../modules/authentication/auth-agent");
+const userRepo = require("../../models/databaseRepositories/userRepository");
+const indivRepo = require("../../models/databaseRepositories/individualRepository");
+const orgRepo = require("../../models/databaseRepositories/organisationRepository");
+const addressRepo = require("../../models/databaseRepositories/addressRepository");
 
 /**
- * Endpoint called whenever a user wishes to view their profile.<br/>
- * URL example: GET http://localhost:8000/profile/view/
+ * Endpoint called whenever a user wishes to get their profile.<br/>
+ * URL example: GET http://localhost:8000/profile/
  * @param {number} req.body.userId
  * @param {String} req.body.authToken
  * @returns {object}
@@ -45,7 +45,7 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
  * <br/>This way you can call for example <code class="highlight">req.body.data.individual</code> to get the
  * individual object and all it's visible params. <br/>(this won't include all params of
  * the objects, for instance their password)
- *  @name View profile
+ *  @name Get profile
  *  @function
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {

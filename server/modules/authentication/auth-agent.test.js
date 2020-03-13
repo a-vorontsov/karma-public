@@ -273,7 +273,7 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(anyRequest6)
         .redirects(0);
 
@@ -293,7 +293,7 @@ test("valid and expired token working", async () => {
     // second pair of requests
 
     const response2 = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(anyRequest6)
         .redirects(1);
 
