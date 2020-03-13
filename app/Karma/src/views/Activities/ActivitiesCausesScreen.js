@@ -21,7 +21,6 @@ class ActivitiesCausesScreen extends Component {
             .get("http://localhost:8000/event/causes")
             .query({userId: 76})
             .then(result => {
-                console.log("MEME CAUSE MAN");
                 let activitiesByCause = result.body.data;
                 console.log(activitiesByCause);
                 this.setState({
