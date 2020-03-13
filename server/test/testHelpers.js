@@ -110,7 +110,7 @@ const getRegistrationExample6 = () => ({...registrationExample6});
 
 const address = {
     address1: "221B Baker St",
-    address2: "Marleybone",
+    address2: "Marylebone",
     postcode: "NW1 6XE",
     city: "London",
     region: "Greater London",
@@ -119,6 +119,18 @@ const address = {
 };
 
 const getAddress = () => ({...address});
+
+const address2 = {
+    addressLine1: "221B Baker St",
+    addressLine2: "Marylebone",
+    postCode: "NW1 6XE",
+    townCity: "London",
+    countryState: "Greater London",
+    lat: 51.523774,
+    long: -0.158534,
+};
+
+const getAddress2 = () => ({...address2});
 
 
 const event = {
@@ -260,6 +272,17 @@ const signUp = {
 };
 
 const getSignUp = () => ({...signUp});
+
+const bugReport = {
+    userId: null,
+    authToken: null,
+    data: {
+        email: "test@gmail.com",
+        report: "I can't date with this app.",
+    },
+};
+
+const getBugReport = () => ({...bugReport});
 
 const favourite = {
     individualId: -1,
@@ -443,6 +466,7 @@ const clearDatabase = async () => {
 
 module.exports = {
     getAddress: getAddress,
+    getAddress2: getAddress2,
     getAuthenticationExample1: getAuthenticationExample1,
     getAuthenticationExample2: getAuthenticationExample2,
     getRegistrationExample1: getRegistrationExample1,
@@ -472,5 +496,6 @@ module.exports = {
     getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
     getNotification: getNotification,
+    getBugReport: getBugReport,
     getInformation: getInformation,
 };

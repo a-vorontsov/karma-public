@@ -10,7 +10,8 @@
     "db-migrate": "db-migrate",
     "docs": "jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes",
     "dev-start": "nodemon ./server",
-    "prod-start": "NODE_ENV=production nodemon ./server"
+    "prod-start": "NODE_ENV=production nodemon ./server",
+    "check-all": "db-migrate down; db-migrate down; db-migrate down; db-migrate up; jest -i; jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes; eslint ./ --fix"
   },
   "author": "",
   "license": "ISC",
@@ -58,6 +59,11 @@
     "supertest": "^4.0.2"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ],
     "setupFilesAfterEnv": [
       "./test/setupTests"
     ]

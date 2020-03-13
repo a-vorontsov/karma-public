@@ -47,16 +47,15 @@ const findGoingEvents = (userId) => {
 const update = (individual) => {
     const query =
     "UPDATE individual SET firstname = $1, lastname = $2, phone = $3, banned = $4, " +
-    "user_id = $5, picture_id = $6, address_id = $7, birthday = $8, gender = $9, WHERE id = $10" +
+    "picture_id = $5, address_id = $6, birthday = $7, gender = $8 WHERE id = $9" +
     "RETURNING *"; // returns passed address with it's id set to corresponding id in database
     const params = [
         individual.firstname,
         individual.lastname,
         individual.phone,
         individual.banned,
-        individual.user_id,
-        individual.picture_id,
-        individual.address_id,
+        individual.pictureId,
+        individual.addressId,
         individual.birthday,
         individual.gender,
         individual.id,
