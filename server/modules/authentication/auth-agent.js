@@ -29,7 +29,8 @@ async function requireAuthentication(req, res, next) {
     } else if (authToken === null || userId === null) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
     } else {
-        const isValid = await isValidToken(userId, authToken);
+        const tokenResult = await authRepo.findLatestByUserID(userId);
+        const isValid = await util.isValidToken(tokenResult, authToken, "token");
         if (isValid.isValidToken) {
             next();
         } else {
@@ -61,10 +62,13 @@ async function requireNoAuthentication(req, res, next) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     } else if (userId === null || authToken === null) {
         next(); // for performance reasons logic is separated
-    } else if ((await isValidToken(userId, authToken)).isValidToken) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
     } else {
-        next();
+        const tokenResult = await authRepo.findLatestByUserID(userId);
+        if ((await util.isValidToken(tokenResult, authToken, "token")).isValidToken) {
+            httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
+        } else {
+            next();
+        }
     }
 }
 
