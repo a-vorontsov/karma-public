@@ -9,6 +9,11 @@
   text-align: center;
 }
 
+.App {
+  margin: 0 auto;
+  width: 1400px;
+  max-width: 90%;
+}
 
 header img.logo {
   height: 44px;
@@ -21,7 +26,7 @@ header h1 {
   font-size: 52px;
   padding-left: 10px;
   display: inline;
-  color: #01a7a6
+  color: #00c5c4
 }
 
 .highlightContainer {
@@ -33,9 +38,13 @@ header h1 {
 
 .highlightContainer h2 {
   font-size: 36px;
-  color: #01a7a6;
+  color: #00c5c4;
 }
 
 .highlightContainer .highlightedStat {
   max-width: 400px;
+}
+
+.tabView {
+  background-color: #01a7a6;
 }

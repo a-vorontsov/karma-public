@@ -12,7 +12,7 @@ export class HighlightedStats extends React.Component {
                 </div>
                 <div className="highlightedStat">
                     <h2>
-                         50
+                         68
                     </h2>
                     <p>Users making the world a better place</p>
                 </div>
