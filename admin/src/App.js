@@ -1,10 +1,13 @@
 import React from 'react';
 import './App.css';
+import {Header} from './components/Header'
+import {HighlightedStats} from "./components/HighlightedStats";
 
 function App() {
   return (
     <div className="App">
-        <h1>Hello, world. How you doin'?</h1>
+        <Header/>
+        <HighlightedStats/>
     </div>
   );
 }
