@@ -26,7 +26,7 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
 const storeAndSendEmailVerificationToken = async (email) => {
     const customSubject = "Reset Password Verification Code";
     const validMinutes = 15;
-    await storeAndSendVerificationToken(validMinutes, regRepo.insertEmailTokenPair, email, customSubject, email);
+    await storeAndSendVerificationToken(validMinutes, regRepo.storeEmailTokenPair, email, customSubject, email);
 };
 
 /**
@@ -48,7 +48,7 @@ const storeAndSendVerificationToken = async (validMinutes, dbUpdateFunction, dbI
         "YYYY-MM-DD HH:mm:ss", true,
     );
     // update the db
-    await dbUpdateFunction(dbId, token, expiryDate);
+    await dbUpdateFunction(dbId, token, expiryDate);// TODO: refactor
     // specify email params
     const text = "K-" + token + " is your karma verification code";
     const subject = customSubject;
