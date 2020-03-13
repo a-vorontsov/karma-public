@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
+const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
 
 /**
  * gets called when user selects causes
