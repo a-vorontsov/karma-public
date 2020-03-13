@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {AppDocumentsTab} from "./AppDocumentsTab"
+import {IndividualsTableTab} from "./IndividualsTableTab";
 
 class TabPanel extends React.Component {
     render() {
@@ -47,11 +48,10 @@ export function TabView() {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <AppDocumentsTab/>
-                {/*<p>Graphs and stuff</p>*/}
+                <p>Cool graphs and stuff go here</p>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <p>Table of users w/ ban button goes here</p>
+                <IndividualsTableTab/>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <AppDocumentsTab/>
