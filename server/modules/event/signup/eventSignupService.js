@@ -1,3 +1,4 @@
+const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
 const util = require("../../../util/util");
 
@@ -48,13 +49,15 @@ const getAllSignupsForEvent = async (eventId) => {
  */
 const getSignupHistory = async (individualId) => {
     const signups = await signupRepository.findAllByIndividualId(individualId);
-    const signedUpEvents = signups.rows
-        .map(s => s.eventId)
-        .map(async e => await eventRepository.findById(e));
+    const now = new Date();
+    const signedUpEvents = (await Promise.all(signups.rows.map(signup => signup.eventId)
+        .map(eventId => eventRepository.findById(eventId))))
+        .map(eventResult => eventResult.rows[0])
+        .filter(event => event.date < now);
     return ({
         status: 200,
         message: "History fetched successfully",
-        data: {events: signedUpEvents.rows},
+        data: {events: signedUpEvents},
     });
 };
 
