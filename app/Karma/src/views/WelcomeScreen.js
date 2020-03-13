@@ -62,7 +62,7 @@ class WelcomeScreen extends Component {
 
         //show code
         this.setState({showCode: true});
-    }
+    };
 
     onSignUpPressed() {
         const {navigate} = this.props.navigation;
@@ -73,7 +73,7 @@ class WelcomeScreen extends Component {
             this.setState(this.baseState)
             //navigate("InitSignup");
         }
-    }
+    };
 
     onChangeText = event => {
         const {name, text} = event;
@@ -81,9 +81,25 @@ class WelcomeScreen extends Component {
     };
 
     onSubmitEmail(isValid) {
+        const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
             // returning user
+
+            // if email is verified
+            //navigate('UserSignup');
+
+            //if user is SignedUp
+            //navigate("InitSignup");
+
+            //is user isFullySignedUp
+            // this.setState({
+            //     showPassField: true,
+            //     showCode: false,
+            //     showEmailError: false,
+            //     buttonText:"Log In"
+            // });
+            
             if (this.state.emailInput === "P@y.c") {
                 this.setState({
                     showPassField: true,
@@ -113,7 +129,7 @@ class WelcomeScreen extends Component {
                 showEmailError: true,
             });
         }
-    }
+    };
 
     // verify password is correct
     checkPass() {
