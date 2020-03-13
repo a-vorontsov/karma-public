@@ -33,7 +33,7 @@ const sendEmail = (email, subject, text) => {
             };
             resolve(result);
         } else {
-            transporter.sendMail(mailOptions, function(err, info) {
+            transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
                     const result = {
                         status: 500,
