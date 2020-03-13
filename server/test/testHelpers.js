@@ -24,6 +24,13 @@ const notification = {
 
 const getNotification = () => ({...notification});
 
+const information = {
+    type: "privacyPolicy",
+    content: "We won't steal your data!",
+};
+
+const getInformation = () => ({...information});
+
 const getRegistrationExample1 = () => ({...registrationExample1});
 
 const registrationExample2 = {
@@ -454,6 +461,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM registration");
     await db.query("DELETE FROM cause");
     await db.query("DELETE FROM address");
+    await db.query("DELETE FROM information");
 };
 
 module.exports = {
@@ -489,4 +497,5 @@ module.exports = {
     clearDatabase: clearDatabase,
     getNotification: getNotification,
     getBugReport: getBugReport,
+    getInformation: getInformation,
 };

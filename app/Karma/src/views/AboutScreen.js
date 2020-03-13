@@ -11,7 +11,7 @@ import {
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
@@ -20,6 +20,7 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
+import AddressInput from "../components/AddressInput";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -33,6 +34,11 @@ class AboutScreen extends React.Component {
             dateSelected: false,
             date: new Date(),
             minYear: new Date().getFullYear() - 18,
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
     }
 
@@ -88,11 +94,11 @@ class AboutScreen extends React.Component {
             surName: this.state.lname,
             dateOfBirth: this.state.date,
             gender: this.state.gender,
-            addressLine1: "TODO", // TODO
-            addressLine2: "TODO", // TODO
-            townCity: "TODO", // TODO
-            countryState: "TODO", // TODO
-            postCode: "TODO", // TODO
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             phoneNumber: "213123421", // TODO
         };
         return individual;
@@ -142,7 +148,9 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        style={{marginBottom: 100}}
+                        showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
@@ -236,6 +244,15 @@ class AboutScreen extends React.Component {
                                 ]}
                                 onValue={value => this.setGender(value)}
                             />
+
+                            <SubTitleText>Where do you live?</SubTitleText>
+                            <RegularText style={Styles.pb24}>
+                                This is for us to help you find the most
+                                compatible events with you. This information
+                                will not be shared with charities.
+                            </RegularText>
+                            <AddressInput />
+
                             <GradientButton
                                 onPress={() => this.goToNext()}
                                 title="Next"
