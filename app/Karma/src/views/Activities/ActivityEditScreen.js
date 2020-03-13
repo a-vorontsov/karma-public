@@ -5,8 +5,8 @@ import {
     Dimensions,
     Image,
     ScrollView,
-    TouchableOpacity,
     StatusBar,
+    TouchableOpacity,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
