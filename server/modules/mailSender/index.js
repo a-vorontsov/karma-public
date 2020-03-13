@@ -3,8 +3,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: `${process.env.EMAIL_ADDRESS}`,
-        pass: `${process.env.EMAIL_PASSWORD}`,
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD,
     },
 });
 
@@ -19,8 +19,8 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (email, subject, text) => {
     return new Promise((resolve, reject) => {
         const mailOptions = {
-            from: `${process.env.EMAIL_ADDRESS}`,
-            to: `${email}`,
+            from: process.env.EMAIL_ADDRESS,
+            to: email,
             subject: subject,
             text: text,
         };
@@ -28,7 +28,7 @@ const sendEmail = async (email, subject, text) => {
             const result = {
                 status: 200,
                 info: "testing",
-                message: `Email sent to ${email}`,
+                message: "Email sent to " + email,
             };
             resolve(result);
         } else {
@@ -37,14 +37,14 @@ const sendEmail = async (email, subject, text) => {
                     const result = {
                         status: 500,
                         info: err,
-                        message: `Email sending failed to ${email}`,
+                        message: "Email sending failed to " + email,
                     };
                     resolve(result);
                 } else {
                     const result = {
                         status: 200,
                         info: info,
-                        message: `Email sent to ${email}`,
+                        message: "Email sent to " + email,
                     };
                     resolve(result);
                 }
@@ -64,7 +64,7 @@ const sendEmail = async (email, subject, text) => {
 const sendBugReport = async (email, report) => {
     const toEmail = process.env.BUG_REPORT_EMAIL_ADDRESS;
     const subject = "Bug Report";
-    const text = `Bug report from ${email}: ${report}`;
+    const text = "Bug report from " + email + ": " + report;
     return sendEmail(toEmail, subject, text);
 };
 
