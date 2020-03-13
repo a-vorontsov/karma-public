@@ -41,16 +41,8 @@ const httpUtil = require("../../../util/httpUtil");
  */
 router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        const verificationResult = await emailVerification.isValidToken(req.body.data.email, req.body.data.token);
-        if (verificationResult.isValidToken) {
-            res.status(200).send({
-                message: "Email successfully verified. Go to registration screen.",
-            });
-        } else {
-            res.status(400).send({
-                message: verificationResult.error,
-            });
-        }
+        const verificationResult = await emailVerification.verifyEmail(req.body.data.email, req.body.data.token);
+        return httpUtil.sendResult(verificationResult, res);
     } catch (e) {
         httpUtil.sendGenericError(e, res);
     }
