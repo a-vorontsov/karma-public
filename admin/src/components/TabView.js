@@ -4,6 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import {AppDocumentsTab} from "./AppDocumentsTab"
 
 class TabPanel extends React.Component {
     render() {
@@ -46,13 +47,14 @@ export function TabView() {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <p>Graphs and stuff</p>
+                <AppDocumentsTab/>
+                {/*<p>Graphs and stuff</p>*/}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <p>Table of users w/ ban button goes here</p>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <p>T&C stuff goes here (with a selector)</p>
+                <AppDocumentsTab/>
             </TabPanel>
         </div>
     );

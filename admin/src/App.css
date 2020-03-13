@@ -45,6 +45,25 @@ header h1 {
   max-width: 400px;
 }
 
-.tabView {
-  background-color: #01a7a6;
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  max-width: 90%;
+  margin: 0 auto;
 }
+
+.documentSelect {
+  width: 250px;
+  margin-bottom: 75px !important;
+}
+
+.documentTextBox div textarea {
+  text-align: left;
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 50px;
+  min-height: 200px;
+}
+
