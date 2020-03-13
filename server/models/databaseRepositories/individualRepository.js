@@ -36,12 +36,13 @@ const findFavouriteEvents = (userId) => {
 };
 
 const findGoingEvents = (userId) => {
+    const now = new Date();
     const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
         "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id as eventCreatorId, " +
         "address1, address2, postcode, city, region, lat, long " +
         "FROM sign_up left join event on event_id = id(event)" +
-        "left join address on id(address) = address_id where user_id = $1 and confirmed = true";
-    return db.query(query, [userId]);
+        "left join address on id(address) = address_id where user_id = $1 and confirmed = true AND date >= $2";
+    return db.query(query, [userId, now]);
 };
 
 const update = (individual) => {
