@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from "@material-ui/core/TextField";
@@ -17,18 +16,44 @@ const useStyles = makeStyles(theme => ({
 
 export function AppDocumentsTab() {
     const classes = useStyles();
-    const [document, setDocument] = React.useState('termsAndConditions');
+    const [document, setDocument] = React.useState('terms');
+    const [changed, setChanged] = React.useState(true);
     const [value, setValue] = React.useState('Document text...');
 
     const handleSelectChange = event => {
         setDocument(event.target.value);
+        if (event.target.value !== document) {
+            setChanged(true);
+        }
     };
 
     const handleTextChange = event => {
         setValue(event.target.value);
     };
 
-    return (
+    const submitChange = event => {
+        fetch(process.env.REACT_APP_API_URL + "/information", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({type: document, content: value})
+        })
+    };
+
+    useEffect(() => {
+        async function fetchTerms() {
+            const type = document;
+            const termsResponse = (await fetch(process.env.REACT_APP_API_URL + "/information?type=" + type));
+            const terms = await termsResponse.json();
+            setValue(terms.data.information.content);
+        }
+        if (changed) {
+            fetchTerms();
+            setChanged(false);
+        }
+    }, [changed, document]);
+
+
+        return (
         <div className={"tabContainer"}>
             <FormControl className={classes.formControl + " documentSelect"}>
                 <InputLabel shrink id="demo-simple-select-placeholder-label-label">
@@ -40,9 +65,9 @@ export function AppDocumentsTab() {
                     value={document}
                     onChange={handleSelectChange}
                 >
-                    <MenuItem value={"termsAndConditions"}>Terms & Conditions</MenuItem>
+                    <MenuItem value={"terms"}>Terms & Conditions</MenuItem>
                     <MenuItem value={"privacyPolicy"}>Privacy Policy</MenuItem>
-                    <MenuItem value={30}>Some other option</MenuItem>
+                    <MenuItem value={"about"}>About</MenuItem>
 
                 </Select>
             </FormControl>
@@ -53,8 +78,8 @@ export function AppDocumentsTab() {
                 value={value}
                 onChange={handleTextChange}
             />
-            <Button variant="contained" color="primary" className={"submitButton"}>
-                Submit
+            <Button variant="contained" color="primary" className={"submitButton"} onClick={submitChange}>
+                Update
             </Button>
         </div>
     );
