@@ -42,9 +42,9 @@ test("editing individual profile works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    // console.log(address);
+
     const addressId = await userAgent.registerAddress(address);
-    // console.log(addressId);
+
     individual.userId = userId;
     individual.addressId = addressId;
     const indivResult = await indivRepo.insert(individual);
@@ -88,9 +88,9 @@ test("editing organisation profile works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    // console.log(address);
+
     const addressId = await userAgent.registerAddress(address);
-    // console.log(addressId);
+
     organisation.userId = userId;
     organisation.addressId = addressId;
     const orgResult = await orgRepo.insert(organisation);
@@ -112,10 +112,6 @@ test("editing organisation profile works", async () => {
     const updatedUser = updatedUserRes.rows[0];
     const updatedOrg = updatedOrgRes.rows[0];
     const updatedAddr = updatedAddrRes.rows[0];
-
-    // console.log(updatedUser);
-    // console.log(updatedOrg);
-    // console.log(updatedAddr);
 
     expect(updatedUser.username).toBe(user.username);
     expect(updatedOrg.phone).toBe(profileChangeRequest2.data.organisation.phoneNumber);
