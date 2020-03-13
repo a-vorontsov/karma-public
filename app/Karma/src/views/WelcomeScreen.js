@@ -12,6 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
+const request = require("superagent");
 
 class WelcomeScreen extends Component {
     constructor(props) {
@@ -26,7 +27,8 @@ class WelcomeScreen extends Component {
             showPassField: false,
             showCode: false,
             isCodeValid: false,
-            buttonText: "Sign Up/ Log In"
+            buttonText: "Sign Up/ Log In",
+            codeSent:false,
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -62,78 +64,116 @@ class WelcomeScreen extends Component {
 
         //show code
         this.setState({showCode: true});
-    };
+    }
 
     onSignUpPressed() {
         const {navigate} = this.props.navigation;
-        if(this.state.emailInput === ""){
+        if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
             //this.setState(this.baseState)
-        }else{
-            this.setState(this.baseState)
+        } else {
+            this.setState(this.baseState);
             //navigate("InitSignup");
         }
-    };
+    }
 
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
     };
 
-    onSubmitEmail(isValid) {
+    async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
-            // returning user
+            console.log("here");
+            await request
+                .post("http://localhost:8000/signin/email")
+                .send({
+                    authToken: null,
+                    userId: null,
+                    data: {
+                        email: this.state.emailInput,
+                    },
+                })
+                .then(res => {
+                    console.log("here1");
+                    // console.log(res.status);
+                     console.log(res.body);
+                    if (res.body.data.isFullySignedUp) {
+                        // returning user
+                        //if user isFullySignedUp
+                        console.log("here2");
+                        console.log("Fully signed Up");
+                        this.setState({
+                            showPassField: true,
+                            showCode: false,
+                            showEmailError: false,
+                            buttonText: "Log In",
+                        });
+                        return;
+                    }
+                    if (res.body.data.isSignedUp) {
+                        console.log("here3");
+                        console.log(" is signed Up");
+                        //if user is SignedUp
+                         navigate("InitSignup");
+                         return;
+                    }
+                    if (res.body.data.isEmailVerified) {
+                        console.log("here4");
+                        console.log(" email is verified");
+                        // if email is verified
+                         navigate("UserSignUp");
+                         return;
+                    }
+                    //if email is not verified
+                    // show code field
+                    console.log("here5");
+                    console.log(" email is NOT verified");
+                    this.setState({
+                        showPassField: false,
+                        showCode: true,
+                        showEmailError: false,
+                        buttonText: "Sign Up",
+                    });
+                    console.log("hereeeeeeeeeee");
+                })
+                .catch(err => {
+                    console.log("BIG ERROR");
+                    console.log(err);
 
-            // if email is verified
-            //navigate('UserSignup');
-
-            //if user is SignedUp
-            //navigate("InitSignup");
-
-            //is user isFullySignedUp
-            // this.setState({
-            //     showPassField: true,
-            //     showCode: false,
-            //     showEmailError: false,
-            //     buttonText:"Log In"
-            // });
-            
-            if (this.state.emailInput === "P@y.c") {
-                this.setState({
-                    showPassField: true,
-                    showCode: false,
-                    showEmailError: false,
-                    buttonText:"Log In"
                 });
-            }
-            // new user
-            else {
-                //send email code TO DO BACKEND
-                // show code field
-
-                this.setState({
-                    showPassField: false,
-                    showCode: true,
-                    showEmailError: false,
-                    buttonText:"Sign Up"
-                });
-            }
-        }
-        // email is of invalid format
-        else {
+        } else {
+            // email is of invalid format
             this.setState({
                 showPassField: false,
                 showCode: false,
                 showEmailError: true,
             });
         }
-    };
+    }
 
     // verify password is correct
-    checkPass() {
+    async checkPass() {
         // if password correct
+        await request
+                .post("http://localhost:8000/signin/password")
+                .send({
+                    authToken: null,
+                    userId: null,
+                    data: {
+                        email: this.state.emailInput,
+                    },
+                })
+                .then(res => {
+                    console.log(res.status);
+                    console.log(res.body);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                });
+
         if (this.state.passInput === "owo") {
             this.setState({isValidPass: true});
             console.log("correct pass");
@@ -146,29 +186,49 @@ class WelcomeScreen extends Component {
     }
 
     // verify code is correct
-    checkCode(code) {
+    async checkCode(code) {
+        const {navigate} = this.props.navigation;
         if (this.state.isForgotPassPressed) {
             // check with forgotPassword route
             // code correct
-            if (code === "123456") {
-                console.log("correct code");
-                this.setState({isCodeValid: true});
-            } else {
-                // code incorrect
-                this.setState({isCodeValid: false});
-                console.log("incorrect code");
-            }
+            // if (code === "123456") {
+            //     console.log("correct code");
+            //     this.setState({isCodeValid: true});
+            //     navigate('UserSignup');
+            // } else {
+            //     // code incorrect
+            //     this.setState({isCodeValid: false});
+            //     console.log("incorrect code");
+            // }
         } else {
             //check with register route
-            // code correct
-            if (code === "123456") {
-                console.log("correct code");
-                this.setState({isCodeValid: true});
-            } else {
-                // code incorrect
+            await request
+                .post("http://localhost:8000/verify/email")
+                .send({
+                    authToken: null,
+                    userId: null,
+                    data: {
+                        email: this.state.emailInput,
+                        token: code,
+                    },
+                })
+                .then(res => {
+                    console.log(res.status);
+                    console.log(res.body);
+                    if(res.status === 200){
+                        console.log("correct code");
+                        this.setState({isCodeValid: true});
+                        navigate("UserSignUp");
+                    }
+                    else{
+                                        // code incorrect
                 this.setState({isCodeValid: false});
                 console.log("incorrect code");
-            }
+                    }
+                })
+                .catch(err => {
+                    console.log(err.message);
+                });
         }
     }
 

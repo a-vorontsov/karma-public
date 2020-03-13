@@ -93,15 +93,17 @@ class AboutScreen extends React.Component {
         const individual = {
             userId: 1, // TODO
             firstName: this.state.fname,
-            surName: this.state.lname,
+            lastName: this.state.lname,
             dateOfBirth: this.state.date,
             gender: this.state.gender,
-            addressLine1: this.state.addressLine1,
-            addressLine2: this.state.addressLine2,
-            townCity: this.state.townCity,
-            countryState: this.state.countryState,
-            postCode: this.state.postCode,
             phoneNumber: "213123421", // TODO
+            address: {
+                addressLine1: "this.state.addressLine1",
+                addressLine2: "this.state.addressLine2",
+                townCity: "this.state.townCity",
+                countryState: "this.state.countryState",
+                postCode: "this.state.postCode",
+            }
         };
         return individual;
     }
@@ -123,11 +125,11 @@ class AboutScreen extends React.Component {
 
         const individual = this.createIndividual();
         await request
-            .post("http://localhost:8000/register/individual")
+            .post("http://localhost:8000/signup/individual")
             .send({
-                authToken: "ffa234124",
+                authToken: "3sume+UKn68TINM6xlHtyIwdNsGjJrEml5PpNc/EemU=",
                 userId: "1",
-                ...individual,
+                data:{individual:{...individual}},
             })
             .then(res => {
                 console.log(res.body);

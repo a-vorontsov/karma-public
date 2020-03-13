@@ -69,7 +69,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         if (!(await regStatus.emailExists(req.body.data.email))) {
             try {
                 await userAgent.registerEmail(req.body.data.email);
-                res.status(400).send({
+                res.status(200).send({
                     message: "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
                     data: {
                         isEmailVerified: false,
@@ -89,7 +89,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             }
         } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
             await tokenSender.storeAndSendEmailVerificationToken(req.body.data.email);
-            res.status(400).send({
+            res.status(200).send({
                 message: "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
                 data: {
                     isEmailVerified: false,
@@ -98,7 +98,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (!(await regStatus.userAccountExists(req.body.data.email))) {
-            res.status(400).send({
+            res.status(200).send({
                 message: "Email verified, but no user account. Go to user registration screen.",
                 data: {
                     isEmailVerified: true,
@@ -107,7 +107,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (await regStatus.isPartlyRegistered(req.body.data.email)) {
-            res.status(400).send({
+            res.status(200).send({
                 message: "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
                 data: {
                     isEmailVerified: true,

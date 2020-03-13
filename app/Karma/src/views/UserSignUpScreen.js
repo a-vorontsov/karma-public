@@ -24,7 +24,7 @@ class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "team-team@gmail.com",
+            email: "",
             username: "",
             password: "",
             confPassword: "",
@@ -57,18 +57,22 @@ class SignUpScreen extends React.Component {
     signUserUp = async () => {
         const user = this.createUser();
         await request
-            .post("http://localhost:8000/register/user")
+            .post("http://localhost:8000/signup/user")
             .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...user,
+                authToken: null,
+                userId: null,
+                data: {
+                    user: {...user}
+                },
             })
             .then(res => {
+                console.log(res.status);
                 console.log(res.body);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");
             })
             .catch(err => {
+                console.log(err.message);
                 Alert.alert("Server Error", err.message);
             });
     };
@@ -105,7 +109,7 @@ class SignUpScreen extends React.Component {
                                         name="email"
                                         onChange={this.onChangeText}
                                         showError={false}
-                                        editable={false}
+                                        editable={true}
                                     />
                                     <RegularText
                                         style={Styles.textInputMiscText}>
