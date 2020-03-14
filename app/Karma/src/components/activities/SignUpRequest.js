@@ -4,6 +4,7 @@ import {TouchableOpacity, View, Image} from "react-native";
 
 import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
+import {sendNotification} from "../../util/SendNotification";
 import Colours from "../../styles/Colours";
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),
@@ -38,7 +39,14 @@ export default class SignUpRequest extends React.Component {
                             flexDirection: "row",
                             justifyContent: "space-evenly",
                         }}>
+                        {/** APPROVE A USER */}
                         <TouchableOpacity
+                            onPress={() =>
+                                sendNotification(
+                                    "AttendanceConfirmation",
+                                    "Your attendance has been confirmed for event [EVENT NAME]",
+                                )
+                            }
                             style={{
                                 width: 30,
                                 paddingRight: 15,
@@ -47,7 +55,6 @@ export default class SignUpRequest extends React.Component {
                             }}>
                             <Image
                                 source={icons.check}
-                                // onPress={() => APPROVE}
                                 style={{
                                     height: 30,
                                     alignSelf: "center",
@@ -57,7 +64,14 @@ export default class SignUpRequest extends React.Component {
                             />
                         </TouchableOpacity>
                         <View style={{width: 50}} />
+                        {/** DISAPPROVE A USER */}
                         <TouchableOpacity
+                            onPress={() =>
+                                sendNotification(
+                                    "AttendanceCancellation",
+                                    "Your attendance has been cancelled for event [EVENT NAME]",
+                                )
+                            }
                             style={{
                                 width: 30,
                                 paddingRight: 27,
@@ -66,7 +80,6 @@ export default class SignUpRequest extends React.Component {
                             }}>
                             <Image
                                 source={icons.cancel}
-                                // onPress={() => DISAPPROVE}
                                 style={{
                                     height: 30,
                                     alignSelf: "center",

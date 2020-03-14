@@ -14,6 +14,7 @@ import Colours from "../../styles/Colours";
 import PageHeader from "../../components/PageHeader";
 import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
+import {sendNotification} from "../../util/SendNotification";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -311,7 +312,15 @@ class ActivityEditScreen extends Component {
                         backgroundColor: Colours.white,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Attend" />
+                        <GradientButton
+                            title="Update"
+                            onPress={() =>
+                                sendNotification(
+                                    "ActivityUpdated",
+                                    "Event named [EVENT NAME] has been updated",
+                                )
+                            }
+                        />
                     </View>
                 </View>
             </View>

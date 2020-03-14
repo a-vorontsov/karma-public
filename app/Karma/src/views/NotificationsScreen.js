@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {View, Text, StatusBar, Dimensions} from "react-native";
+import {RefreshControl, View, StatusBar, Dimensions} from "react-native";
 import Styles from "../styles/Styles";
 import PageHeader from "../components/PageHeader";
 import {hasNotch} from "react-native-device-info";
 import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
-import { ScrollView } from "react-native-gesture-handler";
+import {ScrollView} from "react-native-gesture-handler";
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
@@ -17,7 +17,6 @@ const FORM_WIDTH = 0.85 * SCREEN_WIDTH;
  */
 function compare(a, b) {
     if (a.timestampSent < b.timestampSent) {
-
         return 1;
     } else if (a.timestampSent > b.timestampSent) {
         return -1;
@@ -34,26 +33,30 @@ class NotificationsScreen extends Component {
             userId: 1,
             weekNotifications: [],
             monthNotifications: [],
+            refreshing: false,
         };
     }
 
-    async componentDidMount() {
+    getNotifications = async () => {
+        this.setState({refreshing: true});
         try {
             const response = await request.get(
                 "http://localhost:8000/notification?userId=" +
                     this.state.userId,
             );
+
             this.setState({
                 notifications: response.body.data.notifications,
             });
 
-            this.getNotifications();
-
-
-
+            this.parseNotifications();
         } catch (error) {
             console.log(error);
         }
+    };
+
+    async componentDidMount() {
+        this.getNotifications();
     }
 
     getDaysBetween = (d1, d2) => {
@@ -65,20 +68,20 @@ class NotificationsScreen extends Component {
      * Only displays notifications that the user/org has
      * received rather than sent
      */
-    getNotifications = () => {
+    parseNotifications = () => {
         const {notifications} = this.state;
 
         let received = [];
 
         //get all received notifications
         notifications.forEach(n => {
-            if (n.receiverId == this.state.userId) {
+            if (n.receiverId === this.state.userId) {
                 received.push(n);
             }
         });
-        console.log(received);
+
         received.sort(compare);
-        console.log(received);
+
         let weekNotifications = [];
 
         let monthNotifications = [];
@@ -88,22 +91,18 @@ class NotificationsScreen extends Component {
             let timestamp = new Date(r.timestampSent);
             let curDate = new Date();
 
-            let daysAgo = Math.ceil(this.getDaysBetween(curDate, timestamp));
-           
+            let daysAgo = Math.floor(this.getDaysBetween(curDate, timestamp));
+
             if (daysAgo <= 7) {
                 r.daysAgo = daysAgo;
                 weekNotifications.push(r);
-
             }
 
             if (daysAgo <= 31) {
-               
                 r.daysAgo = daysAgo;
                 monthNotifications.push(r);
             }
         });
-
-        
 
         let hasNotifications = monthNotifications.length > 0;
 
@@ -111,8 +110,9 @@ class NotificationsScreen extends Component {
             hasNotifications: hasNotifications,
             weekNotifications: weekNotifications,
             monthNotifications: monthNotifications,
+            refreshing: false,
         });
-
+        console.log("here");
     };
 
     _renderMonthNotifications = () => {
@@ -121,13 +121,12 @@ class NotificationsScreen extends Component {
         return monthNotifications.map(n => {
             return <NotificationItem notification={n} />;
         });
-
     };
 
     _renderWeekNotifications = () => {
         const {weekNotifications} = this.state;
 
-        if (weekNotifications.length === 0){
+        if (weekNotifications.length === 0) {
             return (
                 <SemiBoldText style={[Styles.pb16, {alignSelf: "center"}]}>
                     No new notifications this week
@@ -141,8 +140,8 @@ class NotificationsScreen extends Component {
     };
 
     render() {
-        const {hasNotifications} = this.state;
-        
+        const {hasNotifications, refreshing} = this.state;
+
         return (
             <View style={Styles.container}>
                 <View style={{alignItems: "center"}}>
@@ -159,19 +158,26 @@ class NotificationsScreen extends Component {
                         style={{
                             width: SCREEN_WIDTH,
                             backgroundColor: Colours.lightestGrey,
-                            height: SCREEN_HEIGHT,
+                            height: 700,
                         }}>
                         <View
                             style={{
                                 width: FORM_WIDTH,
                                 alignSelf: "center",
                                 paddingTop: 20,
-                                flex:1,
-                                
+                                flex: 1,
                             }}>
-                            {hasNotifications ?
-                            ( 
-                                <ScrollView>
+                            {hasNotifications ? (
+                                <ScrollView
+                                    showsVerticalScrollIndicator={false}
+                                    refreshControl={
+                                        <RefreshControl
+                                            refreshing={refreshing}
+                                            onRefresh={() =>
+                                                this.getNotifications()
+                                            }
+                                        />
+                                    }>
                                     <SemiBoldText style={[Styles.pb16]}>
                                         This Week
                                     </SemiBoldText>
@@ -182,13 +188,27 @@ class NotificationsScreen extends Component {
                                     {this._renderMonthNotifications()}
                                 </ScrollView>
                             ) : (
-                                <View style={{flex:1}}>
-                                <RegularText style={{alignSelf:"center", fontSize:20}}>No notifications found</RegularText>
-                                
-                                </View>
-                            )
-                        }
-
+                                <ScrollView
+                                    showsVerticalScrollIndicator={false}
+                                    refreshControl={
+                                        <RefreshControl
+                                            refreshing={refreshing}
+                                            onRefresh={() =>
+                                                this.getNotifications()
+                                            }
+                                        />
+                                    }>
+                                    <View
+                                        style={{flex: 1, alignSelf: "center"}}>
+                                        <RegularText
+                                            style={{
+                                                fontSize: 20,
+                                            }}>
+                                            No notifications found
+                                        </RegularText>
+                                    </View>
+                                </ScrollView>
+                            )}
                         </View>
                     </View>
                 </View>

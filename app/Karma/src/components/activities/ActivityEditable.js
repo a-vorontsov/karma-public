@@ -1,10 +1,11 @@
 import React from "react";
 
-import {Image, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, TouchableOpacity, View, Alert} from "react-native";
 import {RegularText} from "../text";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
+import {sendNotification} from "../../util/SendNotification";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
 import {
@@ -49,7 +50,8 @@ const ActivityEditable = props => {
                                 />
                             </MenuTrigger>
                             <MenuOptions>
-                                <MenuOption onSelect={() => alert("Share")}>
+                                <MenuOption
+                                    onSelect={() => Alert.alert("Share")}>
                                     <RegularText style={styles.settingsText}>
                                         Share Activity
                                     </RegularText>
@@ -71,7 +73,11 @@ const ActivityEditable = props => {
                                     </RegularText>
                                 </MenuOption>
                                 <MenuOption
-                                    onSelect={() =>
+                                    onSelect={() => {
+                                        sendNotification(
+                                            "Message",
+                                            "has sent you a message - check your inbox!",
+                                        );
                                         Communications.email(
                                             null,
                                             null,
@@ -79,18 +85,22 @@ const ActivityEditable = props => {
                                             ["emailAddress1", "emailAddress2"],
                                             null,
                                             null,
-                                        )
-                                    }>
+                                        );
+                                    }}>
                                     <RegularText style={styles.settingsText}>
                                         Message Attendees
                                     </RegularText>
                                 </MenuOption>
                                 <MenuOption
-                                    onSelect={() =>
-                                        alert(
+                                    onSelect={() => {
+                                        sendNotification(
+                                            "EventCancellation",
+                                            "Event named [EVENT NAME] has been cancelled",
+                                        );
+                                        Alert.alert(
                                             "Are you sure you want to delete?",
-                                        )
-                                    }>
+                                        );
+                                    }}>
                                     <RegularText style={styles.settingsText}>
                                         Delete Activity
                                     </RegularText>

@@ -1,27 +1,28 @@
 import React, {Component} from "react";
-import {View, Image, Dimensions, Text} from "react-native";
-import {
-    RegularText,
-    BoldText,
-    LinkText,
-    SemiBoldText,
-} from "../components/text";
-import Styles, {normalise} from "../styles/Styles";
-import SignUpStyles from "../styles/SignUpStyles";
+import {View, Image, Text} from "react-native";
+import {RegularText, BoldText, SemiBoldText} from "../components/text";
+import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
-const {width: SCREEN_WIDTH} = Dimensions.get("window");
-const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 /**
  * Notification types:
  * -- "Message" --
- * -- "Confirmation" --
- * -- "Cancellation" --
+ * -- "ActivityUpdate" --
+ * -- "EventCancellation" --
+ * -- "AttendanceCancellation" --
+ * -- "AttendanceConfirmation" --
  */
 export default class NotificationItem extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            orgName: "The P.E.E.R Center",
+        };
+    }
+
+    async componentDidMount() {
+        this.getOrgName();
     }
 
     /**
@@ -29,7 +30,7 @@ export default class NotificationItem extends Component {
      */
     _sendReply = () => {
         //open email here
-    }
+    };
 
     _renderReplyButton = () => {
         return (
@@ -39,23 +40,42 @@ export default class NotificationItem extends Component {
         );
     };
 
+    getOrgName = async orgId => {
+        //get org name from profile endpoint
+    };
+
     render() {
         const {notification} = this.props;
         const isMessage = notification.type === "Message";
-        const randNum = Math.floor(Math.random() * 200);
+        const daysAgo =
+            notification.daysAgo === 0 ? "Today" : notification.daysAgo + "d";
+        const colon = isMessage ? " " : ": ";
         return (
             <>
                 <View style={[Styles.pb16, {flexDirection: "row"}]}>
                     <Image
-                        style={{height: 40, width: 40, borderRadius: 20, alignSelf:"center"}}
-                        source={{uri:"https://picsum.photos/200"}}
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: 20,
+                            alignSelf: "center",
+                        }}
+                        source={{uri: "https://picsum.photos/200"}}
                     />
-                    <View style={[Styles.ph16, {alignSelf: "center", flexShrink:1, }]}>
+                    <View
+                        style={[
+                            Styles.ph16,
+                            {alignSelf: "center", flexShrink: 1},
+                        ]}>
                         <Text>
+                            <BoldText>
+                                {this.state.orgName}
+                                {colon}
+                            </BoldText>
                             <RegularText>{notification.message}</RegularText>
                             <RegularText style={{color: Colours.grey}}>
                                 {" "}
-                                {notification.daysAgo}d
+                                {daysAgo}
                             </RegularText>
                         </Text>
                         {/**
