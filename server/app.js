@@ -12,33 +12,34 @@ app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
-app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/email", require("./routes/signin/email"));
-app.use("/signin/forgot", require("./routes/signin/forgotPassword"));
-app.use("/register/user", require("./routes/register/user"));
-app.use("/register/individual", require("./routes/register/individual"));
-app.use("/register/organisation", require("./routes/register/organisation"));
-app.use("/logout", require("./routes/signin/logout"));
+app.use("/signin/password", require("./routes/signin/password"));
+app.use("/signin/forgot", require("./routes/signin/forgot"));
 
+app.use("/signup/user", require("./routes/signup/user"));
+app.use("/signup/individual", require("./routes/signup/individual"));
+app.use("/signup/organisation", require("./routes/signup/organisation"));
+
+app.use("/signout", require("./routes/signout"));
+
+app.use("/verify/email", require("./routes/verify/email"));
 app.use("/verify/phone", require("./routes/verify/phone"));
 app.use("/verify/identity", require("./routes/verify/identity"));
 
-app.use("/error/nouserid", require("./routes/error/noUserId"));
-app.use("/error/noauthtoken", require("./routes/error/noAuthToken"));
-app.use("/error/unauthorised", require("./routes/error/unauthorised"));
-app.use("/error/alreadyauthenticated", require("./routes/error/alreadyAuthenticated"));
-app.use("/error/customerror", require("./routes/error/customError"));
-app.use("/error/usernotfound", require("./routes/error/userNotFound"));
-
+app.use("/error", require("./routes/error"));
+app.use("/bugreport", require("./routes/bugreport"));
 app.use("/notification", require("./routes/notification"));
 app.use("/information", require("./routes/information"));
 
-app.use("/user", require("./routes/user"));
 app.use("/causes", require("./routes/causes"));
-app.use("/event", require("./routes/event/event"));
-app.use("/profile/view", require("./routes/profile/view"));
-app.use("/profile/edit/password", require("./routes/profile/edit/change-password"));
-app.use("/bugreport", require("./routes/bugreport"));
+app.use("/causes/user", require("./routes/causes/user"));
+
+app.use("/event", require("./routes/event"));
+// TODO: discuss structure
+
+app.use("/profile", require("./routes/profile"));
+app.use("/profile/edit", require("./routes/profile/edit"));
+app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 
 // import OAuth routes and dependencies if applicable
 if (process.env.ENABLE_OAUTH === "1") {

@@ -50,7 +50,7 @@ test("isValidToken works", async () => {
 
     const isValidResult = await authAgent.isValidToken(userId, "abc");
     expect(isValidResult.isValidToken).toBe(false);
-    expect(isValidResult.error).toBe("No token found for user, or user does not exist.");
+    expect(isValidResult.error).toBe("No token found, or user/email does not exist.");
     // insertion
     const authToken = await authAgent.logIn(userId);
     const authResult = await authRepo.findLatestByUserID(userId);
@@ -181,16 +181,16 @@ test("non-existent user detected", async () => {
         .send(anyRequest4)
         .redirects(1);
 
-    expect(response.body.message).toBe("No token found for user, or user does not exist.");
-    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe("No token found, or user/email does not exist.");
+    expect(response.statusCode).toBe(401);
 
     const responseOfPost = await request(app)
         .post("/any/route/that/requires/auth")
         .send(anyRequest4)
         .redirects(1);
 
-    expect(responseOfPost.body.message).toBe("No token found for user, or user does not exist.");
-    expect(responseOfPost.statusCode).toBe(400);
+    expect(responseOfPost.body.message).toBe("No token found, or user/email does not exist.");
+    expect(responseOfPost.statusCode).toBe(401);
 });
 
 const anyRequest5 = {
@@ -215,7 +215,7 @@ test("non-matching token working", async () => {
     expect(response.body.message).toBe(
         "Invalid token",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(401);
 
     const responseOfPost = await request(app)
         .post("/profile/edit/password")
@@ -225,7 +225,7 @@ test("non-matching token working", async () => {
     expect(responseOfPost.body.message).toBe(
         "Invalid token",
     );
-    expect(responseOfPost.statusCode).toBe(400);
+    expect(responseOfPost.statusCode).toBe(401);
 });
 
 const anyRequest6 = {
@@ -273,7 +273,7 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(anyRequest6)
         .redirects(0);
 
@@ -293,12 +293,12 @@ test("valid and expired token working", async () => {
     // second pair of requests
 
     const response2 = await request(app)
-        .get("/profile/view")
+        .get("/profile")
         .send(anyRequest6)
         .redirects(1);
 
     expect(response2.body.message).toBe("Expired token");
-    expect(response2.statusCode).toBe(400);
+    expect(response2.statusCode).toBe(401);
 
     const responseOfPost2 = await request(app)
         .post("/profile/edit/password")
@@ -306,5 +306,5 @@ test("valid and expired token working", async () => {
         .redirects(1);
 
     expect(responseOfPost2.body.message).toBe("Expired token");
-    expect(responseOfPost2.statusCode).toBe(400);
+    expect(responseOfPost2.statusCode).toBe(401);
 });

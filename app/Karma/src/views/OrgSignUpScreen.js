@@ -17,11 +17,13 @@ import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
 import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
+import AddressInput from "../components/input/AddressInput";
+import Colours from "../styles/Colours";
 
 import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
@@ -45,6 +47,11 @@ export default class OrgSignUpScreen extends React.Component {
             photo: null,
             submitPressed: false,
             isRegDateVisible: false,
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
     }
 
@@ -94,11 +101,11 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            addressLine1: "line1", //TODO
-            addressLine2: "line2", //TODO
-            townCity: "TODO", //TODO
-            countryState: "TODO", //TODO
-            postCode: "TODO", //TODO
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             phoneNumber: "TODO", //TODO
         };
         return organisation;
@@ -288,6 +295,20 @@ export default class OrgSignUpScreen extends React.Component {
                                     />
                                 </View>
                             )}
+
+                            {/* ADDRESS */}
+                            <View>
+                                <RegularText
+                                    style={{
+                                        color: Colours.blue,
+                                        fontSize: 20,
+                                        paddingVertical: 10,
+                                    }}>
+                                    What is your organisation's address?
+                                </RegularText>
+                                <AddressInput />
+                            </View>
+
                             {/** EXEMPTION REASONS */}
                             <View style={{width: FORM_WIDTH}}>
                                 <BoldText style={SignUpStyles.text}>

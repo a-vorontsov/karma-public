@@ -1,6 +1,9 @@
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const digest = require("./digest");
 const date = require("date-and-time");
+const util = require("../../util/util");
+const httpUtil = require("../../util/httpUtil");
+const httpErr = require("../../util/httpErrors");
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -20,17 +23,18 @@ async function requireAuthentication(req, res, next) {
     const userId = req.body.userId;
     const authToken = req.body.authToken;
     if (userId === undefined) {
-        res.redirect("/error/nouserid");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
     } else if (authToken === undefined) {
-        res.redirect("/error/noauthtoken");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     } else if (authToken === null || userId === null) {
-        res.redirect("/error/unauthorised");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
     } else {
-        const isValid = await isValidToken(userId, authToken);
+        const tokenResult = await authRepo.findLatestByUserID(userId);
+        const isValid = await util.isValidToken(tokenResult, authToken, "token");
         if (isValid.isValidToken) {
             next();
         } else {
-            res.redirect("/error/customerror/?err=" + isValid.error);
+            httpUtil.sendErrorWithRedirect(401, isValid.error, res);
         }
     }
 }
@@ -53,15 +57,18 @@ async function requireNoAuthentication(req, res, next) {
     const userId = req.body.userId;
     const authToken = req.body.authToken;
     if (userId === undefined) {
-        res.redirect("/error/nouserid");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
     } else if (authToken === undefined) {
-        res.redirect("/error/noauthtoken");
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     } else if (userId === null || authToken === null) {
         next(); // for performance reasons logic is separated
-    } else if ((await isValidToken(userId, authToken)).isValidToken) {
-        res.redirect("/error/alreadyauthenticated");
     } else {
-        next();
+        const tokenResult = await authRepo.findLatestByUserID(userId);
+        if ((await util.isValidToken(tokenResult, authToken, "token")).isValidToken) {
+            httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
+        } else {
+            next();
+        }
     }
 }
 
@@ -78,29 +85,7 @@ async function requireNoAuthentication(req, res, next) {
  */
 async function isValidToken(userId, authToken) {
     const tokenResult = await authRepo.findLatestByUserID(userId);
-    if (tokenResult.rows.length === 0) {
-        return ({
-            isValidToken: false,
-            error: "No token found for user, or user does not exist.",
-        });
-    }
-    const tokenRecord = tokenResult.rows[0];
-    if (tokenRecord.token !== authToken) {
-        return ({
-            isValidToken: false,
-            error: "Invalid token",
-        });
-    } else if (tokenRecord.expiryDate <= Date.now()) {
-        return ({
-            isValidToken: false,
-            error: "Expired token",
-        });
-    } else {
-        return ({
-            isValidToken: true,
-            error: null,
-        });
-    }
+    return util.isValidToken(tokenResult, authToken, "token");
 }
 
 /**
@@ -118,7 +103,7 @@ async function logIn(userId) {
         ),
         expiryDate: date.format(
             date.addMinutes(new Date(), 15),
-            "YYYY-MM-DD HH:mm:ss",
+            "YYYY-MM-DD HH:mm:ss", true,
         ), // TODO: token renewal
         creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         userId: userId,

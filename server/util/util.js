@@ -88,6 +88,55 @@ const checkEventId = async (eventId) => {
     return result;
 };
 
+/**
+ * Check if input token is valid compared to
+ * tokenResult - result of db query.
+ * This requires the token to be of valid format,
+ * matching the user specified by the userId in
+ * the database and to be not expired.
+ * If no token is found for specified user or
+ * user is not found, a custom error is returned.
+ * @param {object} tokenResult
+ * @param {any} inputToken
+ * @param {string} tokenVarName variable name of token
+ * @return {object} isValidToken, error
+ */
+const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
+    if (tokenResult.rows.length === 0) {
+        return ({
+            isValidToken: false,
+            error: "No token found, or user/email does not exist.",
+        });
+    }
+    const tokenRecord = tokenResult.rows[0];
+    if (tokenRecord[tokenVarName] !== inputToken) {
+        return ({
+            isValidToken: false,
+            error: "Invalid token",
+        });
+    } else if (tokenRecord.expiryDate <= Date.now()) {
+        return ({
+            isValidToken: false,
+            error: "Expired token",
+        });
+    } else {
+        return ({
+            isValidToken: true,
+            error: null,
+        });
+    }
+};
+
+/**
+ * Sleep n milliseconds.
+ * @param {number} ms
+ * @return {Promise}
+ */
+const sleep = async (ms) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+};
 
 module.exports = {
     isIndividual: isIndividual,
@@ -95,4 +144,6 @@ module.exports = {
     checkUserId: checkUserId,
     checkEventId: checkEventId,
     checkEmail: checkEmail,
+    isValidToken: isValidToken,
+    sleep: sleep,
 };

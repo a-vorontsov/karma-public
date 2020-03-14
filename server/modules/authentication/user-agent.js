@@ -6,6 +6,7 @@ const individualRepo = require("../../models/databaseRepositories/individualRepo
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const date = require("date-and-time");
+const tokenSender = require("../verification/tokenSender");
 
 /**
  * Register a new record in the registration table.
@@ -17,13 +18,7 @@ async function registerEmail(email) {
     if (await regStatus.emailExists(email)) {
         throw new Error("Invalid operation: email already exists.");
     }
-    await regRepo.insert({
-        email: email,
-        emailFlag: 0,
-        idFlag: 0,
-        phoneFlag: 0,
-        signUpFlag: 0,
-    });
+    await tokenSender.storeAndSendEmailVerificationToken(email);
 }
 
 /**
@@ -70,39 +65,28 @@ async function registerUser(email, username, password) {
 /**
  * Register a new individual.
  * @param {number} userId
- * @param {string} title
- * @param {string} firstName
- * @param {string} surName
- * @param {Date} dateOfBirth
- * @param {string} gender
- * @param {string} addressLine1
- * @param {string} addressLine2
- * @param {string} townCity
- * @param {string} countryState
- * @param {string} postCode
- * @param {string} phoneNumber
+ * @param {object} individual
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerIndividual(userId, title, firstName, surName, dateOfBirth, gender,
-    addressLine1, addressLine2, townCity, countryState, postCode, phoneNumber) {
+async function registerIndividual(userId, individual) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
 
-    const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
-    const addressId = addressResult.rows[0].id;
+    const addressId = await registerAddress(individual.address);
 
     await individualRepo.insert({
-        firstname: firstName,
-        lastname: surName,
-        phone: phoneNumber,
+        firstname: individual.firstName,
+        lastname: individual.lastName,
+        phone: individual.phoneNumber,
         banned: false,
         userId: userId,
         pictureId: null, // TODO:
         addressId: addressId,
-        birthday: dateOfBirth,
-        gender: gender,
+        birthday: individual.dateOfBirth,
+        gender: individual.gender,
+        // TODO: title
     });
 
     await setSignUpFlagTrue(userId);
@@ -125,40 +109,26 @@ async function setSignUpFlagTrue(userId) {
 /**
  * Register a new organisation
  * @param {number} userId
- * @param {string} organisationNumber //TODO: string?
- * @param {string} name
- * @param {string} addressLine1
- * @param {string} addressLine2
- * @param {string} organisationType
- * @param {string} lowIncome
- * @param {string} exempt
- * @param {string} pocFirstName
- * @param {string} pocLastName
- * @param {string} townCity
- * @param {string} countryState
- * @param {string} postCode
- * @param {string} phoneNumber
+ * @param {object} organisation
  */
-async function registerOrg(userId, organisationNumber, name, addressLine1, addressLine2, organisationType,
-    lowIncome, exempt, pocFirstName, pocLastName, townCity, countryState, postCode, phoneNumber) {
+async function registerOrg(userId, organisation) {
     if (await regStatus.isFullyRegisteredById(userId)) {
         throw new Error("Invalid operation: already fully registered.");
     }
 
-    const addressResult = await registerAddress(addressLine1, addressLine2, townCity, countryState, postCode);
-    const addressId = addressResult.rows[0].id;
+    const addressId = await registerAddress(organisation.address);
 
     await orgRepo.insert({
-        orgName: name,
-        orgNumber: organisationNumber,
-        orgType: organisationType,
-        pocFirstname: pocFirstName,
-        pocLastname: pocLastName,
-        phone: phoneNumber,
+        orgName: organisation.name,
+        orgNumber: organisation.organisationNumber,
+        orgType: organisation.organisationType,
+        pocFirstname: organisation.pocFirstName,
+        pocLastname: organisation.pocLastName,
+        phone: organisation.phoneNumber,
         banned: false,
         orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
-        lowIncome: lowIncome,
-        exempt: exempt,
+        lowIncome: organisation.lowIncome,
+        exempt: organisation.exempt,
         pictureId: null, // TODO:
         userId: userId,
         addressId: addressId,
@@ -169,23 +139,19 @@ async function registerOrg(userId, organisationNumber, name, addressLine1, addre
 
 /**
  * Register address and return it's id.
- * @param {string} addressLine1
- * @param {string} addressLine2
- * @param {string} townCity
- * @param {string} countryState
- * @param {string} postCode
+ * @param {object} address
  * @return {number} addressId
  */
-async function registerAddress(addressLine1, addressLine2, townCity, countryState, postCode) {
-    return await addressRepo.insert({
-        address1: addressLine1,
-        address2: addressLine2,
-        postcode: postCode,
-        city: townCity,
-        region: countryState,
+async function registerAddress(address) {
+    return (await addressRepo.insert({
+        address1: address.addressLine1,
+        address2: address.addressLine2,
+        postcode: address.postCode,
+        city: address.townCity,
+        region: address.countryState,
         lat: 0, // TODO: compute here?
         long: 0,
-    });
+    })).rows[0].id;
 }
 
 /**
@@ -272,4 +238,5 @@ module.exports = {
     isCorrectPasswordByEmail: isCorrectPasswordByEmail,
     updatePassword: updatePassword,
     getUserId: getUserId,
+    registerAddress: registerAddress,
 };

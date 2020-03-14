@@ -1,4 +1,5 @@
 const db = require("../database/connection");
+const date = require("date-and-time");
 
 const registrationExample1 = {
     email: "test@gmail.com",
@@ -6,6 +7,11 @@ const registrationExample1 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 0,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const notification = {
@@ -33,6 +39,11 @@ const registrationExample2 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 0,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const getRegistrationExample2 = () => ({...registrationExample2});
@@ -43,6 +54,11 @@ const registrationExample3 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 0,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const getRegistrationExample3 = () => ({...registrationExample3});
@@ -53,6 +69,11 @@ const registrationExample4 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 0,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const getRegistrationExample4 = () => ({...registrationExample4});
@@ -63,6 +84,11 @@ const registrationExample5 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 0,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const getRegistrationExample5 = () => ({...registrationExample5});
@@ -73,13 +99,18 @@ const registrationExample6 = {
     idFlag: 0,
     phoneFlag: 0,
     signUpFlag: 1,
+    verificationToken: "123456",
+    expiryDate: date.format(
+        date.addMinutes(new Date(), 5),
+        "YYYY-MM-DD HH:mm:ss", true,
+    ),
 };
 
 const getRegistrationExample6 = () => ({...registrationExample6});
 
 const address = {
     address1: "221B Baker St",
-    address2: "Marleybone",
+    address2: "Marylebone",
     postcode: "NW1 6XE",
     city: "London",
     region: "Greater London",
@@ -88,6 +119,18 @@ const address = {
 };
 
 const getAddress = () => ({...address});
+
+const address2 = {
+    addressLine1: "221B Baker St",
+    addressLine2: "Marylebone",
+    postCode: "NW1 6XE",
+    townCity: "London",
+    countryState: "Greater London",
+    lat: 51.523774,
+    long: -0.158534,
+};
+
+const getAddress2 = () => ({...address2});
 
 
 const event = {
@@ -224,11 +267,22 @@ const getCause = () => ({...cause});
 
 const signUp = {
     individualId: -1,
-    eventId: -1,
+    eventId: 3,
     confirmed: true,
 };
 
 const getSignUp = () => ({...signUp});
+
+const bugReport = {
+    userId: null,
+    authToken: null,
+    data: {
+        email: "test@gmail.com",
+        report: "I can't date with this app.",
+    },
+};
+
+const getBugReport = () => ({...bugReport});
 
 const favourite = {
     individualId: -1,
@@ -412,6 +466,7 @@ const clearDatabase = async () => {
 
 module.exports = {
     getAddress: getAddress,
+    getAddress2: getAddress2,
     getAuthenticationExample1: getAuthenticationExample1,
     getAuthenticationExample2: getAuthenticationExample2,
     getRegistrationExample1: getRegistrationExample1,
@@ -441,5 +496,6 @@ module.exports = {
     getPhysicalEvent: getPhysicalEvent,
     clearDatabase: clearDatabase,
     getNotification: getNotification,
+    getBugReport: getBugReport,
     getInformation: getInformation,
 };
