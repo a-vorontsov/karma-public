@@ -32,9 +32,9 @@ export default class PickCausesScreen extends React.Component {
         await request
             .post("http://localhost:8000/causes/select")
             .send({
-                authToken:"3bVEs1b2oavrseSpQ/rtvADSkmM+KyE9ywZOaK10GUA=",
+                authToken: "3bVEs1b2oavrseSpQ/rtvADSkmM+KyE9ywZOaK10GUA=",
                 userId: "1",
-                data:{causes: this.state.selectedCauses},
+                data: {causes: this.state.selectedCauses},
             })
             .then(res => {
                 console.log(res.body.data);

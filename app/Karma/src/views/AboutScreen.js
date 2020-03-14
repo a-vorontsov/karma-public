@@ -103,7 +103,7 @@ class AboutScreen extends React.Component {
                 townCity: "this.state.townCity",
                 countryState: "this.state.countryState",
                 postCode: "this.state.postCode",
-            }
+            },
         };
         return individual;
     }
@@ -129,7 +129,7 @@ class AboutScreen extends React.Component {
             .send({
                 authToken: "3sume+UKn68TINM6xlHtyIwdNsGjJrEml5PpNc/EemU=",
                 userId: "1",
-                data:{individual:{...individual}},
+                data: {individual: {...individual}},
             })
             .then(res => {
                 console.log(res.body);

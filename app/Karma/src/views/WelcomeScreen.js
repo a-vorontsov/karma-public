@@ -28,7 +28,7 @@ class WelcomeScreen extends Component {
             showCode: false,
             isCodeValid: false,
             buttonText: "Sign Up/ Log In",
-            codeSent:false,
+            codeSent: false,
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -56,14 +56,27 @@ class WelcomeScreen extends Component {
         this.setState({[name]: text});
     };
 
-    onForgotPassPressed() {
+    async onForgotPassPressed() {
         this.setState({isForgotPassPressed: true});
         // remove the password field
         this.setState({showPassField: false});
         //send 6 digit code to email through forgot password route
-
-        //show code
-        this.setState({showCode: true});
+        await request
+            .post("http://localhost:8000/signin/forgot")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                },
+            })
+            .then(res => {
+                //show code
+                this.setState({showCode: true});
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     onSignUpPressed() {
@@ -86,7 +99,6 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
-            console.log("here");
             await request
                 .post("http://localhost:8000/signin/email")
                 .send({
@@ -97,14 +109,8 @@ class WelcomeScreen extends Component {
                     },
                 })
                 .then(res => {
-                    console.log("here1");
-                    // console.log(res.status);
-                     console.log(res.body);
                     if (res.body.data.isFullySignedUp) {
-                        // returning user
-                        //if user isFullySignedUp
-                        console.log("here2");
-                        console.log("Fully signed Up");
+                        //if user isFullySignedUp, returning user
                         this.setState({
                             showPassField: true,
                             showCode: false,
@@ -114,35 +120,25 @@ class WelcomeScreen extends Component {
                         return;
                     }
                     if (res.body.data.isSignedUp) {
-                        console.log("here3");
-                        console.log(" is signed Up");
                         //if user is SignedUp
-                         navigate("InitSignup");
-                         return;
+                        navigate("InitSignup");
+                        return;
                     }
                     if (res.body.data.isEmailVerified) {
-                        console.log("here4");
-                        console.log(" email is verified");
                         // if email is verified
-                         navigate("UserSignUp");
-                         return;
+                        navigate("UserSignUp");
+                        return;
                     }
-                    //if email is not verified
-                    // show code field
-                    console.log("here5");
-                    console.log(" email is NOT verified");
+                    //if email is not verified, show code field
                     this.setState({
                         showPassField: false,
                         showCode: true,
                         showEmailError: false,
                         buttonText: "Sign Up",
                     });
-                    console.log("hereeeeeeeeeee");
                 })
                 .catch(err => {
-                    console.log("BIG ERROR");
                     console.log(err);
-
                 });
         } else {
             // email is of invalid format
@@ -158,72 +154,80 @@ class WelcomeScreen extends Component {
     async checkPass() {
         const {navigate} = this.props.navigation;
         await request
-                .post("http://localhost:8000/signin/password")
-                .send({
-                    authToken: null,
-                    userId: null,
-                    data: {
-                        email: this.state.emailInput,
-                        password:this.state.passInput,
-                    },
-                })
-                .then(res => {
-                    // if password correct
-                    this.setState({isValidPass: true});
-                    navigate("PickCauses");
-                    return;
-                })
-                .catch(err => {
-                    this.setState({isValidPass: false});
-                    this.setState({showPassError: true});
-                });
+            .post("http://localhost:8000/signin/password")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    password: this.state.passInput,
+                },
+            })
+            .then(res => {
+                // if password correct
+                this.setState({isValidPass: true});
+                navigate("PickCauses");
+                return;
+            })
+            .catch(err => {
+                this.setState({isValidPass: false});
+                this.setState({showPassError: true});
+            });
     }
 
-    // verify code is correct
-    async checkCode(code) {
-        const {navigate} = this.props.navigation;
-        if (this.state.isForgotPassPressed) {
-            // check with forgotPassword route
-            // code correct
-            // if (code === "123456") {
-            //     console.log("correct code");
-            //     this.setState({isCodeValid: true});
-            //     navigate('UserSignup');
-            // } else {
-            //     // code incorrect
-            //     this.setState({isCodeValid: false});
-            //     console.log("incorrect code");
-            // }
-        } else {
-            //check with register route
-            await request
-                .post("http://localhost:8000/verify/email")
-                .send({
-                    authToken: null,
-                    userId: null,
-                    data: {
-                        email: this.state.emailInput,
-                        token: code,
-                    },
-                })
-                .then(res => {
-                    console.log(res.status);
-                    console.log(res.body);
-                    if(res.status === 200){
-                        console.log("correct code");
-                        this.setState({isCodeValid: true});
-                        navigate("UserSignUp");
-                    }
-                    else{
-                                        // code incorrect
+    async confirmForgotPasswordCode(code) {
+        await request
+            .post("http://localhost:8000/signin/forgot/confirm")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    token: code,
+                },
+            })
+            .then(res => {
+                console.log("correct code");
+                this.setState({isCodeValid: true});
+                //navigate to new Password screen
+            })
+            .catch(err => {
+                // code incorrect
                 this.setState({isCodeValid: false});
                 console.log("incorrect code");
-                    }
-                })
-                .catch(err => {
-                    console.log(err.message);
-                });
-        }
+                console.log(err.message);
+            });
+    }
+
+    async confirmVerifyEmailCode(code) {
+        const {navigate} = this.props.navigation;
+        //check with register route
+        await request
+            .post("http://localhost:8000/verify/email")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    token: code,
+                },
+            })
+            .then(res => {
+                console.log(res.status);
+                console.log(res.body);
+                if (res.status === 200) {
+                    console.log("correct code");
+                    this.setState({isCodeValid: true});
+                    navigate("UserSignUp");
+                } else {
+                    // code incorrect
+                    this.setState({isCodeValid: false});
+                    console.log("incorrect code");
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
     }
 
     render() {
@@ -288,7 +292,11 @@ class WelcomeScreen extends Component {
                         {/* 6-Digit Code Field*/}
                         {this.state.showCode && (
                             <SignInCodeInput
-                                onFulfill={this.checkCode}
+                                onFulfill={
+                                    this.state.isForgotPassPressed
+                                        ? this.confirmForgotPasswordCode
+                                        : this.confirmVerifyEmailCode
+                                }
                                 text={
                                     this.state.isForgotPassPressed
                                         ? "Please enter the 6 digit code sent to your recovery email."

@@ -62,7 +62,7 @@ class SignUpScreen extends React.Component {
                 authToken: null,
                 userId: null,
                 data: {
-                    user: {...user}
+                    user: {...user},
                 },
             })
             .then(res => {
