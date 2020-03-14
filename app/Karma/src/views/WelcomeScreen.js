@@ -35,10 +35,11 @@ class WelcomeScreen extends Component {
             StatusBar.setBackgroundColor(Colours.backgroundWhite);
         }
         this.checkPass = this.checkPass.bind(this);
-        this.checkCode = this.checkCode.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
         this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
+        this.confirmForgotPasswordCode = this.confirmForgotPasswordCode.bind(this);
+        this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
     }
 
@@ -148,7 +149,7 @@ class WelcomeScreen extends Component {
                 showEmailError: true,
             });
         }
-    }
+    };
 
     // verify password is correct
     async checkPass() {
@@ -166,6 +167,10 @@ class WelcomeScreen extends Component {
             .then(res => {
                 // if password correct
                 this.setState({isValidPass: true});
+                const authToken = res.body.authToken;
+                const userId = res.body.userId;
+                console.log("authToken " + authToken );
+                console.log("userId " + userId );
                 navigate("PickCauses");
                 return;
             })
@@ -189,7 +194,7 @@ class WelcomeScreen extends Component {
             .then(res => {
                 console.log("correct code");
                 this.setState({isCodeValid: true});
-                //navigate to new Password screen
+                //TODO navigate to new Password screen
             })
             .catch(err => {
                 // code incorrect
