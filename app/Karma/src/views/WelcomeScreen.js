@@ -169,15 +169,11 @@ class WelcomeScreen extends Component {
                 })
                 .then(res => {
                     // if password correct
-                    console.log(res.status);
-                    console.log(res.body);
                     this.setState({isValidPass: true});
-                    console.log("correct pass");
                     navigate("PickCauses");
                     return;
                 })
                 .catch(err => {
-                    console.log(err.message);
                     this.setState({isValidPass: false});
                     this.setState({showPassError: true});
                 });
