@@ -24,7 +24,7 @@ class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
+            email: this.props.navigation.getParam('email'),
             username: "",
             password: "",
             confPassword: "",
@@ -109,7 +109,7 @@ class SignUpScreen extends React.Component {
                                         name="email"
                                         onChange={this.onChangeText}
                                         showError={false}
-                                        editable={true}
+                                        editable={false}
                                     />
                                     <RegularText
                                         style={Styles.textInputMiscText}>

@@ -127,7 +127,9 @@ class WelcomeScreen extends Component {
                     }
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
-                        navigate("UserSignUp");
+                        navigate("UserSignUp",{
+                            email: this.state.emailInput,
+                        });
                         return;
                     }
                     //if email is not verified, show code field
