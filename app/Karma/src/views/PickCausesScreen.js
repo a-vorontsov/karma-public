@@ -20,6 +20,8 @@ export default class PickCausesScreen extends React.Component {
     }
     async componentDidMount() {
         try {
+
+           
             const response = await request.get("http://localhost:8000/causes");
             this.setState({
                 causes: response.body.data,

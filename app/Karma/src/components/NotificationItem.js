@@ -18,12 +18,12 @@ export default class NotificationItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            orgName: "The P.E.E.R Center",
+            senderName: "The P.E.E.R Center",
         };
     }
 
     async componentDidMount() {
-        this.getOrgName();
+        this.getSenderName();
     }
 
     /**
@@ -41,12 +41,26 @@ export default class NotificationItem extends Component {
         );
     };
 
-    getOrgName = async (orgId) => {
+    getSenderName = async (orgId) => {
         try {
-           const body = {userId: 12};
-           console.log(body);
-            const response = await request.get("http://localhost:8000/profile").send("ass").then(res => {console.log(res.body); return res.json()})
-            .catch(err => console.log(err));
+
+            let randomId = Math.floor(Math.random()*99)
+
+           const body = {userId: randomId};
+           
+            const response = await request.get("http://localhost:8000/profile")
+            .query(body)
+            .then(res => {return res.body.data});
+            
+            let senderName = response.individual.name;
+            
+            if(!senderName) {
+                senderName = response.individual.firstName;
+            }
+            
+            this.setState({
+                senderName: senderName,
+            })
         }
         catch(error){
             console.log(error);
@@ -80,7 +94,7 @@ export default class NotificationItem extends Component {
                         ]}>
                         <Text>
                             <BoldText>
-                                {this.state.orgName}
+                                {this.state.senderName}
                                 {colon}
                             </BoldText>
                             <RegularText>{notification.message}</RegularText>
