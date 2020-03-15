@@ -51,6 +51,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userResult = await userRepo.findById(req.body.userId);
+        console.log(req.body);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,

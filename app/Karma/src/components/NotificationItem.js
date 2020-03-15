@@ -4,6 +4,7 @@ import {RegularText, BoldText, SemiBoldText} from "../components/text";
 import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
+const request = require("superagent");
 
 /**
  * Notification types:
@@ -40,7 +41,17 @@ export default class NotificationItem extends Component {
         );
     };
 
-    getOrgName = async orgId => {
+    getOrgName = async (orgId) => {
+        try {
+           const body = {userId: 12};
+           console.log(body);
+            const response = await request.get("http://localhost:8000/profile").send("ass").then(res => {console.log(res.body); return res.json()})
+            .catch(err => console.log(err));
+        }
+        catch(error){
+            console.log(error);
+        }
+
         //get org name from profile endpoint
     };
 
