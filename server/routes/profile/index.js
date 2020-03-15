@@ -50,13 +50,13 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
-        const userResult = await userRepo.findById(req.body.userId);
+        const userResult = await userRepo.findById(req.query.userId);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,
             email: user.email,
         };
-        const indivResult = await indivRepo.findByUserID(req.body.userId);
+        const indivResult = await indivRepo.findByUserID(req.query.userId);
         // send appropriate profile
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
@@ -88,7 +88,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 },
             });
         } else {
-            const orgResult = await orgRepo.findByUserID(req.body.userId);
+            const orgResult = await orgRepo.findByUserID(req.query.userId);
             const organisation = orgResult.rows[0];
 
             const addressResult = await addressRepo.findById(organisation.addressId);

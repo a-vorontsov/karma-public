@@ -14,6 +14,7 @@ import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import CreateActivityScreen from "../views/CreateActivityScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
+import NotificationsScreen from "../views/NotificationsScreen";
 
 const MainNavigator = createStackNavigator(
     {

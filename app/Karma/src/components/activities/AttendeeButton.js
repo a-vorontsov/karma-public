@@ -6,6 +6,7 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import Communications from "react-native-communications";
+import {sendNotification} from "../../util/SendNotification";
 
 const icons = {
     email: require("../../assets/images/general-logos/mail.png"),
@@ -34,6 +35,19 @@ export default class AttendeeButton extends React.Component {
                         </RegularText>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        onPress={() => {
+                            sendNotification(
+                                "Message",
+                                "has sent you a message - check your inbox!",
+                            );
+                            Communications.email(
+                                ["userEmail"],
+                                null,
+                                null,
+                                null,
+                                null,
+                            );
+                        }}
                         style={{
                             width: 30,
                             paddingRight: 15,
@@ -42,15 +56,6 @@ export default class AttendeeButton extends React.Component {
                         }}>
                         <Image
                             source={icons.email}
-                            onPress={() =>
-                                Communications.email(
-                                    ["userEmail"],
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                )
-                            }
                             style={{
                                 height: 30,
                                 alignSelf: "center",
