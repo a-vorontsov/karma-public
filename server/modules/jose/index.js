@@ -1,6 +1,6 @@
 const jose = require('jose');
 const fs = require("fs");
-const config = require("../../config");
+const config = require("../../config").jose;
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -13,12 +13,12 @@ const {
 const keystore = new jose.JWKS.KeyStore();
 
 const initialise = async () => {
-    const encKey = JWK.generateSync("EC", "P-256", {
+    const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
         use: "enc",
         key_ops: ["deriveKey"],
     });
 
-    const signKey = JWK.generateSync("EC", "P-256", {
+    const signKey = JWK.generateSync(config.kty, config.crvOrSize, {
         use: "sig",
         key_ops: ["sign", "verify"],
     });
@@ -86,8 +86,8 @@ const getSigPubAsPEM = () => {
 const encrypt = (cleartext, key) => {
     return JWE.encrypt(cleartext, JWK.asKey(key),
         {
-            alg: config.jose.alg,
-            enc: config.jose.enc,
+            alg: config.alg,
+            enc: config.enc,
         });
 };
 
