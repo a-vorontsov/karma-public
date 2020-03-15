@@ -47,6 +47,16 @@ class AboutScreen extends React.Component {
         headerShown: false,
     };
 
+    onInputChange = inputState => {
+        this.setState({
+            addressLine1: inputState.address1,
+            addressLine2: inputState.address2,
+            townCity: inputState.city,
+            countryState: inputState.region,
+            postCode: inputState.postcode,
+        });
+    };
+
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -96,11 +106,11 @@ class AboutScreen extends React.Component {
             gender: this.state.gender,
             phoneNumber: "213123421", // TODO
             address: {
-                addressLine1: "this.state.addressLine1",
-                addressLine2: "this.state.addressLine2",
-                townCity: "this.state.townCity",
-                countryState: "this.state.countryState",
-                postCode: "this.state.postCode",
+                addressLine1: this.state.addressLine1,
+                addressLine2: this.state.addressLine2,
+                townCity: this.state.townCity,
+                countryState: this.state.countryState,
+                postCode: this.state.postCode,
             },
         };
         return individual;
@@ -278,7 +288,7 @@ class AboutScreen extends React.Component {
                                 compatible events with you. This information
                                 will not be shared with charities.
                             </RegularText>
-                            <AddressInput />
+                            <AddressInput onChange={this.onInputChange} />
 
                             <GradientButton
                                 onPress={() => this.goToNext()}

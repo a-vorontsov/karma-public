@@ -73,7 +73,7 @@ export default class OrgSignUpScreen extends React.Component {
         });
     };
 
-    onInputChange = (inputState) => {
+    onInputChange = inputState => {
         this.setState({
             addressLine1: inputState.address1,
             addressLine2: inputState.address2,
@@ -111,7 +111,7 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            address:{
+            address: {
                 addressLine1: this.state.addressLine1,
                 addressLine2: this.state.addressLine2,
                 townCity: this.state.townCity,
@@ -174,7 +174,8 @@ export default class OrgSignUpScreen extends React.Component {
     };
 
     render() {
-        const showDateError = this.state.submitPressed && this.state.regDate === "";
+        const showDateError =
+            this.state.submitPressed && this.state.regDate === "";
 
         const data = [
             {value: "NGO (Non-Government Organisation"},
@@ -332,9 +333,7 @@ export default class OrgSignUpScreen extends React.Component {
                                     }}>
                                     What is your organisation's address?
                                 </RegularText>
-                                <AddressInput
-                                    onChange={this.onInputChange}
-                                />
+                                <AddressInput onChange={this.onInputChange} />
                             </View>
 
                             {/** EXEMPTION REASONS */}
