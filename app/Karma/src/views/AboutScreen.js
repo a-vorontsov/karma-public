@@ -64,13 +64,13 @@ class AboutScreen extends React.Component {
             gender: genderCharacter,
             genderSelected: true,
         });
-    };
+    }
 
     setPhoto(selectedPhoto) {
         this.setState({
             photo: selectedPhoto,
         });
-    };
+    }
 
     uploadPhoto(selectedPhoto) {
         if (selectedPhoto != null) {
@@ -78,7 +78,7 @@ class AboutScreen extends React.Component {
         } else {
             Alert.alert("Error", "Please upload a photo.");
         }
-    };
+    }
 
     setDate(selectedDate) {
         this.setState({date: selectedDate});
@@ -87,7 +87,7 @@ class AboutScreen extends React.Component {
         } else {
             this.setState({dateSelected: false});
         }
-    };
+    }
 
     createIndividual() {
         const individual = {
@@ -105,11 +105,11 @@ class AboutScreen extends React.Component {
             },
         };
         return individual;
-    };
+    }
 
     goToPrevious() {
         this.props.navigation.goBack();
-    };
+    }
     getData = async key => {
         try {
             const value = await AsyncStorage.getItem(key);
@@ -156,7 +156,7 @@ class AboutScreen extends React.Component {
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
-    };
+    }
 
     render() {
         return (
