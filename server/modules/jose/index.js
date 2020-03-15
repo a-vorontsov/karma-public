@@ -10,14 +10,54 @@ const {
 } = jose;
 
 
-const signPrivKey = jose.JWK.asKey(fs.readFileSync("./keys/sign-priv.key", "utf8"));
-const signPubKey = jose.JWK.asKey(fs.readFileSync("./keys/sign-pub.key", "utf8"));
-const encPrivKey = jose.JWK.asKey(fs.readFileSync("./keys/enc-priv.key", "utf8"));
-const encPubKey = jose.JWK.asKey(fs.readFileSync("./keys/enc-pub.key", "utf8"));
+const encKey = await JWK.generate("EC", "P-256", {
+    use: "enc",
+    key_ops: ["encrypt", "decrypt"],
+});
 
-const keystore = new jose.JWKS.KeyStore(signPrivKey, signPubKey, encPrivKey, encPubKey);
+const signKey = await JWK.generate("EC", "P-256", {
+    use: "sig",
+    key_ops: ["sign", "verify"],
+});
+
+const keystore = new jose.JWKS.KeyStore(encKey, signKey);
+
+const getEncPubAsJWK = () => {
+    return keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "enc",
+    });
+};
+
+const getEncPubAsPEM = () => {
+    return keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "enc",
+    }).toPEM();
+};
+
+const getSigPubAsJWK = () => {
+    return keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "sig",
+    });
+};
+
+const getSigPubAsPEM = () => {
+    return keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "sig",
+    }).toPEM();
+};
 
 
 module.exports = {
-
+    getEncPubAsJWK,
+    getEncPubAsPEM,
+    getSigPubAsJWK,
+    getSigPubAsPEM,
 };

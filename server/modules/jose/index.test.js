@@ -11,28 +11,57 @@ const {
 
 
 test("jose", async () => {
-    const priv = await JWK.generate("EC", "P-256", {
+
+    const encKey = await JWK.generate("EC", "P-256", {
         use: "enc",
         key_ops: ["encrypt", "decrypt"],
     });
-    // const priv2 = await JWK.generate("EC", "P-256", {
-    //     use: "sig",
-    // }, false);
-    console.log(priv);
-    console.log(priv.type);
-    console.log(priv.toPEM());
 
+    const signKey = await JWK.generate("EC", "P-256", {
+        use: "sig",
+        key_ops: ["sign", "verify"],
+    });
 
-    // const priv2 = await JWK.generate('RSA', 2048, {}, false);
-    // console.log(priv2);
-    // console.log(priv2.type);
+    console.log(encKey.type);
+    console.log(signKey.type);
+    console.log(signKey.toPEM());
 
-    // const signPrivKey = jose.JWK.asKey(fs.readFileSync("./keys/sign-priv.key", "utf8"));
-    // const signPubKey = jose.JWK.asKey(fs.readFileSync("./keys/sign-pub.key", "utf8"));
-    // const encPrivKey = jose.JWK.asKey(fs.readFileSync("./keys/enc-priv.key", "utf8"));
-    // const encPubKey = jose.JWK.asKey(fs.readFileSync("./keys/enc-pub.key", "utf8"));
+    const keystore = new jose.JWKS.KeyStore(encKey, signKey);
 
-    // const keystore = new jose.JWKS.KeyStore(signPrivKey, signPubKey, encPrivKey, encPubKey);
+    console.log(keystore.toJWKS());
 
-    // console.log(keystore.toJWKS());
+    console.log(keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "sig",
+    }));
+
+    console.log(keystore.get({
+        kty: "EC",
+        crv: "P-256",
+        use: "sig",
+    }).toPEM());
 });
+
+// test("rsa", async () => {
+
+//     const encKey = await JWK.generate("RSA", 2048, {
+//         use: "enc",
+//         key_ops: ["encrypt", "decrypt"],
+//     }, true);
+
+//     const signKey = await JWK.generate("RSA", 2048, {
+//         use: "enc",
+//         key_ops: ["encrypt", "decrypt"],
+//     }, false);
+
+//     console.log(encKey);
+//     console.log(encKey.type);
+//     console.log(encKey.toPEM());
+
+
+//     console.log(signKey);
+//     console.log(signKey.type);
+//     console.log(signKey.toPEM());
+
+// });
