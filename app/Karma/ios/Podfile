@@ -41,6 +41,9 @@ target 'Karma' do
 
 
 
+
+  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
   target 'KarmaTests' do
     inherit! :search_paths
     # Pods for testing

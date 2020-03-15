@@ -38,7 +38,7 @@ app.use("/notification", require("./routes/notification"));
 app.use("/information", require("./routes/information"));
 
 app.use("/causes", require("./routes/causes"));
-app.use("/causes/user", require("./routes/causes/user"));
+app.use("/causes/select", require("./routes/causes/select"));
 
 app.use("/event", require("./routes/event"));
 // TODO: discuss structure
