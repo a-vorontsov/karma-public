@@ -7,6 +7,7 @@ import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
+import AsyncStorage from '@react-native-community/async-storage';
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
@@ -27,13 +28,26 @@ export default class PickCausesScreen extends React.Component {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    getData = async (key) => {
+        try {
+          const value = await AsyncStorage.getItem(key)
+          if(value !== null) {
+            return value;
+          }
+        } catch(e) {
+          console.log("error reading value " + e);
+        }
+      };
+
     async selectCauses() {
+        const userId = await this.getData("userId");
         await request
             .post("http://localhost:8000/causes/select")
             .send({
-                authToken: "3bVEs1b2oavrseSpQ/rtvADSkmM+KyE9ywZOaK10GUA=",
-                userId: "1",
+                authToken: this.getData("authToken"),
+                userId: userId,
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {

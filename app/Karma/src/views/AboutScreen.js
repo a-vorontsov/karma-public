@@ -21,6 +21,8 @@ import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
+import AsyncStorage from '@react-native-community/async-storage';
+
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -87,11 +89,8 @@ class AboutScreen extends React.Component {
         }
     }
 
-    createIndividual() {
-        console.log(this.state.addressLine1);
-        console.log("hereee");
+     createIndividual() {
         const individual = {
-            userId: 1, // TODO
             firstName: this.state.fname,
             lastName: this.state.lname,
             dateOfBirth: this.state.date,
@@ -112,6 +111,16 @@ class AboutScreen extends React.Component {
         this.props.navigation.goBack();
     }
 
+    getData = async (key) => {
+        try {
+          const value = await AsyncStorage.getItem(key)
+          if(value !== null) {
+            return value;
+          }
+        } catch(e) {
+          console.log("error reading value " + e);
+        }
+      }
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
         !gender && Alert.alert("Error", "Please select a gender.");
@@ -123,12 +132,14 @@ class AboutScreen extends React.Component {
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
 
+        const userId = await this.getData('userId');
         const individual = this.createIndividual();
+        console.log(individual.firstName);
         await request
             .post("http://localhost:8000/signup/individual")
             .send({
-                authToken: "3sume+UKn68TINM6xlHtyIwdNsGjJrEml5PpNc/EemU=",
-                userId: "1",
+                authToken: this.getData("authToken"),
+                userId: userId,
                 data: {individual: {...individual}},
             })
             .then(res => {

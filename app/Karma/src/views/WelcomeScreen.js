@@ -12,6 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
+import AsyncStorage from '@react-native-community/async-storage';
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -166,19 +167,26 @@ class WelcomeScreen extends Component {
                     password: this.state.passInput,
                 },
             })
-            .then(res => {
+            .then(async (res) => {
                 // if password correct
                 this.setState({isValidPass: true});
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
                 console.log("authToken " + authToken );
                 console.log("userId " + userId );
+                try {
+                    await AsyncStorage.setItem('authToken', authToken)
+                    await AsyncStorage.setItem('userId', userId.toString())
+                  } catch (e) {
+                    console.log("error while saving to async storage");
+                  }
                 navigate("PickCauses");
                 return;
             })
             .catch(err => {
                 this.setState({isValidPass: false});
                 this.setState({showPassError: true});
+                console.log(err);
             });
     }
 
@@ -225,7 +233,9 @@ class WelcomeScreen extends Component {
                 if (res.status === 200) {
                     console.log("correct code");
                     this.setState({isCodeValid: true});
-                    navigate("UserSignUp");
+                    navigate("UserSignUp",{
+                        email: this.state.emailInput,
+                    });
                 } else {
                     // code incorrect
                     this.setState({isCodeValid: false});

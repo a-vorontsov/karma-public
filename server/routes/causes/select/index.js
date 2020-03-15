@@ -10,6 +10,7 @@ const selectedCauseRepository = require("../../../models/databaseRepositories/se
 router.post('/', (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
+    console.log(userId + "selected " + causes.length + " causes");
     if (!causes) {
         return res.status(400).send("No causes were specified in the body");
     }
