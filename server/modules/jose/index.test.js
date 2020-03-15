@@ -15,15 +15,17 @@ test("jose", async () => {
     const encKey = await JWK.generate("EC", "P-256", {
         use: "enc",
         key_ops: ["encrypt", "decrypt"],
-    });
+    }, true);
 
     const signKey = await JWK.generate("EC", "P-256", {
         use: "sig",
         key_ops: ["sign", "verify"],
-    });
+    }, false);
 
-    console.log(encKey.type);
-    console.log(signKey.type);
+    console.log(encKey);
+    console.log("type:" + encKey.type);
+    console.log(signKey);
+    console.log("type:" + signKey.type);
     console.log(signKey.toPEM());
 
     const keystore = new jose.JWKS.KeyStore(encKey, signKey);

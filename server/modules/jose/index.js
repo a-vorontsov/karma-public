@@ -22,6 +22,11 @@ const signKey = await JWK.generate("EC", "P-256", {
 
 const keystore = new jose.JWKS.KeyStore(encKey, signKey);
 
+/**
+ * Get the public key used for encryption-decryption
+ * in JSON Web Key format.
+ * @return {object} enc public key in JWK format
+ */
 const getEncPubAsJWK = () => {
     return keystore.get({
         kty: "EC",
@@ -30,6 +35,11 @@ const getEncPubAsJWK = () => {
     });
 };
 
+/**
+ * Get the public key used for encryption-decryption
+ * in Privacy-Enhanced Mail format
+ * @return {object} enc public key in PEM format
+ */
 const getEncPubAsPEM = () => {
     return keystore.get({
         kty: "EC",
@@ -38,6 +48,11 @@ const getEncPubAsPEM = () => {
     }).toPEM();
 };
 
+/**
+ * Get the public key used for signing-verifying
+ * in JSON Web Key format.
+ * @return {object} sig public key in JWK format
+ */
 const getSigPubAsJWK = () => {
     return keystore.get({
         kty: "EC",
@@ -46,6 +61,11 @@ const getSigPubAsJWK = () => {
     });
 };
 
+/**
+ * Get the public key used for signing-verifying
+ * in Privacy-Enhanced Mail format
+ * @return {object} sig public key in PEM format
+ */
 const getSigPubAsPEM = () => {
     return keystore.get({
         kty: "EC",
