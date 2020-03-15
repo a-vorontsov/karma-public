@@ -74,10 +74,19 @@ const getSigPubAsPEM = () => {
     }).toPEM();
 };
 
+const encrypt = (cleartext) => {
+    return JWE.encrypt(cleartext, JWK.asKey(getEncPubAsJWK()));
+};
+
+const decrypt = (cyphertext) => {
+    return JWE.decrypt(cyphertext, encKey);
+}
 
 module.exports = {
     getEncPubAsJWK,
     getEncPubAsPEM,
     getSigPubAsJWK,
     getSigPubAsPEM,
+    encrypt,
+    decrypt,
 };
