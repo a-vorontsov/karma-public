@@ -7,6 +7,7 @@ const orgRepo = require("../../models/databaseRepositories/organisationRepositor
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
+const authAgent = require("./auth-agent");
 
 /**
  * Register a new record in the registration table.
@@ -41,7 +42,7 @@ async function registerUser(email, username, password) {
     }
     if (await regStatus.userAccountExists(email)) {
         throw new Error("500:Internal Server Error." +
-        "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
+            "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
     }
 
     const secureSalt = digest.generateSecureSaltInHex();
@@ -59,7 +60,14 @@ async function registerUser(email, username, password) {
         dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     });
     const userResult = await userRepo.findByEmail(email);
-    return userResult.rows[0].id;
+    const userId = userResult.rows[0].id;
+    const authToken = await authAgent.logIn(userId);
+    return ({
+        status: 200,
+        message: "User registration successful. Go to individual/org registration selection",
+        userId: userId,
+        authToken: authToken,
+    });
 }
 
 /**
@@ -229,14 +237,34 @@ async function getUserId(email) {
     return userRecord.id;
 }
 
+const signIn = async (email, password) => {
+    const userResult = await userRepo.findByEmail(email);
+    const user = userResult.rows[0];
+    if (isCorrectPassword(user, password)) {
+        const authToken = await authAgent.logIn(user.id);
+        return ({
+            status: 200,
+            message: "Successful authentication with email & password.",
+            userId: user.id,
+            authToken: authToken,
+        });
+    } else {
+        return ({
+            status: 400,
+            message: "Invalid password.",
+        });
+    }
+};
+
 module.exports = {
-    registerEmail: registerEmail,
-    registerUser: registerUser,
-    registerIndividual: registerIndividual,
-    registerOrg: registerOrg,
-    isCorrectPasswordById: isCorrectPasswordById,
-    isCorrectPasswordByEmail: isCorrectPasswordByEmail,
-    updatePassword: updatePassword,
-    getUserId: getUserId,
-    registerAddress: registerAddress,
+    registerEmail,
+    registerUser,
+    registerIndividual,
+    registerOrg,
+    isCorrectPasswordById,
+    isCorrectPasswordByEmail,
+    updatePassword,
+    getUserId,
+    registerAddress,
+    signIn,
 };
