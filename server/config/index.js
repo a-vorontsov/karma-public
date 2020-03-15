@@ -7,6 +7,7 @@ config.jose = {
     enc: "A128GCM",
     iss: "https://karmaaaaaapp.co.uk",
     exp: "30 d",
+    aud: "/user",
 };
 
 module.exports = config;

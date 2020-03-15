@@ -101,6 +101,26 @@ const sign = (payload, exp) => {
     });
 };
 
+/**
+ * Verify provided JWT.
+ * @param {object} token JWT token
+ * @param {string} sub userId - must be provided
+ * @param {string} [aud=default] default config will be used if omitted
+ * @return {string} payload
+ * @throws {JWTClaimInvalid} if sub undefined
+ */
+const verify = (token, sub, aud) => {
+    if (sub === undefined) {
+        throw new errors.JWTClaimInvalid("No subject specified in claim", token, "JWT sub must be specified.");
+    }
+    return JWT.verify(token, sigKey, {
+        audience: aud !== undefined ? aud : config.aud,
+        complete: false,
+        issuer: config.iss,
+        subject: sub,
+    });
+};
+
 module.exports = {
     getEncPubAsJWK,
     getEncPubAsPEM,
@@ -109,4 +129,5 @@ module.exports = {
     encrypt,
     decrypt,
     sign,
+    verify,
 };

@@ -1,6 +1,7 @@
 const jose = require('jose');
 const fs = require("fs");
 const Base64 = require('js-base64').Base64;
+const util = require("../../util/util");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -18,16 +19,16 @@ test("JWE key derivation and en/decryption work", async () => {
 
     const encKey = await JWK.generateSync("EC", "P-256");
 
-    console.log(encKey);
-    console.log(encKey.type);
+    // console.log(encKey);
+    // console.log(encKey.type);
 
     const jwe = joseOnServer.encrypt(cleartext, encKey);
 
-    console.log(jwe);
+    // console.log(jwe);
 
     const decryptionResult = joseOnServer.decrypt(jwe, encKey);
 
-    console.log(decryptionResult);
+    // console.log(decryptionResult);
 
     expect(decryptionResult).toBe(cleartext);
 
@@ -37,7 +38,7 @@ test("JWE key derivation and en/decryption work", async () => {
 test("JWT signing with default and custom exp work", async () => {
 
     const payload = {
-        sub: 1,
+        sub: "1",
         aud: "/user"
     };
 
@@ -70,13 +71,73 @@ test("JWT signing with default and custom exp work", async () => {
 test("JWT verification works", async () => {
 
     const payload = {
-        sub: 1,
+        sub: "1",
         aud: "/user"
     };
 
     const jwt = joseOnServer.sign(payload);
 
     // console.log(jwt);
+
+    const verificationResult = joseOnServer.verify(jwt, "1");
+
+    // console.log(verificationResult);
+
+    expect(verificationResult.sub).toStrictEqual(payload.sub);
+    expect(verificationResult.aud).toStrictEqual(payload.aud);
+
+});
+
+test("expired JWT is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload, "1 s");
+
+    // console.log(jwt);
+
+    await util.sleep(1200);
+
+    expect(() => {
+        joseOnServer.verify(jwt, "1");
+    }).toThrow(new errors.JWTExpired("\"exp\" claim timestamp check failed"));
+
+});
+
+test("JWT with non-matching subject is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    // console.log(jwt);
+
+    expect(() => {
+        joseOnServer.verify(jwt, "2");
+    }).toThrow(new errors.JWTExpired("unexpected \"sub\" claim value"));
+
+});
+
+test("JWT with non-matching audience is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    // console.log(jwt);
+
+    expect(() => {
+        joseOnServer.verify(jwt, "1", "/admin");
+    }).toThrow(new errors.JWTExpired("unexpected \"aud\" claim value"));
 
 });
 
