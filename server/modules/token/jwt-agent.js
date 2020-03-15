@@ -6,11 +6,11 @@ const alg = "ES256";
 const sub = "server-app";
 const aud = "app";
 const privateKey = fs.readFileSync(
-    "./modules/token/pkc/server-client/priv.key",
+    "./modules/token/server-client/priv.key",
     "utf8",
 );
 const publicKey = fs.readFileSync(
-    "./modules/token/pkc/server-client/pub.key",
+    "./modules/token/server-client/pub.key",
     "utf8",
 );
 
@@ -44,8 +44,8 @@ function signWithCustomOptions(tokenSubject, tokenAudience, payload) {
 function signWithDefaultOptions(payload) {
     return jwt.sign(payload, privateKey, {
         issuer: iss,
-        subject: sub,
-        audience: aud,
+        // subject: sub,
+        // audience: aud,
         expiresIn: exp,
         algorithm: alg,
     });

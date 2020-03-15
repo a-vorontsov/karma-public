@@ -10,22 +10,17 @@ const {
     errors, // errors utilized by jose
 } = jose;
 
-const keystore = new jose.JWKS.KeyStore();
+const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
+    use: "enc",
+    key_ops: ["deriveKey"],
+});
 
-const initialise = async () => {
-    const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
-        use: "enc",
-        key_ops: ["deriveKey"],
-    });
+const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
+    use: "sig",
+    key_ops: ["sign", "verify"],
+});
 
-    const signKey = JWK.generateSync(config.kty, config.crvOrSize, {
-        use: "sig",
-        key_ops: ["sign", "verify"],
-    });
-
-    keystore.add(encKey);
-    keystore.add(signKey);
-};
+const keystore = new jose.JWKS.KeyStore(encKey, sigKey);
 
 /**
  * Get the public key used for encryption-decryption
@@ -95,12 +90,23 @@ const decrypt = (jwe, key) => {
     return JWE.decrypt(jwe, key).toString("utf8");
 };
 
+const sign = (payload, exp) => {
+    return JWT.sign(payload, sigKey, {
+        header: {
+            typ: "JWT",
+        },
+        issuer: config.iss,
+        kid: true,
+        expiresIn: exp !== undefined ? exp : config.exp,
+    });
+};
+
 module.exports = {
-    initialise,
     getEncPubAsJWK,
     getEncPubAsPEM,
     getSigPubAsJWK,
     getSigPubAsPEM,
     encrypt,
     decrypt,
+    sign,
 };

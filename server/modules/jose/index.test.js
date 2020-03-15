@@ -1,5 +1,6 @@
 const jose = require('jose');
 const fs = require("fs");
+const Base64 = require('js-base64').Base64;
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -12,8 +13,6 @@ const {
 const joseOnServer = require("./");
 
 test("JWE key derivation and en/decryption work", async () => {
-
-    joseOnServer.initialise();
 
     const cleartext = "karma";
 
@@ -32,7 +31,54 @@ test("JWE key derivation and en/decryption work", async () => {
 
     expect(decryptionResult).toBe(cleartext);
 
+});
 
+
+test("JWT signing with default and custom exp work", async () => {
+
+    const payload = {
+        sub: 1,
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+
+    // console.log(jwt);
+    // console.log(jwtHeader);
+    // console.log(jwtPayload);
+
+    const jwtWithCustomExp = joseOnServer.sign(payload, "15 m");
+    const jwtWithCustomExpSplit = jwtWithCustomExp.split(".");
+    const jwtWithCustomExpHeader = JSON.parse(Base64.decode(jwtWithCustomExpSplit[0]));
+    const jwtWithCustomExpPayload = JSON.parse(Base64.decode(jwtWithCustomExpSplit[1]));
+
+
+    // console.log(jwtWithCustomExp);
+    // console.log(jwtWithCustomExpHeader);
+    // console.log(jwtWithCustomExpPayload);
+
+    expect(jwtHeader).toStrictEqual(jwtWithCustomExpHeader);
+    expect(jwtPayload.sub).toStrictEqual(jwtWithCustomExpPayload.sub);
+    expect(jwtPayload.aud).toStrictEqual(jwtWithCustomExpPayload.aud);
+    expect(jwtPayload.iss).toStrictEqual(jwtWithCustomExpPayload.iss);
+    expect(jwtPayload.exp).not.toStrictEqual(jwtWithCustomExpPayload.exp);
+});
+
+test("JWT verification works", async () => {
+
+    const payload = {
+        sub: 1,
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    // console.log(jwt);
+
+});
 
     // const encKey = await JWK.generateSync("EC", "P-256", {
     //     use: "enc",
@@ -85,7 +131,7 @@ test("JWE key derivation and en/decryption work", async () => {
     // const cleartext = JWE.decrypt(cypertext, encKey);
 
     // console.log(cleartext);
-});
+
 
 // test("rsa", async () => {
 
