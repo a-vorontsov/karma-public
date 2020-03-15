@@ -46,7 +46,6 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @function
  */
 router.post("/", async (req, res) => {
-    console.log(req.body);
     try {
         const individual = {
             title: req.body.data.individual.title,
