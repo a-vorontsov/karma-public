@@ -21,7 +21,7 @@ import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 const request = require("superagent");
 
@@ -89,7 +89,7 @@ class AboutScreen extends React.Component {
         }
     }
 
-     createIndividual() {
+    createIndividual() {
         const individual = {
             firstName: this.state.fname,
             lastName: this.state.lname,
@@ -111,18 +111,42 @@ class AboutScreen extends React.Component {
         this.props.navigation.goBack();
     }
 
-    getData = async (key) => {
+    getData = async key => {
         try {
-          const value = await AsyncStorage.getItem(key)
-          if(value !== null) {
-            return value;
-          }
-        } catch(e) {
-          console.log("error reading value " + e);
+            const value = await AsyncStorage.getItem(key);
+            if (value !== null) {
+                return value;
+            }
+        } catch (e) {
+            console.log("error reading value from async storage" + e);
         }
-      }
+    };
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
+        if (gender && fname !== "" && lname !== "" && dateSelected) {
+            const userId = await this.getData("userId");
+            const individual = this.createIndividual();
+            await request
+                .post("http://localhost:8000/signup/individual")
+                .send({
+                    authToken: this.getData("authToken"),
+                    userId: userId,
+                    data: {individual: {...individual}},
+                })
+                .then(res => {
+                    console.log(res.body);
+                    this.props.navigation.navigate("PickCauses", {
+                        photo: this.state.photo,
+                        gender: this.state.gender,
+                        date: this.state.date,
+                    });
+                    return;
+                })
+                .catch(err => {
+                    Alert.alert("Server Error", err.message);
+                    return;
+                });
+        }
         !gender && Alert.alert("Error", "Please select a gender.");
         fname === "" && Alert.alert("Error", "Please input your first name.");
         lname === "" && Alert.alert("Error", "Please input your last name.");
@@ -131,28 +155,6 @@ class AboutScreen extends React.Component {
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
-
-        const userId = await this.getData('userId');
-        const individual = this.createIndividual();
-        console.log(individual.firstName);
-        await request
-            .post("http://localhost:8000/signup/individual")
-            .send({
-                authToken: this.getData("authToken"),
-                userId: userId,
-                data: {individual: {...individual}},
-            })
-            .then(res => {
-                console.log(res.body);
-                this.props.navigation.navigate("PickCauses", {
-                    photo: this.state.photo,
-                    gender: this.state.gender,
-                    date: this.state.date,
-                });
-            })
-            .catch(err => {
-                Alert.alert("Server Error", err.message);
-            });
     }
 
     render() {

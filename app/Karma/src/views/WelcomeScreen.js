@@ -12,7 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -29,7 +29,6 @@ class WelcomeScreen extends Component {
             showCode: false,
             isCodeValid: false,
             buttonText: "Sign Up/ Log In",
-            codeSent: false,
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -39,7 +38,9 @@ class WelcomeScreen extends Component {
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
         this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
-        this.confirmForgotPasswordCode = this.confirmForgotPasswordCode.bind(this);
+        this.confirmForgotPasswordCode = this.confirmForgotPasswordCode.bind(
+            this,
+        );
         this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
     }
@@ -82,13 +83,21 @@ class WelcomeScreen extends Component {
     }
 
     onSignUpPressed() {
-        const {navigate} = this.props.navigation;
+        console.log(this.state.emailInput);
         if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
-            //this.setState(this.baseState)
+            return;
+        }
+        if (this.isForgotPassPressed && this.state.showCode) {
+            this.confirmForgotPasswordCode();
+        } else if (this.showCode) {
+            this.confirmVerifyEmailCode();
+        } else if (this.state.showPassField) {
+            this.checkPass();
+        } else if (this.state.emailInput !== "") {
+            this.onSubmitEmail(true);
         } else {
             this.setState(this.baseState);
-            //navigate("InitSignup");
         }
     }
 
@@ -128,7 +137,7 @@ class WelcomeScreen extends Component {
                     }
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
-                        navigate("UserSignUp",{
+                        navigate("UserSignUp", {
                             email: this.state.emailInput,
                         });
                         return;
@@ -152,7 +161,7 @@ class WelcomeScreen extends Component {
                 showEmailError: true,
             });
         }
-    };
+    }
 
     // verify password is correct
     async checkPass() {
@@ -167,25 +176,22 @@ class WelcomeScreen extends Component {
                     password: this.state.passInput,
                 },
             })
-            .then(async (res) => {
+            .then(async res => {
                 // if password correct
                 this.setState({isValidPass: true});
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
-                console.log("authToken " + authToken );
-                console.log("userId " + userId );
                 try {
-                    await AsyncStorage.setItem('authToken', authToken)
-                    await AsyncStorage.setItem('userId', userId.toString())
-                  } catch (e) {
+                    await AsyncStorage.setItem("authToken", authToken);
+                    await AsyncStorage.setItem("userId", userId.toString());
+                } catch (e) {
                     console.log("error while saving to async storage");
-                  }
+                }
                 navigate("PickCauses");
                 return;
             })
             .catch(err => {
-                this.setState({isValidPass: false});
-                this.setState({showPassError: true});
+                this.setState({isValidPass: false, showPassError: true});
                 console.log(err);
             });
     }
@@ -233,7 +239,7 @@ class WelcomeScreen extends Component {
                 if (res.status === 200) {
                     console.log("correct code");
                     this.setState({isCodeValid: true});
-                    navigate("UserSignUp",{
+                    navigate("UserSignUp", {
                         email: this.state.emailInput,
                     });
                 } else {
