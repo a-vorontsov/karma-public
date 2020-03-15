@@ -93,7 +93,6 @@ export default class OrgSignUpScreen extends React.Component {
 
     createOrganisation() {
         const organisation = {
-            userId: "1", //TODO
             organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
@@ -101,15 +100,27 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            addressLine1: this.state.addressLine1,
-            addressLine2: this.state.addressLine2,
-            townCity: this.state.townCity,
-            countryState: this.state.countryState,
-            postCode: this.state.postCode,
+            addressLine1: "this.state.addressLine1",    //TODO
+            addressLine2: "this.state.addressLine2",    //TODO
+            townCity: "this.state.townCity",    //TODO
+            countryState: "this.state.countryState",    //TODO
+            postCode: "this.state.postCode",    //TODO
             phoneNumber: "TODO", //TODO
         };
         return organisation;
-    }
+    };
+
+    getData = async key => {
+        try {
+            const value = await AsyncStorage.getItem(key);
+            if (value !== null) {
+                return value;
+            }
+        } catch (e) {
+            console.log("error reading value from async storage" + e);
+        }
+    };
+
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
@@ -126,15 +137,16 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-
+        const authToken = await this.getData("authToken");
+        const userId = await this.getData("userId");
         const org = this.createOrganisation();
         console.log(org);
         await request
-            .post("http://localhost:8000/register/organisation")
+            .post("http://localhost:8000/signup/organisation")
             .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...org,
+                authToken: authToken,
+                userId: userId,
+                data:{organisation:{userId,...org}},
             })
             .then(res => {
                 console.log(res.body);
