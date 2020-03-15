@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View, Image, TouchableOpacity, StyleSheet} from "react-native";
+import {Image, StyleSheet, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
@@ -9,8 +9,8 @@ import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
 import {
     Menu,
-    MenuOptions,
     MenuOption,
+    MenuOptions,
     MenuTrigger,
 } from "react-native-popup-menu";
 

@@ -26,6 +26,9 @@ const Styles = StyleSheet.create({
     center: {
         marginHorizontal: "auto",
     },
+    formWidth: {
+        width: 0.8 * SCREEN_WIDTH,
+    },
     vcenter: {
         flex: 2,
         justifyContent: "center",
@@ -50,7 +53,7 @@ const Styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     fullMinHeight: {
-        minHeight: SCREEN_HEIGHT,
+        minHeight: SCREEN_HEIGHT - StatusBar.currentHeight,
     },
     p8: {
         padding: 8,

@@ -17,10 +17,12 @@ import PhotoUpload from "react-native-photo-upload";
 import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
 import {RegularText, SemiBoldText} from "../components/text";
+import Colours from "../styles/Colours";
+import AddressInput from "../components/input/AddressInput";
 
 import {GradientButton} from "../components/buttons";
 
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 const request = require("superagent");
@@ -49,6 +51,11 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: false,
             minEndDate: new Date(),
             minSlotDate: new Date(),
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
@@ -69,6 +76,11 @@ export default class CreateActivityScreen extends React.Component {
             womenOnly: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
             addressVisible: this.state.isAddressVisible,
+            addressLine1: this.state.addressLine1,
+            addressLine2: this.state.addressLine2,
+            townCity: this.state.townCity,
+            countryState: this.state.countryState,
+            postCode: this.state.postCode,
             minimumAge: 18, //TODO
             photoId: this.state.isIDReq,
             physical: this.state.isPhysical,
@@ -476,16 +488,13 @@ export default class CreateActivityScreen extends React.Component {
                                         editable="false"
                                     />
                                 </View>
-                                <View style={{width: FORM_WIDTH}}>
-                                    <SemiBoldText
-                                        style={{
-                                            alignItems: "flex-start",
-                                            fontSize: 20,
-                                        }}>
-                                        Important
-                                    </SemiBoldText>
-                                </View>
-
+                                <SemiBoldText
+                                    style={{
+                                        alignItems: "flex-start",
+                                        fontSize: 20,
+                                    }}>
+                                    Important
+                                </SemiBoldText>
                                 <View>
                                     <TextInput
                                         placeholder="Number of spots available"
@@ -577,6 +586,14 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAdditionalInfo}
                                     />
                                 </View>
+                                <SemiBoldText
+                                    style={{
+                                        alignItems: "flex-start",
+                                        fontSize: 20,
+                                    }}>
+                                    What is the location?
+                                </SemiBoldText>
+                                <AddressInput />
                             </View>
                         </View>
                     </ScrollView>

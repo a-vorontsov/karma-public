@@ -11,7 +11,7 @@ import {
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
-import TextInput from "../components/TextInput";
+import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
@@ -20,6 +20,8 @@ import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
+import AddressInput from "../components/input/AddressInput";
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -33,11 +35,26 @@ class AboutScreen extends React.Component {
             dateSelected: false,
             date: new Date(),
             minYear: new Date().getFullYear() - 18,
+            addressLine1: "",
+            addressLine2: "",
+            townCity: "",
+            countryState: "",
+            postCode: "",
         };
     }
 
     static navigationOptions = {
         headerShown: false,
+    };
+
+    onInputChange = inputState => {
+        this.setState({
+            addressLine1: inputState.address1,
+            addressLine2: inputState.address2,
+            townCity: inputState.city,
+            countryState: inputState.region,
+            postCode: inputState.postcode,
+        });
     };
 
     onChangeText = event => {
@@ -83,17 +100,18 @@ class AboutScreen extends React.Component {
 
     createIndividual() {
         const individual = {
-            userId: 1, // TODO
             firstName: this.state.fname,
-            surName: this.state.lname,
+            lastName: this.state.lname,
             dateOfBirth: this.state.date,
             gender: this.state.gender,
-            addressLine1: "TODO", // TODO
-            addressLine2: "TODO", // TODO
-            townCity: "TODO", // TODO
-            countryState: "TODO", // TODO
-            postCode: "TODO", // TODO
             phoneNumber: "213123421", // TODO
+            address: {
+                addressLine1: this.state.addressLine1,
+                addressLine2: this.state.addressLine2,
+                townCity: this.state.townCity,
+                countryState: this.state.countryState,
+                postCode: this.state.postCode,
+            },
         };
         return individual;
     }
@@ -102,8 +120,53 @@ class AboutScreen extends React.Component {
         this.props.navigation.goBack();
     }
 
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
+        if (gender && fname !== "" && lname !== "" && dateSelected) {
+            const credentials = await this.getData();
+            const authToken = credentials.password;
+            const userId = credentials.username;
+            console.log(userId);
+            const individual = this.createIndividual();
+            await request
+                .post("http://localhost:8000/signup/individual")
+                .send({
+                    authToken: authToken,
+                    userId: userId,
+                    data: {individual: {...individual}},
+                })
+                .then(res => {
+                    console.log(res.body);
+                    this.props.navigation.navigate("PickCauses", {
+                        photo: this.state.photo,
+                        gender: this.state.gender,
+                        date: this.state.date,
+                    });
+                    return;
+                })
+                .catch(err => {
+                    Alert.alert("Server Error", err.message);
+                    return;
+                });
+        }
         !gender && Alert.alert("Error", "Please select a gender.");
         fname === "" && Alert.alert("Error", "Please input your first name.");
         lname === "" && Alert.alert("Error", "Please input your last name.");
@@ -112,26 +175,6 @@ class AboutScreen extends React.Component {
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
-
-        const individual = this.createIndividual();
-        await request
-            .post("http://localhost:8000/register/individual")
-            .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...individual,
-            })
-            .then(res => {
-                console.log(res.body);
-                this.props.navigation.navigate("PickCauses", {
-                    photo: this.state.photo,
-                    gender: this.state.gender,
-                    date: this.state.date,
-                });
-            })
-            .catch(err => {
-                Alert.alert("Server Error", err.message);
-            });
     }
 
     render() {
@@ -142,7 +185,9 @@ class AboutScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        style={{marginBottom: 100}}
+                        showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
@@ -236,6 +281,15 @@ class AboutScreen extends React.Component {
                                 ]}
                                 onValue={value => this.setGender(value)}
                             />
+
+                            <SubTitleText>Where do you live?</SubTitleText>
+                            <RegularText style={Styles.pb24}>
+                                This is for us to help you find the most
+                                compatible events with you. This information
+                                will not be shared with charities.
+                            </RegularText>
+                            <AddressInput onChange={this.onInputChange} />
+
                             <GradientButton
                                 onPress={() => this.goToNext()}
                                 title="Next"

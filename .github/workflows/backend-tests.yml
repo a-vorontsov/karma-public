@@ -85,6 +85,7 @@ jobs:
           SESSION_SECRET: GIT_CI
           STRIPE_SECRET: sk_test_TBD
           STRIPE_ACC_ID: acct_TBD
+          SKIP_MAIL_SENDING_FOR_TESTING: 1
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on

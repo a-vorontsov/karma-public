@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-mount-set-state */
 import React from "react";
 import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -6,6 +7,7 @@ import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
@@ -27,13 +29,35 @@ export default class PickCausesScreen extends React.Component {
             console.log(error);
         }
     }
+
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+
     async selectCauses() {
+        const credentials = await this.getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
         await request
-            .post("http://localhost:8000/user/1/causes")
+            .post("http://localhost:8000/causes/select")
             .send({
-                authToken: "ffa234124",
-                userId: "1",
-                causes: this.state.selectedCauses,
+                authToken: authToken,
+                userId: userId,
+                data: {causes: this.state.selectedCauses},
             })
             .then(res => {
                 console.log(res.body.data);
@@ -43,6 +67,7 @@ export default class PickCausesScreen extends React.Component {
                 Alert.alert("Server Error", err.message);
             });
     }
+    //TODO display selected causes already from db
     render() {
         const {causes} = this.state;
         return (
@@ -50,7 +75,7 @@ export default class PickCausesScreen extends React.Component {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={[Styles.ph24, {marginBottom: 82}]}>
-                    <View style={Styles.fullMinHeight}>
+                    <View>
                         <>
                             <PageHeader title="Causes" />
                             <SubTitleText style={{fontSize: normalise(24)}}>

@@ -99,11 +99,22 @@ const signupSchema = {
     "required": ["individualId", "confirmed"],
 };
 
+const informationSchema = {
+    "id": "/Information",
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "content": {"type": "string"},
+    },
+    "required": ["type", "content"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
 validator.addSchema(favouriteSchema, "/Favourite");
 validator.addSchema(signupSchema, "/Signup");
+validator.addSchema(informationSchema, "/Information");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
@@ -125,10 +136,15 @@ const validateSignup = (signup) => {
     return validator.validate(signup, signupSchema);
 };
 
+const validateInformation = (information) => {
+    return validator.validate(information, informationSchema);
+};
+
 module.exports = {
     validateAddress,
     validateEvent,
     validateNotification,
     validateFavourite,
     validateSignup,
+    validateInformation,
 };

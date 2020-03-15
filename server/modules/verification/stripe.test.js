@@ -1,4 +1,5 @@
 const stripe = require("./stripe");
+const util = require("../../util/util");
 
 test("immediate response is false", async () => {
     await stripe.uploadFile(1);
@@ -13,11 +14,5 @@ test("response is true after wait", async () => {
 
 /* eslint-disable require-jsdoc */
 async function waitForAccountUpdate() {
-    await sleep(1250);
-}
-
-function sleep(ms) {
-    return new Promise(resolve => {
-        setTimeout(resolve, ms);
-    });
+    await util.sleep(1250);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {View, Image, Text, StyleSheet} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -17,14 +17,49 @@ const icons = {
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
 };
 
-class ActivityCard extends React.Component {
-    navigation = this.props.navigation;
+function formatAMPM(d) {
+    let date = new Date(d);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    let strTime = hours + ":" + minutes + " " + ampm;
+    return strTime;
+}
 
-    setFav = handlePress => {
+function getMonthName(d, long = false) {
+    let date = new Date(d);
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    var name = monthNames[date.getMonth()];
+    if (!long) {
+        name = name.substring(0, 3);
+    }
+    return name;
+}
+
+const ActivityCard = props => {
+    const navigation = useNavigation();
+
+    const setFav = handlePress => {
         return false;
     };
 
-    _renderTruncatedFooter = handlePress => {
+    const renderTruncatedFooter = handlePress => {
         return (
             <Text
                 style={{color: "#00A8A6", marginTop: 5}}
@@ -33,101 +68,89 @@ class ActivityCard extends React.Component {
             </Text>
         );
     };
-
-    render() {
-        const props = this.props;
-        return (
-            <View style={[Styles.container, Styles.ph24]}>
-                <View style={[Styles.pb24, Styles.bottom]}>
-                    <Image
-                        source={
-                            props.individual
-                                ? require("../../assets/images/general-logos/hands-heart.png")
-                                : require("../../assets/images/general-logos/globe.png")
-                        }
+    return (
+        <View style={[Styles.container, Styles.ph24]}>
+            <View style={[Styles.pb24, Styles.bottom]}>
+                <Image
+                    source={{
+                        uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                    }}
+                    style={{
+                        flex: 1,
+                        width: null,
+                        height: null,
+                        marginBottom: 10,
+                    }}
+                    resizeMode="cover"
+                />
+                <Image
+                    source={props.signedup ? null : icons.signup}
+                    style={styles.icon}
+                />
+                <Image source={icons.date} style={[styles.icon, {left: 5}]} />
+                <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
+                    {` ${new Date(props.activity.date).getDate()}`}
+                </RegularText>
+                <RegularText style={styles.dateText}>
+                    {`  ${getMonthName(props.activity.date)}`}
+                </RegularText>
+                <View>
+                    <View
                         style={{
-                            flex: 1,
-                            width: null,
-                            height: null,
-                            marginBottom: 10,
-                        }}
-                        resizeMode="cover"
-                    />
-                    <Image
-                        source={props.signedup ? null : icons.signup}
-                        style={styles.icon}
-                    />
-                    <Image
-                        source={icons.date}
-                        style={[styles.icon, {left: 5}]}
-                    />
-                    <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
-                        {" "}
-                        MON
-                    </RegularText>
-                    <RegularText style={styles.dateText}> DAY</RegularText>
-                    <View>
+                            flexDirection: "row",
+                        }}>
+                        <InfoBar
+                            title={` ${formatAMPM(props.activity.date)}`}
+                            image={icons.clock}
+                        />
+                        <InfoBar
+                            title={`${props.activity.spots} Spots Left`}
+                            image={icons.people}
+                        />
                         <View
                             style={{
-                                flexDirection: "row",
+                                flex: 1,
+                                alignItems: "flex-end",
+                                justifyContent: "flex-end",
                             }}>
-                            <InfoBar title="TIME" image={icons.clock} />
-                            <InfoBar
-                                title="0 SPOTS LEFT"
-                                image={icons.people}
-                            />
-                            <View
-                                style={{
-                                    flex: 1,
-                                    alignItems: "flex-end",
-                                    justifyContent: "flex-end",
-                                }}>
-                                <TouchableOpacity style={{alignSelf: "center"}}>
-                                    <Image
-                                        source={
-                                            props.favorited
-                                                ? icons.fave_inactive
-                                                : icons.fave_active
-                                        }
-                                        style={{
-                                            width: 30,
-                                            height: 30,
-                                            resizeMode: "contain",
-                                            marginRight: 10,
-                                        }}
-                                        // onPress={this.setFav(!props.favorited)}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity style={{alignSelf: "center"}}>
+                                <Image
+                                    source={
+                                        props.favorited
+                                            ? icons.fave_inactive
+                                            : icons.fave_active
+                                    }
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        resizeMode: "contain",
+                                        marginRight: 10,
+                                    }}
+                                    // onPress={this.setFav(!props.favorited)}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <RegularText
-                            style={{
-                                fontWeight: "500",
-                                fontSize: 20,
-                                marginVertical: 8,
-                            }}>
-                            Activity Name
-                        </RegularText>
                     </View>
-                    <View>
-                        <ReadMore
-                            numberOfLines={2}
-                            renderTruncatedFooter={this._renderTruncatedFooter}>
-                            <RegularText>
-                                Activity description, consectetur adip isicing
-                                elit, sed do eiusm ut labore et dolore magna
-                                aliqua consectetur adip isicing elit, sed do
-                                eiusm ut labore et dolore magna aliqua
-                                consectetur adip isicing elit, sed do eiusm ut
-                                labore et dolore magna aliqua
-                            </RegularText>
-                        </ReadMore>
-                    </View>
+                    <RegularText
+                        style={{
+                            fontWeight: "500",
+                            fontSize: 20,
+                            marginVertical: 8,
+                        }}>
+                        {props.activity.name}
+                    </RegularText>
+                </View>
+                <View>
+                    <ReadMore
+                        numberOfLines={2}
+                        renderTruncatedFooter={this._renderTruncatedFooter}>
+                        <RegularText>{props.activity.content}</RegularText>
+                    </ReadMore>
                 </View>
             </View>
-        );
-    }
-}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     dateText: {

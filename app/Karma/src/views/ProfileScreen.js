@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import {
-    View,
-    Text,
-    StyleSheet,
     Dimensions,
+    Image,
     KeyboardAvoidingView,
     SafeAreaView,
-    Image,
     ScrollView,
+    StyleSheet,
+    Text,
     TouchableOpacity,
+    View,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
@@ -22,7 +22,6 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 
-const carouselEntries = [{individual: true}, {individual: false}];
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
@@ -36,6 +35,8 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
+const request = require("superagent");
+
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -47,20 +48,39 @@ class ProfileScreen extends Component {
             bio: "this is your bio lorem ipsum and such",
             causes: ["Cause1", "Cause2"],
             points: 1,
+            activities: [],
         };
+        this.fetchAllActivities();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
+    fetchAllActivities() {
+        request
+            .get("http://localhost:8000/event/going")
+            .query({userId: 76})
+            .then(result => {
+                console.log(result.body.data);
+                let activities = result.body.data;
+                this.setState({
+                    activities,
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
+    }
+
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
                     <ActivityCard
-                        individual={item.individual}
+                        activity={item}
                         signedup={false}
+                        key={item.id}
                     />
                 </View>
             </View>
@@ -335,7 +355,9 @@ class ProfileScreen extends Component {
                                 }}>
                                 <TouchableOpacity>
                                     <RegularText style={styles.bioHeader}>
-                                        Upcoming Events
+                                        {this.state.activities.length > 0
+                                            ? "Upcoming Events"
+                                            : "No Upcoming Events"}
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -357,7 +379,7 @@ class ProfileScreen extends Component {
                                     ref={c => {
                                         this._carousel = c;
                                     }}
-                                    data={carouselEntries}
+                                    data={this.state.activities}
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}

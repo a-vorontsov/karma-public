@@ -1,5 +1,6 @@
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
+const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const util = require("../../util/util");
 
 /**
@@ -61,6 +62,9 @@ const updateEvent = async (event) => {
 const getEventData = async (id) => {
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
+    const eventSignUps = await signUpRepository.findAllByEventId(event.id);
+    const spotsRemaining = event.spots - eventSignUps.rowCount;
+    event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
     return ({
