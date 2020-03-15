@@ -65,13 +65,15 @@ router.post('/:eventId/signUp', async (req, res) => {
     "data": {
         "users": [
             {
-                "user_id": 7,
+                "userId": 7,
+                "individualId": 15,
                 "email": "asd@asd.asd",
                 "username": "Sten"
                 [...]
             }
             {
-                "user_id": 8,
+                "userId": 8,
+                "individualId": 16,
                 "email": "asd@asd.asd",
                 "username": "Sten"
                 [...]
