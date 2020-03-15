@@ -7,7 +7,7 @@ const sendValidationErrors = (validationResult, httpResponse) => {
 
 const sendResult = (result, httpResponse) => {
     return httpResponse.status(result.status)
-        .send({ message: result.message, data: result.data });
+        .send({message: result.message, data: result.data});
 };
 
 /**
@@ -26,9 +26,9 @@ const sendAuthResult = (result, httpResponse) => {
         });
 };
 
-const sendGenericError = (error, httpResponse) => httpResponse.status(500).send({ message: error.message });
+const sendGenericError = (error, httpResponse) => httpResponse.status(500).send({message: error.message});
 
-const sendBuiltInError = (httpError, httpResponse) => httpResponse.status(httpError.status).send({ message: httpError.message });
+const sendBuiltInError = (httpError, httpResponse) => httpResponse.status(httpError.status).send({message: httpError.message});
 
 const sendErrorWithRedirect = (status, message, httpResponse) => {
     httpResponse.redirect("/error/?status=" + status + "&message=" + message);
