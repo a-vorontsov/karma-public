@@ -25,6 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
+import AsyncStorage from "@react-native-community/async-storage"
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -100,15 +101,15 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            addressLine1: "this.state.addressLine1",    //TODO
-            addressLine2: "this.state.addressLine2",    //TODO
-            townCity: "this.state.townCity",    //TODO
-            countryState: "this.state.countryState",    //TODO
-            postCode: "this.state.postCode",    //TODO
+            addressLine1: "this.state.addressLine1", //TODO
+            addressLine2: "this.state.addressLine2", //TODO
+            townCity: "this.state.townCity", //TODO
+            countryState: "this.state.countryState", //TODO
+            postCode: "this.state.postCode", //TODO
             phoneNumber: "TODO", //TODO
         };
         return organisation;
-    };
+    }
 
     getData = async key => {
         try {
@@ -146,7 +147,7 @@ export default class OrgSignUpScreen extends React.Component {
             .send({
                 authToken: authToken,
                 userId: userId,
-                data:{organisation:{userId,...org}},
+                data: {organisation: {userId, ...org}},
             })
             .then(res => {
                 console.log(res.body);

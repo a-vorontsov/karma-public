@@ -83,7 +83,6 @@ class WelcomeScreen extends Component {
     }
 
     onSignUpPressed() {
-        console.log(this.state.emailInput);
         if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
             return;
