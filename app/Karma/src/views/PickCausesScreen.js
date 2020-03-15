@@ -7,7 +7,7 @@ import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
-import * as Keychain from 'react-native-keychain';
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
@@ -35,18 +35,21 @@ export default class PickCausesScreen extends React.Component {
             // Retreive the credentials
             const credentials = await Keychain.getGenericPassword();
             if (credentials) {
-              console.log('Credentials successfully loaded for user ' + credentials.username);
-              return credentials
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
             } else {
-              console.log('No credentials stored')
+                console.log("No credentials stored");
             }
-          } catch (error) {
-            console.log('Keychain couldn\'t be accessed!', error);
-          }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
     };
 
     async selectCauses() {
-        const credentials =  await this.getData();
+        const credentials = await this.getData();
         const authToken = credentials.password;
         const userId = credentials.username;
         await request

@@ -12,7 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
-import * as Keychain from 'react-native-keychain';
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 
 class WelcomeScreen extends Component {

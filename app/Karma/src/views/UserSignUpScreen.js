@@ -17,7 +17,7 @@ import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
-import * as Keychain from 'react-native-keychain';
+import * as Keychain from "react-native-keychain";
 
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;

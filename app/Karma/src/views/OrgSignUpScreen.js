@@ -25,7 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import * as Keychain from 'react-native-keychain';
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -116,14 +116,17 @@ export default class OrgSignUpScreen extends React.Component {
             // Retreive the credentials
             const credentials = await Keychain.getGenericPassword();
             if (credentials) {
-              console.log('Credentials successfully loaded for user ' + credentials.username);
-              return credentials
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
             } else {
-              console.log('No credentials stored')
+                console.log("No credentials stored");
             }
-          } catch (error) {
-            console.log('Keychain couldn\'t be accessed!', error);
-          }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
     };
 
     submit = async () => {
@@ -142,7 +145,7 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-        const credentials =  await this.getData();
+        const credentials = await this.getData();
         const authToken = credentials.password;
         const userId = credentials.username;
         const org = this.createOrganisation();
