@@ -9,22 +9,44 @@ const {
     errors, // errors utilized by jose
 } = jose;
 
+const joseOnServer = require("./");
 
-test("jose", async () => {
+test("JWE key derivation and en/decryption work", async () => {
 
-    const encKey = await JWK.generateSync("EC", "P-256", {
-        use: "enc",
-        key_ops: ["deriveKey"],
-    }, true);
+    joseOnServer.initialise();
+
+    const cleartext = "karma";
+
+    const encKey = await JWK.generateSync("EC", "P-256");
 
     console.log(encKey);
     console.log(encKey.type);
-    console.log(encKey.algorithms());
 
-    const cyp = (JWE.encrypt('karma', encKey, { alg: 'ECDH-ES+A128KW', enc: 'A128GCM' }));
-    console.log(cyp);
+    const jwe = joseOnServer.encrypt(cleartext, encKey);
 
-    console.log(JWE.decrypt(cyp, encKey).toString("utf8"));
+    console.log(jwe);
+
+    const decryptionResult = joseOnServer.decrypt(jwe, encKey);
+
+    console.log(decryptionResult);
+
+    expect(decryptionResult).toBe(cleartext);
+
+
+
+    // const encKey = await JWK.generateSync("EC", "P-256", {
+    //     use: "enc",
+    //     key_ops: ["deriveKey"],
+    // }, true);
+
+    // console.log(encKey);
+    // console.log(encKey.type);
+    // console.log(encKey.algorithms());
+
+    // const cyp = (JWE.encrypt('karma', encKey, { alg: 'ECDH-ES+A128KW', enc: 'A128GCM' }));
+    // console.log(cyp);
+
+    // console.log(JWE.decrypt(cyp, encKey).toString("utf8"));
 
     // const aesKey = "2b7e151628aed2a6abf7158809cf4f3c";
 

@@ -34,8 +34,8 @@ const initialise = async () => {
  */
 const getEncPubAsJWK = () => {
     return keystore.get({
-        kty: "EC",
-        crv: "P-256",
+        kty: config.kty,
+        crv: config.crvOrSize,
         use: "enc",
         key_ops: ["deriveKey"],
     });
@@ -48,8 +48,8 @@ const getEncPubAsJWK = () => {
  */
 const getEncPubAsPEM = () => {
     return keystore.get({
-        kty: "EC",
-        crv: "P-256",
+        kty: config.kty,
+        crv: config.crvOrSize,
         use: "enc",
         key_ops: ["deriveKey"],
     }).toPEM();
@@ -62,8 +62,8 @@ const getEncPubAsPEM = () => {
  */
 const getSigPubAsJWK = () => {
     return keystore.get({
-        kty: "EC",
-        crv: "P-256",
+        kty: config.kty,
+        crv: config.crvOrSize,
         use: "sig",
         key_ops: ["sign", "verify"],
     });
@@ -76,8 +76,8 @@ const getSigPubAsJWK = () => {
  */
 const getSigPubAsPEM = () => {
     return keystore.get({
-        kty: "EC",
-        crv: "P-256",
+        kty: config.kty,
+        crv: config.crvOrSize,
         use: "sig",
         key_ops: ["sign", "verify"],
     }).toPEM();
@@ -91,8 +91,8 @@ const encrypt = (cleartext, key) => {
         });
 };
 
-const decrypt = (jwe) => {
-    return JWE.decrypt(jwe, encKey).toString("utf8");
+const decrypt = (jwe, key) => {
+    return JWE.decrypt(jwe, key).toString("utf8");
 };
 
 module.exports = {
