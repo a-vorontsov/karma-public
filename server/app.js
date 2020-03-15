@@ -5,6 +5,12 @@ const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // -- MIDDLEWARE -- //
 app.use(helmet());
 app.use(express.json());
@@ -32,7 +38,7 @@ app.use("/notification", require("./routes/notification"));
 app.use("/information", require("./routes/information"));
 
 app.use("/causes", require("./routes/causes"));
-app.use("/causes/user", require("./routes/causes/user"));
+app.use("/causes/select", require("./routes/causes/select"));
 
 app.use("/event", require("./routes/event"));
 // TODO: discuss structure
@@ -40,6 +46,8 @@ app.use("/event", require("./routes/event"));
 app.use("/profile", require("./routes/profile"));
 app.use("/profile/edit", require("./routes/profile/edit"));
 app.use("/profile/edit/password", require("./routes/profile/edit/password"));
+
+app.use("/admin", require("./routes/admin"));
 
 // import OAuth routes and dependencies if applicable
 if (process.env.ENABLE_OAUTH === "1") {

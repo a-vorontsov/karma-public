@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+  box-sizing: border-box;
+  font-size: 16px;
+  text-align: center;
+}
+
+.App {
+  margin: 0 auto;
+  width: 1400px;
+  max-width: 90%;
+}
+
+header img.logo {
+  height: 44px;
+  position: relative;
+  top: 3px;
+  display: inline;
+}
+
+header h1 {
+  font-size: 52px;
+  padding-left: 10px;
+  display: inline;
+  color: #00c5c4
+}
+
+.highlightContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 3.5em 0 6.5em 0;
+}
+
+.highlightContainer h2 {
+  font-size: 36px;
+  color: #00c5c4;
+}
+
+.highlightContainer .highlightedStat {
+  max-width: 400px;
+}
+
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.documentSelect {
+  width: 250px;
+  margin-bottom: 75px !important;
+}
+
+.documentTextBox div textarea {
+  text-align: left;
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 50px;
+  min-height: 200px;
+}
+

@@ -8,13 +8,13 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import {RegularText} from "../components/text";
-import TextInput from "../components/input/TextInput";
+import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
-import CodeInput from "react-native-code-input";
 import Colours from "../styles/Colours";
+import * as Keychain from "react-native-keychain";
+const request = require("superagent");
 
-var validate = require("validate.js");
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -23,22 +23,81 @@ class WelcomeScreen extends Component {
             isForgotPassPressed: false,
             emailInput: "",
             passInput: "",
-            emailSubmitted: false,
             showEmailError: false,
             showPassError: false,
             showPassField: false,
             showCode: false,
-            isValidPass: false,
             isCodeValid: false,
+            buttonText: "Sign Up/ Log In",
         };
-
-        // methods that use setState()
-        this.popUpEmail = this.popUpEmail.bind(this);
-        this.checkEmail = this.checkEmail.bind(this);
-        this.popUpPassword = this.popUpPassword.bind(this);
+        StatusBar.setBarStyle("dark-content");
+        if (Platform.OS === "android") {
+            StatusBar.setBackgroundColor(Colours.backgroundWhite);
+        }
         this.checkPass = this.checkPass.bind(this);
-        this.popUpCode = this.popUpCode.bind(this);
-        this.checkCode = this.checkCode.bind(this);
+        this.onSubmitEmail = this.onSubmitEmail.bind(this);
+        this.onSignUpPressed = this.onSignUpPressed.bind(this);
+        this.onForgotPassPressed = this.onForgotPassPressed.bind(this);
+        this.confirmForgotPasswordCode = this.confirmForgotPasswordCode.bind(
+            this,
+        );
+        this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
+        this.baseState = this.state;
+    }
+
+    onInputChange = (name, value) => {
+        this.setState({
+            [name]: value,
+            showCode: false,
+            isForgotPassPressed: false,
+            showPassError: false,
+        });
+    };
+
+    onChangeText = event => {
+        const {name, text} = event;
+        this.setState({[name]: text});
+    };
+
+    async onForgotPassPressed() {
+        this.setState({isForgotPassPressed: true});
+        // remove the password field
+        this.setState({showPassField: false});
+        //send 6 digit code to email through forgot password route
+        await request
+            .post("http://localhost:8000/signin/forgot")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                },
+            })
+            .then(res => {
+                //show code
+                this.setState({showCode: true});
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    onSignUpPressed() {
+        if (this.state.emailInput === "") {
+            this.setState({isSignUpPressed: true});
+            return;
+        }
+        if (this.isForgotPassPressed && this.state.showCode) {
+            this.confirmForgotPasswordCode();
+        } else if (this.showCode) {
+            this.confirmVerifyEmailCode();
+        } else if (this.state.showPassField) {
+            this.checkPass();
+        } else if (this.state.emailInput !== "") {
+            this.onSubmitEmail(true);
+        } else {
+            this.setState(this.baseState);
+        }
     }
 
     onChangeText = event => {
@@ -46,64 +105,55 @@ class WelcomeScreen extends Component {
         this.setState({[name]: text});
     };
 
-    // show email text field
-    popUpEmail() {
-        // if(showCode){
-        //     this.setState({showCode:false})}
-        return (
-            <TextInput
-                name="emailInput"
-                placeholder="Please enter your email"
-                autoFocus={true}
-                style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                showError={this.state.showEmailError && !this.isValidEmail()}
-                errorText={"Please enter a valid email."}
-                onChange={this.onChangeText}
-                onSubmitEditing={() => {
-                    this.setState({emailSubmitted: true});
-                }} // calls checkEmail function
-            />
-        );
-    }
-
-    // check if email is of a valid format
-    isValidEmail() {
-        const invalidEmail = validate(
-            {from: this.state.emailInput},
-            emailConstraints,
-        );
-        // invalidEmail == undefined if email is correct
-        return !invalidEmail;
-    }
-
-    // checks if email is in DB
-    checkEmail() {
-        this.setState({emailSubmitted: false});
-        const isValidEmail = this.isValidEmail();
+    async onSubmitEmail(isValid) {
+        const {navigate} = this.props.navigation;
         // email is of a valid format
-        if (isValidEmail) {
-            // returning user
-            if (this.state.emailInput === "P@y.c") {
-                this.setState({
-                    showPassField: true,
-                    showCode: false,
-                    showEmailError: false,
+        if (isValid) {
+            await request
+                .post("http://localhost:8000/signin/email")
+                .send({
+                    authToken: null,
+                    userId: null,
+                    data: {
+                        email: this.state.emailInput,
+                    },
+                })
+                .then(res => {
+                    if (res.body.data.isFullySignedUp) {
+                        //if user isFullySignedUp, returning user
+                        this.setState({
+                            showPassField: true,
+                            showCode: false,
+                            showEmailError: false,
+                            buttonText: "Log In",
+                        });
+                        return;
+                    }
+                    if (res.body.data.isSignedUp) {
+                        //if user is SignedUp
+                        navigate("InitSignup");
+                        return;
+                    }
+                    if (res.body.data.isEmailVerified) {
+                        // if email is verified
+                        navigate("UserSignUp", {
+                            email: this.state.emailInput,
+                        });
+                        return;
+                    }
+                    //if email is not verified, show code field
+                    this.setState({
+                        showPassField: false,
+                        showCode: true,
+                        showEmailError: false,
+                        buttonText: "Sign Up",
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
                 });
-            }
-            // new user
-            else if (this.state.emailInput !== "P@y.c") {
-                //send email code TO DO BACKEND
-                // show code field
-
-                this.setState({
-                    showPassField: false,
-                    showCode: true,
-                    showEmailError: false,
-                });
-            }
-        }
-        // email is of invalid format
-        else if (!isValidEmail) {
+        } else {
+            // email is of invalid format
             this.setState({
                 showPassField: false,
                 showCode: false,
@@ -112,105 +162,92 @@ class WelcomeScreen extends Component {
         }
     }
 
-    // display password field
-    popUpPassword() {
-        // if(showCode){
-        //  this.setState({showCode:false})}
-        return (
-            <>
-                {/* password field */}
-                <TextInput
-                    name="passInput"
-                    placeholder="Please enter your password"
-                    style={[WelcomeScreenStyles.text, Styles.formWidth]}
-                    secureTextEntry={true}
-                    showError={
-                        this.state.showPassError && !this.state.isValidPass
-                    }
-                    errorText={"Please enter the correct password."}
-                    autoFocus={true}
-                    onChange={this.onChangeText}
-                    onSubmitEditing={this.checkPass}
-                />
-
-                {/* forgot password button*/}
-                <TouchableOpacity
-                    style={[
-                        {textAlign: "right", flex: 1, alignSelf: "flex-end"},
-                    ]}
-                    onPress={() => this.setState({isForgotPassPressed: true})}>
-                    <RegularText
-                        style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
-                        Forgot Password?
-                    </RegularText>
-                </TouchableOpacity>
-            </>
-        );
-    }
-
     // verify password is correct
-    checkPass() {
-        // if password correct
-        if (this.state.passInput === "owo") {
-            this.setState({isValidPass: true});
-        } else {
-            // password incorrect
-            // show error message
-            this.setState({isValidPass: false});
-            this.setState({showPassError: true});
-        }
+    async checkPass() {
+        const {navigate} = this.props.navigation;
+        await request
+            .post("http://localhost:8000/signin/password")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    password: this.state.passInput,
+                },
+            })
+            .then(async res => {
+                // if password correct
+                this.setState({isValidPass: true});
+                const authToken = res.body.authToken;
+                const userId = res.body.userId;
+                await Keychain.setGenericPassword(userId.toString(), authToken);
+                navigate("PickCauses");
+                return;
+            })
+            .catch(err => {
+                this.setState({isValidPass: false, showPassError: true});
+                console.log(err);
+            });
     }
 
-    getForgotPassword() {
-        // remove the password field
-        if (this.state.showPassField) {
-            this.setState({showPassField: false});
-        }
-        // toggle show code field flag
-        if (this.state.showCode) {
-            this.setState({showCode: false});
-        } else {
-            // display code field
-            return this.popUpCode();
-        }
+    async confirmForgotPasswordCode(code) {
+        await request
+            .post("http://localhost:8000/signin/forgot/confirm")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    token: code,
+                },
+            })
+            .then(res => {
+                console.log("correct code");
+                this.setState({isCodeValid: true});
+                //TODO navigate to new Password screen
+            })
+            .catch(err => {
+                // code incorrect
+                this.setState({isCodeValid: false});
+                console.log("incorrect code");
+                console.log(err.message);
+            });
     }
 
-    // display code field
-    popUpCode() {
-        return (
-            <CodeInput
-                ref={ref => (this.codeInputRef2 = ref)}
-                keyboardType="numeric"
-                codeLength={6}
-                autoFocus={false}
-                inputPosition="center"
-                size={50}
-                onFulfill={code => this.checkCode(code)}
-                containerStyle={{marginTop: 30}}
-                codeInputStyle={{borderWidth: 1.5}}
-            />
-        );
-    }
-
-    // verify code is correct
-    checkCode(code) {
-        // code correct
-        if (code === "123456") {
-            console.log("yay!!!");
-            this.setState({isCodeValid: true});
-        } else {
-            // code incorrect
-            this.setState({isCodeValid: false});
-            console.log(";////");
-        }
+    async confirmVerifyEmailCode(code) {
+        const {navigate} = this.props.navigation;
+        //check with register route
+        await request
+            .post("http://localhost:8000/verify/email")
+            .send({
+                authToken: null,
+                userId: null,
+                data: {
+                    email: this.state.emailInput,
+                    token: code,
+                },
+            })
+            .then(res => {
+                console.log(res.status);
+                console.log(res.body);
+                if (res.status === 200) {
+                    console.log("correct code");
+                    this.setState({isCodeValid: true});
+                    navigate("UserSignUp", {
+                        email: this.state.emailInput,
+                    });
+                } else {
+                    // code incorrect
+                    this.setState({isCodeValid: false});
+                    console.log("incorrect code");
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
     }
 
     render() {
-        const {navigate} = this.props.navigation;
-        StatusBar.setBarStyle("dark-content");
-        if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor(Colours.backgroundWhite);
-        }
         return (
             <View style={WelcomeScreenStyles.container}>
                 <View style={{flex: 2, justifyContent: "center"}}>
@@ -232,6 +269,7 @@ class WelcomeScreen extends Component {
                         lorem ipsum
                     </RegularText>
                 </View>
+
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -241,13 +279,48 @@ class WelcomeScreen extends Component {
                             alignItems: "flex-start",
                             marginBottom: 40,
                         }}>
-                        {this.state.isSignUpPressed ? this.popUpEmail() : null}
-                        {this.state.emailSubmitted ? this.checkEmail() : null}
-                        {this.state.showPassField ? this.popUpPassword() : null}
-                        {this.state.showCode ? this.popUpCode() : null}
-                        {this.state.isForgotPassPressed
-                            ? this.getForgotPassword()
-                            : null}
+                        {/* Email Field*/}
+                        {this.state.isSignUpPressed && (
+                            <EmailInput
+                                onChange={this.onInputChange}
+                                style={[
+                                    WelcomeScreenStyles.text,
+                                    Styles.formWidth,
+                                ]}
+                                onSubmitEditing={this.onSubmitEmail}
+                                showEmailError={this.state.showEmailError}
+                            />
+                        )}
+
+                        {/* Passowrd Field*/}
+                        {this.state.showPassField && (
+                            <PasswordInput
+                                style={[
+                                    WelcomeScreenStyles.text,
+                                    Styles.formWidth,
+                                ]}
+                                onChange={this.onInputChange}
+                                onSubmitEditing={this.checkPass}
+                                onForgotPassPressed={this.onForgotPassPressed}
+                                showPassError={this.state.showPassError}
+                            />
+                        )}
+
+                        {/* 6-Digit Code Field*/}
+                        {this.state.showCode && (
+                            <SignInCodeInput
+                                onFulfill={
+                                    this.state.isForgotPassPressed
+                                        ? this.confirmForgotPasswordCode
+                                        : this.confirmVerifyEmailCode
+                                }
+                                text={
+                                    this.state.isForgotPassPressed
+                                        ? "Please enter the 6 digit code sent to your recovery email."
+                                        : "Please enter your email verification code below."
+                                }
+                            />
+                        )}
                     </View>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
@@ -258,6 +331,7 @@ class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
+
                 <View
                     style={{
                         flex: 1,
@@ -267,14 +341,10 @@ class WelcomeScreen extends Component {
                     }}>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
-                        onPress={() =>
-                            this.state.emailInput === ""
-                                ? this.setState({isSignUpPressed: true})
-                                : navigate("InitSignup")
-                        }>
+                        onPress={this.onSignUpPressed}>
                         <RegularText
                             style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
-                            Sign Up
+                            {this.state.buttonText}
                         </RegularText>
                     </TouchableOpacity>
                 </View>
@@ -284,12 +354,3 @@ class WelcomeScreen extends Component {
 }
 
 export default WelcomeScreen;
-
-// for email verification
-export const emailConstraints = {
-    from: {
-        // Email is required
-        presence: true,
-        email: true,
-    },
-};

@@ -17,6 +17,8 @@ import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
+import * as Keychain from "react-native-keychain";
+
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
@@ -24,7 +26,7 @@ class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "team-team@gmail.com",
+            email: this.props.navigation.getParam("email"),
             username: "",
             password: "",
             confPassword: "",
@@ -57,18 +59,23 @@ class SignUpScreen extends React.Component {
     signUserUp = async () => {
         const user = this.createUser();
         await request
-            .post("http://localhost:8000/register/user")
+            .post("http://localhost:8000/signup/user")
             .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...user,
+                authToken: null,
+                userId: null,
+                data: {
+                    user: {...user},
+                },
             })
-            .then(res => {
-                console.log(res.body);
+            .then(async res => {
+                const authToken = res.body.authToken;
+                const userId = res.body.userId;
+                await Keychain.setGenericPassword(userId.toString(), authToken);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");
             })
             .catch(err => {
+                console.log(err.message);
                 Alert.alert("Server Error", err.message);
             });
     };

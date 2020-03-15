@@ -1275,12 +1275,10 @@ VALUES
 
 -- Information --
 
-INSERT INTO "information"
-    (TYPE,
-    content)
-VALUES
-    ('terms ', 'luctus ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed id'),
-    (' about ', 'amet lorem semper auctor. Mauris vel turpis. Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urna suscipit nonummy. Fusce');
+INSERT INTO "information" (TYPE,
+                           content)
+VALUES ('terms','luctus ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed id'),
+       ('about','amet lorem semper auctor. Mauris vel turpis. Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urna suscipit nonummy. Fusce');
 
 -- Report_user
 

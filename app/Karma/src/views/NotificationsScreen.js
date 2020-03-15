@@ -112,7 +112,7 @@ class NotificationsScreen extends Component {
             monthNotifications: monthNotifications,
             refreshing: false,
         });
-        console.log("here");
+       
     };
 
     _renderMonthNotifications = () => {

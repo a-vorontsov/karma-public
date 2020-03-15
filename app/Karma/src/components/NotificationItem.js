@@ -23,7 +23,7 @@ export default class NotificationItem extends Component {
     }
 
     async componentDidMount() {
-        this.getSenderName();
+        this.getSenderName(2);
     }
 
     /**
@@ -41,12 +41,10 @@ export default class NotificationItem extends Component {
         );
     };
 
-    getSenderName = async (orgId) => {
+    getSenderName = async (senderId) => {
         try {
 
-            let randomId = Math.floor(Math.random()*99)
-
-           const body = {userId: randomId};
+           const body = {userId: senderId};
            
             const response = await request.get("http://localhost:8000/profile")
             .query(body)

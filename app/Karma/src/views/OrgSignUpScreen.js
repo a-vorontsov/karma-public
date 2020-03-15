@@ -25,6 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
+import * as Keychain from "react-native-keychain";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -72,6 +73,16 @@ export default class OrgSignUpScreen extends React.Component {
         });
     };
 
+    onInputChange = inputState => {
+        this.setState({
+            addressLine1: inputState.address1,
+            addressLine2: inputState.address2,
+            townCity: inputState.city,
+            countryState: inputState.region,
+            postCode: inputState.postcode,
+        });
+    };
+
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -93,7 +104,6 @@ export default class OrgSignUpScreen extends React.Component {
 
     createOrganisation() {
         const organisation = {
-            userId: "1", //TODO
             organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
@@ -101,40 +111,58 @@ export default class OrgSignUpScreen extends React.Component {
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
             pocLastName: this.state.lname,
-            addressLine1: this.state.addressLine1,
-            addressLine2: this.state.addressLine2,
-            townCity: this.state.townCity,
-            countryState: this.state.countryState,
-            postCode: this.state.postCode,
+            address: {
+                addressLine1: this.state.addressLine1,
+                addressLine2: this.state.addressLine2,
+                townCity: this.state.townCity,
+                countryState: this.state.countryState,
+                postCode: this.state.postCode,
+            },
             phoneNumber: "TODO", //TODO
         };
         return organisation;
     }
+
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+
     submit = async () => {
+        console.log(this.state.addressLine1);
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (
-            !this.state.orgName ||
-            !this.state.password ||
-            !this.state.confPassword
-        ) {
+        if (!this.state.orgName) {
             return;
         }
-        if (
-            !this.state.charityNumber &&
-            (!this.state.isExempt && !this.state.isLowIncome)
-        ) {
+        if (!this.state.charityNumber) {
             return;
         }
-
+        console.log("Passed checks");
+        const credentials = await this.getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
         const org = this.createOrganisation();
         console.log(org);
         await request
-            .post("http://localhost:8000/register/organisation")
+            .post("http://localhost:8000/signup/organisation")
             .send({
-                authToken: "ffa234124",
-                userId: "1",
-                ...org,
+                authToken: authToken,
+                userId: userId,
+                data: {organisation: {userId, ...org}},
             })
             .then(res => {
                 console.log(res.body);
@@ -147,8 +175,7 @@ export default class OrgSignUpScreen extends React.Component {
 
     render() {
         const showDateError =
-            this.state.submitPressed &&
-            (!this.state.isExempt && !this.state.isLowIncome);
+            this.state.submitPressed && this.state.regDate === "";
 
         const data = [
             {value: "NGO (Non-Government Organisation"},
@@ -306,7 +333,7 @@ export default class OrgSignUpScreen extends React.Component {
                                     }}>
                                     What is your organisation's address?
                                 </RegularText>
-                                <AddressInput />
+                                <AddressInput onChange={this.onInputChange} />
                             </View>
 
                             {/** EXEMPTION REASONS */}
