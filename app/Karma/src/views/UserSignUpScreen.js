@@ -17,7 +17,7 @@ import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-community/async-storage";
+import * as Keychain from 'react-native-keychain';
 
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -70,12 +70,7 @@ class SignUpScreen extends React.Component {
             .then(async res => {
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
-                try {
-                    await AsyncStorage.setItem("authToken", authToken);
-                    await AsyncStorage.setItem("userId", userId.toString());
-                } catch (e) {
-                    console.log("error while saving to async storage");
-                }
+                await Keychain.setGenericPassword(userId.toString(), authToken);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");
             })

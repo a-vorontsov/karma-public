@@ -21,8 +21,7 @@ import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
-import AsyncStorage from "@react-native-community/async-storage";
-
+import * as Keychain from 'react-native-keychain';
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -110,22 +109,29 @@ class AboutScreen extends React.Component {
     goToPrevious() {
         this.props.navigation.goBack();
     }
-    getData = async key => {
+
+    getData = async () => {
         try {
-            const value = await AsyncStorage.getItem(key);
-            if (value !== null) {
-                return value;
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+              console.log('Credentials successfully loaded for user ' + credentials.username);
+              return credentials
+            } else {
+              console.log('No credentials stored')
             }
-        } catch (e) {
-            console.log("error reading value from async storage" + e);
-        }
+          } catch (error) {
+            console.log('Keychain couldn\'t be accessed!', error);
+          }
     };
 
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
         if (gender && fname !== "" && lname !== "" && dateSelected) {
-            const authToken = await this.getData("authToken");
-            const userId = await this.getData("userId");
+        const credentials =  await this.getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
+        console.log(userId);
             const individual = this.createIndividual();
             await request
                 .post("http://localhost:8000/signup/individual")

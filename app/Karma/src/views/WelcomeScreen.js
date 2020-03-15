@@ -12,7 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
-import AsyncStorage from "@react-native-community/async-storage";
+import * as Keychain from 'react-native-keychain';
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -180,12 +180,7 @@ class WelcomeScreen extends Component {
                 this.setState({isValidPass: true});
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
-                try {
-                    await AsyncStorage.setItem("authToken", authToken);
-                    await AsyncStorage.setItem("userId", userId.toString());
-                } catch (e) {
-                    console.log("error while saving to async storage");
-                }
+                await Keychain.setGenericPassword(userId, authToken);
                 navigate("PickCauses");
                 return;
             })

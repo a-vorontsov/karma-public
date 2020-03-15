@@ -25,7 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import AsyncStorage from "@react-native-community/async-storage";
+import * as Keychain from 'react-native-keychain';
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -111,15 +111,19 @@ export default class OrgSignUpScreen extends React.Component {
         return organisation;
     }
 
-    getData = async key => {
+    getData = async () => {
         try {
-            const value = await AsyncStorage.getItem(key);
-            if (value !== null) {
-                return value;
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+              console.log('Credentials successfully loaded for user ' + credentials.username);
+              return credentials
+            } else {
+              console.log('No credentials stored')
             }
-        } catch (e) {
-            console.log("error reading value from async storage" + e);
-        }
+          } catch (error) {
+            console.log('Keychain couldn\'t be accessed!', error);
+          }
     };
 
     submit = async () => {
@@ -138,8 +142,9 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-        const authToken = await this.getData("authToken");
-        const userId = await this.getData("userId");
+        const credentials =  await this.getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
         const org = this.createOrganisation();
         console.log(org);
         await request
