@@ -12,29 +12,19 @@ const {
 
 test("jose", async () => {
 
-
-    //     await chacha // wait for libsodium to be ready!
-
-    //     const key = jose.JWK.generateSync('EC', 'P-256')
-    //     console.log(key);
-    //     console.log(key.type);
-    //     console.log(key.algorithms())
-    // const cyp = (jose.JWE.encrypt('foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar', key, { alg: 'ECDH-ES+A128KW', enc: 'XC20P' }));
-    // console.log(cyp);
-
-    // console.log(JWE.decrypt(cyp, key, { alg: 'ECDH-ES+A128KW', enc: 'XC20P' }, true));
-
-
-    const encKey = await JWK.generate("EC", "P-256", {
-        use: "enc"
+    const encKey = await JWK.generateSync("EC", "P-256", {
+        use: "enc",
+        key_ops: ["deriveKey"],
     }, true);
 
     console.log(encKey);
     console.log(encKey.type);
-    console.log(encKey.algorithms())
+    console.log(encKey.algorithms());
 
-    const cyp = (jose.JWE.encrypt('foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar', encKey, { alg: 'ECDH-ES+A128KW', enc: 'A128GCM' }));
+    const cyp = (JWE.encrypt('karma', encKey, { alg: 'ECDH-ES+A128KW', enc: 'A128GCM' }));
     console.log(cyp);
+
+    console.log(JWE.decrypt(cyp, encKey).toString("utf8"));
 
     // const aesKey = "2b7e151628aed2a6abf7158809cf4f3c";
 
