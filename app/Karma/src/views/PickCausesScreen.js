@@ -18,7 +18,6 @@ export default class PickCausesScreen extends React.Component {
             selectedCauses: [],
         };
         this.selectCauses = this.selectCauses.bind(this);
-        updateSelectedCauses();
     }
     async componentDidMount() {
         try {
