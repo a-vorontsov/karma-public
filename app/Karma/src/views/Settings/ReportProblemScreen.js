@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {
-    SafeAreaView,
-    View,
-    Image,
     Dimensions,
+    Image,
     Keyboard,
+    SafeAreaView,
     TouchableWithoutFeedback,
+    View,
 } from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
@@ -15,7 +15,7 @@ import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
 import Colours from "../../styles/Colours";
 
-//const request = require("superagent");
+const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 

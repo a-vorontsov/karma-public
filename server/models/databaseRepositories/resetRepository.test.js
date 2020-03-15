@@ -24,6 +24,6 @@ test('insert token and find token work', async () => {
     const expiry = new Date();
     expiry.setTime(expiry.getTime() + (1 * 60 * 60 * 1000));
     const insertTokenResult = await resetRepository.insertResetToken(userId, "333333", expiry);
-    const findTokenResult = await resetRepository.findLatestByUserID(userId);
+    const findTokenResult = await resetRepository.findLatestByUserId(userId);
     expect(insertTokenResult.rows[0]).toMatchObject(findTokenResult.rows[0]);
 });

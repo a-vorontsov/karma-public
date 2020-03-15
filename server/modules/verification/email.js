@@ -2,24 +2,42 @@ const regRepo = require("../../models/databaseRepositories/registrationRepositor
 const util = require("../../util/util");
 
 /**
- * Check if input token is valid compared to
- * one stored in DB. If valid, update registration
- * record's email flag to indicate verified email.
+ * Verify email address with given token.
+ * An descriptive error is returned if the
+ * token is invalid.
  * @param {string} email
  * @param {string} token
- * @return {object} isValidToken, error
+ * @return {object} result in httpUtil's sendResult format
  */
-const isValidToken = async (email, token) => {
+const verifyEmail = async (email, token) => {
     const regResult = await regRepo.findByEmail(email);
     const isValidResult = await util.isValidToken(regResult, token, "verificationToken");
-    if (isValidResult.isValidToken) {
-        const regRecord = regResult.rows[0];
-        regRecord.emailFlag = 1;
-        await regRepo.update(regRecord);
+    if (!isValidResult.isValidToken) {
+        return ({
+            status: 400,
+            message: isValidResult.error,
+        });
+    } else {
+        await updateEmailVerificationFlag(regResult);
+        return ({
+            status: 200,
+            message: "Email successfully verified. Go to registration screen.",
+        });
     }
-    return isValidResult;
+};
+
+/**
+ * Update the email verification flag to true for
+ * given registration record.
+ * @param {object} regResult result of DB query
+ * @throws {error} if query is faulty
+ */
+const updateEmailVerificationFlag = async (regResult) => {
+    const regRecord = regResult.rows[0];
+    regRecord.emailFlag = 1;
+    await regRepo.update(regRecord);
 };
 
 module.exports = {
-    isValidToken: isValidToken,
+    verifyEmail,
 };

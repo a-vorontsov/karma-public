@@ -18,7 +18,7 @@ import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
 import {RegularText, SemiBoldText} from "../components/text";
 import Colours from "../styles/Colours";
-import AddressInput from "../components/AddressInput";
+import AddressInput from "../components/input/AddressInput";
 
 import {GradientButton} from "../components/buttons";
 

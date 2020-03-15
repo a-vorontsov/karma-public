@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View, Image, Text, TouchableOpacity} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
@@ -64,7 +64,7 @@ class ActivityDisplayCard extends React.Component {
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    Name
+                                    {props.activity.name}
                                 </RegularText>
                                 <Image />
                             </View>
@@ -74,7 +74,7 @@ class ActivityDisplayCard extends React.Component {
                                     color: Colours.lightGrey,
                                     fontWeight: "500",
                                 }}>
-                                Location
+                                {props.activity.city}, {props.activity.postcode}
                             </RegularText>
                         </View>
                     </View>
@@ -99,7 +99,10 @@ class ActivityDisplayCard extends React.Component {
                 </View>
                 <View style={CarouselStyles.itemContainer3}>
                     <View style={[CarouselStyles.item3]}>
-                        <ActivityCard favorited={props.favorited} />
+                        <ActivityCard
+                            activity={props.activity}
+                            favorited={props.favorited}
+                        />
                     </View>
                 </View>
             </View>

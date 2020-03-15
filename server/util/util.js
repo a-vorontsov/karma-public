@@ -91,6 +91,11 @@ const checkEventId = async (eventId) => {
 /**
  * Check if input token is valid compared to
  * tokenResult - result of db query.
+ * This requires the token to be of valid format,
+ * matching the user specified by the userId in
+ * the database and to be not expired.
+ * If no token is found for specified user or
+ * user is not found, a custom error is returned.
  * @param {object} tokenResult
  * @param {any} inputToken
  * @param {string} tokenVarName variable name of token
