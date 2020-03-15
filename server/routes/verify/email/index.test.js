@@ -46,7 +46,7 @@ test("email verification works", async () => {
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(200);
 
     const regResult = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord = regResult.rows[0];
@@ -70,7 +70,7 @@ test("invalid token is rejected", async () => {
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(200);
 
     const regResult = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord = regResult.rows[0];
@@ -94,7 +94,7 @@ test("request without email address is rejected", async () => {
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(200);
 
     const regResult = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord = regResult.rows[0];
@@ -120,7 +120,7 @@ test("request without token is rejected", async () => {
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(200);
 
     const regResult = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord = regResult.rows[0];
@@ -147,7 +147,7 @@ test("email verification works", async () => {
     expect(response.body.message).toBe(
         "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
     );
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(200);
 
     const regResult = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord = regResult.rows[0];
@@ -165,7 +165,7 @@ test("email verification works", async () => {
     expect(secondResponse.body.message).toBe(
         "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
     );
-    expect(secondResponse.statusCode).toBe(400);
+    expect(secondResponse.statusCode).toBe(200);
 
     const regResult2 = await regRepo.findByEmail(signInEmailRequest.data.email);
     regRecord2 = regResult2.rows[0];

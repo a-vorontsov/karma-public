@@ -18,6 +18,7 @@ export default class PickCausesScreen extends React.Component {
             selectedCauses: [],
         };
         this.selectCauses = this.selectCauses.bind(this);
+        updateSelectedCauses();
     }
     async componentDidMount() {
         try {
@@ -59,6 +60,7 @@ export default class PickCausesScreen extends React.Component {
                 Alert.alert("Server Error", err.message);
             });
     }
+    //TODO display selected causes already from db
     render() {
         const {causes} = this.state;
         return (
