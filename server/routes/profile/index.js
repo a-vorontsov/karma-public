@@ -42,6 +42,65 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
                     "postCode": "NW 123",
                     [...]
                 }
+                 "upcomingEvents": [
+                    {
+                    "id": 89,
+                    "name": "nonummy",
+                    "addressId": 35,
+                    "womenOnly": true,
+                    "spots": 18,
+                    "addressVisible": true,
+                    "minimumAge": 21,
+                    "photoId": true,
+                    "physical": true,
+                    "addInfo": false,
+                    "content": "id, libero. Donectristique neque vs. Etiam bibendum fermentum metus. Aenean",
+                    "date": "2020-10-20T23:00:00.000Z",
+                    "userId": 80,
+                    "creationDate": "2019-11-06T00:00:00.000Z"
+                    }
+                 ],
+                 "pastEvents": [
+                 {
+                    "id": 7,
+                    "name": "nec tempus mauris erat",
+                    "addressId": 9,
+                    "womenOnly": false,
+                    "spots": 49,
+                    "addressVisible": true,
+                    "minimumAge": 19,
+                    "photoId": true,
+                    "physical": false,
+                    "addInfo": true,
+                    "content": "frat. Cras dipis nec mauris blandit mattis. Cras eget nisi dictum augue",
+                    "date": "2019-07-15T23:00:00.000Z",
+                    "userId": 45,
+                    "creationDate": "2019-07-06T23:00:00.000Z"
+                            }
+                 {
+                    "id": 45,
+                    "name": "turpis nec mauris blandit mattis.",
+                    "addressId": 68,
+                    "womenOnly": true,
+                    "spots": 44,
+                    "addressVisible": false,
+                    "minimumAge": 20,
+                    "photoId": true,
+                    "physical": true,
+                    "addInfo": false,
+                    "content": "am vitae Sed nec metus facilisis lorem",
+                    "date": "2019-08-19T23:00:00.000Z",
+                    "userId": 53,
+                    "creationDate": "2020-07-26T23:00:00.000Z"
+                            }
+                 ],
+                 "causes": {
+                            "userId": 57,
+                            "causeId": 12
+                        },
+                 "createdEvents": [],
+                 "createdPastEvents": []
+                 }
             &#125;
         &#125;
     &#125;

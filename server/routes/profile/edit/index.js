@@ -12,7 +12,7 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
 const profileRepo = require("../../../models/databaseRepositories/profileRepository");
 
 /**
- * Endpoint called whenever a user wishes to update their profile.<br/>
+ * Endpoint called whenever a user wishes to update their profile <br/>
  * Any data that does not need to be updated can and should be
  * left out from the POST request to avoid unnecessary computation.<br/>
  * URL example: POST http://localhost:8000/profile/edit/
@@ -23,7 +23,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  * @param {object} req.body.data.organisation if anything for org prof has changed
  * @param {object} req.body Here are some examples of an appropriate request json:
 <pre><code>
-    // example 1 (user wishes to change username, phoneNumber, bio)
+    // example 1 (user wishes to change username, phoneNumber, and set/update their bio & filter to women only events)
     &#123;
         "userId": 123,
         "authToken": "secureToken",
@@ -58,6 +58,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
 </code></pre>
  * @returns {object}
  *  status: 200, description: Success, go to view profile endpoint to GET updated record.<br/>
+ *  status: 400, description: Only women can filter by women only event. <br/>
  *  status: 500, description: error <br/><br/><br/><br/>
  *  @name Edit profile
  *  @function
@@ -97,7 +98,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
                 profile.bio = req.body.data.individual.bio;
             }
             if (req.body.data.individual.womenOnly !== undefined) {
-                profile.womenOnly = req.body.data.individual.womenOnly;
+                if (individual.gender !== "f") {
+                    return res.status(400).send({message: "Only women can filter by women only events."});
+                } else {
+                    profile.womenOnly = req.body.data.individual.womenOnly;
+                }
             }
 
             if (individual !== indivCopy) {

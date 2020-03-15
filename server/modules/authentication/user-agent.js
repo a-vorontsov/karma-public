@@ -159,7 +159,7 @@ async function registerAddress(address) {
 /**
  * Create empty profile with individualId and return profile.
  * @param {Number} individualId
- * @return {object} profile with id
+ * @return {object} profile
  */
 async function createEmptyProfile(individualId) {
     const insertProfile = {

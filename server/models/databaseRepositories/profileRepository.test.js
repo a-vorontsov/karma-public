@@ -47,9 +47,10 @@ test('update profile and findById profile work', async () => {
     const insertProfileResult = await profileRepository.insert(profile);
     const findProfileResult = await profileRepository.findById(insertProfileResult.rows[0].id);
     expect(insertProfileResult.rows[0]).toMatchObject(findProfileResult.rows[0]);
+    profile.id = findProfileResult.rows[0].id;
     profile.bio = "new bio and stuff";
     const updateResult = await profileRepository.update(profile);
-    const findProfileResultAfterUpdate = await profileRepository.findById(updateResult.rows[0].id);
+    const findProfileResultAfterUpdate = await profileRepository.findById(insertProfileResult.rows[0].id);
     expect(updateResult.rows[0]).toMatchObject(findProfileResultAfterUpdate.rows[0]);
     expect(findProfileResultAfterUpdate.rows[0]).not.toMatchObject(findProfileResult.rows[0]);
 });

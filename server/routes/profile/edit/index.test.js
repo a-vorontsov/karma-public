@@ -37,6 +37,7 @@ const profileChangeRequest = {
         individual: {
             phoneNumber: "newPhoneNumber",
             bio: "Test",
+            womenOnly: true,
         }
     },
 };
@@ -50,6 +51,7 @@ test("editing individual profile works", async () => {
 
     individual.userId = userId;
     individual.addressId = addressId;
+    individual.gender = "f";
     const indivResult = await indivRepo.insert(individual);
 
     profile.individualId = indivResult.rows[0].id;
@@ -75,6 +77,7 @@ test("editing individual profile works", async () => {
     expect(updatedUser.username).toBe(profileChangeRequest.data.user.username);
     expect(updatedIndiv.phone).toBe(profileChangeRequest.data.individual.phoneNumber);
     expect(updatedProfile.bio).toBe(profileChangeRequest.data.individual.bio);
+    expect(updatedProfile.womenOnly).toBe(profileChangeRequest.data.individual.womenOnly);
     expect(updatedIndiv.firstname).toBe(individual.firstname);
 });
 
