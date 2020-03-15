@@ -42,11 +42,12 @@ export default class PickCausesScreen extends React.Component {
     };
 
     async selectCauses() {
+        const authToken = await this.getData("authToken");
         const userId = await this.getData("userId");
         await request
             .post("http://localhost:8000/causes/select")
             .send({
-                authToken: this.getData("authToken"),
+                authToken: authToken,
                 userId: userId,
                 data: {causes: this.state.selectedCauses},
             })

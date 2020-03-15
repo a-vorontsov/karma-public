@@ -124,12 +124,13 @@ class AboutScreen extends React.Component {
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
         if (gender && fname !== "" && lname !== "" && dateSelected) {
+            const authToken = await this.getData("authToken");
             const userId = await this.getData("userId");
             const individual = this.createIndividual();
             await request
                 .post("http://localhost:8000/signup/individual")
                 .send({
-                    authToken: this.getData("authToken"),
+                    authToken: authToken,
                     userId: userId,
                     data: {individual: {...individual}},
                 })
