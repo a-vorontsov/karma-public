@@ -112,7 +112,6 @@ class NotificationsScreen extends Component {
             monthNotifications: monthNotifications,
             refreshing: false,
         });
-       
     };
 
     _renderMonthNotifications = () => {

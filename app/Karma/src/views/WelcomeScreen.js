@@ -322,14 +322,6 @@ class WelcomeScreen extends Component {
                             />
                         )}
                     </View>
-                    <TouchableOpacity
-                        style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
-                        onPress={() => navigate("Profile")}>
-                        <RegularText
-                            style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
-                            NEXT
-                        </RegularText>
-                    </TouchableOpacity>
                 </KeyboardAvoidingView>
 
                 <View

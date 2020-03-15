@@ -41,26 +41,27 @@ export default class NotificationItem extends Component {
         );
     };
 
-    getSenderName = async (senderId) => {
+    getSenderName = async senderId => {
         try {
+            const body = {userId: senderId};
 
-           const body = {userId: senderId};
-           
-            const response = await request.get("http://localhost:8000/profile")
-            .query(body)
-            .then(res => {return res.body.data});
-            
+            const response = await request
+                .get("http://localhost:8000/profile")
+                .query(body)
+                .then(res => {
+                    return res.body.data;
+                });
+
             let senderName = response.individual.name;
-            
-            if(!senderName) {
+
+            if (!senderName) {
                 senderName = response.individual.firstName;
             }
-            
+
             this.setState({
                 senderName: senderName,
-            })
-        }
-        catch(error){
+            });
+        } catch (error) {
             console.log(error);
         }
 
