@@ -77,7 +77,7 @@ async function registerIndividual(userId, individual) {
 
     const addressId = await registerAddress(individual.address);
 
-    const individualResult  = await individualRepo.insert({
+    const individualResult = await individualRepo.insert({
         firstname: individual.firstName,
         lastname: individual.lastName,
         phone: individual.phoneNumber,

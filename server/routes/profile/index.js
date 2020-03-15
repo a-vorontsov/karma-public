@@ -9,6 +9,10 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
 const indivRepo = require("../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const profileRepo = require("../../models/databaseRepositories/profileRepository");
+const selectedCauseRepo = require("../../models/databaseRepositories/selectedCauseRepository");
+const signUpRepo = require("../../models/databaseRepositories/signupRepository");
+const eventRepo = require("../../models/databaseRepositories/eventRepository");
 
 /**
  * Endpoint called whenever a user wishes to get their profile.<br/>
@@ -50,19 +54,38 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
-        const userResult = await userRepo.findById(req.query.userId);
+        const now = new Date();
+        const userResult = await userRepo.findById(req.body.userId);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,
             email: user.email,
         };
-        const indivResult = await indivRepo.findByUserID(req.query.userId);
+
+        const createdEventsResult = await eventRepo.findAllByUserId(req.body.userId);
+        const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
+        const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
+        const causeResult = await selectedCauseRepo.findByUserId(req.body.userId);
+        const causes = causeResult.rows[0];
+        const indivResult = await indivRepo.findByUserID(req.body.userId);
         // send appropriate profile
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
 
             const addressResult = await addressRepo.findById(individual.addressId);
             const address = addressResult.rows[0];
+
+            const profileResult = await profileRepo.findByIndividualId(individual.id);
+            const profile = profileResult.rows[0];
+            const signUpResult = await signUpRepo.findAllByIndividualId(individual.id);
+            const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
+                .map(eventId => eventRepo.findById(eventId))))
+                .map(eventResult => eventResult.rows[0])
+                .filter(event => event.date < now);
+            const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
+                .map(eventId => eventRepo.findById(eventId))))
+                .map(eventResult => eventResult.rows[0])
+                .filter(event => event.date > now);
 
             const indivToSend = {
                 registrationDate: user.dateRegistered,
@@ -72,12 +95,16 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 gender: individual.gender,
                 phoneNumber: individual.phone,
                 banned: individual.banned,
+                bio: profile.bio,
+                karmaPoints: profile.karmaPoints,
                 address: {
                     addressLine1: address.address1,
                     addressLine2: address.address2,
                     townCity: address.city,
                     countryState: address.region,
                     postCode: address.postcode,
+                    lat: address.lat,
+                    long: address.long,
                 },
             };
             res.status(200).send({
@@ -85,10 +112,15 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 data: {
                     user: userToSend,
                     individual: indivToSend,
+                    upcomingEvents,
+                    pastEvents,
+                    causes,
+                    createdEvents,
+                    createdPastEvents,
                 },
             });
         } else {
-            const orgResult = await orgRepo.findByUserID(req.query.userId);
+            const orgResult = await orgRepo.findByUserID(req.body.userId);
             const organisation = orgResult.rows[0];
 
             const addressResult = await addressRepo.findById(organisation.addressId);
@@ -118,6 +150,9 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 data: {
                     user: userToSend,
                     individual: orgToSend,
+                    causes: causes,
+                    createdEvents,
+                    createdPastEvents,
                 },
             });
         }

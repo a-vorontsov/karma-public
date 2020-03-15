@@ -5,10 +5,12 @@ const regRepo = require("../../models/databaseRepositories/registrationRepositor
 const indivRepo = require("../../models/databaseRepositories/individualRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const request = require("supertest");
 const app = require("../../app");
 
 const user = testHelpers.getUserExample4();
+const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
 beforeEach(() => {
@@ -259,7 +261,8 @@ test("valid and expired token working", async () => {
     insertIndiv.userId = userId;
     insertIndiv.addressId = addressId;
     const insertIndividualResult = await indivRepo.insert(insertIndiv);
-
+    profile.individualId = insertIndividualResult.rows[0].id;
+    await profileRepo.insert(profile);
     logInReq.data.email = user.email;
     const logInResponse = await request(app)
         .post("/signin/password")

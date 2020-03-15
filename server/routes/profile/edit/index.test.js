@@ -7,12 +7,14 @@ const orgRepo = require("../../../models/databaseRepositories/organisationReposi
 const indivRepo = require("../../../models/databaseRepositories/individualRepository");
 const addressRepo = require("../../../models/databaseRepositories/addressRepository");
 const userAgent = require("../../../modules/authentication/user-agent");
+const profileRepo = require("../../../models/databaseRepositories/profileRepository");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();
 const individual = testHelpers.getIndividual();
 const organisation = testHelpers.getOrganisation();
 const address = testHelpers.getAddress2();
+const profile = testHelpers.getProfile();
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
@@ -34,6 +36,7 @@ const profileChangeRequest = {
         },
         individual: {
             phoneNumber: "newPhoneNumber",
+            bio: "Test",
         }
     },
 };
@@ -49,6 +52,8 @@ test("editing individual profile works", async () => {
     individual.addressId = addressId;
     const indivResult = await indivRepo.insert(individual);
 
+    profile.individualId = indivResult.rows[0].id;
+    await profileRepo.insert(profile);
     profileChangeRequest.userId = userId;
 
     const response = await request(app)
@@ -64,9 +69,12 @@ test("editing individual profile works", async () => {
     const updatedIndivRes = await indivRepo.findByUserID(userId);
     const updatedUser = updatedUserRes.rows[0];
     const updatedIndiv = updatedIndivRes.rows[0];
+    const updatedProfileRes = await profileRepo.findByIndividualId(updatedIndiv.id);
+    const updatedProfile = await updatedProfileRes.rows[0];
 
     expect(updatedUser.username).toBe(profileChangeRequest.data.user.username);
     expect(updatedIndiv.phone).toBe(profileChangeRequest.data.individual.phoneNumber);
+    expect(updatedProfile.bio).toBe(profileChangeRequest.data.individual.bio);
     expect(updatedIndiv.firstname).toBe(individual.firstname);
 });
 
