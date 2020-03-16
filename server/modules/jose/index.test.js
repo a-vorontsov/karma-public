@@ -8,9 +8,22 @@ const {
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = jose;
+const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const userRepo = require("../../models/databaseRepositories/userRepository");
+const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const testHelpers = require("../../test/testHelpers");
 
 const joseOnServer = require("./");
 
+
+beforeEach(() => {
+    return testHelpers.clearDatabase();
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
+    return testHelpers.clearDatabase();
+});
 
 test("JWT signing with default and custom exp work", async () => {
 
@@ -103,27 +116,6 @@ test("JWT (combined) server-side verification and userId deriving work", async (
     expect(userId).toStrictEqual(Number.parseInt(payload.sub));
     expect(userId2).toStrictEqual(Number.parseInt(payload.sub));
     expect(userId2).toStrictEqual(userId);
-});
-
-test("JWT blacklisting works", async () => {
-
-    const payload = {
-        sub: "1",
-        aud: "/user"
-    };
-
-    const jwt = joseOnServer.sign(payload);
-
-    joseOnServer.blacklistJWT(jwt);
-
-    // const serverVerificationResult = joseOnServer.verify(jwt);
-    // const userId = joseOnServer.getUserIdFromPayload(serverVerificationResult);
-
-    // const userId2 = joseOnServer.verifyAndGetUserId(jwt);
-
-    // expect(userId).toStrictEqual(Number.parseInt(payload.sub));
-    // expect(userId2).toStrictEqual(Number.parseInt(payload.sub));
-    // expect(userId2).toStrictEqual(userId);
 });
 
 test("JWT that's expired is rejected as expected", async () => {
@@ -486,6 +478,66 @@ test("JWT with forged signature is rejected as expected", async () => {
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT blacklisting works", async () => {
+
+    await regRepo.insert(testHelpers.getRegistrationExample5());
+    const userRes = await userRepo.insert(testHelpers.getUserExample4());
+    const userId = userRes.rows[0].id;
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    payload.sub = userId.toString();
+
+    const jwt = joseOnServer.sign(payload);
+    const jwtSig = joseOnServer.getSignatureFromJWT(jwt);
+
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(false);
+
+    joseOnServer.blacklistJWT(jwt);
+
+    const authResult = await authRepo.findLatestByUserID(userId);
+    const authRecord = authResult.rows[0];
+
+    expect(authRecord.token).toStrictEqual(jwtSig);
+
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(true);
+});
+
+test("JWT blacklist fetching works", async () => {
+
+    await regRepo.insert(testHelpers.getRegistrationExample5());
+    const userRes = await userRepo.insert(testHelpers.getUserExample4());
+    const userId = userRes.rows[0].id;
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    payload.sub = userId.toString();
+
+    const jwt = joseOnServer.sign(payload);
+    const jwtSig = joseOnServer.getSignatureFromJWT(jwt);
+
+    await joseOnServer.fetchBlacklist();
+
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(false);
+
+    await authRepo.insert({
+        token: jwtSig,
+        expiryDate: "2021-06-22T18:10:25.000Z", // TODO:
+        creationDate: "2021-06-22T18:10:25.000Z", // TODO:
+        userId: userId,
+    });
+
+    await joseOnServer.fetchBlacklist();
+
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(true);
 });
 
 test("JWE key generation with public server config works", async () => {

@@ -150,13 +150,13 @@ const sign = (payload, exp) => {
  * reset token. In this case the aud="/reset".
  * If the audience param is left out, the default
  * configuration will be used.
- * @param {object} token JWT token
+ * @param {object} jwt JWT token
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
  * @throws {jose.errors} for failed verification
  */
-const verify = (token, aud) => {
-    return JWT.verify(token, sigKey, {
+const verify = (jwt, aud) => {
+    return JWT.verify(jwt, sigKey, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
         issuer: config.iss,
@@ -169,11 +169,11 @@ const verify = (token, aud) => {
  * the client provided public key.
  * This returns the encrypted JWE object as a string.
  * @param {JSON} payload
- * @param {string} [exp=default] default expiry will be used if omitted
  * @param {object} pub client's pub used for encryption
+ * @param {string} [exp=default] default expiry will be used if omitted
  * @return {string} JWE object as string
  */
-const signAndEncrypt = (payload, exp, pub) => {
+const signAndEncrypt = (payload, pub, exp) => {
     const jwt = sign(payload, exp);
     return encrypt(jwt, pub);
 };
@@ -199,6 +199,27 @@ const decryptAndVerify = (jwe, aud) => {
  */
 const getUserIdFromPayload = (payload) => {
     return Number.parseInt(payload.sub);
+};
+
+/**
+ * Verify provided JWT with given params and
+ * the server's signing key, then return the
+ * userId from the decoded payload.
+ * The audience may also be optionally provided,
+ * for instance when validating access to routes
+ * with custom permissions. An example is when
+ * an unauthenticated user wishes to reset their
+ * password and have been granted access via a
+ * reset token. In this case the aud="/reset".
+ * If the audience param is left out, the default
+ * configuration will be used.
+ * @param {object} jwt JWT token
+ * @param {string} [aud=default] default config will be used if omitted
+ * @return {Number} userId
+ * @throws {jose.errors} for failed verification
+ */
+const verifyAndGetUserId = (jwt, aud) => {
+    return getUserIdFromPayload(verify(jwt, aud));
 };
 
 /**
@@ -243,8 +264,8 @@ const blacklistJWT = async (jwt) => {
     const sig = getSignatureFromJWT(jwt);
     await authRepo.insert({
         token: sig,
-        expiryDate: Date(Now()), // TODO:
-        creationDate: Date(Now()), // TODO:
+        expiryDate: "2021-06-22T18:10:25.000Z", // TODO:
+        creationDate: "2021-06-22T18:10:25.000Z", // TODO:
         userId: userId,
     });
     addSigToBlacklistCache(sig);
@@ -262,9 +283,19 @@ const fetchBlacklist = async () => {
     const dbResCount = dbResult.rows.length;
     if (dbResCount > 0) {
         for (let i = 0; i < dbResCount; i++) {
-            addSigToBlacklistCache(dbResCount.rows[i].token);
+            addSigToBlacklistCache(dbResult.rows[i].token);
         }
     };
+};
+
+/**
+ * Return true if given signature is in the
+ * blacklist cache.
+ * @param {string} sig
+ * @return {Boolean} true if blacklisted
+ */
+const isBlacklisted = (sig) => {
+    return blacklist.has(sig);
 };
 
 /**
@@ -311,10 +342,12 @@ module.exports = {
     decrypt,
     sign,
     verify,
+    verifyAndGetUserId,
     signAndEncrypt,
     decryptAndVerify,
     getUserIdFromPayload,
     getSignatureFromJWT,
     blacklistJWT,
+    isBlacklisted,
     fetchBlacklist,
 };
