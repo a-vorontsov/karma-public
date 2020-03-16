@@ -37,10 +37,10 @@ const findUsersSignedUp = (eventId) => {
 };
 
 module.exports = {
-    insert: insert,
-    findAllByIndividualId: findAllByIndividualId,
-    findAllByEventId: findAllByEventId,
-    find: find,
-    update: update,
-    findUsersSignedUp: findUsersSignedUp,
+    insert,
+    findAllByIndividualId,
+    findAllByEventId,
+    find,
+    update,
+    findUsersSignedUp,
 };

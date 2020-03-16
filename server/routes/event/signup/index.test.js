@@ -1,13 +1,12 @@
 const request = require('supertest');
 const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
-const util = require("../../../util/util");
-const signupRepository = require("../../../models/databaseRepositories/signupRepository");
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
+const validation = require("../../../modules/validation");
+const eventSignupService = require("../../../modules/event/signup/eventSignupService");
 
-jest.mock("../../../models/databaseRepositories/eventRepository");
-jest.mock("../../../models/databaseRepositories/signupRepository");
-jest.mock("../../../util/util");
+jest.mock("../../../modules/event/signup/eventSignupService");
+jest.mock("../../../modules/validation");
+validation.validateSignup.mockReturnValue({errors: ""});
 
 let signUp, event, signedUpUserExample1, signedUpUserExample2;
 beforeEach(() => {
@@ -26,89 +25,63 @@ afterEach(() => {
 });
 
 test('creating signup works', async () => {
-    signupRepository.insert.mockResolvedValue({
-        rows: [{
-            signUp,
-            id: 1,
-        }],
+    eventSignupService.createSignup.mockResolvedValue({
+        status: 200,
+        message: "Signup created successfully",
+        data: {signup: {signUp}},
     });
+
     const response = await request(app).post("/event/3/signUp").send(signUp);
 
-    expect(signupRepository.insert).toHaveBeenCalledTimes(1);
+    expect(validation.validateSignup).toHaveBeenCalledTimes(1);
+    expect(eventSignupService.createSignup).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject({
+        signUp
+    });
 });
 
 test('updating works', async () => {
-    signupRepository.update.mockResolvedValue({
-        rows: [{
-            signUp,
-            id: 1,
-        }],
+    eventSignupService.updateSignUp.mockResolvedValue({
+        status: 200,
+        message: "Signup updated successfully",
+        data: {signup: {signUp}},
     });
+
     const response = await request(app).post("/event/3/signUp/update").send(signUp);
 
-    expect(signupRepository.update).toHaveBeenCalledTimes(1);
+    expect(validation.validateSignup).toHaveBeenCalledTimes(1);
+    expect(eventSignupService.updateSignUp).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject({
+        signUp
+    });
 });
 
-test('requesting event history works', async () => {
-    signupRepository.findAllByIndividualId.mockResolvedValue({
-        rows: [{}, {}, {}], // 3 events
-    });
-    const response = await request(app).get("/event/signUp/history").send({
-        individualId: 5
-    });
-
-    expect(signupRepository.findAllByIndividualId).toHaveBeenCalledTimes(1);
-    expect(eventRepository.findById).toHaveBeenCalledTimes(3);
-    expect(response.statusCode).toBe(200);
-});
-
-test('requesting users signed up to an event works', async () => {
-    util.checkEventId.mockResolvedValue({
-        status: 200
-    });
-    signupRepository.findUsersSignedUp.mockResolvedValue({
-        rows: [{
-            signedUpUser1: signedUpUserExample1,
-            signedUpUser2: signedUpUserExample2
-        }], // 2 users
-    });
-    const response = await request(app).get("/event/1/signUp");
-
-    expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(1);
-    expect(util.checkEventId).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.data.users).toMatchObject([{
-        signedUpUser1: signedUpUserExample1,
-        signedUpUser2: signedUpUserExample2
-    }]);
-});
-
-test('requesting users signed up to an event that doesnt exist returns event does not exist response', async () => {
-    util.checkEventId.mockResolvedValue({
-        status: 404,
-        message: "No event with specified id",
+test('requesting event signups works', async () => {
+    eventSignupService.getAllSignupsForEvent.mockResolvedValue({
+        status: 200,
+        message: "Signup updated successfully",
+        data: {users: [{}, {}, {}]}, // 3 users have signed up
     });
 
     const response = await request(app).get("/event/1/signUp");
 
-    expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
-    expect(util.checkEventId).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(404);
-    expect(response.body.message).toBe("No event with specified id");
+    expect(eventSignupService.getAllSignupsForEvent).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.users).toMatchObject([{}, {}, {}]);
 });
 
-test('requesting users signed up to an event with wrong id format returns id format is wrong response', async () => {
-    util.checkEventId.mockResolvedValue({
-        status: 400,
-        message: "ID specified is in wrong format",
+test('requesting signup history for user works', async () => {
+    eventSignupService.getSignupHistory.mockResolvedValue({
+        status: 200,
+        message: "History fetched successfully",
+        data: {events: [{} , {}]}, // 2 events
     });
 
-    const response = await request(app).get("/event/hhh/signUp");
+    const response = await request(app).get("/event/signUp/history").send({individualId: 5});
 
-    expect(signupRepository.findUsersSignedUp).toHaveBeenCalledTimes(0);
-    expect(util.checkEventId).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe("ID specified is in wrong format");
+    expect(eventSignupService.getSignupHistory).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.events).toMatchObject([{}, {}]);
 });

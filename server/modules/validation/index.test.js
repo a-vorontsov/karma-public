@@ -5,6 +5,7 @@ const event = testHelpers.getEvent();
 const address = testHelpers.getAddress();
 const notification = testHelpers.getNotification();
 const information = testHelpers.getInformation();
+const favourite = testHelpers.getFavourite();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};
@@ -62,4 +63,17 @@ test("incorrect information rejected", () => {
     expect(validation.validateInformation(incorrectInformation).errors.length).toBe(1);
     delete incorrectInformation.content;
     expect(validation.validateInformation(incorrectInformation).errors.length).toBe(2);
+});
+
+test("correct favourites accepted", () => {
+    const correctFavourite = {...favourite};
+    expect(validation.validateFavourite(correctFavourite).errors.length).toBe(0);
+});
+
+test("incorrect addresses rejected", () => {
+    const inCorrectFavourite = {...favourite};
+    inCorrectFavourite.eventId = "Fifteen";
+    expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(1);
+    inCorrectFavourite.individualId = null;
+    expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(2);
 });
