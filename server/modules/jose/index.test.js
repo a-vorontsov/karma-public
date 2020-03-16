@@ -187,6 +187,122 @@ test("JWT with invalid key-id is rejected as expected", async () => {
     }).toThrow(errors.JWSVerificationFailed);
 });
 
+test("JWT with invalid algorithm is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtHeader.alg = "ES384";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWKKeySupport("the key does not support " + jwtHeader.alg + " verify algorithm"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWKKeySupport);
+});
+
+test("JWT with modified expiry is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.exp = 1589909685;
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified issue date is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.iat = 1584316685;
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified issuer is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.iss = "https://karmaaaaaapp.com";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
     // const encKey = await JWK.generateSync("EC", "P-256", {
     //     use: "enc",
     //     key_ops: ["deriveKey"],
