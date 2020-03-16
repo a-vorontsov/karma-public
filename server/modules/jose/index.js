@@ -106,6 +106,17 @@ const decrypt = (jwe, key) => {
 };
 
 /**
+ * Decrypt given JWK object with owned
+ * private key and return cleartext as a
+ * utf8 string.
+ * @param {string} jwe JWE object as string
+ * @return {string} cleartext (utf8)
+ */
+const decryptWithOwnKey = (jwe) => {
+    return decrypt(jwe, encKey);
+};
+
+/**
  * Sign provided payload and return the
  * signed JWT.
  * @param {JSON} payload
@@ -144,10 +155,36 @@ const sign = (payload, exp) => {
  * @throws {jose.errors} for failed verification
  */
 const verify = (token, sub, aud) => {
+    return verifyWithPub(token, JWK.asKey(getSigPubAsJWK()), sub, aud);
+};
+
+/**
+ * Verify provided JWT with given params.
+ * The pubic key of signee and the subject of the token
+ * must be provided for a successful verification,
+ * of which the latter should be the userId in
+ * string format.
+ * The audience may also be optionally provided,
+ * for instance when validating access to routes
+ * with custom permissions. An example is when
+ * an unauthenticated user wishes to reset their
+ * password and have been granted access via a
+ * reset token. In this case the aud="/reset".
+ * If the audience param is left out, the default
+ * configuration will be used.
+ * @param {object} token JWT token
+ * @param {object} pub JWK public key of signee
+ * @param {string} sub userId - must be provided
+ * @param {string} [aud=default] default config will be used if omitted
+ * @return {string} payload
+ * @throws {JWTClaimInvalid} if sub undefined
+ * @throws {jose.errors} for failed verification
+ */
+const verifyWithPub = (token, pub, sub, aud) => {
     if (sub === undefined) {
         throw new errors.JWTClaimInvalid("No subject specified in claim", token, "JWT sub must be specified.");
     }
-    return JWT.verify(token, sigKey, {
+    return JWT.verify(token, pub, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
         issuer: config.iss,

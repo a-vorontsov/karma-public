@@ -460,9 +460,6 @@ test("JWE key and token exchange work", async () => {
     const jwe = joseOnServer.signAndEncrypt(payload, clientPub);
     const jwe2 = joseOnServer.encrypt(jwt, clientPub);
 
-    console.log(jwe);
-    console.log(jwe2);
-
     expect(jwe).not.toStrictEqual(jwe2);
 
     const decryptionResult1 = joseOnServer.decrypt(jwe, clientPub);
