@@ -75,9 +75,9 @@ test("expired JWT is rejected as expected", async () => {
         aud: "/user"
     };
 
-    const jwt = joseOnServer.sign(payload, "1 s");
+    const jwt = joseOnServer.sign(payload, "0s");
 
-    await util.sleep(1200);
+    await util.sleep(10);
 
     expect(() => {
         joseOnServer.verify(jwt, "1");
@@ -296,6 +296,122 @@ test("JWT with modified issuer is rejected as expected", async () => {
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified audience is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.aud = "/admin";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified audience and forged claim is also rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.aud = "/admin";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1", "/admin");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified subject is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.sub = "2";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with modified subject and forged claim is also rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    jwtPayload.sub = "2";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + jwtSignature;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "2");
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
