@@ -1,12 +1,10 @@
 const jose = require('jose');
-const fs = require("fs");
 const Base64 = require('js-base64').Base64;
 const util = require("../../util/util");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
     JWKS, // JSON Web Key Set (JWKS)
-    JWS, // JSON Web Signature (JWS)
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = jose;
@@ -456,8 +454,6 @@ test("JWE key and token exchange work", async () => {
     };
 
     const payloadStr = JSON.stringify(payload);
-    // console.log(payloadStr);
-    // console.log(Base64.encodeURI(payloadStr));
 
     const jwt = joseOnServer.sign(payload);
 
@@ -466,40 +462,7 @@ test("JWE key and token exchange work", async () => {
     const jwe = joseOnServer.encrypt(payloadStr, clientPub);
     const jwe2 = joseOnServer.encrypt(jwt, clientPub);
 
-    // console.log(jwe);
-    // console.log(jwe2);
-
     const decryptionResult = joseOnServer.decrypt(jwe, clientPub);
     const decryptionResult2 = joseOnServer.decrypt(jwe2, clientPub);
 
-    // console.log(decryptionResult);
-    // console.log(decryptionResult2);
-
-    console.log(joseOnServer.verify(decryptionResult2,"1"));
-
 });
-
-
-// test("JWT signing with default and custom exp work", async () => {
-
-//     const payload = {
-//         sub: "1",
-//         aud: "/user"
-//     };
-
-//     const jwt = joseOnServer.sign(payload);
-//     const jwtSplit = jwt.split(".");
-//     const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
-//     const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
-
-//     const jwtWithCustomExp = joseOnServer.sign(payload, "15 m");
-//     const jwtWithCustomExpSplit = jwtWithCustomExp.split(".");
-//     const jwtWithCustomExpHeader = JSON.parse(Base64.decode(jwtWithCustomExpSplit[0]));
-//     const jwtWithCustomExpPayload = JSON.parse(Base64.decode(jwtWithCustomExpSplit[1]));
-
-//     expect(jwtHeader).toStrictEqual(jwtWithCustomExpHeader);
-//     expect(jwtPayload.sub).toStrictEqual(jwtWithCustomExpPayload.sub);
-//     expect(jwtPayload.aud).toStrictEqual(jwtWithCustomExpPayload.aud);
-//     expect(jwtPayload.iss).toStrictEqual(jwtWithCustomExpPayload.iss);
-//     expect(jwtPayload.exp).not.toStrictEqual(jwtWithCustomExpPayload.exp);
-// });

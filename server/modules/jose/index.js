@@ -1,11 +1,9 @@
 const jose = require('jose');
-const fs = require("fs");
 const config = require("../../config").jose;
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
     JWKS, // JSON Web Key Set (JWKS)
-    JWS, // JSON Web Signature (JWS)
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = jose;
