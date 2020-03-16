@@ -20,7 +20,7 @@ const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
     key_ops: ["sign", "verify"],
 });
 
-const keystore = new jose.JWKS.KeyStore(encKey, sigKey);
+const keystore = new JWKS.KeyStore(encKey, sigKey);
 
 /**
  * Get the public key used for encryption-decryption
@@ -80,16 +80,16 @@ const getSigPubAsPEM = () => {
 
 /**
  * Encrypt given cleartext with specified public
- * key and return result as a JWE object.
+ * key and return the resulting JWE object as a string.
  * @param {any} cleartext
  * @param {object} key JWK compatible public key
- * @return {object} JWE
+ * @return {string} JWE object as string
  */
 const encrypt = (cleartext, key) => {
     return JWE.encrypt(cleartext, JWK.asKey(key),
         {
-            alg: config.alg,
             enc: config.enc,
+            alg: config.alg,
         });
 };
 
@@ -97,14 +97,23 @@ const encrypt = (cleartext, key) => {
  * Decrypt given JWK object with specified
  * private key and return cleartext as a
  * utf8 string.
- * @param {object} jwe JWE object
+ * @param {string} jwe JWE object as string
  * @param {object} key JWK compatible private key
  * @return {string} cleartext (utf8)
  */
 const decrypt = (jwe, key) => {
-    return JWE.decrypt(jwe, key).toString("utf8");
+    return JWE.decrypt(jwe, key, {
+        complete: false,
+    }).toString("utf8");
 };
 
+/**
+ * Sign provided payload and return the
+ * signed JWT.
+ * @param {JSON} payload
+ * @param {string} [exp=default] default expiry will be used if omitted
+ * @return {string} signed JWT
+ */
 const sign = (payload, exp) => {
     return JWT.sign(payload, sigKey, {
         header: {
@@ -148,6 +157,37 @@ const verify = (token, sub, aud) => {
     });
 };
 
+/**
+ * Sign provided payload with the server's private
+ * key and asymmetrically encrypt the signed JWT by
+ * the client provided publicKey.
+ * This returns the encrypted JWE object as a string.
+ * @param {JSON} payload
+ * @param {object} publicKey client's pub used for encryption
+ * @param {string} [exp=default] default expiry will be used if omitted
+ * @return {string} JWE object as string
+ */
+const signAndEncrypt = (payload, publicKey, exp) => {
+    const jwt = sign(payload, exp);
+    return encrypt(jwt, publicKey);
+};
+
+/**
+ * Decrypt and verify the given JWE.
+ * // TODO: change this to take partner's pub for
+ * JWT verification and not to take a priv (use global
+ * final static thingy).
+ * @param {string} jwe JWE object as string
+ * @param {string} privateKey // TODO: set as final global once deployed
+ * @param {string} sub userId - must be provided
+ * @param {string} [aud=default] default config will be used if omitted
+ * @return {string} decrypted and verified payload
+ */
+const decryptAndVerify = (jwe, privateKey, sub, aud) => {
+    const jwt = decrypt(jwe, privateKey);
+    return verify(jwt, sub, aud);
+};
+
 module.exports = {
     getEncPubAsJWK,
     getEncPubAsPEM,
@@ -157,4 +197,6 @@ module.exports = {
     decrypt,
     sign,
     verify,
+    signAndEncrypt,
+    decryptAndVerify,
 };
