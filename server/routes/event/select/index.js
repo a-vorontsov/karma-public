@@ -4,117 +4,12 @@
 
 const express = require('express');
 const router = express.Router();
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
+
 const util = require("../../../util/util");
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const eventSorter = require("../../../modules/sorting/event");
-const paginator = require("../../../modules/pagination");
 
-
-/**
- * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
- * route {GET} /event
- * @param {Number} req.query.userId - ID of user logged in
- * @param {Array} req.query.filter - all filters required as an array of strings
- * @returns {Object}
- *  status: 200, description: Array of all event objects sorted by time
- *  and distance from the user (distance measured in miles), along with pagination information as follows:
- <pre>
- {
-  message:"All activities successfully fetched",
-  "data": {
-       "meta": {
-         "currentPage": 2,
-           "pageCount": 1,
-           "pageSize": 2,
-           "count": 4
-       },
-       "events": [
-           {
-               "eventId": 1,
-               "name": "Community help centre",
-               "womenOnly": false,
-               "spots": 3,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "help people at the community help centre because help is good",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "nearby road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.4161220,
-               "long": -0.1866410,
-                "distance": 0.18548890708299523
-           },
-           {
-               "eventId": 2,
-               "name": "Picking up trash",
-               "womenOnly": false,
-               "spots": 5,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "small class to teach other people how to pick themselves up",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "uni road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.5114070,
-               "long": -0.1159050,
-               "distance": 7.399274608089304
-           }
-       ]
-   }
- }
- </pre>
- *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
- *  status: 404, description: if userID doesn't belong to any user <br/>
- *  status: 500, description: Most probably a database error occurred
- *  @function
- *  @name Get "All" Activities tab
- */
-router.get("/", async (req, res) => {
-    const userId = req.query.userId;
-    const filters = req.query.filter;
-    console.log(req.query);
-    const maxDistance = req.query.maxDistance;
-    const availabilityStart = req.query.availabilityStart;
-    const availabilityEnd = req.query.availabilityEnd;
-    // filters.push(maxDistance?{maxDistance: maxDistance}:null, availabilityStart?{availabilityStart: availabilityStart}:null, availabilityEnd?{availabilityEnd: availabilityEnd}:null);
-    console.log(filters);
-    console.log(maxDistance + " " + " from: " + availabilityStart +" to: " + availabilityEnd);
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
-    }
-    const user = checkUserIdResult.user;
-    eventRepository
-        .getEventsWithLocation(filters)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) return res.status(404).send({message: "No events"});
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).send({
-                message: "Events fetched successfully",
-                data: paginator.getPageData(req, events),
-            });
-        })
-        .catch(err => res.status(500).send({message: err.message}));
-});
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>

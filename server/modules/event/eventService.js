@@ -2,7 +2,7 @@ const addressRepository = require("../../models/databaseRepositories/addressRepo
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const util = require("../../util/util");
-
+const filterer = require("../filtering");
 /**
  * Creates a new event to be added to the database.
  * @param {object} event A valid event, an address inside the event object or addressId set to an existing address,
@@ -55,11 +55,40 @@ const updateEvent = async (event) => {
 };
 
 /**
+ * Gets data about all events in the database.
+ * @param {Array} filters filters to be applied to the events
+ * @param {Number} userId Id of the user to be fetched.
+ * Fails if database calls fail.
+ */
+const getEvents = async (filters, userId) => {
+    console.log("here");
+    const whereClause = filterer.getWhereClause(filters);
+    const eventResult = await eventRepository.findAllWithAllData(whereClause);
+    const events = eventResult.rows;
+    const eventSignUps = await signUpRepository.findAllByEventId(event.id);
+    const spotsRemaining = event.spots - eventSignUps.rowCount;
+    event.spotsRemaining = spotsRemaining;
+    const addressResult = await addressRepository.findById(event.addressId);
+    const address = addressResult.rows[0];
+    return ({
+        status: 200,
+        message: "Event fetched successfully",
+        data: {
+            event: {
+                ...event,
+                address: address,
+            },
+        },
+    });
+};
+
+/**
  * Gets data about an event that already exists in the database.
  * @param {Number} id Id of the event to be fetched.
  * Fails if database calls fail.
  */
 const getEventData = async (id) => {
+    console.log("here");
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
     const eventSignUps = await signUpRepository.findAllByEventId(event.id);
