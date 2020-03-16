@@ -17,6 +17,14 @@ const keystore = new JWKS.KeyStore(encKey);
 const config = {};
 
 /**
+ * Assign new config object to jose config.
+ * @param {object} newConfig
+ */
+const setConfig = (newConfig) => {
+    Object.assign(config, newConfig);
+};
+
+/**
  * Get the public key used for encryption-decryption
  * in JSON Web Key format.
  * @return {object} enc public key in JWK format
@@ -47,7 +55,7 @@ const getEncPubAsPEM = () => {
 /**
  * Encrypt given cleartext with specified public
  * key and return the resulting JWE object as a string.
- * @param {any} cleartext
+ * @param {string} cleartext
  * @param {object} key JWK compatible public key
  * @return {string} JWE object as string
  */
@@ -91,10 +99,28 @@ const decrypt = (jwe) => {
  * @throws {JWTClaimInvalid} if sub undefined
  * @throws {jose.errors} for failed verification
  */
-const verifyWithPub = (token, pub, aud) => {
+const verify = (token, pub, aud) => {
     return JWT.verify(token, pub, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
         issuer: config.iss,
     });
 };
+
+/**
+ * Decrypt and parse input encrypted config
+ * object and set it as new config.
+ * @param {string} encryptedNewConfig as JWE
+ */
+const setEncryptedConfig = (encryptedNewConfig) => {
+    setConfig(JSON.parse(decrypt(encryptedNewConfig)));
+}
+
+module.exports = {
+    getEncPubAsJWK,
+    getEncPubAsPEM,
+    encrypt,
+    decrypt,
+    verify,
+    setEncryptedConfig,
+}

@@ -461,4 +461,10 @@ test("JWE key and token exchange work", async () => {
     // console.log(verifyResult1A);
     // console.log(joseOnServer.getUserIdFromPayload(verifyResult1A));
     // console.log(joseOnServer.getSignatureFromJWT(jwt));
+    console.log(joseOnServer.getConfig());
+    console.log(joseOnServer.getEncryptedConfig(clientPub));
+    console.log(joseOnServer.getEncryptedConfig(clientPub));
+    const decrConf = joseOnServer.decrypt(joseOnServer.getEncryptedConfig(clientPub), clientPub);
+    console.log(decrConf);
+    console.log(JSON.parse(decrConf));
 });

@@ -23,6 +23,10 @@ const keystore = new JWKS.KeyStore(encKey, sigKey);
 
 const blacklist = new Set(); // TODO: fetch
 
+const getConfig = () => {
+    return {...config};
+};
+
 /**
  * Get the public key used for encryption-decryption
  * in JSON Web Key format.
@@ -82,7 +86,7 @@ const getSigPubAsPEM = () => {
 /**
  * Encrypt given cleartext with specified public
  * key and return the resulting JWE object as a string.
- * @param {any} cleartext
+ * @param {string} cleartext
  * @param {object} key JWK compatible public key
  * @return {string} JWE object as string
  */
@@ -268,11 +272,17 @@ const fetchBlacklist = async () => {
     };
 };
 
+const getEncryptedConfig = (pub) => {
+    return encrypt(JSON.stringify(getConfig()), pub);
+};
+
 module.exports = {
     getEncPubAsJWK,
     getEncPubAsPEM,
     getSigPubAsJWK,
     getSigPubAsPEM,
+    getConfig,
+    getEncryptedConfig,
     encrypt,
     decrypt,
     sign,
