@@ -59,7 +59,7 @@ test("JWT verification works", async () => {
 
     const jwt = joseOnServer.sign(payload);
 
-    const verificationResult = joseOnServer.verify(jwt, "1");
+    const verificationResult = joseOnServer.verify(jwt);
 
     expect(verificationResult.sub).toStrictEqual(payload.sub);
     expect(verificationResult.aud).toStrictEqual(payload.aud);
@@ -78,35 +78,17 @@ test("expired JWT is rejected as expected", async () => {
     await util.sleep(10);
 
     expect(() => {
-        joseOnServer.verify(jwt, "1");
+        joseOnServer.verify(jwt);
     }).toThrow(new errors.JWTExpired("\"exp\" claim timestamp check failed"));
 
     expect(() => {
-        joseOnServer.verify(jwt, "1");
+        joseOnServer.verify(jwt);
     }).toThrow(errors.JWTClaimInvalid);
 
     expect(() => {
-        joseOnServer.verify(jwt, "1");
+        joseOnServer.verify(jwt);
     }).toThrow(errors.JWTExpired);
 
-});
-
-test("JWT with non-matching subject is rejected as expected", async () => {
-
-    const payload = {
-        sub: "1",
-        aud: "/user"
-    };
-
-    const jwt = joseOnServer.sign(payload);
-
-    expect(() => {
-        joseOnServer.verify(jwt, "2");
-    }).toThrow(new errors.JWTClaimInvalid("unexpected \"sub\" claim value"));
-
-    expect(() => {
-        joseOnServer.verify(jwt, "2");
-    }).toThrow(errors.JWTClaimInvalid);
 });
 
 test("JWT with non-matching audience is rejected as expected", async () => {
@@ -119,11 +101,11 @@ test("JWT with non-matching audience is rejected as expected", async () => {
     const jwt = joseOnServer.sign(payload);
 
     expect(() => {
-        joseOnServer.verify(jwt, "1", "/admin");
+        joseOnServer.verify(jwt, "/admin");
     }).toThrow(new errors.JWTClaimInvalid("unexpected \"aud\" claim value"));
 
     expect(() => {
-        joseOnServer.verify(jwt, "1", "/admin");
+        joseOnServer.verify(jwt, "/admin");
     }).toThrow(errors.JWTClaimInvalid);
 });
 
@@ -148,11 +130,11 @@ test("JWT with invalid type is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -177,11 +159,11 @@ test("JWT with invalid key-id is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -206,11 +188,11 @@ test("JWT with invalid algorithm is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWKKeySupport("the key does not support " + jwtHeader.alg + " verify algorithm"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWKKeySupport);
 });
 
@@ -235,11 +217,11 @@ test("JWT with modified expiry is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -264,11 +246,11 @@ test("JWT with modified issue date is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -293,11 +275,11 @@ test("JWT with modified issuer is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -322,11 +304,11 @@ test("JWT with modified audience is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -351,11 +333,11 @@ test("JWT with modified audience and forged claim is also rejected as expected",
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1", "/admin");
+        joseOnServer.verify(jwtRebuilt, "/admin");
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1", "/admin");
+        joseOnServer.verify(jwtRebuilt, "/admin");
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -380,11 +362,11 @@ test("JWT with modified subject is rejected as expected", async () => {
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -409,11 +391,11 @@ test("JWT with modified subject and forged claim is also rejected as expected", 
         + jwtSignature;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "2");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "2");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -438,11 +420,11 @@ test("JWT with forged signature is rejected as expected", async () => {
         + malformedSig;
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt);
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -463,12 +445,12 @@ test("JWE key and token exchange work", async () => {
     expect(jwe).not.toStrictEqual(jwe2);
 
     const decryptionResult1 = joseOnServer.decrypt(jwe, clientPub);
-    const verifyResult1A = joseOnServer.verify(decryptionResult1, "1");
-    const verifyResult1B = joseOnServer.decryptAndVerify(jwe, clientPub, "1");
+    const verifyResult1A = joseOnServer.verify(decryptionResult1);
+    const verifyResult1B = joseOnServer.decryptAndVerify(jwe, clientPub);
 
     const decryptionResult2 = joseOnServer.decrypt(jwe2, clientPub);
-    const verifyResult2A = joseOnServer.verify(decryptionResult2, "1");
-    const verifyResult2B = joseOnServer.decryptAndVerify(jwe, clientPub, "1");
+    const verifyResult2A = joseOnServer.verify(decryptionResult2);
+    const verifyResult2B = joseOnServer.decryptAndVerify(jwe, clientPub);
 
     expect(verifyResult1A).toStrictEqual(verifyResult1B);
     expect(verifyResult2A).toStrictEqual(verifyResult2B);
@@ -476,7 +458,7 @@ test("JWE key and token exchange work", async () => {
     expect(verifyResult1A.aud).toStrictEqual(verifyResult1B.aud)
     expect(verifyResult1A.iss).toStrictEqual(verifyResult1B.iss)
 
-    console.log(verifyResult1A);
-    console.log(joseOnServer.getUserIdFromPayload(verifyResult1A));
-    console.log(joseOnServer.getSignatureFromJWT(jwt));
+    // console.log(verifyResult1A);
+    // console.log(joseOnServer.getUserIdFromPayload(verifyResult1A));
+    // console.log(joseOnServer.getSignatureFromJWT(jwt));
 });

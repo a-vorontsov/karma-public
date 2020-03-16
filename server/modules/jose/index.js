@@ -1,5 +1,6 @@
 const jose = require('jose');
 const config = require("../../config").jose;
+const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -20,7 +21,7 @@ const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
 
 const keystore = new JWKS.KeyStore(encKey, sigKey);
 
-const blacklist = new Set();
+const blacklist = new Set(); // TODO: fetch
 
 /**
  * Get the public key used for encryption-decryption
@@ -138,9 +139,8 @@ const sign = (payload, exp) => {
 
 /**
  * Verify provided JWT with given params.
- * The subject must be provided for a successful
- * verification, which should be the userId in
- * string format.
+ * The pubic key of signee must be provided
+ * for a successful verification.
  * The audience may also be optionally provided,
  * for instance when validating access to routes
  * with custom permissions. An example is when
@@ -150,22 +150,19 @@ const sign = (payload, exp) => {
  * If the audience param is left out, the default
  * configuration will be used.
  * @param {object} token JWT token
- * @param {string} sub userId - must be provided
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
  * @throws {JWTClaimInvalid} if sub undefined
  * @throws {jose.errors} for failed verification
  */
-const verify = (token, sub, aud) => {
-    return verifyWithPub(token, JWK.asKey(getSigPubAsJWK()), sub, aud);
+const verify = (token, aud) => {
+    return verifyWithPub(token, JWK.asKey(getSigPubAsJWK()), aud);
 };
 
 /**
  * Verify provided JWT with given params.
- * The pubic key of signee and the subject of the token
- * must be provided for a successful verification,
- * of which the latter should be the userId in
- * string format.
+ * The pubic key of signee must be provided
+ * for a successful verification.
  * The audience may also be optionally provided,
  * for instance when validating access to routes
  * with custom permissions. An example is when
@@ -176,21 +173,16 @@ const verify = (token, sub, aud) => {
  * configuration will be used.
  * @param {object} token JWT token
  * @param {object} pub JWK public key of signee
- * @param {string} sub userId - must be provided
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
  * @throws {JWTClaimInvalid} if sub undefined
  * @throws {jose.errors} for failed verification
  */
-const verifyWithPub = (token, pub, sub, aud) => {
-    if (sub === undefined) {
-        throw new errors.JWTClaimInvalid("No subject specified in claim", token, "JWT sub must be specified.");
-    }
+const verifyWithPub = (token, pub, aud) => {
     return JWT.verify(token, pub, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
         issuer: config.iss,
-        subject: sub,
     });
 };
 
@@ -216,13 +208,12 @@ const signAndEncrypt = (payload, publicKey, exp) => {
  * final static thingy).
  * @param {string} jwe JWE object as string
  * @param {string} privateKey // TODO: set as final global once deployed
- * @param {string} sub userId - must be provided
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} decrypted and verified payload
  */
-const decryptAndVerify = (jwe, privateKey, sub, aud) => {
+const decryptAndVerify = (jwe, privateKey, aud) => {
     const jwt = decrypt(jwe, privateKey);
-    return verify(jwt, sub, aud);
+    return verify(jwt, aud);
 };
 
 /**
@@ -250,14 +241,31 @@ const getSignatureFromJWT = (jwt) => {
     return jwt.split(".")[2];
 };
 
-// TODO: add to db
 const blacklistSignature = (sig) => {
     blacklist.add(sig);
 };
 
-const blacklistJWT = (jwt) => {
-    // const userId =
-    blacklistSignature(getSignatureFromJWT(jwt));
+const blacklistJWT = async (jwt) => {
+    const userId = getUserIdFromJWT(jwt);
+    const sig = getSignatureFromJWT(jwt);
+    await authRepo.insert({
+        token: sig,
+        expiryDate: Date(Now()), // TODO:
+        creationDate: Date(Now()), // TODO:
+        userId: userId,
+    });
+    blacklistSignature(sig);
+};
+
+const fetchBlacklist = async () => {
+    blacklist.clear();
+    const dbResult = await authRepo.findAll();
+    const dbResCount = dbResult.rows.length;
+    if (dbResCount > 0) {
+        for (let i = 0; i < dbResCount; i++) {
+            blacklistSignature(dbResCount.rows[i].token);
+        }
+    };
 };
 
 module.exports = {
@@ -273,4 +281,6 @@ module.exports = {
     decryptAndVerify,
     getUserIdFromPayload,
     getSignatureFromJWT,
+    blacklistJWT,
+    fetchBlacklist,
 };
