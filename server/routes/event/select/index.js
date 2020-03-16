@@ -14,7 +14,7 @@ const paginator = require("../../../modules/pagination");
 
 /**
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event?userId=1&amp;currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
+ * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
  * route {GET} /event
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - all filters required as an array of strings
@@ -89,6 +89,13 @@ const paginator = require("../../../modules/pagination");
 router.get("/", async (req, res) => {
     const userId = req.query.userId;
     const filters = req.query.filter;
+    console.log(req.query);
+    const maxDistance = req.query.maxDistance;
+    const availabilityStart = req.query.availabilityStart;
+    const availabilityEnd = req.query.availabilityEnd;
+    // filters.push(maxDistance?{maxDistance: maxDistance}:null, availabilityStart?{availabilityStart: availabilityStart}:null, availabilityEnd?{availabilityEnd: availabilityEnd}:null);
+    console.log(filters);
+    console.log(maxDistance + " " + " from: " + availabilityStart +" to: " + availabilityEnd);
     const checkUserIdResult = await util.checkUserId(userId);
     if (checkUserIdResult.status !== 200) {
         return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
