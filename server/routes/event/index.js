@@ -11,7 +11,7 @@ const eventSelectRoute = require("./select/");
 
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/eventService/");
+const eventService = require("../../modules/event/eventService");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -88,7 +88,7 @@ router.post("/", async (req, res) => {
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
         console.log("Event creation failed: " + e);
-        return httpUtil.sendGenericError(e);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -162,7 +162,7 @@ router.post("/update/:id", async (req, res) => {
         return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
         console.log("Event updating failed: " + e);
-        return httpUtil.sendGenericError(e);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -216,7 +216,7 @@ router.get("/:id", async (req, res) => {
         return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
         console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
-        return httpUtil.sendGenericError(e);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 

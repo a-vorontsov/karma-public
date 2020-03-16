@@ -78,6 +78,27 @@ const notificationSchema = {
     "required": ["type", "message", "senderId", "receiverId"],
 };
 
+const favouriteSchema = {
+    "id": "/Favourite",
+    "type": "object",
+    "properties": {
+        "individualId": {"type": "number"},
+        "eventId": {"type": "number"},
+    },
+    "required": ["individualId", "eventId"],
+};
+
+const signupSchema = {
+    "id": "/Signup",
+    "type": "object",
+    "properties": {
+        "individualId": {"type": "number"},
+        "eventId": {"type": "number"},
+        "confirmed": {"type": "boolean"},
+    },
+    "required": ["individualId", "confirmed"],
+};
+
 const informationSchema = {
     "id": "/Information",
     "type": "object",
@@ -91,6 +112,8 @@ const informationSchema = {
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
+validator.addSchema(favouriteSchema, "/Favourite");
+validator.addSchema(signupSchema, "/Signup");
 validator.addSchema(informationSchema, "/Information");
 
 const validateAddress = (address) => {
@@ -105,13 +128,23 @@ const validateNotification = (notification) => {
     return validator.validate(notification, notificationSchema);
 };
 
+const validateFavourite = (favourite) => {
+    return validator.validate(favourite, favouriteSchema);
+};
+
+const validateSignup = (signup) => {
+    return validator.validate(signup, signupSchema);
+};
+
 const validateInformation = (information) => {
     return validator.validate(information, informationSchema);
 };
 
 module.exports = {
-    validateAddress: validateAddress,
-    validateEvent: validateEvent,
-    validateNotification: validateNotification,
-    validateInformation: validateInformation,
+    validateAddress,
+    validateEvent,
+    validateNotification,
+    validateFavourite,
+    validateSignup,
+    validateInformation,
 };

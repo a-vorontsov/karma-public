@@ -4,9 +4,10 @@
 
 const express = require('express');
 const router = express.Router();
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
-const signupRepository = require("../../../models/databaseRepositories/signupRepository");
-const util = require("../../../util/util");
+
+const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const httpUtil = require("../../../util/httpUtil");
+const validation = require("../../../modules/validation");
 
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
@@ -38,16 +39,17 @@ const util = require("../../../util/util");
  */
 router.post('/:eventId/signUp', async (req, res) => {
     try {
-        const eventId = req.params.eventId;
-        const signupRequest = req.body;
-        signupRequest.eventId = eventId;
-        const signupResult = await signupRepository.insert(signupRequest);
-        res.status(200).send({message: "Signed up for event successfully", data: {signup: signupResult.rows[0]}});
+        const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const validationResult = validation.validateSignup(signup);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const signupResult = await eventSignupService.createSignup(signup);
+        return httpUtil.sendResult(signupResult, res);
     } catch (e) {
         console.log("Error while creating signup: " + e.message);
-        res.status(500).send({
-            message: e.message,
-        });
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -63,13 +65,15 @@ router.post('/:eventId/signUp', async (req, res) => {
     "data": {
         "users": [
             {
-                "id": 7,
+                "userId": 7,
+                "individualId": 15,
                 "email": "asd@asd.asd",
                 "username": "Sten"
                 [...]
             }
             {
-                "id": 7,
+                "userId": 8,
+                "individualId": 16,
                 "email": "asd@asd.asd",
                 "username": "Sten"
                 [...]
@@ -85,23 +89,20 @@ router.post('/:eventId/signUp', async (req, res) => {
  *  @function
  */
 router.get('/:eventId/signUp', async (req, res) => {
-    const eventId = req.params.eventId;
-    const checkEventIdResult = await util.checkEventId(eventId);
-    if (checkEventIdResult.status !== 200) {
-        return res.status(checkEventIdResult.status).send({message: checkEventIdResult.message});
+    try {
+        const eventId = Number.parseInt(req.params.eventId);
+        const signupsResult = await eventSignupService.getAllSignupsForEvent(eventId);
+        return httpUtil.sendResult(signupsResult, res);
+    } catch (e) {
+        console.log("Error while fetching signups: " + e.message);
+        return httpUtil.sendGenericError(e, res);
     }
-    signupRepository.findUsersSignedUp(eventId)
-        .then(result => {
-            if (result.rows.length === 0) return res.status(404).send({message: "No users signed up for this event"});
-            res.status(200).send({message: "Signed up users fetched successfully", data: {users: result.rows}});
-        })
-        .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**
- * Endpoint called whenever a user wishes to see all events they have signed up to.<br/>
+ * Endpoint called whenever a user wishes to see all events they have attended. This only shows past events<br/>
  * URL example: GET http://localhost:8000/event/signUp/history
- * @param {Event} req.body - id of individual requesting their signup history:
+ * @param {Object} req.body - id of individual requesting their signup history:
  <pre>
  {
     "individualId": "3"
@@ -169,15 +170,15 @@ router.get('/:eventId/signUp', async (req, res) => {
 router.get('/signUp/history', async (req, res) => {
     try {
         const individualId = req.body.individualId;
-        const signups = await signupRepository.findAllByIndividualId(individualId);
-        const signedUpEvents = signups.rows.map(s => s.eventId)
-            .map(async e => await eventRepository.findById(e));
-        res.status(200).send({message: "History fetched successfully", data: {events: signedUpEvents.rows}});
+        if (individualId === undefined) {
+            return res.send(400).body({message: "IndividualId not specified"});
+        }
+
+        const signupsResult = await eventSignupService.getSignupHistory(individualId);
+        return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        console.log("Error while creating signup: " + e.message);
-        res.status(500).send({
-            message: e.message,
-        });
+        console.log("Error while fetching signup history: " + e.message);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -211,16 +212,17 @@ router.get('/signUp/history', async (req, res) => {
  */
 router.post('/:eventId/signUp/update', async (req, res) => {
     try {
-        const eventId = req.params.eventId;
-        const signupRequest = req.body;
-        signupRequest.eventId = eventId;
-        const signupResult = await signupRepository.update(signupRequest);
-        res.status(200).send({message: "Signup updated successfully", data: {signup: signupResult.rows[0]}});
+        const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const validationResult = validation.validateSignup(signup);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const signupsResult = await eventSignupService.updateSignUp(signup);
+        return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
         console.log("Error while updating signup: " + e.message);
-        res.status(500).send({
-            message: e.message,
-        });
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
