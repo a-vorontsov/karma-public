@@ -448,21 +448,34 @@ test("JWT with forged signature is rejected as expected", async () => {
 
 test("JWE key and token exchange work", async () => {
 
+    const clientPub = await JWK.generateSync("EC", "P-256");
+
     const payload = {
         sub: "1",
         aud: "/user"
     };
 
-    const payloadStr = JSON.stringify(payload);
-
     const jwt = joseOnServer.sign(payload);
 
-    const clientPub = await JWK.generateSync("EC", "P-256");
-
-    const jwe = joseOnServer.encrypt(payloadStr, clientPub);
+    const jwe = joseOnServer.signAndEncrypt(payload, clientPub);
     const jwe2 = joseOnServer.encrypt(jwt, clientPub);
 
-    const decryptionResult = joseOnServer.decrypt(jwe, clientPub);
-    const decryptionResult2 = joseOnServer.decrypt(jwe2, clientPub);
+    console.log(jwe);
+    console.log(jwe2);
 
+    expect(jwe).not.toStrictEqual(jwe2);
+
+    const decryptionResult1 = joseOnServer.decrypt(jwe, clientPub);
+    const verifyResult1A = joseOnServer.verify(decryptionResult1, "1");
+    const verifyResult1B = joseOnServer.decryptAndVerify(jwe, clientPub, "1");
+
+    const decryptionResult2 = joseOnServer.decrypt(jwe2, clientPub);
+    const verifyResult2A = joseOnServer.verify(decryptionResult2, "1");
+    const verifyResult2B = joseOnServer.decryptAndVerify(jwe, clientPub, "1");
+
+    expect(verifyResult1A).toStrictEqual(verifyResult1B);
+    expect(verifyResult2A).toStrictEqual(verifyResult2B);
+    expect(verifyResult1A.sub).toStrictEqual(verifyResult1B.sub)
+    expect(verifyResult1A.aud).toStrictEqual(verifyResult1B.aud)
+    expect(verifyResult1A.iss).toStrictEqual(verifyResult1B.iss)
 });
