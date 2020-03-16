@@ -1,12 +1,13 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import ReadMore from "react-native-read-more-text";
 import {useNavigation} from "react-navigation-hooks";
+import BottomModal from "../BottomModal";
+import SignUpActivity from "./SignUpActivity";
 
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -52,105 +53,134 @@ function getMonthName(d, long = false) {
     return name;
 }
 
-const ActivityCard = props => {
-    const navigation = useNavigation();
+class ActivityCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            displaySignupModal: false,
+        };
+        this.toggleModal = this.toggleModal.bind(this);
+    }
 
-    const setFav = handlePress => {
+    setFav = handlePress => {
         return false;
     };
 
-    const renderTruncatedFooter = handlePress => {
+    renderTruncatedFooter = handlePress => {
         return (
             <Text
                 style={{color: "#00A8A6", marginTop: 5}}
-                onPress={() => this.navigation.navigate("ActivityInfo")}>
+                onPress={() => this.props.navigation.navigate("ActivityInfo")}>
                 READ MORE
             </Text>
         );
     };
-    return (
-        <View style={[Styles.container, Styles.ph24]}>
-            <View style={[Styles.pb24, Styles.bottom]}>
-                <Image
-                    source={{
-                        uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
-                    }}
-                    style={{
-                        flex: 1,
-                        width: null,
-                        height: null,
-                        marginBottom: 10,
-                    }}
-                    resizeMode="cover"
-                />
-                <Image
-                    source={props.signedup ? null : icons.signup}
-                    style={styles.icon}
-                />
-                <Image source={icons.date} style={[styles.icon, {left: 5}]} />
-                <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
-                    {` ${new Date(props.activity.date).getDate()}`}
-                </RegularText>
-                <RegularText style={styles.dateText}>
-                    {`  ${getMonthName(props.activity.date)}`}
-                </RegularText>
-                <View>
-                    <View
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+    render() {
+        return (
+            <View style={[Styles.container, Styles.ph24]}>
+                <View style={[Styles.pb24, Styles.bottom]}>
+                    <Image
+                        source={{
+                            uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                        }}
                         style={{
-                            flexDirection: "row",
-                        }}>
-                        <InfoBar
-                            title={` ${formatAMPM(props.activity.date)}`}
-                            image={icons.clock}
+                            flex: 1,
+                            width: null,
+                            height: null,
+                            marginBottom: 10,
+                        }}
+                        resizeMode="cover"
+                    />
+                    <TouchableOpacity
+                        opacity={0.9}
+                        onPress={() => this.toggleModal()}>
+                        <Image
+                            source={this.props.signedup ? null : icons.signup}
+                            style={styles.icon}
                         />
-                        <InfoBar
-                            title={`${props.activity.spots} Spots Left`}
-                            image={icons.people}
-                        />
+                    </TouchableOpacity>
+                    <Image
+                        source={icons.date}
+                        style={[styles.icon, {left: 5}]}
+                    />
+                    <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
+                        {` ${new Date(this.props.activity.date).getDate()}`}
+                    </RegularText>
+                    <RegularText style={styles.dateText}>
+                        {`  ${getMonthName(this.props.activity.date)}`}
+                    </RegularText>
+                    <View>
                         <View
                             style={{
-                                flex: 1,
-                                alignItems: "flex-end",
-                                justifyContent: "flex-end",
+                                flexDirection: "row",
                             }}>
-                            <TouchableOpacity style={{alignSelf: "center"}}>
-                                <Image
-                                    source={
-                                        props.favorited
-                                            ? icons.fave_inactive
-                                            : icons.fave_active
-                                    }
-                                    style={{
-                                        width: 30,
-                                        height: 30,
-                                        resizeMode: "contain",
-                                        marginRight: 10,
-                                    }}
-                                    // onPress={this.setFav(!props.favorited)}
-                                />
-                            </TouchableOpacity>
+                            <InfoBar
+                                title={` ${formatAMPM(
+                                    this.props.activity.date,
+                                )}`}
+                                image={icons.clock}
+                            />
+                            <InfoBar
+                                title={`${this.props.activity.spots} Spots Left`}
+                                image={icons.people}
+                            />
+                            <View
+                                style={{
+                                    flex: 1,
+                                    alignItems: "flex-end",
+                                    justifyContent: "flex-end",
+                                }}>
+                                <TouchableOpacity style={{alignSelf: "center"}}>
+                                    <Image
+                                        source={
+                                            this.props.favorited
+                                                ? icons.fave_inactive
+                                                : icons.fave_active
+                                        }
+                                        style={{
+                                            width: 30,
+                                            height: 30,
+                                            resizeMode: "contain",
+                                            marginRight: 10,
+                                        }}
+                                        // onPress={this.setFav(!props.favorited)}
+                                    />
+                                </TouchableOpacity>
+                            </View>
                         </View>
+                        <RegularText
+                            style={{
+                                fontWeight: "500",
+                                fontSize: 20,
+                                marginVertical: 8,
+                            }}>
+                            {this.props.activity.name}
+                        </RegularText>
                     </View>
-                    <RegularText
-                        style={{
-                            fontWeight: "500",
-                            fontSize: 20,
-                            marginVertical: 8,
-                        }}>
-                        {props.activity.name}
-                    </RegularText>
+                    <View>
+                        <ReadMore
+                            numberOfLines={2}
+                            renderTruncatedFooter={this._renderTruncatedFooter}>
+                            <RegularText>
+                                {this.props.activity.content}
+                            </RegularText>
+                        </ReadMore>
+                    </View>
                 </View>
-                <View>
-                    <ReadMore
-                        numberOfLines={2}
-                        renderTruncatedFooter={this._renderTruncatedFooter}>
-                        <RegularText>{props.activity.content}</RegularText>
-                    </ReadMore>
-                </View>
+                <BottomModal
+                    visible={this.state.displaySignupModal}
+                    toggleModal={this.toggleModal}>
+                    <SignUpActivity />
+                </BottomModal>
             </View>
-        </View>
-    );
-};
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     dateText: {
