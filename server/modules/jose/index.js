@@ -78,6 +78,13 @@ const getSigPubAsPEM = () => {
     }).toPEM();
 };
 
+/**
+ * Encrypt given cleartext with specified public
+ * key and return result as a JWE object.
+ * @param {any} cleartext
+ * @param {object} key JWK compatible public key
+ * @return {object} JWE
+ */
 const encrypt = (cleartext, key) => {
     return JWE.encrypt(cleartext, JWK.asKey(key),
         {
@@ -86,6 +93,14 @@ const encrypt = (cleartext, key) => {
         });
 };
 
+/**
+ * Decrypt given JWK object with specified
+ * private key and return cleartext as a
+ * utf8 string.
+ * @param {object} jwe JWE object
+ * @param {object} key JWK compatible private key
+ * @return {string} cleartext (utf8)
+ */
 const decrypt = (jwe, key) => {
     return JWE.decrypt(jwe, key).toString("utf8");
 };
@@ -102,12 +117,24 @@ const sign = (payload, exp) => {
 };
 
 /**
- * Verify provided JWT.
+ * Verify provided JWT with given params.
+ * The subject must be provided for a successful
+ * verification, which should be the userId in
+ * string format.
+ * The audience may also be optionally provided,
+ * for instance when validating access to routes
+ * with custom permissions. An example is when
+ * an unauthenticated user wishes to reset their
+ * password and have been granted access via a
+ * reset token. In this case the aud="/reset".
+ * If the audience param is left out, the default
+ * configuration will be used.
  * @param {object} token JWT token
  * @param {string} sub userId - must be provided
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
  * @throws {JWTClaimInvalid} if sub undefined
+ * @throws {jose.errors} for failed verification
  */
 const verify = (token, sub, aud) => {
     if (sub === undefined) {
