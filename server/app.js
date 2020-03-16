@@ -50,13 +50,18 @@ app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 app.use("/admin", require("./routes/admin"));
 
 // import OAuth routes and dependencies if applicable
-if (process.env.ENABLE_OAUTH === "1") {
+if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
     require("./modules/authentication/passport-config");
     app.use(passport.initialize());
     app.use("signin/oauth/facebook", require("./routes/signin/OAuth/facebook"));
     app.use("signin/oauth/google", require("./routes/signin/OAuth/google"));
     app.use("signin/oauth/linkedin", require("./routes/signin/OAuth/linkedin"));
+}
+app.use("/test", require("./routes/test"));
+// import test routes if applicable
+if (process.env.ENABLE_TEST_ROUTES === 1) {
+    app.use("/test", require("./routes/test"));
 }
 
 // TODO: regex that excludes only requireNotAuth routes

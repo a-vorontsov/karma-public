@@ -6,6 +6,7 @@ const indivRepo = require("../../models/databaseRepositories/individualRepositor
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const request = require("supertest");
+process.env.ENABLE_TEST_ROUTES = 1;
 const app = require("../../app");
 
 const user = testHelpers.getUserExample4();
@@ -273,12 +274,13 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/profile")
+        .get("/test/reqauth")
         .send(anyRequest6)
         .redirects(0);
 
-    expect(response.body.message).toBe("Found individual profile for user.");
     expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe("Successfully authenticated and had correct permissions to access route.");
+
 
     const responseOfPost = await request(app)
         .post("/profile/edit/password")
