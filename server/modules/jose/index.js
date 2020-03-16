@@ -9,23 +9,33 @@ const {
     errors, // errors utilized by jose
 } = jose;
 
+/**
+ * Synchronously generate an encryption key with
+ * config-defined type and curve/size.
+ */
 const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
     use: "enc",
     key_ops: ["deriveKey"],
 });
 
+/**
+ * Synchronously generate a signing key with
+ * config-defined type and curve/size.
+ */
 const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
     use: "sig",
     key_ops: ["sign", "verify"],
 });
 
+/**
+ * Initialise JSON Web Key Store
+ */
 const keystore = new JWKS.KeyStore(encKey, sigKey);
 
-const blacklist = new Set(); // TODO: fetch
-
-const getConfig = () => {
-    return {...config};
-};
+/**
+ * Initialise signature blacklist cache
+ */
+const blacklist = new Set(); // TODO: fetch when starting app
 
 /**
  * Get the public key used for encryption-decryption
@@ -245,10 +255,23 @@ const getSignatureFromJWT = (jwt) => {
     return jwt.split(".")[2];
 };
 
-const blacklistSignature = (sig) => {
+/**
+ * Add given signature to blacklist cache or
+ * do nothing if already stored.
+ * @param {string} sig
+ */
+const addSigToBlacklistCache = (sig) => {
     blacklist.add(sig);
 };
 
+/**
+ * Blacklist given JWT.
+ * This inserts the blacklisted userId - sig
+ * pair in the DB and the latter in the
+ * signature blacklist cache
+ * @param {object} jwt
+ * @throws {error} DB error if already blacklisted
+ */
 const blacklistJWT = async (jwt) => {
     const userId = getUserIdFromJWT(jwt);
     const sig = getSignatureFromJWT(jwt);
@@ -258,20 +281,41 @@ const blacklistJWT = async (jwt) => {
         creationDate: Date(Now()), // TODO:
         userId: userId,
     });
-    blacklistSignature(sig);
+    addSigToBlacklistCache(sig);
 };
 
+/**
+ * Fetch the signature blacklist from
+ * the database and cache the result.
+ * This resets the signature blacklist
+ * cache.
+ */
 const fetchBlacklist = async () => {
     blacklist.clear();
     const dbResult = await authRepo.findAll();
     const dbResCount = dbResult.rows.length;
     if (dbResCount > 0) {
         for (let i = 0; i < dbResCount; i++) {
-            blacklistSignature(dbResCount.rows[i].token);
+            addSigToBlacklistCache(dbResCount.rows[i].token);
         }
     };
 };
 
+/**
+ * Return jose config object.
+ * @return {object} jose config
+ */
+const getConfig = () => {
+    return { ...config };
+};
+
+
+/**
+ * Return the config object as an encrypted
+ * JWE string.
+ * @param {object} pub public key of recipient
+ * @return {string} config as JWE
+ */
 const getEncryptedConfig = (pub) => {
     return encrypt(JSON.stringify(getConfig()), pub);
 };

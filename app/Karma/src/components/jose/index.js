@@ -1,4 +1,5 @@
 const jose = require('jose');
+const config = {};
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -7,22 +8,19 @@ const {
     errors, // errors utilized by jose
 } = jose;
 
+/**
+ * Synchronously generate an encryption key with
+ * config-defined type and curve/size.
+ */
 const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
     use: "enc",
     key_ops: ["deriveKey"],
 });
 
-const keystore = new JWKS.KeyStore(encKey);
-
-const config = {};
-
 /**
- * Assign new config object to jose config.
- * @param {object} newConfig
+ * Initialise JSON Web Key Store
  */
-const setConfig = (newConfig) => {
-    Object.assign(config, newConfig);
-};
+const keystore = new JWKS.KeyStore(encKey);
 
 /**
  * Get the public key used for encryption-decryption
@@ -108,6 +106,14 @@ const verify = (token, pub, aud) => {
 };
 
 /**
+ * Assign new config object to jose config.
+ * @param {object} newConfig
+ */
+const setConfig = (newConfig) => {
+    Object.assign(config, newConfig);
+};
+
+/**
  * Decrypt and parse input encrypted config
  * object and set it as new config.
  * @param {string} encryptedNewConfig as JWE
@@ -122,5 +128,5 @@ module.exports = {
     encrypt,
     decrypt,
     verify,
-    setEncryptedConfig,
+    setEncryptedConfig, // TODO: run at comm start
 }
