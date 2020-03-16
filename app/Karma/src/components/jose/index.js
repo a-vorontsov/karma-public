@@ -54,7 +54,7 @@ const getEncPubAsPEM = () => {
  * Encrypt given cleartext with specified public
  * key and return the resulting JWE object as a string.
  * @param {string} cleartext
- * @param {object} key JWK compatible public key
+ * @param {object} key JWK compatible public key of recipient
  * @return {string} JWE object as string
  */
 const encrypt = (cleartext, key) => {

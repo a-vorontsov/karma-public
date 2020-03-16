@@ -97,29 +97,15 @@ const getSigPubAsPEM = () => {
  * Encrypt given cleartext with specified public
  * key and return the resulting JWE object as a string.
  * @param {string} cleartext
- * @param {object} key JWK compatible public key
+ * @param {object} pub JWK compatible public key of recipient
  * @return {string} JWE object as string
  */
-const encrypt = (cleartext, key) => {
-    return JWE.encrypt(cleartext, JWK.asKey(key),
+const encrypt = (cleartext, pub) => {
+    return JWE.encrypt(cleartext, JWK.asKey(pub),
         {
             enc: config.enc,
             alg: config.alg,
         });
-};
-
-/**
- * Decrypt given JWK object with specified
- * private key and return cleartext as a
- * utf8 string.
- * @param {string} jwe JWE object as string
- * @param {object} key JWK compatible private key
- * @return {string} cleartext (utf8)
- */
-const decrypt = (jwe, key) => {
-    return JWE.decrypt(jwe, key, {
-        complete: false,
-    }).toString("utf8");
 };
 
 /**
@@ -129,8 +115,10 @@ const decrypt = (jwe, key) => {
  * @param {string} jwe JWE object as string
  * @return {string} cleartext (utf8)
  */
-const decryptWithOwnKey = (jwe) => {
-    return decrypt(jwe, encKey);
+const decrypt = (jwe) => {
+    return JWE.decrypt(jwe, encKey, {
+        complete: false,
+    }).toString("utf8");
 };
 
 /**
@@ -152,9 +140,8 @@ const sign = (payload, exp) => {
 };
 
 /**
- * Verify provided JWT with given params.
- * The pubic key of signee must be provided
- * for a successful verification.
+ * Verify provided JWT with given params and
+ * the server's signing key.
  * The audience may also be optionally provided,
  * for instance when validating access to routes
  * with custom permissions. An example is when
@@ -166,34 +153,10 @@ const sign = (payload, exp) => {
  * @param {object} token JWT token
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
- * @throws {JWTClaimInvalid} if sub undefined
  * @throws {jose.errors} for failed verification
  */
 const verify = (token, aud) => {
-    return verifyWithPub(token, JWK.asKey(getSigPubAsJWK()), aud);
-};
-
-/**
- * Verify provided JWT with given params.
- * The pubic key of signee must be provided
- * for a successful verification.
- * The audience may also be optionally provided,
- * for instance when validating access to routes
- * with custom permissions. An example is when
- * an unauthenticated user wishes to reset their
- * password and have been granted access via a
- * reset token. In this case the aud="/reset".
- * If the audience param is left out, the default
- * configuration will be used.
- * @param {object} token JWT token
- * @param {object} pub JWK public key of signee
- * @param {string} [aud=default] default config will be used if omitted
- * @return {string} payload
- * @throws {JWTClaimInvalid} if sub undefined
- * @throws {jose.errors} for failed verification
- */
-const verifyWithPub = (token, pub, aud) => {
-    return JWT.verify(token, pub, {
+    return JWT.verify(token, sigKey, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
         issuer: config.iss,
@@ -203,30 +166,28 @@ const verifyWithPub = (token, pub, aud) => {
 /**
  * Sign provided payload with the server's private
  * key and asymmetrically encrypt the signed JWT by
- * the client provided publicKey.
+ * the client provided public key.
  * This returns the encrypted JWE object as a string.
  * @param {JSON} payload
- * @param {object} publicKey client's pub used for encryption
  * @param {string} [exp=default] default expiry will be used if omitted
+ * @param {object} pub client's pub used for encryption
  * @return {string} JWE object as string
  */
-const signAndEncrypt = (payload, publicKey, exp) => {
+const signAndEncrypt = (payload, exp, pub) => {
     const jwt = sign(payload, exp);
-    return encrypt(jwt, publicKey);
+    return encrypt(jwt, pub);
 };
 
 /**
- * Decrypt and verify the given JWE.
- * // TODO: change this to take partner's pub for
- * JWT verification and not to take a priv (use global
- * final static thingy).
+ * Decrypt given JWE with the server's encryption
+ * key and verify resulting JWT with the server's
+ * signing key.
  * @param {string} jwe JWE object as string
- * @param {string} privateKey // TODO: set as final global once deployed
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} decrypted and verified payload
  */
-const decryptAndVerify = (jwe, privateKey, aud) => {
-    const jwt = decrypt(jwe, privateKey);
+const decryptAndVerify = (jwe, aud) => {
+    const jwt = decrypt(jwe);
     return verify(jwt, aud);
 };
 
@@ -240,14 +201,19 @@ const getUserIdFromPayload = (payload) => {
     return Number.parseInt(payload.sub);
 };
 
-// this should only be used for invalidating tokens!
+/**
+ * Return userId from JWT.
+ * This should only be used for invalidating tokens!
+ * @param {object} jwt
+ * @return {Number} userId
+ */
 const getUserIdFromJWT = (jwt) => {
     const payload = JWT.decode(jwt, false);
     return getUserIdFromPayload(payload);
 };
 
 /**
- * Returns signature of JWT as a Base64 string.
+ * Return signature of JWT as a Base64 string.
  * @param {object} jwt
  * @return {string} signature
  */
@@ -306,7 +272,21 @@ const fetchBlacklist = async () => {
  * @return {object} jose config
  */
 const getConfig = () => {
-    return { ...config };
+    return {...config};
+};
+
+/**
+ * Return public configurations
+ * of jose as an object.
+ * @return {object} public jose config
+ */
+const getPublicConfig = () => {
+    return {
+        kty: config.kty,
+        crvOrSize: config.crvOrSize,
+        alg: config.alg,
+        enc: config.enc,
+    };
 };
 
 
@@ -325,7 +305,7 @@ module.exports = {
     getEncPubAsPEM,
     getSigPubAsJWK,
     getSigPubAsPEM,
-    getConfig,
+    getPublicConfig,
     getEncryptedConfig,
     encrypt,
     decrypt,
