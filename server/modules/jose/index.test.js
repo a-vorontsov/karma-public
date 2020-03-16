@@ -357,7 +357,7 @@ test("JWT with modified audience and forged claim is also rejected as expected",
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
-        joseOnServer.verify(jwtRebuilt, "1");
+        joseOnServer.verify(jwtRebuilt, "1", "/admin");
     }).toThrow(errors.JWSVerificationFailed);
 });
 
@@ -412,6 +412,35 @@ test("JWT with modified subject and forged claim is also rejected as expected", 
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt, "2");
+    }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "2");
+    }).toThrow(errors.JWSVerificationFailed);
+});
+
+test("JWT with forged signature is rejected as expected", async () => {
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    const jwt = joseOnServer.sign(payload);
+
+    const jwtSplit = jwt.split(".");
+    const jwtHeader = JSON.parse(Base64.decode(jwtSplit[0]));
+    const jwtPayload = JSON.parse(Base64.decode(jwtSplit[1]));
+    const jwtSignature = jwtSplit[2];
+
+    const malformedSig = jwtSignature.substring(jwtSignature - 5) + "abcde";
+
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
+        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
+        + malformedSig;
+
+    expect(() => {
+        joseOnServer.verify(jwtRebuilt, "1");
     }).toThrow(new errors.JWSVerificationFailed("signature verification failed"));
 
     expect(() => {
