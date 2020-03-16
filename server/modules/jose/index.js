@@ -20,6 +20,8 @@ const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
 
 const keystore = new JWKS.KeyStore(encKey, sigKey);
 
+const blacklist = new Set();
+
 /**
  * Get the public key used for encryption-decryption
  * in JSON Web Key format.
@@ -223,6 +225,41 @@ const decryptAndVerify = (jwe, privateKey, sub, aud) => {
     return verify(jwt, sub, aud);
 };
 
+/**
+ * Get the userId from the provided
+ * JWT by decoding the subject.
+ * @param {object} payload
+ * @return {Number} userId
+ */
+const getUserIdFromPayload = (payload) => {
+    return Number.parseInt(payload.sub);
+};
+
+// this should only be used for invalidating tokens!
+const getUserIdFromJWT = (jwt) => {
+    const payload = JWT.decode(jwt, false);
+    return getUserIdFromPayload(payload);
+};
+
+/**
+ * Returns signature of JWT as a Base64 string.
+ * @param {object} jwt
+ * @return {string} signature
+ */
+const getSignatureFromJWT = (jwt) => {
+    return jwt.split(".")[2];
+};
+
+// TODO: add to db
+const blacklistSignature = (sig) => {
+    blacklist.add(sig);
+};
+
+const blacklistJWT = (jwt) => {
+    // const userId =
+    blacklistSignature(getSignatureFromJWT(jwt));
+};
+
 module.exports = {
     getEncPubAsJWK,
     getEncPubAsPEM,
@@ -234,4 +271,6 @@ module.exports = {
     verify,
     signAndEncrypt,
     decryptAndVerify,
+    getUserIdFromPayload,
+    getSignatureFromJWT,
 };

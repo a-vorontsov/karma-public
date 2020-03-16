@@ -475,4 +475,8 @@ test("JWE key and token exchange work", async () => {
     expect(verifyResult1A.sub).toStrictEqual(verifyResult1B.sub)
     expect(verifyResult1A.aud).toStrictEqual(verifyResult1B.aud)
     expect(verifyResult1A.iss).toStrictEqual(verifyResult1B.iss)
+
+    console.log(verifyResult1A);
+    console.log(joseOnServer.getUserIdFromPayload(verifyResult1A));
+    console.log(joseOnServer.getSignatureFromJWT(jwt));
 });
