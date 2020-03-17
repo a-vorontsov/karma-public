@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const jose = require("./modules/jose");
+jose.fetchBlacklist();
 const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");

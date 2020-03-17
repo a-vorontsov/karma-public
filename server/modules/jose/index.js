@@ -196,6 +196,18 @@ const decryptAndVerify = (jwe, aud) => {
 };
 
 /**
+ * Decrypt given JWE with the server's encryption
+ * key and verify resulting JWT with the server's
+ * signing key, then return userId from payload.
+ * @param {string} jwe JWE object as string
+ * @param {string} [aud=default] default config will be used if omitted
+ * @return {Number} userId from decrypted and verified payload
+ */
+const decryptVerifyAndGetUserId = (jwe, aud) => {
+    return getUserIdFromPayload(decryptAndVerify(jwe, aud));
+};
+
+/**
  * Get the userId from the provided
  * JWT by decoding the subject.
  * @param {object} payload
@@ -349,6 +361,7 @@ module.exports = {
     verifyAndGetUserId,
     signAndEncrypt,
     decryptAndVerify,
+    decryptVerifyAndGetUserId,
     getUserIdFromPayload,
     getSignatureFromJWT,
     blacklistJWT,

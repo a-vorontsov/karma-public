@@ -850,3 +850,63 @@ test("JWE (combined) client-side decryption and token verification work", async 
     expect(clientVerificationResult.aud).toStrictEqual(payload.aud);
     expect(clientVerificationResult.iss).toStrictEqual(privateServerConfig.iss);
 });
+
+test("JWE complete server-client communication works", async () => {
+
+    // on client:
+    // 1) get public jose config from server
+    const publicServerConfig = joseOnServer.getPublicConfig();
+    // 2) generate client-side enc key
+    const clientEncKey = JWK.generateSync(publicServerConfig.kty, publicServerConfig.crvOrSize, {
+        use: "enc",
+        key_ops: ["deriveKey"],
+    });
+    // 3) securely retrieve full jose config from server
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    // 4) get server's signing public key
+    const serverSigPub = joseOnServer.getSigPubAsJWK();
+
+    // on server:
+    // 1) get payload for user
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+    // 3) sign with server's private key and encrypt with client's public key
+    const jwe = joseOnServer.signAndEncrypt(payload, clientEncKey);
+
+    // on client
+    // 1) decrypt JWE with client's private key
+    const decryptionResult = JWE.decrypt(jwe, clientEncKey, {
+        complete: false,
+    }).toString("utf8");
+    // 2) verify decryptionResult with server's public key
+    const clientVerificationResult = JWT.verify(decryptionResult, serverSigPub, {
+        audience: privateServerConfig.aud,
+        complete: false,
+        issuer: privateServerConfig.iss,
+    });
+    // since verification passed client knows JWT is indeed from server
+    expect(clientVerificationResult.sub).toStrictEqual(payload.sub);
+    expect(clientVerificationResult.aud).toStrictEqual(payload.aud);
+    expect(clientVerificationResult.iss).toStrictEqual(privateServerConfig.iss);
+    // since verification passed client knows JWT is indeed from server
+    // 3) send jwt back to server with next (and every other) request encrypted by server's pub
+    const serverEncPub = joseOnServer.getEncPubAsJWK();
+    const jweInNextReq = JWE.encrypt(decryptionResult, serverEncPub,
+        {
+            enc: privateServerConfig.enc,
+            alg: privateServerConfig.alg,
+        });
+
+
+    // on server:
+    // 1) decryptAndVerify JWE from client
+    const serverVerifResOnNextReq = joseOnServer.decryptAndVerify(jweInNextReq);
+    const serverVerifResUserIdOnNextReq = joseOnServer.decryptVerifyAndGetUserId(jweInNextReq);
+
+    expect(serverVerifResOnNextReq.sub).toStrictEqual(payload.sub);
+    expect(serverVerifResOnNextReq.aud).toStrictEqual(payload.aud);
+    expect(serverVerifResUserIdOnNextReq).toStrictEqual(Number.parseInt(payload.sub));
+    expect(serverVerifResOnNextReq).toStrictEqual(clientVerificationResult);
+});
