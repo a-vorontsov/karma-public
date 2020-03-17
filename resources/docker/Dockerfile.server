@@ -1,4 +1,6 @@
+# building the node server
 FROM node:12-alpine
+WORKDIR /server
 COPY package*.json ./
 
 RUN apk --no-cache --virtual build-dependencies add \

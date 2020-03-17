@@ -1,0 +1,19 @@
+#building the admin site
+FROM node:12-alpine as build
+WORKDIR /admin
+COPY package*.json ./
+
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && npm ci --only=production \
+    && apk del build-dependencies
+
+COPY . .
+RUN npm run build
+
+# exposing admin site via nginx webserver
+FROM nginx:1.17-alpine
+COPY --from=build /admin/build /usr/share/nginx/html
+EXPOSE 80
