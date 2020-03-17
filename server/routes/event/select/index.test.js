@@ -4,13 +4,9 @@ const testHelpers = require("../../../test/testHelpers");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
 const eventService = require("../../../modules/event/eventService");
-
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 
-
-jest.mock("../../../models/databaseRepositories/eventRepository");
 jest.mock("../../../models/databaseRepositories/addressRepository");
 jest.mock("../../../models/databaseRepositories/selectedCauseRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
@@ -20,7 +16,7 @@ jest.mock("../../../util/util");
 jest.mock("../../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 
-let eventWithLocationExample1, eventWithLocationExample2, womenOnlyEvent, physicalEvent, event;
+let eventWithLocationExample1, eventWithLocationExample2, eventWithAllData, animalsEvent,peaceEvent;
 
 beforeEach(() => {
     eventWithLocationExample1 = testHelpers.getEventWithLocationExample1();
@@ -28,6 +24,9 @@ beforeEach(() => {
     womenOnlyEvent = testHelpers.getWomenOnlyEvent();
     physicalEvent = testHelpers.getPhysicalEvent();
     event = testHelpers.getEvent();
+    eventWithAllData = testHelpers.getEventWithAllData();
+    peaceEvent = testHelpers.getPeaceEvent();
+    animalsEvent = testHelpers.getAnimalsEvent();
 
     return testHelpers.clearDatabase();
 });
@@ -39,27 +38,33 @@ afterEach(() => {
 
 
 test("getting events grouped by causes selected by user works", async () => {
-    util.checkUserId.mockResolvedValue({
+    eventService.getEventsBySelectedCauses.mockResolvedValue({
         status: 200,
-        user: {
-            id: 1,
-            lat: 51.414916,
-            long: -0.190487,
+        message: "Events fetched successfully",
+        data: {
+            animals:[{
+                ...animalsEvent,
+                id: 1,
+            }],
+            peace:[{
+                ...peaceEvent,
+                id: 2,
+            }]
         },
-    });
-    selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
-        rows: [eventWithLocationExample1, eventWithLocationExample2],
-    });
+    })
+
     const response = await request(app).get("/event/causes?userId=1");
-    expect(selectedCauseRepository.findEventsSelectedByUser).toHaveBeenCalledTimes(1);
+    expect(eventService.getEventsBySelectedCauses).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toMatchObject({
-        peace: [{
-            ...eventWithLocationExample1,
+        animals:[{
+            ...animalsEvent,
+            id: 1,
         }],
-        gardening: [{
-            ...eventWithLocationExample2,
-        }],
+        peace:[{
+            ...peaceEvent,
+            id: 2,
+        }]
     });
 });
 
