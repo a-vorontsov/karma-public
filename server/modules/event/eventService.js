@@ -60,6 +60,7 @@ const updateEvent = async (event) => {
  * Gets data about all events in the database.
  * @param {Array} filters filters to be applied to the events
  * @param {Number} userId id of the user
+  * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
@@ -89,6 +90,7 @@ const getEvents = async (filters, userId) => {
  * Gets array of events grouped by causes selected by the user
  * @param {Array} filters filters to be applied to the events
  * @param {Number} userId id of the user
+ * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
  */
 const getEventsBySelectedCauses = async (filters, userId) => {

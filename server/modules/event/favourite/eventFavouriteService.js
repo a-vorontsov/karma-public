@@ -44,6 +44,7 @@ const deleteEventFavourite = async (deleteFavouriteRequest) => {
 /**
  * Gets data about all events in the database.
  * @param {Number} userId id of the user
+ * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
  */
 const getFavouriteEvents = async (userId) => {

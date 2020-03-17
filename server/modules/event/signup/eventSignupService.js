@@ -64,6 +64,7 @@ const getSignupHistory = async (individualId) => {
 /**
  * Get all future signups from the database for a specific user.
  * @param {object} userId A valid userId.
+* @return {object} result in httpUtil's sendResult format
  * Fails if userId is invalid, or database call fails.
  */
 const getGoingEvents = async (userId) => {
