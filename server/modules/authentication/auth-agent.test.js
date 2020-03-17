@@ -290,7 +290,7 @@ test("valid and expired token working", async () => {
     expect(responseOfPost.body.message).toBe("Passwords do not match.");
     expect(responseOfPost.statusCode).toBe(400);
 
-    authAgent.logOut(userId);
+    await authAgent.logOut(userId);
 
     // second pair of requests
 

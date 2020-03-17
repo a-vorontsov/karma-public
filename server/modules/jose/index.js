@@ -42,7 +42,7 @@ const blacklist = new Set(); // TODO: fetch when starting app
  * in JSON Web Key format.
  * @return {object} enc public key in JWK format
  */
-const getEncPubAsJWK = () => {
+const getEncPubAsJWK = () => { // TODO: ENFORCE PEM
     return keystore.get({
         kty: config.kty,
         crv: config.crvOrSize,
@@ -70,7 +70,7 @@ const getEncPubAsPEM = () => {
  * in JSON Web Key format.
  * @return {object} sig public key in JWK format
  */
-const getSigPubAsJWK = () => {
+const getSigPubAsJWK = () => { // TODO: ENFORCE PEM
     return keystore.get({
         kty: config.kty,
         crv: config.crvOrSize,
@@ -348,9 +348,9 @@ const getEncryptedConfig = (pub) => {
 };
 
 module.exports = {
-    getEncPubAsJWK,
+    getEncPubAsJWK, // TODO: ENFORCE PEM
     getEncPubAsPEM,
-    getSigPubAsJWK,
+    getSigPubAsJWK, // TODO: ENFORCE PEM
     getSigPubAsPEM,
     getPublicConfig,
     getEncryptedConfig,

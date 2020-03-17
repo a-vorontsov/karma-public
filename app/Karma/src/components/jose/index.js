@@ -9,6 +9,20 @@ const {
 } = jose;
 
 /**
+ * Assign new config object to jose config.
+ * @param {object} newConfig
+ */
+const setConfig = (newConfig) => {
+    Object.assign(config, newConfig);
+};
+
+// const initialise = () => {
+    // TODO: fetch at app start
+    const publicConf = require("./config").jose;
+    setConfig(publicConf);
+// }
+
+/**
  * Synchronously generate an encryption key with
  * config-defined type and curve/size.
  */
@@ -106,14 +120,6 @@ const verify = (token, pub, aud) => {
 };
 
 /**
- * Assign new config object to jose config.
- * @param {object} newConfig
- */
-const setConfig = (newConfig) => {
-    Object.assign(config, newConfig);
-};
-
-/**
  * Decrypt and parse input encrypted config
  * object and set it as new config.
  * @param {string} encryptedNewConfig as JWE
@@ -123,7 +129,7 @@ const setEncryptedConfig = (encryptedNewConfig) => {
 }
 
 module.exports = {
-    getEncPubAsJWK,
+    getEncPubAsJWK, // TODO: ENFORCE PEM
     getEncPubAsPEM,
     encrypt,
     decrypt,

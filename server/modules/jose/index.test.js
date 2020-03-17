@@ -574,7 +574,7 @@ test("JWT with blacklisted signature is rejected as expected", async () => {
     }).toThrow(errors.JWSVerificationFailed);
 });
 
-test("JWE key generation with public server config works", async () => {
+test("JWK key generation with public server config works", async () => {
 
     // on client:
     // 1) get public jose config from server
@@ -595,7 +595,7 @@ test("JWE key generation with public server config works", async () => {
 test("JWE key retrieval as JWK and en/decryption work", async () => {
 
     const cleartext = "karma";
-
+    // TODO: ENFORCE PEM
     const serverPub = joseOnServer.getEncPubAsJWK();
 
     const jwe = joseOnServer.encrypt(cleartext, serverPub);
@@ -651,7 +651,7 @@ test("JWE client-side token signature verification with JWK pub works", async ()
     // 3) securely retrieve full jose config from server
     const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
     // 4) get server's signing public key
-    const serverSigPub = joseOnServer.getSigPubAsJWK();
+    const serverSigPub = joseOnServer.getSigPubAsPEM();
 
     // on server:
     // 1) get payload for user
@@ -733,7 +733,7 @@ test("JWE client-side decryption works", async () => {
     // 3) securely retrieve full jose config from server
     const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
     // 4) get server's signing public key
-    const serverSigPub = joseOnServer.getSigPubAsJWK();
+    const serverSigPub = joseOnServer.getSigPubAsPEM();
 
     // on server:
     // 1) get payload for user
@@ -774,7 +774,7 @@ test("JWE client-side decryption and token verification work", async () => {
     // 3) securely retrieve full jose config from server
     const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
     // 4) get server's signing public key
-    const serverSigPub = joseOnServer.getSigPubAsJWK();
+    const serverSigPub = joseOnServer.getSigPubAsPEM();
 
     // on server:
     // 1) get payload for user
@@ -822,7 +822,7 @@ test("JWE (combined) client-side decryption and token verification work", async 
     // 3) securely retrieve full jose config from server
     const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
     // 4) get server's signing public key
-    const serverSigPub = joseOnServer.getSigPubAsJWK();
+    const serverSigPub = joseOnServer.getSigPubAsPEM();
 
     // on server:
     // 1) get payload for user
@@ -864,7 +864,7 @@ test("JWE complete server-client communication works", async () => {
     // 3) securely retrieve full jose config from server
     const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
     // 4) get server's signing public key
-    const serverSigPub = joseOnServer.getSigPubAsJWK();
+    const serverSigPub = joseOnServer.getSigPubAsPEM();
 
     // on server:
     // 1) get payload for user
@@ -892,7 +892,7 @@ test("JWE complete server-client communication works", async () => {
     expect(clientVerificationResult.iss).toStrictEqual(privateServerConfig.iss);
     // since verification passed client knows JWT is indeed from server
     // 3) send jwt back to server with next (and every other) request encrypted by server's pub
-    const serverEncPub = joseOnServer.getEncPubAsJWK();
+    const serverEncPub = joseOnServer.getEncPubAsPEM();
     const jweInNextReq = JWE.encrypt(decryptionResult, serverEncPub,
         {
             enc: privateServerConfig.enc,
