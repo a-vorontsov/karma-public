@@ -53,6 +53,11 @@ test("having no filters returns empty where clause", () => {
     expect(filterer.getWhereClause(filters)).toBe("");
 });
 
+test("having only incorrect boolean filters returns empty where clause", () => {
+    const filters = {booleanFilters:["womeasadasd","blabla"]};
+    expect(filterer.getWhereClause(filters)).toBe("");
+});
+
 test("where clause not affected by undefined and null values", () => {
     const filters = {
         booleans: [ 'physical', '!women_only' ],

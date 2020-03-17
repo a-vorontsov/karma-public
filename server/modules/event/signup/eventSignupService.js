@@ -1,7 +1,8 @@
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
+const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const util = require("../../../util/util");
-
+const eventSorter = require("../../sorting/event");
 
 /**
  * Creates a new event signup to be added to the database.
@@ -60,6 +61,25 @@ const getSignupHistory = async (individualId) => {
         data: {events: signedUpEvents},
     });
 };
+/**
+ * Get all future signups from the database for a specific user.
+ * @param {object} userId A valid userId.
+ * Fails if userId is invalid, or database call fails.
+ */
+const getGoingEvents = async (userId) => {
+    const userIdCheckResponse = await util.checkUserId(userId);
+    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
+    const findResult = await individualRepository.findGoingEvents(userId);
+    const events = findResult.rows;
+    if (events.length === 0) return ({status: 404, message: "No favourite events found"});
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTimeAndDistance(events, user);
+    return ({
+        status: 200,
+        message: "Future going events fetched successfully",
+        data: {events: events},
+    });
+};
 
 /**
  * Updates a signup already in the database.
@@ -80,4 +100,5 @@ module.exports = {
     getAllSignupsForEvent,
     getSignupHistory,
     updateSignUp,
+    getGoingEvents,
 };
