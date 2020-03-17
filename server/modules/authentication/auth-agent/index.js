@@ -1,11 +1,12 @@
-const authRepo = require("../../models/databaseRepositories/authenticationRepository");
-const digest = require("./digest");
+const authRepo = require("../../../models/databaseRepositories/authenticationRepository");
+const digest = require("../digest");
 const date = require("date-and-time");
-const util = require("../../util/util");
-const httpUtil = require("../../util/httpUtil");
-const httpErr = require("../../util/httpErrors");
-const permConfig = require("../../config").specialPermissions;
+const util = require("../../../util/util");
+const httpUtil = require("../../../util/httpUtil");
+const httpErr = require("../../../util/httpErrors");
+const permConfig = require("../../../config").specialPermissions;
 const specialPermissions = new Map(Object.entries(permConfig));
+specialPermissions.size; // TODO:
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
