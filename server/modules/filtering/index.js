@@ -8,13 +8,11 @@ const filtersAllowed = ["women_only", "physical", "photo_id", "address_visible",
     booleans: [ 'physical', '!women_only' ],
     availabilityStart: '2020-03-03',
     availabilityEnd: '2020-12-03',
-    maxDistance: undefined
 }
  * @param {Object} filters filters to be applied to the events
  * @param {Object} filters.booleans OPTIONAL boolean filters to be applied to the events
  * @param {Object} filters.availabilityStart OPTIONAL start date for the availability of the user
  * @param {Object} filters.availabilityEnd OPTIONAL end date for the availability of the user
- * @param {Object} filters.maxDistance OPTIONAL max distance events should be from the user
  * @return {string} where clause in postgresql format
  * Fails if database calls fail.
  */
@@ -37,8 +35,8 @@ const getWhereClause = (filters) => {
             clause += "and ";
         });
     }
-    if (availabilityStart) clause+= `date >=  \'${availabilityStart}\' and `;
-    if (availabilityEnd) clause+= `date <=  \'${availabilityEnd}\' and `;
+    if (availabilityStart) clause+= `date >= \'${availabilityStart}\' and `;
+    if (availabilityEnd) clause+= `date <= \'${availabilityEnd}\' and `;
     const lastIndex = clause.lastIndexOf("and");
     return clause.substring(0, lastIndex);
 };
