@@ -1,6 +1,7 @@
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
+const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
@@ -84,6 +85,35 @@ const getEvents = async (filters, userId) => {
 };
 
 /**
+ * Gets data about all events in the database.
+ * @param {Array} filters filters to be applied to the events
+ * @param {Number} userId id of the user
+ * Fails if database calls fail.
+ */
+const getEventsBySelectedCauses = async (filters, userId) => {
+    const whereClause = filterer.getWhereClause(filters);
+
+    const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
+    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
+    let events = eventResult.rows.map(event => {
+        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+    });
+    const userIdCheckResponse = await util.checkUserId(userId);
+    if (userIdCheckResponse.status !== 200) {
+        return userIdCheckResponse;
+    }
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTime(events);
+    eventSorter.sortByDistanceFromUser(events, user);
+    if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
+    return ({
+        status: 200,
+        message: "Events fetched successfully",
+        data: eventSorter.groupByCause(events),
+    });
+};
+
+/**
  * Gets data about an event that already exists in the database.
  * @param {Number} id Id of the event to be fetched.
  * Fails if database calls fail.
@@ -113,4 +143,5 @@ module.exports = {
     updateEvent,
     getEventData,
     getEvents,
+    getEventsBySelectedCauses,
 };

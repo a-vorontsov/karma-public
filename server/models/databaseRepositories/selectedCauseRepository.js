@@ -50,19 +50,20 @@ const find = (userID, causeID) => {
     return db.query(query, params);
 };
 
-const findEventsSelectedByUser = (userID, filters) => {
-    let whereClause = filterer.getWhereClause(filters);
+const findEventsSelectedByUser = (userId, whereClause) => {
+    whereClause = whereClause || ""; // if whereClause is not defined, default value is empty string
     if (whereClause === "") whereClause = "where ";
     else whereClause += " and ";
-    const query = "select id(event),name(event),address_id,women_only,spots,address_visible,minimum_age,photo_id," +
+    const query = "select id(event),name(event),address_id,women_only,spots as spots_available,address_visible,minimum_age,photo_id," +
         "physical, add_info,content,date,cause_id(event_cause),name(cause) as cause_name,description as cause_description," +
-        "user_id(event) as event_creator_id,address_1,address_2,postcode,city,region,lat,long from event " +
+        "user_id(event) as event_creator_id,address_1,address_2,postcode,city,region,lat,long, "+
+        "ARRAY(SELECT individual_id from sign_up where event_id = id(event)) as volunteers from event " +
         "inner join event_cause on id(event) = event_id " +
         "inner join selected_cause on cause_id(event_cause)=cause_id(selected_cause) " +
         "inner join cause on cause_id(event_cause) = id(cause) " +
         "inner join address on id(address) = address_id " +
         whereClause + "user_id(selected_cause) = $1";
-    return db.query(query, [userID]);
+    return db.query(query, [userId]);
 };
 
 module.exports = {

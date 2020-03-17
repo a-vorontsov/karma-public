@@ -22,7 +22,6 @@ const getWhereClause = (filters) => {
     if (availabilityStart) clause+= `date >=  \'${availabilityStart}\' and `;
     if (availabilityEnd) clause+= `date <=  \'${availabilityEnd}\' and `;
     const lastIndex = clause.lastIndexOf("and");
-    
     return clause.substring(0, lastIndex);
 };
 
