@@ -4,13 +4,17 @@ const eventService = require("./eventService");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
+const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const util = require("../../util/util");
+const filterer = require("../filtering");
 
 
 jest.mock("../../models/databaseRepositories/eventRepository");
 jest.mock("../../models/databaseRepositories/addressRepository");
 jest.mock("../../models/databaseRepositories/signupRepository");
+jest.mock("../../models/databaseRepositories/selectedCauseRepository");
 jest.mock("../../util/util");
+jest.mock("../filtering");
 
 let address, event, signUp;
 
