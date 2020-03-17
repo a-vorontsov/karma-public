@@ -36,23 +36,7 @@ afterEach(() => {
 });
 
 
-test("getting all events works", async () => {
-    util.checkUserId.mockResolvedValue({
-        status: 200,
-        user: {
-            id: 1,
-            lat: 51.414916,
-            long: -0.190487,
-        },
-    });
-    eventRepository.getEventsWithLocation.mockResolvedValue({
-        rows: [eventWithLocationExample1, eventWithLocationExample2],
-    });
-    const response = await request(app).get("/event?userId=1");
-    expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.data.events).toMatchObject([eventWithLocationExample1, eventWithLocationExample2]);
-});
+
 
 test("getting only physical events works", async () => {
     util.checkUserId.mockResolvedValue({

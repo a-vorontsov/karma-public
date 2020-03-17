@@ -128,7 +128,7 @@ router.get("/", async (req, res) => {
         filters.maxDistance = req.query.maxDistance;
 
         const getEventsResult = await eventService.getEvents(filters, userId);
-        getEventsResult.data = paginator.getPageData(req, getEventsResult.data.events);
+        getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
         console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
