@@ -4,10 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-
-const util = require("../../../util/util");
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
-const eventSorter = require("../../../modules/sorting/event");
 const httpUtil = require("../../../util/httpUtil");
 const eventService = require("../../../modules/event/eventService");
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
