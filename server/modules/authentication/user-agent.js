@@ -5,6 +5,7 @@ const userRepo = require("../../models/databaseRepositories/userRepository");
 const individualRepo = require("../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
 const authAgent = require("./auth-agent");
@@ -84,7 +85,7 @@ async function registerIndividual(userId, individual) {
 
     const addressId = await registerAddress(individual.address);
 
-    await individualRepo.insert({
+    const individualResult = await individualRepo.insert({
         firstname: individual.firstName,
         lastname: individual.lastName,
         phone: individual.phoneNumber,
@@ -97,6 +98,7 @@ async function registerIndividual(userId, individual) {
         // TODO: title
     });
 
+    await createEmptyProfile(individualResult.rows[0].id);
     await setSignUpFlagTrue(userId);
 }
 
@@ -160,6 +162,22 @@ async function registerAddress(address) {
         lat: 0, // TODO: compute here?
         long: 0,
     })).rows[0].id;
+}
+
+/**
+ * Create empty profile with individualId and return profile.
+ * @param {Number} individualId
+ * @return {object} profile
+ */
+async function createEmptyProfile(individualId) {
+    const insertProfile = {
+        individualId,
+        karmaPoints: 0,
+        bio: "",
+        womenOnly: false,
+    };
+    const profile = await profileRepo.insert(insertProfile);
+    return profile.rows[0];
 }
 
 /**
