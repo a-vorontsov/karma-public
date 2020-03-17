@@ -242,19 +242,6 @@ async function updatePassword(userId, password) {
     await userRepo.updatePassword(userId, hashedPassword, secureSalt);
 }
 
-/**
- * Get userId of user specified by email address.
- * @param {string} email
- * @return {number} userId
- * @throws {error} if user is not found
- * @throws {error} if invalid query
- */
-async function getUserId(email) {
-    const userResult = await userRepo.findByEmail(email);
-    const userRecord = userResult.rows[0];
-    return userRecord.id;
-}
-
 const signIn = async (email, password) => {
     const userResult = await userRepo.findByEmail(email);
     const user = userResult.rows[0];
@@ -282,7 +269,6 @@ module.exports = {
     isCorrectPasswordById,
     isCorrectPasswordByEmail,
     updatePassword,
-    getUserId,
     registerAddress,
     signIn,
 };
