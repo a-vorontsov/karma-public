@@ -1,37 +1,37 @@
 const db = require("../../database/connection");
 
-const insert = (userID, causeID) => {
+const insert = (userId, causeId) => {
     const query = "INSERT INTO selected_cause VALUES ($1, $2) " +
         "RETURNING *"; // returns inserted row
-    const params = [userID, causeID];
+    const params = [userId, causeId];
     return db.query(query, params);
 };
 
-const insertMultiple = (userID, causes) => {
+const insertMultiple = (userId, causes) => {
     const query = "INSERT INTO selected_cause SELECT $1 id, x FROM unnest($2::int[]) x " +
         "RETURNING *"; // returns inserted rows/selected causes
-    const params = [userID, causes];
+    const params = [userId, causes];
     return db.query(query, params);
 };
 
-const deleteUnselected = (userID, causes) => {
+const deleteUnselected = (userId, causes) => {
     const query = "DELETE FROM selected_cause WHERE cause_id NOT IN (SELECT * FROM unnest($2::int[])) AND user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
-    const params = [userID, causes];
+    const params = [userId, causes];
     return db.query(query, params);
 };
 
-const unselectAll = (userID) => {
+const unselectAll = (userId) => {
     const query = "DELETE FROM selected_cause WHERE user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
-    const params = [userID];
+    const params = [userId];
     return db.query(query, params);
 };
 
-const deleteMultiple = (userID, causes) => {
+const deleteMultiple = (userId, causes) => {
     const query = "DELETE FROM selected_cause WHERE cause_id IN (SELECT * FROM unnest($2::int[])) AND user_id = $1" +
         "RETURNING *"; // returns deleted selected causes
-    const params = [userID, causes];
+    const params = [userId, causes];
     return db.query(query, params);
 };
 
@@ -43,9 +43,9 @@ const findByCauseId = (causeId) => {
     const query = "SELECT * FROM selected_cause WHERE cause_id=$1";
     return db.query(query, [causeId]);
 };
-const find = (userID, causeID) => {
+const find = (userId, causeId) => {
     const query = "SELECT * FROM selected_cause WHERE user_id = $1 AND cause_id=$2";
-    const params = [userID, causeID];
+    const params = [userId, causeId];
     return db.query(query, params);
 };
 
