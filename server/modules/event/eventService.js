@@ -73,7 +73,10 @@ const getEvents = async (filters, userId) => {
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
-        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spotsAvailable - (event.volunteers).length,
+        };
     });
 
     const user = userIdCheckResponse.user;
@@ -103,7 +106,10 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
-        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spotsAvailable - (event.volunteers).length,
+        };
     });
 
     const user = userIdCheckResponse.user;
