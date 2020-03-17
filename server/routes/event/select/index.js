@@ -16,66 +16,80 @@ const eventService = require("../../../modules/event/eventService");
  * route {GET} event/causes
  * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!womenOnly&filter[]=physical
  * @param {Number} req.query.userId - ID of user logged in
- * @param {Array} req.query.filter - all filters required as an array of strings
+ * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
+ * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
+ * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
+ * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
  * @returns {Object}
  *  status: 200, description: Array of all event objects grouped by causes that were selected by user <br/>
  *  Each cause group is sorted by time and distance from the user (distance measured in miles) as follows:
  *  <pre>
- {
-    message: "Events fetched successfully",
-    data: {
+{
+    "message": "Events fetched successfully",
+    "data": {
         "peace": [
             {
                 "id": 3,
-                "name": "Staying at Home",
-                "addressId": 1,
-                "womenOnly": false,
-                "spots": 1,
-                "addressVisible": true,
-                "minimumAge": 18,
-                "photoId": false,
-                "addInfo": false,
-                "content": "sleeping at home",
-                "date": "2020-03-25T19:10:00.000Z",
-                "causeId": 3,
-                "causeName": "peace",
-                "causeDescription": "not dealing with people",
-                "eventCreatorId": 1,
-                "address1": "pincot road",
-                "address2": null,
-                "postcode": "SW19 2LF",
-                "city": "London",
-                "region": null,
-                "lat": 51.4149160,
-                "long": -0.1904870,
-                "distance": 0
-            }
-        ],
-        "gardening": [
-            {
-                "id": 1,
-                "name": "Close to Home",
+                "name": "Event in KCL",
                 "addressId": 3,
                 "womenOnly": false,
-                "spots": 3,
+                "spotsAvailable": 30,
                 "addressVisible": true,
-                "minimumAge": 18,
+                "minimumAge": 20,
                 "photoId": false,
-                "addInfo": false,
-                "content": "very very close from home",
-                "date": "2020-03-25T19:10:00.000Z",
-                "causeId": 1,
-                "causeName": "gardening",
-                "causeDescription": "watering plants and dat",
+                "physical": true,
+                "addInfo": true,
+                "content": "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+                "date": "2020-04-08T23:00:00.000Z",
+                "causeId": 6,
+                "causeName": "peace",
+                "causeDescription": "montes, nascetur ridiculus mus. Aenean",
                 "eventCreatorId": 1,
-                "address1": "nearby road",
-                "address2": null,
-                "postcode": "whatever",
+                "address1": "uni road",
+                "address2": "wherever",
+                "postcode": "SE1 1DR",
                 "city": "London",
-                "region": null,
-                "lat": 51.4161220,
-                "long": -0.1866410,
-                "distance": 0.18548890708299523
+                "region": "region",
+                "lat": 51.511407,
+                "long": -0.115905,
+                "volunteers": [
+                    1,
+                    34
+                ],
+                "going": true,
+                "spotsRemaining": 28,
+                "distance": 7.399274608089304
+            }
+        ],
+        "animals": [
+            {
+                "id": 47,
+                "name": "consectetuer, cursus et, magna. Praesent",
+                "addressId": 15,
+                "womenOnly": false,
+                "spotsAvailable": 4,
+                "addressVisible": true,
+                "minimumAge": 20,
+                "photoId": false,
+                "physical": true,
+                "addInfo": false,
+                "content": "ullamcorper eu, euismod ac, fermentum vel, mauris.",
+                "date": "2020-01-22T00:00:00.000Z",
+                "causeId": 1,
+                "causeName": "animals",
+                "causeDescription": "Morbi accumsan laoreet ipsum. Curabitur",
+                "eventCreatorId": 13,
+                "address1": "5296 Nulla Av.",
+                "address2": "982-9169 Ante Road",
+                "postcode": "18258",
+                "city": "Carovilli",
+                "region": "MOL",
+                "lat": -84,
+                "long": 10,
+                "volunteers": [],
+                "going": false,
+                "spotsRemaining": 4,
+                "distance": 9361.620275789797
             }
         ]
     }

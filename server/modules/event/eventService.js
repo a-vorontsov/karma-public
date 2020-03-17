@@ -85,7 +85,7 @@ const getEvents = async (filters, userId) => {
 };
 
 /**
- * Gets data about all events in the database.
+ * Gets array of events grouped by causes selected by the user
  * @param {Array} filters filters to be applied to the events
  * @param {Number} userId id of the user
  * Fails if database calls fail.
