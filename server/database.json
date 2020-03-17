@@ -3,7 +3,7 @@
     "driver": "pg",
     "user": "postgres",
     "password": "asd123",
-    "host": "localhost",
+    "host": "db",
     "database": "karma-db",
     "port": "5432"
   }

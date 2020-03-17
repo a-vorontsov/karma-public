@@ -1,0 +1,28 @@
+name: Backend - Automatically Run Node.js Linting and Tests
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "server/**"
+  pull_request: # TODO remove this before merging
+    branches:
+      - devops-deployment
+      - dev # dev
+    paths:
+      - "server/**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: stenal/karma
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: resources/docker
+          snapshot: true

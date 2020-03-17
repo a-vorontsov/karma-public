@@ -16,13 +16,22 @@ services:
     image: karma/server
     build:
       context: ../../../server
-      dockerfile: ../resources/docker/Dockerfile
+      dockerfile: ../resources/docker/Dockerfile.server
     container_name: karma-server
     ports:
       - 8000:8000
     depends_on:
       - db
     command: sh -c "npm run db-migrate up && node server.js"
+
+  admin:
+    image: karma/admin
+    build:
+      context: ../../../admin
+      dockerfile: ../resources/docker/Dockerfile.admin
+    container_name: karma-admin
+    ports:
+      - 80:80
 
 volumes:
   db_data: {}
