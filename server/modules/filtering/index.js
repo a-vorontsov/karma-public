@@ -1,4 +1,4 @@
-const filtersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
+const booleanfiltersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
 
 /**
  * Gets the where clause from the filters given to be plugged to any db query.
@@ -42,11 +42,9 @@ const getWhereClause = (filters) => {
 };
 
 const filterIsValid = (filter) => {
-    return filtersAllowed.includes(filter);
+    return booleanfiltersAllowed.includes(filter);
 };
-
 
 module.exports = {
     getWhereClause,
-    filterIsValid,
 };

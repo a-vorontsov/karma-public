@@ -21,6 +21,7 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
+import * as Keychain from "react-native-keychain";
 
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -50,28 +51,58 @@ class ProfileScreen extends Component {
             points: 1,
             activities: [],
         };
-        this.fetchAllActivities();
+        this.fetchProfileInfo();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
-
-    fetchAllActivities() {
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+    async fetchProfileInfo(){
+        const credentials = await this.getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
         request
-            .get("http://localhost:8000/event/going")
-            .query({userId: 76})
-            .then(result => {
-                console.log(result.body.data);
-                let activities = result.body.data;
-                this.setState({
-                    activities,
-                });
-            })
-            .catch(er => {
-                console.log(er);
-            });
+        .get("http://localhost:8000/profile")
+        .query({userId:1})
+        .then(res => {
+            console.log(res.body.data);
+        })
+        .catch(err => {
+            console.log(err)
+        });
     }
+    // fetchAllActivities() {
+    //     request
+    //         .get("http://localhost:8000/event/going")
+    //         .query({userId: 76})
+    //         .then(result => {
+    //             console.log(result.body.data);
+    //             let activities = result.body.data;
+    //             this.setState({
+    //                 activities,
+    //             });
+    //         })
+    //         .catch(er => {
+    //             console.log(er);
+    //         });
+    // }
 
     _renderItem = ({item}) => {
         return (

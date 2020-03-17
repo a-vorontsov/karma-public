@@ -1,16 +1,9 @@
 const filterer = require("./index.js");
 
-test("incorrect filter is not valid", () => {
-    expect(filterer.filterIsValid("Delete * from db")).toBe(false);
-    expect(filterer.filterIsValid("womenOnly")).toBe(false);
-    expect(filterer.filterIsValid("address")).toBe(false);
-});
-test("correct filter is  valid", () => {
-    expect(filterer.filterIsValid("women_only")).toBe(true);
-    expect(filterer.filterIsValid("physical")).toBe(true);
-    expect(filterer.filterIsValid("add_info")).toBe(true);
-    expect(filterer.filterIsValid("photo_id")).toBe(true);
-    expect(filterer.filterIsValid("address_visible")).toBe(true);
+test("incorrect filter is not valid and returns empty string", () => {
+    expect(filterer.getWhereClause({booleans:["Delete * from db"]})).toBe("");
+    expect(filterer.getWhereClause({booleans:["womenOnly"]})).toBe("");
+    expect(filterer.getWhereClause({booleans:["address"]})).toBe("");
 });
 
 test("where clause matches boolean filters specified", () => {
