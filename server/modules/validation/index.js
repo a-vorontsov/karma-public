@@ -119,7 +119,7 @@ const individualSchema = {
         "phone": {"type": "string"},
         "banned": {"type": "boolean"},
         "userId": {"type": "number"},
-        "pictureId": {"type": "number"},
+        "pictureId": {"type": ["number", "null"]},
         "addressId": {"type": "number"},
         "birthday": {"type": ["string", "date-time"]},
         "gender": {"type": "string"},
