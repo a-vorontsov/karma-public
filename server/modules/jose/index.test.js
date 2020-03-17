@@ -590,6 +590,9 @@ test("JWK key generation with public server config works", async () => {
     expect(clientEncKey.crv).toStrictEqual(publicServerConfig.crvOrSize);
     expect(clientEncKey.type).toBe("private");
     expect(clientEncKey.private).toBe(true);
+
+    const pubServerSigKey = joseOnServer.getSigPubAsJWK(); // TODO: enforce PEM
+    expect(JWK.isKey(pubServerSigKey)).toBe(true);
 });
 
 test("JWE key retrieval as JWK and en/decryption work", async () => {
