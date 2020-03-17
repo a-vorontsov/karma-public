@@ -12,11 +12,7 @@ const eventSelectRoute = require("./select/");
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
-
-const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const paginator = require("../../modules/pagination");
-const util = require("../../util/util");
-const eventSorter = require("../../modules/sorting/event");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -25,71 +21,97 @@ router.use("/", eventSelectRoute);
 
 /**
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event?userId=1&currentPage=1&pageSize=2&filter[]=!womenOnly&filter[]=physical<br/>
+ * URL example: REACT_APP_API_URL/event?userId=1&pageSize=2&currentPage=1
+&filter[]=!womenOnly&filter[]=physical&availabilityStart=2020-03-03&availabilityEnd=2020-12-03&maxDistance=5000<br/>
  * route {GET} /event
  * @param {Number} req.query.userId - ID of user logged in
- * @param {Array} req.query.filter - all filters required as an array of strings
+ * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
+ * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
+ * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
+ * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
  * @returns {Object}
  *  status: 200, description: Array of all event objects sorted by time
  *  and distance from the user (distance measured in miles), along with pagination information as follows:
  <pre>
- {
-  message:"All activities successfully fetched",
-  "data": {
-       "meta": {
-         "currentPage": 2,
-           "pageCount": 1,
-           "pageSize": 2,
-           "count": 4
-       },
-       "events": [
-           {
-               "eventId": 1,
-               "name": "Community help centre",
-               "womenOnly": false,
-               "spots": 3,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "help people at the community help centre because help is good",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "nearby road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.4161220,
-               "long": -0.1866410,
+{
+    "message": "All Events fetched successfully",
+    "data": {
+        "meta": {
+            "currentPage": 1,
+            "pageCount": 1,
+            "pageSize": 2,
+            "count": 3
+        },
+        "events": [
+            {
+                "eventId": 2,
+                "name": "Event close to user 1",
+                "womenOnly": true,
+                "spotsAvailable": 20,
+                "addressVisible": true,
+                "minimumAge": 21,
+                "photoId": false,
+                "physical": true,
+                "addInfo": false,
+                "content": "risus. Quisque libero lacus, varius et, euismod et, commodo at, libero. Morbi accumsan laoreet",
+                "date": "2020-07-04T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "nearby road",
+                "address2": "wherever",
+                "postcode": "SW19 2LF",
+                "city": "London",
+                "region": "region",
+                "lat": 51.416122,
+                "long": -0.186641,
+                "volunteers": [
+                    1,
+                    21,
+                    36,
+                    2,
+                    24,
+                    13,
+                    29,
+                    46,
+                    37,
+                    39,
+                    49,
+                    12
+                ],
+                "going": true,
+                "spotsRemaining": 8,
                 "distance": 0.18548890708299523
-           },
-           {
-               "eventId": 2,
-               "name": "Picking up trash",
-               "womenOnly": false,
-               "spots": 5,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "small class to teach other people how to pick themselves up",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "uni road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.5114070,
-               "long": -0.1159050,
-               "distance": 7.399274608089304
-           }
-       ]
-   }
- }
+            },
+            {
+                "eventId": 3,
+                "name": "Event in KCL",
+                "womenOnly": false,
+                "spotsAvailable": 30,
+                "addressVisible": true,
+                "minimumAge": 20,
+                "photoId": false,
+                "physical": true,
+                "addInfo": true,
+                "content": "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+                "date": "2020-04-08T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "uni road",
+                "address2": "wherever",
+                "postcode": "SE1 1DR",
+                "city": "London",
+                "region": "region",
+                "lat": 51.511407,
+                "long": -0.115905,
+                "volunteers": [
+                    1,
+                    34
+                ],
+                "going": true,
+                "spotsRemaining": 28,
+                "distance": 7.399274608089304
+            }
+        ]
+    }
+}
  </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: if userID doesn't belong to any user <br/>
@@ -98,22 +120,13 @@ router.use("/", eventSelectRoute);
  *  @name Get "All" Activities tab
  */
 router.get("/", async (req, res) => {
-    // const userId = req.query.userId;
-    // const filters = req.query.filter;
-    // console.log(req.query);
-    // const maxDistance = req.query.maxDistance;
-    // const availabilityStart = req.query.availabilityStart;
-    // const availabilityEnd = req.query.availabilityEnd;
-    // filters.push(maxDistance?{maxDistance: maxDistance}:null,
-    // availabilityStart?{availabilityStart: availabilityStart}:null, availabilityEnd?{availabilityEnd: availabilityEnd}:null);
-    // console.log(filters);
-    // console.log(maxDistance + " " + " from: " + availabilityStart +" to: " + availabilityEnd);
     try {
         const userId = Number.parseInt(req.query.userId);
         const filters = {booleans: req.query.filter};
-        filters.availabilityStart= req.query.availabilityStart;
-        filters.availabilityEnd= req.query.availabilityEnd;
+        filters.availabilityStart = req.query.availabilityStart;
+        filters.availabilityEnd = req.query.availabilityEnd;
         filters.maxDistance = req.query.maxDistance;
+
         const getEventsResult = await eventService.getEvents(filters, userId);
         getEventsResult.data = paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
@@ -121,25 +134,6 @@ router.get("/", async (req, res) => {
         console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
-
-    // const checkUserIdResult = await util.checkUserId(userId);
-    // if (checkUserIdResult.status !== 200) {
-    //     return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
-    // }
-    // const user = checkUserIdResult.user;
-    // eventRepository
-    //     .getEventsWithLocation(filters)
-    //     .then(result => {
-    //         const events = result.rows;
-    //         if (events.length === 0) return res.status(404).send({message: "No events"});
-    //         eventSorter.sortByTime(events);
-    //         eventSorter.sortByDistanceFromUser(events, user);
-    //         res.status(200).send({
-    //             message: "Events fetched successfully",
-    //             data: paginator.getPageData(req, events),
-    //         });
-    //     })
-    //     .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**

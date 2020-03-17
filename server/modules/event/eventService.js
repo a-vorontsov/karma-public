@@ -58,7 +58,7 @@ const updateEvent = async (event) => {
 /**
  * Gets data about all events in the database.
  * @param {Array} filters filters to be applied to the events
- * @param {Number} userId Id of the user to be fetched.
+ * @param {Number} userId id of the user
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
