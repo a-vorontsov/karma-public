@@ -6,16 +6,19 @@ import {
     Platform,
     Image,
     KeyboardAvoidingView,
+    SafeAreaView,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
+import {ScrollView} from "react-native-gesture-handler";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
+import { Button } from "../components/buttons";
 const request = require("superagent");
 
-class WelcomeScreen extends Component {
+export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -191,6 +194,7 @@ class WelcomeScreen extends Component {
     }
 
     async confirmForgotPasswordCode(code) {
+        const {navigate} = this.props.navigation;
         await request
             .post("http://localhost:8000/signin/forgot/confirm")
             .send({
@@ -205,6 +209,9 @@ class WelcomeScreen extends Component {
                 console.log("correct code");
                 this.setState({isCodeValid: true});
                 //TODO navigate to new Password screen
+                navigate("ForgotPassword", {
+                    email: this.state.emailInput,
+                });
             })
             .catch(err => {
                 // code incorrect
@@ -249,7 +256,8 @@ class WelcomeScreen extends Component {
 
     render() {
         return (
-            <View style={WelcomeScreenStyles.container}>
+            <SafeAreaView style={WelcomeScreenStyles.container}>
+                    
                 <View style={{flex: 2, justifyContent: "center"}}>
                     <Image
                         style={{
@@ -260,24 +268,19 @@ class WelcomeScreen extends Component {
                         }}
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
-                    <RegularText
-                        style={[
-                            WelcomeScreenStyles.text,
-                            {fontSize: 40},
-                        ]} /* // should be an image so that its moved as smoothly as the image PROBLEM */
-                    >
-                        lorem ipsum
-                    </RegularText>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ForgotPassword")}><RegularText>forgot pass</RegularText></TouchableOpacity>
                 </View>
 
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
+                        <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="always">
                     <View
                         style={{
                             flex: 1,
                             alignItems: "flex-start",
-                            marginBottom: 40,
                         }}>
                         {/* Email Field*/}
                         {this.state.isSignUpPressed && (
@@ -322,6 +325,7 @@ class WelcomeScreen extends Component {
                             />
                         )}
                     </View>
+                    </ScrollView>
                 </KeyboardAvoidingView>
 
                 <View
@@ -329,7 +333,6 @@ class WelcomeScreen extends Component {
                         flex: 1,
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        marginBottom: 40,
                     }}>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
@@ -340,9 +343,9 @@ class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
                 </View>
-            </View>
+                
+            </SafeAreaView>
         );
     }
 }
 
-export default WelcomeScreen;
