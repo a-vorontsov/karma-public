@@ -63,16 +63,18 @@ const updateEvent = async (event) => {
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
-    const whereClause = filterer.getWhereClause(filters);
+    const userIdCheckResponse = await util.checkUserId(userId);
+    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
+
+    const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
     if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
+
+    // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
         return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
     });
-    const userIdCheckResponse = await util.checkUserId(userId);
-    if (userIdCheckResponse.status !== 200) {
-        return userIdCheckResponse;
-    }
+
     const user = userIdCheckResponse.user;
     eventSorter.sortByTimeAndDistance(events, user);
     if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
@@ -90,17 +92,18 @@ const getEvents = async (filters, userId) => {
  * Fails if database calls fail.
  */
 const getEventsBySelectedCauses = async (filters, userId) => {
-    const whereClause = filterer.getWhereClause(filters);
+    const userIdCheckResponse = await util.checkUserId(userId);
+    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
 
+    const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
     if (eventResult.rows.length === 0) return ({status: 404, message: "No events with causes selected by user and corresponding filters."});
+
+    // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
         return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
     });
-    const userIdCheckResponse = await util.checkUserId(userId);
-    if (userIdCheckResponse.status !== 200) {
-        return userIdCheckResponse;
-    }
+
     const user = userIdCheckResponse.user;
     eventSorter.sortByTimeAndDistance(events, user);
 
