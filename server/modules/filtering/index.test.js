@@ -1,6 +1,5 @@
 const filterer = require("./index.js");
 
-const filters = ["physical", "women_only"];
 test("incorrect filter is not valid", () => {
     expect(filterer.filterIsValid("Delete * from db")).toBe(false);
     expect(filterer.filterIsValid("womenOnly")).toBe(false);

@@ -149,7 +149,36 @@ const event = {
     creationDate: "2019-10-19 10:23:54",
 };
 
+const eventWithData = {
+    name: "Event in KCL",
+    womenOnly: false,
+    spotsAvailable: 30,
+    addressVisible: true,
+    minimumAge: 20,
+    photoId: false,
+    physical: true,
+    addInfo: true,
+    content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+    date: "2020-04-08T23:00:00.000Z",
+    eventCreatorId: 1,
+    address1: "uni road",
+    address2: "wherever",
+    postcode: "SE1 1DR",
+    city: "London",
+    region: "region",
+    lat: 51.511407,
+    long: -0.115905,
+    volunteers: [
+        1,
+        34,
+    ],
+    going: true,
+    spotsRemaining: 28,
+    distance: 7.399274608089304,
+};
+
 const getEvent = () => ({...event});
+const getEventWithAllData = () => ({...eventWithData});
 
 const userExample1 = {
     email: "test@gmail.com",
@@ -498,4 +527,5 @@ module.exports = {
     getNotification: getNotification,
     getBugReport: getBugReport,
     getInformation: getInformation,
+    getEventWithAllData: getEventWithAllData,
 };
