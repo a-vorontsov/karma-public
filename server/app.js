@@ -43,9 +43,9 @@ app.use("/causes/select", require("./routes/causes/select"));
 app.use("/event", require("./routes/event"));
 // TODO: discuss structure
 
-app.use("/profile", require("./routes/profile"));
 app.use("/profile/edit", require("./routes/profile/edit"));
 app.use("/profile/edit/password", require("./routes/profile/edit/password"));
+app.use("/profile", require("./routes/profile"));
 
 app.use("/admin", require("./routes/admin"));
 
