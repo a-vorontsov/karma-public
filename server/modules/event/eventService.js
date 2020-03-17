@@ -94,7 +94,7 @@ const getEventsBySelectedCauses = async (filters, userId) => {
     const whereClause = filterer.getWhereClause(filters);
 
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
-    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
+    if (eventResult.rows.length === 0) return ({status: 404, message: "No events with causes selected by user and corresponding filters."});
     let events = eventResult.rows.map(event => {
         return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
     });

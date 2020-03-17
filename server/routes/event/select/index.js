@@ -93,35 +93,12 @@ router.get("/causes", async (req, res) => {
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
         filters.maxDistance = req.query.maxDistance;
-
         const getEventsResult = await eventService.getEventsBySelectedCauses(filters, userId);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
         console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
-    // const userId = req.query.userId;
-    // const filters = req.query.filter;
-    // const checkUserIdResult = await util.checkUserId(userId);
-    // if (checkUserIdResult.status !== 200) {
-    //     return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
-    // }
-    // const user = checkUserIdResult.user;
-    // selectedCauseRepository
-    //     .findEventsSelectedByUser(userId, filters)
-    //     .then(result => {
-    //         const events = result.rows;
-    //         if (events.length === 0) {
-    //             return res.status(404).send({message: "No causes selected by user"});
-    //         }
-    //         eventSorter.sortByTime(events);
-    //         eventSorter.sortByDistanceFromUser(events, user);
-    //         res.status(200).send({
-    //             message: "Events fetched successfully",
-    //             data: eventSorter.groupByCause(events),
-    //         });
-    //     })
-    //     .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**
