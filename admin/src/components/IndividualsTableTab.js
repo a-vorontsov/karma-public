@@ -14,13 +14,35 @@ export function IndividualsTableTab() {
         fetchData();
     }, []);
 
+    const toggleBan = async (event, rowData) => {
+        if (!window.confirm("Ban " + rowData.firstname + " " + rowData.lastname + "?")) return;
+        rowData.banned = !rowData.banned;
+        const indivs = individuals.slice();
+        indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
+        setIndividuals(indivs);
+        await fetch(process.env.REACT_APP_API_URL + "/admin/ban", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({data: {individual: rowData}}),
+        });
+    };
+
     return (
         <div style={{ maxWidth: '100%' }}>
             <MaterialTable
                 columns={[
                     { title: 'First name', field: 'firstname' },
                     { title: 'Last name', field: 'lastname' },
+                    { title: 'Phone', field: 'phone' },
+                    { title: 'Gender', field: 'gender' },
                     { title: 'Banned', field: 'banned', type: 'boolean' },
+                ]}
+                actions={[
+                    () => ({
+                        icon: 'not_interested',
+                        tooltip: 'Ban User',
+                        onClick: toggleBan,
+                    })
                 ]}
                 data={individuals}
                 options={{pageSize: 15, pageSizeOptions: [5, 15, 25]}}
