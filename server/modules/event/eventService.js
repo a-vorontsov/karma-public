@@ -75,7 +75,7 @@ const getEvents = async (filters, userId) => {
     const user = userIdCheckResponse.user;
     eventSorter.sortByTime(events);
     eventSorter.sortByDistanceFromUser(events, user);
-    events = events.filter(event => event.distance <= filters.maxDistance);
+    if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
     return ({
         status: 200,
         message: "Events fetched successfully",
