@@ -135,29 +135,19 @@ validator.addSchema(signupSchema, "/Signup");
 validator.addSchema(informationSchema, "/Information");
 validator.addSchema(individualSchema, "/Individual");
 
-const validateAddress = (address) => {
-    return validator.validate(address, addressSchema);
-};
+const validateAddress = (address) => validator.validate(address, addressSchema);
 
-const validateEvent = (event) => {
-    return validator.validate(event, eventSchema);
-};
+const validateEvent = (event) => validator.validate(event, eventSchema);
 
-const validateNotification = (notification) => {
-    return validator.validate(notification, notificationSchema);
-};
+const validateNotification = (notification) => validator.validate(notification, notificationSchema);
 
-const validateFavourite = (favourite) => {
-    return validator.validate(favourite, favouriteSchema);
-};
+const validateFavourite = (favourite) => validator.validate(favourite, favouriteSchema);
 
-const validateSignup = (signup) => {
-    return validator.validate(signup, signupSchema);
-};
+const validateSignup = (signup) => validator.validate(signup, signupSchema);
 
-const validateInformation = (information) => {
-    return validator.validate(information, informationSchema);
-};
+const validateInformation = (information) => validator.validate(information, informationSchema);
+
+const validateIndividual = (individual) => validator.validate(individual, individualSchema);
 
 module.exports = {
     validateAddress,
@@ -166,4 +156,5 @@ module.exports = {
     validateFavourite,
     validateSignup,
     validateInformation,
+    validateIndividual,
 };
