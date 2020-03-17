@@ -138,12 +138,29 @@ const sleep = async (ms) => {
     });
 };
 
+/**
+ * Convert given Base64 string to hex and
+ * return result.
+ * @param {string} base64String
+ * @return {string} in hex
+ */
+const base64ToHex = (base64String) => {
+    const proc = atob(base64String);
+    let result = '';
+    for (let i = 0; i < proc.length; i++) {
+        const hex = proc.charCodeAt(i).toString(16);
+        result += (hex.length === 2 ? hex : '0' + hex);
+    }
+    return result;
+};
+
 module.exports = {
-    isIndividual: isIndividual,
-    isOrganisation: isOrganisation,
-    checkUserId: checkUserId,
-    checkEventId: checkEventId,
-    checkEmail: checkEmail,
-    isValidToken: isValidToken,
-    sleep: sleep,
+    isIndividual,
+    isOrganisation,
+    checkUserId,
+    checkEventId,
+    checkEmail,
+    isValidToken,
+    sleep,
+    base64ToHex,
 };
