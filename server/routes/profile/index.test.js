@@ -59,7 +59,7 @@ test("viewing individual profile works", async () => {
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
         .get("/profile")
-        .send(profileViewRequest);
+        .query(profileViewRequest);
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
@@ -125,7 +125,7 @@ test("viewing org profile works", async () => {
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
         .get("/profile")
-        .send(profileViewRequest);
+        .query(profileViewRequest);
 
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
@@ -160,7 +160,7 @@ test("viewing profile without indiv or org account works", async () => {
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
         .get("/profile")
-        .send(profileViewRequest);
+        .query(profileViewRequest);
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
