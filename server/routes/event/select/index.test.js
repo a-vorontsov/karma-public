@@ -3,6 +3,7 @@ const app = require("../../../app");
 const testHelpers = require("../../../test/testHelpers");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
+const eventService = require("../../../modules/event/eventService");
 
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
@@ -14,6 +15,7 @@ jest.mock("../../../models/databaseRepositories/addressRepository");
 jest.mock("../../../models/databaseRepositories/selectedCauseRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
 jest.mock("../../../models/databaseRepositories/userRepository");
+jest.mock("../../../modules/event/eventService");
 jest.mock("../../../util/util");
 jest.mock("../../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
@@ -35,44 +37,6 @@ afterEach(() => {
     return testHelpers.clearDatabase();
 });
 
-
-
-
-test("getting only physical events works", async () => {
-    util.checkUserId.mockResolvedValue({
-        status: 200,
-        user: {
-            id: 1,
-            lat: 51.414916,
-            long: -0.190487,
-        }
-    });
-    eventRepository.getEventsWithLocation.mockResolvedValue({
-        rows: [physicalEvent]
-    });
-    const response = await request(app).get("/event?userId=1&filter[]=physical");
-    expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.data.events).toMatchObject([physicalEvent]);
-});
-
-test("getting women only events works", async () => {
-    util.checkUserId.mockResolvedValue({
-        status: 200,
-        user: {
-            id: 1,
-            lat: 51.414916,
-            long: -0.190487,
-        }
-    });
-    eventRepository.getEventsWithLocation.mockResolvedValue({
-        rows: [womenOnlyEvent]
-    });
-    const response = await request(app).get("/event?userId=1&filter[]=womenOnly");
-    expect(eventRepository.getEventsWithLocation).toHaveBeenCalledTimes(1);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.data.events).toMatchObject([womenOnlyEvent]);
-});
 
 test("getting events grouped by causes selected by user works", async () => {
     util.checkUserId.mockResolvedValue({
