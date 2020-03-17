@@ -98,43 +98,49 @@ router.use("/", eventSelectRoute);
  *  @name Get "All" Activities tab
  */
 router.get("/", async (req, res) => {
-    const userId = req.query.userId;
-    const filters = req.query.filter;
-    console.log(req.query);
-    const maxDistance = req.query.maxDistance;
-    const availabilityStart = req.query.availabilityStart;
-    const availabilityEnd = req.query.availabilityEnd;
+    // const userId = req.query.userId;
+    // const filters = req.query.filter;
+    // console.log(req.query);
+    // const maxDistance = req.query.maxDistance;
+    // const availabilityStart = req.query.availabilityStart;
+    // const availabilityEnd = req.query.availabilityEnd;
     // filters.push(maxDistance?{maxDistance: maxDistance}:null,
     // availabilityStart?{availabilityStart: availabilityStart}:null, availabilityEnd?{availabilityEnd: availabilityEnd}:null);
-    console.log(filters);
-    console.log(maxDistance + " " + " from: " + availabilityStart +" to: " + availabilityEnd);
+    // console.log(filters);
+    // console.log(maxDistance + " " + " from: " + availabilityStart +" to: " + availabilityEnd);
     try {
-        const id = Number.parseInt(req.params.id);
-        const getEventResult = await eventService.getEventData(id);
-        return httpUtil.sendResult(getEventResult, res);
+        const userId = Number.parseInt(req.query.userId);
+        const filters = req.query.filter;
+        console.log(req.query);
+        const maxDistance = req.query.maxDistance;
+        const availabilityStart = req.query.availabilityStart;
+        const availabilityEnd = req.query.availabilityEnd;
+        const getEventsResult = await eventService.getEvents(filters, userId);
+        getEventsResult.data = paginator.getPageData(req, getEventsResult.data.events);
+        return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
-    
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
-    }
-    const user = checkUserIdResult.user;
-    eventRepository
-        .getEventsWithLocation(filters)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) return res.status(404).send({message: "No events"});
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).send({
-                message: "Events fetched successfully",
-                data: paginator.getPageData(req, events),
-            });
-        })
-        .catch(err => res.status(500).send({message: err.message}));
+
+    // const checkUserIdResult = await util.checkUserId(userId);
+    // if (checkUserIdResult.status !== 200) {
+    //     return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
+    // }
+    // const user = checkUserIdResult.user;
+    // eventRepository
+    //     .getEventsWithLocation(filters)
+    //     .then(result => {
+    //         const events = result.rows;
+    //         if (events.length === 0) return res.status(404).send({message: "No events"});
+    //         eventSorter.sortByTime(events);
+    //         eventSorter.sortByDistanceFromUser(events, user);
+    //         res.status(200).send({
+    //             message: "Events fetched successfully",
+    //             data: paginator.getPageData(req, events),
+    //         });
+    //     })
+    //     .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**

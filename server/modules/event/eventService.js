@@ -1,6 +1,8 @@
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
+const userRepository = require("../../models/databaseRepositories/userRepository");
+const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
 /**
@@ -61,24 +63,22 @@ const updateEvent = async (event) => {
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
-    console.log("here");
     const whereClause = filterer.getWhereClause(filters);
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
-    const events = eventResult.rows;
-    const eventSignUps = await signUpRepository.findAllByEventId(event.id);
-    const spotsRemaining = event.spots - eventSignUps.rowCount;
-    event.spotsRemaining = spotsRemaining;
-    const addressResult = await addressRepository.findById(event.addressId);
-    const address = addressResult.rows[0];
+    const events = eventResult.rows.map(event => {
+        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+    });
+    const userIdCheckResponse = await util.checkUserId(userId);
+    if (userIdCheckResponse.status !== 200) {
+        return userIdCheckResponse;
+    }
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTime(events);
+    eventSorter.sortByDistanceFromUser(events, user);
     return ({
         status: 200,
-        message: "Event fetched successfully",
-        data: {
-            event: {
-                ...event,
-                address: address,
-            },
-        },
+        message: "Events fetched successfully",
+        data: {events: events},
     });
 };
 
@@ -88,7 +88,6 @@ const getEvents = async (filters, userId) => {
  * Fails if database calls fail.
  */
 const getEventData = async (id) => {
-    console.log("here");
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
     const eventSignUps = await signUpRepository.findAllByEventId(event.id);
@@ -112,4 +111,5 @@ module.exports = {
     createNewEvent,
     updateEvent,
     getEventData,
+    getEvents,
 };
