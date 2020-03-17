@@ -61,11 +61,6 @@ if (process.env.ENABLE_OAUTH === 1) {
     app.use("signin/oauth/google", require("./routes/signin/OAuth/google"));
     app.use("signin/oauth/linkedin", require("./routes/signin/OAuth/linkedin"));
 }
-app.use("/test", require("./routes/test"));
-// import test routes if applicable
-if (process.env.ENABLE_TEST_ROUTES === 1) {
-    app.use("/test", require("./routes/test"));
-}
 
 // TODO: regex that excludes only requireNotAuth routes
 app.all("*", authAgent.requireAuthentication);

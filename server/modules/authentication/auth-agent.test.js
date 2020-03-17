@@ -5,11 +5,12 @@ const regRepo = require("../../models/databaseRepositories/registrationRepositor
 const indivRepo = require("../../models/databaseRepositories/individualRepository");
 const addressRepo = require("../../models/databaseRepositories/addressRepository");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const request = require("supertest");
-process.env.ENABLE_TEST_ROUTES = 1;
 const app = require("../../app");
 
 const user = testHelpers.getUserExample4();
+const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
 beforeEach(() => {
@@ -242,14 +243,14 @@ const logInReq = {
     data: {
         email: "email",
         password: "password",
-    },
+    }
 };
 
 const owasp = require("owasp-password-strength-test");
 jest.mock("owasp-password-strength-test");
 
 test("valid and expired token working", async () => {
-    owasp.test.mockReturnValue({strong: true});
+    owasp.test.mockReturnValue({ strong: true });
 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
@@ -260,7 +261,8 @@ test("valid and expired token working", async () => {
     insertIndiv.userId = userId;
     insertIndiv.addressId = addressId;
     const insertIndividualResult = await indivRepo.insert(insertIndiv);
-
+    profile.individualId = insertIndividualResult.rows[0].id;
+    await profileRepo.insert(profile);
     logInReq.data.email = user.email;
     const logInResponse = await request(app)
         .post("/signin/password")
@@ -274,13 +276,11 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/test/reqauth")
-        .send(anyRequest6)
+        .get(`/profile?userId=${userId}`).send(anyRequest6)
         .redirects(0);
 
+    expect(response.body.message).toBe("Found individual profile for user.");
     expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe("Successfully authenticated and had correct permissions to access route.");
-
 
     const responseOfPost = await request(app)
         .post("/profile/edit/password")
@@ -290,7 +290,7 @@ test("valid and expired token working", async () => {
     expect(responseOfPost.body.message).toBe("Passwords do not match.");
     expect(responseOfPost.statusCode).toBe(400);
 
-    await authAgent.logOut(userId);
+    authAgent.logOut(userId);
 
     // second pair of requests
 
