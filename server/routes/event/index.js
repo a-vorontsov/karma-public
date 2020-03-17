@@ -111,12 +111,9 @@ router.get("/", async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const filters = {booleans: req.query.filter};
-        console.log(req.query);
-        const maxDistance = req.query.maxDistance;
-        const availabilityStart = req.query.availabilityStart;
-        const availabilityEnd = req.query.availabilityEnd;
-        filters.availabilityStart= availabilityStart;
-        filters.availabilityEnd= availabilityEnd;
+        filters.availabilityStart= req.query.availabilityStart;
+        filters.availabilityEnd= req.query.availabilityEnd;
+        filters.maxDistance = req.query.maxDistance;
         const getEventsResult = await eventService.getEvents(filters, userId);
         getEventsResult.data = paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);

@@ -64,7 +64,8 @@ const updateEvent = async (event) => {
 const getEvents = async (filters, userId) => {
     const whereClause = filterer.getWhereClause(filters);
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
-    const events = eventResult.rows.map(event => {
+    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
+    let events = eventResult.rows.map(event => {
         return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
     });
     const userIdCheckResponse = await util.checkUserId(userId);
@@ -74,6 +75,7 @@ const getEvents = async (filters, userId) => {
     const user = userIdCheckResponse.user;
     eventSorter.sortByTime(events);
     eventSorter.sortByDistanceFromUser(events, user);
+    events = events.filter(event => event.distance <= filters.maxDistance);
     return ({
         status: 200,
         message: "Events fetched successfully",

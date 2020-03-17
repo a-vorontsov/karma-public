@@ -3,9 +3,9 @@ const filtersAllowed = ["women_only", "physical", "photo_id", "address_visible",
 const getWhereClause = (filters) => {
     let clause = "";
     if (!filters) return clause;
-    clause += " where ";
     const availabilityStart = filters.availabilityStart;
     const availabilityEnd = filters.availabilityEnd;
+    clause += " where ";
     filters.booleans.forEach(filter => {
         if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
             clause += filter.substring(1) + " = false ";
@@ -16,12 +16,8 @@ const getWhereClause = (filters) => {
         }
         clause += "and ";
     });
-    if (availabilityStart) {
-        clause+= `date >  \'${availabilityStart}\' and `;
-    }
-    if (availabilityEnd) {
-        clause+= `date <  \'${availabilityEnd}\' and `;
-    }
+    if (availabilityStart) clause+= `date >=  \'${availabilityStart}\' and `;
+    if (availabilityEnd) clause+= `date <=  \'${availabilityEnd}\' and `;
     const lastIndex = clause.lastIndexOf("and");
     return clause.substring(0, lastIndex);
 };
@@ -30,7 +26,8 @@ const filterIsValid = (filter) => {
     return filtersAllowed.includes(filter);
 };
 
+
 module.exports = {
-    getWhereClause: getWhereClause,
-    filterIsValid: filterIsValid,
+    getWhereClause,
+    filterIsValid,
 };
