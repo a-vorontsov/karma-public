@@ -108,11 +108,12 @@ const getEventsBySelectedCauses = async (filters, userId) => {
     eventSorter.sortByTimeAndDistance(events, user);
 
     if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
+    events = await eventSorter.groupByCause(events);
 
     return ({
         status: 200,
         message: "Events fetched successfully",
-        data: eventSorter.groupByCause(events),
+        data: events,
     });
 };
 

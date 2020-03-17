@@ -176,9 +176,75 @@ const eventWithData = {
     spotsRemaining: 28,
     distance: 7.399274608089304,
 };
-
+const peaceEvent = {
+    id: 3,
+    name: "Event in KCL",
+    addressId: 3,
+    womenOnly: false,
+    spotsAvailable: 30,
+    addressVisible: true,
+    minimumAge: 20,
+    photoId: false,
+    physical: true,
+    addInfo: true,
+    content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+    date: "2020-04-08T23:00:00.000Z",
+    causeId: 6,
+    causeName: "peace",
+    causeDescription: "montes, nascetur ridiculus mus. Aenean",
+    eventCreatorId: 1,
+    address1: "uni road",
+    address2: "wherever",
+    postcode: "SE1 1DR",
+    city: "London",
+    region: "region",
+    lat: 51.511407,
+    long: -0.115905,
+    volunteers: [
+        1,
+        34,
+    ],
+    going: true,
+    spotsRemaining: 28,
+    distance: 7.399274608089304,
+};
+const animalsEvent = {
+    id: 1,
+    name: "Event in user 1s house",
+    addressId: 1,
+    womenOnly: false,
+    spotsAvailable: 3,
+    addressVisible: true,
+    minimumAge: 18,
+    photoId: false,
+    physical: false,
+    addInfo: false,
+    content: "event created by user 1 and happening at user 1s house. Distance to user 1 should be 0.",
+    date: "2020-04-03T23:00:00.000Z",
+    causeId: 1,
+    causeName: "animals",
+    causeDescription: "Morbi accumsan laoreet ipsum. Curabitur",
+    eventCreatorId: 1,
+    address1: "pincot road",
+    address2: "wherever",
+    postcode: "SW19 2LF",
+    city: "London",
+    region: "region",
+    lat: 51.414916,
+    long: -0.190487,
+    volunteers: [
+        1,
+        44,
+        21,
+    ],
+    going: true,
+    spotsRemaining: 0,
+    distance: 0,
+};
 const getEvent = () => ({...event});
 const getEventWithAllData = () => ({...eventWithData});
+const getPeaceEvent = () => ({...peaceEvent});
+const getAnimalsEvent = () => ({...animalsEvent});
 
 const userExample1 = {
     email: "test@gmail.com",
@@ -528,4 +594,6 @@ module.exports = {
     getBugReport: getBugReport,
     getInformation: getInformation,
     getEventWithAllData: getEventWithAllData,
+    getPeaceEvent: getPeaceEvent,
+    getAnimalsEvent: getAnimalsEvent,
 };

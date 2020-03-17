@@ -18,13 +18,15 @@ jest.mock("../../util/util");
 jest.mock("../filtering");
 jest.mock("../sorting/event");
 
-let address, event, signUp, eventWithAllData;
+let address, event, signUp, eventWithAllData, peaceEvent, animalsEvent;
 
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
     address = testHelpers.getAddress();
     event = testHelpers.getEvent();
     eventWithAllData = testHelpers.getEventWithAllData();
+    peaceEvent = testHelpers.getPeaceEvent();
+    animalsEvent = testHelpers.getAnimalsEvent();
 });
 
 afterEach(() => {
@@ -190,5 +192,50 @@ test("getting all events works", async () => {
     expect(filterer.getWhereClause).toHaveBeenCalledWith({});
     expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
     expect(getEventsResult.data.events).toStrictEqual(eventsArray);
+    expect(getEventsResult.status).toBe(200);
+});
+
+test("getting events grouped by user selected causes works", async () => {
+    const eventsArray =[{
+        ...animalsEvent,
+        id: 1,
+    },
+    {
+        ...peaceEvent,
+        id: 2,
+    }];
+    util.checkUserId.mockResolvedValue({status: 200});
+    filterer.getWhereClause.mockResolvedValue("");
+    selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
+        rows: eventsArray,
+    });
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray);
+    eventSorter.groupByCause.mockResolvedValue(
+        {
+            animals:[{
+                ...animalsEvent,
+                id: 1,
+            }],
+            peace:[{
+                ...peaceEvent,
+                id: 2,
+            }]
+        }
+    )
+    const getEventsResult = await eventService.getEventsBySelectedCauses({},1);
+    expect(util.checkUserId).toHaveBeenCalledTimes(1);
+    expect(selectedCauseRepository.findEventsSelectedByUser).toHaveBeenCalledTimes(1);
+    expect(filterer.getWhereClause).toHaveBeenCalledWith({});
+    expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
+    expect(getEventsResult.data).toStrictEqual({
+        animals:[{
+            ...animalsEvent,
+            id: 1,
+        }],
+        peace:[{
+            ...peaceEvent,
+            id: 2,
+        }]
+    });
     expect(getEventsResult.status).toBe(200);
 });
