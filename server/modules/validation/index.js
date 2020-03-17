@@ -109,12 +109,31 @@ const informationSchema = {
     "required": ["type", "content"],
 };
 
+const individualSchema = {
+    "id": "/Individual",
+    "type": "object",
+    "properties": {
+        "id": {"type": "number"},
+        "firstname": {"type": "string"},
+        "lastname": {"type": "string"},
+        "phone": {"type": "string"},
+        "banned": {"type": "boolean"},
+        "userId": {"type": "number"},
+        "pictureId": {"type": "number"},
+        "addressId": {"type": "number"},
+        "birthday": {"type": ["string", "date-time"]},
+        "gender": {"type": "string"},
+    },
+    "required": ["firstname", "lastname", "phone", "banned", "birthday", "gender"],
+};
+
 validator.addSchema(addressSchema, "/Address");
 validator.addSchema(eventSchema, "/Event");
 validator.addSchema(notificationSchema, "/Notification");
 validator.addSchema(favouriteSchema, "/Favourite");
 validator.addSchema(signupSchema, "/Signup");
 validator.addSchema(informationSchema, "/Information");
+validator.addSchema(individualSchema, "/Individual");
 
 const validateAddress = (address) => {
     return validator.validate(address, addressSchema);
