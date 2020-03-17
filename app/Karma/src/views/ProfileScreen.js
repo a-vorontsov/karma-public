@@ -51,7 +51,7 @@ class ProfileScreen extends Component {
             points: 1,
             activities: [],
         };
-        this.fetchProfileInfo();
+        this.fetchAllActivities();
     }
 
     static navigationOptions = {
@@ -74,35 +74,21 @@ class ProfileScreen extends Component {
             console.log("Keychain couldn't be accessed!", error);
         }
     };
-    async fetchProfileInfo(){
-        const credentials = await this.getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+    fetchAllActivities() {
         request
-        .get("http://localhost:8000/profile")
-        .query({userId:1})
-        .then(res => {
-            console.log(res.body.data);
-        })
-        .catch(err => {
-            console.log(err)
-        });
+            .get("http://localhost:8000/event/going")
+            .query({userId: 76})
+            .then(result => {
+                console.log(result.body.data);
+                let activities = result.body.data;
+                this.setState({
+                    activities,
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
     }
-    // fetchAllActivities() {
-    //     request
-    //         .get("http://localhost:8000/event/going")
-    //         .query({userId: 76})
-    //         .then(result => {
-    //             console.log(result.body.data);
-    //             let activities = result.body.data;
-    //             this.setState({
-    //                 activities,
-    //             });
-    //         })
-    //         .catch(er => {
-    //             console.log(er);
-    //         });
-    // }
 
     _renderItem = ({item}) => {
         return (
