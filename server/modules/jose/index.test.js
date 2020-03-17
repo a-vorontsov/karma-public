@@ -498,7 +498,7 @@ test("JWT blacklisting works", async () => {
 
     expect(joseOnServer.isBlacklisted(jwtSig)).toBe(false);
 
-    joseOnServer.blacklistJWT(jwt);
+    await joseOnServer.blacklistJWT(jwt);
 
     const authResult = await authRepo.findLatestByUserID(userId);
     const authRecord = authResult.rows[0];
@@ -538,6 +538,40 @@ test("JWT blacklist fetching works", async () => {
     await joseOnServer.fetchBlacklist();
 
     expect(joseOnServer.isBlacklisted(jwtSig)).toBe(true);
+});
+
+test("JWT with blacklisted signature is rejected as expected", async () => {
+
+    await regRepo.insert(testHelpers.getRegistrationExample5());
+    const userRes = await userRepo.insert(testHelpers.getUserExample4());
+    const userId = userRes.rows[0].id;
+
+    const payload = {
+        sub: "1",
+        aud: "/user"
+    };
+
+    payload.sub = userId.toString();
+
+    const jwt = joseOnServer.sign(payload);
+    const jwtSig = joseOnServer.getSignatureFromJWT(jwt);
+
+    // verification passes before blacklisting
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(false);
+    expect(joseOnServer.verifyAndGetUserId(jwt)).toStrictEqual(Number.parseInt(payload.sub));
+
+    await joseOnServer.blacklistJWT(jwt);
+
+    // verification fails after blacklisting
+    expect(joseOnServer.isBlacklisted(jwtSig)).toBe(true);
+
+    expect(() => {
+        joseOnServer.verify(jwt);
+    }).toThrow(new errors.JWSVerificationFailed("JWT blacklisted"));
+
+    expect(() => {
+        joseOnServer.verify(jwt);
+    }).toThrow(errors.JWSVerificationFailed);
 });
 
 test("JWE key generation with public server config works", async () => {

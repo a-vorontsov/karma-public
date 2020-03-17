@@ -153,9 +153,13 @@ const sign = (payload, exp) => {
  * @param {object} jwt JWT token
  * @param {string} [aud=default] default config will be used if omitted
  * @return {string} payload
+ * @throws {JWSVerificationFailed} if JWT blacklisted
  * @throws {jose.errors} for failed verification
  */
 const verify = (jwt, aud) => {
+    if (isBlacklisted(getSignatureFromJWT(jwt))) {
+        throw new errors.JWSVerificationFailed("JWT blacklisted");
+    }
     return JWT.verify(jwt, sigKey, {
         audience: aud !== undefined ? aud : config.aud,
         complete: false,
