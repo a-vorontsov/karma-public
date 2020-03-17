@@ -1,7 +1,6 @@
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
-const userRepository = require("../../models/databaseRepositories/userRepository");
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");

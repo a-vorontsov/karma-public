@@ -4,7 +4,9 @@ const getWhereClause = (filters) => {
     let clause = "";
     if (!filters) return clause;
     clause += " where ";
-    filters.forEach(filter => {
+    const availabilityStart = filters.availabilityStart;
+    const availabilityEnd = filters.availabilityEnd;
+    filters.booleans.forEach(filter => {
         if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
             clause += filter.substring(1) + " = false ";
         } else if (filterIsValid(filter)) {
@@ -14,6 +16,12 @@ const getWhereClause = (filters) => {
         }
         clause += "and ";
     });
+    if (availabilityStart) {
+        clause+= `date >  \'${availabilityStart}\' and `;
+    }
+    if (availabilityEnd) {
+        clause+= `date <  \'${availabilityEnd}\' and `;
+    }
     const lastIndex = clause.lastIndexOf("and");
     return clause.substring(0, lastIndex);
 };
