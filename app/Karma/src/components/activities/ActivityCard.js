@@ -1,7 +1,7 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
