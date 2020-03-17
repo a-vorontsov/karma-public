@@ -65,14 +65,21 @@ const findEventsSelectedByUser = (userID, filters) => {
     return db.query(query, [userID]);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM selected_cause WHERE user_id = $1";
+    const params = [userId];
+    return db.query(query, params);
+};
+
 module.exports = {
-    insert: insert,
-    insertMultiple: insertMultiple,
-    deleteUnselected: deleteUnselected,
-    deleteMultiple: deleteMultiple,
-    findByUserId: findByUserId,
-    findByCauseId: findByCauseId,
-    findEventsSelectedByUser: findEventsSelectedByUser,
-    find: find,
-    unselectAll: unselectAll,
+    insert,
+    insertMultiple,
+    deleteUnselected,
+    deleteMultiple,
+    findByUserId,
+    findByCauseId,
+    findEventsSelectedByUser,
+    find,
+    unselectAll,
+    removeByUserId,
 };

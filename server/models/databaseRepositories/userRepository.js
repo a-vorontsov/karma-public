@@ -60,16 +60,22 @@ const findIdFromEmail = (email) => {
     const query = "SELECT id FROM \"user\" WHERE email = $1";
     return db.query(query, [email]);
 };
+
+const removeUserById = (id) => {
+    const query = "DELETE FROM \"user\" WHERE id=$1";
+    return db.query(query, [id]);
+};
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    getUsersLocations: getUsersLocations,
-    getUserLocation: getUserLocation,
-    findByEmail: findByEmail,
-    findByUsername: findByUsername,
-    updatePassword: updatePassword,
-    updateVerificationStatus: updateVerificationStatus,
-    updateUsername: updateUsername,
-    findIdFromEmail: findIdFromEmail,
+    insert,
+    findById,
+    findAll,
+    getUsersLocations,
+    getUserLocation,
+    findByEmail,
+    findByUsername,
+    updatePassword,
+    updateVerificationStatus,
+    updateUsername,
+    findIdFromEmail,
+    removeUserById,
 };

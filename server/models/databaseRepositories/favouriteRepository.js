@@ -29,10 +29,16 @@ const remove = (favourite) => {
     return db.query(query, params);
 };
 
+const removeByIndividualId = (individualId) => {
+    const query = "DELETE FROM favourite WHERE individual_id=$1 RETURNING *";
+    return db.query(query, individualId);
+};
+
 module.exports = {
-    insert: insert,
-    findAllByIndividualId: findAllByIndividualId,
-    findAllByEventId: findAllByEventId,
-    find: find,
-    remove: remove,
+    insert,
+    findAllByIndividualId,
+    findAllByEventId,
+    find,
+    remove,
+    removeByIndividualId,
 };

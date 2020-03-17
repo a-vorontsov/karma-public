@@ -62,11 +62,18 @@ const updateSignUpFlag = (email) => {
     return db.query(query, params);
 };
 
+const removeByEmail = (email) => {
+    const query = 'DELETE FROM \"registration\" WHERE email = $1 RETURNING *';
+    const params = [email];
+    return db.query(query, params);
+}
+
 module.exports = {
-    insert: insert,
-    storeEmailTokenPair: storeEmailTokenPair,
-    update: update,
-    findAll: findAll,
-    findByEmail: findByEmail,
-    updateSignUpFlag: updateSignUpFlag,
+    insert,
+    storeEmailTokenPair,
+    update,
+    findAll,
+    findByEmail,
+    updateSignUpFlag,
+    removeByEmail,
 };

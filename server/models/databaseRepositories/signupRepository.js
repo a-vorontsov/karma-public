@@ -36,6 +36,10 @@ const findUsersSignedUp = (eventId) => {
     return db.query(query, [eventId]);
 };
 
+const removeByIndividualId = (individualId) => {
+    const query = "DELETE FROM sign_up WHERE individual_id = $1 RETURNING *";
+    return db.query(query, individualId);
+};
 module.exports = {
     insert,
     findAllByIndividualId,
@@ -43,4 +47,5 @@ module.exports = {
     find,
     update,
     findUsersSignedUp,
+    removeByIndividualId,
 };
