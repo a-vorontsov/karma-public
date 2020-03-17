@@ -10,4 +10,9 @@ config.jose = { // TODO: host on domain
     aud: "/user",
 };
 
+config.specialPermissions = {
+    "/admin": "/admin",
+    "/signin/reset": "/reset",
+};
+
 module.exports = config;

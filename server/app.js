@@ -23,6 +23,7 @@ app.use(methodOverride("_method"));
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/forgot", require("./routes/signin/forgot"));
+app.use("/signin/reset", require("./routes/signin/reset"));
 
 app.use("/signup/user", require("./routes/signup/user"));
 app.use("/signup/individual", require("./routes/signup/individual"));

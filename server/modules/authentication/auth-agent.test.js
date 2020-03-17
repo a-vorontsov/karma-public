@@ -242,7 +242,7 @@ const logInReq = {
     data: {
         email: "email",
         password: "password",
-    }
+    },
 };
 
 const owasp = require("owasp-password-strength-test");

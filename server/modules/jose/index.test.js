@@ -26,10 +26,9 @@ afterEach(() => {
 });
 
 test("JWT signing with default and custom exp work", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -50,10 +49,9 @@ test("JWT signing with default and custom exp work", async () => {
 });
 
 test("JWT server-side verification works", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -62,14 +60,12 @@ test("JWT server-side verification works", async () => {
 
     expect(serverVerificationResult.sub).toStrictEqual(payload.sub);
     expect(serverVerificationResult.aud).toStrictEqual(payload.aud);
-
 });
 
 test("JWT server-side verification with custom audience works", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/admin"
+        aud: "/admin",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -78,14 +74,12 @@ test("JWT server-side verification with custom audience works", async () => {
 
     expect(serverVerificationResult.sub).toStrictEqual(payload.sub);
     expect(serverVerificationResult.aud).toStrictEqual(payload.aud);
-
 });
 
 test("JWT server-side verification and userId deriving work", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -96,14 +90,12 @@ test("JWT server-side verification and userId deriving work", async () => {
     expect(serverVerificationResult.sub).toStrictEqual(payload.sub);
     expect(serverVerificationResult.aud).toStrictEqual(payload.aud);
     expect(userId).toStrictEqual(Number.parseInt(payload.sub));
-
 });
 
 test("JWT (combined) server-side verification and userId deriving work", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -119,10 +111,9 @@ test("JWT (combined) server-side verification and userId deriving work", async (
 });
 
 test("JWT that's expired is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload, "0s");
@@ -140,14 +131,12 @@ test("JWT that's expired is rejected as expected", async () => {
     expect(() => {
         joseOnServer.verify(jwt);
     }).toThrow(errors.JWTExpired);
-
 });
 
 test("JWT with non-matching audience is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -162,10 +151,9 @@ test("JWT with non-matching audience is rejected as expected", async () => {
 });
 
 test("JWT with invalid type is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -177,9 +165,9 @@ test("JWT with invalid type is rejected as expected", async () => {
 
     jwtHeader.typ = 'invalidType';
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -191,10 +179,9 @@ test("JWT with invalid type is rejected as expected", async () => {
 });
 
 test("JWT with invalid key-id is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -206,9 +193,9 @@ test("JWT with invalid key-id is rejected as expected", async () => {
 
     jwtHeader.kid = jwtHeader.kid.substring(jwtHeader.length - 5) + "abcde";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -220,10 +207,9 @@ test("JWT with invalid key-id is rejected as expected", async () => {
 });
 
 test("JWT with invalid algorithm is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -235,9 +221,9 @@ test("JWT with invalid algorithm is rejected as expected", async () => {
 
     jwtHeader.alg = "ES384";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -249,10 +235,9 @@ test("JWT with invalid algorithm is rejected as expected", async () => {
 });
 
 test("JWT with modified expiry is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -264,9 +249,9 @@ test("JWT with modified expiry is rejected as expected", async () => {
 
     jwtPayload.exp = 1589909685;
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -278,10 +263,9 @@ test("JWT with modified expiry is rejected as expected", async () => {
 });
 
 test("JWT with modified issue date is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -293,9 +277,9 @@ test("JWT with modified issue date is rejected as expected", async () => {
 
     jwtPayload.iat = 1584316685;
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -307,10 +291,9 @@ test("JWT with modified issue date is rejected as expected", async () => {
 });
 
 test("JWT with modified issuer is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -322,9 +305,9 @@ test("JWT with modified issuer is rejected as expected", async () => {
 
     jwtPayload.iss = "https://karmaaaaaapp.com";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -336,10 +319,9 @@ test("JWT with modified issuer is rejected as expected", async () => {
 });
 
 test("JWT with modified audience is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -351,9 +333,9 @@ test("JWT with modified audience is rejected as expected", async () => {
 
     jwtPayload.aud = "/admin";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -365,10 +347,9 @@ test("JWT with modified audience is rejected as expected", async () => {
 });
 
 test("JWT with modified audience and forged claim is also rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -380,9 +361,9 @@ test("JWT with modified audience and forged claim is also rejected as expected",
 
     jwtPayload.aud = "/admin";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt, "/admin");
@@ -394,10 +375,9 @@ test("JWT with modified audience and forged claim is also rejected as expected",
 });
 
 test("JWT with modified subject is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -409,9 +389,9 @@ test("JWT with modified subject is rejected as expected", async () => {
 
     jwtPayload.sub = "2";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -423,10 +403,9 @@ test("JWT with modified subject is rejected as expected", async () => {
 });
 
 test("JWT with modified subject and forged claim is also rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -438,9 +417,9 @@ test("JWT with modified subject and forged claim is also rejected as expected", 
 
     jwtPayload.sub = "2";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + jwtSignature;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        jwtSignature;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -452,10 +431,9 @@ test("JWT with modified subject and forged claim is also rejected as expected", 
 });
 
 test("JWT with forged signature is rejected as expected", async () => {
-
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     const jwt = joseOnServer.sign(payload);
@@ -467,9 +445,9 @@ test("JWT with forged signature is rejected as expected", async () => {
 
     const malformedSig = jwtSignature.substring(jwtSignature - 5) + "abcde";
 
-    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "."
-        + Base64.encodeURI(JSON.stringify(jwtPayload)) + "."
-        + malformedSig;
+    const jwtRebuilt = Base64.encodeURI(JSON.stringify(jwtHeader)) + "." +
+        Base64.encodeURI(JSON.stringify(jwtPayload)) + "." +
+        malformedSig;
 
     expect(() => {
         joseOnServer.verify(jwtRebuilt);
@@ -481,14 +459,13 @@ test("JWT with forged signature is rejected as expected", async () => {
 });
 
 test("JWT blacklisting works", async () => {
-
     await regRepo.insert(testHelpers.getRegistrationExample5());
     const userRes = await userRepo.insert(testHelpers.getUserExample4());
     const userId = userRes.rows[0].id;
 
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     payload.sub = userId.toString();
@@ -509,14 +486,13 @@ test("JWT blacklisting works", async () => {
 });
 
 test("JWT blacklist fetching works", async () => {
-
     await regRepo.insert(testHelpers.getRegistrationExample5());
     const userRes = await userRepo.insert(testHelpers.getUserExample4());
     const userId = userRes.rows[0].id;
 
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     payload.sub = userId.toString();
@@ -541,14 +517,13 @@ test("JWT blacklist fetching works", async () => {
 });
 
 test("JWT with blacklisted signature is rejected as expected", async () => {
-
     await regRepo.insert(testHelpers.getRegistrationExample5());
     const userRes = await userRepo.insert(testHelpers.getUserExample4());
     const userId = userRes.rows[0].id;
 
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
 
     payload.sub = userId.toString();
@@ -575,7 +550,6 @@ test("JWT with blacklisted signature is rejected as expected", async () => {
 });
 
 test("JWK key generation with public server config works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -596,7 +570,6 @@ test("JWK key generation with public server config works", async () => {
 });
 
 test("JWE key retrieval as JWK and en/decryption work", async () => {
-
     const cleartext = "karma";
     // TODO: ENFORCE PEM
     const serverPub = joseOnServer.getEncPubAsJWK();
@@ -606,11 +579,9 @@ test("JWE key retrieval as JWK and en/decryption work", async () => {
     const decryptionResult = joseOnServer.decrypt(jwe);
 
     expect(decryptionResult).toBe(cleartext);
-
 });
 
 test("JWE key retrieval as PEM and en/decryption work", async () => {
-
     const cleartext = "karma";
 
     const serverPub = joseOnServer.getEncPubAsPEM();
@@ -620,11 +591,9 @@ test("JWE key retrieval as PEM and en/decryption work", async () => {
     const decryptionResult = joseOnServer.decrypt(jwe);
 
     expect(decryptionResult).toBe(cleartext);
-
 });
 
 test("JWE secure config retrieval works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -634,15 +603,13 @@ test("JWE secure config retrieval works", async () => {
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
 
     const confOnServer = require("../../config").jose;
     expect(privateServerConfig).toStrictEqual(confOnServer);
-
 });
 
 test("JWE client-side token signature verification with JWK pub works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -652,7 +619,7 @@ test("JWE client-side token signature verification with JWK pub works", async ()
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -660,7 +627,7 @@ test("JWE client-side token signature verification with JWK pub works", async ()
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key
     const jwt = joseOnServer.sign(payload);
@@ -683,7 +650,6 @@ test("JWE client-side token signature verification with JWK pub works", async ()
 });
 
 test("JWE client-side token signature verification with PEM pub works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -693,7 +659,7 @@ test("JWE client-side token signature verification with PEM pub works", async ()
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -701,7 +667,7 @@ test("JWE client-side token signature verification with PEM pub works", async ()
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key
     const jwt = joseOnServer.sign(payload);
@@ -724,7 +690,6 @@ test("JWE client-side token signature verification with PEM pub works", async ()
 });
 
 test("JWE client-side decryption works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -734,7 +699,7 @@ test("JWE client-side decryption works", async () => {
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -742,7 +707,7 @@ test("JWE client-side decryption works", async () => {
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key
     const jwt = joseOnServer.sign(payload);
@@ -765,7 +730,6 @@ test("JWE client-side decryption works", async () => {
 });
 
 test("JWE client-side decryption and token verification work", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -775,7 +739,7 @@ test("JWE client-side decryption and token verification work", async () => {
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -783,7 +747,7 @@ test("JWE client-side decryption and token verification work", async () => {
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key
     const jwt = joseOnServer.sign(payload);
@@ -813,7 +777,6 @@ test("JWE client-side decryption and token verification work", async () => {
 });
 
 test("JWE (combined) client-side decryption and token verification work", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -823,7 +786,7 @@ test("JWE (combined) client-side decryption and token verification work", async 
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -831,7 +794,7 @@ test("JWE (combined) client-side decryption and token verification work", async 
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key and encrypt with client's public key
     const jwe = joseOnServer.signAndEncrypt(payload, clientEncKey);
@@ -855,7 +818,6 @@ test("JWE (combined) client-side decryption and token verification work", async 
 });
 
 test("JWE complete server-client communication works", async () => {
-
     // on client:
     // 1) get public jose config from server
     const publicServerConfig = joseOnServer.getPublicConfig();
@@ -865,7 +827,7 @@ test("JWE complete server-client communication works", async () => {
         key_ops: ["deriveKey"],
     });
     // 3) securely retrieve full jose config from server
-    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, { complete: false }).toString("utf8"));
+    const privateServerConfig = JSON.parse(JWE.decrypt(joseOnServer.getEncryptedConfig(clientEncKey), clientEncKey, {complete: false}).toString("utf8"));
     // 4) get server's signing public key
     const serverSigPub = joseOnServer.getSigPubAsPEM();
 
@@ -873,7 +835,7 @@ test("JWE complete server-client communication works", async () => {
     // 1) get payload for user
     const payload = {
         sub: "1",
-        aud: "/user"
+        aud: "/user",
     };
     // 3) sign with server's private key and encrypt with client's public key
     const jwe = joseOnServer.signAndEncrypt(payload, clientEncKey);
