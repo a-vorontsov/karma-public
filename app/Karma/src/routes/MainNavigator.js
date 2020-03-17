@@ -55,6 +55,9 @@ const MainNavigator = createStackNavigator(
         CreateActivity: {
             screen: CreateActivityScreen,
         },
+        Notifications: {
+            screen: NotificationsScreen,
+        },
     },
     {
         headerMode: "none",
