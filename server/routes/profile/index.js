@@ -17,7 +17,7 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 /**
  * Endpoint called whenever a user wishes to get their profile.<br/>
  * URL example: GET http://localhost:8000/profile/
- * @param {number} req.body.userId
+ * @param {Number} req.query.userId - ID of user logged in
  * @param {String} req.body.authToken
  * @returns {object}
  * status: 400, description: error - for example an undefined indicating missing profile <br/>
@@ -114,19 +114,19 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const now = new Date();
-        const userResult = await userRepo.findById(req.body.userId);
+        const userResult = await userRepo.findById(req.query.userId);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,
             email: user.email,
         };
 
-        const createdEventsResult = await eventRepo.findAllByUserId(req.body.userId);
+        const createdEventsResult = await eventRepo.findAllByUserId(req.query.userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
-        const causeResult = await selectedCauseRepo.findByUserId(req.body.userId);
+        const causeResult = await selectedCauseRepo.findByUserId(req.query.userId);
         const causes = causeResult.rows[0];
-        const indivResult = await indivRepo.findByUserID(req.body.userId);
+        const indivResult = await indivRepo.findByUserID(req.query.userId);
         // send appropriate profile
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
@@ -179,7 +179,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 },
             });
         } else {
-            const orgResult = await orgRepo.findByUserID(req.body.userId);
+            const orgResult = await orgRepo.findByUserID(req.query.userId);
             const organisation = orgResult.rows[0];
 
             const addressResult = await addressRepo.findById(organisation.addressId);

@@ -276,8 +276,7 @@ test("valid and expired token working", async () => {
     anyRequest6.userId = userId;
     anyRequest6.authToken = validToken;
     const response = await request(app)
-        .get("/profile")
-        .send(anyRequest6)
+        .get(`/profile?userId=${userId}`).send(anyRequest6)
         .redirects(0);
 
     expect(response.body.message).toBe("Found individual profile for user.");
