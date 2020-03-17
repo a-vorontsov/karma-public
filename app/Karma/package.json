@@ -16,7 +16,6 @@
     "@react-native-community/slider": "^2.0.8",
     "@react-navigation/bottom-tabs": "^5.0.5",
     "@react-navigation/material-top-tabs": "^5.1.0",
-    "jose": "^1.25.0",
     "moment": "^2.24.0",
     "react": "16.9.0",
     "react-moment": "^0.9.7",

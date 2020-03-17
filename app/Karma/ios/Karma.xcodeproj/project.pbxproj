@@ -6,7 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* KarmaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KarmaTests.m */; };
 		0255F33CC9344CCF81FFC36A /* calendar-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = C64583044F814041A747D2DA /* calendar-dark.png */; };
