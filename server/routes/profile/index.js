@@ -208,7 +208,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 message: "Found organisation profile for user.",
                 data: {
                     user: userToSend,
-                    individual: orgToSend,
+                    organisation: orgToSend,
                     causes: causes,
                     createdEvents,
                     createdPastEvents,

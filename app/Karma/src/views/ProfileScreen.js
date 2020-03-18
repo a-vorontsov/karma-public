@@ -44,10 +44,10 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             activeSlide: 0,
-            name: "Name",
-            username: "Username",
-            location: "Location",
-            bio: "this is your bio lorem ipsum and such",
+            name: "",
+            username: "",
+            location: "",
+            bio: "",
             causes: [],
             points: 1,
             createdEvents: [],
