@@ -42,7 +42,7 @@ export default class OrgSignUpScreen extends React.Component {
             charityNumber: "",
             fname: "",
             lname: "",
-            phone:"",
+            phone: "",
             regDate: "",
             isLowIncome: false,
             isExempt: false,
@@ -145,7 +145,11 @@ export default class OrgSignUpScreen extends React.Component {
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (!this.state.orgName || !this.state.charityNumber || !this.state.phone) {
+        if (
+            !this.state.orgName ||
+            !this.state.charityNumber ||
+            !this.state.phone
+        ) {
             return;
         }
         const credentials = await this.getData();

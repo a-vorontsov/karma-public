@@ -56,9 +56,8 @@ class ProfileScreen extends Component {
             pastEvents: [],
             eventsToggle: true,
             isOrganisation: false,
-            organisationType:"",
-            orgPhoneNumber:"",
-
+            organisationType: "",
+            orgPhoneNumber: "",
         };
         this.fetchProfileInfo();
     }
@@ -85,7 +84,7 @@ class ProfileScreen extends Component {
         }
     };
 
-    setupIndividualProfile(res){
+    setupIndividualProfile(res) {
         const {
             causes,
             createdEvents,
@@ -99,12 +98,9 @@ class ProfileScreen extends Component {
         this.setState({
             isOrganisation: false,
             name: individual.firstName + " " + individual.lastName,
-            organisationType: organisation.type,
             username: user.username,
             location:
-                individual.address.townCity +
-                " " +
-                individual.address.postCode,
+                individual.address.townCity + " " + individual.address.postCode,
             bio: individual.bio,
             causes: causes,
             points: individual.karmaPoints,
@@ -114,7 +110,7 @@ class ProfileScreen extends Component {
             createdPastEvents: createdPastEvents,
         });
     }
-    setupOrganisationProfile(res){
+    setupOrganisationProfile(res) {
         const {
             causes,
             user,
@@ -125,13 +121,14 @@ class ProfileScreen extends Component {
         this.setState({
             isOrganisation: true,
             name: organisation.name,
+            organisationType: organisation.type,
             username: user.username,
             location:
                 organisation.address.townCity +
                 " " +
                 organisation.address.postCode,
             causes: causes,
-            bio: organisation.pocFirstName + " " + organisation.pocLastName ,
+            bio: organisation.pocFirstName + " " + organisation.pocLastName,
             orgPhoneNumber: organisation.phoneNumber,
             upcomingEvents: createdEvents,
             pastEvents: createdPastEvents,
@@ -145,7 +142,9 @@ class ProfileScreen extends Component {
             .get("http://localhost:8000/profile")
             .query({userId: userId})
             .then(res => {
-                res.body.data.organisation? this.setupOrganisationProfile(res) : this.setupIndividualProfile(res);
+                res.body.data.organisation
+                    ? this.setupOrganisationProfile(res)
+                    : this.setupIndividualProfile(res);
             })
             .catch(err => {
                 console.log(err);
@@ -263,16 +262,17 @@ class ProfileScreen extends Component {
                                     <Text style={styles.usernameText}>
                                         {this.state.username}
                                     </Text>
-                                    {this.state.isOrganisation &&
-                                    <Text style={styles.usernameText}>
-                                        { " | " + this.state.organisationType}
-                                    </Text>
-                                    }
-                                     {!this.state.isOrganisation &&
-                                    <Text style={styles.locationText}>
-                                        {this.state.location}
-                                    </Text>
-                                     }
+                                    {this.state.isOrganisation && (
+                                        <Text style={styles.usernameText}>
+                                            {" | " +
+                                                this.state.organisationType}
+                                        </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                        <Text style={styles.locationText}>
+                                            {this.state.location}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
@@ -280,56 +280,56 @@ class ProfileScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                    {!this.state.isOrganisation &&
-                                    <View style={styles.pointContainer}>
-                                        <Image
-                                            source={icons.badge}
-                                            style={{height: 60, width: 60}}
-                                        />
-                                        <Image
-                                            source={icons.ribbon}
+                                    {!this.state.isOrganisation && (
+                                        <View style={styles.pointContainer}>
+                                            <Image
+                                                source={icons.badge}
+                                                style={{height: 60, width: 60}}
+                                            />
+                                            <Image
+                                                source={icons.ribbon}
+                                                style={{
+                                                    height: 60,
+                                                    width: 60,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <Image
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 45,
+                                                    top: -8,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <RegularText
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    color: Colours.white,
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 50,
+                                                    top: -5,
+                                                    position: "absolute",
+                                                }}>
+                                                {this.state.points}
+                                            </RegularText>
+                                        </View>
+                                    )}
+                                    {this.state.isOrganisation && (
+                                        <View
                                             style={{
-                                                height: 60,
-                                                width: 60,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <Image
-                                            source={icons.orange_circle}
-                                            style={{
-                                                height: 25,
-                                                width: 25,
-                                                left: 45,
-                                                top: -8,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <RegularText
-                                            source={icons.orange_circle}
-                                            style={{
-                                                color: Colours.white,
-                                                height: 25,
-                                                width: 25,
-                                                left: 50,
-                                                top: -5,
-                                                position: "absolute",
+                                                flexDirection: "row",
+                                                paddingTop: 20,
+                                                justifyContent: "space-between",
                                             }}>
-                                            {this.state.points}
-                                        </RegularText>
-                                    </View>
-                                    }
-                                    {this.state.isOrganisation &&
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            paddingTop: 20,
-                                            justifyContent: "space-between",
-                                        }}>
-                                        <Text style={styles.usernameText}>
-                                            {this.state.orgPhoneNumber}
-                                        </Text>
-                                    </View>
-                                    }
+                                            <Text style={styles.usernameText}>
+                                                {this.state.orgPhoneNumber}
+                                            </Text>
+                                        </View>
+                                    )}
                                     <TouchableOpacity>
                                         <Image
                                             source={icons.share}
@@ -366,20 +366,21 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                     paddingTop: 15,
                                 }}>
-                                {!this.state.isOrganisation && <TransparentButton
-                                    title="View Your Activities"
-                                    size={15}
-                                    ph={40}
-                                    onPress={() =>
-                                        navigate("CreatedActivities", {
-                                            activities: this.state
-                                                .createdEvents,
-                                            pastActivities: this.state
-                                                .createdPastEvents,
-                                        })
-                                    }
-                                />
-                                }
+                                {!this.state.isOrganisation && (
+                                    <TransparentButton
+                                        title="View Your Activities"
+                                        size={15}
+                                        ph={40}
+                                        onPress={() =>
+                                            navigate("CreatedActivities", {
+                                                activities: this.state
+                                                    .createdEvents,
+                                                pastActivities: this.state
+                                                    .createdPastEvents,
+                                            })
+                                        }
+                                    />
+                                )}
                             </View>
                             <View
                                 style={{
