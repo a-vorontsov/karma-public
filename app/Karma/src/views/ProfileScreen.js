@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
+import CauseItem from "../components/causes/CauseItem";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -49,10 +50,10 @@ class ProfileScreen extends Component {
             bio: "this is your bio lorem ipsum and such",
             causes: [],
             points: 1,
-            createdEvents:[],
-            createdPastEvents:[],
+            createdEvents: [],
+            createdPastEvents: [],
             upcomingEvents: [],
-            pastEvents:[],
+            pastEvents: [],
             eventsToggle: true,
         };
         this.fetchProfileInfo();
@@ -80,33 +81,46 @@ class ProfileScreen extends Component {
         }
     };
 
-    async fetchProfileInfo(){
+    async fetchProfileInfo() {
         const credentials = await this.getData();
         console.log(credentials);
         const authToken = credentials.password;
-        const userId =  credentials.username;
+        const userId = credentials.username;
 
         request
-        .get("http://localhost:8000/profile")
-        .query({userId: userId})
-        .then(res => {
-            const {causes, createdEvents, createdPastEvents, individual, pastEvents, upcomingEvents, user} = res.body.data;
-            this.setState({
-                name: individual.firstName + " " + individual.lastName,
-                username: user.username,
-                location: individual.address.townCity + " " + individual.address.postCode,
-                bio: individual.bio,
-                causes: causes,
-                points: individual.karmaPoints,
-                upcomingEvents: upcomingEvents,
-                pastEvents: pastEvents,
-                createdEvents: createdEvents,
-                createdPastEvents: createdPastEvents,
+            .get("http://localhost:8000/profile")
+            .query({userId: userId})
+            .then(res => {
+                const {
+                    causes,
+                    createdEvents,
+                    createdPastEvents,
+                    individual,
+                    pastEvents,
+                    upcomingEvents,
+                    user,
+                } = res.body.data;
+
+                this.setState({
+                    name: individual.firstName + " " + individual.lastName,
+                    username: user.username,
+                    location:
+                        individual.address.townCity +
+                        " " +
+                        individual.address.postCode,
+                    bio: individual.bio,
+                    causes: causes,
+                    points: individual.karmaPoints,
+                    upcomingEvents: upcomingEvents,
+                    pastEvents: pastEvents,
+                    createdEvents: createdEvents,
+                    createdPastEvents: createdPastEvents,
+                });
+                console.log(this.state.causes);
             })
-        })
-        .catch(err => {
-            console.log(err)
-        });
+            .catch(err => {
+                console.log(err);
+            });
     }
     _renderItem = ({item}) => {
         return (
@@ -303,9 +317,12 @@ class ProfileScreen extends Component {
                                     title="View Your Activities"
                                     size={15}
                                     ph={40}
-                                    onPress={() => navigate("CreatedActivities", {
-                                            activities: this.state.createdEvents,
-                                            pastActivities:this.state.createdPastEvents,
+                                    onPress={() =>
+                                        navigate("CreatedActivities", {
+                                            activities: this.state
+                                                .createdEvents,
+                                            pastActivities: this.state
+                                                .createdPastEvents,
                                         })
                                     }
                                 />
@@ -348,15 +365,37 @@ class ProfileScreen extends Component {
                                         {this.state.bio}
                                     </RegularText>
                                 </View>
+                                <RegularText style={styles.bioHeader}>
+                                        Causes
+                                    </RegularText>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "flex-end",
                                         justifyContent: "flex-end",
                                     }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Causes
-                                    </RegularText>
+
+
+                                        {this.state.causes.length > 0 ? (
+                                            this.state.causes.map(
+                                                cause => {
+                                                    return (
+                                                        <CauseItem
+                                                            cause={cause}
+                                                            key={cause.id}
+                                                            isDisabled = {true}
+                                                        />
+                                                    );
+                                                },
+                                            )
+                                        ) : (
+                                            <View style={Styles.ph24}>
+                                                <RegularText>
+                                                    You did not select any causes
+                                                </RegularText>
+                                            </View>
+                                        )}
+
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
@@ -384,18 +423,40 @@ class ProfileScreen extends Component {
                                     paddingHorizontal: formWidth * 0.075,
                                 }}>
                                 <TouchableOpacity
-                                 onPress={()=> this.setState({eventsToggle: !this.state.eventsToggle})}>
-                                    <RegularText style={this.state.eventsToggle? styles.bioHeader: styles.bioHeaderAlt}>
-                                        {this.state.upcomingEvents.length > 0 ? "Upcoming Events": "No Upcoming Events"}
+                                    onPress={() =>
+                                        this.setState({
+                                            eventsToggle: !this.state
+                                                .eventsToggle,
+                                        })
+                                    }>
+                                    <RegularText
+                                        style={
+                                            this.state.eventsToggle
+                                                ? styles.bioHeader
+                                                : styles.bioHeaderAlt
+                                        }>
+                                        {this.state.upcomingEvents.length > 0
+                                            ? "Upcoming Events"
+                                            : "No Upcoming Events"}
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={()=> this.setState({eventsToggle: !this.state.eventsToggle})}
+                                    onPress={() =>
+                                        this.setState({
+                                            eventsToggle: !this.state
+                                                .eventsToggle,
+                                        })
+                                    }
                                     style={{
                                         alignSelf: "flex-start",
                                         marginLeft: 80,
                                     }}>
-                                    <RegularText style={this.state.eventsToggle? styles.bioHeaderAlt: styles.bioHeader}>
+                                    <RegularText
+                                        style={
+                                            this.state.eventsToggle
+                                                ? styles.bioHeaderAlt
+                                                : styles.bioHeader
+                                        }>
                                         Past Events
                                     </RegularText>
                                 </TouchableOpacity>
@@ -409,7 +470,11 @@ class ProfileScreen extends Component {
                                     ref={c => {
                                         this._carousel = c;
                                     }}
-                                    data={this.state.eventsToggle? this.state.upcomingEvents: this.state.pastEvents}
+                                    data={
+                                        this.state.eventsToggle
+                                            ? this.state.upcomingEvents
+                                            : this.state.pastEvents
+                                    }
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}

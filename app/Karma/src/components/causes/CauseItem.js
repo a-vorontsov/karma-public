@@ -12,6 +12,7 @@ export default class CauseItem extends React.Component {
         this.onPress = this.onPress.bind(this);
     }
     onPress() {
+        if(this.props.isDisabled) return;
         const {cause} = this.props;
         this.props.onPress({
             name: cause.name,

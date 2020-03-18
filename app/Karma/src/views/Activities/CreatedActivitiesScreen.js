@@ -36,22 +36,22 @@ class CreatedActivitiesScreen extends Component {
                 </SafeAreaView>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
-                    {(this.state.activities).length > 0 ? (
-                    this.state.activities.map(activity => {
-                        return (
-                            <ActivityEditable
-                                activity={activity}
-                                key={activity.id}
-                            />
-                        );
-                    })
-                ) : (
-                    <View style={Styles.ph24}>
-                        <RegularText>
-                            Could not find any activities (Refresh)
-                        </RegularText>
-                    </View>
-                )}
+                        {this.state.activities.length > 0 ? (
+                            this.state.activities.map(activity => {
+                                return (
+                                    <ActivityEditable
+                                        activity={activity}
+                                        key={activity.id}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <View style={Styles.ph24}>
+                                <RegularText>
+                                    Could not find any activities (Refresh)
+                                </RegularText>
+                            </View>
+                        )}
                     </View>
                 </ScrollView>
             </View>

@@ -23,7 +23,6 @@ const icons = {
     location: require("../../assets/images/general-logos/location-logo.png"),
 };
 
-
 function formatAMPM(d) {
     let date = new Date(d);
     let hours = date.getHours();
@@ -59,17 +58,15 @@ function getMonthName(d, long = false) {
     return name;
 }
 // returns date string in the format day/month/year
-function getDate(d){
-   const date =  new Date(d);
+function getDate(d) {
+    const date = new Date(d);
     return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
 }
 
 const ActivityEditable = props => {
-
     const navigation = useNavigation();
     const {activity} = props;
     return (
-
         <View>
             <View
                 style={{
@@ -174,7 +171,8 @@ const ActivityEditable = props => {
                                 source={icons.date}
                                 style={[styles.icon, {left: 5}]}
                             />
-                            <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
+                            <RegularText
+                                style={[styles.dateText, {top: 5, left: 1}]}>
                                 {` ${new Date(activity.date).getDate()}`}
                             </RegularText>
                             <RegularText style={styles.dateText}>
@@ -213,7 +211,7 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        { getDate(activity.date) || "Full Date"}
+                                        {getDate(activity.date) || "Full Date"}
                                     </RegularText>
                                     <RegularText
                                         style={{
@@ -244,7 +242,10 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        {activity.address1 + ", " + activity.address2 + "," }
+                                        {activity.address1 +
+                                            ", " +
+                                            activity.address2 +
+                                            ","}
                                     </RegularText>
                                     <RegularText
                                         style={{
@@ -252,7 +253,9 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        {activity.postcode + ", " + activity.city || "Full Location"}
+                                        {activity.postcode +
+                                            ", " +
+                                            activity.city || "Full Location"}
                                     </RegularText>
                                 </View>
                             </View>
