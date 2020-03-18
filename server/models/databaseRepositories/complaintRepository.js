@@ -12,6 +12,11 @@ const find = (id) => {
     return db.query(query, [id]);
 };
 
+const findByUserId = (userId) => {
+    const query = "SELECT * FROM complaint WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 const removeByUserId = (userId) => {
     const query = "DELETE FROM complaint WHERE user_id = $1";
     return db.query(query, [userId]);
@@ -21,4 +26,5 @@ module.exports = {
     insert,
     find,
     removeByUserId,
+    findByUserId,
 };

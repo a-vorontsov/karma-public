@@ -455,6 +455,22 @@ const eventCauseExample1 = {
 
 const getEventCauseExample1 = () => ({...eventCauseExample1});
 
+const complaint = {
+    type: "Sten",
+    message: "I don't like Sten",
+    userId: -1,
+};
+
+const getComplaint = () => ({...complaint});
+
+const setting = {
+    email: 1,
+    notifications: 0,
+    userId: -1,
+};
+
+const getSetting = () => ({...setting});
+
 const clearDatabase = async () => {
     await db.query("DELETE FROM notification");
     await db.query("DELETE FROM complaint");
@@ -513,4 +529,6 @@ module.exports = {
     getInformation,
     getPictureExample1,
     getEventCauseExample1,
+    getComplaint,
+    getSetting,
 };

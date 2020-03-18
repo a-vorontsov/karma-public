@@ -1,15 +1,10 @@
 const db = require("../../database/connection");
 
 const insert = (setting) => {
-    const query = "INSERT INTO setting(email, notification, user_id) VALUES ($1, $2, $3) " +
+    const query = "INSERT INTO setting(email, notifications, user_id) VALUES ($1, $2, $3) " +
         "RETURNING *";
-    const params = [setting.email, setting.notification, setting.user_id];
+    const params = [setting.email, setting.notifications, setting.userId];
     return db.query(query, params);
-};
-
-const find = (id) => {
-    const query = "SELECT * FROM setting WHERE id=$1";
-    return db.query(query, [id]);
 };
 
 const findByUserId = (userId) => {
@@ -24,7 +19,6 @@ const removeByUserId = (userId) => {
 
 module.exports = {
     insert,
-    find,
     removeByUserId,
     findByUserId,
 };
