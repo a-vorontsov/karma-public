@@ -55,6 +55,10 @@ class ProfileScreen extends Component {
             upcomingEvents: [],
             pastEvents: [],
             eventsToggle: true,
+            isOrganisation: false,
+            organisationType:"",
+            orgPhoneNumber:"",
+
         };
         this.fetchProfileInfo();
     }
@@ -81,6 +85,57 @@ class ProfileScreen extends Component {
         }
     };
 
+    setupIndividualProfile(res){
+        const {
+            causes,
+            createdEvents,
+            createdPastEvents,
+            individual,
+            pastEvents,
+            upcomingEvents,
+            user,
+        } = res.body.data;
+
+        this.setState({
+            isOrganisation: false,
+            name: individual.firstName + " " + individual.lastName,
+            username: user.username,
+            location:
+                individual.address.townCity +
+                " " +
+                individual.address.postCode,
+            bio: individual.bio,
+            causes: causes,
+            points: individual.karmaPoints,
+            upcomingEvents: upcomingEvents,
+            pastEvents: pastEvents,
+            createdEvents: createdEvents,
+            createdPastEvents: createdPastEvents,
+        });
+    }
+    setupOrganisationProfile(res){
+        const {
+            causes,
+            user,
+            createdEvents,
+            createdPastEvents,
+            organisation,
+        } = res.body.data;
+        this.setState({
+            isOrganisation: true,
+            name: organisation.name,
+            username: user.username,
+            location:
+                organisation.address.townCity +
+                " " +
+                organisation.address.postCode,
+            causes: causes,
+            bio: organisation.pocFirstName + " " + organisation.pocLastName ,
+            orgPhoneNumber: organisation.phoneNumber,
+            createdEvents: createdEvents,
+            createdPastEvents: createdPastEvents,
+        });
+    }
     async fetchProfileInfo() {
         const credentials = await this.getData();
         //const authToken = credentials.password;
@@ -89,31 +144,7 @@ class ProfileScreen extends Component {
             .get("http://localhost:8000/profile")
             .query({userId: userId})
             .then(res => {
-                const {
-                    causes,
-                    createdEvents,
-                    createdPastEvents,
-                    individual,
-                    pastEvents,
-                    upcomingEvents,
-                    user,
-                } = res.body.data;
-
-                this.setState({
-                    name: individual.firstName + " " + individual.lastName,
-                    username: user.username,
-                    location:
-                        individual.address.townCity +
-                        " " +
-                        individual.address.postCode,
-                    bio: individual.bio,
-                    causes: causes,
-                    points: individual.karmaPoints,
-                    upcomingEvents: upcomingEvents,
-                    pastEvents: pastEvents,
-                    createdEvents: createdEvents,
-                    createdPastEvents: createdPastEvents,
-                });
+                res.body.data.organisation? this.setupOrganisationProfile(res) : this.setupIndividualProfile(res);
             })
             .catch(err => {
                 console.log(err);
@@ -231,9 +262,16 @@ class ProfileScreen extends Component {
                                     <Text style={styles.usernameText}>
                                         {this.state.username}
                                     </Text>
+                                    {this.state.isOrganisation &&
+                                    <Text style={styles.usernameText}>
+                                        {this.state.organisationType}
+                                    </Text>
+                                    }
+                                     {!this.state.isOrganisation &&
                                     <Text style={styles.locationText}>
                                         {this.state.location}
                                     </Text>
+                                     }
                                 </View>
                                 <View
                                     style={{
@@ -241,6 +279,7 @@ class ProfileScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
+                                    {!this.state.isOrganisation &&
                                     <View style={styles.pointContainer}>
                                         <Image
                                             source={icons.badge}
@@ -277,6 +316,19 @@ class ProfileScreen extends Component {
                                             {this.state.points}
                                         </RegularText>
                                     </View>
+                                    }
+                                    {this.state.isOrganisation &&
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            paddingTop: 20,
+                                            justifyContent: "space-between",
+                                        }}>
+                                        <Text style={styles.usernameText}>
+                                            {this.state.orgPhoneNumber}
+                                        </Text>
+                                    </View>
+                                    }
                                     <TouchableOpacity>
                                         <Image
                                             source={icons.share}
