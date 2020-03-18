@@ -44,7 +44,7 @@ export default class CauseContainer extends React.Component {
                 Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
                 this.props.onSubmit();
             })
-            .catch(err => {
+            .catch(() => {
                 this.props.onError(
                     "There was an issue saving your causes.",
                     "Please make sure that you're connected to the internet. Contact us if this issue persists.",

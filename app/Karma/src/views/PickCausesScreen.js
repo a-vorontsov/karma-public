@@ -1,4 +1,3 @@
-/* eslint-disable react/no-did-mount-set-state */
 import React from "react";
 import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";

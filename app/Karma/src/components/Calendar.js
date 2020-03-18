@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {StyleSheet, Text, View, Dimensions} from "react-native";
+import {StyleSheet, View, Dimensions} from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import Colours from "../styles/Colours";
 
-const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 
 export default class Calendar extends Component {
@@ -30,11 +30,8 @@ export default class Calendar extends Component {
     }
 
     render() {
-        const {selectedStartDate, selectedEndDate} = this.state;
         const minDate = new Date(); // Today
         const maxDate = new Date(2020, 6, 3);
-        const startDate = selectedStartDate ? selectedStartDate.toString() : "";
-        const endDate = selectedEndDate ? selectedEndDate.toString() : "";
 
         return (
             <View style={styles.container}>
@@ -49,11 +46,6 @@ export default class Calendar extends Component {
                     onDateChange={this.onDateChange}
                     width={formWidth}
                 />
-
-                {/* <View>
-          <Text>SELECTED START DATE:{ startDate }</Text>
-          <Text>SELECTED END DATE:{ endDate }</Text>
-        </View> */}
             </View>
         );
     }
@@ -61,7 +53,6 @@ export default class Calendar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         backgroundColor: "#FFFFFF",
     },
 });

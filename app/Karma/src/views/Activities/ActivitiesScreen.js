@@ -25,7 +25,6 @@ import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
-const HALF = formWidth / 2;
 
 const icons = {
     filter: require("../../assets/images/general-logos/filter.png"),

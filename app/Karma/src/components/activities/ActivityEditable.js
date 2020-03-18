@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Image, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, TouchableOpacity, View, Alert} from "react-native";
 import {RegularText} from "../text";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
@@ -49,7 +49,8 @@ const ActivityEditable = props => {
                                 />
                             </MenuTrigger>
                             <MenuOptions>
-                                <MenuOption onSelect={() => alert("Share")}>
+                                <MenuOption
+                                    onSelect={() => Alert.alert("Share")}>
                                     <RegularText style={styles.settingsText}>
                                         Share Activity
                                     </RegularText>
@@ -87,7 +88,7 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() =>
-                                        alert(
+                                        Alert.alert(
                                             "Are you sure you want to delete?",
                                         )
                                     }>

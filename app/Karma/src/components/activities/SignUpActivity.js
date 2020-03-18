@@ -103,7 +103,9 @@ export default class SignUpActivity extends React.Component {
                     notes: activity.content,
                     startDate: activity.date,
                     endDate: activity.date,
-                    location: `${activity.address1} ${activity.address2}, ${activity.city}, ${activity.postcode}`,
+                    location: `${activity.address1} ${activity.address2}, ${
+                        activity.city
+                    }, ${activity.postcode}`,
                 });
                 Toast.showWithGravity(
                     "You have successfully added this activity to your calendar!",
