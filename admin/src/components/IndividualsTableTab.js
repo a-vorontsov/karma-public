@@ -16,7 +16,7 @@ export function IndividualsTableTab() {
     }, []);
 
     const toggleBan = async (event, rowData) => {
-        if (!window.confirm("Ban " + rowData.firstname + " " + rowData.lastname + "?")) return;
+        if (!window.confirm(rowData.banned ? "Unban " : "Ban " + rowData.firstname + " " + rowData.lastname + "?")) return;
         rowData.banned = !rowData.banned;
         const indivs = individuals.slice();
         indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
@@ -29,7 +29,7 @@ export function IndividualsTableTab() {
     };
 
     return (
-        <div style={{ maxWidth: '100%' }}>
+        <div>
             <MaterialTable
                 columns={[
                     { title: 'First name', field: 'firstname' },
