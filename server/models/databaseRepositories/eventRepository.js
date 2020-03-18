@@ -40,6 +40,11 @@ const findAllByUserIdLastMonth = (userId) => {
     return db.query(query, [userId, currentDateTime]);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM event WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 const update = (event) => {
     const query = "UPDATE event SET name = $1, address_id = $2, women_only = $3, spots = $4, address_visible = $5, " +
         "minimum_age = $6, photo_id = $7, physical = $8, add_info = $9, content = $10, " +
@@ -67,8 +72,10 @@ module.exports = {
     findById,
     findAll,
     update,
+    removeByUserId,
     findAllByUserId,
     findAllByUserIdLastMonth,
     findAllWithAllData,
     findAllByUserIdWithLocation,
+
 };

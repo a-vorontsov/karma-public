@@ -28,6 +28,11 @@ const findByUserID = (userId) => {
     return db.query(query, [userId]);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM organisation WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 const update = (organisation) => {
     const query =
     "UPDATE organisation SET org_name = $1, org_number = $2, org_type = $3, poc_firstname = $4, " +
@@ -53,9 +58,10 @@ const update = (organisation) => {
 };
 
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    findByUserID: findByUserID,
-    update: update,
+    insert,
+    findById,
+    findAll,
+    findByUserID,
+    update,
+    removeByUserId,
 };

@@ -36,6 +36,16 @@ const findUsersSignedUp = (eventId) => {
     return db.query(query, [eventId]);
 };
 
+const removeByIndividualId = (individualId) => {
+    const query = "DELETE FROM sign_up WHERE individual_id = $1 RETURNING *";
+    return db.query(query, [individualId]);
+};
+
+const removeByEventCreatorId = (eventId) => {
+    const query = "DELETE FROM sign_up WHERE event_id IN " +
+        "(SELECT id as event_id FROM event WHERE user_id=$1) RETURNING *";
+    return db.query(query, [eventId]);
+};
 module.exports = {
     insert,
     findAllByIndividualId,
@@ -43,4 +53,6 @@ module.exports = {
     find,
     update,
     findUsersSignedUp,
+    removeByIndividualId,
+    removeByEventCreatorId,
 };
