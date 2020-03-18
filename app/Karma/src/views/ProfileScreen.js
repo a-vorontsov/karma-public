@@ -21,6 +21,7 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
+import * as Keychain from "react-native-keychain";
 
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -46,32 +47,87 @@ class ProfileScreen extends Component {
             username: "Username",
             location: "Location",
             bio: "this is your bio lorem ipsum and such",
-            causes: ["Cause1", "Cause2"],
+            causes: [],
             points: 1,
-            activities: [],
+            createdEvents:[],
+            upcomingEvents: [],
+            pastEvents:[]
         };
-        this.fetchAllActivities();
+        this.fetchProfileInfo();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
-    fetchAllActivities() {
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+
+    async fetchProfileInfo(){
+        const credentials = await this.getData();
+        console.log(credentials);
+        const authToken = credentials.password;
+        const userId =  credentials.username;
+
         request
-            .get("http://localhost:8000/event/going")
-            .query({userId: 76})
-            .then(result => {
-                console.log(result.body.data);
-                let activities = result.body.data;
-                this.setState({
-                    activities,
-                });
+        .get("http://localhost:8000/profile?userId=1")
+        .then(res => {
+            const {causes, createdEvents, createdPastEvents, individual, pastEvents, upcomingEvents, user} = res.body.data;
+            console.log("causes : " + causes);
+            console.log("createdEvents : " + createdEvents);
+            console.log("createdPastEvents : " + createdPastEvents);
+            console.log("individual : ");
+            console.log(individual);
+            console.log("pastEvents : " + pastEvents);
+            console.log("upcomingEvents : " + upcomingEvents);
+            console.log("user: ")
+            console.log(user);
+            this.setState({
+                name: individual.firstName + " " + individual.lastName,
+                username: user.username,
+                location: individual.address.townCity + " " + individual.address.postCode,
+                bio: individual.bio,
+                causes: causes,
+                points: individual.karmaPoints,
+                upcomingEvents: upcomingEvents,
+                pastEvents: pastEvents,
+                createdEvents: createdEvents,
             })
-            .catch(er => {
-                console.log(er);
-            });
+        })
+        .catch(err => {
+            console.log(err)
+        });
     }
+    // fetchAllActivities() {
+    //     request
+    //         .get("http://localhost:8000/event/going")
+    //         .query({userId: 76})
+    //         .then(result => {
+    //             console.log(result.body.data);
+    //             let activities = result.body.data;
+    //             this.setState({
+    //                 activities,
+    //             });
+    //         })
+    //         .catch(er => {
+    //             console.log(er);
+    //         });
+    // }
 
     _renderItem = ({item}) => {
         return (
@@ -269,7 +325,10 @@ class ProfileScreen extends Component {
                                     size={15}
                                     ph={40}
                                     onPress={() =>
-                                        navigate("CreatedActivities")
+
+                                        navigate("CreatedActivities", {
+                                            activities: this.state.createdEvents,
+                                        })
                                     }
                                 />
                             </View>
@@ -355,7 +414,7 @@ class ProfileScreen extends Component {
                                 }}>
                                 <TouchableOpacity>
                                     <RegularText style={styles.bioHeader}>
-                                        {this.state.activities.length > 0
+                                        {this.state.upcomingEvents.length > 0
                                             ? "Upcoming Events"
                                             : "No Upcoming Events"}
                                     </RegularText>

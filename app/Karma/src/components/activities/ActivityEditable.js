@@ -24,6 +24,7 @@ const icons = {
 };
 
 const ActivityEditable = props => {
+
     const navigation = useNavigation();
     return (
         <View>
@@ -115,7 +116,9 @@ const ActivityEditable = props => {
                     <View style={[Styles.container, Styles.ph24]}>
                         <View style={[Styles.pb24, Styles.bottom]}>
                             <Image
-                                source={require("../../assets/images/general-logos/globe.png")}
+                                source={{
+                                    uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                                }}
                                 style={{
                                     flex: 1,
                                     width: null,
@@ -144,7 +147,7 @@ const ActivityEditable = props => {
                                         fontSize: 20,
                                         marginVertical: 8,
                                     }}>
-                                    Activity Name
+                                    {props.activity.name || "Full Name"}
                                 </RegularText>
                             </View>
                             <View
@@ -170,7 +173,7 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        Full Date
+                                        {props.activity.date || "Full Date"}
                                     </RegularText>
                                     <RegularText
                                         style={{
@@ -178,7 +181,7 @@ const ActivityEditable = props => {
                                             color: Colours.lightGrey,
                                             fontWeight: "500",
                                         }}>
-                                        Full Time
+                                        {props.activity.time || "Full Time"}
                                     </RegularText>
                                 </View>
                             </View>
@@ -201,7 +204,7 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        Full Location
+                                        {props.activity.location || "Full Location"}
                                     </RegularText>
                                 </View>
                             </View>
