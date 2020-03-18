@@ -121,7 +121,7 @@ class ProfileScreen extends Component {
         this.setState({
             isOrganisation: true,
             name: organisation.name,
-            organisationType: organisation.type,
+            organisationType: organisation.organisationType,
             username: user.username,
             location:
                 organisation.address.townCity +
