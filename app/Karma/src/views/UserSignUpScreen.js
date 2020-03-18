@@ -88,6 +88,7 @@ class SignUpScreen extends React.Component {
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
             !this.isValidPassword();
+            
         return (
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
@@ -161,7 +162,7 @@ class SignUpScreen extends React.Component {
                                                 ? ""
                                                 : undefined
                                         }
-                                        inputRef={ref => (this.password = ref)}
+                                        inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                                         onSubmitEditing={() =>
                                             this.confPassword.focus()
                                         }
