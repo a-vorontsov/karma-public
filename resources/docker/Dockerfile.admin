@@ -15,5 +15,8 @@ RUN npm run build
 
 # exposing admin site via nginx webserver
 FROM nginx:1.17-alpine
+RUN rm /etc/nginx/conf.d/default.conf
+
 COPY --from=build /admin/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
