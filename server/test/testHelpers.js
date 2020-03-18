@@ -448,6 +448,13 @@ const resetExample2 = {
 
 const getResetExample2 = () => ({...resetExample2});
 
+const eventCauseExample1 = {
+    eventId: -1,
+    causeId: -1,
+};
+
+const getEventCauseExample1 = () => ({...eventCauseExample1});
+
 const clearDatabase = async () => {
     await db.query("DELETE FROM notification");
     await db.query("DELETE FROM complaint");
@@ -505,4 +512,5 @@ module.exports = {
     getBugReport,
     getInformation,
     getPictureExample1,
+    getEventCauseExample1,
 };

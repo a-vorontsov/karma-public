@@ -10,6 +10,11 @@ const notificationRepository = require("../../models/databaseRepositories/notifi
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const orgRepository = require("../../models/databaseRepositories/organisationRepository");
 const pictureRepository = require("../../models/databaseRepositories/pictureRepository");
+const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
+const complaintRepository = require("../../models/databaseRepositories/complaintRepository");
+const reportUserRepository = require("../../models/databaseRepositories/reportUserRepository");
+const resetRepository = require("../../models/databaseRepositories/resetRepository");
+const settingRepository = require("../../models/databaseRepositories/settingsRepository");
 const util = require("../../util/util");
 
 /**
@@ -24,20 +29,26 @@ const deleteAllInformation = async (userId) => {
     }
 
     await notificationRepository.removeByUserId(userId);
+    await eventCauseRepository.removeByEventCreatorId(userId);
+    await signUpRepository.removeByEventCreatorId(userId);
+    await favouriteRepository.removeByEventCreatorId(userId);
     await eventRepository.removeByUserId(userId);
     await selectedCauseRepository.removeByUserId(userId);
+    await complaintRepository.removeByUserId(userId);
+    await resetRepository.removeByUserId(userId);
+    await reportUserRepository.removeByUserId(userId);
+    await settingRepository.removeByUserId(userId);
 
     const isIndividual = await util.isIndividual(userId);
     if (isIndividual) {
+        console.log("here");
         const findIndividual = await individualRepository.findByUserID(userId);
-        await individualRepository.removeByUserId(userId);
-        const individualId = findIndividual.id;
+        const individualId = findIndividual.rows[0].id;
         await pictureRepository.removeById(findIndividual.pictureId);
-
         await profileRepository.removeByIndividualId(individualId);
         await favouriteRepository.removeByIndividualId(individualId);
         await signUpRepository.removeByIndividualId(individualId);
-
+        await individualRepository.removeByUserId(userId);
     }
 
     const isOrganisation = await util.isOrganisation(userId);
