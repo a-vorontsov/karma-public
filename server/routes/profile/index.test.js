@@ -58,8 +58,7 @@ test("viewing individual profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .query(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
@@ -124,8 +123,7 @@ test("viewing org profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .query(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
@@ -143,8 +141,7 @@ test("viewing org profile works", async () => {
 
 test("viewing profile without user account works", async () => {
     const profileResponse = await request(app)
-        .get("/profile")
-        .send(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
@@ -159,8 +156,7 @@ test("viewing profile without indiv or org account works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .query(profileViewRequest);
+        .get(`/profile?userId=${userId}`);
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(

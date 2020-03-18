@@ -9,9 +9,10 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
 const indivRepo = require("../../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
 const addressRepo = require("../../../models/databaseRepositories/addressRepository");
+const profileRepo = require("../../../models/databaseRepositories/profileRepository");
 
 /**
- * Endpoint called whenever a user wishes to update their profile.<br/>
+ * Endpoint called whenever a user wishes to update their profile <br/>
  * Any data that does not need to be updated can and should be
  * left out from the POST request to avoid unnecessary computation.<br/>
  * URL example: POST http://localhost:8000/profile/edit/
@@ -22,7 +23,7 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
  * @param {object} req.body.data.organisation if anything for org prof has changed
  * @param {object} req.body Here are some examples of an appropriate request json:
 <pre><code>
-    // example 1 (user wishes to change username, phoneNumber)
+    // example 1 (user wishes to change username, phoneNumber, and set/update their bio & filter to women only events)
     &#123;
         "userId": 123,
         "authToken": "secureToken",
@@ -32,6 +33,8 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
             &#125;
             "individual": &#123;
                 "phoneNumber": "newPhoneNumber",
+                "bio": "New bio",
+                "womenOnly": true
             &#125;
         &#125;
     &#125;
@@ -55,6 +58,7 @@ const addressRepo = require("../../../models/databaseRepositories/addressReposit
 </code></pre>
  * @returns {object}
  *  status: 200, description: Success, go to view profile endpoint to GET updated record.<br/>
+ *  status: 400, description: Only women can filter by women only event. <br/>
  *  status: 500, description: error <br/><br/><br/><br/>
  *  @name Edit profile
  *  @function
@@ -71,6 +75,10 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const individual = indivResult.rows[0];
             const indivCopy = {...individual};
 
+            const profileResult = await profileRepo.findByIndividualId(individual.id);
+            const profile = profileResult.rows[0];
+            const profileCopy = {...profile};
+
             const addressResult = await addressRepo.findById(individual.addressId);
             await updateAddress(req.body.data.individual.address, addressResult.rows[0]);
 
@@ -86,9 +94,22 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             if (req.body.data.individual.gender !== undefined) {
                 individual.gender = req.body.data.individual.gender;
             }
+            if (req.body.data.individual.bio !== undefined) {
+                profile.bio = req.body.data.individual.bio;
+            }
+            if (req.body.data.individual.womenOnly !== undefined) {
+                if (individual.gender !== "f") {
+                    return res.status(400).send({message: "Only women can filter by women only events."});
+                } else {
+                    profile.womenOnly = req.body.data.individual.womenOnly;
+                }
+            }
 
             if (individual !== indivCopy) {
                 await indivRepo.update(individual);
+            }
+            if (profile !== profileCopy) {
+                await profileRepo.update(profile);
             }
         } else if (req.body.data.organisation !== undefined) {
             const orgResult = await orgRepo.findByUserID(req.body.userId);
