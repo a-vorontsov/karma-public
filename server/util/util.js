@@ -52,7 +52,7 @@ const checkUserId = async (userId) => {
         result.message = "ID specified is in wrong format";
         return result;
     }
-    const userResult = await userRepository.findById(userId);
+    const userResult = await userRepository.getUserLocation(userId);
     const user = userResult.rows[0];
     if (!user) {
         result.status = 404;

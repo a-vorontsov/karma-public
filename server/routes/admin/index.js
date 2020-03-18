@@ -25,9 +25,9 @@ router.get("/users", async (req, res) => {
 
 /**
  * This deletes a user and all information.
- * Example: admin/user/delete?userId=5
+ * Example: POST localhost:8000/admin/user/delete?userId=2
  */
-router.get("/user/delete", async (req, res) => {
+router.post("/user/delete", async (req, res) => {
     try {
         const userId = req.query.userId;
         const deletionResult = await deletionModule.deleteAllInformation(userId);

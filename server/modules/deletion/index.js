@@ -41,7 +41,6 @@ const deleteAllInformation = async (userId) => {
 
     const isIndividual = await util.isIndividual(userId);
     if (isIndividual) {
-        console.log("here");
         const findIndividual = await individualRepository.findByUserID(userId);
         const individualId = findIndividual.rows[0].id;
         await pictureRepository.removeById(findIndividual.pictureId);
@@ -58,9 +57,11 @@ const deleteAllInformation = async (userId) => {
         await pictureRepository.removeById(findOrganisation.pictureId);
     }
 
-    const deleteUser = await userRepository.removeUserById(userId);
-    const addressId = deleteUser.addressId;
-    const emailUser = deleteUser.email;
+
+    const findUser = await userRepository.findById(userId);
+    const addressId = findUser.addressId;
+    const emailUser = findUser.email;
+    await userRepository.removeUserById(userId);
 
     await registrationRepository.removeByEmail(emailUser);
     await addressRepository.removeById(addressId);
@@ -68,7 +69,7 @@ const deleteAllInformation = async (userId) => {
     return ({
         status: 200,
         message: "All User information deleted successfully",
-        data: {event: deleteUser.rows[0]},
+        data: {user: findUser.rows[0]},
     });
 };
 
