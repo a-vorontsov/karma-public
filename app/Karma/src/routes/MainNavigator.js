@@ -15,11 +15,15 @@ import CreateActivityScreen from "../views/CreateActivityScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
+import ForgotPasswordScreen from "../views/ForgotPasswordScreen";
 
 const MainNavigator = createStackNavigator(
     {
         Welcome: {
             screen: WelcomeScreen,
+        },
+        ForgotPassword:{
+            screen: ForgotPasswordScreen,
         },
         InitSignup: {
             screen: InitSignUpScreen,
