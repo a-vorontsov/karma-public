@@ -4,9 +4,11 @@ const testHelpers = require("../../test/testHelpers");
 
 const validation = require("../../modules/validation");
 const adminService = require("../../modules/admin/adminService");
+const deletion = require("../../modules/deletion");
 
 jest.mock("../../modules/admin/adminService");
 jest.mock("../../modules/validation");
+jest.mock("../../modules/deletion");
 validation.validateIndividual.mockReturnValue({errors: ""});
 
 let user, individual;
@@ -33,6 +35,22 @@ test("fetching users endpoint works", async () => {
 
     expect(adminService.getAllUsers).toHaveBeenCalledTimes(1);
     expect(response.body.data.users).toMatchObject([user]);
+    expect(response.statusCode).toBe(200);
+});
+
+test("deleting all user data endpoint works", async () => {
+    deletion.deleteAllInformation.mockResolvedValue({
+        message: "All User information deleted successfully",
+        status: 200,
+        data: {user: user},
+    });
+
+    const response = await request(app)
+        .post("/admin/user/delete?userId=3");
+
+    expect(deletion.deleteAllInformation).toHaveBeenCalledTimes(1);
+    expect(response.body.data.user).toMatchObject(user);
+    expect(response.body.message).toBe("All User information deleted successfully");
     expect(response.statusCode).toBe(200);
 });
 

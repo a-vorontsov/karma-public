@@ -53,8 +53,29 @@ router.get("/users", async (req, res) => {
 });
 
 /**
- * This deletes a user and all information.
- * Example: POST localhost:8000/admin/user/delete?userId=2
+ * Endpoint called whenever an admin requests to delete all information in database for
+ * specific user.<br/>
+ * URL Example: POST localhost:8000/admin/user/delete?userId=2
+ * @returns {Object}
+ *  status: 200, description: The deleted user.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "All User information deleted successfully",
+    "data": {
+        user: {
+          email: 'test@gmail.com',
+          username: 'test1',
+          passwordHash: 'password',
+          verified: true,
+          salt: 'password',
+          dateRegistered: '2016-06-22 19:10:25-07',
+          id: 1
+        }
+ }
+ </pre>
+ *  @name Post delete user info
+ *  @function
  */
 router.post("/user/delete", async (req, res) => {
     try {

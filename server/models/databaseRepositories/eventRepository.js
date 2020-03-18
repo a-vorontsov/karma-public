@@ -72,7 +72,6 @@ module.exports = {
     findById,
     findAll,
     update,
-    getEventsWithLocation,
     removeByUserId,
     findAllByUserId,
     findAllByUserIdLastMonth,
