@@ -1,4 +1,4 @@
-const filtersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
+const booleanfiltersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
 
 /**
  * Gets the where clause from the filters given to be plugged to any db query.
@@ -25,14 +25,16 @@ const getWhereClause = (filters) => {
     clause += " where ";
     if (booleanFilters) {
         booleanFilters.forEach(filter => {
-            if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
-                clause += filter.substring(1) + " = false ";
-            } else if (filterIsValid(filter)) {
-                clause += filter + " = true ";
-            } else {
-                return;
+            if (filter) {
+                if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
+                    clause += filter.substring(1) + " = false ";
+                } else if (filterIsValid(filter)) {
+                    clause += filter + " = true ";
+                } else {
+                    throw new Error('One of the filters is invalid');
+                }
+                clause += "and ";
             }
-            clause += "and ";
         });
     }
     if (availabilityStart) clause+= `date >= \'${availabilityStart}\' and `;
@@ -42,11 +44,9 @@ const getWhereClause = (filters) => {
 };
 
 const filterIsValid = (filter) => {
-    return filtersAllowed.includes(filter);
+    return booleanfiltersAllowed.includes(filter);
 };
-
 
 module.exports = {
     getWhereClause,
-    filterIsValid,
 };

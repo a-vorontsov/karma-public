@@ -1,17 +1,5 @@
 const filterer = require("./index.js");
 
-test("incorrect filter is not valid", () => {
-    expect(filterer.filterIsValid("Delete * from db")).toBe(false);
-    expect(filterer.filterIsValid("womenOnly")).toBe(false);
-    expect(filterer.filterIsValid("address")).toBe(false);
-});
-test("correct filter is  valid", () => {
-    expect(filterer.filterIsValid("women_only")).toBe(true);
-    expect(filterer.filterIsValid("physical")).toBe(true);
-    expect(filterer.filterIsValid("add_info")).toBe(true);
-    expect(filterer.filterIsValid("photo_id")).toBe(true);
-    expect(filterer.filterIsValid("address_visible")).toBe(true);
-});
 
 test("where clause matches boolean filters specified", () => {
     expect(filterer.getWhereClause({booleans:["physical", "women_only"]})).toBe(" where physical = true and women_only = true ");
@@ -60,12 +48,19 @@ test("having no filters returns empty where clause", () => {
     expect(filterer.getWhereClause(filters)).toBe("");
 });
 
+test("having only incorrect boolean filters throws invalid filter error", () => {
+    const filters = {booleans:["hellowrold", "Delete * from db"]};
+    expect(() => {
+        filterer.getWhereClause(filters);
+      }).toThrowError(new Error('One of the filters is invalid'));
+});
+
 test("where clause not affected by undefined and null values", () => {
     const filters = {
-        booleans: [ 'physical', '!women_only' ],
+        booleans: [ null, '!women_only' ],
         availabilityStart: null,
         availabilityEnd: null,
     }
-    const expectedResponse = " where physical = true and women_only = false ";
+    const expectedResponse = " where women_only = false ";
     expect(filterer.getWhereClause(filters)).toBe(expectedResponse);
 });

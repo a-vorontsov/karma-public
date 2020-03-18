@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
  * URL example: GET http://localhost:8000/information?type=privacyPolicy
  * @param {String} req.query.type - type of information
  * @returns {Object}
- *  status: 200, description: The information of the type type.<br/>
+ *  status: 200, description: The information of the requested type.<br/>
  *  status: 400, description: Wrong input format.
  *  status: 500, description: DB error
  *<pre>
