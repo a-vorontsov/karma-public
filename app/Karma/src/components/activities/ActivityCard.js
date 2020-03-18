@@ -1,7 +1,14 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {Image, StyleSheet, Text, View, TouchableOpacity} from "react-native";
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Alert,
+} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import ReadMore from "react-native-read-more-text";
@@ -16,6 +23,7 @@ const icons = {
     people: require("../../assets/images/general-logos/people-logo.png"),
     signup: require("../../assets/images/general-logos/favourite.png"),
     date: require("../../assets/images/general-logos/rectangle-blue.png"),
+    tick: require("../../assets/images/general-logos/password-tick.png"),
 };
 
 function formatAMPM(d) {
@@ -80,7 +88,11 @@ class ActivityCard extends React.Component {
             displaySignupModal: !this.state.displaySignupModal,
         });
     };
+    handleSignupError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
+    };
     render() {
+        const {activity, signedup, favorited} = this.props;
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
@@ -98,10 +110,20 @@ class ActivityCard extends React.Component {
                     />
                     <TouchableOpacity
                         opacity={0.9}
-                        onPress={() => this.toggleModal()}>
+                        onPress={() => this.toggleModal()}
+                        style={{
+                            position: "absolute",
+                            right: 0,
+                            top: 0,
+                            padding: 5,
+                        }}>
                         <Image
-                            source={this.props.signedup ? null : icons.signup}
-                            style={styles.icon}
+                            source={signedup ? icons.tick : icons.signup}
+                            style={{
+                                height: 50,
+                                width: 50,
+                                resizeMode: "contain",
+                            }}
                         />
                     </TouchableOpacity>
                     <Image
@@ -109,10 +131,10 @@ class ActivityCard extends React.Component {
                         style={[styles.icon, {left: 5}]}
                     />
                     <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
-                        {` ${new Date(this.props.activity.date).getDate()}`}
+                        {` ${new Date(activity.date).getDate()}`}
                     </RegularText>
                     <RegularText style={styles.dateText}>
-                        {`  ${getMonthName(this.props.activity.date)}`}
+                        {`  ${getMonthName(activity.date)}`}
                     </RegularText>
                     <View>
                         <View
@@ -120,13 +142,11 @@ class ActivityCard extends React.Component {
                                 flexDirection: "row",
                             }}>
                             <InfoBar
-                                title={` ${formatAMPM(
-                                    this.props.activity.date,
-                                )}`}
+                                title={` ${formatAMPM(activity.date)}`}
                                 image={icons.clock}
                             />
                             <InfoBar
-                                title={`${this.props.activity.spots} Spots Left`}
+                                title={`${activity.spots} Spots Left`}
                                 image={icons.people}
                             />
                             <View
@@ -138,7 +158,7 @@ class ActivityCard extends React.Component {
                                 <TouchableOpacity style={{alignSelf: "center"}}>
                                     <Image
                                         source={
-                                            this.props.favorited
+                                            favorited
                                                 ? icons.fave_inactive
                                                 : icons.fave_active
                                         }
@@ -159,23 +179,26 @@ class ActivityCard extends React.Component {
                                 fontSize: 20,
                                 marginVertical: 8,
                             }}>
-                            {this.props.activity.name}
+                            {activity.name}
                         </RegularText>
                     </View>
                     <View>
                         <ReadMore
                             numberOfLines={2}
                             renderTruncatedFooter={this._renderTruncatedFooter}>
-                            <RegularText>
-                                {this.props.activity.content}
-                            </RegularText>
+                            <RegularText>{activity.content}</RegularText>
                         </ReadMore>
                     </View>
                 </View>
                 <BottomModal
                     visible={this.state.displaySignupModal}
                     toggleModal={this.toggleModal}>
-                    <SignUpActivity />
+                    <SignUpActivity
+                        activity={activity}
+                        onConfirm={this.toggleModal}
+                        onError={this.handleSignupError}
+                        signedUp={signedup}
+                    />
                 </BottomModal>
             </View>
         );

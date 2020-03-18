@@ -102,6 +102,7 @@ class ActivityDisplayCard extends React.Component {
                         <ActivityCard
                             activity={props.activity}
                             favorited={props.favorited}
+                            signedup={props.signedup}
                         />
                     </View>
                 </View>

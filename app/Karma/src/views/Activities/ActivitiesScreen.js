@@ -21,6 +21,7 @@ import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import Calendar from "../../components/Calendar";
 import {Button} from "../../components/buttons";
+import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -41,6 +42,13 @@ class ActivitiesScreen extends Component {
             visible: false,
             calendarVisible: false,
         };
+    }
+
+    async componentDidMount() {
+        const perms = await getCalendarPerms();
+        if (perms === "undetermined") {
+            await askCalendarPerms();
+        }
     }
 
     static navigationOptions = {
