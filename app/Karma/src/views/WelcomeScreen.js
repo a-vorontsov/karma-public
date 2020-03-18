@@ -16,6 +16,8 @@ import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
 import { Button } from "../components/buttons";
+import LinearGradient from "react-native-linear-gradient";
+
 const request = require("superagent");
 
 export default class WelcomeScreen extends Component {
@@ -343,8 +345,9 @@ export default class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
                 </View>
-                
+               
             </SafeAreaView>
+            
         );
     }
 }

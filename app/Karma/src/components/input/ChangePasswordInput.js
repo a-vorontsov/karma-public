@@ -5,8 +5,6 @@ import {
     Keyboard,
     Alert,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    Platform,
 } from "react-native";
 import {TextInput} from "../input";
 import {RegularText} from "../text";
@@ -20,7 +18,7 @@ export default class ChangePasswordInput extends Component {
         super(props);
         this.state={
             hidePassword: true,
-            
+            isSubmitted: false,
             showError: false,
             passwordMatch: true,
             password: "",
@@ -57,17 +55,19 @@ export default class ChangePasswordInput extends Component {
         // passwords don't match 
         if(this.state.password !== this.state.confPassword){
                 
-            console.log("iurt")
-            this.setState({passwordMatch:false})
-                return true;
+            if(!this.state.isSubmitted){
+                this.setState({passwordMatch:false, isSubmitted:true})
+               
             }
+            return true;
         }
+    }
 
     whichErrorText(){
         if(!this.state.passwordMatch){
             return "Passwords must match";
         }
-        else{
+        if(!this.isValidPassword()){
             return "Invalid Password Format";
         }
     }
@@ -75,12 +75,10 @@ export default class ChangePasswordInput extends Component {
     getInnerRef = () => this.ref; // allows focus
 
     render() {
-        const {firstOpen} = this.props;
-
         const showError = this.showError()
-        
         return(
         <View>
+            <View style={{flexDirection:"row", alignItems:"center"}}>
             <TextInput 
                 placeholder="Password"
                 autoCapitalize="none"
@@ -95,11 +93,13 @@ export default class ChangePasswordInput extends Component {
                 
                 inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                 onSubmitEditing={() =>
-                    this.confPassword.focus()
+                    {   
+                        this.confPassword.focus()
+                    }
                 }
                 returnKeyType="next"
             />
-            <TouchableOpacity
+            <TouchableOpacity style={{position:"absolute", right:0, top:20, backgroundColor:"#f8f8f8"}}
                 onPress={() =>
                     this.setState({
                         hidePassword: !this.state
@@ -107,12 +107,13 @@ export default class ChangePasswordInput extends Component {
                     })
                 }
                >
-                <RegularText >
+                <RegularText style={Styles.cyan}>
                     Show
                 </RegularText>
             </TouchableOpacity>
-
-            <TextInput ref={(input) => { this.confPassword = input; }}
+            </View>
+            <View>
+            <TextInput 
                 placeholder="Confirm Password"
                 name="confPassword"
                 autoCapitalize="none"
@@ -121,7 +122,7 @@ export default class ChangePasswordInput extends Component {
                     (this.confPassword = ref)
                 }
                 onSubmitEditing={() =>
-                    {Keyboard.dismiss(); console.log("ooooo")}
+                    {Keyboard.dismiss()}
                 }
                 secureTextEntry={
                     this.state.hidePassword
@@ -133,12 +134,13 @@ export default class ChangePasswordInput extends Component {
                 errorText={this.whichErrorText()}
                 />
 
-                <TouchableOpacity
+                <TouchableOpacity style={{position:"absolute", right:0, top:20, backgroundColor:"#f8f8f8"}}
                     onPress={() => this.setState({hidePassword: !this.state.hidePassword,})}>
-                    <RegularText >
-                        Show
-                    </RegularText>
+                <RegularText style={Styles.cyan}>
+                    Show
+                </RegularText>
                 </TouchableOpacity>
+                </View>
         </View>
         );
         
