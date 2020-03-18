@@ -4,8 +4,7 @@ export class Header extends React.Component {
     render() {
         return (
             <header>
-                <img className={"logo"} src={"favicon.ico"} alt={"Karma"}/>
-                <h1>Karma, brother</h1>
+                <img className={"header-title"} src={"header-title.png"} alt={"Karma"}/>
             </header>
         );
     }

@@ -54,7 +54,7 @@ const update = (event) => {
 
 const findAllWithAllData = (whereClause) => {
     whereClause = whereClause || ""; // if whereClause is not defined, default value is empty string
-    const query = "SELECT id(event) as event_id,name,women_only,spots as spots_available,address_visible,minimum_age,photo_id," +
+    const query = "SELECT id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id," +
         "address_1,address_2,postcode,city,region,lat,long,"+
         "ARRAY(SELECT individual_id from sign_up where event_id = id(event)) as volunteers " +

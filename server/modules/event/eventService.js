@@ -60,6 +60,7 @@ const updateEvent = async (event) => {
  * Gets data about all events in the database.
  * @param {Array} filters filters to be applied to the events
  * @param {Number} userId id of the user
+  * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
@@ -72,7 +73,10 @@ const getEvents = async (filters, userId) => {
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
-        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spots - (event.volunteers).length,
+        };
     });
 
     const user = userIdCheckResponse.user;
@@ -89,6 +93,7 @@ const getEvents = async (filters, userId) => {
  * Gets array of events grouped by causes selected by the user
  * @param {Array} filters filters to be applied to the events
  * @param {Number} userId id of the user
+ * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
  */
 const getEventsBySelectedCauses = async (filters, userId) => {
@@ -101,7 +106,10 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {
-        return {...event, going: (event.volunteers).includes(userId), spotsRemaining: event.spotsAvailable - (event.volunteers).length};
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spots - (event.volunteers).length,
+        };
     });
 
     const user = userIdCheckResponse.user;

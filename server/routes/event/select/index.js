@@ -4,12 +4,10 @@
 
 const express = require('express');
 const router = express.Router();
-
-const util = require("../../../util/util");
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
-const eventSorter = require("../../../modules/sorting/event");
 const httpUtil = require("../../../util/httpUtil");
 const eventService = require("../../../modules/event/eventService");
+const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
+const eventSignupService = require("../../../modules/event/signup/eventSignupService");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
@@ -181,24 +179,14 @@ router.get("/causes", async (req, res) => {
  *  @name Get "Favourites" Activites tab
  *  */
 router.get("/favourites", async (req, res) => {
-    const userId = req.query.userId;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
+    try {
+        const userId = Number.parseInt(req.query.userId);
+        const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(userId);
+        return httpUtil.sendResult(getFavouriteEventsResult, res);
+    } catch (e) {
+        console.log("Favourite events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        return httpUtil.sendGenericError(e, res);
     }
-    const user = checkUserIdResult.user;
-    individualRepository
-        .findFavouriteEvents(userId)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) {
-                return res.status(404).send({message: "No events favourited by user"});
-            }
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).send({message: "Events fetched successfully", data: {events: events}});
-        })
-        .catch(err => res.status(500).send({message: err.message}));
 });
 
 /**
@@ -267,24 +255,14 @@ router.get("/favourites", async (req, res) => {
  *  @name Get "Going" Activites tab
  *  */
 router.get("/going", async (req, res) => {
-    const userId = req.query.userId;
-    const checkUserIdResult = await util.checkUserId(userId);
-    if (checkUserIdResult.status !== 200) {
-        return res.status(checkUserIdResult.status).send({message: checkUserIdResult.message});
+    try {
+        const userId = Number.parseInt(req.query.userId);
+        const getGoingEventsResult = await eventSignupService.getGoingEvents(userId);
+        return httpUtil.sendResult(getGoingEventsResult, res);
+    } catch (e) {
+        console.log("Favourite events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        return httpUtil.sendGenericError(e, res);
     }
-    const user = checkUserIdResult.user;
-    individualRepository
-        .findGoingEvents(userId)
-        .then(result => {
-            const events = result.rows;
-            if (events.length === 0) {
-                return res.status(404).send({message: "User not going to any events"});
-            }
-            eventSorter.sortByTime(events);
-            eventSorter.sortByDistanceFromUser(events, user);
-            res.status(200).send({message: "Events fetched successfully", data: {events: events}});
-        })
-        .catch(err => res.status(500).send(err));
 });
 
 module.exports = router;
