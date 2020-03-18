@@ -1,7 +1,7 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -53,21 +53,21 @@ function getMonthName(d, long = false) {
 }
 
 const ActivityCard = props => {
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
-    const setFav = handlePress => {
-        return false;
-    };
+    // const setFav = handlePress => {
+    //     return false;
+    // };
 
-    const renderTruncatedFooter = handlePress => {
-        return (
-            <Text
-                style={{color: "#00A8A6", marginTop: 5}}
-                onPress={() => this.navigation.navigate("ActivityInfo")}>
-                READ MORE
-            </Text>
-        );
-    };
+    // const renderTruncatedFooter = handlePress => {
+    //     return (
+    //         <Text
+    //             style={{color: "#00A8A6", marginTop: 5}}
+    //             onPress={() => this.navigation.navigate("ActivityInfo")}>
+    //             READ MORE
+    //         </Text>
+    //     );
+    // };
     return (
         <View style={[Styles.container, Styles.ph24]}>
             <View style={[Styles.pb24, Styles.bottom]}>

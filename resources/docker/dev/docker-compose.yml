@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    container_name: karma-postgres
+    environment:
+      POSTGRES_DB: karma-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: asd123
+    ports:
+      - 5432:5432
+
+volumes:
+  db_data: {}

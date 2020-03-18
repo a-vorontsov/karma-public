@@ -9,16 +9,45 @@ const httpUtil = require("../../util/httpUtil");
 const userRepository = require("../../models/databaseRepositories/userRepository");
 const individualRepository = require("../../models/databaseRepositories/individualRepository");
 const deletionModule = require("../../modules/deletion");
+const adminService = require("../../modules/admin/adminService");
+const validation = require("../../modules/validation");
 
 /**
- * This fetches all users.
+ * Endpoint called whenever an admin requests to see all users.<br/>
+ * URL example: GET http://localhost:8000/admin/users
+ * @returns {Object}
+ *  status: 200, description: All users signed up to the app.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Users fetched successfully.",
+    "data": {
+        "users": [
+            {
+                "id": 7,
+                "email": "asd@asd.asd",
+                "username": "Sten"
+                [...]
+            }
+            {
+                "id": 7,
+                "email": "asd@asd.asd",
+                "username": "Sten"
+                [...]
+            }
+        ]
+    }
+ }
+ </pre>
+ *  @name Get all users
+ *  @function
  */
 router.get("/users", async (req, res) => {
     try {
-        const users = await userRepository.findAll();
-        return httpUtil.sendResult({status: 200, data: {users: users.rows}}, res);
+        const usersResult = await adminService.getAllUsers();
+        return httpUtil.sendResult(usersResult, res);
     } catch (e) {
-        console.log("Information creation failed: " + e);
+        console.log("Users fetching failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -40,13 +69,99 @@ router.post("/user/delete", async (req, res) => {
 
 /**
  * This fetches all individuals.
+ * Endpoint called whenever an admin requests to see all individuals.<br/>
+ * URL example: GET http://localhost:8000/admin/individuals
+ * @returns {Object}
+ *  status: 200, description: All individuals signed up to the app.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Individuals fetched successfully.",
+    "data": {
+        "individuals": [
+            {
+                "id": 1,
+                "firstname": "Juliet",
+                "lastname": "Lowe",
+                "phone": "07009 140829",
+                "banned": false,
+                "userId": 50,
+                "pictureId": null,
+                "addressId": 18,
+                "birthday": "2011-09-22T23:00:00.000Z",
+                "gender": "m"
+            },
+            {
+                "id": 2,
+                "firstname": "Jocelyn",
+                "lastname": "Lancaster",
+                "phone": "(016977) 7982",
+                "banned": true,
+                "userId": 51,
+                "pictureId": null,
+                "addressId": 35,
+                "birthday": "1939-10-25T23:00:00.000Z",
+                "gender": "m"
+            }
+        ]
+    }
+ }
+ </pre>
+ *  @name Get all individuals
+ *  @function
+
  */
 router.get("/individuals", async (req, res) => {
     try {
-        const individuals = await individualRepository.findAll();
-        return httpUtil.sendResult({status: 200, data: {individuals: individuals.rows}}, res);
+        const individualsResult = await adminService.getAllIndividuals();
+        return httpUtil.sendResult(individualsResult, res);
     } catch (e) {
-        console.log("Information creation failed: " + e);
+        console.log("Individuals fetching failed: " + e);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
+ * Endpoint called whenever an admin requests to toggle the ban status of an individual.<br/>
+ * URL example: POST http://localhost:8000/admin/individuals
+ * @returns {Object}
+ *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Individuals fetched successfully.",
+    "data": {
+        "individual":
+        {
+            "id": 1,
+            "firstname": "Juliet",
+            "lastname": "Lowe",
+            "phone": "07009 140829",
+            "banned": false,
+            "userId": 50,
+            "pictureId": null,
+            "addressId": 18,
+            "birthday": "2011-09-22T23:00:00.000Z",
+            "gender": "m"
+        }
+    }
+ }
+ </pre>
+ *  @name Ban individual
+ *  @function
+ */
+router.post("/toggleBan", async (req, res) => {
+    try {
+        const individual = req.body.data.individual;
+        const validationResult = validation.validateIndividual(individual);
+        if (validationResult.errors.length > 0) {
+            return httpUtil.sendValidationErrors(validationResult, res);
+        }
+
+        const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
+        return httpUtil.sendResult(bannedIndividualResult, res);
+    } catch (e) {
+        console.log("Banning individual failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

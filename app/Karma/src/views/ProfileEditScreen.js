@@ -8,9 +8,7 @@ import {
     Image,
     ScrollView,
     TouchableOpacity,
-    Switch,
 } from "react-native";
-import Slider from "@react-native-community/slider";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";

@@ -121,11 +121,11 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             email: user.email,
         };
 
-        const createdEventsResult = await eventRepo.findAllByUserId(req.query.userId);
+        const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(req.query.userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
         const causeResult = await selectedCauseRepo.findByUserId(req.query.userId);
-        const causes = causeResult.rows[0];
+        const causes = causeResult.rows;
         const indivResult = await indivRepo.findByUserID(req.query.userId);
         // send appropriate profile
         if (indivResult.rows.length === 1) {
@@ -208,7 +208,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 message: "Found organisation profile for user.",
                 data: {
                     user: userToSend,
-                    individual: orgToSend,
+                    organisation: orgToSend,
                     causes: causes,
                     createdEvents,
                     createdPastEvents,
