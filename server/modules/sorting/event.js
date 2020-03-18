@@ -12,16 +12,16 @@ const sortByTime = (events) => {
 };
 
 const sortByDistanceFromUser = (events, user) => {
-    events.sort((event1, event2) => {
-        event1.distance = distanceCalculator.getDistance(user, event1, 'M');
-        event2.distance = distanceCalculator.getDistance(user, event2, 'M');
-        if (event1.distance > event2.distance) return 1;
-        else if (event1.distance < event2.distance) return -1;
-        else return 0;
+    events.forEach(event => {
+        event.distance = distanceCalculator.getDistance(user, event, 'M');
     });
+    events.sort((event1, event2) => event1.distance - event2.distance);
     return events;
 };
 
+const sortByTimeAndDistance = (events, user) => {
+    return sortByDistanceFromUser(sortByTime(events), user);
+};
 
 const groupBy = key => array =>
     array.reduce(
@@ -33,7 +33,6 @@ const groupBy = key => array =>
 const groupByCause = groupBy('causeName');
 
 module.exports = {
-    sortByTime: sortByTime,
-    sortByDistanceFromUser: sortByDistanceFromUser,
-    groupByCause: groupByCause,
+    groupByCause,
+    sortByTimeAndDistance,
 };
