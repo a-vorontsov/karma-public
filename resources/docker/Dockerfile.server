@@ -1,8 +1,9 @@
 # building the node server
 FROM node:12-alpine
 WORKDIR /server
-COPY package*.json ./
+RUN apk add --update bash
 
+COPY package*.json ./
 RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
