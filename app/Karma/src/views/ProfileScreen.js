@@ -50,6 +50,7 @@ class ProfileScreen extends Component {
             causes: [],
             points: 1,
             createdEvents:[],
+            createdPastEvents:[],
             upcomingEvents: [],
             pastEvents:[]
         };
@@ -88,15 +89,16 @@ class ProfileScreen extends Component {
         .get("http://localhost:8000/profile?userId=1")
         .then(res => {
             const {causes, createdEvents, createdPastEvents, individual, pastEvents, upcomingEvents, user} = res.body.data;
-            console.log("causes : " + causes);
-            console.log("createdEvents : " + createdEvents);
-            console.log("createdPastEvents : " + createdPastEvents);
-            console.log("individual : ");
-            console.log(individual);
-            console.log("pastEvents : " + pastEvents);
-            console.log("upcomingEvents : " + upcomingEvents);
-            console.log("user: ")
-            console.log(user);
+            // console.log("causes : " + causes);
+            console.log("createdEvents : ");
+            console.log(createdEvents);
+            // console.log("createdPastEvents : " + createdPastEvents);
+            // console.log("individual : ");
+            // console.log(individual);
+            // console.log("pastEvents : " + pastEvents);
+            // console.log("upcomingEvents : " + upcomingEvents);
+            // console.log("user: ")
+            // console.log(user);
             this.setState({
                 name: individual.firstName + " " + individual.lastName,
                 username: user.username,
@@ -107,6 +109,7 @@ class ProfileScreen extends Component {
                 upcomingEvents: upcomingEvents,
                 pastEvents: pastEvents,
                 createdEvents: createdEvents,
+                createdPastEvents: createdPastEvents,
             })
         })
         .catch(err => {
@@ -328,6 +331,7 @@ class ProfileScreen extends Component {
 
                                         navigate("CreatedActivities", {
                                             activities: this.state.createdEvents,
+                                            pastActivities:this.state.createdPastEvents,
                                         })
                                     }
                                 />

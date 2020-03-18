@@ -21,6 +21,7 @@ class CreatedActivitiesScreen extends Component {
         super(props);
         this.state = {
             activities: this.props.navigation.getParam("activities"),
+            pastActivities: this.props.navigation.getParam("pastActivities"),
         };
     }
     static navigationOptions = {

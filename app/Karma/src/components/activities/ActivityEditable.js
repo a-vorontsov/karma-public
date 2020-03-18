@@ -25,8 +25,45 @@ const icons = {
 
 const ActivityEditable = props => {
 
+    function formatAMPM(d) {
+        let date = new Date(d);
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        let strTime = hours + ":" + minutes + " " + ampm;
+        return strTime;
+    }
+
+    function getMonthName(d, long = false) {
+        let date = new Date(d);
+        const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        var name = monthNames[date.getMonth()];
+        if (!long) {
+            name = name.substring(0, 3);
+        }
+        return name;
+    }
+
     const navigation = useNavigation();
+    const {activity} = props;
     return (
+
         <View>
             <View
                 style={{
@@ -131,14 +168,11 @@ const ActivityEditable = props => {
                                 source={icons.date}
                                 style={[styles.icon, {left: 5}]}
                             />
-                            <RegularText
-                                style={[styles.dateText, {top: 5, left: 1}]}>
-                                {" "}
-                                MON
+                            <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
+                                {` ${new Date(activity.date).getDate()}`}
                             </RegularText>
                             <RegularText style={styles.dateText}>
-                                {" "}
-                                DAY
+                                {`  ${getMonthName(props.activity.date)}`}
                             </RegularText>
                             <View>
                                 <RegularText
@@ -147,7 +181,7 @@ const ActivityEditable = props => {
                                         fontSize: 20,
                                         marginVertical: 8,
                                     }}>
-                                    {props.activity.name || "Full Name"}
+                                    {activity.name || "Full Name"}
                                 </RegularText>
                             </View>
                             <View
@@ -181,7 +215,7 @@ const ActivityEditable = props => {
                                             color: Colours.lightGrey,
                                             fontWeight: "500",
                                         }}>
-                                        {props.activity.time || "Full Time"}
+                                        {`${formatAMPM(activity.date)}`}
                                     </RegularText>
                                 </View>
                             </View>
@@ -204,7 +238,7 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        {props.activity.location || "Full Location"}
+                                        {activity.address1 + ", " + activity.postcode + ", " + activity.city || "Full Location"}
                                     </RegularText>
                                 </View>
                             </View>

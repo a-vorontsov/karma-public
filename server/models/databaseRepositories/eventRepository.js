@@ -28,6 +28,11 @@ const findAllByUserId = (userId) => {
     return db.query(query, [userId]);
 };
 
+const findAllByUserIdWithLocation = (userId) => {
+    const query = "SELECT * FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 const findAllByUserIdLastMonth = (userId) => {
     const currentDateTime = new Date();
     currentDateTime.setDate(currentDateTime.getDate() - 30);
@@ -65,4 +70,5 @@ module.exports = {
     findAllByUserId,
     findAllByUserIdLastMonth,
     findAllWithAllData,
+    findAllByUserIdWithLocation,
 };

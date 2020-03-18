@@ -121,7 +121,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             email: user.email,
         };
 
-        const createdEventsResult = await eventRepo.findAllByUserId(req.query.userId);
+        const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(req.query.userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
         const causeResult = await selectedCauseRepo.findByUserId(req.query.userId);
