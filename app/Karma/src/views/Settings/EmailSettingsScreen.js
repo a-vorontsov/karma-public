@@ -6,11 +6,8 @@ import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import {TextInput} from "../../components/input";
 
-<<<<<<< HEAD
-=======
 //const request = require("superagent");
 
->>>>>>> dev
 const logo = require("../../assets/images/settings-logos/email.png");
 
 class EmailSettingsScreen extends Component {
