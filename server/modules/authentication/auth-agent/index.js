@@ -1,4 +1,3 @@
-const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const httpErr = require("../../../util/httpErrors");
 const jose = require("../../jose");
@@ -14,33 +13,29 @@ const permissions = new Map(Object.entries(permConfig));
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
+ * @return {Function} next or redirect
  */
-function requireAuthentication(req, res, next) {
+const requireAuthentication = (req, res, next) => {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
-        next();
-        return;
+        return next();
     }
-    console.log(req.baseUrl);
-    console.log(req.body);
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
-    } else if (authToken === null) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
-    } else {
-        try {
-            const baseUrl = req.baseUrl;
-            const aud = permissions.has(baseUrl) ? permissions.get(baseUrl) : undefined;
-            const userId = jose.verifyAndGetUserId(authToken, aud);
-            req.body.userId = userId;
-            req.query.userId = userId;
-            req.params.userId = userId;
-            next();
-        } catch (e) {
-            httpUtil.sendErrorWithRedirect(401, e.message, res);
-        }
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     }
-}
+    try {
+        const baseUrl = req.baseUrl;
+        const aud = permissions.has(baseUrl) ? permissions.get(baseUrl) : undefined;
+        const userId = jose.verifyAndGetUserId(authToken, aud);
+        // pass on derived userId in request
+        req.body.userId = userId;
+        req.query.userId = userId;
+        req.params.userId = userId;
+        next();
+    } catch (e) {
+        httpUtil.sendErrorWithRedirect(401, e.message, res);
+    }
+};
 
 /**
  * Check if app user is NOT authenticated.
@@ -51,26 +46,23 @@ function requireAuthentication(req, res, next) {
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {HTTP} next
+ * @return {Function} next or redirect
  */
-function requireNoAuthentication(req, res, next) {
+const requireNoAuthentication = (req, res, next) => {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
-        next();
-        return;
+        return next();
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
-    } else if (authToken === null) {
-        next(); // for performance reasons logic is separated
-    } else {
-        try { // if it does not fail user already auth
-            jose.verify(authToken);
-            httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
-        } catch (error) {
-            next();
-        }
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
     }
-}
+    try { // if it does not fail user already auth
+        jose.verify(authToken);
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
+    } catch (e) {
+        next(); // if it does fail, user is not auth as needed
+    }
+};
 
 /**
  * Log user in: initialise an authToken valid
@@ -80,7 +72,7 @@ function requireNoAuthentication(req, res, next) {
  * @return {string} authToken
  * @throws {error} if failed query
  */
-function logIn(userId) {
+const logIn = (userId) => {
     const payload = {
         sub: userId.toString(),
         aud: permConfig["/"],
@@ -93,9 +85,9 @@ function logIn(userId) {
  * auth token invalid.
  * @param {string} authToken
  */
-async function logOut(authToken) {
+const logOut = async (authToken) => {
     await jose.blacklistJWT(authToken);
-}
+};
 
 module.exports = {
     requireAuthentication: requireAuthentication,
