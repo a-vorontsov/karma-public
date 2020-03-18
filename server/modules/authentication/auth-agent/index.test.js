@@ -33,7 +33,7 @@ test("log-in works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 });
 
@@ -53,7 +53,7 @@ test("visiting an internal route with a valid token works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
     viewCausesRequest.authToken = authToken;
 
@@ -83,7 +83,7 @@ test("visiting an internal route with a missing token fails as expected", async 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -109,7 +109,7 @@ test("visiting an internal route with a null token fails as expected", async () 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -135,7 +135,7 @@ test("visiting an internal route with a forged token sig fails as expected", asy
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -161,7 +161,7 @@ test("visiting an internal route with a forged token body or header fails as exp
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -200,7 +200,7 @@ test("visiting an internal route with a fully forged token fails as expected", a
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -277,7 +277,7 @@ test("visiting a no-auth route already authenticated redirects as expected", asy
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
     signUpEmailReq.authToken = authToken;
 
@@ -305,7 +305,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
     viewCausesRequest.authToken = authToken;
 
@@ -342,7 +342,7 @@ test("visiting a no-auth route with auth-checks disabled works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
     signUpEmailReq.authToken = authToken;
 
@@ -426,7 +426,7 @@ test("visiting an admin route with a user token fails as expected", async () => 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logIn(userId);
+    const authToken = authAgent.logInUser(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
     adminRequest.authToken = authToken;
 

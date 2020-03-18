@@ -65,18 +65,31 @@ const requireNoAuthentication = (req, res, next) => {
 };
 
 /**
+ * Log in user of custom role: initialise an
+ * authToken valid for a specific time
+ * (specified in /config) for given
+ * user and return it.
+ * @param {number} userId
+ * @param {string} aud
+ * @return {string} authToken
+ */
+const logIn = (userId, aud) => {
+    const payload = {
+        sub: userId.toString(),
+        aud: aud,
+    };
+    return jose.sign(payload);
+};
+
+/**
  * Log user in: initialise an authToken valid
  * for a specific time (specified in /config)
  * for given user and return it.
  * @param {number} userId
  * @return {string} authToken
  */
-const logIn = (userId) => {
-    const payload = {
-        sub: userId.toString(),
-        aud: permConfig["/"],
-    };
-    return jose.sign(payload);
+const logInUser = (userId) => {
+    return logIn(userId, permConfig["/"]);
 };
 
 /**
@@ -87,11 +100,7 @@ const logIn = (userId) => {
  * @return {string} authToken
  */
 const logInAdmin = (userId) => {
-    const payload = {
-        sub: userId.toString(),
-        aud: permConfig["/admin"],
-    };
-    return jose.sign(payload);
+    return logIn(userId, permConfig["/admin"]);
 };
 
 /**
@@ -106,7 +115,7 @@ const logOut = async (authToken) => {
 module.exports = {
     requireAuthentication,
     requireNoAuthentication,
-    logIn,
+    logInUser,
     logInAdmin,
     logOut,
 };
