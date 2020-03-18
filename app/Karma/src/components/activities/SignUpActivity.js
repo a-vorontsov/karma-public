@@ -39,7 +39,7 @@ export default class SignUpActivity extends React.Component {
         request
             .post(`http://localhost:8000/event/${activity.eventId}/signUp`)
             .send({
-                individualId: 3,
+                individualId: 2,
                 confirmed: true,
             })
             .then(() => {
@@ -64,7 +64,7 @@ export default class SignUpActivity extends React.Component {
                 `http://localhost:8000/event/${activity.eventId}/signUp/update`,
             )
             .send({
-                individualId: 3,
+                individualId: 2,
                 confirmed: false,
             })
             .then(() => {
@@ -103,9 +103,7 @@ export default class SignUpActivity extends React.Component {
                     notes: activity.content,
                     startDate: activity.date,
                     endDate: activity.date,
-                    location: `${activity.address1} ${activity.address2}, ${
-                        activity.city
-                    }, ${activity.postcode}`,
+                    location: `${activity.address1} ${activity.address2}, ${activity.city}, ${activity.postcode}`,
                 });
                 Toast.showWithGravity(
                     "You have successfully added this activity to your calendar!",

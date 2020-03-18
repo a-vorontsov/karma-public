@@ -22,7 +22,7 @@ class ActivitiesFavouritesScreen extends Component {
     fetchAllActivities() {
         request
             .get("http://localhost:8000/event/favourites")
-            .query({userId: 76})
+            .query({userId: 2})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data.events;
