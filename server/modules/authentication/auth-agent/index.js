@@ -70,12 +70,26 @@ const requireNoAuthentication = (req, res, next) => {
  * for given user and return it.
  * @param {number} userId
  * @return {string} authToken
- * @throws {error} if failed query
  */
 const logIn = (userId) => {
     const payload = {
         sub: userId.toString(),
         aud: permConfig["/"],
+    };
+    return jose.sign(payload);
+};
+
+/**
+ * Log an admin in: initialise an authToken valid
+ * for a specific time (specified in /config)
+ * for given user and return it.
+ * @param {number} userId of admin
+ * @return {string} authToken
+ */
+const logInAdmin = (userId) => {
+    const payload = {
+        sub: userId.toString(),
+        aud: permConfig["/admin"],
     };
     return jose.sign(payload);
 };
@@ -90,8 +104,9 @@ const logOut = async (authToken) => {
 };
 
 module.exports = {
-    requireAuthentication: requireAuthentication,
-    requireNoAuthentication: requireNoAuthentication,
-    logIn: logIn,
-    logOut: logOut,
+    requireAuthentication,
+    requireNoAuthentication,
+    logIn,
+    logInAdmin,
+    logOut,
 };

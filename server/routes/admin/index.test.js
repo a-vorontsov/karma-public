@@ -13,6 +13,7 @@ let user, individual;
 
 beforeEach(() => {
     jest.clearAllMocks();
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     user = testHelpers.getUserExample1();
     individual = testHelpers.getIndividual();
 });

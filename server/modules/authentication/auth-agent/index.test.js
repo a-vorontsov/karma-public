@@ -10,12 +10,14 @@ const causeRepo = require("../../../models/databaseRepositories/causeRepository"
 const request = require("supertest");
 const app = require("../../../app");
 const jose = require("../../jose");
+const adminService = require("../../admin/adminService");
 
 const user = testHelpers.getUserExample4();
 const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
 jest.mock("../../../models/databaseRepositories/causeRepository");
+jest.mock("../../admin/adminService");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();
@@ -44,7 +46,7 @@ test("visiting an internal route with a valid token works", async () => {
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: "toBeReceived",
     };
@@ -53,11 +55,11 @@ test("visiting an internal route with a valid token works", async () => {
     const userId = insertUserResult.rows[0].id;
     const authToken = authAgent.logIn(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
-    profileViewRequest.authToken = authToken;
+    viewCausesRequest.authToken = authToken;
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(0);
 
     expect(causeRepo.findAll).toHaveBeenCalledTimes(1)
@@ -74,7 +76,7 @@ test("visiting an internal route with a missing token fails as expected", async 
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         // no authToken specified!!!
     };
@@ -86,7 +88,7 @@ test("visiting an internal route with a missing token fails as expected", async 
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response.body.message).toBe("No authToken specified in incoming request.");
@@ -100,7 +102,7 @@ test("visiting an internal route with a null token fails as expected", async () 
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: null,
     };
@@ -112,7 +114,7 @@ test("visiting an internal route with a null token fails as expected", async () 
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response.body.message).toBe("Cannot read property 'split' of null");
@@ -126,7 +128,7 @@ test("visiting an internal route with a forged token sig fails as expected", asy
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiJWR0tEUGY4RHhvWU04U2FEZVBudm5JS0tENWh1SVF0eV8zOU1BaTQyYURrIiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiI1MjYiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyMjEzLCJleHAiOjE1ODcxNTQyMTN9.FORGED",
     };
@@ -138,7 +140,7 @@ test("visiting an internal route with a forged token sig fails as expected", asy
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response.body.message).toBe("signature verification failed");
@@ -152,7 +154,7 @@ test("visiting an internal route with a forged token body or header fails as exp
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiIxdFU1Z3FxQkhLREV5RHg3SHJrQkE5aVhIQlNmTkZtYV9vRmZhWHd0N2trIiwiYWxnIjoiRVMyNTYifQ.FORGED.KNkhgTIU4WES-pw4Yi6u7KYAldMdnS256IcgnEy0HfKLJv3fsPHqunesaY5EsP7MzLFmf-sU1wo1wztO1E7x1w",
     };
@@ -164,20 +166,20 @@ test("visiting an internal route with a forged token body or header fails as exp
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response.body.message).toBe("JWT is malformed");
     expect(response.statusCode).toBe(401);
 
-    const profileViewRequest2 = {
+    const viewCausesRequest2 = {
         // no userId specified!!!
         authToken: "FORGED.eyJzdWIiOiI1NDEiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyMzMyLCJleHAiOjE1ODcxNTQzMzJ9.w8wHlcIs0JOiMtMeAtcT4G826tTfv64WKbVCaJG-fLp6kCtHpjbqPsI-zewSpdf6onxoe1PPrj1FkFuPwCz3Lw",
     };
 
     const response2 = await request(app)
         .get("/causes")
-        .send(profileViewRequest2)
+        .send(viewCausesRequest2)
         .redirects(1);
 
     expect(response2.body.message).toBe("JWT is malformed");
@@ -191,7 +193,7 @@ test("visiting an internal route with a fully forged token fails as expected", a
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiJ1VDNhMTliWTRkemRKMW9Yd0E2MUJRUzRJSTdiOU1HbVI0Ul9aNTBPejg0IiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiI1NjUiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyNDgxLCJleHAiOjE1ODcxNTQ0ODF9.auy - IW3zmO6obFKkZ1Vby5H2c8osJY2CtKUSRu60ZKtU8ST - v57v9x3b2ctTuKkEEnAEPi_jJtKqybnsy1d6XA",
     };
@@ -203,7 +205,7 @@ test("visiting an internal route with a fully forged token fails as expected", a
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response.body.data).toBe(undefined);
@@ -296,7 +298,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
             id: 1,
         }],
     });
-    const profileViewRequest = {
+    const viewCausesRequest = {
         // no userId specified!!!
         authToken: "toBeReceived",
     };
@@ -305,11 +307,11 @@ test("visiting an internal route with a blacklisted token fails as expected", as
     const userId = insertUserResult.rows[0].id;
     const authToken = authAgent.logIn(userId);
     expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
-    profileViewRequest.authToken = authToken;
+    viewCausesRequest.authToken = authToken;
 
     const response = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(0);
 
     expect(causeRepo.findAll).toHaveBeenCalledTimes(1)
@@ -322,9 +324,117 @@ test("visiting an internal route with a blacklisted token fails as expected", as
 
     const response2 = await request(app)
         .get("/causes")
-        .send(profileViewRequest)
+        .send(viewCausesRequest)
         .redirects(1);
 
     expect(response2.body.message).toBe("JWT blacklisted");
     expect(response2.statusCode).toBe(401);
+});
+
+test("visiting a no-auth route with auth-checks disabled works", async () => {
+    const signUpEmailReq = {
+        // no userId specified!!!
+        authToken: null,
+        data: {
+            email: "anything, I'm already auth anyways",
+        },
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+    signUpEmailReq.authToken = authToken;
+
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+
+    const response = await request(app)
+        .post("/signin/email")
+        .send(signUpEmailReq)
+        .redirects(1);
+
+    expect(response.body.message).toBe("Email did not exist. Email successfully recorded, wait for user to input email verification code.");
+    expect(response.statusCode).toBe(200);
+
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+});
+
+test("visiting an internal route with auth-checks disabled works", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const viewCausesRequest = {
+        // no userId specified!!!
+        // no auth token specified
+    };
+
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+
+    const response = await request(app)
+        .get("/causes")
+        .send(viewCausesRequest)
+        .redirects(0);
+
+    expect(causeRepo.findAll).toHaveBeenCalledTimes(1)
+    expect(response.body.data).toMatchObject([{
+        ...cause,
+        id: 1,
+    }]);
+
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+});
+
+test("visiting an admin route with a valid token works", async () => {
+    adminService.getAllUsers.mockResolvedValue({
+        message: "Users fetched successfully",
+        status: 200,
+        data: { users: [user] },
+    });
+    const adminRequest = {
+        // no userId specified!!!
+        authToken: "toBeReceived",
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logInAdmin(userId);
+    expect(jose.verifyAndGetUserId(authToken, "/admin")).toStrictEqual(userId);
+    adminRequest.authToken = authToken;
+
+    const response = await request(app)
+        .get("/admin/users")
+        .send(adminRequest)
+        .redirects(0);
+
+    expect(adminService.getAllUsers).toHaveBeenCalledTimes(1);
+    expect(response.body.data.users).toMatchObject([user]);
+});
+
+test("visiting an admin route with a user token fails as expected", async () => {
+    adminService.getAllUsers.mockResolvedValue({
+        message: "Users fetched successfully",
+        status: 200,
+        data: { users: [user] },
+    });
+    const adminRequest = {
+        // no userId specified!!!
+        authToken: "toBeReceived",
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+    adminRequest.authToken = authToken;
+
+    const response = await request(app)
+        .get("/admin/users")
+        .send(adminRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("unexpected \"aud\" claim value");
+    expect(response.statusCode).toBe(401);
 });
