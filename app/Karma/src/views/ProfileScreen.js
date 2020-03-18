@@ -21,6 +21,7 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
+import * as Keychain from "react-native-keychain";
 
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -56,7 +57,23 @@ class ProfileScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
-
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
     fetchAllActivities() {
         request
             .get("http://localhost:8000/event/going")

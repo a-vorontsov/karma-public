@@ -15,6 +15,11 @@ import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
 import Colours from "../../styles/Colours";
 
+<<<<<<< HEAD
+=======
+//const request = require("superagent");
+
+>>>>>>> dev
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");

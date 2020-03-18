@@ -41,6 +41,7 @@ export default class TInput extends Component {
                     secureTextEntry={this.props.secureTextEntry}
                     editable={this.props.editable}
                     value={this.props.value}
+                    textContentType={this.props.textContentType}
                 />
                 {this.props.showError ? (
                     <RegularText style={Styles.error}>
