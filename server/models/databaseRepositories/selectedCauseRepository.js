@@ -36,7 +36,7 @@ const deleteMultiple = (userId, causes) => {
 };
 
 const findByUserId = (userId) => {
-    const query = "SELECT * FROM selected_cause WHERE user_id=$1";
+    const query = "SELECT * FROM selected_cause LEFT JOIN cause on cause_id = id(cause) WHERE user_id=$1";
     return db.query(query, [userId]);
 };
 const findByCauseId = (causeId) => {
