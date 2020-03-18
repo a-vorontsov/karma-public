@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
+const deletionModule = require("../../modules/deletion");
 const adminService = require("../../modules/admin/adminService");
 const validation = require("../../modules/validation");
 const authAgent = require("../../modules/authentication/auth-agent");
@@ -51,6 +52,43 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
 });
 
 /**
+ * Endpoint called whenever an admin requests to delete all information in database for
+ * specific user.<br/>
+ * URL Example: POST localhost:8000/admin/user/delete?userId=2
+ * @returns {Object}
+ *  status: 200, description: The deleted user.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "All User information deleted successfully",
+    "data": {
+        user: {
+          email: 'test@gmail.com',
+          username: 'test1',
+          passwordHash: 'password',
+          verified: true,
+          salt: 'password',
+          dateRegistered: '2016-06-22 19:10:25-07',
+          id: 1
+        }
+ }
+ </pre>
+ *  @name Post delete user info
+ *  @function
+ */
+router.post("/user/delete", async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        const deletionResult = await deletionModule.deleteAllInformation(userId);
+        return httpUtil.sendResult(deletionResult, res);
+    } catch (e) {
+        console.log("User couldn't be deleted: " + e);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
+ * This fetches all individuals.
  * Endpoint called whenever an admin requests to see all individuals.<br/>
  * URL example: GET http://localhost:8000/admin/individuals
  * @returns {Object}
@@ -91,6 +129,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  </pre>
  *  @name Get all individuals
  *  @function
+
  */
 router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
     try {

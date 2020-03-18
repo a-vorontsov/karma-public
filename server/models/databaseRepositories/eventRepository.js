@@ -28,11 +28,21 @@ const findAllByUserId = (userId) => {
     return db.query(query, [userId]);
 };
 
+const findAllByUserIdWithLocation = (userId) => {
+    const query = "SELECT * FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 const findAllByUserIdLastMonth = (userId) => {
     const currentDateTime = new Date();
     currentDateTime.setDate(currentDateTime.getDate() - 30);
     const query = "SELECT * FROM event WHERE user_id=$1 AND creation_date>$2";
     return db.query(query, [userId, currentDateTime]);
+};
+
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM event WHERE user_id=$1";
+    return db.query(query, [userId]);
 };
 
 const update = (event) => {
@@ -62,7 +72,10 @@ module.exports = {
     findById,
     findAll,
     update,
+    removeByUserId,
     findAllByUserId,
     findAllByUserIdLastMonth,
     findAllWithAllData,
+    findAllByUserIdWithLocation,
+
 };
