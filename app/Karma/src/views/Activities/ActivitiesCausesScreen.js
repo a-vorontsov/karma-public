@@ -18,7 +18,7 @@ class ActivitiesCausesScreen extends Component {
 
     fetchAllActivities() {
         request
-            .get("http://192.168.0.25:8000//event/causes")
+            .get("http://localhost:8000/event/causes")
             .query({userId: 76})
             .then(result => {
                 let activitiesByCause = result.body.data;

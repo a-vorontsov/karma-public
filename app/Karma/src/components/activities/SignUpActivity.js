@@ -37,7 +37,7 @@ export default class SignUpActivity extends React.Component {
     confirmSignUp() {
         const {activity, onConfirm, onError} = this.props;
         request
-            .post(`http://192.168.0.25:8000/event/${activity.eventId}/signUp`)
+            .post(`http://localhost:8000/event/${activity.eventId}/signUp`)
             .send({
                 individualId: 3,
                 confirmed: true,
@@ -61,7 +61,7 @@ export default class SignUpActivity extends React.Component {
         const {activity, onConfirm, onError} = this.props;
         request
             .post(
-                `http://192.168.0.25:8000/event/${activity.eventId}/signUp/update`,
+                `http://localhost:8000/event/${activity.eventId}/signUp/update`,
             )
             .send({
                 individualId: 3,
