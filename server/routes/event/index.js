@@ -12,10 +12,183 @@ const eventSelectRoute = require("./select/");
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
+const paginator = require("../../modules/pagination");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
 router.use("/", eventSelectRoute);
+
+
+/**
+ * Endpoint called when "All" tab is pressed in Activities homepage<br/>
+ * URL example: REACT_APP_API_URL/event?userId=1&pageSize=2&currentPage=1
+&filter[]=!womenOnly&filter[]=physical&availabilityStart=2020-03-03&availabilityEnd=2020-12-03&maxDistance=5000<br/>
+ * route {GET} /event
+ * @param {Number} req.query.userId - ID of user logged in
+ * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
+ * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
+ * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
+ * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
+ * @returns {Object}
+ *  status: 200, description: Array of all event objects sorted by time
+ *  and distance from the user (distance measured in miles), along with pagination information as follows:
+ <pre>
+{
+    "message": "All Events fetched successfully",
+    "data": {
+        "meta": {
+            "currentPage": 1,
+            "pageCount": 1,
+            "pageSize": 2,
+            "count": 3
+        },
+        "events": [
+            {
+                "eventId": 2,
+                "name": "Event close to user 1",
+                "womenOnly": true,
+                "spotsAvailable": 20,
+                "addressVisible": true,
+                "minimumAge": 21,
+                "photoId": false,
+                "physical": true,
+                "addInfo": false,
+                "content": "risus. Quisque libero lacus, varius et, euismod et, commodo at, libero. Morbi accumsan laoreet",
+                "date": "2020-07-04T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "nearby road",
+                "address2": "wherever",
+                "postcode": "SW19 2LF",
+                "city": "London",
+                "region": "region",
+                "lat": 51.416122,
+                "long": -0.186641,
+                "volunteers": [
+                    1,
+                    21,
+                    36,
+                    2,
+                    24,
+                    13,
+                    29,
+                    46,
+                    37,
+                    39,
+                    49,
+                    12
+                ],
+                "going": true,
+                "spotsRemaining": 8,
+                "distance": 0.18548890708299523
+            },
+            {
+                "eventId": 3,
+                "name": "Event in KCL",
+                "womenOnly": false,
+                "spotsAvailable": 30,
+                "addressVisible": true,
+                "minimumAge": 20,
+                "photoId": false,
+                "physical": true,
+                "addInfo": true,
+                "content": "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+                "date": "2020-04-08T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "uni road",
+                "address2": "wherever",
+                "postcode": "SE1 1DR",
+                "city": "London",
+                "region": "region",
+                "lat": 51.511407,
+                "long": -0.115905,
+                "volunteers": [
+                    1,
+                    34
+                ],
+                "going": true,
+                "spotsRemaining": 28,
+                "distance": 7.399274608089304
+            }
+        ]
+    }
+}
+ </pre>
+ *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
+ *  status: 404, description: if userID doesn't belong to any user <br/>
+ *  status: 500, description: Most probably a database error occurred
+ *  @function
+ *  @name Get "All" Activities tab
+ */
+router.get("/", async (req, res) => {
+    try {
+        const userId = Number.parseInt(req.query.userId);
+        const filters = {booleans: req.query.filter};
+        filters.availabilityStart = req.query.availabilityStart;
+        filters.availabilityEnd = req.query.availabilityEnd;
+        filters.maxDistance = req.query.maxDistance;
+
+        const getEventsResult = await eventService.getEvents(filters, userId);
+        getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
+        return httpUtil.sendResult(getEventsResult, res);
+    } catch (e) {
+        console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
+ * Endpoint called whenever a user requests information about an event.
+ * URL example: GET http://localhost:8000/event/5
+ * @param {Number} id - id of requested event.
+ * @returns {object}
+ *  status: 200, description: Information regarding the event containing the same properties as this example
+ <pre>
+ {
+    "message": "Event fetched successfully",
+    "data": {
+        "event": {
+            "id": 7,
+            "name": "event",
+            "addressId": 24,
+            "womenOnly": true,
+            "spots": 3,
+            "addressVisible": true,
+            "minimumAge": 16,
+            "photoId": true,
+            "physical": true,
+            "addInfo": true,
+            "content": "fun event yay",
+            "date": "2004-10-19T09:23:54.000Z",
+            "userId": 27,
+            "spotsRemaining": 1,
+            "address": {
+                "id": 24,
+                "address1": "221B Baker St",
+                "address2": "Marleybone",
+                "postcode": "NW1 6XE",
+                "city": "London",
+                "region": "Greater London",
+                "lat": 51.5237740,
+                "long": -0.1585340
+            }
+        }
+    }
+}
+ </pre>
+ *  status: 500, description: DB error
+ *  @function
+ *  @name Get event by id
+ *  */
+router.get("/:id", async (req, res) => {
+    try {
+        const id = Number.parseInt(req.params.id);
+        const getEventResult = await eventService.getEventData(id);
+        return httpUtil.sendResult(getEventResult, res);
+    } catch (e) {
+        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
 
 /**
  * Endpoint called whenever a user creates a new event.<br/>
@@ -166,58 +339,5 @@ router.post("/update/:id", async (req, res) => {
     }
 });
 
-/**
- * Endpoint called whenever a user requests information about an event.
- * URL example: GET http://localhost:8000/event/5
- * @param {Number} id - id of requested event.
- * @returns {object}
- *  status: 200, description: Information regarding the event containing the same properties as this example
- <pre>
- {
-    "message": "Event fetched successfully",
-    "data": {
-        "event": {
-            "id": 7,
-            "name": "event",
-            "addressId": 24,
-            "womenOnly": true,
-            "spots": 3,
-            "addressVisible": true,
-            "minimumAge": 16,
-            "photoId": true,
-            "physical": true,
-            "addInfo": true,
-            "content": "fun event yay",
-            "date": "2004-10-19T09:23:54.000Z",
-            "userId": 27,
-            "spotsRemaining": 1,
-            "address": {
-                "id": 24,
-                "address1": "221B Baker St",
-                "address2": "Marleybone",
-                "postcode": "NW1 6XE",
-                "city": "London",
-                "region": "Greater London",
-                "lat": 51.5237740,
-                "long": -0.1585340
-            }
-        }
-    }
-}
- </pre>
- *  status: 500, description: DB error
- *  @function
- *  @name Get event by id
- *  */
-router.get("/:id", async (req, res) => {
-    try {
-        const id = Number.parseInt(req.params.id);
-        const getEventResult = await eventService.getEventData(id);
-        return httpUtil.sendResult(getEventResult, res);
-    } catch (e) {
-        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
-        return httpUtil.sendGenericError(e, res);
-    }
-});
 
 module.exports = router;
