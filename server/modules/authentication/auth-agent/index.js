@@ -1,12 +1,9 @@
-const authRepo = require("../../../models/databaseRepositories/authenticationRepository");
-const digest = require("../digest");
-const date = require("date-and-time");
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const httpErr = require("../../../util/httpErrors");
-const permConfig = require("../../../config").specialPermissions;
-const specialPermissions = new Map(Object.entries(permConfig));
-specialPermissions.size; // TODO:
+const jose = require("../../jose");
+const permConfig = require("../../../config").permissions;
+const permissions = new Map(Object.entries(permConfig));
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -18,27 +15,29 @@ specialPermissions.size; // TODO:
  * @param {HTTP} res
  * @param {HTTP} next
  */
-async function requireAuthentication(req, res, next) {
+function requireAuthentication(req, res, next) {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
         next();
         return;
     }
-    const userId = req.body.userId;
+    console.log(req.body);
     const authToken = req.body.authToken;
-    if (userId === undefined) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
-    } else if (authToken === undefined) {
+    if (authToken === undefined) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
-    } else if (authToken === null || userId === null) {
+    } else if (authToken === null) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
     } else {
-        const tokenResult = await authRepo.findLatestByUserID(userId);
-        const isValid = await util.isValidToken(tokenResult, authToken, "token");
-        if (isValid.isValidToken) {
-            next();
-        } else {
-            httpUtil.sendErrorWithRedirect(401, isValid.error, res);
+        let aud = undefined;
+        const baseUrl = req.baseUrl;
+        console.log(baseUrl);
+        if (permissions.has(baseUrl)) {
+            aud = permissions.get(baseUrl);
         }
+        const userId = jose.verifyAndGetUserId(authToken, aud);
+        req.body.userId = userId;
+        req.query.userId = userId;
+        req.params.userId = userId;
+        next();
     }
 }
 
@@ -52,79 +51,49 @@ async function requireAuthentication(req, res, next) {
  * @param {HTTP} res
  * @param {HTTP} next
  */
-async function requireNoAuthentication(req, res, next) {
+function requireNoAuthentication(req, res, next) {
     if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
         next();
         return;
     }
-    const userId = req.body.userId;
     const authToken = req.body.authToken;
-    if (userId === undefined) {
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("userId"), res);
-    } else if (authToken === undefined) {
+    if (authToken === undefined) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
-    } else if (userId === null || authToken === null) {
+    } else if (authToken === null) {
         next(); // for performance reasons logic is separated
     } else {
-        const tokenResult = await authRepo.findLatestByUserID(userId);
-        if ((await util.isValidToken(tokenResult, authToken, "token")).isValidToken) {
+        try { // if it does not fail user already auth
+            jose.verify(authToken);
             httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
-        } else {
+        } catch (error) {
             next();
         }
     }
 }
 
 /**
- * Return true if authToken is valid for given
- * user.
- * This requires the token to be of valid format,
- * matching the user specified by the userId in
- * the database and to be not expired.
- * If no token is found for specified user or
- * user is not found, a custom error is returned.
- * @param {number} userId
- * @param {string} authToken
- */
-async function isValidToken(userId, authToken) {
-    const tokenResult = await authRepo.findLatestByUserID(userId);
-    return util.isValidToken(tokenResult, authToken, "token");
-}
-
-/**
  * Log user in: initialise an authToken valid
- * for 15 minutes for given user and return it.
+ * for a specific time (specified in /config)
+ * for given user and return it.
  * @param {number} userId
- * @return {string} authToken valid for 15 minutes
+ * @return {string} authToken
  * @throws {error} if failed query
  */
-async function logIn(userId) {
-    const tokenResult = await authRepo.insert({
-        token: digest.hashVarargInBase64(
-            userId,
-            digest.generateSecureSaltInHex(),
-        ),
-        expiryDate: date.format(
-            date.addMinutes(new Date(), 15),
-            "YYYY-MM-DD HH:mm:ss", true,
-        ), // TODO: token renewal
-        creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
-        userId: userId,
-    });
-    return tokenResult.rows[0].token;
-}
+function logIn(userId) {
+    const payload = {
+        sub: userId.toString(),
+        aud: permConfig["/"],
+    };
+    return jose.sign(payload);
+};
 
 /**
  * Log user out: set their
- * auth token(s) expired.
- * @param {number} userId
- * @throws {error} if failed query
+ * auth token invalid.
+ * @param {string} authToken
  */
-async function logOut(userId) {
-    await authRepo.updateAllExpirationsForUser(
-        userId,
-        date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
-    );
+async function logOut(authToken) {
+    await jose.blacklistJWT(authToken);
 }
 
 module.exports = {
@@ -132,5 +101,4 @@ module.exports = {
     requireNoAuthentication: requireNoAuthentication,
     logIn: logIn,
     logOut: logOut,
-    isValidToken: isValidToken,
 };

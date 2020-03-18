@@ -5,14 +5,15 @@ config.jose = { // TODO: host on domain
     crvOrSize: "P-256",
     alg: "ECDH-ES+A128KW",
     enc: "A128GCM",
-    iss: "https://karmaaaaaapp.co.uk",
+    iss: "http://karma.laane.xyz/",
     exp: "30 d",
     aud: "/user",
 };
 
-config.specialPermissions = {
+config.permissions = {
     "/admin": "/admin",
     "/signin/reset": "/reset",
+    "/": "/user",
 };
 
 module.exports = config;

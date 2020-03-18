@@ -11,7 +11,6 @@ jest.mock("owasp-password-strength-test");
 beforeEach(() => {
     registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
     registerUserRequest.data.user.confirmPassword = "new_plaintext";
     registerUserRequest.data.user.email = "test4@gmail.com";
     return testHelpers.clearDatabase();

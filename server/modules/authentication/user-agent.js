@@ -62,7 +62,7 @@ async function registerUser(email, username, password) {
     });
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
-    const authToken = await authAgent.logIn(userId);
+    const authToken = authAgent.logIn(userId);
     return ({
         status: 200,
         message: "User registration successful. Go to individual/org registration selection",
@@ -246,7 +246,7 @@ const signIn = async (email, password) => {
     const userResult = await userRepo.findByEmail(email);
     const user = userResult.rows[0];
     if (isCorrectPassword(user, password)) {
-        const authToken = await authAgent.logIn(user.id);
+        const authToken = authAgent.logIn(user.id);
         return ({
             status: 200,
             message: "Successful authentication with email & password.",
