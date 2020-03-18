@@ -9,6 +9,7 @@ export function IndividualsTableTab() {
         async function fetchData() {
             const usersResponse = (await fetch(process.env.REACT_APP_API_URL + "/admin/individuals"));
             const users = await usersResponse.json();
+            console.log(users);
             setIndividuals(users.data.individuals);
         }
         fetchData();
@@ -20,7 +21,7 @@ export function IndividualsTableTab() {
         const indivs = individuals.slice();
         indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
         setIndividuals(indivs);
-        await fetch(process.env.REACT_APP_API_URL + "/admin/ban", {
+        await fetch(process.env.REACT_APP_API_URL + "/admin/toggleBan", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({data: {individual: rowData}}),
@@ -38,9 +39,9 @@ export function IndividualsTableTab() {
                     { title: 'Banned', field: 'banned', type: 'boolean' },
                 ]}
                 actions={[
-                    () => ({
+                    (rowData) => ({
                         icon: 'not_interested',
-                        tooltip: 'Ban User',
+                        tooltip: rowData.banned ? 'Unban user' : 'Ban User',
                         onClick: toggleBan,
                     })
                 ]}
