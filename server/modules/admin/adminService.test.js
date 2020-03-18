@@ -43,13 +43,13 @@ test("getting all individuals users works", async () => {
     expect(getAllIndividualsResult.status).toBe(200);
 });
 
-test("ban individual works", async () => {
+test("toggling ban of an individual works", async () => {
     individualRepository.update.mockResolvedValue({
         rows: [{...individual, banned: true}],
     });
 
     individual.banned = false;
-    const banIndividualResult = await adminService.banIndividual(individual);
+    const banIndividualResult = await adminService.toggleIndividualBan(individual);
 
     expect(individualRepository.update).toHaveBeenCalledTimes(1);
     expect(individualRepository.update).toHaveBeenCalledWith({...individual, banned: true});

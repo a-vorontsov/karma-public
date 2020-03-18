@@ -29,11 +29,11 @@ const getAllIndividuals = async () => {
 
 /**
  * This bans an individual.
- * @param {Object} bannedIndividual The individual an administrator wishes to ban.
+ * @param {Object} individual The individual an administrator wishes to ban.
  */
-const banIndividual = async (bannedIndividual) => {
-    bannedIndividual.banned = true;
-    const individualResult = await individualRepository.update(bannedIndividual);
+const toggleIndividualBan = async (individual) => {
+    individual.banned = !individual.banned;
+    const individualResult = await individualRepository.update(individual);
     return ({
         message: "Individual banned successfully",
         status: 200,
@@ -44,5 +44,5 @@ const banIndividual = async (bannedIndividual) => {
 module.exports = {
     getAllUsers,
     getAllIndividuals,
-    banIndividual,
+    toggleIndividualBan,
 };

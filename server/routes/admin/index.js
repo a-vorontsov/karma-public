@@ -102,10 +102,10 @@ router.get("/individuals", async (req, res) => {
 });
 
 /**
- * Endpoint called whenever an admin requests to ban an individual.<br/>
+ * Endpoint called whenever an admin requests to toggle the ban status of an individual.<br/>
  * URL example: POST http://localhost:8000/admin/individuals
  * @returns {Object}
- *  status: 200, description: An object containing the data of the banned individual.<br/>
+ *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
  *  status: 500, description: DB error
  *<pre>
  {
@@ -130,15 +130,15 @@ router.get("/individuals", async (req, res) => {
  *  @name Ban individual
  *  @function
  */
-router.post("/ban", async (req, res) => {
+router.post("/toggleBan", async (req, res) => {
     try {
-        const bannedIndividual = req.body.data.individual;
-        const validationResult = validation.validateIndividual(bannedIndividual);
+        const individual = req.body.data.individual;
+        const validationResult = validation.validateIndividual(individual);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
         }
 
-        const bannedIndividualResult = await adminService.banIndividual(bannedIndividual);
+        const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
         return httpUtil.sendResult(bannedIndividualResult, res);
     } catch (e) {
         console.log("Banning individual failed: " + e);

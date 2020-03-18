@@ -51,19 +51,19 @@ test("fetching individuals endpoint works", async () => {
     expect(response.statusCode).toBe(200);
 });
 
-test("banning individuals endpoint works", async () => {
-    adminService.banIndividual.mockResolvedValue({
+test("toggling individual's ban endpoint works", async () => {
+    adminService.toggleIndividualBan.mockResolvedValue({
         message: "Individual banned successfully",
         status: 200,
         data: {individual: individual},
     });
 
     const response = await request(app)
-        .post("/admin/ban")
+        .post("/admin/toggleBan")
         .send({data: {individual}});
 
     expect(validation.validateIndividual).toHaveBeenCalledTimes(1);
-    expect(adminService.banIndividual).toHaveBeenCalledTimes(1);
+    expect(adminService.toggleIndividualBan).toHaveBeenCalledTimes(1);
     expect(response.body.data.individual).toMatchObject(individual);
     expect(response.statusCode).toBe(200);
 });
