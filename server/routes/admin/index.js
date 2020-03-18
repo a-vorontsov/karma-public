@@ -6,8 +6,6 @@ const express = require("express");
 const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
-const userRepository = require("../../models/databaseRepositories/userRepository");
-const individualRepository = require("../../models/databaseRepositories/individualRepository");
 const deletionModule = require("../../modules/deletion");
 const adminService = require("../../modules/admin/adminService");
 const validation = require("../../modules/validation");
