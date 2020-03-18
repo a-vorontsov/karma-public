@@ -66,7 +66,7 @@ const removeByEmail = (email) => {
     const query = 'DELETE FROM \"registration\" WHERE email = $1 RETURNING *';
     const params = [email];
     return db.query(query, params);
-}
+};
 
 module.exports = {
     insert,

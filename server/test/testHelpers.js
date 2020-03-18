@@ -471,6 +471,15 @@ const setting = {
 
 const getSetting = () => ({...setting});
 
+const reportUser = {
+    type: "Alcoholic",
+    message: "He drank too much",
+    userReported: -1,
+    userReporting: -1,
+};
+
+const getReportUser = () => ({...reportUser});
+
 const clearDatabase = async () => {
     await db.query("DELETE FROM notification");
     await db.query("DELETE FROM complaint");
@@ -531,4 +540,5 @@ module.exports = {
     getEventCauseExample1,
     getComplaint,
     getSetting,
+    getReportUser,
 };
