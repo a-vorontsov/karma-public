@@ -52,7 +52,7 @@ const checkUserId = async (userId) => {
         result.message = "ID specified is in wrong format";
         return result;
     }
-    const userResult = await userRepository.getUserLocation(userId);
+    const userResult = await userRepository.findById(userId);
     const user = userResult.rows[0];
     if (!user) {
         result.status = 404;
@@ -62,6 +62,34 @@ const checkUserId = async (userId) => {
     result.status = 200;
     result.user = user;
     return result;
+};
+
+const checkUser = async (userId) => {
+    const result = {};
+    const checkUserIdResult = await checkUserId(userId);
+    const user = checkUserIdResult.user;
+    if (user) {
+        const userIdResult = await userRepository.getUserLocation(userId);
+        if (userIdResult.rows.length >0) {
+            const individualResult = await individualRepository.findByUserID(userId);
+            const orgResult = await organisationRepository.findByUserID(userId);
+            if (individualResult.rows.length>0 || orgResult.rows.length>0) {
+                result.status = 400;
+                result.message = "No address associated with specified user id";
+                return result;
+            } else {
+                result.status = 400;
+                result.message = "No individual nor organisation is associated with specified user id";
+                return result;
+            }
+        } else {
+            result.status = 200;
+            result.user = user;
+            return result;
+        }
+    } else {
+        return checkUserIdResult;
+    }
 };
 
 const checkEventId = async (eventId) => {
@@ -139,11 +167,12 @@ const sleep = async (ms) => {
 };
 
 module.exports = {
-    isIndividual: isIndividual,
-    isOrganisation: isOrganisation,
-    checkUserId: checkUserId,
-    checkEventId: checkEventId,
-    checkEmail: checkEmail,
-    isValidToken: isValidToken,
-    sleep: sleep,
+    isIndividual,
+    isOrganisation,
+    checkUserId,
+    checkUser,
+    checkEventId,
+    checkEmail,
+    isValidToken,
+    sleep,
 };

@@ -64,12 +64,10 @@ const updateEvent = async (event) => {
  * Fails if database calls fail.
  */
 const getEvents = async (filters, userId) => {
-    const userIdCheckResponse = await util.checkUserId(userId);
-    console.log(userIdCheckResponse.status!== 200);
+    const userIdCheckResponse = await util.checkUser(userId);
     if (userIdCheckResponse.status !== 200) {
         throw new Error(userIdCheckResponse.message);
     }
-    console.log("here");
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
     if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
@@ -81,9 +79,7 @@ const getEvents = async (filters, userId) => {
             spotsRemaining: event.spots - (event.volunteers).length,
         };
     });
-    console.log("here");
     const user = userIdCheckResponse.user;
-    console.log(userIdCheckResponse);
     eventSorter.sortByTimeAndDistance(events, user);
 
     if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
@@ -102,8 +98,10 @@ const getEvents = async (filters, userId) => {
  * Fails if database calls fail.
  */
 const getEventsBySelectedCauses = async (filters, userId) => {
-    const userIdCheckResponse = await util.checkUserId(userId);
-    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
+    const userIdCheckResponse = await util.checkUser(userId);
+    if (userIdCheckResponse.status !== 200) {
+        throw new Error(userIdCheckResponse.message);
+    }
 
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
