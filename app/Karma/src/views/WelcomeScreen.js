@@ -83,6 +83,7 @@ class WelcomeScreen extends Component {
     }
 
     onSignUpPressed() {
+        this.props.navigation.navigate("Activities");
         if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
             return;
