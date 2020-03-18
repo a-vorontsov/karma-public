@@ -25,14 +25,16 @@ const getWhereClause = (filters) => {
     clause += " where ";
     if (booleanFilters) {
         booleanFilters.forEach(filter => {
-            if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
-                clause += filter.substring(1) + " = false ";
-            } else if (filterIsValid(filter)) {
-                clause += filter + " = true ";
-            } else {
-                return;
+            if (filter) {
+                if (filter.startsWith("!") && filterIsValid(filter.substring(1))) {
+                    clause += filter.substring(1) + " = false ";
+                } else if (filterIsValid(filter)) {
+                    clause += filter + " = true ";
+                } else {
+                    return;
+                }
+                clause += "and ";
             }
-            clause += "and ";
         });
     }
     if (availabilityStart) clause+= `date >= \'${availabilityStart}\' and `;
