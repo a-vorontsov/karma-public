@@ -265,7 +265,7 @@ class ProfileScreen extends Component {
                                     </Text>
                                     {this.state.isOrganisation &&
                                     <Text style={styles.usernameText}>
-                                        {this.state.organisationType}
+                                        { " | " + this.state.organisationType}
                                     </Text>
                                     }
                                      {!this.state.isOrganisation &&
