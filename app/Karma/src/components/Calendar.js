@@ -46,11 +46,6 @@ export default class Calendar extends Component {
                     onDateChange={this.onDateChange}
                     width={formWidth}
                 />
-
-                {/* <View>
-          <Text>SELECTED START DATE:{ startDate }</Text>
-          <Text>SELECTED END DATE:{ endDate }</Text>
-        </View> */}
             </View>
         );
     }
@@ -58,7 +53,6 @@ export default class Calendar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         backgroundColor: "#FFFFFF",
     },
 });

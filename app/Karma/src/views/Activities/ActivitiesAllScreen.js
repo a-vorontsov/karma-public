@@ -43,7 +43,8 @@ class ActivitiesAllScreen extends Component {
                         return (
                             <ActivityDisplayCard
                                 activity={activity}
-                                key={activity.id}
+                                key={activity.eventId}
+                                signedup={activity.going}
                             />
                         );
                     })
