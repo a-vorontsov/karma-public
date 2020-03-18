@@ -47,7 +47,7 @@ test("visiting an internal route with a valid token works", async () => {
     const profileViewRequest = {
         // no userId specified!!!
         authToken: "toBeReceived",
-    }
+    };
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
@@ -65,6 +65,149 @@ test("visiting an internal route with a valid token works", async () => {
         ...cause,
         id: 1,
     }]);
+});
+
+test("visiting an internal route with a missing token fails as expected", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const profileViewRequest = {
+        // no userId specified!!!
+        // no authToken specified!!!
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+
+    const response = await request(app)
+        .get("/causes")
+        .send(profileViewRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("No authToken specified in incoming request.");
+    expect(response.statusCode).toBe(400);
+});
+
+test("visiting an internal route with a null token fails as expected", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const profileViewRequest = {
+        // no userId specified!!!
+        authToken: null,
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+
+    const response = await request(app)
+        .get("/causes")
+        .send(profileViewRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("Request is not authorised.");
+    expect(response.statusCode).toBe(401);
+});
+
+test("visiting an internal route with a forged token sig fails as expected", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const profileViewRequest = {
+        // no userId specified!!!
+        authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiJWR0tEUGY4RHhvWU04U2FEZVBudm5JS0tENWh1SVF0eV8zOU1BaTQyYURrIiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiI1MjYiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyMjEzLCJleHAiOjE1ODcxNTQyMTN9.FORGED",
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+
+    const response = await request(app)
+        .get("/causes")
+        .send(profileViewRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("signature verification failed");
+    expect(response.statusCode).toBe(401);
+});
+
+test("visiting an internal route with a forged token body or header fails as expected", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const profileViewRequest = {
+        // no userId specified!!!
+        authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiIxdFU1Z3FxQkhLREV5RHg3SHJrQkE5aVhIQlNmTkZtYV9vRmZhWHd0N2trIiwiYWxnIjoiRVMyNTYifQ.FORGED.KNkhgTIU4WES-pw4Yi6u7KYAldMdnS256IcgnEy0HfKLJv3fsPHqunesaY5EsP7MzLFmf-sU1wo1wztO1E7x1w",
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+
+    const response = await request(app)
+        .get("/causes")
+        .send(profileViewRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("JWT is malformed");
+    expect(response.statusCode).toBe(401);
+
+    const profileViewRequest2 = {
+        // no userId specified!!!
+        authToken: "FORGED.eyJzdWIiOiI1NDEiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyMzMyLCJleHAiOjE1ODcxNTQzMzJ9.w8wHlcIs0JOiMtMeAtcT4G826tTfv64WKbVCaJG-fLp6kCtHpjbqPsI-zewSpdf6onxoe1PPrj1FkFuPwCz3Lw",
+    };
+
+    const response2 = await request(app)
+        .get("/causes")
+        .send(profileViewRequest2)
+        .redirects(1);
+
+    expect(response2.body.message).toBe("JWT is malformed");
+    expect(response2.statusCode).toBe(401);
+});
+
+test("visiting an internal route with a fully forged token fails as expected", async () => {
+    causeRepo.findAll.mockResolvedValue({
+        rows: [{
+            ...cause,
+            id: 1,
+        }],
+    });
+    const profileViewRequest = {
+        // no userId specified!!!
+        authToken: "eyJ0eXAiOiJKV1QiLCJraWQiOiJ1VDNhMTliWTRkemRKMW9Yd0E2MUJRUzRJSTdiOU1HbVI0Ul9aNTBPejg0IiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiI1NjUiLCJhdWQiOiIvdXNlciIsImlzcyI6Imh0dHA6Ly9rYXJtYS5sYWFuZS54eXovIiwiaWF0IjoxNTg0NTYyNDgxLCJleHAiOjE1ODcxNTQ0ODF9.auy - IW3zmO6obFKkZ1Vby5H2c8osJY2CtKUSRu60ZKtU8ST - v57v9x3b2ctTuKkEEnAEPi_jJtKqybnsy1d6XA",
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logIn(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+
+    const response = await request(app)
+        .get("/causes")
+        .send(profileViewRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("signature verification failed");
+    expect(response.statusCode).toBe(401);
 });
 
 // test("inserting multiple tokens works", async () => {

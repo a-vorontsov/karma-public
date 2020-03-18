@@ -20,6 +20,7 @@ function requireAuthentication(req, res, next) {
         next();
         return;
     }
+    console.log(req.baseUrl);
     console.log(req.body);
     const authToken = req.body.authToken;
     if (authToken === undefined) {
@@ -27,17 +28,17 @@ function requireAuthentication(req, res, next) {
     } else if (authToken === null) {
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getUnauthorised(), res);
     } else {
-        let aud = undefined;
-        const baseUrl = req.baseUrl;
-        console.log(baseUrl);
-        if (permissions.has(baseUrl)) {
-            aud = permissions.get(baseUrl);
+        try {
+            const baseUrl = req.baseUrl;
+            const aud = permissions.has(baseUrl) ? permissions.get(baseUrl) : undefined;
+            const userId = jose.verifyAndGetUserId(authToken, aud);
+            req.body.userId = userId;
+            req.query.userId = userId;
+            req.params.userId = userId;
+            next();
+        } catch (e) {
+            httpUtil.sendErrorWithRedirect(401, e.message, res);
         }
-        const userId = jose.verifyAndGetUserId(authToken, aud);
-        req.body.userId = userId;
-        req.query.userId = userId;
-        req.params.userId = userId;
-        next();
     }
 }
 
