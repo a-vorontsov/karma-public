@@ -169,7 +169,7 @@ INSERT INTO "registration"
     verification_token,
     expiry_date)
 VALUES
-    ('houssammahlous123@gmail.com', 1, 1, 1, 1, 'token', '2020-12-10 00:00:00-00'),
+    ('houssammahlous123@gmail.com', 1, 1, 1, 0, 'token', '2020-12-10 00:00:00-00'),
     ('magna.Sed.eu@eget.org', 0, 0, 0, 0, 'token', '2020-12-10 00:00:00-00'),
     ('nunc.Quisque.ornare@maurisanunc.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
     ('augue.eu@ipsumDonec.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
@@ -932,7 +932,7 @@ VALUES
     (8, 4),
     (9, 8),
     (10, 2),
-    (11, 0),
+    (11, 10),
     (12, 5),
     (13, 2),
     (14, 6),
