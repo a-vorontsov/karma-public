@@ -87,7 +87,8 @@ class ProfileScreen extends Component {
         const userId =  credentials.username;
 
         request
-        .get("http://localhost:8000/profile?userId=1")
+        .get("http://localhost:8000/profile")
+        .query({userId: userId})
         .then(res => {
             const {causes, createdEvents, createdPastEvents, individual, pastEvents, upcomingEvents, user} = res.body.data;
             this.setState({
@@ -384,12 +385,8 @@ class ProfileScreen extends Component {
                                 }}>
                                 <TouchableOpacity
                                  onPress={()=> this.setState({eventsToggle: !this.state.eventsToggle})}>
-
-                                    <RegularText style={this.state.eventsToggle? styles.bioHeader:styles.bioHeaderAlt}>
-                                    {
-                                      this.state.upcomingEvents.length > 0 ? "Upcoming Events": "No Upcoming Events"
-                                    }
-
+                                    <RegularText style={this.state.eventsToggle? styles.bioHeader: styles.bioHeaderAlt}>
+                                        {this.state.upcomingEvents.length > 0 ? "Upcoming Events": "No Upcoming Events"}
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
