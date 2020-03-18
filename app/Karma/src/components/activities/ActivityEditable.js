@@ -240,11 +240,19 @@ const ActivityEditable = props => {
                                 <View>
                                     <RegularText
                                         style={{
+                                            fontSize: 16,
+                                            color: Colours.black,
+                                            fontWeight: "500",
+                                        }}>
+                                        {activity.address1 + ", " + activity.address2 + "," }
+                                    </RegularText>
+                                    <RegularText
+                                        style={{
                                             fontSize: 18,
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        {activity.address1 + ", " + activity.postcode + ", " + activity.city || "Full Location"}
+                                        {activity.postcode + ", " + activity.city || "Full Location"}
                                     </RegularText>
                                 </View>
                             </View>

@@ -52,7 +52,8 @@ class ProfileScreen extends Component {
             createdEvents:[],
             createdPastEvents:[],
             upcomingEvents: [],
-            pastEvents:[]
+            pastEvents:[],
+            eventsToggle: true,
         };
         this.fetchProfileInfo();
     }
@@ -89,16 +90,6 @@ class ProfileScreen extends Component {
         .get("http://localhost:8000/profile?userId=1")
         .then(res => {
             const {causes, createdEvents, createdPastEvents, individual, pastEvents, upcomingEvents, user} = res.body.data;
-            // console.log("causes : " + causes);
-            console.log("createdEvents : ");
-            console.log(createdEvents);
-            // console.log("createdPastEvents : " + createdPastEvents);
-            // console.log("individual : ");
-            // console.log(individual);
-            // console.log("pastEvents : " + pastEvents);
-            // console.log("upcomingEvents : " + upcomingEvents);
-            // console.log("user: ")
-            // console.log(user);
             this.setState({
                 name: individual.firstName + " " + individual.lastName,
                 username: user.username,
@@ -116,22 +107,6 @@ class ProfileScreen extends Component {
             console.log(err)
         });
     }
-    // fetchAllActivities() {
-    //     request
-    //         .get("http://localhost:8000/event/going")
-    //         .query({userId: 76})
-    //         .then(result => {
-    //             console.log(result.body.data);
-    //             let activities = result.body.data;
-    //             this.setState({
-    //                 activities,
-    //             });
-    //         })
-    //         .catch(er => {
-    //             console.log(er);
-    //         });
-    // }
-
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
@@ -327,9 +302,7 @@ class ProfileScreen extends Component {
                                     title="View Your Activities"
                                     size={15}
                                     ph={40}
-                                    onPress={() =>
-
-                                        navigate("CreatedActivities", {
+                                    onPress={() => navigate("CreatedActivities", {
                                             activities: this.state.createdEvents,
                                             pastActivities:this.state.createdPastEvents,
                                         })
@@ -371,14 +344,7 @@ class ProfileScreen extends Component {
                                         justifyContent: "center",
                                     }}>
                                     <RegularText style={styles.contentText}>
-                                        o eos et accusamus et iusto odio
-                                        dignissimos ducimus qui blanditiis
-                                        praesentium voluptatum deleniti atque
-                                        corrupti quos dolores et quas molestias
-                                        excepturi sint occaecati cupiditate non
-                                        provident, similique sunt in culpa qui
-                                        officia deserunt mollitia animi, id est
-                                        laborum et dolorum fuga
+                                        {this.state.bio}
                                     </RegularText>
                                 </View>
                                 <View
@@ -416,19 +382,23 @@ class ProfileScreen extends Component {
                                     alignItems: "center",
                                     paddingHorizontal: formWidth * 0.075,
                                 }}>
-                                <TouchableOpacity>
-                                    <RegularText style={styles.bioHeader}>
-                                        {this.state.upcomingEvents.length > 0
-                                            ? "Upcoming Events"
-                                            : "No Upcoming Events"}
+                                <TouchableOpacity
+                                 onPress={()=> this.setState({eventsToggle: !this.state.eventsToggle})}>
+
+                                    <RegularText style={this.state.eventsToggle? styles.bioHeader:styles.bioHeaderAlt}>
+                                    {
+                                      this.state.upcomingEvents.length > 0 ? "Upcoming Events": "No Upcoming Events"
+                                    }
+
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
+                                    onPress={()=> this.setState({eventsToggle: !this.state.eventsToggle})}
                                     style={{
                                         alignSelf: "flex-start",
                                         marginLeft: 80,
                                     }}>
-                                    <RegularText style={styles.bioHeaderAlt}>
+                                    <RegularText style={this.state.eventsToggle? styles.bioHeaderAlt: styles.bioHeader}>
                                         Past Events
                                     </RegularText>
                                 </TouchableOpacity>
@@ -442,7 +412,7 @@ class ProfileScreen extends Component {
                                     ref={c => {
                                         this._carousel = c;
                                     }}
-                                    data={this.state.activities}
+                                    data={this.state.eventsToggle? this.state.upcomingEvents: this.state.pastEvents}
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}
