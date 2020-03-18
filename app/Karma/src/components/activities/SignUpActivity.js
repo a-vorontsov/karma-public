@@ -100,6 +100,7 @@ export default class SignUpActivity extends React.Component {
             try {
                 await RNCalendarEvents.saveEvent(activity.name, {
                     description: activity.content,
+                    notes: activity.content,
                     startDate: activity.date,
                     endDate: activity.date,
                     location: `${activity.address1} ${activity.address2}, ${activity.city}, ${activity.postcode}`,
