@@ -70,9 +70,7 @@ test("where clause not affected by undefined and null values", () => {
 
 test("where clause not affected by invalid boolean filters", () => {
     const filters = {
-        booleans: [ "a filter that is not valid", 'physical','!women_only' ],
-        availabilityStart: null,
-        availabilityEnd: null,
+        booleans: [ "a filter that is not valid", 'physical','!women_only' ]
     }
     const expectedResponse = " where physical = true and women_only = false ";
     expect(filterer.getWhereClause(filters)).toBe(expectedResponse);
