@@ -23,7 +23,7 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
-
+import CauseStyles from "../styles/CauseStyles";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const icons = {
@@ -83,7 +83,6 @@ class ProfileScreen extends Component {
 
     async fetchProfileInfo() {
         const credentials = await this.getData();
-        console.log(credentials);
         const authToken = credentials.password;
         const userId = credentials.username;
 
@@ -116,7 +115,6 @@ class ProfileScreen extends Component {
                     createdEvents: createdEvents,
                     createdPastEvents: createdPastEvents,
                 });
-                console.log(this.state.causes);
             })
             .catch(err => {
                 console.log(err);
@@ -220,7 +218,9 @@ class ProfileScreen extends Component {
                                     source={icons.photo_add}
                                 />
                             </PhotoUpload>
-                            <View>
+                            <View style={{
+                                        paddingLeft: 38,
+                                    }}>
                                 <RegularText style={styles.nameText}>
                                     {this.state.name}
                                 </RegularText>
@@ -270,7 +270,7 @@ class ProfileScreen extends Component {
                                                 color: Colours.white,
                                                 height: 25,
                                                 width: 25,
-                                                left: 53,
+                                                left: 50,
                                                 top: -5,
                                                 position: "absolute",
                                             }}>
@@ -366,35 +366,33 @@ class ProfileScreen extends Component {
                                     </RegularText>
                                 </View>
                                 <RegularText style={styles.bioHeader}>
-                                        Causes
-                                    </RegularText>
+                                    Causes
+                                </RegularText>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "flex-end",
                                         justifyContent: "flex-end",
                                     }}>
-
-
-                                        {this.state.causes.length > 0 ? (
-                                            this.state.causes.map(
-                                                cause => {
-                                                    return (
-                                                        <CauseItem
-                                                            cause={cause}
-                                                            key={cause.id}
-                                                            isDisabled = {true}
-                                                        />
-                                                    );
-                                                },
-                                            )
-                                        ) : (
-                                            <View style={Styles.ph24}>
-                                                <RegularText>
-                                                    You did not select any causes
-                                                </RegularText>
-                                            </View>
-                                        )}
+                                    {this.state.causes.length > 0 ? (
+                                        <View style={CauseStyles.container}>
+                                        {this.state.causes.map(cause => {
+                                            return (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            );
+                                        })}
+                                        </View>
+                                    ) : (
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You did not select any causes
+                                            </RegularText>
+                                        </View>
+                                    )}
 
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
@@ -497,7 +495,7 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 30,
+        fontSize: 25,
         color: Colours.white,
         fontWeight: "bold",
     },
