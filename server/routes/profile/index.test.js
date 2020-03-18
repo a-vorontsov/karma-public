@@ -128,7 +128,7 @@ test("viewing org profile works", async () => {
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
     );
-    expect(profileResponse.body.data.individual.address.postCode).toBe(
+    expect(profileResponse.body.data.organisation.address.postCode).toBe(
         organisationRegistrationRequest.data.organisation.address.postCode,
     );
     expect(profileResponse.body.data.organisation.organisationNumber).toBe(
