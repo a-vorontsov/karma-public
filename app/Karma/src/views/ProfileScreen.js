@@ -83,9 +83,8 @@ class ProfileScreen extends Component {
 
     async fetchProfileInfo() {
         const credentials = await this.getData();
-        const authToken = credentials.password;
+        //const authToken = credentials.password;
         const userId = credentials.username;
-
         request
             .get("http://localhost:8000/profile")
             .query({userId: userId})
@@ -218,9 +217,10 @@ class ProfileScreen extends Component {
                                     source={icons.photo_add}
                                 />
                             </PhotoUpload>
-                            <View style={{
-                                        paddingLeft: 38,
-                                    }}>
+                            <View
+                                style={{
+                                    paddingLeft: 38,
+                                }}>
                                 <RegularText style={styles.nameText}>
                                     {this.state.name}
                                 </RegularText>
@@ -376,15 +376,15 @@ class ProfileScreen extends Component {
                                     }}>
                                     {this.state.causes.length > 0 ? (
                                         <View style={CauseStyles.container}>
-                                        {this.state.causes.map(cause => {
-                                            return (
-                                                <CauseItem
-                                                    cause={cause}
-                                                    key={cause.id}
-                                                    isDisabled={true}
-                                                />
-                                            );
-                                        })}
+                                            {this.state.causes.map(cause => {
+                                                return (
+                                                    <CauseItem
+                                                        cause={cause}
+                                                        key={cause.id}
+                                                        isDisabled={true}
+                                                    />
+                                                );
+                                            })}
                                         </View>
                                     ) : (
                                         <View style={Styles.ph24}>
