@@ -7,33 +7,9 @@ on:
     paths:
       - "server/**"
       - "admin/**"
-  pull_request: # TODO remove this before merge, this is only for testing !!
-    branches:
-      - dev
-    paths:
-      - "server/**"
-      - "admin/**"
 
 jobs:
   publish:
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      TWILIO_ACCOUND_SID: ${{ secrets.TWILIO_ACCOUND_SID }}
-      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-      TWILIO_SERVICE_SID: ${{ secrets.TWILIO_SERVICE_SID }}
-      EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-      BUG_REPORT_EMAIL_ADDRESS: ${{ secrets.BUG_REPORT_EMAIL_ADDRESS }}
-      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
-
-      # TODO: Enable these sometime in the future
-      ENABLE_OAUTH: 0
-      SKIP_PASSWORD_CHECKS: 0
-      SKIP_AUTH_CHECKS_FOR_TESTING: 0
-      SKIP_MAIL_SENDING_FOR_TESTING: 0
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -57,3 +33,4 @@ jobs:
           dockerfile: resources/docker/Dockerfile.admin
           context: admin
           snapshot: true
+          buildargs: REACT_APP_API_URL

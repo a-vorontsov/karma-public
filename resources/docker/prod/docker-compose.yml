@@ -7,35 +7,54 @@ services:
       - db_data:/var/lib/postgresql/data
     container_name: karma-postgres
     environment:
-      POSTGRES_DB: karma-db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: asd123
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
-
   server:
-    image: karma/server
-    build:
-      context: ../../../server
-      dockerfile: ../resources/docker/Dockerfile.server
+    image: teamteamkarma/server
+    # Uncomment if you want to build the images locally
+    #build:
+    #  context: ../../../server
+    #  dockerfile: ../resources/docker/Dockerfile.server
     container_name: karma-server
+    environment:
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_HOST: ${DB_HOST}
+      TWILIO_ACCOUND_SID: ${TWILIO_ACCOUND_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      TWILIO_SERVICE_SID: ${TWILIO_SERVICE_SID}
+      EMAIL_ADDRESS: ${EMAIL_ADDRESS}
+      BUG_REPORT_EMAIL_ADDRESS: ${BUG_REPORT_EMAIL_ADDRESS}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+
+      # TODO: Enable these sometime in the future
+      ENABLE_OAUTH: 0
+      SKIP_PASSWORD_CHECKS: 0
+      SKIP_AUTH_CHECKS_FOR_TESTING: 0
+      SKIP_MAIL_SENDING_FOR_TESTING: 0
     ports:
       - 8000:8000
     depends_on:
       - db
-    command: ["./wait-for-it.sh", "db:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
-
+    command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
   admin:
-    image: karma/admin
-    build:
-      context: ../../../admin
-      dockerfile: ../resources/docker/Dockerfile.admin
+    image: teamteamkarma/admin
+    # Uncomment if you want to build the images locally
+    #build:
+    #  context: ../../../admin
+    #  dockerfile: ../resources/docker/Dockerfile.admin
     container_name: karma-admin
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
     ports:
       - 80:80
     depends_on:

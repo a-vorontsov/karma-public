@@ -12,4 +12,5 @@ RUN apk --no-cache --virtual build-dependencies add \
     && apk del build-dependencies
 
 COPY . .
+RUN chmod a+x wait-for-it.sh
 EXPOSE 8000
