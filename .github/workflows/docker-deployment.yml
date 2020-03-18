@@ -1,0 +1,36 @@
+name: Docker Deployment
+# Trigger on push or pull request
+on:
+  push: # run whenever something is merged into dev
+    branches:
+      - dev
+    paths:
+      - "server/**"
+      - "admin/**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Publish server image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: teamteamkarma/server
+          tags: "latest"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: resources/docker/Dockerfile.server
+          context: server
+          snapshot: true
+      - name: Publish admin image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: teamteamkarma/admin
+          tags: "latest"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: resources/docker/Dockerfile.admin
+          context: admin
+          snapshot: true
+          buildargs: REACT_APP_API_URL

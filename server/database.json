@@ -1,10 +1,10 @@
 {
   "dev": {
     "driver": "pg",
-    "user": "postgres",
-    "password": "asd123",
-    "host": "localhost",
-    "database": "karma-db",
+    "user": {"ENV" : "DB_USER"},
+    "password": {"ENV" : "DB_PASS"},
+    "host": {"ENV" : "DB_HOST"},
+    "database": {"ENV" : "DB_DATABASE"},
     "port": "5432"
   }
 }

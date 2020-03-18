@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 .App {
   margin: 0 auto;
   width: 1400px;
