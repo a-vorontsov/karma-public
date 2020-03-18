@@ -20,7 +20,7 @@ export default class ChangePasswordInput extends Component {
         super(props);
         this.state={
             hidePassword: true,
-            firstOpen: this.props.firstOpen,
+            
             showError: false,
             passwordMatch: true,
             password: "",
@@ -45,9 +45,9 @@ export default class ChangePasswordInput extends Component {
     }
 
     showError(){
-        console.log("in show err")
+        const {firstOpen} = this.props;
         // it's the first time you open the page
-        if (this.state.firstOpen){
+        if (firstOpen){
            return false;
         }
         // password is of an invalid format OR empty
@@ -56,16 +56,15 @@ export default class ChangePasswordInput extends Component {
             }
         // passwords don't match 
         if(this.state.password !== this.state.confPassword){
-                this.setState({passwordMatch:false})
-                console.log("no")
-
+                
+            console.log("iurt")
+            this.setState({passwordMatch:false})
                 return true;
             }
         }
 
     whichErrorText(){
         if(!this.state.passwordMatch){
-            console.log("sad")
             return "Passwords must match";
         }
         else{
@@ -76,8 +75,10 @@ export default class ChangePasswordInput extends Component {
     getInnerRef = () => this.ref; // allows focus
 
     render() {
+        const {firstOpen} = this.props;
+
         const showError = this.showError()
-        console.log(showError)
+        
         return(
         <View>
             <TextInput 
