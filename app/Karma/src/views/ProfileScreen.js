@@ -212,7 +212,7 @@ class ProfileScreen extends Component {
                                         width: 25,
                                         marginHorizontal: formWidth * 0.02,
                                         marginTop: 2,
-                                        marginBottom: 5
+                                        marginBottom: 5,
                                     }}
                                 />
                             </TouchableOpacity>
@@ -230,9 +230,7 @@ class ProfileScreen extends Component {
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
-                            <View
-                                // style={{marginLeft:10}}
-                                >
+                            <View>
                                 <PhotoUpload
                                     onPhotoSelect={avatar => {
                                         if (avatar) {
@@ -246,8 +244,8 @@ class ProfileScreen extends Component {
                                     <Image
                                         style={{
                                             paddingVertical: 5,
-                                            width: HALF*0.8,
-                                            height: HALF*0.8,
+                                            width: HALF * 0.8,
+                                            height: HALF * 0.8,
                                             borderRadius: 75,
                                         }}
                                         resizeMode="cover"
@@ -258,12 +256,12 @@ class ProfileScreen extends Component {
                             <View
                                 style={{
                                     marginLeft: 38,
-                                    flex:1
+                                    flex: 1,
                                 }}>
-                                <View 
-                                    // style={{flex:1}}
-                                    >
-                                    <Text numberOfLines={1} style={[styles.nameText]}>
+                                <View>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={[styles.nameText]}>
                                         {this.state.name}
                                     </Text>
                                 </View>
@@ -271,17 +269,23 @@ class ProfileScreen extends Component {
                                     style={{
                                         flexDirection: "row",
                                     }}>
-                                    <Text numberOfLines={1} style={styles.usernameText}>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.usernameText}>
                                         {this.state.username}
                                     </Text>
                                     {this.state.isOrganisation && (
-                                        <Text numberOfLines={1} style={styles.usernameText}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.usernameText}>
                                             {" | " +
                                                 this.state.organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
-                                        <Text numberOfLines={1} style={styles.locationText}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.locationText}>
                                             {this.state.location}
                                         </Text>
                                     )}
