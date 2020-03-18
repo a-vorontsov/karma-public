@@ -133,8 +133,8 @@ class ProfileScreen extends Component {
             causes: causes,
             bio: organisation.pocFirstName + " " + organisation.pocLastName ,
             orgPhoneNumber: organisation.phoneNumber,
-            createdEvents: createdEvents,
-            createdPastEvents: createdPastEvents,
+            upcomingEvents: createdEvents,
+            pastEvents: createdPastEvents,
         });
     }
     async fetchProfileInfo() {
@@ -366,7 +366,7 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                     paddingTop: 15,
                                 }}>
-                                <TransparentButton
+                                {!this.state.isOrganisation && <TransparentButton
                                     title="View Your Activities"
                                     size={15}
                                     ph={40}
@@ -379,6 +379,7 @@ class ProfileScreen extends Component {
                                         })
                                     }
                                 />
+                                }
                             </View>
                             <View
                                 style={{
