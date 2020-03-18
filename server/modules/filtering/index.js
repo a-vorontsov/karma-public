@@ -31,7 +31,7 @@ const getWhereClause = (filters) => {
                 } else if (filterIsValid(filter)) {
                     clause += filter + " = true ";
                 } else {
-                    return;
+                    throw new Error('One of the filters is invalid');
                 }
                 clause += "and ";
             }
