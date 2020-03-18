@@ -101,7 +101,7 @@ test('getting events user is going to works and in the future', async () => {
         eventid: 2,
     }];
 
-    util.checkUserId.mockResolvedValue({status: 200});
+    util.checkUser.mockResolvedValue({status: 200});
     individualRepository.findGoingEvents.mockResolvedValue({rows: eventsArray});
     eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
     const getGoingEventsResult = await eventSignupService.getGoingEvents(15);
