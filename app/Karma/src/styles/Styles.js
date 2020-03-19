@@ -142,6 +142,15 @@ const Styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 10,
     },
+    roundButtonTransparentRed: {
+        borderColor: Colours.red,
+        borderWidth: 2,
+        backgroundColor: "transparent",
+        padding: 10,
+    },
+    disabledButton: {
+        opacity: 0.2,
+    },
     buttonText: {
         fontSize: 20,
     },
@@ -162,6 +171,9 @@ const Styles = StyleSheet.create({
         color: Colours.grey,
     },
     error: {
+        color: Colours.red,
+    },
+    red: {
         color: Colours.red,
     },
     textInput: {

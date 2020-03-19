@@ -39,12 +39,21 @@ const checkEmail = async (email) => {
     result.user = user;
     return result;
 };
+const getIndividualIdFromUserId = async (userId) => {
+    const individualResult = await isIndividual(userId);
+    if (individualResult) {
+        const individualId = await individualRepository.getIndividualId(userId);
 
+        return individualId.rows[0].id;
+    } else {
+        throw new Error("User is not an individual");
+    }
+};
 const checkUserId = async (userId) => {
     const result = {};
     if (!userId) {
         result.status = 400;
-        result.message = "No user id was specified in the query";
+        result.message = "No user id was specified";
         return result;
     }
     if (isNaN(userId)) {
@@ -52,7 +61,7 @@ const checkUserId = async (userId) => {
         result.message = "ID specified is in wrong format";
         return result;
     }
-    const userResult = await userRepository.getUserLocation(userId);
+    const userResult = await userRepository.findById(userId);
     const user = userResult.rows[0];
     if (!user) {
         result.status = 404;
@@ -62,6 +71,43 @@ const checkUserId = async (userId) => {
     result.status = 200;
     result.user = user;
     return result;
+};
+
+const checkUser = async (userId) => {
+    const result = {};
+    const checkUserIdResult = await checkUserId(userId);
+    const user = checkUserIdResult.user;
+    if (user) {
+        const individualResult = await individualRepository.findByUserID(userId);
+        if (individualResult.rows.length>0) {
+            const individualLocationResult = await individualRepository.getIndividualLocation(userId);
+            if (individualLocationResult.rows.length>0) {
+                result.status = 200;
+                result.user = individualLocationResult.rows[0];
+                return result;
+            }
+            result.status = 400;
+            result.message = "No address associated to individual with specified user id";
+            return result;
+        }
+        const orgResult = await organisationRepository.findByUserID(userId);
+        if (orgResult.rows.length>0) {
+            const orgLocationResult = await organisationRepository.getOrganisationLocation(userId);
+            if (orgLocationResult.rows.length>0) {
+                result.status = 200;
+                result.user = orgLocationResult.rows[0];
+                return result;
+            }
+            result.status = 400;
+            result.message = "No address associated to organisation with specified user id";
+            return result;
+        }
+        result.status = 400;
+        result.message = "No individual nor organisation is associated with specified user id";
+        return result;
+    } else {
+        return checkUserIdResult;
+    }
 };
 
 const checkEventId = async (eventId) => {
@@ -158,9 +204,10 @@ module.exports = {
     isIndividual,
     isOrganisation,
     checkUserId,
+    checkUser,
     checkEventId,
     checkEmail,
     isValidToken,
     sleep,
-    base64ToHex,
+    getIndividualIdFromUserId,
 };

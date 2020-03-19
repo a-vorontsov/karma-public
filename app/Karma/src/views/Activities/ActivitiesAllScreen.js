@@ -22,7 +22,7 @@ class ActivitiesAllScreen extends Component {
     fetchAllActivities() {
         request
             .get("http://localhost:8000/event")
-            .query({userId: 76, Page: 1, pageSize: 2})
+            .query({userId: 51, Page: 1, pageSize: 2})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data.events;
@@ -43,7 +43,8 @@ class ActivitiesAllScreen extends Component {
                         return (
                             <ActivityDisplayCard
                                 activity={activity}
-                                key={activity.id}
+                                key={activity.eventId}
+                                signedup={activity.going}
                             />
                         );
                     })

@@ -3,9 +3,12 @@ const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
 const validation = require("../../../modules/validation");
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const util = require("../../../util/util");
 
 jest.mock("../../../modules/event/signup/eventSignupService");
 jest.mock("../../../modules/validation");
+jest.mock("../../../util/util");
+
 validation.validateSignup.mockReturnValue({errors: ""});
 
 let signUp, event, signedUpUserExample1, signedUpUserExample2;
@@ -26,6 +29,7 @@ afterEach(() => {
 });
 
 test('creating signup works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
     eventSignupService.createSignup.mockResolvedValue({
         status: 200,
         message: "Signup created successfully",
@@ -74,13 +78,14 @@ test('requesting event signups works', async () => {
 });
 
 test('requesting signup history for user works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
     eventSignupService.getSignupHistory.mockResolvedValue({
         status: 200,
         message: "History fetched successfully",
         data: {events: [{} , {}]}, // 2 events
     });
 
-    const response = await request(app).get("/event/signUp/history").send({individualId: 5});
+    const response = await request(app).get("/event/signUp/history").query({userId: 55}).send();
 
     expect(eventSignupService.getSignupHistory).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);

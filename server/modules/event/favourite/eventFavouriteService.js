@@ -48,9 +48,10 @@ const deleteEventFavourite = async (deleteFavouriteRequest) => {
  * Fails if database calls fail.
  */
 const getFavouriteEvents = async (userId) => {
-    const userIdCheckResponse = await util.checkUserId(userId);
-    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
-
+    const userIdCheckResponse = await util.checkUser(userId);
+    if (userIdCheckResponse.status !== 200) {
+        throw new Error(userIdCheckResponse.message);
+    }
 
     const findResult = await individualRepository.findFavouriteEvents(userId);
     const events = findResult.rows;

@@ -179,7 +179,7 @@ test("getting all events works", async () => {
         ...eventWithAllData,
         id: 2,
     }];
-    util.checkUserId.mockResolvedValue({status: 200});
+    util.checkUser.mockResolvedValue({status: 200});
     filterer.getWhereClause.mockResolvedValue("");
     eventRepository.findAllWithAllData.mockResolvedValue({
         rows: eventsArray,
@@ -187,7 +187,7 @@ test("getting all events works", async () => {
     eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
     const getEventsResult = await eventService.getEvents({},1);
 
-    expect(util.checkUserId).toHaveBeenCalledTimes(1);
+    expect(util.checkUser).toHaveBeenCalledTimes(1);
     expect(eventRepository.findAllWithAllData).toHaveBeenCalledTimes(1);
     expect(filterer.getWhereClause).toHaveBeenCalledWith({});
     expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
@@ -204,7 +204,7 @@ test("getting events grouped by user selected causes works", async () => {
         ...peaceEvent,
         id: 2,
     }];
-    util.checkUserId.mockResolvedValue({status: 200});
+    util.checkUser.mockResolvedValue({status: 200});
     filterer.getWhereClause.mockResolvedValue("");
     selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
         rows: eventsArray,
@@ -223,7 +223,7 @@ test("getting events grouped by user selected causes works", async () => {
         }
     )
     const getEventsResult = await eventService.getEventsBySelectedCauses({},1);
-    expect(util.checkUserId).toHaveBeenCalledTimes(1);
+    expect(util.checkUser).toHaveBeenCalledTimes(1);
     expect(selectedCauseRepository.findEventsSelectedByUser).toHaveBeenCalledTimes(1);
     expect(filterer.getWhereClause).toHaveBeenCalledWith({});
     expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
