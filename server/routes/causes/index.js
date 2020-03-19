@@ -34,7 +34,7 @@ router.get('/', authAgent.requireAuthentication, (req, res) => {
  *  @name Get by ID
  *  @function
  */
-router.get('/:id', (req, res) => {
+router.get('/:id', authAgent.requireAuthentication, (req, res) => {
     const id = req.params.id;
     if (!id) return res.status(400).send("No id was specified");
     if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");

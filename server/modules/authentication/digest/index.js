@@ -6,7 +6,7 @@ const crypto = require("crypto");
  * @return {hex} 32-byte salt in hex
  */
 function generateSecureSaltInHex() {
-    return crypto.randomBytes(32).toString("hex");
+    return generateSecureRandomBytesInHex(32);
 }
 
 /**
@@ -15,8 +15,28 @@ function generateSecureSaltInHex() {
  * @return {base64} 32-byte salt in base64
  */
 function generateSecureSaltInBase64() {
-    return crypto.randomBytes(32).toString("base64");
+    return generateSecureRandomBytesInBase64(32);
 }
+
+/**
+ * Generate secure random bytes of given size
+ * and return value in hex.
+ * @param {number} size in bytes
+ * @return {string} random bytes in hex
+ */
+const generateSecureRandomBytesInHex = (size) => {
+    return crypto.randomBytes(size).toString("hex");
+};
+
+/**
+ * Generate secure random bytes of given size
+ * and return value in Base64.
+ * @param {number} size in bytes
+ * @return {string} random bytes in base64
+ */
+const generateSecureRandomBytesInBase64 = (size) => {
+    return crypto.randomBytes(size).toString("base64");
+};
 
 /**
  * Hashes the given password and salt concatenated with the
@@ -76,10 +96,12 @@ function hashInput(input) {
 }
 
 module.exports = {
-    generateSecureSaltInHex: generateSecureSaltInHex,
-    generateSecureSaltInBase64: generateSecureSaltInBase64,
-    hashPassWithSaltInHex: hashPassWithSaltInHex,
-    hashPassWithSaltInBase64: hashPassWithSaltInBase64,
-    hashVarargInHex: hashVarargInHex,
-    hashVarargInBase64: hashVarargInBase64,
+    generateSecureRandomBytesInHex,
+    generateSecureRandomBytesInBase64,
+    generateSecureSaltInHex,
+    generateSecureSaltInBase64,
+    hashPassWithSaltInHex,
+    hashPassWithSaltInBase64,
+    hashVarargInHex,
+    hashVarargInBase64,
 };

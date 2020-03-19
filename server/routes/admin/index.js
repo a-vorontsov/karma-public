@@ -76,7 +76,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  *  @name Post delete user info
  *  @function
  */
-router.post("/user/delete", async (req, res) => {
+router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
         const deletionResult = await deletionModule.deleteAllInformation(userId);

@@ -8,6 +8,7 @@ const httpUtil = require("../../../util/httpUtil");
 const eventService = require("../../../modules/event/eventService");
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
@@ -98,7 +99,7 @@ const eventSignupService = require("../../../modules/event/signup/eventSignupSer
  *  @function
  *  @name Get "Causes" Activites tab
  *  */
-router.get("/causes", async (req, res) => {
+router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const filters = {booleans: req.query.filter};
@@ -178,7 +179,7 @@ router.get("/causes", async (req, res) => {
  *  @function
  *  @name Get "Favourites" Activites tab
  *  */
-router.get("/favourites", async (req, res) => {
+router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(userId);
@@ -254,7 +255,7 @@ router.get("/favourites", async (req, res) => {
  *  @function
  *  @name Get "Going" Activites tab
  *  */
-router.get("/going", async (req, res) => {
+router.get("/going", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const getGoingEventsResult = await eventSignupService.getGoingEvents(userId);

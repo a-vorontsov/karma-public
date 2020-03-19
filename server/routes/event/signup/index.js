@@ -8,7 +8,7 @@ const router = express.Router();
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
 const httpUtil = require("../../../util/httpUtil");
 const validation = require("../../../modules/validation");
-
+const authAgent = require("../../../modules/authentication/auth-agent");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
  * URL example: POST http://localhost:8000/event/5/signUp
@@ -37,7 +37,7 @@ const validation = require("../../../modules/validation");
  *  @name Sign up to event
  *  @function
  */
-router.post('/:eventId/signUp', async (req, res) => {
+router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateSignup(signup);
@@ -88,7 +88,7 @@ router.post('/:eventId/signUp', async (req, res) => {
  *  @name See signed up users
  *  @function
  */
-router.get('/:eventId/signUp', async (req, res) => {
+router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.eventId);
         const signupsResult = await eventSignupService.getAllSignupsForEvent(eventId);
@@ -167,7 +167,7 @@ router.get('/:eventId/signUp', async (req, res) => {
  *  @name See signup history
  *  @function
  */
-router.get('/signUp/history', async (req, res) => {
+router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
     try {
         const individualId = req.body.individualId;
         if (individualId === undefined) {
@@ -210,7 +210,7 @@ router.get('/signUp/history', async (req, res) => {
  *  @name Update signup status for event
  *  @function
  */
-router.post('/:eventId/signUp/update', async (req, res) => {
+router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateSignup(signup);

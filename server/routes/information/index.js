@@ -8,9 +8,11 @@ const router = express.Router();
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const informationService = require("../../modules/informationService/");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever an admin wants to upload new information such as Privacy Policy, Community Guidelines.<br/>
+ * // TODO: move to admin/
  * URL example: POST http://localhost:8000/information/
  * @param {Information} req.body - Information regarding the information containing the same properties as this example:
  <pre>
@@ -75,7 +77,7 @@ router.post("/", async (req, res) => {
  *  @name Get information entry
  *  @function
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.anyAuth, async (req, res) => {
     try {
         const type = req.query.type;
 

@@ -8,7 +8,7 @@ const resetRepository = require("../../../models/databaseRepositories/resetRepos
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const tokenSender = require("../../../modules/verification/tokenSender");
-
+const authAgent = require("../../../modules/authentication/auth-agent");
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
  * URL example: POST http://localhost:8000/signin/forgot
@@ -21,7 +21,7 @@ const tokenSender = require("../../../modules/verification/tokenSender");
  *  @name Forgot password
  *  @function
  */
-router.post('/', async (req, res) => {
+router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
     const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
  *  @name Confirm token
  *  @function
  */
-router.post('/confirm', async (req, res) => {
+router.post('/confirm', authAgent.requireNoAuthentication, async (req, res) => {
     const tokenRecieved = req.body.data.token;
     const email = req.body.data.email;
     const checkEmailResult = await util.checkEmail(email);

@@ -30,17 +30,18 @@ const sendGenericError = (error, httpResponse) => httpResponse.status(500).send(
 
 const sendBuiltInError = (httpError, httpResponse) => httpResponse.status(httpError.status).send({message: httpError.message});
 
-const sendErrorWithRedirect = (status, message, httpResponse, data) => {
-    httpResponse.redirect("/error/?status=" + status + "&message=" + message + "&data=" + data);
+const sendErrorWithRedirect = (status, message, httpResponse, token, data) => {
+    httpResponse.redirect("/error/?status=" + status + "&message=" + message + "&token=" + token + "&data=" + data);
 };
 
 /**
  * Send a built in error with redirection
  * @param {object} httpError a built in http error object in util/httpErrors
  * @param {object} httpResponse
+ * @param {string} token for accessing the redirect route
  */
-const sendBuiltInErrorWithRedirect = (httpError, httpResponse) => {
-    sendErrorWithRedirect(httpError.status, httpError.message, httpResponse, JSON.stringify(httpError.data));
+const sendBuiltInErrorWithRedirect = (httpError, httpResponse, token) => {
+    sendErrorWithRedirect(httpError.status, httpError.message, httpResponse, token, JSON.stringify(httpError.data));
 };
 
 module.exports = {

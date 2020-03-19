@@ -1,8 +1,10 @@
 const httpUtil = require("../../../util/httpUtil");
 const httpErr = require("../../../util/httpErrors");
+const digest = require("../digest");
 const jose = require("../../jose");
 const permConfig = require("../../../config").permissions;
 const permissions = new Map(Object.entries(permConfig));
+const redirectCache = new Set();
 /**
  * Check if app user is authenticated.
  * If yes, directs user to desired destination.
@@ -21,7 +23,7 @@ const requireAuthentication = (req, res, next) => {
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
     }
     try {
         const baseUrl = req.baseUrl;
@@ -33,7 +35,7 @@ const requireAuthentication = (req, res, next) => {
         req.params.userId = userId;
         next();
     } catch (e) {
-        httpUtil.sendErrorWithRedirect(401, e.message, res);
+        httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
     }
 };
 
@@ -54,14 +56,75 @@ const requireNoAuthentication = (req, res, next) => {
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res);
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
     }
     try { // if it does not fail user already auth
         jose.verify(authToken);
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res);
+        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res, redirToken());
     } catch (e) {
         next(); // if it does fail, user is not auth as needed
     }
+};
+
+/**
+ * Explicitly specify that a route can be
+ * accessed by a user of authentication
+ * and authorisation status.
+ * This is to ensure all routes have a
+ * well-defined authentication requirement
+ * and to validate the sent request.
+ * This will (only) fail if authToken is undefined.
+ * @param {HTTP} req
+ * @param {HTTP} res
+ * @param {HTTP} next
+ * @return {Function} next or redirect
+ */
+const anyAuth = (req, res, next) => {
+    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+        return next();
+    }
+    const authToken = req.body.authToken;
+    if (authToken === undefined) {
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
+    }
+    next();
+};
+
+/**
+ * Explicitly specify that a route can only
+ * be accessed after a secure redirect.
+ * This is to ensure all routes have a
+ * well-defined authentication requirement
+ * and to validate the sent request.
+ * This will fail if a protected route
+ * is attempted to be visited without a
+ * valid redirection token.
+ * @param {HTTP} req
+ * @param {HTTP} res
+ * @param {HTTP} next
+ * @return {Function} next or redirect
+ */
+const redirAuth = (req, res, next) => {
+    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+        return next();
+    }
+    const authToken = req.query.token;
+    if (authToken === undefined || !(redirectCache.has(authToken))) {
+        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getForbidden(), res, redirToken());
+    }
+    redirectCache.delete(authToken);
+    next();
+};
+
+/**
+ * Generate, cache and return a temporary
+ * redirection token.
+ * @return {string} redirToken
+ */
+const redirToken = () => {
+    const token = digest.generateSecureRandomBytesInHex(3);
+    redirectCache.add(token);
+    return token;
 };
 
 /**
@@ -153,6 +216,8 @@ const logOut = async (authToken) => {
 module.exports = {
     requireAuthentication,
     requireNoAuthentication,
+    anyAuth,
+    redirAuth,
     logInUser,
     logInAdmin,
     logOut,

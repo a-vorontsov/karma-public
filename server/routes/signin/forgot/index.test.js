@@ -13,6 +13,7 @@ jest.mock("../../../modules/mailSender");
 let user, reset1, reset2;
 
 beforeEach(() => {
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     user = testHelpers.getUserExample1();
     reset1 = testHelpers.getResetExample1();
     reset2 = testHelpers.getResetExample2();

@@ -12,6 +12,7 @@ let information;
 
 beforeEach(() => {
     jest.clearAllMocks();
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     information = testHelpers.getInformation();
 });
 
