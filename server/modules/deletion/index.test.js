@@ -146,6 +146,5 @@ test("deleting user who is org works", async () => {
         ...user,
         id: 1,
     });
-    console.log(deleteAllInformation);
     expect(deleteAllInformation.status).toBe(200);
 });

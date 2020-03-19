@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const jose = require("./modules/jose");
+jose.fetchBlacklist();
 const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
@@ -21,6 +23,7 @@ app.use(methodOverride("_method"));
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/forgot", require("./routes/signin/forgot"));
+app.use("/reset", require("./routes/signin/reset"));
 
 app.use("/signup/user", require("./routes/signup/user"));
 app.use("/signup/individual", require("./routes/signup/individual"));
@@ -50,7 +53,7 @@ app.use("/profile", require("./routes/profile"));
 app.use("/admin", require("./routes/admin"));
 
 // import OAuth routes and dependencies if applicable
-if (process.env.ENABLE_OAUTH === "1") {
+if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
     require("./modules/authentication/passport-config");
     app.use(passport.initialize());

@@ -26,7 +26,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
-        authAgent.logOut(req.body.userId);
+        authAgent.logOut(req.body.authToken);
         res.status(200).send({
             message: "User successfully logged out.",
         });

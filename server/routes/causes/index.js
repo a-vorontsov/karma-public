@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const causeRepository = require("../../models/databaseRepositories/causeRepository");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Gets all causes.<br/>
@@ -15,7 +16,7 @@ const causeRepository = require("../../models/databaseRepositories/causeReposito
  *  @name Get all causes
  *  @function
  */
-router.get('/', (req, res) => {
+router.get('/', authAgent.requireAuthentication, (req, res) => {
     causeRepository.findAll()
         .then(result => res.status(200).json({data: result.rows}))
         .catch(err => res.status(500).send(err));

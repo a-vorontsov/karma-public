@@ -7,6 +7,7 @@ const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
 const authAgent = require("../../../modules/authentication/auth-agent");
 const owasp = require("owasp-password-strength-test");
+const httpUtil = require("../../../util/httpUtil");
 
 /**
  * This is the third step of the signup flow (after email
@@ -63,13 +64,12 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         });
     } else {
         try {
-            const userId = await userAgent.registerUser(req.body.data.user.email, req.body.data.user.username, req.body.data.user.password);
-            const authToken = await authAgent.logIn(userId);
-            res.status(200).send({
-                message: "User registration successful. Go to individual/org registration selection",
-                userId: userId,
-                authToken: authToken,
-            });
+            const signupResult = await userAgent.registerUser(
+                req.body.data.user.email,
+                req.body.data.user.username,
+                req.body.data.user.password,
+            );
+            httpUtil.sendAuthResult(signupResult, res);
         } catch (e) {
             res.status(400).send({
                 message: e.message,
