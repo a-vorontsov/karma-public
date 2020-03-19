@@ -18,7 +18,7 @@ const WelcomeScreenStyles = StyleSheet.create({
         borderColor: "white",
         borderWidth: 2,
         borderRadius: 30,
-        paddingHorizontal: 125,
+        paddingHorizontal: 96,
         paddingVertical: 10,
     },
 });

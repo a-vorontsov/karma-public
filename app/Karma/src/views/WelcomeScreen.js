@@ -5,6 +5,7 @@ import {
     StatusBar,
     Platform,
     Image,
+    Dimensions,
     KeyboardAvoidingView,
     SafeAreaView,
 } from "react-native";
@@ -19,7 +20,8 @@ import { Button } from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";
 
 const request = require("superagent");
-
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +35,7 @@ export default class WelcomeScreen extends Component {
             showPassField: false,
             showCode: false,
             isCodeValid: false,
-            buttonText: "Sign Up/ Log In",
+            buttonText: "Sign Up/Log In",
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -270,7 +272,14 @@ export default class WelcomeScreen extends Component {
                         }}
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ForgotPassword")}><RegularText>forgot pass</RegularText></TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ChangePassword")}>
+                        <RegularText>change pass</RegularText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ForgotPassword")}>
+                        <RegularText>forgot pass</RegularText>
+                    </TouchableOpacity>
                 </View>
 
                 <KeyboardAvoidingView
@@ -324,6 +333,7 @@ export default class WelcomeScreen extends Component {
                                         ? "Please enter the 6 digit code sent to your recovery email."
                                         : "Please enter your email verification code below."
                                 }
+                                
                             />
                         )}
                     </View>

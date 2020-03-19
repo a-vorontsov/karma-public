@@ -60,6 +60,11 @@ class SettingsMenuScreen extends Component {
                             onPress={() => navigate("EmailSettings")}
                         />
                         <SettingsButton
+                            title="Change Password"
+                            icon={icons.report}
+                            onPress={() => navigate("ChangePassword")}
+                        />
+                        <SettingsButton
                             title="Log Out"
                             icon={icons.logout}
                             onPress={() => navigate("LogOut")}

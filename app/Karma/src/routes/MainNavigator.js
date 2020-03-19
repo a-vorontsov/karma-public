@@ -16,6 +16,8 @@ import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ForgotPasswordScreen from "../views/ForgotPasswordScreen";
+import ChangePasswordScreen from "../views/Settings/ChangePasswordScreen";
+
 
 const MainNavigator = createStackNavigator(
     {
@@ -58,6 +60,9 @@ const MainNavigator = createStackNavigator(
         },
         CreateActivity: {
             screen: CreateActivityScreen,
+        },
+        ChangePassword:{
+            screen:ChangePasswordScreen,
         },
     },
     {
