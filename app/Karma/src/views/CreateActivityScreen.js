@@ -130,7 +130,7 @@ export default class CreateActivityScreen extends React.Component {
             .post("http://localhost:8000/event/update/" + this.state.eventId)
             .send({
                 // authToken: "ffa234124",
-                userId: "86",
+                userId: 90,
                 ...event,
             })
             .then(res => {
@@ -176,7 +176,7 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: 86, //TODO
+            userId: 90, //TODO
             creationDate: new Date(), //returns current date
         };
         return event;
@@ -302,8 +302,9 @@ export default class CreateActivityScreen extends React.Component {
                 ...event,
             })
             .then(res => {
-                console.log(res.body);
-                navigate("Profile");
+                Alert.alert("Successfully created the event!", "", [
+                    {text: "OK", onPress: () => navigate("Profile")},
+                ]);
             })
             .catch(er => {
                 console.log(er.message);

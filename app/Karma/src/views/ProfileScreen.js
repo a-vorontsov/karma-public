@@ -22,8 +22,8 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
-import * as Keychain from "react-native-keychain";
 import CauseStyles from "../styles/CauseStyles";
+import {getData} from "../util/GetCredentials";
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -65,24 +65,6 @@ class ProfileScreen extends Component {
 
     static navigationOptions = {
         headerShown: false,
-    };
-
-    getData = async () => {
-        try {
-            // Retreive the credentials
-            const credentials = await Keychain.getGenericPassword();
-            if (credentials) {
-                console.log(
-                    "Credentials successfully loaded for user " +
-                        credentials.username,
-                );
-                return credentials;
-            } else {
-                console.log("No credentials stored");
-            }
-        } catch (error) {
-            console.log("Keychain couldn't be accessed!", error);
-        }
     };
 
     setupIndividualProfile(res) {
@@ -148,12 +130,12 @@ class ProfileScreen extends Component {
     }
 
     async fetchProfileInfo() {
-        const credentials = await this.getData();
+        const credentials = await getData();
         //const authToken = credentials.password;
         const userId = credentials.username;
         request
             .get("http://localhost:8000/profile")
-            .query({userId: 86})
+            .query({userId: 90})
             .then(res => {
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)

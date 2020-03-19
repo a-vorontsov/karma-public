@@ -110,7 +110,9 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() =>
-                                        navigation.navigate("ViewSignUps")
+                                        navigation.navigate("ViewSignUps", {
+                                            activity: activity,
+                                        })
                                     }>
                                     <RegularText style={styles.settingsText}>
                                         View Sign Ups
