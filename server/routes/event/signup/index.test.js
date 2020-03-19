@@ -77,13 +77,14 @@ test('requesting event signups works', async () => {
 });
 
 test('requesting signup history for user works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
     eventSignupService.getSignupHistory.mockResolvedValue({
         status: 200,
         message: "History fetched successfully",
         data: {events: [{} , {}]}, // 2 events
     });
 
-    const response = await request(app).get("/event/signUp/history").send({individualId: 5});
+    const response = await request(app).get("/event/signUp/history").query({userId: 55}).send();
 
     expect(eventSignupService.getSignupHistory).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
