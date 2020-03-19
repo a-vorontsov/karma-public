@@ -31,8 +31,6 @@ class ViewSignUpsScreen extends Component {
         });
     }
 
-    
-
     render() {
         const activity = this.props.navigation.getParam("activity");
         return (

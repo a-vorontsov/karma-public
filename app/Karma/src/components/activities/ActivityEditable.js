@@ -100,8 +100,7 @@ const ActivityEditable = props => {
                                 <MenuOption
                                     onSelect={() =>
                                         navigation.navigate("CreateActivity", {
-                                                activity: activity,
-
+                                            activity: activity,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>
@@ -141,7 +140,9 @@ const ActivityEditable = props => {
                                     onSelect={() => {
                                         sendNotification(
                                             "EventCancellation",
-                                            `"Event named ${activity.name} has been cancelled"` ,
+                                            `"Event named ${
+                                                activity.name
+                                            } has been cancelled"`,
                                         );
                                         Alert.alert(
                                             "Are you sure you want to delete?",

@@ -24,7 +24,7 @@ import {GradientButton} from "../components/buttons";
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
-import { getData } from "../util/GetCredentials";
+import {getData} from "../util/GetCredentials";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -123,7 +123,7 @@ export default class CreateActivityScreen extends React.Component {
 
         const credentials = await getData();
         const event = this.createEvent(credentials.username);
-          
+
         const {navigate} = this.props.navigation;
 
         this.setState({
@@ -158,7 +158,6 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     createEvent(userId) {
-
         const event = {
             address: {
                 id: this.state.addressId,

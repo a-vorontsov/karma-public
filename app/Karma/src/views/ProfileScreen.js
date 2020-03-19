@@ -24,7 +24,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getData} from "../util/GetCredentials";
-const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
+const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
 const icons = {
