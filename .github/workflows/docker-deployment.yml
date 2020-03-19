@@ -6,13 +6,13 @@ on:
       - dev
     paths:
       - "server/**"
-      - "admin/**"
+      - "web/**"
   pull_request: # run whenever something is merged into dev
     branches:
       - dev
     paths:
       - "server/**"
-      - "admin/**"
+      - "web/**"
 
 jobs:
   publish:
@@ -29,15 +29,15 @@ jobs:
           dockerfile: resources/docker/Dockerfile.server
           context: server
           snapshot: true
-      - name: Publish admin image
+      - name: Publish web image
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: teamteamkarma/admin
+          name: teamteamkarma/web
           tags: "latest"
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: resources/docker/Dockerfile.admin
-          context: admin
+          dockerfile: resources/docker/Dockerfile.web
+          context: web
           snapshot: true
       - name: Deploy published images
         uses: appleboy/ssh-action@master

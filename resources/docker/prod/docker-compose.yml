@@ -46,13 +46,13 @@ services:
     depends_on:
       - db
     command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
-  admin:
-    image: teamteamkarma/admin
+  web:
+    image: teamteamkarma/web
     # Uncomment if you want to build the images locally
     #build:
-    #  context: ../../../admin
-    #  dockerfile: ../resources/docker/Dockerfile.admin
-    container_name: karma-admin
+    #  context: ../../../web
+    #  dockerfile: ../resources/docker/Dockerfile.web
+    container_name: karma-web
     ports:
       - 80:80
     depends_on:
