@@ -135,13 +135,25 @@ class ProfileScreen extends Component {
             pastEvents: createdPastEvents,
         });
     }
+
+    componentDidMount() {
+        const {navigation} = this.props;
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.fetchProfileInfo();
+        });
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
+
     async fetchProfileInfo() {
         const credentials = await this.getData();
         //const authToken = credentials.password;
         const userId = credentials.username;
         request
             .get("http://localhost:8000/profile")
-            .query({userId: userId})
+            .query({userId: 86})
             .then(res => {
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)

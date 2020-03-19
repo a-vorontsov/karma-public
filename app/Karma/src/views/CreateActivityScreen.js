@@ -34,7 +34,7 @@ export default class CreateActivityScreen extends React.Component {
 
         this.state = {
             eventDesc: "",
-            isAddressVisible: false,
+            isAddressVisible: true,
             isWomenOnly: false,
             isIDReq: false,
             isPhysical: false,
@@ -50,24 +50,119 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: false,
             minEndDate: new Date(),
             minSlotDate: new Date(),
-            addressLine1: "",
-            addressLine2: "",
-            townCity: "",
-            countryState: "",
-            postCode: "",
+            address1: "",
+
+            region: "",
+            city: "",
+            postcode: "",
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
         console.disableYellowBox = true;
     }
+
+    async componentDidMount() {
+        const activity = this.props.navigation.getParam("activity");
+        //event id is passed when updating an event
+        if (activity) {
+            try {
+                const title = activity.name;
+                const startDate = this.getFormattedDate(activity.date);
+                const spots = activity.spots;
+                const eventDesc = activity.content;
+                const isAdditionalInfo = activity.addInfo;
+                const isPhysical = activity.physical;
+                const isWomenOnly = activity.womenOnly;
+                const isAddressVisible = activity.addressVisible;
+
+                const address1 = activity.address1;
+                const addressId = activity.addressId;
+                const address2 = activity.address2;
+                const region = activity.region;
+                const city = activity.city;
+                const postcode = activity.postcode;
+
+                this.setState({
+                    eventId: activity.id,
+                    isUpdate: true,
+                    addressId: addressId,
+                    title,
+                    startDate,
+                    address1: address1,
+                    address2: address2,
+                    city,
+                    region,
+                    postcode,
+                    numSpots: "" + spots,
+                    isWomenOnly,
+                    isAdditionalInfo,
+                    eventDesc,
+                    isPhysical,
+                    isAddressVisible,
+                });
+            } catch (err) {
+                Alert.alert("Server Error", err);
+            }
+        }
+    }
+
+    /**
+     * Updates the user's already created event
+     */
+    updateEvent = async () => {
+        if (
+            !this.state.title ||
+            !this.state.startDate ||
+            !this.state.eventDesc ||
+            !this.state.numSpots
+        ) {
+            return;
+        }
+
+        const event = this.createEvent();
+
+        const {navigate} = this.props.navigation;
+
+        this.setState({
+            submitPressed: true,
+        });
+        await request
+            .post("http://localhost:8000/event/update/" + this.state.eventId)
+            .send({
+                // authToken: "ffa234124",
+                userId: "86",
+                ...event,
+            })
+            .then(res => {
+                Alert.alert("Successfully updated the event!", "", [
+                    {text: "OK", onPress: () => navigate("Profile")},
+                ]);
+            })
+            .catch(er => {
+                Alert.alert("Server Error", er);
+            });
+    };
+
+    onInputChange = inputState => {
+        this.setState({
+            address1: inputState.address1,
+            address2: inputState.address2,
+            city: inputState.city,
+            region: inputState.region,
+            postcode: inputState.postcode,
+        });
+    };
+
     createEvent() {
         const event = {
             address: {
-                address1: "Line 1",
-                address2: "Line 2",
-                postcode: "14 aa",
-                city: "LDN",
-                region: "LDN again",
+                id: this.state.addressId,
+                address1: this.state.address1,
+                //use empty string for address line 2 if user does not use it
+                address2: this.state.address2 ? this.state.address2 : "",
+                postcode: this.state.postcode,
+                city: this.state.city,
+                region: this.state.region,
                 lat: 0.3,
                 long: 100.5,
             }, //TODO
@@ -75,18 +170,13 @@ export default class CreateActivityScreen extends React.Component {
             womenOnly: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
             addressVisible: this.state.isAddressVisible,
-            addressLine1: this.state.addressLine1,
-            addressLine2: this.state.addressLine2,
-            townCity: this.state.townCity,
-            countryState: this.state.countryState,
-            postCode: this.state.postCode,
-            minimumAge: 18, //TODO
+            minimumAge: 18,
             photoId: this.state.isIDReq,
             physical: this.state.isPhysical,
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: 72, //TODO
+            userId: 86, //TODO
             creationDate: new Date(), //returns current date
         };
         return event;
@@ -114,13 +204,15 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    setDateValue = (date, name) => {
-        if (name === "endDate") {
-            this.setState({
-                maxSlotDate: date,
-            });
-        }
+    getFormattedDate = date => {
+        let newDate = new Date(date);
+        //removes day and local timezone from date
+        let formattedString = newDate.toUTCString().substring(5);
+        formattedString = formattedString.slice(0, -7);
+        return formattedString;
+    };
 
+    setDateValue = (date, name) => {
         //events must be at least one hour long
         if (name === "startDate") {
             const min = new Date(date);
@@ -131,11 +223,9 @@ export default class CreateActivityScreen extends React.Component {
                 minSlotDate: date,
             });
         }
-        //removes day and local timezone from date
-        let formattedString = date.toUTCString().substring(5);
-        formattedString = formattedString.slice(0, -7);
+
         this.setState({
-            [name]: formattedString,
+            [name]: this.getFormattedDate(date),
         });
     };
 
@@ -198,7 +288,6 @@ export default class CreateActivityScreen extends React.Component {
         if (
             !this.state.title ||
             !this.state.startDate ||
-            !this.state.endDate ||
             !this.state.eventDesc ||
             !this.state.numSpots
         ) {
@@ -210,7 +299,6 @@ export default class CreateActivityScreen extends React.Component {
             .post("http://localhost:8000/event")
             .send({
                 authToken: "ffa234124",
-                userId: "1",
                 ...event,
             })
             .then(res => {
@@ -227,6 +315,11 @@ export default class CreateActivityScreen extends React.Component {
             ? parseInt(this.state.numSpots, 2)
             : 0;
 
+        let pageTitle = this.state.isUpdate
+            ? "Update Activity"
+            : "Create Activity";
+        let buttonText = this.state.isUpdate ? "Update" : "Create";
+
         return (
             <View style={Styles.container}>
                 {/** HEADER */}
@@ -238,7 +331,7 @@ export default class CreateActivityScreen extends React.Component {
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader title="Create Activity" />
+                        <PageHeader title={pageTitle} />
                     </View>
                 </View>
 
@@ -329,6 +422,7 @@ export default class CreateActivityScreen extends React.Component {
                                         }
                                         name="title"
                                         onChange={this.onChangeText}
+                                        value={this.state.title}
                                         onSubmitEditing={() =>
                                             Keyboard.dismiss()
                                         }
@@ -385,85 +479,6 @@ export default class CreateActivityScreen extends React.Component {
                                         />
                                     </View>
                                 )}
-                                {/** END DATE  */}
-                                <View>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.showDatePicker(
-                                                "isEndDateVisible",
-                                            )
-                                        }>
-                                        <View style={{flexDirection: "row"}}>
-                                            <TextInput
-                                                placeholder="End"
-                                                pointerEvents="none"
-                                                editable={false}
-                                                showError={
-                                                    this.state.submitPressed &&
-                                                    !this.state.endDate
-                                                }
-                                                value={this.state.endDate}
-                                            />
-                                            <Image
-                                                style={{
-                                                    position: "absolute",
-                                                    right: 0,
-                                                    top: 20,
-                                                    height: 20,
-                                                    width: 20,
-                                                }}
-                                                source={require("../assets/images/general-logos/calendar-dark.png")}
-                                            />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-
-                                {this.state.isEndDateVisible && (
-                                    <View>
-                                        <DatePicker
-                                            mode="datetime"
-                                            onDateChange={date =>
-                                                this.setDateValue(
-                                                    date,
-                                                    "endDate",
-                                                )
-                                            }
-                                            minimumDate={this.state.minEndDate}
-                                            minuteInterval={15}
-                                        />
-                                    </View>
-                                )}
-
-                                {/**
-                                 * Address picker
-                                 */}
-                                <View>
-                                    <TextInput
-                                        inputRef={ref => (this.address = ref)}
-                                        placeholder={"Address"}
-                                        onChange={this.onChangeText}
-                                        showError={
-                                            this.state.submitPressed &&
-                                            !this.state.address
-                                        }
-                                    />
-                                </View>
-                                <View style={{flexDirection: "row"}}>
-                                    <TextInput
-                                        placeholder="Make address visible"
-                                        editable={false}
-                                    />
-                                    <Switch
-                                        style={{position: "absolute", right: 0}}
-                                        onValueChange={() =>
-                                            this.setState({
-                                                isAddressVisible: !this.state
-                                                    .isAddressVisible,
-                                            })
-                                        }
-                                        value={this.state.isAddressVisible}
-                                    />
-                                </View>
 
                                 <TextInput
                                     placeholder="What will volunteers do?"
@@ -585,6 +600,22 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAdditionalInfo}
                                     />
                                 </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <TextInput
+                                        placeholder={"Display address to users"}
+                                        editable={false}
+                                    />
+                                    <Switch
+                                        style={{position: "absolute", right: 0}}
+                                        onValueChange={() =>
+                                            this.setState({
+                                                isAddressVisible: !this.state
+                                                    .isAddressVisible,
+                                            })
+                                        }
+                                        value={this.state.isAddressVisible}
+                                    />
+                                </View>
                                 <SemiBoldText
                                     style={{
                                         alignItems: "flex-start",
@@ -592,7 +623,15 @@ export default class CreateActivityScreen extends React.Component {
                                     }}>
                                     What is the location?
                                 </SemiBoldText>
-                                <AddressInput />
+
+                                <AddressInput
+                                    address1={this.state.address1}
+                                    address2={this.state.address2}
+                                    postcode={this.state.postcode}
+                                    region={this.state.region}
+                                    city={this.state.city}
+                                    onChange={this.onInputChange}
+                                />
                             </View>
                         </View>
                     </ScrollView>
@@ -607,7 +646,14 @@ export default class CreateActivityScreen extends React.Component {
                         marginBottom: 30,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Create" onPress={this.submit} />
+                        <GradientButton
+                            title={buttonText}
+                            onPress={
+                                this.state.isUpdate
+                                    ? this.updateEvent
+                                    : this.submit
+                            }
+                        />
                     </View>
                 </View>
             </View>
