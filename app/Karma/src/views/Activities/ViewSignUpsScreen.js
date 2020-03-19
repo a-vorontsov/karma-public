@@ -32,6 +32,7 @@ class ViewSignUpsScreen extends Component {
     }
 
     render() {
+        const activity = this.props.navigation.getParam("activity");
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph24}>
@@ -87,7 +88,7 @@ class ViewSignUpsScreen extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
-                        <this.state.display />
+                        <this.state.display activity={activity} />
                     </View>
                 </ScrollView>
             </SafeAreaView>

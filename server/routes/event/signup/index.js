@@ -7,6 +7,7 @@ const router = express.Router();
 
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
 const httpUtil = require("../../../util/httpUtil");
+const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
 const authAgent = require("../../../modules/authentication/auth-agent");
 /**
@@ -15,7 +16,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3",
+    "userId": "3",
     "confirmed": "true"
   }
  </pre>
@@ -40,6 +41,9 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+
+        const individualId = await util.getIndividualIdFromUserId(signup.userId);
+        signup.individualId = individualId;
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -101,13 +105,8 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
 
 /**
  * Endpoint called whenever a user wishes to see all events they have attended. This only shows past events<br/>
- * URL example: GET http://localhost:8000/event/signUp/history
- * @param {Object} req.body - id of individual requesting their signup history:
- <pre>
- {
-    "individualId": "3"
-  }
- </pre>
+ * URL example: GET http://localhost:8000/event/signUp/history?userId=1
+ * @param {Object} req.query.userId - id of user requesting their signup history
  * @returns {Object}
  *  status: 200, description: Array of all events the user has signed up to<br/>
  <pre>
@@ -169,7 +168,8 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
  */
 router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
     try {
-        const individualId = req.body.individualId;
+        const userId = Number.parseInt(req.query.userId);
+        const individualId = await util.getIndividualIdFromUserId(userId);
         if (individualId === undefined) {
             return res.send(400).body({message: "IndividualId not specified"});
         }
@@ -188,7 +188,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3",
+    "userId": "3",
     "confirmed": "false"
   }
  </pre>
@@ -213,6 +213,8 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
 router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(signup.userId);
+        signup.individualId = individualId;
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
