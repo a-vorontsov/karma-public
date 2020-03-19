@@ -5,7 +5,6 @@
 const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const tokenSender = require("../../../modules/verification/tokenSender");
@@ -44,7 +43,7 @@ router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
  * @param {String} req.body.data.email - Email of the user
  * @param {String} req.body.data.token - Token input by user
  * @returns
- *  status: 200, description: Token is accepted <br/>
+ *  status: 200, description: Token is accepted, req.body.data.authToken <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
  *  status: 400, description: Token did not match sent token <br/>
  *  status: 400, description: Token expired(tokens are valid only for 1 hour) <br/>
