@@ -7,12 +7,6 @@ on:
     paths:
       - "server/**"
       - "web/**"
-  pull_request: # run whenever something is merged into dev
-    branches:
-      - dev
-    paths:
-      - "server/**"
-      - "web/**"
 
 jobs:
   publish:
