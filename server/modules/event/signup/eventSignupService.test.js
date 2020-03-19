@@ -30,6 +30,7 @@ afterEach(() => {
 
 test('creating signup works', async () => {
     util.checkEventId.mockResolvedValue({status: 200});
+    util.checkUserId.mockResolvedValue({status:200})
     signupRepository.insert.mockResolvedValue({
         rows: [{
             signUp,
