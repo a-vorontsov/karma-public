@@ -5,23 +5,14 @@ const cross = require("../assets/images/general-logos/cross.png");
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 
 export default class BottomModal extends React.Component {
-    constructor(props) {
-        super(props);
-        const visible = props.visible !== null ? props.visible : true;
-        this.state = {
-            visible,
-        };
-        this.close = this.close.bind(this);
-    }
     close() {
-        this.setState({visible: false});
+        this.props.toggleModal();
     }
     render() {
-        const {visible} = this.state;
+        const {visible} = this.props;
         return (
             <Modal.BottomModal
                 visible={visible}
-                onDismiss={() => this.close()}
                 onTouchOutside={() => this.close()}
                 swipeDirection="down"
                 onSwipeOut={() => this.close()}

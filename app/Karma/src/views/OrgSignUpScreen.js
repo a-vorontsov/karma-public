@@ -25,7 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import * as Keychain from "react-native-keychain";
+import {getData} from "../util/credentials";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -124,24 +124,6 @@ export default class OrgSignUpScreen extends React.Component {
         return organisation;
     }
 
-    getData = async () => {
-        try {
-            // Retreive the credentials
-            const credentials = await Keychain.getGenericPassword();
-            if (credentials) {
-                console.log(
-                    "Credentials successfully loaded for user " +
-                        credentials.username,
-                );
-                return credentials;
-            } else {
-                console.log("No credentials stored");
-            }
-        } catch (error) {
-            console.log("Keychain couldn't be accessed!", error);
-        }
-    };
-
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
@@ -152,7 +134,7 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-        const credentials = await this.getData();
+        const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
         const org = this.createOrganisation();
@@ -249,8 +231,8 @@ export default class OrgSignUpScreen extends React.Component {
                                 showError={
                                     this.state.submitPressed
                                         ? !this.state.charityNumber &&
-                                          (!this.state.isExempt &&
-                                              !this.state.isLowIncome)
+                                          !this.state.isExempt &&
+                                          !this.state.isLowIncome
                                         : false
                                 }
                             />
