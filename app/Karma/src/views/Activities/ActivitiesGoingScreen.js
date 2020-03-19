@@ -22,7 +22,7 @@ class ActivitiesGoingScreen extends Component {
     fetchAllActivities() {
         request
             .get("http://localhost:8000/event/going")
-            .query({userId: 2})
+            .query({userId: 51})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data.events;

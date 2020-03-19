@@ -93,6 +93,7 @@ class ActivityCard extends React.Component {
     };
     render() {
         const {activity, signedup, favorited} = this.props;
+        console.log(activity);
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>

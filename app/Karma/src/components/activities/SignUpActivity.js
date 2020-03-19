@@ -39,7 +39,7 @@ export default class SignUpActivity extends React.Component {
         request
             .post(`http://localhost:8000/event/${activity.eventId}/signUp`)
             .send({
-                individualId: 2,
+                userId: 51,
                 confirmed: true,
             })
             .then(() => {
@@ -64,7 +64,7 @@ export default class SignUpActivity extends React.Component {
                 `http://localhost:8000/event/${activity.eventId}/signUp/update`,
             )
             .send({
-                individualId: 2,
+                userId: 51,
                 confirmed: false,
             })
             .then(() => {
