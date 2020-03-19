@@ -5,6 +5,7 @@ import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 
+
 const icons = {
     email: require("../../assets/images/settings-logos/email.png"),
     guidelines: require("../../assets/images/settings-logos/guidelines.png"),
@@ -13,6 +14,8 @@ const icons = {
     privacy: require("../../assets/images/settings-logos/privacy.png"),
     report: require("../../assets/images/settings-logos/report-problem.png"),
     terms: require("../../assets/images/settings-logos/terms.png"),
+    key: require("../../assets/images/settings-logos/key.png"),
+
 };
 
 class SettingsMenuScreen extends Component {
@@ -61,7 +64,7 @@ class SettingsMenuScreen extends Component {
                         />
                         <SettingsButton
                             title="Change Password"
-                            icon={icons.report}
+                            icon={icons.key}
                             onPress={() => navigate("ChangePassword")}
                         />
                         <SettingsButton
