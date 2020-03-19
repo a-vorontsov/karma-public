@@ -31,6 +31,11 @@ const findByUserID = (userId) => {
 const getOrganisationLocation = (userId) => {
     const query = "select user_id, id(organisation) as organisation_id, lat,long "+
     "from organisation inner join address on address_id = id(address) where user_id = $1";
+     return db.query(query, [userId]);
+};
+
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM organisation WHERE user_id=$1";
     return db.query(query, [userId]);
 };
 
@@ -65,4 +70,5 @@ module.exports = {
     findByUserID,
     update,
     getOrganisationLocation,
+    removeByUserId,
 };

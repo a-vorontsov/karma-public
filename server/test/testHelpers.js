@@ -524,12 +524,50 @@ const resetExample1 = {
 
 const getResetExample1 = () => ({...resetExample1});
 
+const pictureExample1 = {
+    pictureLocation: "/User/Downloads",
+};
+
+const getPictureExample1 = () => ({...pictureExample1});
+
 const resetExample2 = {
     userId: 1,
     passwordToken: "234567",
 };
 
 const getResetExample2 = () => ({...resetExample2});
+
+const eventCauseExample1 = {
+    eventId: -1,
+    causeId: -1,
+};
+
+const getEventCauseExample1 = () => ({...eventCauseExample1});
+
+const complaint = {
+    type: "Sten",
+    message: "I don't like Sten",
+    userId: -1,
+};
+
+const getComplaint = () => ({...complaint});
+
+const setting = {
+    email: 1,
+    notifications: 0,
+    userId: -1,
+};
+
+const getSetting = () => ({...setting});
+
+const reportUser = {
+    type: "Alcoholic",
+    message: "He drank too much",
+    userReported: -1,
+    userReporting: -1,
+};
+
+const getReportUser = () => ({...reportUser});
 
 const clearDatabase = async () => {
     await db.query("DELETE FROM notification");
@@ -554,40 +592,45 @@ const clearDatabase = async () => {
 };
 
 module.exports = {
-    getAddress: getAddress,
-    getAddress2: getAddress2,
-    getAuthenticationExample1: getAuthenticationExample1,
-    getAuthenticationExample2: getAuthenticationExample2,
-    getRegistrationExample1: getRegistrationExample1,
-    getRegistrationExample2: getRegistrationExample2,
-    getRegistrationExample3: getRegistrationExample3,
-    getRegistrationExample4: getRegistrationExample4,
-    getRegistrationExample5: getRegistrationExample5,
-    getRegistrationExample6: getRegistrationExample6,
-    getEvent: getEvent,
-    getCause: getCause,
-    getSignUp: getSignUp,
-    getUserExample1: getUserExample1,
-    getUserExample2: getUserExample2,
-    getUserExample3: getUserExample3,
-    getUserExample4: getUserExample4,
-    getIndividual: getIndividual,
-    getProfile: getProfile,
-    getOrganisation: getOrganisation,
-    getSignedUpUserExample1: getSignedUpUserExample1,
-    getSignedUpUserExample2: getSignedUpUserExample2,
-    getResetExample1: getResetExample1,
-    getResetExample2: getResetExample2,
-    getEventWithLocationExample1: getEventWithLocationExample1,
-    getEventWithLocationExample2: getEventWithLocationExample2,
-    getWomenOnlyEvent: getWomenOnlyEvent,
-    getFavourite: getFavourite,
-    getPhysicalEvent: getPhysicalEvent,
-    clearDatabase: clearDatabase,
-    getNotification: getNotification,
-    getBugReport: getBugReport,
-    getInformation: getInformation,
-    getEventWithAllData: getEventWithAllData,
-    getPeaceEvent: getPeaceEvent,
-    getAnimalsEvent: getAnimalsEvent,
+    getAddress,
+    getAddress2,
+    getAuthenticationExample1,
+    getAuthenticationExample2,
+    getRegistrationExample1,
+    getRegistrationExample2,
+    getRegistrationExample3,
+    getRegistrationExample4,
+    getRegistrationExample5,
+    getRegistrationExample6,
+    getEvent,
+    getCause,
+    getSignUp,
+    getUserExample1,
+    getUserExample2,
+    getUserExample3,
+    getUserExample4,
+    getIndividual,
+    getProfile,
+    getOrganisation,
+    getSignedUpUserExample1,
+    getSignedUpUserExample2,
+    getResetExample1,
+    getResetExample2,
+    getEventWithLocationExample1,
+    getEventWithLocationExample2,
+    getWomenOnlyEvent,
+    getFavourite,
+    getPhysicalEvent,
+    clearDatabase,
+    getNotification,
+    getBugReport,
+    getInformation,
+    getPictureExample1,
+    getEventCauseExample1,
+    getComplaint,
+    getSetting,
+    getReportUser,
+    getEventWithAllData,
+    getPeaceEvent,
+    getAnimalsEvent,
 };

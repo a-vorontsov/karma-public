@@ -48,7 +48,6 @@ export function TabView() {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <IndividualsTableTab/>
                 <p>Cool graphs and stuff go here</p>
             </TabPanel>
             <TabPanel value={value} index={1}>

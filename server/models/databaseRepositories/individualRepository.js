@@ -74,6 +74,11 @@ const update = (individual) => {
     return db.query(query, params);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM individual WHERE user_id=$1";
+    return db.query(query, [userId]);
+};
+
 module.exports = {
     insert,
     findById,
@@ -84,4 +89,5 @@ module.exports = {
     update,
     getIndividualId,
     getIndividualLocation,
+    removeByUserId,
 };
