@@ -345,6 +345,8 @@ const organisation = {
     orgRegisterDate: "2016-10-09",
     lowIncome: false,
     exempt: false,
+    website: "sten.com",
+    bio: "whatever this is",
     pictureId: null,
     userId: -1,
     addressId: -1,
