@@ -260,7 +260,6 @@ const getUserExample1 = () => ({...userExample1});
 
 const authenticationExample1 = {
     token: "thisIsASecureToken",
-    expiryDate: "2020-01-22 19:10:25-07",
     creationDate: "2020-01-10 19:10:25-07",
     userId: -1,
 };
@@ -269,7 +268,6 @@ const getAuthenticationExample1 = () => ({...authenticationExample1});
 
 const authenticationExample2 = {
     token: "thisIsANonSecureToken",
-    expiryDate: "2020-01-10 19:10:25-07",
     creationDate: "2019-12-23 19:10:25-07",
     userId: -1,
 };
