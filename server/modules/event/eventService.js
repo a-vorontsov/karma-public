@@ -71,12 +71,11 @@ const deleteEvent = async (eventId) => {
     await eventCauseRepository.removeByEventId(eventId);
     await signUpRepository.removeByEventId(eventId);
     await favouriteEventRepository.removeByEventId(eventId);
-    const findEventToReturn = await eventRepository.findById(eventId);
-    await eventRepository.removeById(eventId);
+    const deleteEvent = await eventRepository.removeById(eventId);
     return ({
         status: 200,
         message: "Event deleted successfully",
-        data: findEventToReturn.rows[0],
+        data: {event: deleteEvent.rows[0]},
     });
 };
 

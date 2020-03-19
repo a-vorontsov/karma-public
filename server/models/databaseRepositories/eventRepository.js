@@ -1,6 +1,5 @@
 const db = require("../../database/connection");
 
-
 const insert = (event) => {
     const query = "INSERT INTO event(name, address_id, women_only, spots, address_visible, minimum_age, " +
         "photo_id, physical, add_info, content, date, user_id, creation_date) " +
@@ -41,12 +40,12 @@ const findAllByUserIdLastMonth = (userId) => {
 };
 
 const removeByUserId = (userId) => {
-    const query = "DELETE FROM event WHERE user_id=$1";
+    const query = "DELETE FROM event WHERE user_id=$1 RETURNING *";
     return db.query(query, [userId]);
 };
 
 const removeById = (id) => {
-    const query = "DELETE FROM event WHERE id=$1";
+    const query = "DELETE FROM event WHERE id=$ RETURNING *";
     return db.query(query, [id]);
 };
 

@@ -52,16 +52,14 @@ const deleteAllInformation = async (userId) => {
 
     const isOrganisation = await util.isOrganisation(userId);
     if (isOrganisation) {
-        const findOrganisation = await orgRepository.findByUserID(userId);
-        await orgRepository.removeByUserId(userId);
-        await pictureRepository.removeById(findOrganisation.pictureId);
+        const deleteOrg = await orgRepository.removeByUserId(userId);
+        await pictureRepository.removeById(deleteOrg.pictureId);
     }
 
 
-    const findUser = await userRepository.findById(userId);
+    const findUser = await userRepository.removeUserById(userId);
     const addressId = findUser.addressId;
     const emailUser = findUser.email;
-    await userRepository.removeUserById(userId);
 
     await registrationRepository.removeByEmail(emailUser);
     await addressRepository.removeById(addressId);

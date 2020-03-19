@@ -161,15 +161,15 @@ test("event deleting endpoint works", async () => {
     eventService.deleteEvent.mockResolvedValue({
         status: 200,
         message: "Event deleted successfully",
-        data: event,
+        data: {event: event},
     });
 
     const eventId = 3;
     const response = await request(app)
-        .post(`/event/delete?eventId=${eventId}`);
+        .post(`/event/${eventId}/delete?eventId`);
 
     expect(eventService.deleteEvent).toHaveBeenCalledTimes(1);
     expect(eventService.deleteEvent).toHaveBeenCalledWith(eventId);
-    expect(response.body.data).toMatchObject(event);
+    expect(response.body.data.event).toMatchObject(event);
     expect(response.statusCode).toBe(200);
 });

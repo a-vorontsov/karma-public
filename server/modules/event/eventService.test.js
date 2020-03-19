@@ -247,7 +247,7 @@ test("getting events grouped by user selected causes works", async () => {
 test("deleting events works", async () => {
 
     util.checkEventId.mockResolvedValue({status: 200});
-    eventRepository.findById.mockResolvedValue({
+    eventRepository.removeById.mockResolvedValue({
         rows: [{
             ...event,
             id: 3,
@@ -256,11 +256,10 @@ test("deleting events works", async () => {
 
     const deleteResult = await eventService.deleteEvent(3);
     expect(eventRepository.removeById).toHaveBeenCalledTimes(1);
-    expect(eventRepository.findById).toHaveBeenCalledTimes(1);
     expect(favouriteRepository.removeByEventId).toHaveBeenCalledTimes(1);
     expect(signUpRepository.removeByEventId).toHaveBeenCalledTimes(1);
     expect(eventCauseRepository.removeByEventId).toHaveBeenCalledTimes(1);
-    expect(deleteResult.data).toMatchObject({
+    expect(deleteResult.data.event).toMatchObject({
         ...event,
         id: 3,
     });
