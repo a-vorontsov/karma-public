@@ -101,7 +101,7 @@ test('confirming correct token works', async () => {
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.text).toMatch("Token accepted");
+    expect(response.body.message).toMatch("Token accepted");
 });
 
 test('confirming correct token but not latest does not work', async () => {

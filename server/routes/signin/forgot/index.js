@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
+const userRepo = require("../../../models/databaseRepositories/userRepository");
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const tokenSender = require("../../../modules/verification/tokenSender");
@@ -69,7 +70,13 @@ router.post('/confirm', authAgent.requireNoAuthentication, async (req, res) => {
             const expiryDate = result.rows[0].expiryDate;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
-                res.status(200).send("Token accepted");
+                const authToken = authAgent.grantResetAccess(checkEmailResult.user.id);
+                res.status(200).send({
+                    message: "Token accepted",
+                    data: {
+                        authToken: authToken,
+                    },
+                });
             } else if (tokenSent !== tokenRecieved) {
                 res.status(400).send("Tokens did not match");
             } else {
