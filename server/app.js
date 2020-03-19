@@ -51,6 +51,7 @@ app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 app.use("/profile", require("./routes/profile"));
 
 app.use("/admin", require("./routes/admin"));
+app.use("/admin/information", require("./routes/admin/information"));
 
 // import OAuth routes and dependencies if applicable
 if (process.env.ENABLE_OAUTH === 1) {

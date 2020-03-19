@@ -19,7 +19,8 @@ const httpUtil = require("../../../util/httpUtil");
  * This operation should only fail if attempted by an
  * unauthenticated and/or unauthorised user, or if
  * the input password is not strong enough.
- * @route {POST} /reset
+ <p><b>Route: </b>/reset (POST)</p>
+ <p><b>Permissions: </b>require pass-reset permissions</p>
  * @param {string} req.body.data.password new password input by user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>

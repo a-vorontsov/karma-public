@@ -20,7 +20,8 @@ const httpUtil = require("../../../util/httpUtil");
  * A HTTP response is generated based on the outcome of the
  * operation. It will contain the new user's id following a
  * successful registration.
- * @route {POST} /signup/user
+ <p><b>Route: </b>/signup/user (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {object} req.body.data.user the user input values for their user account

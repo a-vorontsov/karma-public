@@ -17,7 +17,8 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * authentication.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /signup/organisation
+ <p><b>Route: </b>/signup/organisation (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.organisation the user input values for their profile

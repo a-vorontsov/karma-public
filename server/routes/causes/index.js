@@ -9,7 +9,8 @@ const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Gets all causes.<br/>
- * URL example: GET http://localhost:8000/causes
+ <p><b>Route: </b>/causes (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @returns
  *  status: 200, description: Array of all cause objects<br/>
  *  status: 500, description: Most probably a database error occurred
@@ -24,7 +25,8 @@ router.get('/', authAgent.requireAuthentication, (req, res) => {
 
 /**
  * Gets a cause specified by id.<br/>
- * URL example: GET http://localhost:8000/causes/3
+ <p><b>Route: </b>/causes/:id (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.params.id - ID of the cause required
  * @returns
  *  status: 200, description: cause object with given id <br/>

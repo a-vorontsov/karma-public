@@ -14,7 +14,8 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * by the app user (as bugs may occur when a user is not
  * signed-in). Returns success or an error message from
  * the mailSender module.
- * @route {POST} /bugreport
+ <p><b>Route: </b>/bugreport (POST)</p>
+ <p><b>Permissions: </b>any</p>
  * @param {number} req.body.userId can be anything
  * @param {string} req.body.authToken can be anything
  * @param {object} req.body.data.email user input email address
