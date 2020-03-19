@@ -47,6 +47,8 @@ app.use("/profile/edit", require("./routes/profile/edit"));
 app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 app.use("/profile", require("./routes/profile"));
 
+app.use("/avatars", require("./routes/avatars"));
+
 app.use("/admin", require("./routes/admin"));
 
 // import OAuth routes and dependencies if applicable
