@@ -24,6 +24,7 @@ import {GradientButton} from "../components/buttons";
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
+import { getData } from "../util/GetCredentials";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -74,7 +75,7 @@ export default class CreateActivityScreen extends React.Component {
                 const isPhysical = activity.physical;
                 const isWomenOnly = activity.womenOnly;
                 const isAddressVisible = activity.addressVisible;
-
+                const isIDReq = activity.photoId;
                 const address1 = activity.address1;
                 const addressId = activity.addressId;
                 const address2 = activity.address2;
@@ -99,6 +100,7 @@ export default class CreateActivityScreen extends React.Component {
                     eventDesc,
                     isPhysical,
                     isAddressVisible,
+                    isIDReq,
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
@@ -119,8 +121,9 @@ export default class CreateActivityScreen extends React.Component {
             return;
         }
 
-        const event = this.createEvent();
-
+        const credentials = await getData();
+        const event = this.createEvent(credentials.username);
+          
         const {navigate} = this.props.navigation;
 
         this.setState({
@@ -130,13 +133,14 @@ export default class CreateActivityScreen extends React.Component {
             .post("http://localhost:8000/event/update/" + this.state.eventId)
             .send({
                 // authToken: "ffa234124",
-                userId: 90,
+                userId: credentials.username,
                 ...event,
             })
             .then(res => {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
+                console.log(res.body.data);
             })
             .catch(er => {
                 Alert.alert("Server Error", er);
@@ -153,7 +157,8 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    createEvent() {
+    createEvent(userId) {
+
         const event = {
             address: {
                 id: this.state.addressId,
@@ -176,7 +181,7 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: 90, //TODO
+            userId: userId,
             creationDate: new Date(), //returns current date
         };
         return event;
@@ -293,7 +298,8 @@ export default class CreateActivityScreen extends React.Component {
         ) {
             return;
         }
-        const event = this.createEvent();
+        const credentials = await getData();
+        const event = this.createEvent(credentials.username);
         // send a request to update the db with the new event
         await request
             .post("http://localhost:8000/event")

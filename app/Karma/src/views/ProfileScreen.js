@@ -135,7 +135,7 @@ class ProfileScreen extends Component {
         const userId = credentials.username;
         request
             .get("http://localhost:8000/profile")
-            .query({userId: 90})
+            .query({userId: userId})
             .then(res => {
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
