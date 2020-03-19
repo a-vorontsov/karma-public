@@ -45,6 +45,10 @@ const findGoingEvents = (userId) => {
         "INNER JOIN individual ON individual_id = id(individual) WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";
     return db.query(query, [userId, now]);
 };
+const getIndividualId = (userId) =>{
+    const query = "SELECT id from individual where user_id = $1";
+    return db.query(query, [userId]);
+};
 
 const update = (individual) => {
     const query =
@@ -73,4 +77,5 @@ module.exports = {
     findFavouriteEvents: findFavouriteEvents,
     findGoingEvents: findGoingEvents,
     update: update,
+    getIndividualId: getIndividualId,
 };

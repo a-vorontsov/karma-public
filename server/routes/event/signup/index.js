@@ -7,6 +7,7 @@ const router = express.Router();
 
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
 const httpUtil = require("../../../util/httpUtil");
+const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
 
 /**
@@ -15,7 +16,7 @@ const validation = require("../../../modules/validation");
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3",
+    "userId": "3",
     "confirmed": "true"
   }
  </pre>
@@ -40,6 +41,9 @@ const validation = require("../../../modules/validation");
 router.post('/:eventId/signUp', async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+
+        const individualId = await util.getIndividualIdFromUserId(signup.userId);
+        signup.individualId = individualId;
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);

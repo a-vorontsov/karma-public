@@ -39,12 +39,22 @@ const checkEmail = async (email) => {
     result.user = user;
     return result;
 };
-
+const getIndividualIdFromUserId = async (userId) => {
+    try {
+        const individualResult = await isIndividual(userId);
+        if (individualResult) {
+            const individualId = await individualRepository.getIndividualId(userId);
+            return individualId.rows[0].id;
+        }
+    } catch (error) {
+        return error;
+    }
+};
 const checkUserId = async (userId) => {
     const result = {};
     if (!userId) {
         result.status = 400;
-        result.message = "No user id was specified in the query";
+        result.message = "No user id was specified";
         return result;
     }
     if (isNaN(userId)) {
@@ -175,4 +185,5 @@ module.exports = {
     checkEmail,
     isValidToken,
     sleep,
+    getIndividualIdFromUserId,
 };

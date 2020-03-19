@@ -15,6 +15,10 @@ const createSignup = async (signup) => {
     if (eventIdCheckResponse.status !== 200) {
         return eventIdCheckResponse;
     }
+    const userIdCheckResponse = await util.checkUserId(signup.userId);
+    if (userIdCheckResponse.status !== 200) {
+        return userIdCheckResponse;
+    }
 
     const signupResult = await signupRepository.insert(signup);
     return ({
