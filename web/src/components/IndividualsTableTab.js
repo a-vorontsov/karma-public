@@ -9,7 +9,6 @@ export function IndividualsTableTab() {
         async function fetchData() {
             const usersResponse = (await fetch(process.env.REACT_APP_API_URL + "/admin/individuals"));
             const users = await usersResponse.json();
-            console.log(users);
             setIndividuals(users.data.individuals);
         }
         fetchData();
