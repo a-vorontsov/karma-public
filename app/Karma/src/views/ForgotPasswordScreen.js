@@ -11,7 +11,8 @@ import PageHeader from "../components/PageHeader";
 import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
-
+ 
+const request = require("superagent");
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -22,8 +23,36 @@ export default class ForgotPasswordScreen extends Component {
         this.state={
             email: this.props.navigation.getParam("email"),
             isFirstOpened: true,
+            passwordInput: "",
         };
     }
+
+    sendNewPass = async() =>{
+        console.log("in forgot screen")
+        console.log(this.state.passwordInput)
+        this.setState({isFirstOpened:false})
+        await request
+            .post("http://localhost:8000/reset")
+            .send({
+                data: {
+                    password: this.state.passwordInput,
+                },
+            })
+            .then(res => {
+                console.log(res.body.data)
+            })
+            .catch(err => {
+                console.log(err);
+            });       
+    }
+
+    onInputChange = inputState => {
+        this.setState({
+            passwordInput: inputState.password,
+            
+        });
+    };
+
         render(){
             return(
                 <SafeAreaView style={[Styles.container, Styles.ph24]}>
@@ -32,7 +61,7 @@ export default class ForgotPasswordScreen extends Component {
                 </View>
 
                 <View style={{alignItems:"center", flex:1, top:20}}>
-                    <View style={{flex:1, backgroundColor:"red"}}>
+                    <View style={{flex:1}}>
                         <TextInput
                             placeholder={this.state.email}
                             autoCapitalize="none"
@@ -41,13 +70,14 @@ export default class ForgotPasswordScreen extends Component {
                             showError={false}
                             editable={false}
                         />
-                        <ChangePasswordInput 
+                        <ChangePasswordInput onChange={this.onInputChange} 
                         firstOpen={this.state.isFirstOpened}
                         />
                     </View>
                     <View style={{width: FORM_WIDTH,justifyContent: "flex-end", marginBottom:40}} >
-                        <GradientButton onPress={() => this.setState({isFirstOpened:false})}
+                        <GradientButton onPress={() => this.sendNewPass()}
                                     title="Submit"
+                                    
                                     
                                 /> 
                             </View>                     

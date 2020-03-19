@@ -21,10 +21,11 @@ export default class ChangePasswordInput extends Component {
             isSubmitted: false,
             showError: false,
             passwordMatch: true,
-            password: "",
+            password: "", 
             confPassword: "",
         };
         this.onChangeText = this.onChangeText.bind(this);
+        this.passUpState = this.passUpState.bind(this);
 
     }
     onChangeText = event => {
@@ -32,6 +33,16 @@ export default class ChangePasswordInput extends Component {
         this.setState({[name]: text});
         
     };
+
+    passUpState() {
+        const password = this.state;
+        if (password) {
+            this.props.onChange({
+                password,
+                valid: true,
+            });
+        }
+    }
 
     isValidPassword(){
         if(!PASSWORD_REGEX.test(this.state.password) || !this.state.password){
@@ -129,7 +140,8 @@ export default class ChangePasswordInput extends Component {
                 }
                 returnKeyType="default"
                 onChange={this.onChangeText}
-                
+                onBlur={this.passUpState}
+
                 showError={showError}
                 errorText={this.whichErrorText()}
                 />

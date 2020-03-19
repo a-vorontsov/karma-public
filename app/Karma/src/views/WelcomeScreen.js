@@ -210,6 +210,8 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
+                console.log("in welcome screen")
+
                 console.log("correct code");
                 this.setState({isCodeValid: true});
                 //TODO navigate to new Password screen
