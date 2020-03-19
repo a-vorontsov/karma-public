@@ -53,8 +53,6 @@ services:
     #  context: ../../../admin
     #  dockerfile: ../resources/docker/Dockerfile.admin
     container_name: karma-admin
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
     ports:
       - 80:80
     depends_on:

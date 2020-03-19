@@ -1,7 +1,7 @@
 # creating a static build of the admin site
 FROM node:12-alpine as build
 WORKDIR /admin
-ENV REACT_APP_API_URL /app
+ENV REACT_APP_API_URL /api
 COPY package*.json ./
 
 RUN apk --no-cache --virtual build-dependencies add \
