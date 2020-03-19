@@ -7,6 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
+    Alert,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
@@ -18,7 +19,9 @@ import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
 import {getDate, formatAMPM} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
-import Marker from "react-native-maps";
+import BottomModal from "../../components/BottomModal";
+import SignUpActivity from "../../components/activities/SignUpActivity";
+
 import request from "superagent";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
@@ -40,6 +43,7 @@ class ActivityInfoScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            displaySignupModal: false,
             addInfo: false,
             photoId: false,
             physical: false,
@@ -69,8 +73,17 @@ class ActivityInfoScreen extends Component {
         headerShown: false,
     };
 
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+
+    handleSignupError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
+    };
+
     getCreatorInfo = async id => {
-        console.log(id);
         const response = await request
             .get("http://localhost:8000/profile")
             .query({userId: id})
@@ -83,8 +96,10 @@ class ActivityInfoScreen extends Component {
         const individual = response.individual
             ? response.individual
             : response.organisation;
-        let fullName = individual.firstName + " " + individual.lastName;
-        if (!fullName) {
+        let fullName = "";
+        if (individual.firstName) {
+            fullName = individual.firstName + " " + individual.lastName;
+        } else {
             fullName = individual.pocFirstName + " " + individual.pocLastName;
         }
         const phoneNumber = individual.phoneNumber;
@@ -131,7 +146,7 @@ class ActivityInfoScreen extends Component {
 
     async componentDidMount() {
         const activity = this.props.navigation.getParam("activity");
-        console.log(activity);
+
         this.getEventInfo(activity);
         this.getCreatorInfo(
             activity.eventCreatorId
@@ -141,7 +156,9 @@ class ActivityInfoScreen extends Component {
     }
 
     render() {
-        const phoneNumbers = [];
+        const signedup = this.props.navigation.getParam("signedup");
+        const activity = this.props.navigation.getParam("activity");
+
         return (
             <View style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
@@ -221,14 +238,17 @@ class ActivityInfoScreen extends Component {
                                     </RegularText>
                                     <Image />
                                 </View>
-                                <RegularText
-                                    style={{
-                                        fontSize: 15,
-                                        color: Colours.lightGrey,
-                                        fontWeight: "500",
-                                    }}>
-                                    {this.state.location}
-                                </RegularText>
+                                <View style={{width: FORM_WIDTH}}>
+                                    <RegularText
+                                        style={{
+                                            fontSize: 15,
+                                            color: Colours.lightGrey,
+                                            fontWeight: "500",
+                                            flexWrap: "wrap",
+                                        }}>
+                                        {this.state.location}
+                                    </RegularText>
+                                </View>
                             </View>
                         </View>
                         <View
@@ -509,9 +529,22 @@ class ActivityInfoScreen extends Component {
                         backgroundColor: Colours.white,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Attend" />
+                        <GradientButton
+                            title="Attend"
+                            onPress={() => this.toggleModal()}
+                        />
                     </View>
                 </View>
+                <BottomModal
+                    visible={this.state.displaySignupModal}
+                    toggleModal={this.toggleModal}>
+                    <SignUpActivity
+                        activity={activity}
+                        onConfirm={this.toggleModal}
+                        onError={this.handleSignupError}
+                        signedUp={signedup}
+                    />
+                </BottomModal>
             </View>
         );
     }

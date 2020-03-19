@@ -5,6 +5,7 @@ import TitleText from "./TitleText";
 import LogoText from "./LogoText";
 import SubTitleText from "./SubTitleText";
 import LinkText from "./LinkText";
+import FadedText from "./FadedText";
 
 export {
     RegularText,
@@ -14,4 +15,5 @@ export {
     LogoText,
     SubTitleText,
     LinkText,
+    FadedText,
 };

@@ -8,13 +8,16 @@ import {
     Image,
     ScrollView,
     TouchableOpacity,
+    Alert,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
+import BottomModal from "../components/BottomModal";
 import Colours from "../styles/Colours";
+import CauseContainer from "../components/causes/CauseContainer";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -42,12 +45,24 @@ class ProfileEditScreen extends Component {
             bio: "this is your bio lorem ipsum and such",
             causes: ["Cause1", "Cause2"],
             points: 1,
+            displaySignupModal: false,
         };
+        this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
     }
 
     static navigationOptions = {
         headerShown: false,
+    };
+
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+
+    handleError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
     };
 
     onChangeText = event => {
@@ -244,7 +259,7 @@ class ProfileEditScreen extends Component {
                                         Causes
                                     </RegularText>
                                     <TouchableOpacity
-                                        onPress={() => navigate("PickCauses")}>
+                                        onPress={this.toggleModal}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{
@@ -272,6 +287,14 @@ class ProfileEditScreen extends Component {
                                 />
                             </View>
                         </View>
+                        <BottomModal
+                            visible={this.state.displaySignupModal}
+                            toggleModal={this.toggleModal}>
+                            <CauseContainer
+                                onSubmit={this.toggleModal}
+                                onError={this.handleError}
+                            />
+                        </BottomModal>
                     </SafeAreaView>
                 </ScrollView>
             </KeyboardAvoidingView>

@@ -63,7 +63,7 @@ test('getting events user favourited works', async () => {
         eventid: 2,
     }];
 
-    util.checkUserId.mockResolvedValue({status: 200});
+    util.checkUser.mockResolvedValue({status: 200});
     individualRepository.findFavouriteEvents.mockResolvedValue({rows: eventsArray});
     eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
     const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(15);

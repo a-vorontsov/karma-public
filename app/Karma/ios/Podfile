@@ -46,7 +46,6 @@ pod 'GoogleMaps'
 pod 'Google-Maps-iOS-Utils'
 
 
-  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
   target 'KarmaTests' do
     inherit! :search_paths

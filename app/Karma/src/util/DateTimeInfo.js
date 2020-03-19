@@ -7,7 +7,7 @@ export const formatAMPM = d => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? "0" + minutes : minutes;
     let strTime = hours + ":" + minutes + " " + ampm;
-    
+
     return strTime;
 };
 
@@ -31,7 +31,7 @@ export const getMonthName = (d, long = false) => {
     if (!long) {
         name = name.substring(0, 3);
     }
-    
+
     return name;
 };
 // returns date string in the format day/month/year
