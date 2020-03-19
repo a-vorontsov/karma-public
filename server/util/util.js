@@ -78,8 +78,8 @@ const checkUser = async (userId) => {
     const checkUserIdResult = await checkUserId(userId);
     const user = checkUserIdResult.user;
     if (user) {
-        const userIdResult = await userRepository.getUserLocation(userId);
-        if (userIdResult.rows.length >0) {
+        const userLocationResult = await userRepository.getUserLocation(userId);
+        if (userLocationResult.rows.length === 0) {
             const individualResult = await individualRepository.findByUserID(userId);
             const orgResult = await organisationRepository.findByUserID(userId);
             if (individualResult.rows.length>0 || orgResult.rows.length>0) {
@@ -93,7 +93,7 @@ const checkUser = async (userId) => {
             }
         } else {
             result.status = 200;
-            result.user = user;
+            result.user = userLocationResult.rows[0];
             return result;
         }
     } else {
