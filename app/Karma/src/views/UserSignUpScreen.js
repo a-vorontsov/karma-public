@@ -88,7 +88,7 @@ class SignUpScreen extends React.Component {
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
             !this.isValidPassword();
-            
+
         return (
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView

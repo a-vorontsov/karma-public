@@ -1,9 +1,5 @@
 import React, {Component} from "react";
-import {
-    View,
-    Dimensions,
-    SafeAreaView,
-} from "react-native";
+import {View, Dimensions, SafeAreaView} from "react-native";
 
 import Styles from "../styles/Styles";
 
@@ -11,7 +7,7 @@ import PageHeader from "../components/PageHeader";
 import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
- 
+
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
@@ -20,17 +16,17 @@ const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 export default class ForgotPasswordScreen extends Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             email: this.props.navigation.getParam("email"),
             isFirstOpened: true,
             passwordInput: "",
         };
     }
 
-    sendNewPass = async() =>{
-        console.log("in forgot screen")
-        console.log(this.state.passwordInput)
-        this.setState({isFirstOpened:false})
+    sendNewPass = async () => {
+        console.log("in forgot screen");
+        console.log(this.state.passwordInput);
+        this.setState({isFirstOpened: false});
         await request
             .post("http://localhost:8000/reset")
             .send({
@@ -39,29 +35,28 @@ export default class ForgotPasswordScreen extends Component {
                 },
             })
             .then(res => {
-                console.log(res.body.data)
+                console.log(res.body.data);
             })
             .catch(err => {
                 console.log(err);
-            });       
-    }
+            });
+    };
 
     onInputChange = inputState => {
         this.setState({
             passwordInput: inputState.password,
-            
         });
     };
 
-        render(){
-            return(
-                <SafeAreaView style={[Styles.container, Styles.ph24]}>
+    render() {
+        return (
+            <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph24}>
-                    <PageHeader title="Settings" />
+                    <PageHeader title="Forgot Password" />
                 </View>
 
-                <View style={{alignItems:"center", flex:1, top:20}}>
-                    <View style={{flex:1}}>
+                <View style={{alignItems: "center", flex: 1, top: 20}}>
+                    <View style={{flex: 1}}>
                         <TextInput
                             placeholder={this.state.email}
                             autoCapitalize="none"
@@ -70,18 +65,24 @@ export default class ForgotPasswordScreen extends Component {
                             showError={false}
                             editable={false}
                         />
-                        <ChangePasswordInput onChange={this.onInputChange} 
-                        firstOpen={this.state.isFirstOpened}
+                        <ChangePasswordInput
+                            onChange={this.onInputChange}
+                            firstOpen={this.state.isFirstOpened}
                         />
                     </View>
-                    <View style={{width: FORM_WIDTH,justifyContent: "flex-end", marginBottom:40}} >
-                        <GradientButton onPress={() => this.sendNewPass()}
-                                    title="Submit"
-                                    
-                                    
-                                /> 
-                            </View>                     
+                    <View
+                        style={{
+                            width: FORM_WIDTH,
+                            justifyContent: "flex-end",
+                            marginBottom: 40,
+                        }}>
+                        <GradientButton
+                            onPress={() => this.sendNewPass()}
+                            title="Submit"
+                        />
                     </View>
-            </SafeAreaView>)
-        }
+                </View>
+            </SafeAreaView>
+        );
+    }
 }

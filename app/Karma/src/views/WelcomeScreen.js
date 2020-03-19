@@ -16,7 +16,7 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
-import { Button } from "../components/buttons";
+import {Button} from "../components/buttons";
 import LinearGradient from "react-native-linear-gradient";
 
 const request = require("superagent");
@@ -210,7 +210,7 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
-                console.log("in welcome screen")
+                console.log("in welcome screen");
 
                 console.log("correct code");
                 this.setState({isCodeValid: true});
@@ -263,7 +263,6 @@ export default class WelcomeScreen extends Component {
     render() {
         return (
             <SafeAreaView style={WelcomeScreenStyles.container}>
-                    
                 <View style={{flex: 2, justifyContent: "center"}}>
                     <Image
                         style={{
@@ -275,11 +274,17 @@ export default class WelcomeScreen extends Component {
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ChangePassword")}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.props.navigation.navigate("ChangePassword")
+                        }>
                         <RegularText>change pass</RegularText>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ForgotPassword")}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.props.navigation.navigate("ForgotPassword")
+                        }>
                         <RegularText>forgot pass</RegularText>
                     </TouchableOpacity>
                 </View>
@@ -287,58 +292,59 @@ export default class WelcomeScreen extends Component {
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
-                        <ScrollView
+                    <ScrollView
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="always">
-                    <View
-                        style={{
-                            flex: 1,
-                            alignItems: "flex-start",
-                        }}>
-                        {/* Email Field*/}
-                        {this.state.isSignUpPressed && (
-                            <EmailInput
-                                onChange={this.onInputChange}
-                                style={[
-                                    WelcomeScreenStyles.text,
-                                    Styles.formWidth,
-                                ]}
-                                onSubmitEditing={this.onSubmitEmail}
-                                showEmailError={this.state.showEmailError}
-                            />
-                        )}
+                        <View
+                            style={{
+                                flex: 1,
+                                alignItems: "flex-start",
+                            }}>
+                            {/* Email Field*/}
+                            {this.state.isSignUpPressed && (
+                                <EmailInput
+                                    onChange={this.onInputChange}
+                                    style={[
+                                        WelcomeScreenStyles.text,
+                                        Styles.formWidth,
+                                    ]}
+                                    onSubmitEditing={this.onSubmitEmail}
+                                    showEmailError={this.state.showEmailError}
+                                />
+                            )}
 
-                        {/* Passowrd Field*/}
-                        {this.state.showPassField && (
-                            <PasswordInput
-                                style={[
-                                    WelcomeScreenStyles.text,
-                                    Styles.formWidth,
-                                ]}
-                                onChange={this.onInputChange}
-                                onSubmitEditing={this.checkPass}
-                                onForgotPassPressed={this.onForgotPassPressed}
-                                showPassError={this.state.showPassError}
-                            />
-                        )}
+                            {/* Passowrd Field*/}
+                            {this.state.showPassField && (
+                                <PasswordInput
+                                    style={[
+                                        WelcomeScreenStyles.text,
+                                        Styles.formWidth,
+                                    ]}
+                                    onChange={this.onInputChange}
+                                    onSubmitEditing={this.checkPass}
+                                    onForgotPassPressed={
+                                        this.onForgotPassPressed
+                                    }
+                                    showPassError={this.state.showPassError}
+                                />
+                            )}
 
-                        {/* 6-Digit Code Field*/}
-                        {this.state.showCode && (
-                            <SignInCodeInput
-                                onFulfill={
-                                    this.state.isForgotPassPressed
-                                        ? this.confirmForgotPasswordCode
-                                        : this.confirmVerifyEmailCode
-                                }
-                                text={
-                                    this.state.isForgotPassPressed
-                                        ? "Please enter the 6 digit code sent to your recovery email."
-                                        : "Please enter your email verification code below."
-                                }
-                                
-                            />
-                        )}
-                    </View>
+                            {/* 6-Digit Code Field*/}
+                            {this.state.showCode && (
+                                <SignInCodeInput
+                                    onFulfill={
+                                        this.state.isForgotPassPressed
+                                            ? this.confirmForgotPasswordCode
+                                            : this.confirmVerifyEmailCode
+                                    }
+                                    text={
+                                        this.state.isForgotPassPressed
+                                            ? "Please enter the 6 digit code sent to your recovery email."
+                                            : "Please enter your email verification code below."
+                                    }
+                                />
+                            )}
+                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
 
@@ -357,10 +363,7 @@ export default class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
                 </View>
-               
             </SafeAreaView>
-            
         );
     }
 }
-

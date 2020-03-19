@@ -1,4 +1,4 @@
-const jose = require('jose');
+const jose = require("jose");
 const config = {};
 const {
     JWE, // JSON Web Encryption (JWE)
@@ -12,14 +12,14 @@ const {
  * Assign new config object to jose config.
  * @param {object} newConfig
  */
-const setConfig = (newConfig) => {
+const setConfig = newConfig => {
     Object.assign(config, newConfig);
 };
 
 // const initialise = () => {
-    // TODO: fetch at app start
-    const publicConf = require("./config").jose;
-    setConfig(publicConf);
+// TODO: fetch at app start
+const publicConf = require("./config").jose;
+setConfig(publicConf);
 // }
 
 /**
@@ -56,12 +56,14 @@ const getEncPubAsJWK = () => {
  * @return {object} enc public key in PEM format
  */
 const getEncPubAsPEM = () => {
-    return keystore.get({
-        kty: config.kty,
-        crv: config.crvOrSize,
-        use: "enc",
-        key_ops: ["deriveKey"],
-    }).toPEM();
+    return keystore
+        .get({
+            kty: config.kty,
+            crv: config.crvOrSize,
+            use: "enc",
+            key_ops: ["deriveKey"],
+        })
+        .toPEM();
 };
 
 /**
@@ -72,11 +74,10 @@ const getEncPubAsPEM = () => {
  * @return {string} JWE object as string
  */
 const encrypt = (cleartext, key) => {
-    return JWE.encrypt(cleartext, JWK.asKey(key),
-        {
-            enc: config.enc,
-            alg: config.alg,
-        });
+    return JWE.encrypt(cleartext, JWK.asKey(key), {
+        enc: config.enc,
+        alg: config.alg,
+    });
 };
 
 /**
@@ -86,7 +87,7 @@ const encrypt = (cleartext, key) => {
  * @param {string} jwe JWE object as string
  * @return {string} cleartext (utf8)
  */
-const decrypt = (jwe) => {
+const decrypt = jwe => {
     return JWE.decrypt(jwe, encKey, {
         complete: false,
     }).toString("utf8");
@@ -124,9 +125,9 @@ const verify = (token, pub, aud) => {
  * object and set it as new config.
  * @param {string} encryptedNewConfig as JWE
  */
-const setEncryptedConfig = (encryptedNewConfig) => {
+const setEncryptedConfig = encryptedNewConfig => {
     setConfig(JSON.parse(decrypt(encryptedNewConfig)));
-}
+};
 
 module.exports = {
     getEncPubAsJWK, // TODO: ENFORCE PEM
@@ -135,4 +136,4 @@ module.exports = {
     decrypt,
     verify,
     setEncryptedConfig, // TODO: run at comm start
-}
+};
