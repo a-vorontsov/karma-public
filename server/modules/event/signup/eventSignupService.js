@@ -15,6 +15,10 @@ const createSignup = async (signup) => {
     if (eventIdCheckResponse.status !== 200) {
         return eventIdCheckResponse;
     }
+    const userIdCheckResponse = await util.checkUserId(signup.userId);
+    if (userIdCheckResponse.status !== 200) {
+        return userIdCheckResponse;
+    }
 
     const signupResult = await signupRepository.insert(signup);
     return ({
@@ -68,8 +72,10 @@ const getSignupHistory = async (individualId) => {
  * Fails if userId is invalid, or database call fails.
  */
 const getGoingEvents = async (userId) => {
-    const userIdCheckResponse = await util.checkUserId(userId);
-    if (userIdCheckResponse.status !== 200) userIdCheckResponse;
+    const userIdCheckResponse = await util.checkUser(userId);
+    if (userIdCheckResponse.status !== 200) {
+        throw new Error(userIdCheckResponse.message);
+    }
     const findResult = await individualRepository.findGoingEvents(userId);
     const events = findResult.rows;
     if (events.length === 0) return ({status: 404, message: "No favourite events found"});
