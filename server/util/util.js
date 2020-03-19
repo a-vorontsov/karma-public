@@ -40,14 +40,13 @@ const checkEmail = async (email) => {
     return result;
 };
 const getIndividualIdFromUserId = async (userId) => {
-    try {
-        const individualResult = await isIndividual(userId);
-        if (individualResult) {
-            const individualId = await individualRepository.getIndividualId(userId);
-            return individualId.rows[0].id;
-        }
-    } catch (error) {
-        return error;
+    const individualResult = await isIndividual(userId);
+    if (individualResult) {
+        const individualId = await individualRepository.getIndividualId(userId);
+
+        return individualId.rows[0].id;
+    } else {
+        throw new Error("User is not an individual");
     }
 };
 const checkUserId = async (userId) => {
