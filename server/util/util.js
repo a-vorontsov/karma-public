@@ -78,24 +78,33 @@ const checkUser = async (userId) => {
     const checkUserIdResult = await checkUserId(userId);
     const user = checkUserIdResult.user;
     if (user) {
-        const userLocationResult = await userRepository.getUserLocation(userId);
-        if (userLocationResult.rows.length === 0) {
-            const individualResult = await individualRepository.findByUserID(userId);
-            const orgResult = await organisationRepository.findByUserID(userId);
-            if (individualResult.rows.length>0 || orgResult.rows.length>0) {
-                result.status = 400;
-                result.message = "No address associated with specified user id";
-                return result;
-            } else {
-                result.status = 400;
-                result.message = "No individual nor organisation is associated with specified user id";
+        const individualResult = await individualRepository.findByUserID(userId);
+        if (individualResult.rows.length>0) {
+            const individualLocationResult = await individualRepository.getIndividualLocation(userId);
+            if (individualLocationResult.rows.length>0) {
+                result.status = 200;
+                result.user = individualLocationResult.rows[0];
                 return result;
             }
-        } else {
-            result.status = 200;
-            result.user = userLocationResult.rows[0];
+            result.status = 400;
+            result.message = "No address associated to individual with specified user id";
             return result;
         }
+        const orgResult = await organisationRepository.findByUserID(userId);
+        if (orgResult.rows.length>0) {
+            const orgLocationResult = await organisationRepository.getOrganisationLocation(userId);
+            if (orgLocationResult.rows.length>0) {
+                result.status = 200;
+                result.user = orgLocationResult.rows[0];
+                return result;
+            }
+            result.status = 400;
+            result.message = "No address associated to organisation with specified user id";
+            return result;
+        }
+        result.status = 400;
+        result.message = "No individual nor organisation is associated with specified user id";
+        return result;
     } else {
         return checkUserIdResult;
     }

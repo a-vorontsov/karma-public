@@ -50,6 +50,11 @@ const getIndividualId = (userId) =>{
     return db.query(query, [userId]);
 };
 
+const getIndividualLocation = (userId) => {
+    const query = "select user_id, id(individual) as individual_id, lat,long "+
+    "from individual inner join address on address_id = id(address) where user_id = $1";
+    return db.query(query, [userId]);
+};
 const update = (individual) => {
     const query =
     "UPDATE individual SET firstname = $1, lastname = $2, phone = $3, banned = $4, " +
@@ -70,12 +75,13 @@ const update = (individual) => {
 };
 
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    findByUserID: findByUserID,
-    findFavouriteEvents: findFavouriteEvents,
-    findGoingEvents: findGoingEvents,
-    update: update,
-    getIndividualId: getIndividualId,
+    insert,
+    findById,
+    findAll,
+    findByUserID,
+    findFavouriteEvents,
+    findGoingEvents,
+    update,
+    getIndividualId,
+    getIndividualLocation,
 };
