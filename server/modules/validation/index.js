@@ -73,7 +73,7 @@ const notificationSchema = {
         "message": {"type": "string"},
         "timestampSent": {"type": "date-time"},
         "senderId": {"type": "number"},
-        "receiverId": {"type": "number"},
+        "receiverIds": {"type": "array", "items": {"type": "number"}},
     },
     "required": ["type", "message", "senderId", "receiverId"],
 };

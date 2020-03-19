@@ -40,11 +40,13 @@ test("incorrect events rejected", () => {
 
 test("correct notifications accepted", () => {
     const correctNotification = {...notification};
+    correctNotification.receiverId = [1,2,3];
     expect(validation.validateNotification(correctNotification).errors.length).toBe(0);
 });
 
 test("incorrect notifications rejected", () => {
     const incorrectNotification = {...notification};
+    incorrectNotification.receiverId = [1,2,3];
     incorrectNotification.type = 15;
     expect(validation.validateNotification(incorrectNotification).errors.length).toBe(1);
     incorrectNotification.message = true;
