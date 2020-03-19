@@ -53,7 +53,7 @@ function getMonthName(d, long = false) {
 }
 
 const ActivityCard = props => {
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
 
     // const setFav = handlePress => {
     //     return false;
@@ -83,6 +83,11 @@ const ActivityCard = props => {
                     }}
                     resizeMode="cover"
                 />
+                <TouchableOpacity onPress={() => navigation.navigate("ActivityInfo", {
+                    activity: props.activity,
+                })}>
+                    <RegularText>View</RegularText>
+                </TouchableOpacity>
                 <Image
                     source={props.signedup ? null : icons.signup}
                     style={styles.icon}

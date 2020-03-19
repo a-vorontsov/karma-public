@@ -6,6 +6,7 @@ import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
 import {sendNotification} from "../../util/SendNotification";
+import {getMonthName, formatAMPM, getDate} from "../../util/DateTimeInfo";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
 import {
@@ -22,46 +23,6 @@ const icons = {
     calendar: require("../../assets/images/general-logos/calendar-light.png"),
     location: require("../../assets/images/general-logos/location-logo.png"),
 };
-
-function formatAMPM(d) {
-    let date = new Date(d);
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    let strTime = hours + ":" + minutes + " " + ampm;
-    return strTime;
-}
-
-function getMonthName(d, long = false) {
-    let date = new Date(d);
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-    var name = monthNames[date.getMonth()];
-    if (!long) {
-        name = name.substring(0, 3);
-    }
-    return name;
-}
-// returns date string in the format day/month/year
-function getDate(d) {
-    const date = new Date(d);
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
-}
 
 const ActivityEditable = props => {
     const navigation = useNavigation();

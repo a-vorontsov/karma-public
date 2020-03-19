@@ -39,7 +39,11 @@ target 'Karma' do
 
 
 
-
+# React Native Maps dependencies
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'react-native-google-maps', :path => rn_maps_path
+pod 'GoogleMaps'
+pod 'Google-Maps-iOS-Utils'
 
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
@@ -48,6 +52,8 @@ target 'Karma' do
     inherit! :search_paths
     # Pods for testing
   end
+
+  
 
   use_native_modules!
 end
