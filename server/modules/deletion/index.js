@@ -43,11 +43,11 @@ const deleteAllInformation = async (userId) => {
     if (isIndividual) {
         const findIndividual = await individualRepository.findByUserID(userId);
         const individualId = findIndividual.rows[0].id;
-        await pictureRepository.removeById(findIndividual.pictureId);
         await profileRepository.removeByIndividualId(individualId);
         await favouriteRepository.removeByIndividualId(individualId);
         await signUpRepository.removeByIndividualId(individualId);
         await individualRepository.removeByUserId(userId);
+        await pictureRepository.removeById(findIndividual.pictureId);
     }
 
     const isOrganisation = await util.isOrganisation(userId);

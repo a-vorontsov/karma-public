@@ -9,6 +9,7 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
+const util = require("../../util/util");
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
@@ -339,5 +340,47 @@ router.post("/update/:id", async (req, res) => {
     }
 });
 
+/**
+ * Endpoint called whenever a user deletes an event.<br/>
+ * URL example: POST http://localhost:8000/event/delete?eventId=5
+ * @param {Number} eventId
+ * @returns {object}
+ *  status: 200, description: The deleted event object.<br/>
+ <pre>
+ {
+    "message": "New event created",
+    "data": {
+        "event": {
+            "name": "event",
+            "addressId": 5,
+            "womenOnly": true,
+            "spots": 3,
+            "addressVisible": true,
+            "minimumAge": 16,
+            "photoId": true,
+            "physical": true,
+            "addInfo": true,
+            "content": "fun event yay",
+            "date": "2004-10-19 10:23:54",
+            "userId": 3,
+            "creationDate": "2019-10-19 10:23:54"
+        }
+    }
+ }
+ </pre>
+ *  status: 500, description: DB error
+ *  @function
+ *  @name Delete event
+ */
+router.post("/delete/", async (req, res) => {
+    try {
+        const eventId = Number.parseInt(req.query.eventId);
+        const eventDeleteResult = await eventService.deleteEvent(eventId);
+        return httpUtil.sendResult(eventDeleteResult, res);
+    } catch (e) {
+        console.log("Event updating failed: " + e);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
 
 module.exports = router;

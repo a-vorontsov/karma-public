@@ -2,6 +2,8 @@ const addressRepository = require("../../models/databaseRepositories/addressRepo
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
+const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
+const favouriteEventRepository = require("../../models/databaseRepositories/favouriteRepository");
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
@@ -53,6 +55,28 @@ const updateEvent = async (event) => {
         status: 200,
         message: "Event updated successfully",
         data: {event: updateEventResult.rows[0]},
+    });
+};
+
+/**
+ * Delete an event that already exists in the database.
+ * @param {Number} eventId
+ * Fails if database calls fail.
+ */
+const deleteEvent = async (eventId) => {
+    const eventIdCheckResponse = await util.checkEventId(eventId);
+    if (eventIdCheckResponse.status !== 200) {
+        throw new Error(eventIdCheckResponse.message);
+    }
+    await eventCauseRepository.removeByEventId(eventId);
+    await signUpRepository.removeByEventId(eventId);
+    await favouriteEventRepository.removeByEventId(eventId);
+    const findEventToReturn = await eventRepository.findById(eventId);
+    await eventRepository.removeById(eventId);
+    return ({
+        status: 200,
+        message: "Event deleted successfully",
+        data: {event: findEventToReturn.rows[0]},
     });
 };
 
@@ -159,4 +183,5 @@ module.exports = {
     getEventData,
     getEvents,
     getEventsBySelectedCauses,
+    deleteEvent,
 };
