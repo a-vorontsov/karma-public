@@ -24,8 +24,9 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
 import CauseStyles from "../styles/CauseStyles";
-const {width} = Dimensions.get("window");
+const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
+const HALF = formWidth / 2;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
     cog: require("../assets/images/general-logos/cog.png"),
@@ -211,6 +212,7 @@ class ProfileScreen extends Component {
                                         width: 25,
                                         marginHorizontal: formWidth * 0.02,
                                         marginTop: 2,
+                                        marginBottom: 5,
                                     }}
                                 />
                             </TouchableOpacity>
@@ -219,57 +221,71 @@ class ProfileScreen extends Component {
                             style={{
                                 flex: 1,
                                 backgroundColor: Colours.blue,
-                                height: 160,
+                                height: HALF,
                                 width: width,
                                 alignItems: "center",
-                                justifyContent: "space-between",
+                                justifyContent: "flex-start",
                                 paddingRight: 30,
+                                paddingLeft: 30,
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
-                            <PhotoUpload
-                                onPhotoSelect={avatar => {
-                                    if (avatar) {
-                                        console.log(
-                                            "Image base64 string: ",
-                                            avatar,
-                                        );
-                                        this.setPhoto(avatar);
-                                    }
-                                }}>
-                                <Image
-                                    style={{
-                                        paddingVertical: 5,
-                                        width: 140,
-                                        height: 140,
-                                        borderRadius: 75,
-                                    }}
-                                    resizeMode="cover"
-                                    source={icons.photo_add}
-                                />
-                            </PhotoUpload>
+                            <View>
+                                <PhotoUpload
+                                    onPhotoSelect={avatar => {
+                                        if (avatar) {
+                                            console.log(
+                                                "Image base64 string: ",
+                                                avatar,
+                                            );
+                                            this.setPhoto(avatar);
+                                        }
+                                    }}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 5,
+                                            width: HALF * 0.8,
+                                            height: HALF * 0.8,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={icons.photo_add}
+                                    />
+                                </PhotoUpload>
+                            </View>
                             <View
                                 style={{
-                                    paddingLeft: 38,
+                                    marginLeft: 38,
+                                    flex: 1,
                                 }}>
-                                <RegularText style={styles.nameText}>
-                                    {this.state.name}
-                                </RegularText>
+                                <View>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={[styles.nameText]}>
+                                        {this.state.name}
+                                    </Text>
+                                </View>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                     }}>
-                                    <Text style={styles.usernameText}>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.usernameText}>
                                         {this.state.username}
                                     </Text>
                                     {this.state.isOrganisation && (
-                                        <Text style={styles.usernameText}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.usernameText}>
                                             {" | " +
                                                 this.state.organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
-                                        <Text style={styles.locationText}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.locationText}>
                                             {this.state.location}
                                         </Text>
                                     )}
@@ -310,7 +326,7 @@ class ProfileScreen extends Component {
                                                     color: Colours.white,
                                                     height: 25,
                                                     width: 25,
-                                                    left: 50,
+                                                    left: 53,
                                                     top: -5,
                                                     position: "absolute",
                                                 }}>
