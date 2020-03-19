@@ -2,6 +2,8 @@ const testHelpers = require("../../test/testHelpers");
 const eventService = require("./eventService");
 
 const eventRepository = require("../../models/databaseRepositories/eventRepository");
+const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
+const favouriteRepository = require("../../models/databaseRepositories/favouriteRepository");
 const signUpRepository = require("../../models/databaseRepositories/signupRepository");
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
@@ -14,6 +16,8 @@ jest.mock("../../models/databaseRepositories/eventRepository");
 jest.mock("../../models/databaseRepositories/addressRepository");
 jest.mock("../../models/databaseRepositories/signupRepository");
 jest.mock("../../models/databaseRepositories/selectedCauseRepository");
+jest.mock("../../models/databaseRepositories/favouriteRepository");
+jest.mock("../../models/databaseRepositories/eventCauseRepository");
 jest.mock("../../util/util");
 jest.mock("../filtering");
 jest.mock("../sorting/event");
@@ -238,4 +242,28 @@ test("getting events grouped by user selected causes works", async () => {
         }]
     });
     expect(getEventsResult.status).toBe(200);
+});
+
+test("deleting events works", async () => {
+
+    util.checkEventId.mockResolvedValue({status: 200});
+    eventRepository.findById.mockResolvedValue({
+        rows: [{
+            ...event,
+            id: 3,
+        }],
+    });
+
+    const deleteResult = await eventService.deleteEvent(3);
+    expect(eventRepository.removeById).toHaveBeenCalledTimes(1);
+    expect(eventRepository.findById).toHaveBeenCalledTimes(1);
+    expect(favouriteRepository.removeByEventId).toHaveBeenCalledTimes(1);
+    expect(signUpRepository.removeByEventId).toHaveBeenCalledTimes(1);
+    expect(eventCauseRepository.removeByEventId).toHaveBeenCalledTimes(1);
+    expect(deleteResult.data).toMatchObject({
+        ...event,
+        id: 3,
+    });
+    expect(deleteResult.message).toBe("Event deleted successfully");
+    expect(deleteResult.status).toBe(200);
 });

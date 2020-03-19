@@ -9,7 +9,6 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
-const util = require("../../util/util");
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
@@ -341,7 +340,7 @@ router.post("/update/:id", async (req, res) => {
 });
 
 /**
- * Endpoint called whenever a user deletes an event.<br/>
+ * Endpoint called whenever a user deletes an event. <br/>
  * URL example: POST http://localhost:8000/event/delete?eventId=5
  * @param {Number} eventId
  * @returns {object}
@@ -350,7 +349,6 @@ router.post("/update/:id", async (req, res) => {
  {
     "message": "New event created",
     "data": {
-        "event": {
             "name": "event",
             "addressId": 5,
             "womenOnly": true,
@@ -364,7 +362,6 @@ router.post("/update/:id", async (req, res) => {
             "date": "2004-10-19 10:23:54",
             "userId": 3,
             "creationDate": "2019-10-19 10:23:54"
-        }
     }
  }
  </pre>

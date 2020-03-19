@@ -76,7 +76,7 @@ const deleteEvent = async (eventId) => {
     return ({
         status: 200,
         message: "Event deleted successfully",
-        data: {event: findEventToReturn.rows[0]},
+        data: findEventToReturn.rows[0],
     });
 };
 
