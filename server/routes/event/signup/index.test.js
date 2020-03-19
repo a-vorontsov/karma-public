@@ -3,9 +3,12 @@ const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
 const validation = require("../../../modules/validation");
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const util = require("../../../util/util");
 
 jest.mock("../../../modules/event/signup/eventSignupService");
 jest.mock("../../../modules/validation");
+jest.mock("../../../util/util");
+
 validation.validateSignup.mockReturnValue({errors: ""});
 
 let signUp, event, signedUpUserExample1, signedUpUserExample2;
@@ -25,6 +28,7 @@ afterEach(() => {
 });
 
 test('creating signup works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
     eventSignupService.createSignup.mockResolvedValue({
         status: 200,
         message: "Signup created successfully",
