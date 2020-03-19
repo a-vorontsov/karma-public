@@ -104,6 +104,44 @@ const logInAdmin = (userId) => {
 };
 
 /**
+ * Grant temporary access to some routes
+ * to given user. The access type and
+ * length of temporary access must both
+ * must be specified. Otherwise, an error
+ * is thrown.
+ * @param {number} userId
+ * @param {string} aud
+ * @param {string} exp
+ * @return {string} authToken
+ * @throws {error} if aud or exp unspecified
+ */
+const grantTemporaryAccess = (userId, aud, exp) => {
+    if (!permissions.has(aud) || !(typeof(exp) === "string")) {
+        throw new Error("Invalid params for temporary access.");
+    }
+    const payload = {
+        sub: userId.toString(),
+        aud: aud,
+    };
+    return jose.sign(payload, exp);
+};
+
+/**
+ * Grant temporary access to a user to
+ * reset their password. This must only
+ * be called after a valid password
+ * reset token was input by the user.
+ * The temporary reset access is only
+ * valid for the reset password route
+ * and for 15 minutes.
+ * @param {number} userId
+ * @return {string} authToken
+ */
+const grantResetAccess = (userId) => {
+    return grantTemporaryAccess(userId, permConfig["/reset"], "15 m");
+};
+
+/**
  * Log user out: set their
  * auth token invalid.
  * @param {string} authToken
@@ -118,4 +156,5 @@ module.exports = {
     logInUser,
     logInAdmin,
     logOut,
+    grantResetAccess,
 };

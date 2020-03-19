@@ -67,9 +67,9 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         httpUtil.sendResult({
             status: 200,
             message: "Password successfully updated. Go to sign-in screen.",
-        });
+        }, res);
     } catch (e) {
-        httpUtil.sendGenericError(e);
+        httpUtil.sendGenericError(e, res);
     }
 });
 

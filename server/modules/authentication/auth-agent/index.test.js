@@ -11,6 +11,7 @@ const request = require("supertest");
 const app = require("../../../app");
 const jose = require("../../jose");
 const adminService = require("../../admin/adminService");
+const userAgent = require("../user-agent");
 
 const user = testHelpers.getUserExample4();
 const profile = testHelpers.getProfile();
@@ -436,5 +437,72 @@ test("visiting an admin route with a user token fails as expected", async () => 
         .redirects(1);
 
     expect(response.body.message).toBe("unexpected \"aud\" claim value");
+    expect(response.statusCode).toBe(401);
+});
+
+test("visiting the reset route with a regular user token fails as expected", async () => {
+    const resetRequest = {
+        // no userId specified!!!
+        authToken: "toBeReceived",
+        data: {
+            password: "newpass69",
+        },
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.logInUser(userId);
+    expect(jose.verifyAndGetUserId(authToken)).toStrictEqual(userId);
+    resetRequest.authToken = authToken;
+
+    const response = await request(app)
+        .post("/reset")
+        .send(resetRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("unexpected \"aud\" claim value");
+    expect(response.statusCode).toBe(401);
+});
+
+test("visiting the reset route with a password reset token works", async () => {
+    const resetRequest = {
+        // no userId specified!!!
+        authToken: "toBeReceived",
+        data: {
+            password: "newPass69!.",
+        },
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    const authToken = authAgent.grantResetAccess(userId);
+    expect(jose.verifyAndGetUserId(authToken, "/reset")).toStrictEqual(userId);
+    resetRequest.authToken = authToken;
+
+    const response = await request(app)
+        .post("/reset")
+        .send(resetRequest)
+        .redirects(0);
+
+    expect(response.body.message).toBe("Password successfully updated. Go to sign-in screen.");
+    expect(response.statusCode).toBe(200);
+    expect(await userAgent.isCorrectPasswordById(userId, resetRequest.data.password)).toBe(true);
+});
+
+test("visiting the reset route without a token fails as expected", async () => {
+    const resetRequest = {
+        // no userId specified!!!
+        authToken: "none.none.none",
+        data: {
+            password: "newPass69!.",
+        },
+    };
+
+    const response = await request(app)
+        .post("/reset")
+        .send(resetRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("JWT is malformed");
     expect(response.statusCode).toBe(401);
 });

@@ -12,7 +12,7 @@ config.jose = { // TODO: host on domain
 
 config.permissions = {
     "/admin": "/admin",
-    "/signin/reset": "/reset",
+    "/reset": "/reset",
     "/": "/user",
 };
 
