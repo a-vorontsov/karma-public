@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
+import CauseItem from "../components/causes/CauseItem";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -21,9 +22,11 @@ import CarouselStyles, {
 import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
-
-const {width} = Dimensions.get("window");
+import * as Keychain from "react-native-keychain";
+import CauseStyles from "../styles/CauseStyles";
+const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
+const HALF = formWidth / 2;
 const icons = {
     share: require("../assets/images/general-logos/share-logo.png"),
     cog: require("../assets/images/general-logos/cog.png"),
@@ -42,37 +45,112 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             activeSlide: 0,
-            name: "Name",
-            username: "Username",
-            location: "Location",
-            bio: "this is your bio lorem ipsum and such",
-            causes: ["Cause1", "Cause2"],
+            name: "",
+            username: "",
+            location: "",
+            bio: "",
+            causes: [],
             points: 1,
-            activities: [],
+            createdEvents: [],
+            createdPastEvents: [],
+            upcomingEvents: [],
+            pastEvents: [],
+            eventsToggle: true,
+            isOrganisation: false,
+            organisationType: "",
+            orgPhoneNumber: "",
         };
-        this.fetchAllActivities();
+        this.fetchProfileInfo();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
-    fetchAllActivities() {
+    getData = async () => {
+        try {
+            // Retreive the credentials
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    "Credentials successfully loaded for user " +
+                        credentials.username,
+                );
+                return credentials;
+            } else {
+                console.log("No credentials stored");
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    };
+
+    setupIndividualProfile(res) {
+        const {
+            causes,
+            createdEvents,
+            createdPastEvents,
+            individual,
+            pastEvents,
+            upcomingEvents,
+            user,
+        } = res.body.data;
+
+        this.setState({
+            isOrganisation: false,
+            name: individual.firstName + " " + individual.lastName,
+            username: user.username,
+            location:
+                individual.address.townCity + " " + individual.address.postCode,
+            bio: individual.bio,
+            causes: causes,
+            points: individual.karmaPoints,
+            upcomingEvents: upcomingEvents,
+            pastEvents: pastEvents,
+            createdEvents: createdEvents,
+            createdPastEvents: createdPastEvents,
+        });
+    }
+    setupOrganisationProfile(res) {
+        const {
+            causes,
+            user,
+            createdEvents,
+            createdPastEvents,
+            organisation,
+        } = res.body.data;
+        this.setState({
+            isOrganisation: true,
+            name: organisation.name,
+            organisationType: organisation.organisationType,
+            username: user.username,
+            location:
+                organisation.address.townCity +
+                " " +
+                organisation.address.postCode,
+            causes: causes,
+            bio: organisation.pocFirstName + " " + organisation.pocLastName,
+            orgPhoneNumber: organisation.phoneNumber,
+            upcomingEvents: createdEvents,
+            pastEvents: createdPastEvents,
+        });
+    }
+    async fetchProfileInfo() {
+        const credentials = await this.getData();
+        //const authToken = credentials.password;
+        const userId = credentials.username;
         request
-            .get("http://localhost:8000/event/going")
-            .query({userId: 76})
-            .then(result => {
-                console.log(result.body.data);
-                let activities = result.body.data;
-                this.setState({
-                    activities,
-                });
+            .get("http://localhost:8000/profile")
+            .query({userId: userId})
+            .then(res => {
+                res.body.data.organisation
+                    ? this.setupOrganisationProfile(res)
+                    : this.setupIndividualProfile(res);
             })
-            .catch(er => {
-                console.log(er);
+            .catch(err => {
+                console.log(err);
             });
     }
-
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
@@ -134,6 +212,7 @@ class ProfileScreen extends Component {
                                         width: 25,
                                         marginHorizontal: formWidth * 0.02,
                                         marginTop: 2,
+                                        marginBottom: 5,
                                     }}
                                 />
                             </TouchableOpacity>
@@ -142,49 +221,74 @@ class ProfileScreen extends Component {
                             style={{
                                 flex: 1,
                                 backgroundColor: Colours.blue,
-                                height: 160,
+                                height: HALF,
                                 width: width,
                                 alignItems: "center",
-                                justifyContent: "space-between",
+                                justifyContent: "flex-start",
                                 paddingRight: 30,
+                                paddingLeft: 30,
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
-                            <PhotoUpload
-                                onPhotoSelect={avatar => {
-                                    if (avatar) {
-                                        console.log(
-                                            "Image base64 string: ",
-                                            avatar,
-                                        );
-                                        this.setPhoto(avatar);
-                                    }
-                                }}>
-                                <Image
-                                    style={{
-                                        paddingVertical: 5,
-                                        width: 140,
-                                        height: 140,
-                                        borderRadius: 75,
-                                    }}
-                                    resizeMode="cover"
-                                    source={icons.photo_add}
-                                />
-                            </PhotoUpload>
                             <View>
-                                <RegularText style={styles.nameText}>
-                                    {this.state.name}
-                                </RegularText>
+                                <PhotoUpload
+                                    onPhotoSelect={avatar => {
+                                        if (avatar) {
+                                            console.log(
+                                                "Image base64 string: ",
+                                                avatar,
+                                            );
+                                            this.setPhoto(avatar);
+                                        }
+                                    }}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 5,
+                                            width: HALF * 0.8,
+                                            height: HALF * 0.8,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={icons.photo_add}
+                                    />
+                                </PhotoUpload>
+                            </View>
+                            <View
+                                style={{
+                                    marginLeft: 38,
+                                    flex: 1,
+                                }}>
+                                <View>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={[styles.nameText]}>
+                                        {this.state.name}
+                                    </Text>
+                                </View>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                     }}>
-                                    <Text style={styles.usernameText}>
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.usernameText}>
                                         {this.state.username}
                                     </Text>
-                                    <Text style={styles.locationText}>
-                                        {this.state.location}
-                                    </Text>
+                                    {this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.usernameText}>
+                                            {" | " +
+                                                this.state.organisationType}
+                                        </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.locationText}>
+                                            {this.state.location}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
@@ -192,42 +296,56 @@ class ProfileScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                    <View style={styles.pointContainer}>
-                                        <Image
-                                            source={icons.badge}
-                                            style={{height: 60, width: 60}}
-                                        />
-                                        <Image
-                                            source={icons.ribbon}
+                                    {!this.state.isOrganisation && (
+                                        <View style={styles.pointContainer}>
+                                            <Image
+                                                source={icons.badge}
+                                                style={{height: 60, width: 60}}
+                                            />
+                                            <Image
+                                                source={icons.ribbon}
+                                                style={{
+                                                    height: 60,
+                                                    width: 60,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <Image
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 45,
+                                                    top: -8,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <RegularText
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    color: Colours.white,
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 53,
+                                                    top: -5,
+                                                    position: "absolute",
+                                                }}>
+                                                {this.state.points}
+                                            </RegularText>
+                                        </View>
+                                    )}
+                                    {this.state.isOrganisation && (
+                                        <View
                                             style={{
-                                                height: 60,
-                                                width: 60,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <Image
-                                            source={icons.orange_circle}
-                                            style={{
-                                                height: 25,
-                                                width: 25,
-                                                left: 45,
-                                                top: -8,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <RegularText
-                                            source={icons.orange_circle}
-                                            style={{
-                                                color: Colours.white,
-                                                height: 25,
-                                                width: 25,
-                                                left: 53,
-                                                top: -5,
-                                                position: "absolute",
+                                                flexDirection: "row",
+                                                paddingTop: 20,
+                                                justifyContent: "space-between",
                                             }}>
-                                            {this.state.points}
-                                        </RegularText>
-                                    </View>
+                                            <Text style={styles.usernameText}>
+                                                {this.state.orgPhoneNumber}
+                                            </Text>
+                                        </View>
+                                    )}
                                     <TouchableOpacity>
                                         <Image
                                             source={icons.share}
@@ -264,14 +382,21 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                     paddingTop: 15,
                                 }}>
-                                <TransparentButton
-                                    title="View Your Activities"
-                                    size={15}
-                                    ph={40}
-                                    onPress={() =>
-                                        navigate("CreatedActivities")
-                                    }
-                                />
+                                {!this.state.isOrganisation && (
+                                    <TransparentButton
+                                        title="View Your Activities"
+                                        size={15}
+                                        ph={40}
+                                        onPress={() =>
+                                            navigate("CreatedActivities", {
+                                                activities: this.state
+                                                    .createdEvents,
+                                                pastActivities: this.state
+                                                    .createdPastEvents,
+                                            })
+                                        }
+                                    />
+                                )}
                             </View>
                             <View
                                 style={{
@@ -308,25 +433,38 @@ class ProfileScreen extends Component {
                                         justifyContent: "center",
                                     }}>
                                     <RegularText style={styles.contentText}>
-                                        o eos et accusamus et iusto odio
-                                        dignissimos ducimus qui blanditiis
-                                        praesentium voluptatum deleniti atque
-                                        corrupti quos dolores et quas molestias
-                                        excepturi sint occaecati cupiditate non
-                                        provident, similique sunt in culpa qui
-                                        officia deserunt mollitia animi, id est
-                                        laborum et dolorum fuga
+                                        {this.state.bio}
                                     </RegularText>
                                 </View>
+                                <RegularText style={styles.bioHeader}>
+                                    Causes
+                                </RegularText>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "flex-end",
                                         justifyContent: "flex-end",
                                     }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Causes
-                                    </RegularText>
+                                    {this.state.causes.length > 0 ? (
+                                        <View style={CauseStyles.container}>
+                                            {this.state.causes.map(cause => {
+                                                return (
+                                                    <CauseItem
+                                                        cause={cause}
+                                                        key={cause.id}
+                                                        isDisabled={true}
+                                                    />
+                                                );
+                                            })}
+                                        </View>
+                                    ) : (
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You did not select any causes
+                                            </RegularText>
+                                        </View>
+                                    )}
+
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
@@ -353,19 +491,41 @@ class ProfileScreen extends Component {
                                     alignItems: "center",
                                     paddingHorizontal: formWidth * 0.075,
                                 }}>
-                                <TouchableOpacity>
-                                    <RegularText style={styles.bioHeader}>
-                                        {this.state.activities.length > 0
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.setState({
+                                            eventsToggle: !this.state
+                                                .eventsToggle,
+                                        })
+                                    }>
+                                    <RegularText
+                                        style={
+                                            this.state.eventsToggle
+                                                ? styles.bioHeader
+                                                : styles.bioHeaderAlt
+                                        }>
+                                        {this.state.upcomingEvents.length > 0
                                             ? "Upcoming Events"
                                             : "No Upcoming Events"}
                                     </RegularText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
+                                    onPress={() =>
+                                        this.setState({
+                                            eventsToggle: !this.state
+                                                .eventsToggle,
+                                        })
+                                    }
                                     style={{
                                         alignSelf: "flex-start",
                                         marginLeft: 80,
                                     }}>
-                                    <RegularText style={styles.bioHeaderAlt}>
+                                    <RegularText
+                                        style={
+                                            this.state.eventsToggle
+                                                ? styles.bioHeaderAlt
+                                                : styles.bioHeader
+                                        }>
                                         Past Events
                                     </RegularText>
                                 </TouchableOpacity>
@@ -379,7 +539,11 @@ class ProfileScreen extends Component {
                                     ref={c => {
                                         this._carousel = c;
                                     }}
-                                    data={this.state.activities}
+                                    data={
+                                        this.state.eventsToggle
+                                            ? this.state.upcomingEvents
+                                            : this.state.pastEvents
+                                    }
                                     removeClippedSubviews={false}
                                     renderItem={this._renderItem}
                                     sliderWidth={sliderWidth}
@@ -402,7 +566,7 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 30,
+        fontSize: 25,
         color: Colours.white,
         fontWeight: "bold",
     },

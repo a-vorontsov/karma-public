@@ -1,0 +1,16 @@
+# building the node server
+FROM node:12-alpine
+WORKDIR /server
+RUN apk add --update bash
+
+COPY package*.json ./
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && npm ci --only=production \
+    && apk del build-dependencies
+
+COPY . .
+RUN chmod a+x wait-for-it.sh
+EXPOSE 8000

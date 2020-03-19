@@ -64,6 +64,9 @@ const MainNavigator = createStackNavigator(
         ChangePassword:{
             screen:ChangePasswordScreen,
         },
+        Notifications: {
+            screen: NotificationsScreen,
+        },
     },
     {
         headerMode: "none",

@@ -1,17 +1,22 @@
 const testHelpers = require("../../../test/testHelpers");
 const eventFavouriteService = require("./eventFavouriteService");
-
+const eventSorter = require("../../sorting/event");
+const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 const util = require("../../../util/util");
 
 jest.mock("../../../models/databaseRepositories/favouriteRepository");
+jest.mock("../../../models/databaseRepositories/individualRepository");
+jest.mock("../../sorting/event");
 jest.mock("../../../util/util");
 
 
-let favourite;
+let favourite, event1, event2;
 
 beforeEach(() => {
     favourite = testHelpers.getFavourite();
+    event1 = testHelpers.getEventWithLocationExample1();
+    event2 = testHelpers.getEventWithLocationExample2();
 });
 
 afterEach(() => {
@@ -46,4 +51,24 @@ test('deleting favourite works', async () => {
         favourite
     });
     expect(deleteFavouriteResult.status).toBe(200);
+});
+
+test('getting events user favourited works', async () => {
+    const eventsArray =[{
+        ...event1,
+        eventid: 1,
+    },
+    {
+        ...event2,
+        eventid: 2,
+    }];
+
+    util.checkUserId.mockResolvedValue({status: 200});
+    individualRepository.findFavouriteEvents.mockResolvedValue({rows: eventsArray});
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
+    const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(15);
+
+    expect(individualRepository.findFavouriteEvents).toHaveBeenCalledTimes(1);
+    expect(getFavouriteEventsResult.status).toBe(200);
+    expect(getFavouriteEventsResult.data.events).toMatchObject(eventsArray);
 });

@@ -1,4 +1,4 @@
-name: Backend - Automatically Run Node.js Linting and Tests
+name: Backend
 
 # Trigger on push or pull request
 on:
@@ -52,7 +52,19 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+    env:
+      CI: true
+      DB_USER: postgres
+      DB_PASS: asd123
+      TWILIO_ACCOUND_SID: fake1
+      TWILIO_AUTH_TOKEN: fake2
+      TWILIO_SERVICE_SID: fake3
+      SESSION_SECRET: GIT_CI
+      STRIPE_SECRET: sk_test_TBD
+      STRIPE_ACC_ID: acct_TBD
+      SKIP_MAIL_SENDING_FOR_TESTING: 1
+      DB_HOST: localhost
+      DB_DATABASE: karma-db
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repo
@@ -75,17 +87,6 @@ jobs:
       - name: npm test
         run: npm test
         working-directory: ./server
-        env:
-          CI: true
-          DB_USER: postgres
-          DB_PASS: asd123
-          TWILIO_ACCOUND_SID: fake1
-          TWILIO_AUTH_TOKEN: fake2
-          TWILIO_SERVICE_SID: fake3
-          SESSION_SECRET: GIT_CI
-          STRIPE_SECRET: sk_test_TBD
-          STRIPE_ACC_ID: acct_TBD
-          SKIP_MAIL_SENDING_FOR_TESTING: 1
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on

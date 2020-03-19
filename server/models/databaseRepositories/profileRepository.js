@@ -22,9 +22,27 @@ const findAll = () => {
     return db.query(query);
 };
 
+const update = (profile) => {
+    const query = "UPDATE profile SET karma_points = $1, bio = $2, women_only = $3  WHERE id=$4 RETURNING *";
+    const params = [
+        profile.karmaPoints,
+        profile.bio,
+        profile.womenOnly,
+        profile.id,
+    ];
+    return db.query(query, params);
+};
+
+const removeByIndividualId = (individualId) => {
+    const query = "DELETE FROM profile WHERE individual_id=$1";
+    return db.query(query, [individualId]);
+};
+
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    findByIndividualId: findByIndividualId,
+    insert,
+    findById,
+    findAll,
+    findByIndividualId,
+    update,
+    removeByIndividualId,
 };

@@ -58,8 +58,7 @@ test("viewing individual profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .send(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
@@ -124,16 +123,15 @@ test("viewing org profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .send(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found organisation profile for user.",
     );
-    expect(profileResponse.body.data.individual.address.postCode).toBe(
+    expect(profileResponse.body.data.organisation.address.postCode).toBe(
         organisationRegistrationRequest.data.organisation.address.postCode,
     );
-    expect(profileResponse.body.data.individual.organisationNumber).toBe(
+    expect(profileResponse.body.data.organisation.organisationNumber).toBe(
         organisationRegistrationRequest.data.organisation.organisationNumber,
     );
     expect(profileResponse.body.data.user.username).toBe(user.username);
@@ -143,8 +141,7 @@ test("viewing org profile works", async () => {
 
 test("viewing profile without user account works", async () => {
     const profileResponse = await request(app)
-        .get("/profile")
-        .send(profileViewRequest);
+        .get(`/profile?userId=${profileViewRequest.userId}`);
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
@@ -159,8 +156,7 @@ test("viewing profile without indiv or org account works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get("/profile")
-        .send(profileViewRequest);
+        .get(`/profile?userId=${userId}`);
 
     expect(profileResponse.statusCode).toBe(400);
     expect(profileResponse.body.message).toBe(
