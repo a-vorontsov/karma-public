@@ -9,6 +9,7 @@ const profileRepo = require("../../models/databaseRepositories/profileRepository
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
 const authAgent = require("./auth-agent");
+const geocoder = require("../geocoder");
 
 /**
  * Register a new record in the registration table.
@@ -153,14 +154,15 @@ async function registerOrg(userId, organisation) {
  * @return {number} addressId
  */
 async function registerAddress(address) {
+    const geoCode = await geocoder.geocode(address);
     return (await addressRepo.insert({
         address1: address.addressLine1,
         address2: address.addressLine2,
         postcode: address.postCode,
         city: address.townCity,
         region: address.countryState,
-        lat: 0, // TODO: compute here?
-        long: 0,
+        lat: geoCode == true ? geoCode[0].latitude : 0,
+        long: geoCode == true ? geoCode[0].longitude : 0,
     })).rows[0].id;
 }
 
