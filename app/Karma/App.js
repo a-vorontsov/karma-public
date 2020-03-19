@@ -10,7 +10,7 @@ import {MenuProvider} from "react-native-popup-menu";
 const AppNavigator = createSwitchNavigator(
     {
         Splash: {
-            getScreen: () => require("./src/views/WelcomeScreen").default,
+            getScreen: () => require("./src/views/ProfileScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,
