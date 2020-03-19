@@ -16,15 +16,6 @@ const findAll = () => {
     const query = "SELECT * FROM \"user\"";
     return db.query(query);
 };
-const getUsersLocations = () => {
-    const query = "select user_id,lat,long from profile natural join individual " +
-        "natural join \"user\" left join address on address_id = id(address)";
-    return db.query(query);
-};
-const getUserLocation = (userId) => {
-    const query = "select user_id, lat,long from individual left join address on address_id = id(address) where user_id = $1";
-    return db.query(query, [userId]);
-};
 
 const findByEmail = (email) => {
     const query = "SELECT * FROM \"user\" WHERE email=$1";
@@ -60,16 +51,20 @@ const findIdFromEmail = (email) => {
     const query = "SELECT id FROM \"user\" WHERE email = $1";
     return db.query(query, [email]);
 };
+
+const removeUserById = (id) => {
+    const query = "DELETE FROM \"user\" WHERE id=$1";
+    return db.query(query, [id]);
+};
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    getUsersLocations: getUsersLocations,
-    getUserLocation: getUserLocation,
-    findByEmail: findByEmail,
-    findByUsername: findByUsername,
-    updatePassword: updatePassword,
-    updateVerificationStatus: updateVerificationStatus,
-    updateUsername: updateUsername,
-    findIdFromEmail: findIdFromEmail,
+    insert,
+    findById,
+    findAll,
+    findByEmail,
+    findByUsername,
+    updatePassword,
+    updateVerificationStatus,
+    updateUsername,
+    findIdFromEmail,
+    removeUserById,
 };
