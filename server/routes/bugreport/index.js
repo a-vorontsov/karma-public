@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
 const httpUtil = require("../../util/httpUtil");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Attempt send a bug report to admin email account.
@@ -43,7 +44,7 @@ const httpUtil = require("../../util/httpUtil");
  * @name Send bug report
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.anyAuth, async (req, res) => {
     try {
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);

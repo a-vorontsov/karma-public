@@ -13,6 +13,7 @@ const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
 const paginator = require("../../modules/pagination");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -119,7 +120,7 @@ router.use("/", eventSelectRoute);
  *  @function
  *  @name Get "All" Activities tab
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const filters = {booleans: req.query.filter};
@@ -179,7 +180,7 @@ router.get("/", async (req, res) => {
  *  @function
  *  @name Get event by id
  *  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
         const getEventResult = await eventService.getEventData(id);
@@ -249,7 +250,7 @@ router.get("/:id", async (req, res) => {
  *  @name Create new event
  *  @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const event = req.body;
         const validationResult = validation.validateEvent(event);
@@ -323,7 +324,7 @@ router.post("/", async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", async (req, res) => {
+router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const event = {...req.body, id: Number.parseInt(req.params.id)};
         const validationResult = validation.validateEvent(event);

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const authAgent = require("../../modules/authentication/auth-agent");
 
-router.get("/", (req, res) => {
+router.get("/", authAgent.redirAuth, (req, res) => {
     const status = req.query.status !== undefined ? req.query.status : 500;
     const message = req.query.message !== undefined ? req.query.message : "Unknown system error.";
     if (req.query.data === "undefined") {

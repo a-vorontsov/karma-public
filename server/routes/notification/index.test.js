@@ -12,6 +12,7 @@ validation.validateNotification.mockReturnValue({errors: ""});
 let notification;
 
 beforeEach(() => {
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     notification = testHelpers.getNotification();
     return testHelpers.clearDatabase();
 });

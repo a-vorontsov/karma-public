@@ -13,6 +13,7 @@ validation.validateEvent.mockReturnValue({errors: ""});
 let eventWithLocation,eventWithAllData;
 
 beforeEach(() => {
+    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
     eventWithLocation = testHelpers.getEventWithLocationExample1();
     eventWithAllData = testHelpers.getEventWithAllData();
 });

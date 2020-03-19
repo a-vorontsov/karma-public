@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const notificationRepository = require("../../models/databaseRepositories/notificationRepository");
 const validation = require("../../modules/validation");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever a user sends a new notification.<br/>
@@ -42,7 +43,7 @@ const validation = require("../../modules/validation");
  *  @name Create new notification
  *  @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const notification = req.body;
         const validationResult = validation.validateNotification(notification);
@@ -95,7 +96,7 @@ router.post("/", async (req, res) => {
  *  @name Get notifications
  *  @function
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
         if (Number.isInteger(id)) {
