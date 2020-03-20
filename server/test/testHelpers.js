@@ -19,10 +19,20 @@ const notification = {
     message: "Cancel Cancel",
     timestampSent: new Date(),
     senderId: -1,
+    receiverIds: [-1],
+};
+
+const notificationExample2 = {
+    type: "Cancel",
+    message: "Cancel Cancel",
+    timestampSent: new Date(),
+    senderId: -1,
     receiverId: -1,
 };
 
 const getNotification = () => ({...notification});
+
+const getNotificationExample2 = () => ({...notificationExample2});
 
 const information = {
     type: "privacyPolicy",
@@ -635,4 +645,5 @@ module.exports = {
     getEventWithAllData,
     getPeaceEvent,
     getAnimalsEvent,
+    getNotificationExample2,
 };
