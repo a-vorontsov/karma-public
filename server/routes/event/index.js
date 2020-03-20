@@ -346,7 +346,8 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
 
 /**
  * Endpoint called whenever a user deletes an event. <br/>
- * URL example: POST http://localhost:8000/event/5/delete/
+ <p><b>Route: </b>/event/:id/delete/ (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @returns {object}
  *  status: 200, description: The deleted event object.<br/>
  <pre>
@@ -375,7 +376,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", async (req, res) => {
+router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
