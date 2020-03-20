@@ -2,11 +2,11 @@ const pictureRepository = require("./pictureRepository");
 const testHelpers = require("../../test/testHelpers");
 
 let pictureExample1;
-let randomPictureExample;
+let pictureExample2;
 
 beforeEach(() => {
     pictureExample1 = testHelpers.getPictureExample1();
-    randomPictureExample = testHelpers.getRandomPictureExample();
+    pictureExample2 = testHelpers.getPictureExample2();
     return testHelpers.clearDatabase();
 });
 
@@ -22,8 +22,8 @@ test('insert picture and findById work', async () => {
 });
 
 test('insert picture and findByUrl work', async () => {
-    const insertPictureResult = await pictureRepository.insert(randomPictureExample);
-    const findPictureResult = await pictureRepository.findById(insertPictureResult.rows[0].pictureLocation);
+    const insertPictureResult = await pictureRepository.insert(pictureExample2);
+    const findPictureResult = await pictureRepository.findByUrl(insertPictureResult.rows[0].pictureLocation);
 
     expect(insertPictureResult.rows[0]).toMatchObject(findPictureResult.rows[0]);
 });
