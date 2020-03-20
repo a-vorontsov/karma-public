@@ -19,6 +19,7 @@ import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
 import {getDate, formatAMPM} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
+import Marker from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
 
@@ -93,20 +94,20 @@ class ActivityInfoScreen extends Component {
 
         const email = response.user.email;
 
-        const individual = response.individual
+        const eventCreator = response.individual
             ? response.individual
             : response.organisation;
         let fullName = "";
-        if (individual.firstName) {
-            fullName = individual.firstName + " " + individual.lastName;
+        if (eventCreator.firstName) {
+            fullName = eventCreator.firstName + " " + eventCreator.lastName;
         } else {
-            fullName = individual.pocFirstName + " " + individual.pocLastName;
+            fullName = eventCreator.pocFirstName + " " + eventCreator.pocLastName;
         }
-        const phoneNumber = individual.phoneNumber;
-        const org_name = individual.firstName
-            ? individual.firstName
-            : individual.name;
-        const address = individual.address;
+        const phoneNumber = eventCreator.phoneNumber;
+        const org_name = eventCreator.firstName
+            ? eventCreator.firstName
+            : eventCreator.name;
+        const address = eventCreator.address;
         const address1 = address.addressLine1 + ", ";
         const address2 = address.addressLine2
             ? address.addressLine2 + ", "

@@ -4,6 +4,7 @@ export const getData = async () => {
     try {
         // Retreive the credentials
         const credentials = await Keychain.getGenericPassword();
+        const userId = credentials.username;
         if (credentials) {
             console.log(
                 "Credentials successfully loaded for user " +

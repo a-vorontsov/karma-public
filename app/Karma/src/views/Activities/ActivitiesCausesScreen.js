@@ -43,7 +43,9 @@ class ActivitiesCausesScreen extends Component {
                     Object.entries(this.state.activitiesByCause).map(
                         ([cause, activities]) => {
                             return (
+                                
                                 <ActivityCauseCarousel
+                                key={activities.eventId}
                                     cause={cause}
                                     activities={activities}
                                 />

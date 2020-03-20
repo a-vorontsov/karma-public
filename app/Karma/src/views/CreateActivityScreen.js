@@ -122,7 +122,7 @@ export default class CreateActivityScreen extends React.Component {
         }
 
         const credentials = await getData();
-        const event = this.createEvent(credentials.username);
+        const event = this.createEvent(102);
 
         const {navigate} = this.props.navigation;
 
@@ -217,17 +217,6 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     setDateValue = (date, name) => {
-        //events must be at least one hour long
-        if (name === "startDate") {
-            const min = new Date(date);
-            min.setHours(min.getHours() + 1);
-
-            this.setState({
-                minEndDate: min,
-                minSlotDate: date,
-            });
-        }
-
         this.setState({
             [name]: this.getFormattedDate(date),
         });
@@ -304,6 +293,7 @@ export default class CreateActivityScreen extends React.Component {
             .post("http://localhost:8000/event")
             .send({
                 authToken: "ffa234124",
+                userId: credentials.username,
                 ...event,
             })
             .then(res => {

@@ -162,8 +162,11 @@ class SignUpScreen extends React.Component {
                                                 : undefined
                                         }
                                         inputRef={ref => (this.password = ref)}
-                                        onSubmitEditing={() =>
-                                            this.confPassword.focus()
+                                        onSubmitEditing={() => {
+                                            Keyboard.dismiss();
+                                            this.confPassword.focus();
+                                        }
+                                           
                                         }
                                         returnKeyType="next"
                                     />

@@ -9,6 +9,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Alert,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
@@ -124,7 +125,6 @@ class ProfileScreen extends Component {
             this.fetchProfileInfo();
         });
     }
-
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
@@ -142,7 +142,7 @@ class ProfileScreen extends Component {
                     : this.setupIndividualProfile(res);
             })
             .catch(err => {
-                console.log(err);
+                Alert.alert("Unable to load profile")
             });
     }
     _renderItem = ({item}) => {
