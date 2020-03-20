@@ -542,6 +542,10 @@ const pictureExample1 = {
 
 const getPictureExample1 = () => ({...pictureExample1});
 
+const getRandomPictureExample = () => ({
+    pictureLocation: "/User/Downloads/" + (new Date()).getTime().toString(),
+});
+
 const resetExample2 = {
     userId: 1,
     passwordToken: "234567",
@@ -638,6 +642,7 @@ module.exports = {
     getBugReport,
     getInformation,
     getPictureExample1,
+    getRandomPictureExample,
     getEventCauseExample1,
     getComplaint,
     getSetting,

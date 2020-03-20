@@ -2,7 +2,6 @@
 
 const aws = require('aws-sdk');
 const fs = require("fs");
-const request = require('request');
 const path = require("path");
 
 const individualRepository = require("../../models/databaseRepositories/individualRepository");
@@ -19,8 +18,6 @@ aws.config.update({
     accessKeyId: process.env.S3_KEY_ID,
     region: process.env.S3_REGION,
 });
-
-const s3 = new aws.S3();
 
 /**
  * Fetch the profile picture for an individual user, fetching default if none is found.
@@ -59,7 +56,7 @@ function getIndividualAvatar(req, res) {
                         picture_url: picture.pictureLocation,
                     });
                 }
-            }).catch((e)=>{
+            }).catch((e) => {
                 res.status(400).send({
                     message: e.message,
                 });
@@ -109,7 +106,7 @@ function getCompanyAvatar(req, res) {
                         picture_url: picture.pictureLocation,
                     });
                 }
-            }).catch((e)=>{
+            }).catch((e) => {
                 res.status(400).send({
                     message: e.message,
                 });

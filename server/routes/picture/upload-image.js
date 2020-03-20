@@ -46,7 +46,7 @@ function updateAvatar(req, res, userType) {
                 storage: s3Storage({
                     s3: s3,
                     Bucket: process.env.S3_BUCKET_NAME,
-                    Key: function (req, file, cb) {
+                    Key: function(req, file, cb) {
                         const hash = crypto.createHash('md5')
                             .update(`karma_${userType}_${req.params.id}`)
                             .digest('hex');

@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-var path = require('path');
+const path = require('path');
 
 const imgFetch = require("../picture/fetch-image");
 const imgUpload = require("../picture/upload-image");
