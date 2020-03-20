@@ -44,6 +44,7 @@ class ActivitiesCausesScreen extends Component {
                         ([cause, activities]) => {
                             return (
                                 <ActivityCauseCarousel
+                                    key={activities.eventId}
                                     cause={cause}
                                     activities={activities}
                                 />
