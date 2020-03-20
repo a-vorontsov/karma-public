@@ -75,7 +75,7 @@ const update = (individual) => {
 };
 
 const removeByUserId = (userId) => {
-    const query = "DELETE FROM individual WHERE user_id=$1";
+    const query = "DELETE FROM individual WHERE user_id=$1 RETURNING *";
     return db.query(query, [userId]);
 };
 

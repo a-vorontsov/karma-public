@@ -10,10 +10,11 @@ jest.mock("../../modules/validation");
 jest.mock("../../modules/pagination");
 validation.validateEvent.mockReturnValue({errors: ""});
 
-let eventWithLocation,eventWithAllData;
+let eventWithLocation,eventWithAllData,event;
 
 beforeEach(() => {
     process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    event = testHelpers.getEvent();
     eventWithLocation = testHelpers.getEventWithLocationExample1();
     eventWithAllData = testHelpers.getEventWithAllData();
 });
@@ -136,8 +137,6 @@ test("getting all events with filters applied works", async () => {
     });
 });
 
-
-
 test("event updating endpoint works", async () => {
     eventService.updateEvent.mockResolvedValue({
         status: 200,
@@ -156,5 +155,22 @@ test("event updating endpoint works", async () => {
     expect(response.body.data).toMatchObject({
         eventWithLocation
     });
+    expect(response.statusCode).toBe(200);
+});
+
+test("event deleting endpoint works", async () => {
+    eventService.deleteEvent.mockResolvedValue({
+        status: 200,
+        message: "Event deleted successfully",
+        data: {event: event},
+    });
+
+    const eventId = 3;
+    const response = await request(app)
+        .post(`/event/${eventId}/delete?eventId`);
+
+    expect(eventService.deleteEvent).toHaveBeenCalledTimes(1);
+    expect(eventService.deleteEvent).toHaveBeenCalledWith(eventId);
+    expect(response.body.data.event).toMatchObject(event);
     expect(response.statusCode).toBe(200);
 });

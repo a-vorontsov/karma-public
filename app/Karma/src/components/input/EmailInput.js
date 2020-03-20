@@ -34,6 +34,7 @@ export default class EmailInput extends React.Component {
     render() {
         return (
             <TextInput
+                autoCapitalize={"none"}
                 name="emailInput"
                 placeholder="Please enter your email"
                 autoFocus={true}

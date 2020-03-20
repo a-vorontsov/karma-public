@@ -65,6 +65,7 @@ CREATE TABLE authentication
         content text NOT NULL,
         date timestamp NOT NULL,
         user_id int NOT NULL,
+        picture_id int,
         creation_date timestamp NOT NULL,
         CONSTRAINT event_pk PRIMARY KEY (id)
     );
@@ -138,6 +139,8 @@ CREATE TABLE authentication
         picture_id int NULL,
         user_id int NOT NULL,
         address_id int NOT NULL,
+        bio text,
+        website varchar(256),
         CONSTRAINT organisation_ak_1 UNIQUE (org_number)
         NOT DEFERRABLE  INITIALLY IMMEDIATE,
                               CONSTRAINT organisation_ak_2 UNIQUE
@@ -221,7 +224,7 @@ CREATE TABLE authentication
         (
             individual_id int NOT NULL,
             event_id int NOT NULL,
-            confirmed boolean NOT NULL,
+            confirmed boolean DEFAULT NULL,
             CONSTRAINT sign_up_pk PRIMARY KEY (individual_id,event_id)
         );
 

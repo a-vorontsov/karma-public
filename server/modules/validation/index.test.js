@@ -7,6 +7,7 @@ const notification = testHelpers.getNotification();
 const information = testHelpers.getInformation();
 const favourite = testHelpers.getFavourite();
 const individual = testHelpers.getIndividual();
+const notificationExampleTwo = testHelpers.getNotificationExample2();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};
@@ -38,8 +39,13 @@ test("incorrect events rejected", () => {
     expect(validation.validateEvent(incorrectEvent).errors.length).toBe(3);
 });
 
-test("correct notifications accepted", () => {
+test("correct notifications accepted with receiverIDs", () => {
     const correctNotification = {...notification};
+    expect(validation.validateNotification(correctNotification).errors.length).toBe(0);
+});
+
+test("correct notifications accepted with receiverID", () => {
+    const correctNotification = {...notificationExampleTwo};
     expect(validation.validateNotification(correctNotification).errors.length).toBe(0);
 });
 

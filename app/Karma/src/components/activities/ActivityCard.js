@@ -15,6 +15,7 @@ import ReadMore from "react-native-read-more-text";
 import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
+import Colours from "../../styles/Colours";
 
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -93,7 +94,6 @@ class ActivityCard extends React.Component {
     };
     render() {
         const {activity, signedup, favorited} = this.props;
-        console.log(activity);
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
@@ -109,6 +109,7 @@ class ActivityCard extends React.Component {
                         }}
                         resizeMode="cover"
                     />
+
                     <TouchableOpacity
                         opacity={0.9}
                         onPress={() => this.toggleModal()}
@@ -174,6 +175,18 @@ class ActivityCard extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        <TouchableOpacity
+                            style={{alignSelf: "center"}}
+                            onPress={() =>
+                                this.props.navigation.navigate("ActivityInfo", {
+                                    activity: activity,
+                                    signedup: signedup,
+                                })
+                            }>
+                            <RegularText style={{color: Colours.cyan}}>
+                                View Activity
+                            </RegularText>
+                        </TouchableOpacity>
                         <RegularText
                             style={{
                                 fontWeight: "500",

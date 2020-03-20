@@ -9,6 +9,7 @@ class Attendees extends Component {
     };
 
     render() {
+        console.log(this.props.activity);
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph16}>

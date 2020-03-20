@@ -163,9 +163,10 @@ class SignUpScreen extends React.Component {
                                                 : undefined
                                         }
                                         inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
-                                        onSubmitEditing={() =>
-                                            this.confPassword.focus()
-                                        }
+                                        onSubmitEditing={() => {
+                                            Keyboard.dismiss();
+                                            this.confPassword.focus();
+                                        }}
                                         returnKeyType="next"
                                     />
                                     <TouchableOpacity

@@ -7,6 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
+    Alert,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
@@ -16,6 +17,12 @@ import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
+import {getDate, formatAMPM} from "../../util/DateTimeInfo";
+import MapView from "react-native-maps";
+import BottomModal from "../../components/BottomModal";
+import SignUpActivity from "../../components/activities/SignUpActivity";
+
+import request from "superagent";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -36,6 +43,11 @@ class ActivityInfoScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            displaySignupModal: false,
+            addInfo: false,
+            photoId: false,
+            physical: false,
+            womenOnly: false,
             spots_taken: 3,
             spots: 4,
             activity_name: "Activity Name",
@@ -44,6 +56,8 @@ class ActivityInfoScreen extends Component {
             full_date: "Full Date",
             full_time: "Full Time",
             full_location: "Full Location",
+            lat: 37.78825,
+            long: -122.4324,
             description:
                 "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
             contact:
@@ -59,8 +73,93 @@ class ActivityInfoScreen extends Component {
         headerShown: false,
     };
 
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+
+    handleSignupError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
+    };
+
+    getCreatorInfo = async id => {
+        const response = await request
+            .get("http://localhost:8000/profile")
+            .query({userId: id})
+            .then(res => {
+                return res.body.data;
+            });
+
+        const email = response.user.email;
+
+        const eventCreator = response.individual
+            ? response.individual
+            : response.organisation;
+        let fullName = "";
+        if (eventCreator.firstName) {
+            fullName = eventCreator.firstName + " " + eventCreator.lastName;
+        } else {
+            fullName =
+                eventCreator.pocFirstName + " " + eventCreator.pocLastName;
+        }
+        const phoneNumber = eventCreator.phoneNumber;
+        const org_name = eventCreator.firstName
+            ? eventCreator.firstName
+            : eventCreator.name;
+        const address = eventCreator.address;
+        const address1 = address.addressLine1 + ", ";
+        const address2 = address.addressLine2
+            ? address.addressLine2 + ", "
+            : "";
+        const city = address.townCity + " ";
+        const postcode = address.postCode;
+        const full_location = address1 + address2 + city + postcode;
+
+        const long = Number(address.long); //TODO - MapView doesn't update lat/long
+        const lat = Number(address.lat);
+        this.setState({
+            org_name: org_name,
+            location: address.townCity,
+            full_location: full_location,
+            lat: lat,
+            long: long,
+            email: email,
+            fullName: fullName,
+            phoneNumber: phoneNumber,
+        });
+    };
+
+    getEventInfo = activity => {
+        this.setState({
+            spots_taken: activity.spots - activity.spotsRemaining,
+            spots: activity.spots,
+            full_date: getDate(activity.date),
+            full_time: formatAMPM(activity.date),
+            description: activity.content,
+            activity_name: activity.name,
+            addInfo: activity.addInfo,
+            photoId: activity.photoId,
+            womenOnly: activity.womenOnly,
+            physical: activity.physical,
+        });
+    };
+
+    async componentDidMount() {
+        const activity = this.props.navigation.getParam("activity");
+
+        this.getEventInfo(activity);
+        this.getCreatorInfo(
+            activity.eventCreatorId
+                ? activity.eventCreatorId
+                : activity.eventcreatorid,
+        );
+    }
+
     render() {
-        const phoneNumbers = [];
+        const signedup = this.props.navigation.getParam("signedup");
+        const activity = this.props.navigation.getParam("activity");
+
         return (
             <View style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
@@ -91,7 +190,7 @@ class ActivityInfoScreen extends Component {
                         <RegularText
                             style={[
                                 Styles.pv16,
-                                {fontSize: 25, fontWeight: "500"},
+                                {fontSize: 20, fontWeight: "500"},
                             ]}>
                             {this.state.activity_name}
                         </RegularText>
@@ -140,14 +239,17 @@ class ActivityInfoScreen extends Component {
                                     </RegularText>
                                     <Image />
                                 </View>
-                                <RegularText
-                                    style={{
-                                        fontSize: 15,
-                                        color: Colours.lightGrey,
-                                        fontWeight: "500",
-                                    }}>
-                                    {this.state.location}
-                                </RegularText>
+                                <View style={{width: FORM_WIDTH}}>
+                                    <RegularText
+                                        style={{
+                                            fontSize: 15,
+                                            color: Colours.lightGrey,
+                                            fontWeight: "500",
+                                            flexWrap: "wrap",
+                                        }}>
+                                        {this.state.location}
+                                    </RegularText>
+                                </View>
                             </View>
                         </View>
                         <View
@@ -319,7 +421,11 @@ class ActivityInfoScreen extends Component {
                         <RegularText style={styles.headerText}>
                             Who to Contact
                         </RegularText>
-                        <RegularText>{this.state.contact}</RegularText>
+                        <RegularText>Name: {this.state.fullName}</RegularText>
+                        <RegularText>Email: {this.state.email}</RegularText>
+                        <RegularText>
+                            Number: {this.state.phoneNumber}
+                        </RegularText>
                         <View
                             style={{
                                 flexDirection: "row",
@@ -331,7 +437,7 @@ class ActivityInfoScreen extends Component {
                                 activeOpacity={0.9}
                                 onPress={() =>
                                     Communications.phonecall(
-                                        phoneNumbers[0].number,
+                                        this.state.phoneNumber,
                                         true,
                                     )
                                 }>
@@ -367,28 +473,50 @@ class ActivityInfoScreen extends Component {
                         <RegularText style={styles.headerText}>
                             Where
                         </RegularText>
-                        <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
-                        </RegularText>
-                        <View
-                            styles={{
-                                flex: 1,
-                                height: 10,
-                                width: 30,
-                                backgroundColor: "red",
-                                alignSelf: "center",
-                            }}
-                        />
+                        <View style={{height: 200}}>
+                            <MapView
+                                style={styles.map}
+                                initialRegion={{
+                                    latitude: 37.78825,
+                                    longitude: -122.4324,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421,
+                                }}
+                                scrollEnabled={false}>
+                                <MapView.Marker
+                                    coordinate={{
+                                        latitude: 37.78825,
+                                        longitude: -122.4324,
+                                    }}
+                                    pinColor={"green"}
+                                />
+                            </MapView>
+                        </View>
                         <RegularText style={styles.headerText}>
                             Important
                         </RegularText>
                         <RegularText>
-                            sed do eiusm ut labore et dolore magna aliqua sed do
-                            eiusm ut labore et dolore magna aliqua sed do eiusm
-                            ut labore et dolore magna aliqua
+                            The minimum age for this event is 18.
                         </RegularText>
+                        {this.state.photoId && (
+                            <RegularText>
+                                You will be required to show photo ID upon
+                                arrival.
+                            </RegularText>
+                        )}
+                        {this.state.womenOnly && (
+                            <RegularText>This event is women only.</RegularText>
+                        )}
+                        {this.state.physical && (
+                            <RegularText>
+                                This event involves physical activity.
+                            </RegularText>
+                        )}
+                        {this.state.addInfo && (
+                            <RegularText>
+                                Additional information will be sent by email.
+                            </RegularText>
+                        )}
                     </View>
                 </ScrollView>
 
@@ -402,9 +530,22 @@ class ActivityInfoScreen extends Component {
                         backgroundColor: Colours.white,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton title="Attend" />
+                        <GradientButton
+                            title="Attend"
+                            onPress={() => this.toggleModal()}
+                        />
                     </View>
                 </View>
+                <BottomModal
+                    visible={this.state.displaySignupModal}
+                    toggleModal={this.toggleModal}>
+                    <SignUpActivity
+                        activity={activity}
+                        onConfirm={this.toggleModal}
+                        onError={this.handleSignupError}
+                        signedUp={signedup}
+                    />
+                </BottomModal>
             </View>
         );
     }
@@ -434,6 +575,9 @@ const styles = StyleSheet.create({
         width: HALF,
         backgroundColor: Colours.blue,
         marginVertical: 10,
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
     },
 });
 
