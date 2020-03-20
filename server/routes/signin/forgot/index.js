@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
 
 /**
  * Endpoint called whenever a user writes in the token they recieved and click submit.<br/>
- * URL example: POST http://localhost:8000/signin/forgot
+ * URL example: POST http://localhost:8000/signin/forgot/confirm
  * @param {String} req.body.data.email - Email of the user
  * @param {String} req.body.data.token - Token input by user
  * @returns
