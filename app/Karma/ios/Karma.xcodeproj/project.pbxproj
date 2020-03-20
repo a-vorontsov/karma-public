@@ -19,6 +19,7 @@
 		0D1C1271A1C943CD927F14C4 /* favourite.png in Resources */ = {isa = PBXBuildFile; fileRef = 76A11DEBFE004C2DA29F2148 /* favourite.png */; };
 		11CC0FF347CE4FBED212BAA7 /* libPods-KarmaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D45ADFE6F4A9B4E25404B690 /* libPods-KarmaTests.a */; };
 		124A12A04DFB419EA6F100B4 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D0974B2C743439F887A4ACD /* OpenSans-ExtraBold.ttf */; };
+		12C13DB42425428A0061012A /* password-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C13DB32425428A0061012A /* password-tick.png */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -42,7 +43,6 @@
 		31F6B0AFAEB941D0AB8664F3 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = A7F5289B4F09453EABB1A549 /* food.png */; };
 		322E498EF5174948BB28B553 /* arts-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461F262F58E4297B2CB591B /* arts-white.png */; };
 		33ED5C3CE34A49F5A06A86F1 /* animals-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 204B9FB2C60849C9AC498105 /* animals-white.png */; };
-		358D523281BB465B910D8C76 /* password-tick 12.25.23.png in Resources */ = {isa = PBXBuildFile; fileRef = A90630EDB2564BB0A96E998E /* password-tick 12.25.23.png */; };
 		385C031BEE4D4F1186361192 /* fav-outline-activities.png in Resources */ = {isa = PBXBuildFile; fileRef = 57DCE8D03842460CACEB8CD3 /* fav-outline-activities.png */; };
 		3A7A133D4BBD4D189BBABE89 /* community.png in Resources */ = {isa = PBXBuildFile; fileRef = F961A0732F184A7E8A98C5F7 /* community.png */; };
 		3D1EDCA9DCAA408E95FB2A7B /* id-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 908185F0F3DB403B84DD99C8 /* id-check.png */; };
@@ -131,6 +131,7 @@
 		065E7647E0854B15AC310B25 /* globe.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = globe.png; path = "../src/assets/images/general-logos/globe.png"; sourceTree = "<group>"; };
 		0681029F6035404A8BD713DE /* energy-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "energy-white.png"; path = "../src/assets/images/causes-logos/white/energy-white.png"; sourceTree = "<group>"; };
 		0F486C8B91BC4999BC1B42F5 /* profile-off.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "profile-off.png"; path = "../src/assets/images/nav-bar/profile-off.png"; sourceTree = "<group>"; };
+		12C13DB32425428A0061012A /* password-tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "password-tick.png"; path = "../src/assets/images/general-logos/password-tick.png"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Karma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Karma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Karma/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Karma/AppDelegate.m; sourceTree = "<group>"; };
@@ -426,7 +427,6 @@
 				8CB840BDB31D46F6B6292F3C /* share-logo.png */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -439,6 +439,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				12C13DB32425428A0061012A /* password-tick.png */,
 				13B07FAE1A68108700A75B9A /* Karma */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* KarmaTests */,
@@ -622,6 +623,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12C13DB42425428A0061012A /* password-tick.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				694A1FD98BE14209866C1035 /* OpenSans-Bold.ttf in Resources */,
@@ -687,7 +689,6 @@
 				1A2D3453813349D2BE3BA0BD /* KARMA-logo.png in Resources */,
 				AA6BEBBBC1634AC792C8ED83 /* linkedin-logo.png in Resources */,
 				5A23B998046C4F63BF52F7E2 /* location-logo(low res).png in Resources */,
-				358D523281BB465B910D8C76 /* password-tick 12.25.23.png in Resources */,
 				F1508E5919584552B7DFFD76 /* people-logo.png in Resources */,
 				75504B6D633B41FDBF680CF3 /* photo-logo.png in Resources */,
 				B4EDCED7023444EAA518E514 /* photo-plus.png in Resources */,
