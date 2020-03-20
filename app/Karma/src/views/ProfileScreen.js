@@ -142,7 +142,7 @@ class ProfileScreen extends Component {
                     : this.setupIndividualProfile(res);
             })
             .catch(err => {
-                Alert.alert("Unable to load profile")
+                Alert.alert("Unable to load profile", err);
             });
     }
     _renderItem = ({item}) => {

@@ -100,7 +100,7 @@ class ActivityCard extends React.Component {
                     <Image
                         source={{
                             uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
-                            }}
+                        }}
                         style={{
                             flex: 1,
                             width: null,

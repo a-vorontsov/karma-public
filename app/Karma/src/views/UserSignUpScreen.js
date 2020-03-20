@@ -165,9 +165,7 @@ class SignUpScreen extends React.Component {
                                         onSubmitEditing={() => {
                                             Keyboard.dismiss();
                                             this.confPassword.focus();
-                                        }
-                                           
-                                        }
+                                        }}
                                         returnKeyType="next"
                                     />
                                     <TouchableOpacity

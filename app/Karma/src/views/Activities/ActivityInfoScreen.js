@@ -19,7 +19,6 @@ import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
 import {getDate, formatAMPM} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
-import Marker from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
 
@@ -101,7 +100,8 @@ class ActivityInfoScreen extends Component {
         if (eventCreator.firstName) {
             fullName = eventCreator.firstName + " " + eventCreator.lastName;
         } else {
-            fullName = eventCreator.pocFirstName + " " + eventCreator.pocLastName;
+            fullName =
+                eventCreator.pocFirstName + " " + eventCreator.pocLastName;
         }
         const phoneNumber = eventCreator.phoneNumber;
         const org_name = eventCreator.firstName

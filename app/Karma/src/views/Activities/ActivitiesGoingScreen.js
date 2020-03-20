@@ -3,7 +3,7 @@ import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
-import { getData } from "../../util/GetCredentials";
+import {getData} from "../../util/GetCredentials";
 
 const request = require("superagent");
 
@@ -46,7 +46,7 @@ class ActivitiesGoingScreen extends Component {
                             <ActivityDisplayCard
                                 activity={activity}
                                 key={activity.id}
-                                signedup={true}//TODO
+                                signedup={true} //TODO
                             />
                         );
                     })
