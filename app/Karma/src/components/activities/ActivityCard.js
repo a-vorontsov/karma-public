@@ -94,7 +94,6 @@ class ActivityCard extends React.Component {
     };
     render() {
         const {activity, signedup, favorited} = this.props;
-
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
@@ -177,6 +176,7 @@ class ActivityCard extends React.Component {
                             </View>
                         </View>
                         <TouchableOpacity
+                            style={{alignSelf: "center"}}
                             onPress={() =>
                                 this.props.navigation.navigate("ActivityInfo", {
                                     activity: activity,
@@ -184,7 +184,7 @@ class ActivityCard extends React.Component {
                                 })
                             }>
                             <RegularText style={{color: Colours.cyan}}>
-                                View
+                                View Activity
                             </RegularText>
                         </TouchableOpacity>
                         <RegularText

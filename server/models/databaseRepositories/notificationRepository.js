@@ -13,7 +13,7 @@ const findByUserId = (id) => {
 };
 
 const removeByUserId = (userId) => {
-    const query = "DELETE FROM notification WHERE sender_id=$1 OR receiver_id=$1";
+    const query = "DELETE FROM notification WHERE sender_id=$1 OR receiver_id=$1 RETURNING *";
     return db.query(query, [userId]);
 };
 

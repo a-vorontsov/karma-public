@@ -66,7 +66,7 @@ const findEventsSelectedByUser = (userId, whereClause) => {
 };
 
 const removeByUserId = (userId) => {
-    const query = "DELETE FROM selected_cause WHERE user_id = $1";
+    const query = "DELETE FROM selected_cause WHERE user_id = $1 RETURNING *";
     const params = [userId];
     return db.query(query, params);
 };
