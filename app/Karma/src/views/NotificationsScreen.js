@@ -9,7 +9,7 @@ import Colours from "../styles/Colours";
 import {ScrollView} from "react-native-gesture-handler";
 const request = require("superagent");
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.85 * SCREEN_WIDTH;
 
 /**

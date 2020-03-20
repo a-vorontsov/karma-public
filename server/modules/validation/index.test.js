@@ -6,6 +6,8 @@ const address = testHelpers.getAddress();
 const notification = testHelpers.getNotification();
 const information = testHelpers.getInformation();
 const favourite = testHelpers.getFavourite();
+const individual = testHelpers.getIndividual();
+const notificationExampleTwo = testHelpers.getNotificationExample2();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};
@@ -37,8 +39,13 @@ test("incorrect events rejected", () => {
     expect(validation.validateEvent(incorrectEvent).errors.length).toBe(3);
 });
 
-test("correct notifications accepted", () => {
+test("correct notifications accepted with receiverIDs", () => {
     const correctNotification = {...notification};
+    expect(validation.validateNotification(correctNotification).errors.length).toBe(0);
+});
+
+test("correct notifications accepted with receiverID", () => {
+    const correctNotification = {...notificationExampleTwo};
     expect(validation.validateNotification(correctNotification).errors.length).toBe(0);
 });
 
@@ -76,4 +83,17 @@ test("incorrect addresses rejected", () => {
     expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(1);
     inCorrectFavourite.individualId = null;
     expect(validation.validateFavourite(inCorrectFavourite).errors.length).toBe(2);
+});
+
+test("correct individuals accepted", () => {
+    const correctIndividual = {...individual};
+    expect(validation.validateIndividual(correctIndividual).errors.length).toBe(0);
+});
+
+test("incorrect individuals rejected", () => {
+    const inCorrectIndividual = {...individual};
+    inCorrectIndividual.firstname = 1111;
+    expect(validation.validateIndividual(inCorrectIndividual).errors.length).toBe(1);
+    inCorrectIndividual.banned = "yes";
+    expect(validation.validateIndividual(inCorrectIndividual).errors.length).toBe(2);
 });

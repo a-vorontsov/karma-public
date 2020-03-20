@@ -1,21 +1,25 @@
 const testHelpers = require("../../../test/testHelpers");
 const eventSignupService = require("./eventSignupService");
 
+const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
-
+const eventSorter = require("../../sorting/event");
 const util = require("../../../util/util");
 
 jest.mock("../../../models/databaseRepositories/signupRepository");
 jest.mock("../../../models/databaseRepositories/eventRepository");
+jest.mock("../../../models/databaseRepositories/individualRepository");
 jest.mock("../../../util/util");
+jest.mock("../../sorting/event");
 
-
-let signUp, signedUpUserExample1, signedUpUserExample2;
+let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2;
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
     signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
+    event1 = testHelpers.getEventWithLocationExample1();
+    event2 = testHelpers.getEventWithLocationExample2();
     return testHelpers.clearDatabase();
 });
 
@@ -26,6 +30,7 @@ afterEach(() => {
 
 test('creating signup works', async () => {
     util.checkEventId.mockResolvedValue({status: 200});
+    util.checkUserId.mockResolvedValue({status:200})
     signupRepository.insert.mockResolvedValue({
         rows: [{
             signUp,
@@ -83,6 +88,30 @@ test('requesting event history works and only returns events from the past', asy
     expect(updateSignupResult.data.events).toMatchObject([{id: 4, date: yesterday}]);
 });
 
+test('getting events user is going to works and in the future', async () => {
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    event1.date = tomorrow;
+    event2.date = tomorrow;
+    const eventsArray =[{
+        ...event1,
+        eventid: 1,
+    },
+    {
+        ...event2,
+        eventid: 2,
+    }];
+
+    util.checkUser.mockResolvedValue({status: 200});
+    individualRepository.findGoingEvents.mockResolvedValue({rows: eventsArray});
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
+    const getGoingEventsResult = await eventSignupService.getGoingEvents(15);
+
+    expect(individualRepository.findGoingEvents).toHaveBeenCalledTimes(1);
+    expect(getGoingEventsResult.status).toBe(200);
+    expect(getGoingEventsResult.data.events).toMatchObject(eventsArray);
+});
+
 test('getting all signups to event works', async () => {
     util.checkEventId.mockResolvedValue({
         status: 200
@@ -97,5 +126,3 @@ test('getting all signups to event works', async () => {
     expect(updateSignupResult.status).toBe(200);
     expect(updateSignupResult.data.users).toMatchObject([signedUpUserExample1, signedUpUserExample2]);
 });
-
-

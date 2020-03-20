@@ -25,7 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import * as Keychain from "react-native-keychain";
+import {getData} from "../util/credentials";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -37,11 +37,12 @@ export default class OrgSignUpScreen extends React.Component {
         super(props);
 
         this.state = {
-            orgType: "",
+            orgType: "NGO (Non-Government Organisation",
             orgName: "",
             charityNumber: "",
             fname: "",
             lname: "",
+            phone: "",
             regDate: "",
             isLowIncome: false,
             isExempt: false,
@@ -118,45 +119,26 @@ export default class OrgSignUpScreen extends React.Component {
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,
             },
-            phoneNumber: "TODO", //TODO
+            phoneNumber: this.state.phone, //TODO
         };
         return organisation;
     }
 
-    getData = async () => {
-        try {
-            // Retreive the credentials
-            const credentials = await Keychain.getGenericPassword();
-            if (credentials) {
-                console.log(
-                    "Credentials successfully loaded for user " +
-                        credentials.username,
-                );
-                return credentials;
-            } else {
-                console.log("No credentials stored");
-            }
-        } catch (error) {
-            console.log("Keychain couldn't be accessed!", error);
-        }
-    };
-
     submit = async () => {
-        console.log(this.state.addressLine1);
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (!this.state.orgName) {
+        if (
+            !this.state.orgName ||
+            !this.state.charityNumber ||
+            !this.state.phone
+        ) {
             return;
         }
-        if (!this.state.charityNumber) {
-            return;
-        }
-        console.log("Passed checks");
-        const credentials = await this.getData();
+        const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
         const org = this.createOrganisation();
-        console.log(org);
+
         await request
             .post("http://localhost:8000/signup/organisation")
             .send({
@@ -165,7 +147,6 @@ export default class OrgSignUpScreen extends React.Component {
                 data: {organisation: {userId, ...org}},
             })
             .then(res => {
-                console.log(res.body);
                 navigate("PickCauses");
             })
             .catch(err => {
@@ -179,7 +160,7 @@ export default class OrgSignUpScreen extends React.Component {
 
         const data = [
             {value: "NGO (Non-Government Organisation"},
-            {value: "Charity Option 1"},
+            {value: "Non Profit Organisation"},
             {value: "Charity Option 2"},
         ];
 
@@ -250,10 +231,16 @@ export default class OrgSignUpScreen extends React.Component {
                                 showError={
                                     this.state.submitPressed
                                         ? !this.state.charityNumber &&
-                                          (!this.state.isExempt &&
-                                              !this.state.isLowIncome)
+                                          !this.state.isExempt &&
+                                          !this.state.isLowIncome
                                         : false
                                 }
+                            />
+                            <TextInput
+                                placeholder="Organisation Phone Number"
+                                name="phone"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.fname.focus()}
                             />
                             <TextInput
                                 placeholder="Point of Contact First Name"

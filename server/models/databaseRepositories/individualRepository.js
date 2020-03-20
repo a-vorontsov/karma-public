@@ -29,22 +29,32 @@ const findByUserID = (userId) => {
 
 const findFavouriteEvents = (userId) => {
     const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
-        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id as eventCreatorId, " +
-        "address1, address2, postcode, city, region, lat, long " +
-        "FROM favourite LEFT JOIN event ON event_id = id(event) left join address on id(address) = address_id where user_id = $1";
+        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id(event) as eventCreatorId, " +
+        "address_1, address_2, postcode, city, region, lat, long " +
+        "FROM event LEFT JOIN favourite ON event_id = id INNER JOIN individual on individual_id = id(individual) "+
+        "INNER JOIN address ON id(address)=address_id(event) WHERE user_id(individual)=$1";
     return db.query(query, [userId]);
 };
 
 const findGoingEvents = (userId) => {
     const now = new Date();
     const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
-        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id as eventCreatorId, " +
-        "address1, address2, postcode, city, region, lat, long " +
-        "FROM sign_up left join event on event_id = id(event)" +
-        "left join address on id(address) = address_id where user_id = $1 and confirmed = true AND date >= $2";
+        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id(event) as eventCreatorId, " +
+        "address_1, address_2, postcode, city, region, lat, long " +
+        "FROM event LEFT JOIN sign_up on event_id = id(event) INNER JOIN address ON id(address) = address_id(event) "+
+        "INNER JOIN individual ON individual_id = id(individual) WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";
     return db.query(query, [userId, now]);
 };
+const getIndividualId = (userId) =>{
+    const query = "SELECT id from individual where user_id = $1";
+    return db.query(query, [userId]);
+};
 
+const getIndividualLocation = (userId) => {
+    const query = "select user_id, id(individual) as individual_id, lat,long "+
+    "from individual inner join address on address_id = id(address) where user_id = $1";
+    return db.query(query, [userId]);
+};
 const update = (individual) => {
     const query =
     "UPDATE individual SET firstname = $1, lastname = $2, phone = $3, banned = $4, " +
@@ -64,12 +74,20 @@ const update = (individual) => {
     return db.query(query, params);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM individual WHERE user_id=$1 RETURNING *";
+    return db.query(query, [userId]);
+};
+
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    findByUserID: findByUserID,
-    findFavouriteEvents: findFavouriteEvents,
-    findGoingEvents: findGoingEvents,
-    update: update,
+    insert,
+    findById,
+    findAll,
+    findByUserID,
+    findFavouriteEvents,
+    findGoingEvents,
+    update,
+    getIndividualId,
+    getIndividualLocation,
+    removeByUserId,
 };

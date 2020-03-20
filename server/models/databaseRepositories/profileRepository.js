@@ -33,10 +33,16 @@ const update = (profile) => {
     return db.query(query, params);
 };
 
+const removeByIndividualId = (individualId) => {
+    const query = "DELETE FROM profile WHERE individual_id=$1 RETURNING *";
+    return db.query(query, [individualId]);
+};
+
 module.exports = {
     insert,
     findById,
     findAll,
     findByIndividualId,
     update,
+    removeByIndividualId,
 };

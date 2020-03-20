@@ -13,7 +13,14 @@ const findLatestByUserId = (userId) => {
     return db.query(query, params);
 };
 
+const removeByUserId = (userId) => {
+    const query = "DELETE FROM reset WHERE user_id =$1 RETURNING *";
+    const params = [userId];
+    return db.query(query, params);
+};
+
 module.exports = {
-    insertResetToken: insertResetToken,
-    findLatestByUserId: findLatestByUserId,
+    insertResetToken,
+    findLatestByUserId,
+    removeByUserId,
 };

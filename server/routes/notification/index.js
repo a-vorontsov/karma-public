@@ -4,8 +4,9 @@
 
 const express = require("express");
 const router = express.Router();
-const notificationRepository = require("../../models/databaseRepositories/notificationRepository");
+const notificationService = require("../../modules/notification");
 const validation = require("../../modules/validation");
+const httpUtil = require("../../util/httpUtil");
 
 /**
  * Endpoint called whenever a user sends a new notification.<br/>
@@ -17,7 +18,7 @@ const validation = require("../../modules/validation");
     "type": "Cancellation",
     "message": "This event is cancelled thanks",
     "senderId": 1,
-    "receiverId": 2
+    "receiverIds": [1,2,3,4,5]
  }
  </pre>
  * @returns {Object}
@@ -28,18 +29,27 @@ const validation = require("../../modules/validation");
  {
     "message": "Notification created successfully.",
     "data": {
-        "notification": {
-            "id": 1,
-            "type": "Cancel",
-            "message": "This is a message.",
-            "timestampSent": "2019-02-02 00:00:00"
-            "senderId": 1,
-            "receiverId": 2
-        }
+        notifications:
+            {
+                "id": 91,
+                "type": "Cancellation",
+                "message": "This event is cancelled thanks",
+                "timestampSent": "2020-03-19T21:56:14.862Z",
+                "senderId": 1,
+                "receiverId": 1
+            },
+            {
+                "id": 89,
+                "type": "Cancellation",
+                "message": "This event is cancelled thanks",
+                "timestampSent": "2020-03-19T21:56:14.862Z",
+                "senderId": 1,
+                "receiverId": 2
+            }
     }
  }
  </pre>
- *  @name Create new notification
+ *  @name Create new notifications
  *  @function
  */
 router.post("/", async (req, res) => {
@@ -53,17 +63,11 @@ router.post("/", async (req, res) => {
             });
             return;
         }
-        notification.timestampSent = new Date();
-        const notificationResult = await notificationRepository.insert(notification);
-        res.status(200).send({
-            message: "Notification created successfully.",
-            data: {
-                notification: notificationResult.rows[0],
-            },
-        });
+        const notificationResult = await notificationService.createNotifications(notification);
+        return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log(e);
-        res.status(500).send({message: e.message});
+        console.log("Notification creation failed: " + e);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 
@@ -102,16 +106,11 @@ router.get("/", async (req, res) => {
             return res.status(400).send({message: "ID is not a number."});
         }
 
-        const notificationResult = await notificationRepository.findByUserId(id);
-        res.status(200).send({
-            message: "Notifications fetched successfully.",
-            data: {
-                notifications: notificationResult.rows,
-            },
-        });
+        const notificationResult = await notificationService.getNotification(id);
+        return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log(e);
-        res.status(500).send({message: e.message});
+        console.log("Fetching Notifications failed: " + e);
+        return httpUtil.sendGenericError(e, res);
     }
 });
 

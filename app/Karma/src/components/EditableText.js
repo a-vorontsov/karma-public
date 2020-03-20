@@ -16,7 +16,7 @@ class EditableText extends Component {
                     onChangeText={onChange}
                     style={style}
                     autoCompleteType="off"
-                    autoCorrect="false"
+                    autoCorrect={false}
                     multiline={true}
                 />
             </View>

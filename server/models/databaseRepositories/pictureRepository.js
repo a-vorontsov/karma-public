@@ -23,7 +23,7 @@ const update = (picture) => {
 };
 
 const removeById = (id) => {
-    const query = "DELETE FROM picture WHERE id=$1";
+    const query = "DELETE FROM picture WHERE id=$1 RETURNING *";
     return db.query(query, [id]);
 };
 

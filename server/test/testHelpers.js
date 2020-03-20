@@ -19,10 +19,20 @@ const notification = {
     message: "Cancel Cancel",
     timestampSent: new Date(),
     senderId: -1,
+    receiverIds: [-1],
+};
+
+const notificationExample2 = {
+    type: "Cancel",
+    message: "Cancel Cancel",
+    timestampSent: new Date(),
+    senderId: -1,
     receiverId: -1,
 };
 
 const getNotification = () => ({...notification});
+
+const getNotificationExample2 = () => ({...notificationExample2});
 
 const information = {
     type: "privacyPolicy",
@@ -149,7 +159,102 @@ const event = {
     creationDate: "2019-10-19 10:23:54",
 };
 
+const eventWithData = {
+    name: "Event in KCL",
+    womenOnly: false,
+    spots: 30,
+    addressVisible: true,
+    minimumAge: 20,
+    photoId: false,
+    physical: true,
+    addInfo: true,
+    content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+    date: "2020-04-08T23:00:00.000Z",
+    eventCreatorId: 1,
+    address1: "uni road",
+    address2: "wherever",
+    postcode: "SE1 1DR",
+    city: "London",
+    region: "region",
+    lat: 51.511407,
+    long: -0.115905,
+    volunteers: [
+        1,
+        34,
+    ],
+    going: true,
+    spotsRemaining: 28,
+    distance: 7.399274608089304,
+};
+const peaceEvent = {
+    id: 3,
+    name: "Event in KCL",
+    addressId: 3,
+    womenOnly: false,
+    spots: 30,
+    addressVisible: true,
+    minimumAge: 20,
+    photoId: false,
+    physical: true,
+    addInfo: true,
+    content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+    date: "2020-04-08T23:00:00.000Z",
+    causeId: 6,
+    causeName: "peace",
+    causeDescription: "montes, nascetur ridiculus mus. Aenean",
+    eventCreatorId: 1,
+    address1: "uni road",
+    address2: "wherever",
+    postcode: "SE1 1DR",
+    city: "London",
+    region: "region",
+    lat: 51.511407,
+    long: -0.115905,
+    volunteers: [
+        1,
+        34,
+    ],
+    going: true,
+    spotsRemaining: 28,
+    distance: 7.399274608089304,
+};
+const animalsEvent = {
+    id: 1,
+    name: "Event in user 1s house",
+    addressId: 1,
+    womenOnly: false,
+    spots: 3,
+    addressVisible: true,
+    minimumAge: 18,
+    photoId: false,
+    physical: false,
+    addInfo: false,
+    content: "event created by user 1 and happening at user 1s house. Distance to user 1 should be 0.",
+    date: "2020-04-03T23:00:00.000Z",
+    causeId: 1,
+    causeName: "animals",
+    causeDescription: "Morbi accumsan laoreet ipsum. Curabitur",
+    eventCreatorId: 1,
+    address1: "pincot road",
+    address2: "wherever",
+    postcode: "SW19 2LF",
+    city: "London",
+    region: "region",
+    lat: 51.414916,
+    long: -0.190487,
+    volunteers: [
+        1,
+        44,
+        21,
+    ],
+    going: true,
+    spotsRemaining: 0,
+    distance: 0,
+};
 const getEvent = () => ({...event});
+const getEventWithAllData = () => ({...eventWithData});
+const getPeaceEvent = () => ({...peaceEvent});
+const getAnimalsEvent = () => ({...animalsEvent});
 
 const userExample1 = {
     email: "test@gmail.com",
@@ -250,6 +355,8 @@ const organisation = {
     orgRegisterDate: "2016-10-09",
     lowIncome: false,
     exempt: false,
+    website: "sten.com",
+    bio: "whatever this is",
     pictureId: null,
     userId: -1,
     addressId: -1,
@@ -292,55 +399,49 @@ const favourite = {
 const getFavourite = () => ({...favourite});
 
 const eventWithLocationExample1 = {
-    id: 3,
-    name: "Staying at Home",
-    addressId: 1,
+    name: "Event in KCL",
     womenOnly: false,
-    spots: 1,
-    addressVisible: true,
-    minimumAge: 18,
-    photoId: false,
-    addInfo: false,
-    content: "sleeping at home",
-    date: "2020-03-25T19:10:00.000Z",
-    causeId: 3,
-    causeName: "peace",
-    causeDescription: "not dealing with people",
-    eventCreatorId: 1,
-    address1: "pincot road",
-    address2: null,
-    postcode: "SW19 2LF",
+    spots: 30,
+    addressvisible: true,
+    minimumage: 20,
+    photoid: false,
+    physical: true,
+    addinfo: true,
+    content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+    date: "2020-04-08T23:00:00.000Z",
+    eventcreatorid: 1,
+    address1: "uni road",
+    address2: "wherever",
+    postcode: "SE1 1DR",
     city: "London",
-    region: null,
-    lat: "51.4149160",
-    long: "-0.1904870",
+    region: "region",
+    lat: 51.511407,
+    long: -0.115905,
+    distance: 7.399274608089304,
 };
 
 const getEventWithLocationExample1 = () => ({...eventWithLocationExample1});
 
 const eventWithLocationExample2 = {
-    id: 1,
-    name: "Close to Home",
-    addressId: 3,
-    womenOnly: false,
-    spots: 3,
-    addressVisible: true,
-    minimumAge: 18,
-    photoId: false,
-    addInfo: false,
-    content: "very very close from home",
-    date: "2020-03-25T19:10:00.000Z",
-    causeId: 1,
-    causeName: "gardening",
-    causeDescription: "watering plants and dat",
-    eventCreatorId: 1,
+    name: "Event close to user 1",
+    womenOnly: true,
+    spots: 20,
+    addressvisible: true,
+    minimumage: 21,
+    photoid: false,
+    physical: true,
+    addinfo: false,
+    content: "risus. Quisque libero lacus, varius et, euismod et, commodo at, libero. Morbi accumsan laoreet",
+    date: "2020-07-04T23:00:00.000Z",
+    eventcreatorid: 1,
     address1: "nearby road",
-    address2: null,
-    postcode: "whatever",
+    address2: "wherever",
+    postcode: "SW19 2LF",
     city: "London",
-    region: null,
-    lat: "51.4161220",
-    long: "-0.1866410",
+    region: "region",
+    lat: 51.416122,
+    long: -0.186641,
+    distance: 0.18548890708299523,
 };
 
 const getEventWithLocationExample2 = () => ({...eventWithLocationExample2});
@@ -435,12 +536,50 @@ const resetExample1 = {
 
 const getResetExample1 = () => ({...resetExample1});
 
+const pictureExample1 = {
+    pictureLocation: "/User/Downloads",
+};
+
+const getPictureExample1 = () => ({...pictureExample1});
+
 const resetExample2 = {
     userId: 1,
     passwordToken: "234567",
 };
 
 const getResetExample2 = () => ({...resetExample2});
+
+const eventCauseExample1 = {
+    eventId: -1,
+    causeId: -1,
+};
+
+const getEventCauseExample1 = () => ({...eventCauseExample1});
+
+const complaint = {
+    type: "Sten",
+    message: "I don't like Sten",
+    userId: -1,
+};
+
+const getComplaint = () => ({...complaint});
+
+const setting = {
+    email: 1,
+    notifications: 0,
+    userId: -1,
+};
+
+const getSetting = () => ({...setting});
+
+const reportUser = {
+    type: "Alcoholic",
+    message: "He drank too much",
+    userReported: -1,
+    userReporting: -1,
+};
+
+const getReportUser = () => ({...reportUser});
 
 const clearDatabase = async () => {
     await db.query("DELETE FROM notification");
@@ -465,37 +604,46 @@ const clearDatabase = async () => {
 };
 
 module.exports = {
-    getAddress: getAddress,
-    getAddress2: getAddress2,
-    getAuthenticationExample1: getAuthenticationExample1,
-    getAuthenticationExample2: getAuthenticationExample2,
-    getRegistrationExample1: getRegistrationExample1,
-    getRegistrationExample2: getRegistrationExample2,
-    getRegistrationExample3: getRegistrationExample3,
-    getRegistrationExample4: getRegistrationExample4,
-    getRegistrationExample5: getRegistrationExample5,
-    getRegistrationExample6: getRegistrationExample6,
-    getEvent: getEvent,
-    getCause: getCause,
-    getSignUp: getSignUp,
-    getUserExample1: getUserExample1,
-    getUserExample2: getUserExample2,
-    getUserExample3: getUserExample3,
-    getUserExample4: getUserExample4,
-    getIndividual: getIndividual,
-    getProfile: getProfile,
-    getOrganisation: getOrganisation,
-    getSignedUpUserExample1: getSignedUpUserExample1,
-    getSignedUpUserExample2: getSignedUpUserExample2,
-    getResetExample1: getResetExample1,
-    getResetExample2: getResetExample2,
-    getEventWithLocationExample1: getEventWithLocationExample1,
-    getEventWithLocationExample2: getEventWithLocationExample2,
-    getWomenOnlyEvent: getWomenOnlyEvent,
-    getFavourite: getFavourite,
-    getPhysicalEvent: getPhysicalEvent,
-    clearDatabase: clearDatabase,
-    getNotification: getNotification,
-    getBugReport: getBugReport,
-    getInformation: getInformation,
+    getAddress,
+    getAddress2,
+    getAuthenticationExample1,
+    getAuthenticationExample2,
+    getRegistrationExample1,
+    getRegistrationExample2,
+    getRegistrationExample3,
+    getRegistrationExample4,
+    getRegistrationExample5,
+    getRegistrationExample6,
+    getEvent,
+    getCause,
+    getSignUp,
+    getUserExample1,
+    getUserExample2,
+    getUserExample3,
+    getUserExample4,
+    getIndividual,
+    getProfile,
+    getOrganisation,
+    getSignedUpUserExample1,
+    getSignedUpUserExample2,
+    getResetExample1,
+    getResetExample2,
+    getEventWithLocationExample1,
+    getEventWithLocationExample2,
+    getWomenOnlyEvent,
+    getFavourite,
+    getPhysicalEvent,
+    clearDatabase,
+    getNotification,
+    getBugReport,
+    getInformation,
+    getPictureExample1,
+    getEventCauseExample1,
+    getComplaint,
+    getSetting,
+    getReportUser,
+    getEventWithAllData,
+    getPeaceEvent,
+    getAnimalsEvent,
+    getNotificationExample2,
 };

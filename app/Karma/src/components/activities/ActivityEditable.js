@@ -23,8 +23,49 @@ const icons = {
     location: require("../../assets/images/general-logos/location-logo.png"),
 };
 
+function formatAMPM(d) {
+    let date = new Date(d);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    let strTime = hours + ":" + minutes + " " + ampm;
+    return strTime;
+}
+
+function getMonthName(d, long = false) {
+    let date = new Date(d);
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    var name = monthNames[date.getMonth()];
+    if (!long) {
+        name = name.substring(0, 3);
+    }
+    return name;
+}
+// returns date string in the format day/month/year
+function getDate(d) {
+    const date = new Date(d);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+}
+
 const ActivityEditable = props => {
     const navigation = useNavigation();
+    const {activity} = props;
     return (
         <View>
             <View
@@ -58,7 +99,9 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() =>
-                                        navigation.navigate("ActivityEdit")
+                                        navigation.navigate("CreateActivity", {
+                                            activity: activity,
+                                        })
                                     }>
                                     <RegularText style={styles.settingsText}>
                                         Edit Activity
@@ -66,7 +109,9 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() =>
-                                        navigation.navigate("ViewSignUps")
+                                        navigation.navigate("ViewSignUps", {
+                                            activity: activity,
+                                        })
                                     }>
                                     <RegularText style={styles.settingsText}>
                                         View Sign Ups
@@ -95,7 +140,9 @@ const ActivityEditable = props => {
                                     onSelect={() => {
                                         sendNotification(
                                             "EventCancellation",
-                                            "Event named [EVENT NAME] has been cancelled",
+                                            `"Event named ${
+                                                activity.name
+                                            } has been cancelled"`,
                                         );
                                         Alert.alert(
                                             "Are you sure you want to delete?",
@@ -115,7 +162,9 @@ const ActivityEditable = props => {
                     <View style={[Styles.container, Styles.ph24]}>
                         <View style={[Styles.pb24, Styles.bottom]}>
                             <Image
-                                source={require("../../assets/images/general-logos/globe.png")}
+                                source={{
+                                    uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                                }}
                                 style={{
                                     flex: 1,
                                     width: null,
@@ -130,12 +179,10 @@ const ActivityEditable = props => {
                             />
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 1}]}>
-                                {" "}
-                                MON
+                                {` ${new Date(activity.date).getDate()}`}
                             </RegularText>
                             <RegularText style={styles.dateText}>
-                                {" "}
-                                DAY
+                                {`  ${getMonthName(props.activity.date)}`}
                             </RegularText>
                             <View>
                                 <RegularText
@@ -144,7 +191,7 @@ const ActivityEditable = props => {
                                         fontSize: 20,
                                         marginVertical: 8,
                                     }}>
-                                    Activity Name
+                                    {activity.name || "Full Name"}
                                 </RegularText>
                             </View>
                             <View
@@ -170,7 +217,7 @@ const ActivityEditable = props => {
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        Full Date
+                                        {getDate(activity.date) || "Full Date"}
                                     </RegularText>
                                     <RegularText
                                         style={{
@@ -178,7 +225,7 @@ const ActivityEditable = props => {
                                             color: Colours.lightGrey,
                                             fontWeight: "500",
                                         }}>
-                                        Full Time
+                                        {`${formatAMPM(activity.date)}`}
                                     </RegularText>
                                 </View>
                             </View>
@@ -197,11 +244,24 @@ const ActivityEditable = props => {
                                 <View>
                                     <RegularText
                                         style={{
+                                            fontSize: 16,
+                                            color: Colours.black,
+                                            fontWeight: "500",
+                                        }}>
+                                        {activity.address1 +
+                                            ", " +
+                                            activity.address2 +
+                                            ","}
+                                    </RegularText>
+                                    <RegularText
+                                        style={{
                                             fontSize: 18,
                                             color: Colours.black,
                                             fontWeight: "500",
                                         }}>
-                                        Full Location
+                                        {activity.postcode +
+                                            ", " +
+                                            activity.city || "Full Location"}
                                     </RegularText>
                                 </View>
                             </View>

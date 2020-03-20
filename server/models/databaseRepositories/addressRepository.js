@@ -21,8 +21,14 @@ const update = (address) => {
     return db.query(query, params);
 };
 
+const removeById = (id) => {
+    const query = "DELETE FROM address WHERE id=$1 RETURNING *";
+    return db.query(query, [id]);
+};
+
 module.exports = {
-    insert: insert,
-    findById: findById,
-    update: update,
+    insert,
+    findById,
+    update,
+    removeById,
 };

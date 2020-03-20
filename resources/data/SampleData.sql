@@ -31,9 +31,9 @@ INSERT INTO "address"
     region,
     lat,long)
 VALUES
-    ('2690 Donec St.', 'P.O. Box 173, 6377 Nec Rd.', '25308', 'Pamplona', 'Navarra', 48, 12),
-    ('7175 Nibh St.', '223-1483 Lectus. Ave', '9735', 'Uberlândia', 'Minas Gerais', 46, 70),
-    ('315-2919 Libero Road', '768-3328 Odio Av.', '2171', 'Legnica', 'Dolnośląskie', -88, 88),
+    ('houseam','wherever','SW19 2LF','London',' Greater London', 51.414916, -0.190487),
+    ('nearby road','wherever','SW19 2LF','London','region', 51.416122, -0.186641),
+    ('uni road','wherever','SE1 1DR','London','region', 51.511407, -0.115905),
     ('P.O. Box 557, 869 Accumsan St.', 'P.O. Box 789, 6002 Dui Road', '4499 QO', 'Neuss', 'NW', 0, 150),
     ('181-9764 Enim. Street', '300-9072 Odio Street', '22684', 'Lo Espejo', 'RM', 46, -110),
     ('342-8693 Nisl. Road', '782-3407 At, Rd.', '17786', 'Galway', 'C', -37, -110),
@@ -156,92 +156,7 @@ VALUES
     ('poverty', 'mauris blandit mattis. Cras eget', 'Poverty'),
     ('religious', 'morbi tristique senectus et netus', 'Religious'),
     ('equality', 'tristique senectus et sas', 'Equality'),
-    ('refugees', 'ad litora torquent per conubia', 'Refugees'),
-    ('scelerisque', 'sem magna nec quam. Curabitur', 'mauris. Morbi non'),
-    ('eu', 'id, ante. Nunc mauris sapien,', 'Vestibulum ut eros'),
-    ('risus,', 'odio, auctor vitae, aliquet nec,', 'et malesuada fames'),
-    ('lacus.', 'Donec luctus aliquet odio. Etiam', 'Vestibulum accumsan neque'),
-    ('erat,', 'scelerisque neque. Nullam nisl. Maecenas', 'urna et arcu'),
-    ('diam', 'non dui nec urna suscipit', 'Integer in magna.'),
-    ('ac', 'velit justo nec ante. Maecenas', 'diam. Proin dolor.'),
-    ('sagittis', 'volutpat. Nulla facilisis. Suspendisse commodo', 'Phasellus elit pede,'),
-    ('enim', 'tellus lorem eu metus. In', 'parturient montes, nascetur'),
-    ('erat.', 'Proin sed turpis nec mauris', 'quis urna. Nunc'),
-    ('sit', 'turpis vitae purus gravida sagittis.', 'eget, dictum placerat,'),
-    ('Duis', 'interdum enim non nisi. Aenean', 'mauris erat eget'),
-    ('ligula.', 'sodales purus, in molestie tortor', 'Aenean massa. Integer'),
-    ('auctor,', 'orci tincidunt adipiscing. Mauris molestie', 'at lacus. Quisque'),
-    ('malesuada', 'eget magna. Suspendisse tristique neque', 'neque non quam.'),
-    ('tempor', 'Sed id risus quis diam', 'ac turpis egestas.'),
-    ('sapien', 'lobortis quis, pede. Suspendisse dui.', 'eu odio tristique'),
-    ('Quisque', 'massa rutrum magna. Cras convallis', 'sed dui. Fusce'),
-    ('nunc', 'non enim commodo hendrerit. Donec', 'lorem, auctor quis,'),
-    ('nulla.', 'orci sem eget massa. Suspendisse', 'quis lectus. Nullam'),
-    ('ac,', 'ut lacus. Nulla tincidunt, neque', 'aliquet vel, vulputate'),
-    ('amet,', 'pharetra. Nam ac nulla. In', 'a odio semper'),
-    ('sociis', 'molestie. Sed id risus quis', 'Vivamus rhoncus. Donec'),
-    ('metus.', 'arcu. Aliquam ultrices iaculis odio.', 'nunc. Quisque ornare'),
-    ('tincidunt.', 'arcu ac orci. Ut semper', 'dignissim pharetra. Nam'),
-    ('Duis', 'amet ultricies sem magna nec', 'viverra. Donec tempus,'),
-    ('aliquam', 'Fusce mollis. Duis sit amet', 'Nulla interdum. Curabitur'),
-    ('magna.', 'dignissim lacus. Aliquam rutrum lorem', 'fringilla. Donec feugiat'),
-    ('adipiscing', 'metus. In nec orci. Donec', 'at risus. Nunc'),
-    ('accumsan', 'egestas ligula. Nullam feugiat placerat', 'ac mattis velit'),
-    ('elit,', 'tellus non magna. Nam ligula', 'tincidunt orci quis'),
-    ('eu', 'Duis cursus, diam at pretium', 'porttitor vulputate, posuere'),
-    ('a,', 'quis turpis vitae purus gravida', 'eu, ligula. Aenean'),
-    ('Vivamus', 'at pede. Cras vulputate velit', 'Mauris quis turpis'),
-    ('eu', 'accumsan convallis, ante lectus convallis', 'diam. Duis mi'),
-    ('feugiat', 'lorem fringilla ornare placerat, orci', 'a, dui. Cras'),
-    ('viverra.', 'ullamcorper eu, euismod ac, fermentum', 'Cum sociis natoque'),
-    ('Suspendisse', 'ligula tortor, dictum eu, placerat', 'consequat dolor vitae'),
-    ('nunc', 'orci lacus vestibulum lorem, sit', 'rhoncus. Nullam velit'),
-    ('nec', 'eu odio tristique pharetra. Quisque', 'amet diam eu'),
-    ('sed', 'nec ante. Maecenas mi felis,', 'vitae, erat. Vivamus'),
-    ('ante,', 'urna suscipit nonummy. Fusce fermentum', 'aliquet. Phasellus fermentum'),
-    ('facilisis', 'dolor dolor, tempus non, lacinia', 'placerat velit. Quisque'),
-    ('amet,', 'vulputate ullamcorper magna. Sed eu', 'odio. Phasellus at'),
-    ('at', 'ullamcorper magna. Sed eu eros.', 'euismod in, dolor.'),
-    ('enim.', 'metus. Vivamus euismod urna. Nullam', 'Fusce diam nunc,'),
-    ('augue', 'sodales elit erat vitae risus.', 'urna suscipit nonummy.'),
-    ('tristique', 'et tristique pellentesque, tellus sem', 'ultrices a, auctor'),
-    ('Phasellus', 'sed turpis nec mauris blandit', 'justo. Praesent luctus.'),
-    ('Integer', 'tortor, dictum eu, placerat eget,', 'ornare egestas ligula.'),
-    ('molestie', 'semper. Nam tempor diam dictum', 'consectetuer, cursus et,'),
-    ('consectetuer', 'elit, pretium et, rutrum non,', 'a sollicitudin orci'),
-    ('Vestibulum', 'ut erat. Sed nunc est,', 'egestas ligula. Nullam'),
-    ('tempus', 'molestie sodales. Mauris blandit enim', 'In nec orci.'),
-    ('penatibus', 'pharetra sed, hendrerit a, arcu.', 'volutpat nunc sit'),
-    ('Donec', 'dignissim magna a tortor. Nunc', 'sollicitudin orci sem'),
-    ('a,', 'lorem lorem, luctus ut, pellentesque', 'sollicitudin orci sem'),
-    ('Mauris', 'nibh vulputate mauris sagittis placerat.', 'lobortis risus. In'),
-    ('dictum', 'malesuada augue ut lacus. Nulla', 'eros non enim'),
-    ('nunc.', 'eu augue porttitor interdum. Sed', 'ornare lectus justo'),
-    ('blandit', 'odio sagittis semper. Nam tempor', 'libero at auctor'),
-    ('Maecenas', 'ultricies sem magna nec quam.', 'Curabitur egestas nunc'),
-    ('ante', 'amet, dapibus id, blandit at,', 'Ut tincidunt orci'),
-    ('felis.', 'erat nonummy ultricies ornare, elit', 'eleifend egestas. Sed'),
-    ('ut', 'Nullam enim. Sed nulla ante,', 'Nullam ut nisi'),
-    ('urna', 'Vivamus non lorem vitae odio', 'metus. Aliquam erat'),
-    ('nulla.', 'Donec egestas. Duis ac arcu.', 'fringilla est. Mauris'),
-    ('semper', 'montes, nascetur ridiculus mus. Donec', 'eget mollis lectus'),
-    ('nibh', 'risus. Donec egestas. Duis ac', 'nec ante. Maecenas'),
-    ('dolor', 'ligula. Aliquam erat volutpat. Nulla', 'in sodales elit'),
-    ('felis.', 'mus. Donec dignissim magna a', 'Nunc pulvinar arcu'),
-    ('turpis', 'Cras sed leo. Cras vehicula', 'nibh enim, gravida'),
-    ('vulputate', 'vitae purus gravida sagittis. Duis', 'nisi sem semper'),
-    ('Etiam', 'posuere cubilia Curae; Donec tincidunt.', 'natoque penatibus et'),
-    ('rutrum.', 'gravida sit amet, dapibus id,', 'magna. Cras convallis'),
-    ('sem.', 'magna. Praesent interdum ligula eu', 'porttitor tellus non'),
-    ('elit.', 'vestibulum massa rutrum magna. Cras', 'in sodales elit'),
-    ('laoreet,', 'Suspendisse eleifend. Cras sed leo.', 'suscipit nonummy. Fusce'),
-    ('erat.', 'euismod urna. Nullam lobortis quam', 'massa. Integer vitae'),
-    ('nunc', 'Curae; Donec tincidunt. Donec vitae', 'sem elit, pharetra'),
-    ('Curabitur', 'semper egestas, urna justo faucibus', 'elementum, lorem ut'),
-    ('vulputate', 'in, dolor. Fusce feugiat. Lorem', 'faucibus ut, nulla.'),
-    ('est', 'quis, pede. Praesent eu dui.', 'in felis. Nulla'),
-    ('velit', 'eros. Nam consequat dolor vitae', 'bibendum sed, est.'),
-    ('nibh', 'a mi fringilla mi lacinia', 'aliquet magna a');
+    ('refugees', 'ad litora torquent per conubia', 'Refugees');
 
 -- Registration --
 
@@ -254,7 +169,7 @@ INSERT INTO "registration"
     verification_token,
     expiry_date)
 VALUES
-    ('elementum@velitSedmalesuada.ca', 0, 0, 1, 0, 'token', '2020-12-10 00:00:00-00'),
+    ('houssammahlous123@gmail.com', 1, 1, 1, 0, 'token', '2020-12-10 00:00:00-00'),
     ('magna.Sed.eu@eget.org', 0, 0, 0, 0, 'token', '2020-12-10 00:00:00-00'),
     ('nunc.Quisque.ornare@maurisanunc.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
     ('augue.eu@ipsumDonec.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
@@ -368,7 +283,7 @@ INSERT INTO "user"
     salt,
     date_registered)
 VALUES
-    ('elementum@velitSedmalesuada.ca', 'Aliquam', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'false', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-12-10 00:00:00-00'),
+    ('houssammahlous123@gmail.com', 'houssam966', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00'),
     ('magna.Sed.eu@eget.org', 'Aenean', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-11-19 00:00:00-00'),
     ('nunc.Quisque.ornare@maurisanunc.co.uk', 'fringilla', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-10-17 00:00:00-00'),
     ('augue.eu@ipsumDonec.co.uk', 'arcu', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-07-08 00:00:00-00'),
@@ -554,7 +469,7 @@ INSERT INTO "individual"
     gender,
     birthday)
 VALUES
-    ('Juliet', 'Lowe', '07009 140829', 'false', 50, 18, 'm', '2011-09-27'),
+    ('Houssam', 'Mahlous', '07333333', 'false', 1, 1, 'm', '2000-07-17'),
     ('Jocelyn', 'Lancaster', '(016977) 7982', 'false', 51, 35, 'm', '1939-10-27'),
     ('Sydnee', 'Adkins', '0500 916538', 'true', 52, 67, 'm', '1997-04-09'),
     ('Julie', 'Lowe', '076 3276 7223', 'false', 53, 16, 'm', '1966-07-07'),
@@ -623,9 +538,9 @@ INSERT INTO "event"
     content,date,user_id,
     creation_date)
 VALUES
-    ('tempus, lorem', 18, 'true', 21, 'true', 21, 'true', 'false', 'false', 'diam. Proin dolor. Nulla semper tellus id nunc interdum feugiat. Sed nec metus facilisis lorem tristique aliquet. Phasellus fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor, dictum eu, placerat eget, venenatis a, magna.', '2020-12-29 00:00:00-00', 49, '2020-04-30 00:00:00-00'),
-    ('arcu. Vivamus sit amet', 54, 'false', 17, 'false', 18, 'false', 'true', 'false', 'risus. Quisque libero lacus, varius et, euismod et, commodo at, libero. Morbi accumsan laoreet', '2020-07-05 00:00:00-00', 54, '2019-09-18 00:00:00-00'),
-    ('id, ante.', 50, 'false', 47, 'true', 21, 'false', 'false', 'true', 'nunc sit amet metus. Aliquam erat volutpat. Nulla facilisis. Suspendisse commodo tincidunt nibh. Phasellus nulla. Integer', '2019-12-09 00:00:00-00', 38, '2020-05-06 00:00:00-00'),
+    ('Event in user 1s house', 1, 'false', 3, 'true', 18, 'false', 'false', 'false', 'event created by user 1 and happening at user 1s house. Distance to user 1 should be 0.', '2020-04-04 00:00:00-00', 1, '2020-04-30 00:00:00-00'),
+    ('Event close to user 1', 2, 'true', 20, 'true', 21, 'false', 'true', 'false', 'risus. Quisque libero lacus, varius et, euismod et, commodo at, libero. Morbi accumsan laoreet', '2020-07-05 00:00:00-00', 1, '2019-09-18 00:00:00-00'),
+    ('Event in KCL', 3, 'false', 30, 'true', 20,'false','true','true', 'nunc sit amet metus. Aliquam erat volutpat. Nulla facili', '2020-04-09 00:00:00-00', 1, '2020-05-06 00:00:00-00'),
     ('Maecenas iaculis aliquet', 69, 'false', 46, 'true', 18, 'false', 'false', 'false', 'at, egestas a, scelerisque sed, sapien. Nunc pulvinar arcu et pede. Nunc sed orci lobortis augue scelerisque mollis. Phasellus libero mauris, aliquam eu, accumsan sed, facilisis vitae, orci. Phasellus dapibus quam quis diam. Pellentesque habitant morbi tristique senectus et', '2019-10-25 00:00:00-00', 15, '2021-02-04 00:00:00-00'),
     ('aliquet odio.', 55, 'true', 24, 'false', 21, 'false', 'false', 'false', 'eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urna suscipit nonummy. Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis in faucibus', '2020-08-30 00:00:00-00', 82, '2020-03-03 00:00:00-00'),
     ('adipiscing.', 23, 'true', 45, 'false', 19, 'false', 'true', 'false', 'elit pede, malesuada vel, venenatis vel, faucibus id, libero. Donec consectetuer mauris id sapien. Cras dolor', '2019-03-20 00:00:00-00', 71, '2020-09-18 00:00:00-00'),
@@ -901,30 +816,26 @@ INSERT INTO "sign_up"
     event_id,
     confirmed)
 VALUES
-    (44, 26, 'true'),
-    (21, 86, 'true'),
-    (21, 67, 'false'),
-    (36, 28, 'false'),
-    (13, 14, 'true'),
-    (2, 54, 'true'),
-    (24, 85, 'false'),
-    (13, 77, 'true'),
-    (29, 53, 'false'),
-    (46, 81, 'true'),
-    (37, 64, 'false'),
-    (39, 62, 'false'),
-    (49, 29, 'true'),
-    (18, 84, 'false'),
-    (10, 47, 'false'),
-    (25, 79, 'true'),
-    (6, 92, 'true'),
-    (25, 13, 'true'),
-    (30, 10, 'false'),
-    (8, 89, 'true'),
-    (13, 21, 'false'),
-    (25, 18, 'false'),
-    (4, 33, 'true'),
-    (30, 44, 'false'),
+    (1, 1, 'false'),
+    (1, 2, 'true'),
+    (1, 3, 'true'),
+    (1, 31, 'true'),
+    (1, 13, 'false'),
+    (1, 23, 'true'),
+    (1, 33, 'false'),
+    (44, 1, 'true'),
+    (21, 1, 'true'),
+    (21, 2, 'false'),
+    (36, 2, 'false'),
+    (2, 100, 'true'),
+    (2, 2, 'true'),
+    (24, 2, 'false'),
+    (13, 2, 'true'),
+    (29, 2, 'false'),
+    (46, 2, 'true'),
+    (37, 2, 'false'),
+    (39, 2, 'false'),
+    (49, 2, 'true'),
     (24, 34, 'true'),
     (46, 42, 'false'),
     (20, 71, 'false'),
@@ -1008,106 +919,109 @@ INSERT INTO "selected_cause"
     (user_id,
     cause_id)
 VALUES
-    (1, 33),
-    (2, 85),
-    (3, 97),
-    (4, 58),
-    (5, 71),
-    (6, 49),
-    (7, 98),
-    (8, 14),
-    (9, 48),
-    (10, 72),
-    (11, 40),
-    (12, 45),
-    (13, 82),
-    (14, 66),
-    (15, 25),
-    (16, 85),
-    (17, 84),
+    (1, 1),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (2, 15),
+    (3, 7),
+    (4, 8),
+    (5, 1),
+    (6, 9),
+    (7, 8),
+    (8, 4),
+    (9, 8),
+    (10, 2),
+    (11, 10),
+    (12, 5),
+    (13, 2),
+    (14, 6),
+    (15, 5),
+    (16, 5),
+    (17, 4),
     (18, 8),
-    (19, 18),
-    (20, 90),
-    (21, 95),
-    (22, 80),
-    (23, 45),
-    (24, 21),
-    (25, 57),
-    (26, 16),
-    (27, 58),
-    (28, 60),
-    (29, 93),
-    (30, 30),
-    (31, 77),
-    (32, 53),
-    (33, 50),
-    (34, 25),
-    (35, 52),
-    (36, 91),
-    (37, 64),
+    (19, 8),
+    (20, 9),
+    (21, 9),
+    (22, 8),
+    (23, 4),
+    (24, 2),
+    (25, 5),
+    (26, 1),
+    (27, 5),
+    (28, 6),
+    (29, 9),
+    (30, 3),
+    (31, 7),
+    (32, 5),
+    (33, 5),
+    (34, 5),
+    (35, 2),
+    (36, 9),
+    (37, 6),
     (38, 9),
-    (39, 82),
+    (39, 2),
     (40, 7),
-    (41, 60),
-    (42, 49),
-    (43, 26),
-    (44, 58),
-    (45, 48),
-    (46, 19),
-    (47, 68),
-    (48, 32),
+    (41, 6),
+    (42, 4),
+    (43, 6),
+    (44, 8),
+    (45, 8),
+    (46, 9),
+    (47, 8),
+    (48, 2),
     (49, 8),
-    (50, 62),
-    (51, 49),
+    (50, 2),
+    (51, 9),
     (52, 8),
-    (53, 20),
-    (54, 36),
-    (55, 85),
-    (56, 22),
+    (53, 2),
+    (54, 3),
+    (55, 8),
+    (56, 2),
     (57, 12),
-    (58, 47),
-    (59, 55),
+    (58, 7),
+    (59, 5),
     (60, 6),
-    (61, 55),
-    (62, 25),
-    (63, 71),
-    (64, 25),
-    (65, 89),
-    (66, 21),
+    (61, 5),
+    (62, 5),
+    (63, 1),
+    (64, 5),
+    (65, 8),
+    (66, 2),
     (67, 9),
-    (68, 85),
-    (69, 37),
-    (70, 89),
-    (71, 88),
+    (68, 8),
+    (69, 3),
+    (70, 8),
+    (71, 8),
     (72, 5),
-    (73, 52),
-    (74, 72),
-    (75, 48),
-    (76, 31),
-    (77, 50),
-    (78, 69),
-    (79, 43),
+    (73, 5),
+    (74, 7),
+    (75, 4),
+    (76, 3),
+    (77, 5),
+    (78, 6),
+    (79, 4),
     (80, 7),
     (81, 14),
-    (82, 97),
-    (83, 19),
-    (84, 83),
-    (85, 80),
-    (86, 47),
+    (82, 9),
+    (83, 1),
+    (84, 8),
+    (85, 8),
+    (86, 4),
     (87, 8),
-    (88, 81),
-    (89, 100),
-    (90, 34),
-    (91, 41),
-    (92, 22),
-    (93, 64),
-    (94, 99),
-    (95, 55),
-    (96, 17),
-    (97, 71),
-    (98, 41),
-    (99, 87),
-    (100, 47);
+    (88, 1),
+    (89, 10),
+    (90, 4),
+    (91, 4),
+    (92, 2),
+    (93, 6),
+    (94, 9),
+    (95, 5),
+    (96, 1),
+    (97, 7),
+    (98, 4),
+    (99, 8),
+    (100, 7);
 
 -- Event_Cause --
 
@@ -1115,104 +1029,104 @@ INSERT INTO "event_cause"
     (event_id,
     cause_id)
 VALUES
-    (1, 35),
-    (2, 31),
-    (3, 91),
-    (4, 92),
-    (5, 95),
-    (6, 53),
+    (1, 1),
+    (2, 4),
+    (3, 6),
+    (4, 9),
+    (5, 9),
+    (6, 5),
     (7, 8),
-    (8, 23),
-    (9, 34),
-    (10, 23),
-    (11, 89),
-    (12, 78),
-    (13, 44),
-    (14, 40),
-    (15, 55),
+    (8, 2),
+    (9, 4),
+    (10, 2),
+    (11, 9),
+    (12, 8),
+    (13, 4),
+    (14, 13),
+    (15, 5),
     (16, 15),
-    (17, 43),
-    (18, 43),
-    (19, 23),
-    (20, 25),
-    (21, 18),
-    (22, 90),
-    (23, 63),
+    (17, 3),
+    (18, 3),
+    (19, 3),
+    (20, 5),
+    (21, 8),
+    (22, 9),
+    (23, 6),
     (24, 14),
-    (25, 70),
-    (26, 70),
-    (27, 63),
-    (28, 22),
-    (29, 63),
-    (30, 19),
-    (31, 47),
-    (32, 64),
+    (25, 7),
+    (26, 7),
+    (27, 3),
+    (28, 2),
+    (29, 6),
+    (30, 1),
+    (31, 7),
+    (32, 6),
     (33, 15),
-    (34, 31),
-    (35, 21),
-    (36, 49),
-    (37, 90),
-    (38, 19),
+    (34, 3),
+    (35, 1),
+    (36, 9),
+    (37, 9),
+    (38, 1),
     (39, 12),
-    (40, 31),
-    (41, 64),
-    (42, 41),
-    (43, 98),
+    (40, 3),
+    (41, 6),
+    (42, 4),
+    (43, 9),
     (44, 11),
-    (45, 23),
-    (46, 72),
+    (45, 3),
+    (46, 7),
     (47, 1),
-    (48, 69),
-    (49, 93),
-    (50, 79),
+    (48, 9),
+    (49, 3),
+    (50, 9),
     (51, 1),
     (52, 2),
-    (53, 26),
-    (54, 55),
-    (55, 28),
+    (53, 2),
+    (54, 5),
+    (55, 2),
     (56, 2),
-    (57, 29),
-    (58, 22),
-    (59, 26),
+    (57, 9),
+    (58, 2),
+    (59, 6),
     (60, 8),
     (61, 14),
-    (62, 42),
-    (63, 39),
+    (62, 2),
+    (63, 9),
     (64, 8),
-    (65, 24),
-    (66, 18),
-    (67, 82),
-    (68, 86),
+    (65, 4),
+    (66, 8),
+    (67, 2),
+    (68, 6),
     (69, 14),
-    (70, 64),
-    (71, 77),
-    (72, 36),
-    (73, 72),
-    (74, 86),
-    (75, 76),
-    (76, 66),
-    (77, 20),
-    (78, 31),
-    (79, 28),
-    (80, 65),
-    (81, 94),
-    (82, 17),
-    (83, 60),
+    (70, 4),
+    (71, 7),
+    (72, 6),
+    (73, 2),
+    (74, 6),
+    (75, 6),
+    (76, 6),
+    (77, 2),
+    (78, 3),
+    (79, 8),
+    (80, 6),
+    (81, 9),
+    (82, 1),
+    (83, 6),
     (84, 10),
-    (85, 25),
-    (86, 50),
-    (87, 48),
-    (88, 29),
-    (89, 67),
-    (90, 77),
-    (91, 94),
-    (92, 25),
-    (93, 44),
-    (94, 78),
-    (95, 51),
-    (96, 99),
-    (97, 46),
-    (98, 17),
+    (85, 2),
+    (86, 5),
+    (87, 4),
+    (88, 2),
+    (89, 7),
+    (90, 7),
+    (91, 4),
+    (92, 5),
+    (93, 4),
+    (94, 8),
+    (95, 1),
+    (96, 9),
+    (97, 6),
+    (98, 7),
     (99, 7),
     (100, 12);
 
@@ -1278,7 +1192,128 @@ VALUES
 INSERT INTO "information" (TYPE,
                            content)
 VALUES ('terms','luctus ut, pellentesque eget, dictum placerat, augue. Sed molestie. Sed id'),
-       ('about','amet lorem semper auctor. Mauris vel turpis. Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urna suscipit nonummy. Fusce');
+       ('about','amet lorem semper auctor. Mauris vel turpis. Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urna suscipit nonummy. Fusce'),
+       ('privacyPolicy','Our Company is part of the Our Company Group which includes Our Company International and Our Company Direct. This privacy policy will explain how our organization uses the personal data we collect from you when you use our website.
+
+        Topics:
+
+        What data do we collect?
+        How do we collect your data?
+        How will we use your data?
+        How do we store your data?
+        Marketing
+        What are your data protection rights?
+        What are cookies?
+        How do we use cookies?
+        What types of cookies do we use?
+        How to manage your cookies
+        Privacy policies of other websites
+        Changes to our privacy policy
+        How to contact us
+        How to contact the appropriate authorities
+        What data do we collect?
+        Our Company collects the following data:
+
+        Personal identification information (Name, email address, phone number, etc.)
+        [Add any other data your company collects]
+        How do we collect your data?
+        You directly provide Our Company with most of the data we collect. We collect data and process data when you:
+
+        Register online or place an order for any of our products or services.
+        Voluntarily complete a customer survey or provide feedback on any of our message boards or via email.
+        Use or view our website via your browser’s cookies.
+        [Add any other ways your company collects data]
+        Our Company may also receive your data indirectly from the following sources:
+
+        [Add any indirect source of data your company has]
+        How will we use your data?
+        Our Company collects your data so that we can:
+
+        Process your order and manage your account.
+        Email you with special offers on other products and services we think you might like.
+        [Add how else your company uses data]
+        If you agree, Our Company will share your data with our partner companies so that they may offer you their products and services.
+
+        [List organizations that will receive data]
+        When Our Company processes your order, it may send your data to, and also use the resulting information from, credit reference agencies to prevent fraudulent purchases.
+
+        How do we store your data?
+        Our Company securely stores your data at [enter the location and describe security precautions taken].
+
+        Our Company will keep your [enter type of data] for [enter time period]. Once this time period has expired, we will delete your data by [enter how you delete users’ data].
+
+        Marketing
+        Our Company would like to send you information about products and services of ours that we think you might like, as well as those of our partner companies.
+
+        [List organizations that will receive data]
+        If you have agreed to receive marketing, you may always opt out at a later date.
+
+        You have the right at any time to stop Our Company from contacting you for marketing purposes or giving your data to other members of the Our Company Group.
+
+        If you no longer wish to be contacted for marketing purposes, please click here.
+
+        What are your data protection rights?
+        Our Company would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:
+
+        The right to access – You have the right to request Our Company for copies of your personal data. We may charge you a small fee for this service.
+
+        The right to rectification – You have the right to request that Our Company correct any information you believe is inaccurate. You also have the right to request Our Company to complete the information you believe is incomplete.
+
+        The right to erasure – You have the right to request that Our Company erase your personal data, under certain conditions.
+
+        The right to restrict processing – You have the right to request that Our Company restrict the processing of your personal data, under certain conditions.
+
+        The right to object to processing – You have the right to object to Our Company’s processing of your personal data, under certain conditions.
+
+        The right to data portability – You have the right to request that Our Company transfer the data that we have collected to another organization, or directly to you, under certain conditions.
+
+        If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us at our email:
+
+        Call us at:
+
+        Or write to us:
+
+        Cookies
+        Cookies are text files placed on your computer to collect standard Internet log information and visitor behavior information. When you visit our websites, we may collect information from you automatically through cookies or similar technology
+
+        For further information, visit allaboutcookies.org.
+
+        How do we use cookies?
+        Our Company uses cookies in a range of ways to improve your experience on our website, including:
+
+        Keeping you signed in
+        Understanding how you use our website
+        [Add any uses your company has for cookies]
+        What types of cookies do we use?
+        There are a number of different types of cookies, however, our website uses:
+
+        Functionality – Our Company uses these cookies so that we recognize you on our website and remember your previously selected preferences. These could include what language you prefer and location you are in. A mix of first-party and third-party cookies are used.
+        Advertising – Our Company uses these cookies to collect information about your visit to our website, the content you viewed, the links you followed and information about your browser, device, and your IP address. Our Company sometimes shares some limited aspects of this data with third parties for advertising purposes. We may also share online data collected through cookies with our advertising partners. This means that when you visit another website, you may be shown advertising based on your browsing patterns on our website.
+        [Add any other types of cookies your company uses]
+        How to manage cookies
+        You can set your browser not to accept cookies, and the above website tells you how to remove cookies from your browser. However, in a few cases, some of our website features may not function as a result.
+
+        Privacy policies of other websites
+        The Our Company website contains links to other websites. Our privacy policy applies only to our website, so if you click on a link to another website, you should read their privacy policy.
+
+        Changes to our privacy policy
+        Our Company keeps its privacy policy under regular review and places any updates on this web page. This privacy policy was last updated on 9 January 2019.
+
+        How to contact us
+        If you have any questions about Our Company’s privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us.
+
+        Email us at:
+
+        Call us:
+
+        Or write to us at:
+
+        How to contact the appropriate authority
+        Should you wish to report a complaint or if you feel that Our Company has not addressed your concern in a satisfactory manner, you may contact the Information Commissioner’s Office.
+
+        Email:
+
+        Address');
 
 -- Report_user
 

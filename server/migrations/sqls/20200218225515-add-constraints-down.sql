@@ -13,6 +13,9 @@ ALTER TABLE event
 ALTER TABLE event
     DROP CONSTRAINT event_user;
 
+ALTER TABLE event
+    DROP CONSTRAINT event_picture;
+
 ALTER TABLE event_cause
     DROP CONSTRAINT eventcause_cause;
 
