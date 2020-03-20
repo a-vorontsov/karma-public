@@ -28,7 +28,7 @@ const findAllByUserId = (userId) => {
 };
 
 const findAllByUserIdWithLocation = (userId) => {
-    const query = "SELECT * FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1";
+    const query = "SELECT *, id(event) as id FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1";
     return db.query(query, [userId]);
 };
 
