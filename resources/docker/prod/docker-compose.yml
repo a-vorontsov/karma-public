@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:12
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data
     container_name: karma-postgres
     environment:
       POSTGRES_DB: ${DB_DATABASE}
@@ -48,6 +48,8 @@ services:
     command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
   web:
     image: teamteamkarma/web
+    volumes:
+      - ./web-data:/usr/share/nginx/html
     # Uncomment if you want to build the images locally
     #build:
     #  context: ../../../web
@@ -59,4 +61,5 @@ services:
       - server
 
 volumes:
-  db_data: {}
+  db-data: {}
+  web-data: {}
