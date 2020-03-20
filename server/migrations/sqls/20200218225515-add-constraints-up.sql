@@ -31,6 +31,14 @@ NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
 
+-- Reference: event_picture (table: event)
+ALTER TABLE event ADD CONSTRAINT event_picture
+    FOREIGN KEY (picture_id)
+        REFERENCES picture (id)
+NOT DEFERRABLE
+            INITIALLY IMMEDIATE
+;
+
 -- Reference: eventcause_cause (table: event_cause)
 ALTER TABLE event_cause ADD CONSTRAINT eventcause_cause
     FOREIGN KEY (cause_id)

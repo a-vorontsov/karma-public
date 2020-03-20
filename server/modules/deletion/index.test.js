@@ -64,7 +64,7 @@ test("deleting user who is individual works", async () => {
         }],
     });
 
-    userRepository.findById.mockResolvedValue({
+    userRepository.removeUserById.mockResolvedValue({
         rows: [{
             ...user,
             id: 1,
@@ -92,7 +92,7 @@ test("deleting user who is individual works", async () => {
     expect(registrationRepository.removeByEmail).toHaveBeenCalledTimes(1);
     expect(addressRepository.removeById).toHaveBeenCalledTimes(1);
     expect(individualRepository.findByUserID).toHaveBeenCalledTimes(1);
-    expect(userRepository.findById).toHaveBeenCalledTimes(1);
+    expect(userRepository.findById).toHaveBeenCalledTimes(0);
     expect(orgRepository.removeByUserId).toHaveBeenCalledTimes(0);
     expect(deleteAllInformation.data.user).toMatchObject({
         ...user,
@@ -106,14 +106,14 @@ test("deleting user who is org works", async () => {
     util.isIndividual.mockResolvedValue(false);
     util.isOrganisation.mockResolvedValue(true);
 
-    orgRepository.findByUserID.mockResolvedValue({
+    orgRepository.removeByUserId.mockResolvedValue({
         rows: [{
             ...organisation,
             id: 1,
         }],
     });
 
-    userRepository.findById.mockResolvedValue({
+    userRepository.removeUserById.mockResolvedValue({
         rows: [{
             ...user,
             id: 1,
@@ -138,8 +138,8 @@ test("deleting user who is org works", async () => {
     expect(registrationRepository.removeByEmail).toHaveBeenCalledTimes(1);
     expect(addressRepository.removeById).toHaveBeenCalledTimes(1);
     expect(individualRepository.findByUserID).toHaveBeenCalledTimes(0);
-    expect(orgRepository.findByUserID).toHaveBeenCalledTimes(1);
-    expect(userRepository.findById).toHaveBeenCalledTimes(1);
+    expect(orgRepository.findByUserID).toHaveBeenCalledTimes(0);
+    expect(userRepository.findById).toHaveBeenCalledTimes(0);
     expect(orgRepository.removeByUserId).toHaveBeenCalledTimes(1);
     expect(profileRepository.removeByIndividualId).toHaveBeenCalledTimes(0);
     expect(deleteAllInformation.data.user).toMatchObject({

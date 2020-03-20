@@ -34,6 +34,11 @@ const removeByIndividualId = (individualId) => {
     return db.query(query, [individualId]);
 };
 
+const removeByEventId = (eventId) => {
+    const query = "DELETE FROM favourite WHERE event_id=$1 RETURNING *";
+    return db.query(query, [eventId]);
+};
+
 const removeByEventCreatorId = (userId) => {
     const query = "DELETE FROM favourite WHERE event_id IN " +
         "(SELECT id AS event_id FROM event WHERE user_id = $1) RETURNING *";
@@ -48,4 +53,5 @@ module.exports = {
     remove,
     removeByIndividualId,
     removeByEventCreatorId,
+    removeByEventId,
 };

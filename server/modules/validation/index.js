@@ -73,9 +73,21 @@ const notificationSchema = {
         "message": {"type": "string"},
         "timestampSent": {"type": "date-time"},
         "senderId": {"type": "number"},
+        "receiverIds": {"type": "array", "items": {"type": "number"}},
         "receiverId": {"type": "number"},
     },
-    "required": ["type", "message", "senderId", "receiverId"],
+    "required": ["type", "message", "senderId"],
+    "oneOf": [
+        {
+            "required": [
+                "receiverId",
+            ],
+        },
+        {
+            "required": [
+                "receiverIds",
+            ],
+        }],
 };
 
 const favouriteSchema = {

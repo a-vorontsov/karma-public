@@ -2,10 +2,9 @@ const request = require('supertest');
 const app = require('../../app');
 const testHelpers = require("../../test/testHelpers");
 const validation = require("../../modules/validation");
+const notificationService = require("../../modules/notification");
 
-const notificationRepository = require("../../models/databaseRepositories/notificationRepository");
-
-jest.mock("../../models/databaseRepositories/notificationRepository");
+jest.mock("../../modules/notification");
 jest.mock("../../modules/validation");
 validation.validateNotification.mockReturnValue({errors: ""});
 
@@ -13,42 +12,38 @@ let notification;
 
 beforeEach(() => {
     notification = testHelpers.getNotification();
-    return testHelpers.clearDatabase();
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
-    return testHelpers.clearDatabase();
+    return jest.clearAllMocks();
 });
 
 test('creating notification works', async () => {
     notification.timestampSent = notification.timestampSent.toDateString();
-    notificationRepository.insert.mockResolvedValue({
-        rows: [{
-            ...notification,
-            id: 1,
-        }],
+    notificationService.createNotifications.mockResolvedValue({
+        status: 200,
+        message: "Notification created successfully.",
+        data: notification,
     });
+    notification.receiverIds = [1,2,3,4];
     const response = await request(app).post("/notification").send(notification);
-
     expect(validation.validateNotification).toHaveBeenCalledTimes(1);
     expect(response.body).toMatchObject({
         message: "Notification created successfully.",
-        data: {
-            notification: notification
-        }
+        data: notification,
     });
-    expect(notificationRepository.insert).toHaveBeenCalledTimes(1);
+    expect(notificationService.createNotifications).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
 });
 
 test('finding notifications works', async () => {
     notification.timestampSent = notification.timestampSent.toDateString();
-    notificationRepository.findByUserId.mockResolvedValue({
-        rows: [{
-            ...notification,
-            id: 1,
-        }],
+    notificationService.getNotification.mockResolvedValue({
+        status: 200,
+        message: "Notifications fetched successfully.",
+        data: {
+            notifications: [notification],
+        }
     });
     const response = await request(app).get("/notification").query({userId: 1}).send(notification);
 
@@ -58,6 +53,6 @@ test('finding notifications works', async () => {
             notifications: [notification]
         }
     });
-    expect(notificationRepository.findByUserId).toHaveBeenCalledTimes(1);
+    expect(notificationService.getNotification).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
 });
