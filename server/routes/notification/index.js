@@ -18,7 +18,7 @@ const httpUtil = require("../../util/httpUtil");
     "type": "Cancellation",
     "message": "This event is cancelled thanks",
     "senderId": 1,
-    "receiverId": [1,2,3,4,5]
+    "receiverIds": [1,2,3,4,5]
  }
  </pre>
  * @returns {Object}
@@ -44,7 +44,7 @@ const httpUtil = require("../../util/httpUtil");
                 "message": "This event is cancelled thanks",
                 "timestampSent": "2020-03-19T21:56:14.862Z",
                 "senderId": 1,
-                "receiverIds": 2
+                "receiverId": 2
             }
     }
  }

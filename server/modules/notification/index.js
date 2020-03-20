@@ -17,7 +17,7 @@ const createNotifications = async (notification) => {
 };
 
 const create = async (notification, receiverId) => {
-    notification.receiverIds = receiverId;
+    notification.receiverId = receiverId;
     return await notificationRepository.insert(notification);
 };
 
