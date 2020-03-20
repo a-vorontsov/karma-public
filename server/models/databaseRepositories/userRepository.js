@@ -41,8 +41,7 @@ const updateVerificationStatus = (userId, isVerified) => {
 };
 
 const updateUsername = (userId, username) => {
-    const query =
-    'UPDATE "user" SET username = $1 WHERE id = $2 RETURNING *';
+    const query = "UPDATE \"user\" SET username = $1 WHERE id = $2 RETURNING *";
     const params = [username, userId];
     return db.query(query, params);
 };
@@ -53,7 +52,7 @@ const findIdFromEmail = (email) => {
 };
 
 const removeUserById = (id) => {
-    const query = "DELETE FROM \"user\" WHERE id=$1";
+    const query = "DELETE FROM \"user\" WHERE id=$1 RETURNING *";
     return db.query(query, [id]);
 };
 module.exports = {

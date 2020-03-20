@@ -34,7 +34,7 @@ const update = (profile) => {
 };
 
 const removeByIndividualId = (individualId) => {
-    const query = "DELETE FROM profile WHERE individual_id=$1";
+    const query = "DELETE FROM profile WHERE individual_id=$1 RETURNING *";
     return db.query(query, [individualId]);
 };
 
