@@ -35,7 +35,7 @@ const getOrganisationLocation = (userId) => {
 };
 
 const removeByUserId = (userId) => {
-    const query = "DELETE FROM organisation WHERE user_id=$1";
+    const query = "DELETE FROM organisation WHERE user_id=$1 RETURNING *";
     return db.query(query, [userId]);
 };
 

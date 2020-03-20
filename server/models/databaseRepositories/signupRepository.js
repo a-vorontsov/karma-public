@@ -41,6 +41,11 @@ const removeByIndividualId = (individualId) => {
     return db.query(query, [individualId]);
 };
 
+const removeByEventId = (eventId) => {
+    const query = "DELETE FROM sign_up WHERE event_id = $1 RETURNING *";
+    return db.query(query, [eventId]);
+};
+
 const removeByEventCreatorId = (eventId) => {
     const query = "DELETE FROM sign_up WHERE event_id IN " +
         "(SELECT id as event_id FROM event WHERE user_id=$1) RETURNING *";
@@ -55,4 +60,5 @@ module.exports = {
     findUsersSignedUp,
     removeByIndividualId,
     removeByEventCreatorId,
+    removeByEventId,
 };

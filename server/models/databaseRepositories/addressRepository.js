@@ -22,7 +22,7 @@ const update = (address) => {
 };
 
 const removeById = (id) => {
-    const query = "DELETE FROM address WHERE id=$1";
+    const query = "DELETE FROM address WHERE id=$1 RETURNING *";
     return db.query(query, [id]);
 };
 
