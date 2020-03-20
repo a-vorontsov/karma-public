@@ -71,7 +71,7 @@ router.post('/confirm', authAgent.requireNoAuthentication, async (req, res) => {
             const expiryDate = result.rows[0].expiryDate;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
-                const authToken = authAgent.grantResetAccess(checkEmailResult.user.id);
+                const authToken = authAgent.grantResetAccess(checkEmailResult.user.id, req.body.pub);
                 res.status(200).send({
                     message: "Token accepted",
                     data: {

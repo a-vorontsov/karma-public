@@ -288,6 +288,18 @@ const blacklistJWT = async (jwt) => {
 };
 
 /**
+ * Decrypt and blacklist given JWE.
+ * This inserts the blacklisted userId - sig
+ * pair in the DB and the latter in the
+ * signature blacklist cache
+ * @param {object} jwe
+ * @throws {error} DB error if already blacklisted
+ */
+const decryptAndBlacklistJWE = async (jwe) => {
+    await blacklistJWT(decrypt(jwe));
+};
+
+/**
  * Fetch the signature blacklist from
  * the database and cache the result.
  * This resets the signature blacklist
@@ -365,6 +377,7 @@ module.exports = {
     getUserIdFromPayload,
     getSignatureFromJWT,
     blacklistJWT,
+    decryptAndBlacklistJWE,
     isBlacklisted,
     fetchBlacklist,
 };

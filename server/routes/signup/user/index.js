@@ -69,6 +69,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 req.body.data.user.email,
                 req.body.data.user.username,
                 req.body.data.user.password,
+                req.body.pub,
             );
             httpUtil.sendAuthResult(signupResult, res);
         } catch (e) {

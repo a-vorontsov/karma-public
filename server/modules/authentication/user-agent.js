@@ -30,12 +30,13 @@ async function registerEmail(email) {
  * @param {string} email
  * @param {string} username
  * @param {string} password
+ * @param {Object} pub public key of client
  * @return {number} id of new user
  * @throws {error} if registration record not found
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerUser(email, username, password) {
+async function registerUser(email, username, password, pub) {
     if (!(await regStatus.emailExists(email))) {
         throw new Error("Invalid operation: registration record not found.");
     }
@@ -63,7 +64,7 @@ async function registerUser(email, username, password) {
     });
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId);
+    const authToken = authAgent.logInUser(userId, pub);
     return ({
         status: 200,
         message: "User registration successful. Go to individual/org registration selection",
@@ -244,11 +245,11 @@ async function updatePassword(userId, password) {
     await userRepo.updatePassword(userId, hashedPassword, secureSalt);
 }
 
-const signIn = async (email, password) => {
+const signIn = async (email, password, pub) => {
     const userResult = await userRepo.findByEmail(email);
     const user = userResult.rows[0];
     if (isCorrectPassword(user, password)) {
-        const authToken = authAgent.logInUser(user.id);
+        const authToken = authAgent.logInUser(user.id, pub);
         return ({
             status: 200,
             message: "Successful authentication with email & password.",
