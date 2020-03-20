@@ -45,7 +45,7 @@ const removeByUserId = (userId) => {
 };
 
 const removeById = (id) => {
-    const query = "DELETE FROM event WHERE id=$ RETURNING *";
+    const query = "DELETE FROM event WHERE id=$1 RETURNING *";
     return db.query(query, [id]);
 };
 
