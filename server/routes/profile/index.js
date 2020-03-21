@@ -111,7 +111,7 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
  *  @name Get profile
  *  @function
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const now = new Date();
         const userResult = await userRepo.findById(req.query.userId);
