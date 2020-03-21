@@ -148,7 +148,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
                 organisation.exempt = req.body.data.organisation.exempt;
             }
 
-            if (organisation !== orgCopy) {
+            if (JSON.stringify(organisation) !== JSON.stringify(orgCopy)) {
                 await orgRepo.update(organisation);
             }
         }
@@ -191,7 +191,7 @@ async function createNewAddress(address, storedAddress) {
         addressObj.region = address.countryState;
     }
 
-    if (addressObj !== storedAddress) {
+    if (JSON.stringify(addressObj) !== JSON.stringify(storedAddress)) {
         return await addressRepo.insert(addressObj);
     }
 }
