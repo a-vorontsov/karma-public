@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
-import Toast from "react-native-simple-toast";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
@@ -27,7 +26,7 @@ import AddressInput from "../components/input/AddressInput";
 import {RadioInput} from "../components/radio";
 import {getData} from "../util/GetCredentials";
 const request = require("superagent");
-const _ =  require('lodash');
+const _ = require("lodash");
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -100,65 +99,69 @@ class ProfileEditScreen extends Component {
         Alert.alert(errorTitle, errorMessage);
     };
     onChangeText = event => {
-        console.log(this.state.individual.bio);
         const {name, text} = event;
         switch (name) {
             case "username":
                 this.setState({user: {[name]: text}});
                 break;
-            case "lastName" :
-            case "firstName" :
-            case "gender":
-                this.setState(prevState =>{
-                 return {individual: {
-                     ...prevState.individual,
-                    [name]: text,
-                    },
-                }
+            case "lastName":
+            case "firstName":
+                this.setState(prevState => {
+                    return {
+                        individual: {
+                            ...prevState.individual,
+                            [name]: text,
+                        },
+                    };
                 });
                 break;
-            case "name" :
+            case "name":
             case "organisationType":
             case "orgPhoneNumber":
-            this.setState(prevState =>{
-                return {organisation: {
-                    ...prevState.organisation,
-                   [name]: text,
-                   },
-               }
-               });
-               break;
+                this.setState(prevState => {
+                    return {
+                        organisation: {
+                            ...prevState.organisation,
+                            [name]: text,
+                        },
+                    };
+                });
+                break;
             default:
                 this.setState({[name]: text});
         }
-        console.log(this.state.individual.bio);
     };
     onInputChange = inputState => {
-       this.state.isOrganisation?
-        this.setState({
-            organisation:{
-                address: {
-                    addressLine1: inputState.address1,
-                    addressLine2: inputState.address2,
-                    townCity: inputState.city,
-                    countryState: inputState.region,
-                    postCode: inputState.postcode,
-                },
-            }
-        })
-        :
-        this.setState({
-            individual:{
-                address: {
-                    addressLine1: inputState.address1,
-                    addressLine2: inputState.address2,
-                    townCity: inputState.city,
-                    countryState: inputState.region,
-                    postCode: inputState.postcode,
-                },
-            }
-        })
-    }
+        this.state.isOrganisation
+            ? this.setState(prevState => {
+                  return {
+                      organisation: {
+                          ...prevState.organisation,
+                          address: {
+                              addressLine1: inputState.address1,
+                              addressLine2: inputState.address2,
+                              townCity: inputState.city,
+                              countryState: inputState.region,
+                              postCode: inputState.postcode,
+                          },
+                      },
+                  };
+              })
+            : this.setState(prevState => {
+                  return {
+                      individual: {
+                          ...prevState.individual,
+                          address: {
+                              addressLine1: inputState.address1,
+                              addressLine2: inputState.address2,
+                              townCity: inputState.city,
+                              countryState: inputState.region,
+                              postCode: inputState.postcode,
+                          },
+                      },
+                  };
+              });
+    };
 
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
@@ -166,22 +169,37 @@ class ProfileEditScreen extends Component {
         const authToken = credentials.password;
         const userId = credentials.username;
         const dataChanged = {};
-        if(!_.isEqual(this.state.user,this.baseState.user)){
+        if (!_.isEqual(this.state.user, this.baseState.user)) {
             dataChanged.user = this.state.user;
         }
-        if(!this.state.isOrganisation && !_.isEqual(this.state.individual,this.baseState.individual)){
+        if (
+            !this.state.isOrganisation &&
+            !_.isEqual(this.state.individual, this.baseState.individual)
+        ) {
             dataChanged.individual = this.state.individual;
-            if(_.isEqual(this.state.individual.address,this.baseState.individual.address)){
+            if (
+                _.isEqual(
+                    this.state.individual.address,
+                    this.baseState.individual.address,
+                )
+            ) {
                 delete dataChanged.individual.address;
             }
         }
-        if(this.state.isOrganisation && !_.isEqual(this.state.organisation,this.baseState.organisation)){
+        if (
+            this.state.isOrganisation &&
+            !_.isEqual(this.state.organisation, this.baseState.organisation)
+        ) {
             dataChanged.organisation = this.state.organisation;
-            if(_.isEqual(this.state.organisation.address,this.baseState.organisation.address)){
+            if (
+                _.isEqual(
+                    this.state.organisation.address,
+                    this.baseState.organisation.address,
+                )
+            ) {
                 delete dataChanged.organisation.address;
             }
         }
-        console.log(dataChanged);
         await request
             .post("http://localhost:8000/profile/edit")
             .send({
@@ -191,13 +209,13 @@ class ProfileEditScreen extends Component {
             })
             .then(async res => {
                 console.log("status: " + res.status + ", " + res.body.message);
-                navigate('Profile');
+                navigate("Profile");
             })
             .catch(err => {
                 console.log(err.message);
                 Alert.alert("Server Error", err.message);
             });
-    }
+    };
 
     getGender = character => {
         if (character === "m") {
@@ -209,7 +227,7 @@ class ProfileEditScreen extends Component {
         if (character === "x") {
             return "non-binary";
         }
-    }
+    };
 
     setGender = selectedGender => {
         const genderCharacter =
@@ -218,16 +236,17 @@ class ProfileEditScreen extends Component {
                 : selectedGender === "female"
                 ? "f"
                 : "x";
-        this.setState(prevState =>{
-            return {individual: {
-                ...prevState.individual,
-                gender: genderCharacter,
+        this.setState(prevState => {
+            return {
+                individual: {
+                    ...prevState.individual,
+                    gender: genderCharacter,
                 },
-            }
+            };
         });
-    }
+    };
     render() {
-        const {isOrganisation,individual,organisation} = this.state;
+        const {isOrganisation, individual, organisation} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -306,9 +325,11 @@ class ProfileEditScreen extends Component {
                                         ]}>
                                         {this.isOrganisation
                                             ? this.baseState.organisation.name
-                                            : this.baseState.individual.fname +
+                                            : this.baseState.individual
+                                                  .firstName +
                                               " " +
-                                              this.baseState.individual.lastName}
+                                              this.baseState.individual
+                                                  .lastName}
                                     </Text>
                                 </View>
                                 <View
@@ -390,19 +411,23 @@ class ProfileEditScreen extends Component {
                                     First Name
                                 </RegularText>
                                 <TextInput
-                                    value={this.state.individual.firstName}
+                                    value={individual.firstName}
                                     name="firstName"
                                     onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.lastName.focus()}
+                                    onSubmitEditing={() =>
+                                        this.lastName.focus()
+                                    }
                                 />
                                 <RegularText style={styles.bioHeader}>
                                     Last Name
                                 </RegularText>
                                 <TextInput
-                                    value={this.state.individual.lastName}
+                                    value={individual.lastName}
                                     name="lastName"
                                     onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.username.focus()}
+                                    onSubmitEditing={() =>
+                                        this.username.focus()
+                                    }
                                 />
                                 <RegularText style={styles.bioHeader}>
                                     User Name
@@ -439,13 +464,14 @@ class ProfileEditScreen extends Component {
                                         text={this.state.individual.bio}
                                         style={styles.contentText}
                                         onChange={val =>
-                                            this.setState(prevState =>{
-                                                return {individual: {
-                                                    ...prevState.individual,
-                                                   bio: val,
-                                                   },
-                                               }
-                                               })
+                                            this.setState(prevState => {
+                                                return {
+                                                    individual: {
+                                                        ...prevState.individual,
+                                                        bio: val,
+                                                    },
+                                                };
+                                            })
                                         }
                                     />
                                 </View>
@@ -493,11 +519,31 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <AddressInput
                                     onChange={this.onInputChange}
-                                    address1={isOrganisation?organisation.address.addressLine1:individual.address.addressLine1}
-                                    address2={isOrganisation?organisation.address.addressLine2:individual.address.addressLine2}
-                                    city={isOrganisation?organisation.address.townCity:individual.address.townCity}
-                                    countryState={isOrganisation?organisation.address.countryState:individual.address.countryState}
-                                    postcode={isOrganisation?organisation.address.postCode:individual.address.postCode}
+                                    address1={
+                                        isOrganisation
+                                            ? organisation.address.addressLine1
+                                            : individual.address.addressLine1
+                                    }
+                                    address2={
+                                        isOrganisation
+                                            ? organisation.address.addressLine2
+                                            : individual.address.addressLine2
+                                    }
+                                    city={
+                                        isOrganisation
+                                            ? organisation.address.townCity
+                                            : individual.address.townCity
+                                    }
+                                    countryState={
+                                        isOrganisation
+                                            ? organisation.address.countryState
+                                            : individual.address.countryState
+                                    }
+                                    postcode={
+                                        isOrganisation
+                                            ? organisation.address.postCode
+                                            : individual.address.postCode
+                                    }
                                 />
                             </View>
                         </View>
@@ -527,7 +573,7 @@ class ProfileEditScreen extends Component {
                     </SafeAreaView>
                 </ScrollView>
             </KeyboardAvoidingView>
-        )
+        );
     }
 }
 
