@@ -13,7 +13,6 @@ on:
       - dev # dev
     paths:
       - "server/**"
-      - "resources/**" # TODO Remove this, this is only for testing
 
 jobs:
   # build and run tests
@@ -21,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     # setup node, build, and run tests
     steps:
-      - name: checkout GitHub repo
+      - name: checkout GitHub repository
         uses: actions/checkout@v2
 
       - name: set up Node.js 12.x
@@ -40,8 +39,20 @@ jobs:
         working-directory: ./server
         run: npx eslint ./
 
+      - name: Generate API documentation
+        if: github.ref == 'refs/heads/dev'
+        run: npm run docs
+        working-directory: ./server
+
+      - name: Create API documentation artifact
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/upload-artifact@v1
+        with:
+          name: docs
+          path: server/out
+
+
   test:
-    if: github.ref == 'refs/pull/128/merge' # TODO remove
     needs: build
     services:
       postgres:
@@ -69,7 +80,7 @@ jobs:
       DB_DATABASE: karma-db
     runs-on: ubuntu-latest
     steps:
-      - name: checkout Github repo
+      - name: checkout Github repository
         uses: actions/checkout@v2
 
       - name: set up Node.js 12.x
@@ -89,28 +100,16 @@ jobs:
       - name: npm test
         run: npm test
         working-directory: ./server
-      - name: Generate docs
-        if: github.ref == 'refs/heads/devops-deploy-docs' # TODO Change this to 'refs/heads/dev' before merging
-        run: npm run docs
-        working-directory: ./server
-      - name: Deploy docs
-        if: github.ref == 'refs/heads/devops-deploy-docs' # TODO Change this to 'refs/heads/dev' before merging
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "server/out"
-          target: "web-data"
 
   publish:
-    if: github.ref == 'refs/pull/127/merge' # TODO Change this to 'refs/heads/dev' before merging
+    if: github.ref == 'refs/heads/dev'
+    needs: [build, test]
     runs-on: ubuntu-latest
     steps:
-    - name: Generate docs
-      run: npm run docs
-      working-directory: ./server
+    - name: Download docs artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: docs
     - name: Deploy docs
       uses: appleboy/scp-action@master
       with:
@@ -118,9 +117,9 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        source: "server/out/**"
+        source: "docs/**"
         target: "web-data"
-        strip_components: 2
+        strip_components: 1
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on
