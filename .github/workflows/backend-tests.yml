@@ -65,6 +65,7 @@ jobs:
       SKIP_MAIL_SENDING_FOR_TESTING: 1
       DB_HOST: localhost
       DB_DATABASE: karma-db
+      SKIP_GEOCODING: 1
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repo

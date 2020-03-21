@@ -1,5 +1,6 @@
 const jose = require('jose');
 const config = require("../../config").jose;
+const date = require("date-and-time");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const {
     JWE, // JSON Web Encryption (JWE)
@@ -280,11 +281,22 @@ const blacklistJWT = async (jwt) => {
     const sig = getSignatureFromJWT(jwt);
     await authRepo.insert({
         token: sig,
-        expiryDate: "2021-06-22T18:10:25.000Z", // TODO:
-        creationDate: "2021-06-22T18:10:25.000Z", // TODO:
+        creationDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         userId: userId,
     });
     addSigToBlacklistCache(sig);
+};
+
+/**
+ * Decrypt and blacklist given JWE.
+ * This inserts the blacklisted userId - sig
+ * pair in the DB and the latter in the
+ * signature blacklist cache
+ * @param {object} jwe
+ * @throws {error} DB error if already blacklisted
+ */
+const decryptAndBlacklistJWE = async (jwe) => {
+    await blacklistJWT(decrypt(jwe));
 };
 
 /**
@@ -365,6 +377,7 @@ module.exports = {
     getUserIdFromPayload,
     getSignatureFromJWT,
     blacklistJWT,
+    decryptAndBlacklistJWE,
     isBlacklisted,
     fetchBlacklist,
 };

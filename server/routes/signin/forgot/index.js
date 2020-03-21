@@ -11,7 +11,8 @@ const tokenSender = require("../../../modules/verification/tokenSender");
 const authAgent = require("../../../modules/authentication/auth-agent");
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
- * URL example: POST http://localhost:8000/signin/forgot
+ <p><b>Route: </b>/signin/forgot (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {String} req.body.data.email - Email of the user
  * @returns
  *  status: 200, description: Token sent successfully. Valid for use 1 hour from sending <br/>
@@ -39,11 +40,12 @@ router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
 
 /**
  * Endpoint called whenever a user writes in the token they recieved and click submit.<br/>
- * URL example: POST http://localhost:8000/signin/forgot
+ <p><b>Route: </b>/signin/forgot/confirm (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {String} req.body.data.email - Email of the user
  * @param {String} req.body.data.token - Token input by user
  * @returns
- *  status: 200, description: Token is accepted <br/>
+ *  status: 200, description: Token is accepted, req.body.data.authToken <br/>
  *  status: 400, description: Email or Token not specified in request body <br/>
  *  status: 400, description: Token did not match sent token <br/>
  *  status: 400, description: Token expired(tokens are valid only for 1 hour) <br/>
@@ -69,7 +71,13 @@ router.post('/confirm', authAgent.requireNoAuthentication, async (req, res) => {
             const expiryDate = result.rows[0].expiryDate;
 
             if (tokenSent === tokenRecieved && new Date() <= expiryDate) {
-                res.status(200).send("Token accepted");
+                const authToken = authAgent.grantResetAccess(checkEmailResult.user.id, req.body.pub);
+                res.status(200).send({
+                    message: "Token accepted",
+                    data: {
+                        authToken: authToken,
+                    },
+                });
             } else if (tokenSent !== tokenRecieved) {
                 res.status(400).send("Tokens did not match");
             } else {

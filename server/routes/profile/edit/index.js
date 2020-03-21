@@ -15,7 +15,8 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  * Endpoint called whenever a user wishes to update their profile <br/>
  * Any data that does not need to be updated can and should be
  * left out from the POST request to avoid unnecessary computation.<br/>
- * URL example: POST http://localhost:8000/profile/edit/
+ <p><b>Route: </b>/profile/edit (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.user if anything for user has changed

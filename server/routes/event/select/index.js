@@ -12,8 +12,9 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
- * route {GET} event/causes
  * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!womenOnly&filter[]=physical
+ <p><b>Route: </b>/event/causes (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
@@ -116,7 +117,8 @@ router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
 
 /**
  * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
- * route {GET} event/favourites
+ <p><b>Route: </b>/event/favourites (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @returns {Object}
  *  status: 200, description: res.data: Array of all event objects favourited by the user<br/>
@@ -192,7 +194,8 @@ router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
 
 /**
  * Endpoint called when "Going" tab is pressed in Activities homepage <br/>
- * route {GET} event/going
+ <p><b>Route: </b>/event/going (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @returns {Object}
  *  status: 200, description: Array of all event objects that user is going to<br/>

@@ -12,7 +12,8 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite
+ <p><b>Route: </b>/event/:id/favourite (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -54,7 +55,8 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
 
 /**
  * Endpoint called whenever a user unfavourites an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite/delete
+ <p><b>Route: </b>/event/:id/favourite/delete (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {

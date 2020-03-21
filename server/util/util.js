@@ -210,4 +210,5 @@ module.exports = {
     isValidToken,
     sleep,
     getIndividualIdFromUserId,
+    base64ToHex,
 };

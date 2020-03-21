@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
-
+const jose = require("../../../modules/jose");
 const userRepository = require("../../../models/databaseRepositories/userRepository");
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
 const mailSender = require("../../../modules/mailSender");
@@ -96,12 +96,13 @@ test('confirming correct token works', async () => {
             data: {
                 email: "test@gmail.com",
                 token: "234567",
-            }
+            },
+            pub: jose.getEncPubAsPEM(),
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
-    expect(response.text).toMatch("Token accepted");
+    expect(response.body.message).toMatch("Token accepted");
 });
 
 test('confirming correct token but not latest does not work', async () => {

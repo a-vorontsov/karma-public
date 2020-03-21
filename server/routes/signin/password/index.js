@@ -15,7 +15,8 @@ const httpUtil = require("../../../util/httpUtil");
  * the sing-in operation & password validation will not continue.<br/>
  * Upon a successful login attempt, the response will contain the
  * userId as well as a new and valid authToken for the user.
- * @route {POST} /signin/password
+ <p><b>Route: </b>/signin/password (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {string} req.body.data.email the email address of the user
@@ -49,7 +50,7 @@ const httpUtil = require("../../../util/httpUtil");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password);
+        const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
         httpUtil.sendAuthResult(signInResult, res);
     } catch (e) {
         res.status(400).send({

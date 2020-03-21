@@ -28,7 +28,7 @@ const requireAuthentication = (req, res, next) => {
     try {
         const baseUrl = req.baseUrl;
         const aud = permissions.has(baseUrl) ? permissions.get(baseUrl) : undefined;
-        const userId = jose.verifyAndGetUserId(authToken, aud);
+        const userId = jose.decryptVerifyAndGetUserId(authToken, aud);
         // pass on derived userId in request
         req.body.userId = userId;
         req.query.userId = userId;
@@ -59,7 +59,7 @@ const requireNoAuthentication = (req, res, next) => {
         return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
     }
     try { // if it does not fail user already auth
-        jose.verify(authToken);
+        jose.decryptAndVerify(authToken);
         httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res, redirToken());
     } catch (e) {
         next(); // if it does fail, user is not auth as needed
@@ -134,14 +134,15 @@ const redirToken = () => {
  * user and return it.
  * @param {number} userId
  * @param {string} aud
+ * @param {Object} pub public key of recipient
  * @return {string} authToken
  */
-const logIn = (userId, aud) => {
+const logIn = (userId, aud, pub) => {
     const payload = {
         sub: userId.toString(),
         aud: aud,
     };
-    return jose.sign(payload);
+    return jose.signAndEncrypt(payload, pub);
 };
 
 /**
@@ -149,10 +150,11 @@ const logIn = (userId, aud) => {
  * for a specific time (specified in /config)
  * for given user and return it.
  * @param {number} userId
+ * @param {Object} pub public key of recipient
  * @return {string} authToken
  */
-const logInUser = (userId) => {
-    return logIn(userId, permConfig["/"]);
+const logInUser = (userId, pub) => {
+    return logIn(userId, permConfig["/"], pub);
 };
 
 /**
@@ -160,10 +162,11 @@ const logInUser = (userId) => {
  * for a specific time (specified in /config)
  * for given user and return it.
  * @param {number} userId of admin
+ * @param {Object} pub public key of recipient
  * @return {string} authToken
  */
-const logInAdmin = (userId) => {
-    return logIn(userId, permConfig["/admin"]);
+const logInAdmin = (userId, pub) => {
+    return logIn(userId, permConfig["/admin"], pub);
 };
 
 /**
@@ -174,11 +177,12 @@ const logInAdmin = (userId) => {
  * is thrown.
  * @param {number} userId
  * @param {string} aud
+ * @param {Object} pub public key of recipient
  * @param {string} exp
  * @return {string} authToken
  * @throws {error} if aud or exp unspecified
  */
-const grantTemporaryAccess = (userId, aud, exp) => {
+const grantTemporaryAccess = (userId, aud, pub, exp) => {
     if (!permissions.has(aud) || !(typeof(exp) === "string")) {
         throw new Error("Invalid params for temporary access.");
     }
@@ -186,7 +190,7 @@ const grantTemporaryAccess = (userId, aud, exp) => {
         sub: userId.toString(),
         aud: aud,
     };
-    return jose.sign(payload, exp);
+    return jose.signAndEncrypt(payload, pub, exp);
 };
 
 /**
@@ -198,10 +202,11 @@ const grantTemporaryAccess = (userId, aud, exp) => {
  * valid for the reset password route
  * and for 15 minutes.
  * @param {number} userId
+ * @param {Object} pub public key of recipient
  * @return {string} authToken
  */
-const grantResetAccess = (userId) => {
-    return grantTemporaryAccess(userId, permConfig["/reset"], "15 m");
+const grantResetAccess = (userId, pub) => {
+    return grantTemporaryAccess(userId, permConfig["/reset"], pub, "15 m");
 };
 
 /**
@@ -210,7 +215,7 @@ const grantResetAccess = (userId) => {
  * @param {string} authToken
  */
 const logOut = async (authToken) => {
-    await jose.blacklistJWT(authToken);
+    await jose.decryptAndBlacklistJWE(authToken);
 };
 
 module.exports = {

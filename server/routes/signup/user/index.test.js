@@ -3,6 +3,7 @@ const app = require("../../../app");
 const testHelpers = require("../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
+const jose = require("../../../modules/jose");
 
 let registration;
 
@@ -31,7 +32,8 @@ const registerUserRequest = {
             email: "test4@gmail.com",
             username: "userNamesArePointless",
         }
-    }
+    },
+    pub: jose.getEncPubAsPEM(),
 };
 
 test("user registration works", async () => {

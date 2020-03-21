@@ -13,7 +13,8 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * authToken must be present, as in any other request.</br>
  * This logs out the user by setting their current authToken
  * expired and therefore ending their session.
- * @route {GET} /signout
+ <p><b>Route: </b>/signout (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId user's id
  * @param {String} req.body.authToken valid token
  * @return {HTTP} one of the following HTTP responses:<br/>

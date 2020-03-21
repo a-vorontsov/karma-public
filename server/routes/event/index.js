@@ -1,5 +1,5 @@
 /**
- * @module Events
+ * @module Event
  */
 
 const express = require("express");
@@ -24,7 +24,8 @@ router.use("/", eventSelectRoute);
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
  * URL example: REACT_APP_API_URL/event?userId=1&pageSize=2&currentPage=1
 &filter[]=!womenOnly&filter[]=physical&availabilityStart=2020-03-03&availabilityEnd=2020-12-03&maxDistance=5000<br/>
- * route {GET} /event
+ <p><b>Route: </b>/event (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
@@ -139,7 +140,8 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
 
 /**
  * Endpoint called whenever a user requests information about an event.
- * URL example: GET http://localhost:8000/event/5
+ <p><b>Route: </b>/event/:id (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} id - id of requested event.
  * @returns {object}
  *  status: 200, description: Information regarding the event containing the same properties as this example
@@ -194,7 +196,8 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
 /**
  * Endpoint called whenever a user creates a new event.<br/>
  * If an existing addressId is specified in the request, it is reused and no new address is created.<br/>
- * URL example: POST http://localhost:8000/event/
+ <p><b>Route: </b>/event (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -268,7 +271,8 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 
 /**
  * Endpoint called whenever a user updates an event.<br/>
- * URL example: POST http://localhost:8000/event/update/5
+ <p><b>Route: </b>/event/update/:id (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -342,7 +346,8 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
 
 /**
  * Endpoint called whenever a user deletes an event. <br/>
- * URL example: POST http://localhost:8000/event/5/delete/
+ <p><b>Route: </b>/event/:id/delete/ (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @returns {object}
  *  status: 200, description: The deleted event object.<br/>
  <pre>
@@ -371,7 +376,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", async (req, res) => {
+router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
