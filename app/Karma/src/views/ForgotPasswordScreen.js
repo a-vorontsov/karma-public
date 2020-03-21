@@ -32,7 +32,7 @@ export default class ForgotPasswordScreen extends Component {
             .post("http://localhost:8000/reset")
             .send({
                 userId: credentials.username,
-                authToken: credentials.password,
+                //authToken: credentials.password,
                 data: {
                     password: this.state.passwordInput
                 }
