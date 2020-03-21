@@ -17,6 +17,7 @@ class DetailsEntry extends React.Component {
     }
 }
 
+
 export class IndividualDetails extends React.Component {
     render() {
         const {details} = this.props;
