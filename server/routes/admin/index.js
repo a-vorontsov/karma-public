@@ -9,10 +9,12 @@ const httpUtil = require("../../util/httpUtil");
 const deletionModule = require("../../modules/deletion");
 const adminService = require("../../modules/admin/adminService");
 const validation = require("../../modules/validation");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever an admin requests to see all users.<br/>
- * URL example: GET http://localhost:8000/admin/users
+ <p><b>Route: </b>/admin/users (GET)</p>
+ <p><b>Permissions: </b>require admin permissions</p>
  * @returns {Object}
  *  status: 200, description: All users signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -40,7 +42,7 @@ const validation = require("../../modules/validation");
  *  @name Get all users
  *  @function
  */
-router.get("/users", async (req, res) => {
+router.get("/users", authAgent.requireAuthentication, async (req, res) => {
     try {
         const usersResult = await adminService.getAllUsers();
         return httpUtil.sendResult(usersResult, res);
@@ -53,7 +55,8 @@ router.get("/users", async (req, res) => {
 /**
  * Endpoint called whenever an admin requests to delete all information in database for
  * specific user.<br/>
- * URL Example: POST localhost:8000/admin/user/delete?userId=2
+ <p><b>Route: </b>/admin/user/delete?userId=2 (POST)</p>
+ <p><b>Permissions: </b>require admin permissions</p>
  * @returns {Object}
  *  status: 200, description: The deleted user.<br/>
  *  status: 500, description: DB error
@@ -75,7 +78,7 @@ router.get("/users", async (req, res) => {
  *  @name Post delete user info
  *  @function
  */
-router.post("/user/delete", async (req, res) => {
+router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
         const deletionResult = await deletionModule.deleteAllInformation(userId);
@@ -89,7 +92,8 @@ router.post("/user/delete", async (req, res) => {
 /**
  * This fetches all individuals.
  * Endpoint called whenever an admin requests to see all individuals.<br/>
- * URL example: GET http://localhost:8000/admin/individuals
+ <p><b>Route: </b>/admin/individuals (GET)</p>
+ <p><b>Permissions: </b>require admin permissions</p>
  * @returns {Object}
  *  status: 200, description: All individuals signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -130,7 +134,7 @@ router.post("/user/delete", async (req, res) => {
  *  @function
 
  */
-router.get("/individuals", async (req, res) => {
+router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
     try {
         const individualsResult = await adminService.getAllIndividuals();
         return httpUtil.sendResult(individualsResult, res);
@@ -142,7 +146,8 @@ router.get("/individuals", async (req, res) => {
 
 /**
  * Endpoint called whenever an admin requests to toggle the ban status of an individual.<br/>
- * URL example: POST http://localhost:8000/admin/individuals
+ <p><b>Route: </b>/admin/toggleban (POST)</p>
+ <p><b>Permissions: </b>require admin permissions</p>
  * @returns {Object}
  *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
  *  status: 500, description: DB error
@@ -169,7 +174,7 @@ router.get("/individuals", async (req, res) => {
  *  @name Ban individual
  *  @function
  */
-router.post("/toggleBan", async (req, res) => {
+router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
     try {
         const individual = req.body.data.individual;
         const validationResult = validation.validateIndividual(individual);

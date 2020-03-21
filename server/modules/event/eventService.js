@@ -7,6 +7,7 @@ const favouriteEventRepository = require("../../models/databaseRepositories/favo
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
+const geocoder = require("../geocoder");
 /**
  * Creates a new event to be added to the database.
  * @param {object} event A valid event, an address inside the event object or addressId set to an existing address,
@@ -28,7 +29,11 @@ const createNewEvent = async (event) => {
     }
 
     if (!event.addressId) { // address doesn't exist in database yet
-        const addressResult = await addressRepository.insert(event.address);
+        const address = event.address;
+        const geoCode = await geocoder.geocode(address);
+        address.lat = geoCode == true ? geoCode[0].latitude : 0;
+        address.long = geoCode == true ? geoCode[0].longitude : 0;
+        const addressResult = await addressRepository.insert(address);
         event.addressId = addressResult.rows[0].id;
     }
 

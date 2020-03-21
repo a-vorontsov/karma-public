@@ -16,7 +16,8 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 
 /**
  * Endpoint called whenever a user wishes to get their profile.<br/>
- * URL example: GET http://localhost:8000/profile?userId=5
+ <p><b>Route: </b>/profile (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @param {String} req.body.authToken
  * @returns {object}

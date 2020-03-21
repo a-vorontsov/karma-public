@@ -1,9 +1,9 @@
 const db = require("../../database/connection");
 
 const insert = (authentication) => {
-    const query = "INSERT INTO authentication(token, expiry_date, creation_date, user_id) VALUES ($1, $2, $3, $4)" +
+    const query = "INSERT INTO authentication(token, creation_date, user_id) VALUES ($1, $2, $3)" +
         "RETURNING *"; // returns passed authentication with it's id set to corresponding id in database
-    const params = [authentication.token, authentication.expiryDate, authentication.creationDate, authentication.userId];
+    const params = [authentication.token, authentication.creationDate, authentication.userId];
     return db.query(query, params);
 };
 
@@ -27,18 +27,10 @@ const findLatestByUserID = (userId) => {
     return db.query(query, [userId]);
 };
 
-const updateAllExpirationsForUser = (userId, expirationDate) => {
-    const query =
-    'UPDATE "authentication" SET expiry_date = $1 WHERE user_id = $2 RETURNING *';
-    const params = [expirationDate, userId];
-    return db.query(query, params);
-};
-
 module.exports = {
-    insert: insert,
-    findById: findById,
-    findAll: findAll,
-    findAllByUserID: findAllByUserID,
-    findLatestByUserID: findLatestByUserID,
-    updateAllExpirationsForUser: updateAllExpirationsForUser,
+    insert,
+    findById,
+    findAll,
+    findAllByUserID,
+    findLatestByUserID,
 };
