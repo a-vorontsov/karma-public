@@ -9,7 +9,7 @@ const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
 test("resetting the password works", async () => {
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
     const resetRequest = {
         data: {
             password: "newPass69!.",

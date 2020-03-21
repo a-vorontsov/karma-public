@@ -470,7 +470,7 @@ test("visiting a no-auth route with auth-checks disabled works", async () => {
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     signUpEmailReq.authToken = authToken;
 
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
 
     const response = await request(app)
         .post("/signin/email")
@@ -480,7 +480,7 @@ test("visiting a no-auth route with auth-checks disabled works", async () => {
     expect(response.body.message).toBe("Email did not exist. Email successfully recorded, wait for user to input email verification code.");
     expect(response.statusCode).toBe(200);
 
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+    process.env.NO_AUTH = 0;
 });
 
 test("visiting an internal route with auth-checks disabled works", async () => {
@@ -495,7 +495,7 @@ test("visiting an internal route with auth-checks disabled works", async () => {
         // no auth token specified
     };
 
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
 
     const response = await request(app)
         .get("/causes")
@@ -508,7 +508,7 @@ test("visiting an internal route with auth-checks disabled works", async () => {
         id: 1,
     }]);
 
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
+    process.env.NO_AUTH = 0;
 });
 
 test("visiting an admin route with a valid token works", async () => {

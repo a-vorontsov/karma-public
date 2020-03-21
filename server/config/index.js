@@ -10,7 +10,7 @@ config.jose = { // TODO: host on domain
     aud: "/user",
 };
 
-config.permissions = {
+config.josePermissions = {
     "/admin": "/admin",
     "/reset": "/reset",
     "/": "/user",
