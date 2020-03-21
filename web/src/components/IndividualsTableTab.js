@@ -14,8 +14,14 @@ export function IndividualsTableTab() {
         fetchData();
     }, []);
 
-    const toggleBan = async (event, rowData) => {
-        if (!window.confirm(rowData.banned ? "Unban " : "Ban " + rowData.firstname + " " + rowData.lastname + "?")) return;
+    const toggleBan = (event, rowData) => {
+        if (!window.confirm((rowData.banned ? "Unban " : "Ban ") + rowData.firstname + " " + rowData.lastname + "?")) return;
+        fetch(process.env.REACT_APP_API_URL + "/admin/toggleBan", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({data: {individual: rowData}}),
+        });
+
         rowData.banned = !rowData.banned;
         const indivs = individuals.slice();
         indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
