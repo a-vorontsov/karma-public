@@ -19,8 +19,7 @@ CREATE TABLE address
 CREATE TABLE authentication
 (
     id serial NOT NULL,
-    token varchar(64) NOT NULL,
-    expiry_date timestamp NOT NULL,
+    token varchar(256) NOT NULL,
     creation_date timestamp NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT authentication_ak_1 UNIQUE (token)

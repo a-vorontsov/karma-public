@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
 const userAgent = require("../../../modules/authentication/user-agent");
+const httpUtil = require("../../../util/httpUtil");
 
 /**
  * Attempt to log in an existing user with given email & password.<br/>
@@ -14,7 +15,8 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * the sing-in operation & password validation will not continue.<br/>
  * Upon a successful login attempt, the response will contain the
  * userId as well as a new and valid authToken for the user.
- * @route {POST} /signin/password
+ <p><b>Route: </b>/signin/password (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {string} req.body.data.email the email address of the user
@@ -48,19 +50,8 @@ const userAgent = require("../../../modules/authentication/user-agent");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        if (await userAgent.isCorrectPasswordByEmail(req.body.data.email, req.body.data.password)) {
-            const userId = await userAgent.getUserId(req.body.data.email);
-            const authToken = await authAgent.logIn(userId);
-            res.status(200).send({
-                message: "Successful authentication with email & password.",
-                userId: userId,
-                authToken: authToken,
-            });
-        } else {
-            res.status(400).send({
-                message: "Invalid password.",
-            });
-        }
+        const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
+        httpUtil.sendAuthResult(signInResult, res);
     } catch (e) {
         res.status(400).send({
             message: e.message,

@@ -18,7 +18,7 @@ const profile = testHelpers.getProfile();
 
 beforeEach(() => {
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
     return testHelpers.clearDatabase();
 });
 

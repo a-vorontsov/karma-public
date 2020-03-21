@@ -3,6 +3,7 @@ const app = require("../../../app");
 const testHelpers = require("../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
+const jose = require("../../../modules/jose");
 
 let registration;
 
@@ -11,7 +12,6 @@ jest.mock("owasp-password-strength-test");
 beforeEach(() => {
     registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
     registerUserRequest.data.user.confirmPassword = "new_plaintext";
     registerUserRequest.data.user.email = "test4@gmail.com";
     return testHelpers.clearDatabase();
@@ -32,7 +32,8 @@ const registerUserRequest = {
             email: "test4@gmail.com",
             username: "userNamesArePointless",
         }
-    }
+    },
+    pub: jose.getEncPubAsPEM(),
 };
 
 test("user registration works", async () => {

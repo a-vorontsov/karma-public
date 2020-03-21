@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
 const httpUtil = require("../../util/httpUtil");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Attempt send a bug report to admin email account.
@@ -13,7 +14,8 @@ const httpUtil = require("../../util/httpUtil");
  * by the app user (as bugs may occur when a user is not
  * signed-in). Returns success or an error message from
  * the mailSender module.
- * @route {POST} /bugreport
+ <p><b>Route: </b>/bugreport (POST)</p>
+ <p><b>Permissions: </b>any</p>
  * @param {number} req.body.userId can be anything
  * @param {string} req.body.authToken can be anything
  * @param {object} req.body.data.email user input email address
@@ -43,7 +45,7 @@ const httpUtil = require("../../util/httpUtil");
  * @name Send bug report
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);

@@ -8,6 +8,8 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
+const authAgent = require("./auth-agent");
+const geocoder = require("../geocoder");
 
 /**
  * Register a new record in the registration table.
@@ -28,12 +30,13 @@ async function registerEmail(email) {
  * @param {string} email
  * @param {string} username
  * @param {string} password
+ * @param {Object} pub public key of client
  * @return {number} id of new user
  * @throws {error} if registration record not found
  * @throws {error} if already registered
  * @throws {error} if invalid query
  */
-async function registerUser(email, username, password) {
+async function registerUser(email, username, password, pub) {
     if (!(await regStatus.emailExists(email))) {
         throw new Error("Invalid operation: registration record not found.");
     }
@@ -42,7 +45,7 @@ async function registerUser(email, username, password) {
     }
     if (await regStatus.userAccountExists(email)) {
         throw new Error("500:Internal Server Error." +
-        "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
+            "This may be an indicator of malfunctioning DB queries, logical programming errors, or corrupt data.");
     }
 
     const secureSalt = digest.generateSecureSaltInHex();
@@ -60,7 +63,14 @@ async function registerUser(email, username, password) {
         dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
     });
     const userResult = await userRepo.findByEmail(email);
-    return userResult.rows[0].id;
+    const userId = userResult.rows[0].id;
+    const authToken = authAgent.logInUser(userId, pub);
+    return ({
+        status: 200,
+        message: "User registration successful. Go to individual/org registration selection",
+        userId: userId,
+        authToken: authToken,
+    });
 }
 
 /**
@@ -145,14 +155,15 @@ async function registerOrg(userId, organisation) {
  * @return {number} addressId
  */
 async function registerAddress(address) {
+    const geoCode = await geocoder.geocode(address);
     return (await addressRepo.insert({
         address1: address.addressLine1,
         address2: address.addressLine2,
         postcode: address.postCode,
         city: address.townCity,
         region: address.countryState,
-        lat: 0, // TODO: compute here?
-        long: 0,
+        lat: geoCode == true ? geoCode[0].latitude : 0,
+        long: geoCode == true ? geoCode[0].longitude : 0,
     })).rows[0].id;
 }
 
@@ -234,27 +245,33 @@ async function updatePassword(userId, password) {
     await userRepo.updatePassword(userId, hashedPassword, secureSalt);
 }
 
-/**
- * Get userId of user specified by email address.
- * @param {string} email
- * @return {number} userId
- * @throws {error} if user is not found
- * @throws {error} if invalid query
- */
-async function getUserId(email) {
+const signIn = async (email, password, pub) => {
     const userResult = await userRepo.findByEmail(email);
-    const userRecord = userResult.rows[0];
-    return userRecord.id;
-}
+    const user = userResult.rows[0];
+    if (isCorrectPassword(user, password)) {
+        const authToken = authAgent.logInUser(user.id, pub);
+        return ({
+            status: 200,
+            message: "Successful authentication with email & password.",
+            userId: user.id,
+            authToken: authToken,
+        });
+    } else {
+        return ({
+            status: 400,
+            message: "Invalid password.",
+        });
+    }
+};
 
 module.exports = {
-    registerEmail: registerEmail,
-    registerUser: registerUser,
-    registerIndividual: registerIndividual,
-    registerOrg: registerOrg,
-    isCorrectPasswordById: isCorrectPasswordById,
-    isCorrectPasswordByEmail: isCorrectPasswordByEmail,
-    updatePassword: updatePassword,
-    getUserId: getUserId,
-    registerAddress: registerAddress,
+    registerEmail,
+    registerUser,
+    registerIndividual,
+    registerOrg,
+    isCorrectPasswordById,
+    isCorrectPasswordByEmail,
+    updatePassword,
+    registerAddress,
+    signIn,
 };
