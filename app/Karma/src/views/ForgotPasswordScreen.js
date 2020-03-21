@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Dimensions, SafeAreaView} from "react-native";
+import {View, Dimensions, SafeAreaView, Alert} from "react-native";
 
 import Styles from "../styles/Styles";
 
@@ -24,18 +24,19 @@ export default class ForgotPasswordScreen extends Component {
     }
 
     sendNewPass = async () => {
-        console.log("in forgot screen");
-        console.log(this.state.passwordInput);
+        const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
         await request
             .post("http://localhost:8000/reset")
             .send({
                 data: {
-                    password: this.state.passwordInput,
-                },
+                    password: this.state.passwordInput
+                }
             })
             .then(res => {
-                console.log(res.body.data);
+                    Alert.alert("Successful password reset", "You've successfully reset your password!", [
+                        {text: "OK", onPress: () => navigate("Welcome")},
+                    ]);
             })
             .catch(err => {
                 console.log(err);
@@ -44,7 +45,7 @@ export default class ForgotPasswordScreen extends Component {
 
     onInputChange = inputState => {
         this.setState({
-            passwordInput: inputState.password,
+            passwordInput: inputState.confPassword.confPassword,
         });
     };
 

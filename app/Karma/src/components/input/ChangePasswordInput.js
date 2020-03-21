@@ -27,16 +27,17 @@ export default class ChangePasswordInput extends Component {
         this.onChangeText = this.onChangeText.bind(this);
         this.passUpState = this.passUpState.bind(this);
     }
-    onChangeText = event => {
+
+    onChangeText(event){
         const {name, text} = event;
         this.setState({[name]: text});
     };
 
     passUpState() {
-        const password = this.state;
-        if (password) {
+        const confPassword = this.state;
+        if (confPassword) {
             this.props.onChange({
-                password,
+                confPassword,
                 valid: true,
             });
         }
@@ -90,7 +91,7 @@ export default class ChangePasswordInput extends Component {
                         autoCapitalize="none"
                         name="password"
                         secureTextEntry={this.state.hidePassword}
-                        blurOnSubmit={false}
+                        //blurOnSubmit={false}
                         onChange={this.onChangeText}
                         showError={showError}
                         errorText={this.whichErrorText()}
@@ -120,7 +121,7 @@ export default class ChangePasswordInput extends Component {
                         placeholder="Confirm Password"
                         name="confPassword"
                         autoCapitalize="none"
-                        blurOnSubmit={false}
+                        //blurOnSubmit={false}
                         inputRef={ref => (this.confPassword = ref)}
                         onSubmitEditing={() => {
                             Keyboard.dismiss();

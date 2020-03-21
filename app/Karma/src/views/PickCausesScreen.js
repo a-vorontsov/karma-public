@@ -32,6 +32,7 @@ export default class PickCausesScreen extends React.Component {
     async selectCauses() {
         const credentials = await getData();
         const authToken = credentials.password;
+        console.log(authToken)
         const userId = credentials.username;
         await request
             .post("http://localhost:8000/causes/select")
