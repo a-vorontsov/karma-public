@@ -37,7 +37,7 @@ export default class CausePicker extends React.Component {
                             key={c.id}
                             cause={c}
                             selected={selected}
-                            showCheckBox= {true}
+                            showCheckBox={true}
                             onPress={this.onPress}
                         />
                     );

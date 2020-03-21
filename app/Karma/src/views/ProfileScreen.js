@@ -46,7 +46,8 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             activeSlide: 0,
-            name: "",
+            fname: "",
+            lname: "",
             username: "",
             location: "",
             bio: "",
@@ -60,7 +61,9 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             organisationType: "",
             orgPhoneNumber: "",
-            address:{},
+            orgName:"",
+            address: {},
+            gender: null,
         };
         this.fetchProfileInfo();
     }
@@ -70,6 +73,7 @@ class ProfileScreen extends Component {
     };
 
     setupIndividualProfile(res) {
+        console.log(res.body.data.individual);
         const {
             causes,
             createdEvents,
@@ -82,7 +86,8 @@ class ProfileScreen extends Component {
 
         this.setState({
             isOrganisation: false,
-            name: individual.firstName + " " + individual.lastName,
+            fname: individual.firstName,
+            lname: individual.lastName,
             username: user.username,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
@@ -94,8 +99,10 @@ class ProfileScreen extends Component {
             createdEvents: createdEvents,
             createdPastEvents: createdPastEvents,
             address: individual.address,
+            gender: individual.gender,
         });
     }
+
     setupOrganisationProfile(res) {
         const {
             causes,
@@ -106,7 +113,7 @@ class ProfileScreen extends Component {
         } = res.body.data;
         this.setState({
             isOrganisation: true,
-            name: organisation.name,
+            orgName: organisation.name,
             organisationType: organisation.organisationType,
             username: user.username,
             location:
@@ -190,9 +197,11 @@ class ProfileScreen extends Component {
                                 flexDirection: "row-reverse",
                             }}>
                             <TouchableOpacity
-                                onPress={() => navigate("ProfileEdit",{
-                                    profile: this.state,
-                                })}>
+                                onPress={() =>
+                                    navigate("ProfileEdit", {
+                                        profile: this.state,
+                                    })
+                                }>
                                 <Image
                                     source={icons.edit_white}
                                     style={{
@@ -259,11 +268,22 @@ class ProfileScreen extends Component {
                                     flex: 1,
                                 }}>
                                 <View>
+                                    {this.state.isOrganisation && (
                                     <Text
                                         numberOfLines={1}
                                         style={[styles.nameText]}>
-                                        {this.state.name}
+                                        {this.state.orgName}
                                     </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                    <Text
+                                        numberOfLines={1}
+                                        style={[styles.nameText]}>
+                                        {this.state.fname +
+                                            " " +
+                                            this.state.lname}
+                                    </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
