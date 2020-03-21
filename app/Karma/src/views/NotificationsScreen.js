@@ -136,7 +136,7 @@ class NotificationsScreen extends Component {
         }
 
         return weekNotifications.map(n => {
-            return <NotificationItem notification={n} />;
+            return <NotificationItem key={n.id} notification={n} />;
         });
     };
 

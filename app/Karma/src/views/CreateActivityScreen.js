@@ -84,7 +84,7 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
-                const volunteers = [2]; //TODO get from activity
+                const volunteers = activity.volunteers; 
                 this.setState({
                     eventId: activity.id,
                     isUpdate: true,
@@ -146,7 +146,7 @@ export default class CreateActivityScreen extends React.Component {
                 ]);
                 sendNotification(
                     "EventUpdate",
-                    `The activity named ${event.title} has been updated!`,
+                    `The activity named ${event.name} has been updated!`,
                     Number(userId),
                     this.state.volunteers,
                 );

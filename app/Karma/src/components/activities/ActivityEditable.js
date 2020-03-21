@@ -16,6 +16,7 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import request from "superagent";
+import { getData } from "../../util/GetCredentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -28,15 +29,25 @@ const icons = {
 const ActivityEditable = props => {
     const navigation = useNavigation();
     const {activity, creatorName} = props;
-
+    const volunteers = activity.volunteers; //todo get from activity object
     /**
      * Delete the event selected
      */
     const deleteEvent = async () => {
         const activityId = activity.id;
+        const credentials = await getData();
+
         const url = `http://localhost:8000/event/${activityId}/delete/`;
         await request.post(url).then(res => {
             navigation.navigate("Profile");
+            sendNotification(
+                "EventCancellation",
+                `Event named ${
+                    activity.name
+                } has been cancelled.`,
+                Number(credentials.username),
+                volunteers
+            );
         });
     };
 
@@ -112,12 +123,7 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        // sendNotification(
-                                        //     "EventCancellation",
-                                        //     `"Event named ${
-                                        //         activity.name
-                                        //     } has been cancelled"`,
-                                        // );
+                                        
                                         Alert.alert(
                                             "Are you sure you want to delete this event?",
                                             "",
