@@ -1,6 +1,7 @@
 const config = {};
 
-config.jose = { // TODO: fetch at app start
+config.jose = {
+    // TODO: fetch at app start
     kty: "EC",
     crvOrSize: "P-256",
     alg: "ECDH-ES+A128KW",
