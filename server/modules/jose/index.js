@@ -179,7 +179,7 @@ const verify = (jwt, aud) => {
  * @return {string} JWE object as string
  */
 const signAndEncrypt = (payload, pub, exp) => {
-    if (pub === undefined && SKIP_ASYNC_KEY_EXCHANGE == true) {
+    if (pub === undefined && process.env.SKIP_ASYNC_KEY_EXCHANGE == true) {
         pub = getEncPubAsPEM();
     };
     const jwt = sign(payload, exp);
