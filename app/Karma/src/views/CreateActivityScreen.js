@@ -25,6 +25,7 @@ import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 import {getData} from "../util/GetCredentials";
+import {sendNotification} from "../util/SendNotification";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -64,6 +65,7 @@ export default class CreateActivityScreen extends React.Component {
 
     async componentDidMount() {
         const activity = this.props.navigation.getParam("activity");
+        const creatorName = this.props.navigation.getParam("creatorName");
         //event id is passed when updating an event
         if (activity) {
             try {
@@ -82,7 +84,7 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
-
+                const volunteers = [2]; //TODO get from activity
                 this.setState({
                     eventId: activity.id,
                     isUpdate: true,
@@ -101,6 +103,8 @@ export default class CreateActivityScreen extends React.Component {
                     isPhysical,
                     isAddressVisible,
                     isIDReq,
+                    volunteers,
+                    creatorName,
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
@@ -123,7 +127,7 @@ export default class CreateActivityScreen extends React.Component {
 
         const credentials = await getData();
         const event = this.createEvent(credentials.username);
-
+        const userId = credentials.username;
         const {navigate} = this.props.navigation;
 
         this.setState({
@@ -132,15 +136,20 @@ export default class CreateActivityScreen extends React.Component {
         await request
             .post("http://localhost:8000/event/update/" + this.state.eventId)
             .send({
-                // authToken: "ffa234124",
-                userId: credentials.username,
+                authToken: credentials.password,
+                userId: userId,
                 ...event,
             })
             .then(res => {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.data);
+                sendNotification(
+                    "EventUpdate",
+                    `The activity named ${event.title} has been updated!`,
+                    Number(userId),
+                    this.state.volunteers,
+                );
             })
             .catch(er => {
                 Alert.alert("Server Error", er);

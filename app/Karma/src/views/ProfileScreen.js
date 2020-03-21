@@ -387,6 +387,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                creatorName: this.state.name,
                                             })
                                         }
                                     />

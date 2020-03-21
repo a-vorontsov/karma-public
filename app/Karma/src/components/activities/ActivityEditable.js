@@ -27,7 +27,7 @@ const icons = {
 
 const ActivityEditable = props => {
     const navigation = useNavigation();
-    const {activity} = props;
+    const {activity, creatorName} = props;
 
     /**
      * Delete the event selected
@@ -74,6 +74,7 @@ const ActivityEditable = props => {
                                     onSelect={() =>
                                         navigation.navigate("CreateActivity", {
                                             activity: activity,
+                                            creatorName: creatorName,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>

@@ -13,6 +13,7 @@ class CreatedActivitiesScreen extends Component {
         this.state = {
             activities: this.props.navigation.getParam("activities"),
             pastActivities: this.props.navigation.getParam("pastActivities"),
+            creatorName: this.props.navigation.getParam("creatorName"),
         };
     }
     static navigationOptions = {
@@ -32,6 +33,7 @@ class CreatedActivitiesScreen extends Component {
                                 return (
                                     <ActivityEditable
                                         activity={activity}
+                                        creatorName={this.state.creatorName}
                                         key={activity.id}
                                     />
                                 );

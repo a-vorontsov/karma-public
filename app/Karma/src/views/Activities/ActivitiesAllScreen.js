@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {View, Alert} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
+import {getData} from "../../util/GetCredentials";
 
 const request = require("superagent");
 
@@ -19,10 +20,12 @@ class ActivitiesAllScreen extends Component {
         headerShown: false,
     };
 
-    fetchAllActivities() {
+    async fetchAllActivities() {
+        const credentials = await getData();
+
         request
             .get("http://localhost:8000/event")
-            .query({userId: 51, Page: 1, pageSize: 2})
+            .query({userId: credentials.username, Page: 1, pageSize: 2})
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data.events;
@@ -31,7 +34,7 @@ class ActivitiesAllScreen extends Component {
                 });
             })
             .catch(er => {
-                console.log(er);
+                Alert.alert("No activities could be found!");
             });
     }
 

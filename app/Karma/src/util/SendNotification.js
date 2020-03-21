@@ -1,12 +1,17 @@
 import {Alert} from "react-native";
 const request = require("superagent");
 
-export const sendNotification = async (type, message = "", userId) => {
+export const sendNotification = async (
+    type,
+    message = "",
+    senderId,
+    receiverIds,
+) => {
     let options = {
         type: type,
         message: message,
-        senderId: 2,
-        receiverId: 1,
+        senderId: senderId,
+        receiverIds: receiverIds,
     };
 
     await request

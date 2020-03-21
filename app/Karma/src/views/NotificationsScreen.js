@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {RefreshControl, View, StatusBar, Dimensions} from "react-native";
+import {RefreshControl, View, StatusBar, Dimensions, Alert} from "react-native";
 import Styles from "../styles/Styles";
 import PageHeader from "../components/PageHeader";
 import {hasNotch} from "react-native-device-info";
@@ -7,6 +7,7 @@ import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
 import {ScrollView} from "react-native-gesture-handler";
+import {getData} from "../util/GetCredentials";
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -30,28 +31,29 @@ class NotificationsScreen extends Component {
         this.state = {
             notifications: [],
             hasNotifications: false,
-            userId: 1,
             weekNotifications: [],
             monthNotifications: [],
             refreshing: false,
+            userId: 0,
         };
     }
 
     getNotifications = async () => {
         this.setState({refreshing: true});
+        const credentials = await getData();
+        const userId = credentials.username;
         try {
             const response = await request.get(
-                "http://localhost:8000/notification?userId=" +
-                    this.state.userId,
+                "http://localhost:8000/notification?userId=" + userId,
             );
-
             this.setState({
                 notifications: response.body.data.notifications,
+                userId: Number(userId),
             });
 
             this.parseNotifications();
         } catch (error) {
-            console.log(error);
+            Alert.alert("Unable to fetch new notifications");
         }
     };
 
