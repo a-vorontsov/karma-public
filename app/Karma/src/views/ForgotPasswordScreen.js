@@ -7,6 +7,7 @@ import PageHeader from "../components/PageHeader";
 import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
+import { getData } from "../util/credentials";
 
 const request = require("superagent");
 
@@ -26,9 +27,11 @@ export default class ForgotPasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
+        const credentials = await getData();
         await request
             .post("http://localhost:8000/reset")
             .send({
+                userId: credentials.username,
                 data: {
                     password: this.state.passwordInput
                 }
