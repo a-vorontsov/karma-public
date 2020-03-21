@@ -6,7 +6,7 @@ const {
     JWT, // JSON Web Token (JWT)
 } = jose;
 
-let config = require("./config").jose;
+let config = {...require("./config").jose};
 
 /**
  * Synchronously generate an encryption key with

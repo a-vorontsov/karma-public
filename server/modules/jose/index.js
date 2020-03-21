@@ -1,5 +1,5 @@
 const jose = require('jose');
-const config = require("../../config").jose;
+const config = {...require("../../config").jose};
 const date = require("date-and-time");
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const {
