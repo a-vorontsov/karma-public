@@ -16,8 +16,12 @@ import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
 import BottomModal from "../components/BottomModal";
+import CauseStyles from "../styles/CauseStyles";
+import CauseItem from "../components/causes/CauseItem";
 import Colours from "../styles/Colours";
 import CauseContainer from "../components/causes/CauseContainer";
+import {TextInput} from "../components/input";
+import {RadioInput} from "../components/radio";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -36,19 +40,19 @@ const icons = {
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
+        const profile = this.props.navigation.getParam("profile");
         this.state = {
-            womenOnlyValue: false,
-            distance: 90,
-            name: "Edit",
-            username: "Username",
+            name: profile.name,
+            username: profile.username,
             location: "Location",
-            bio: "this is your bio lorem ipsum and such",
-            causes: ["Cause1", "Cause2"],
-            points: 1,
+            bio: profile.bio,
+            causes: profile.causes,
+            points: profile.points,
             displaySignupModal: false,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
+
     }
 
     static navigationOptions = {
@@ -238,6 +242,46 @@ class ProfileEditScreen extends Component {
                                     justifyContent: "space-between",
                                 }}>
                                 <RegularText style={styles.bioHeader}>
+                                        First Name
+                                    </RegularText>
+                                <TextInput
+                                placeholder={this.state.fname}
+                                name="fname"
+                                onChange={this.onChangeText}
+                                onSubmitEditing={() => this.lname.focus()}
+                            />
+                                <RegularText style={styles.bioHeader}>
+                                        Last Name
+                                    </RegularText>
+                            <TextInput
+                                inputRef={ref => (this.lname = ref)}
+                                placeholder={this.state.lname}
+                                name="lname"
+                                onChange={this.onChangeText}
+                            />
+                                <RegularText style={styles.bioHeader}>
+                                        Username
+                                    </RegularText>
+                                <TextInput
+                                    inputRef={ref => (this.username = ref)}
+                                    placeholder={this.state.username}
+                                    autoCapitalize="none"
+                                    onChange={this.onChangeText}
+                                    name="username"
+                                />
+                                <RegularText style={styles.bioHeader}>
+                                        Gender
+                                    </RegularText>
+                            <RadioInput
+                                values={[
+                                    {value: "male", title: "Male"},
+                                    {value: "female", title: "Female"},
+                                    {value: "non-binary", title: "Non-Binary"},
+                                ]}
+                                value={this.state.gender}
+                                onValue={value => this.setGender(value)}
+                            />
+                                <RegularText style={styles.bioHeader}>
                                     Bio
                                 </RegularText>
                                 <View style={{flexWrap: "wrap"}}>
@@ -258,17 +302,34 @@ class ProfileEditScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Causes
                                     </RegularText>
-                                    <TouchableOpacity
+                                    <View style={CauseStyles.container}>
+                                        {this.state.causes.map(cause => {
+                                            return (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            );
+                                        })}
+                                        <TouchableOpacity
                                         onPress={this.toggleModal}>
                                         <Image
                                             source={icons.new_cause}
                                             style={{
-                                                width: 60,
-                                                height: 60,
-                                                resizeMode: "contain",
+                                                height: SCREEN_WIDTH / 3.6,
+                                                width: SCREEN_WIDTH / 3.6,
+                                                borderRadius: 10,
+                                                marginVertical: 4,
+                                                paddingVertical: 16,
+                                                paddingHorizontal: 6,
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                backgroundColor: Colours.white,
                                             }}
                                         />
                                     </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
                         </View>

@@ -26,7 +26,7 @@ class ActivitiesCausesScreen extends Component {
             .query({userId: userId})
             .then(result => {
                 let activitiesByCause = result.body.data;
-                console.log(activitiesByCause);
+                console.log(result.body.message);
                 this.setState({
                     activitiesByCause,
                 });

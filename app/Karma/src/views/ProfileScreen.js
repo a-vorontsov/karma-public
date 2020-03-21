@@ -60,6 +60,7 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             organisationType: "",
             orgPhoneNumber: "",
+            address:{},
         };
         this.fetchProfileInfo();
     }
@@ -92,6 +93,7 @@ class ProfileScreen extends Component {
             pastEvents: pastEvents,
             createdEvents: createdEvents,
             createdPastEvents: createdPastEvents,
+            address: individual.address,
         });
     }
     setupOrganisationProfile(res) {
@@ -116,6 +118,7 @@ class ProfileScreen extends Component {
             orgPhoneNumber: organisation.phoneNumber,
             upcomingEvents: createdEvents,
             pastEvents: createdPastEvents,
+            address: organisation.address,
         });
     }
 
@@ -137,6 +140,7 @@ class ProfileScreen extends Component {
             .get("http://localhost:8000/profile")
             .query({userId: userId})
             .then(res => {
+                console.log(res.body.message);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -186,7 +190,9 @@ class ProfileScreen extends Component {
                                 flexDirection: "row-reverse",
                             }}>
                             <TouchableOpacity
-                                onPress={() => navigate("ProfileEdit")}>
+                                onPress={() => navigate("ProfileEdit",{
+                                    profile: this.state,
+                                })}>
                                 <Image
                                     source={icons.edit_white}
                                     style={{

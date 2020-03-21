@@ -24,7 +24,10 @@ router.post('/', (req, res) => {
             return selectedCauseRepository.insertMultiple(userId, ids);
         })
         .then(insertResult =>{
-            res.status(200).send({data: insertResult.rows});
+            res.status(200).send({
+                message: ("Successfully selected causes for user " + userId),
+                data: insertResult.rows,
+            });
         })
         .catch(err => res.status(500).send(err));
 });
