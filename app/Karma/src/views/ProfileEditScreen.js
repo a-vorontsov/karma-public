@@ -26,6 +26,8 @@ import {TextInput} from "../components/input";
 import AddressInput from "../components/input/AddressInput";
 import {RadioInput} from "../components/radio";
 import {getData} from "../util/GetCredentials";
+const request = require("superagent");
+const _ =  require('lodash');
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -45,29 +47,35 @@ class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         const profile = this.props.navigation.getParam("profile");
-        console.log(profile.address);
         this.state = {
             points: profile.points,
             location: profile.location,
             user: {username: profile.username},
             isOrganisation: profile.isOrganisation,
             individual: {
-                fname: profile.fname,
-                lname: profile.lname,
+                firstName: profile.fname,
+                lastName: profile.lname,
                 gender: profile.gender,
                 bio: profile.bio,
+                address: {
+                    addressLine1: profile.address.addressLine1,
+                    addressLine2: profile.address.addressLine2,
+                    townCity: profile.address.townCity,
+                    countryState: profile.address.countryState,
+                    postCode: profile.address.postCode,
+                },
             },
             organisation: {
                 name: "",
                 organisationType: "",
                 orgPhoneNumber: "",
-            },
-            address: {
-                addressLine1: profile.address.addressLine1,
-                addressLine2: profile.address.addressLine2,
-                townCity: profile.address.townCity,
-                region: profile.address.countryState,
-                postCode: profile.address.postCode,
+                address: {
+                    addressLine1: profile.address.addressLine1,
+                    addressLine2: profile.address.addressLine2,
+                    townCity: profile.address.townCity,
+                    countryState: profile.address.countryState,
+                    postCode: profile.address.postCode,
+                },
             },
             causes: profile.causes,
             displaySignupModal: false,
@@ -92,33 +100,106 @@ class ProfileEditScreen extends Component {
         Alert.alert(errorTitle, errorMessage);
     };
     onChangeText = event => {
+        console.log(this.state.individual.bio);
         const {name, text} = event;
         switch (name) {
             case "username":
                 this.setState({user: {[name]: text}});
                 break;
-            case "fname" || "lname" || "gender" || "bio":
-                this.setState({individual: {[name]: text}});
+            case "lastName" :
+            case "firstName" :
+            case "gender":
+                this.setState(prevState =>{
+                 return {individual: {
+                     ...prevState.individual,
+                    [name]: text,
+                    },
+                }
+                });
                 break;
-            case "name" || "organisationType" || "orgPhoneNumber":
-                this.setState({organisation: {[name]: text}});
-                break;
+            case "name" :
+            case "organisationType":
+            case "orgPhoneNumber":
+            this.setState(prevState =>{
+                return {organisation: {
+                    ...prevState.organisation,
+                   [name]: text,
+                   },
+               }
+               });
+               break;
             default:
                 this.setState({[name]: text});
         }
+        console.log(this.state.individual.bio);
     };
     onInputChange = inputState => {
+       this.state.isOrganisation?
         this.setState({
-            address: {
-                addressLine1: inputState.address1,
-                addressLine2: inputState.address2,
-                townCity: inputState.city,
-                countryState: inputState.region,
-                postCode: inputState.postcode,
-            },
-        });
-    };
-    getGender(character) {
+            organisation:{
+                address: {
+                    addressLine1: inputState.address1,
+                    addressLine2: inputState.address2,
+                    townCity: inputState.city,
+                    countryState: inputState.region,
+                    postCode: inputState.postcode,
+                },
+            }
+        })
+        :
+        this.setState({
+            individual:{
+                address: {
+                    addressLine1: inputState.address1,
+                    addressLine2: inputState.address2,
+                    townCity: inputState.city,
+                    countryState: inputState.region,
+                    postCode: inputState.postcode,
+                },
+            }
+        })
+    }
+
+    onUpdatePressed = async () => {
+        const {navigate} = this.props.navigation;
+        const credentials = await getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
+        const dataChanged = {};
+        if(!_.isEqual(this.state.user,this.baseState.user)){
+            dataChanged.user = this.state.user;
+        }
+        if(!this.state.isOrganisation && !_.isEqual(this.state.individual,this.baseState.individual)){
+            dataChanged.individual = this.state.individual;
+            if(_.isEqual(this.state.individual.address,this.baseState.individual.address)){
+                delete dataChanged.individual.address;
+            }
+        }
+        if(this.state.isOrganisation && !_.isEqual(this.state.organisation,this.baseState.organisation)){
+            dataChanged.organisation = this.state.organisation;
+            if(_.isEqual(this.state.organisation.address,this.baseState.organisation.address)){
+                delete dataChanged.organisation.address;
+            }
+        }
+        console.log(dataChanged);
+        await request
+            .post("http://localhost:8000/profile/edit")
+            .send({
+                authToken: authToken,
+                userId: userId,
+                data: dataChanged,
+            })
+            .then(async res => {
+                console.log("status: " + res.status + ", " + res.body.message);
+                navigate('Profile');
+            })
+            .catch(err => {
+                console.log(err.message);
+                Alert.alert("Server Error", err.message);
+            });
+    }
+
+    getGender = character => {
         if (character === "m") {
             return "male";
         }
@@ -130,50 +211,23 @@ class ProfileEditScreen extends Component {
         }
     }
 
-    setGender(selectedGender) {
+    setGender = selectedGender => {
         const genderCharacter =
             selectedGender === "male"
                 ? "m"
                 : selectedGender === "female"
                 ? "f"
                 : "x";
-        this.setState({
-            individual: {
+        this.setState(prevState =>{
+            return {individual: {
+                ...prevState.individual,
                 gender: genderCharacter,
-            },
+                },
+            }
         });
     }
-    async onUpdate() {
-        const {navigate} = this.props.navigation;
-        let user, individual, organisation;
-        if (this.state.username !== this.baseState.username) {
-            user = {username: this.state.username};
-        }
-
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
-        await request
-            .post("http://localhost:8000/profile/edit")
-            .send({
-                authToken: authToken,
-                userId: userId,
-                data: {causes: this.state.selectedCauses},
-            })
-            .then(res => {
-                console.log(res.body.message);
-                Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
-                this.props.onSubmit();
-            })
-            .catch(() => {
-                this.props.onError(
-                    "There was an issue saving your causes.",
-                    "Please make sure that you're connected to the internet. Contact us if this issue persists.",
-                );
-            });
-    }
-
     render() {
+        const {isOrganisation,individual,organisation} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -254,7 +308,7 @@ class ProfileEditScreen extends Component {
                                             ? this.baseState.organisation.name
                                             : this.baseState.individual.fname +
                                               " " +
-                                              this.baseState.individual.lname}
+                                              this.baseState.individual.lastName}
                                     </Text>
                                 </View>
                                 <View
@@ -336,22 +390,22 @@ class ProfileEditScreen extends Component {
                                     First Name
                                 </RegularText>
                                 <TextInput
-                                    value={this.state.individual.fname}
-                                    name="fname"
+                                    value={this.state.individual.firstName}
+                                    name="firstName"
                                     onChange={this.onChangeText}
-                                    onSubmitEditing={() => this.lname.focus()}
+                                    onSubmitEditing={() => this.lastName.focus()}
                                 />
                                 <RegularText style={styles.bioHeader}>
                                     Last Name
                                 </RegularText>
                                 <TextInput
-                                    inputRef={ref => (this.lname = ref)}
-                                    value={this.state.individual.lname}
-                                    name="lname"
+                                    value={this.state.individual.lastName}
+                                    name="lastName"
                                     onChange={this.onChangeText}
+                                    onSubmitEditing={() => this.username.focus()}
                                 />
                                 <RegularText style={styles.bioHeader}>
-                                    Username
+                                    User Name
                                 </RegularText>
                                 <TextInput
                                     inputRef={ref => (this.username = ref)}
@@ -382,10 +436,16 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <View style={{flexWrap: "wrap"}}>
                                     <EditableText
-                                        text={this.state.bio}
+                                        text={this.state.individual.bio}
                                         style={styles.contentText}
                                         onChange={val =>
-                                            this.setState({bio: val})
+                                            this.setState(prevState =>{
+                                                return {individual: {
+                                                    ...prevState.individual,
+                                                   bio: val,
+                                                   },
+                                               }
+                                               })
                                         }
                                     />
                                 </View>
@@ -433,11 +493,11 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <AddressInput
                                     onChange={this.onInputChange}
-                                    address1={this.state.address.addressLine1}
-                                    address2={this.state.address.addressLine2}
-                                    city={this.state.address.townCity}
-                                    region={this.state.address.region}
-                                    postcode={this.state.address.postCode}
+                                    address1={isOrganisation?organisation.address.addressLine1:individual.address.addressLine1}
+                                    address2={isOrganisation?organisation.address.addressLine2:individual.address.addressLine2}
+                                    city={isOrganisation?organisation.address.townCity:individual.address.townCity}
+                                    countryState={isOrganisation?organisation.address.countryState:individual.address.countryState}
+                                    postcode={isOrganisation?organisation.address.postCode:individual.address.postCode}
                                 />
                             </View>
                         </View>
@@ -451,7 +511,7 @@ class ProfileEditScreen extends Component {
                             }}>
                             <View style={{width: formWidth}}>
                                 <GradientButton
-                                    onPress={this.onUpdate}
+                                    onPress={this.onUpdatePressed}
                                     title="Update"
                                 />
                             </View>
@@ -467,7 +527,7 @@ class ProfileEditScreen extends Component {
                     </SafeAreaView>
                 </ScrollView>
             </KeyboardAvoidingView>
-        );
+        )
     }
 }
 

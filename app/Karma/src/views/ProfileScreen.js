@@ -73,7 +73,6 @@ class ProfileScreen extends Component {
     };
 
     setupIndividualProfile(res) {
-        console.log(res.body.data.individual);
         const {
             causes,
             createdEvents,
