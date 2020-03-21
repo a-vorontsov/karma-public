@@ -61,7 +61,7 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             organisationType: "",
             orgPhoneNumber: "",
-            orgName:"",
+            orgName: "",
             address: {},
             gender: null,
         };
@@ -269,20 +269,20 @@ class ProfileScreen extends Component {
                                 }}>
                                 <View>
                                     {this.state.isOrganisation && (
-                                    <Text
-                                        numberOfLines={1}
-                                        style={[styles.nameText]}>
-                                        {this.state.orgName}
-                                    </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.orgName}
+                                        </Text>
                                     )}
                                     {!this.state.isOrganisation && (
-                                    <Text
-                                        numberOfLines={1}
-                                        style={[styles.nameText]}>
-                                        {this.state.fname +
-                                            " " +
-                                            this.state.lname}
-                                    </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.fname +
+                                                " " +
+                                                this.state.lname}
+                                        </Text>
                                     )}
                                 </View>
                                 <View

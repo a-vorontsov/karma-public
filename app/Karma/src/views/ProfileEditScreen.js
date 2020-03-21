@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
+import Toast from "react-native-simple-toast";
 import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
@@ -48,20 +49,20 @@ class ProfileEditScreen extends Component {
         this.state = {
             points: profile.points,
             location: profile.location,
-            user:{username: profile.username},
+            user: {username: profile.username},
             isOrganisation: profile.isOrganisation,
-            individual:{
+            individual: {
                 fname: profile.fname,
                 lname: profile.lname,
                 gender: profile.gender,
                 bio: profile.bio,
             },
-            organisation:{
-                name:"",
+            organisation: {
+                name: "",
                 organisationType: "",
                 orgPhoneNumber: "",
             },
-            address:{
+            address: {
                 addressLine1: profile.address.addressLine1,
                 addressLine2: profile.address.addressLine2,
                 townCity: profile.address.townCity,
@@ -92,29 +93,30 @@ class ProfileEditScreen extends Component {
     };
     onChangeText = event => {
         const {name, text} = event;
-        switch(name) {
-            case 'username':
-            this.setState({user:{[name]: text}});
-              break;
-            case ('fname' || 'lname' || 'gender' || 'bio') :
-            this.setState({individual:{[name]: text}});
-              break;
-            case ('name' || 'organisationType' || 'orgPhoneNumber') :
-            this.setState({organisation:{[name]: text}});
-              break;
+        switch (name) {
+            case "username":
+                this.setState({user: {[name]: text}});
+                break;
+            case "fname" || "lname" || "gender" || "bio":
+                this.setState({individual: {[name]: text}});
+                break;
+            case "name" || "organisationType" || "orgPhoneNumber":
+                this.setState({organisation: {[name]: text}});
+                break;
             default:
-            this.setState({[name]: text});
-          }
-
+                this.setState({[name]: text});
+        }
     };
     onInputChange = inputState => {
-        this.setState({address:{
-            addressLine1: inputState.address1,
-            addressLine2: inputState.address2,
-            townCity: inputState.city,
-            countryState: inputState.region,
-            postCode: inputState.postcode,
-        }});
+        this.setState({
+            address: {
+                addressLine1: inputState.address1,
+                addressLine2: inputState.address2,
+                townCity: inputState.city,
+                countryState: inputState.region,
+                postCode: inputState.postcode,
+            },
+        });
     };
     getGender(character) {
         if (character === "m") {
@@ -136,15 +138,16 @@ class ProfileEditScreen extends Component {
                 ? "f"
                 : "x";
         this.setState({
-            individual:{
+            individual: {
                 gender: genderCharacter,
-            }
+            },
         });
     }
-    async onUpdate(){
-        let user,individual,organisation;
-        if(this.state.username !== this.baseState.username){
-            user = {username:this.state.username};
+    async onUpdate() {
+        const {navigate} = this.props.navigation;
+        let user, individual, organisation;
+        if (this.state.username !== this.baseState.username) {
+            user = {username: this.state.username};
         }
 
         const credentials = await getData();
@@ -171,7 +174,6 @@ class ProfileEditScreen extends Component {
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -248,10 +250,11 @@ class ProfileEditScreen extends Component {
                                             styles.nameText,
                                             {position: "absolute", top: -35},
                                         ]}>
-                                        {this.isOrganisation?
-                                        this.baseState.organisation.name
-                                        :this.baseState.individual.fname +" " + this.baseState.individual.lname
-                                        }
+                                        {this.isOrganisation
+                                            ? this.baseState.organisation.name
+                                            : this.baseState.individual.fname +
+                                              " " +
+                                              this.baseState.individual.lname}
                                     </Text>
                                 </View>
                                 <View
@@ -369,7 +372,9 @@ class ProfileEditScreen extends Component {
                                             title: "Non-Binary",
                                         },
                                     ]}
-                                    value={this.getGender(this.state.individual.gender)}
+                                    value={this.getGender(
+                                        this.state.individual.gender,
+                                    )}
                                     onValue={value => this.setGender(value)}
                                 />
                                 <RegularText style={styles.bioHeader}>
