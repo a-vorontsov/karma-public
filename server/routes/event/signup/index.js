@@ -217,7 +217,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  *  @name Update signup status for event
  *  @function
  */
-router.post('/:eventId/signUp/update/', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const individualId = await util.getIndividualIdFromUserId(signup.userId);

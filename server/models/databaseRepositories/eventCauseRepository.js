@@ -1,8 +1,7 @@
 const db = require("../../database/connection");
 
 const insert = (eventCause) => {
-    const query = "INSERT INTO event_cause VALUES ($1, $2) " +
-        "RETURNING *"; // returns inserted row
+    const query = "INSERT INTO event_cause VALUES ($1, $2) RETURNING *"; // returns inserted row
     const params = [eventCause.eventId, eventCause.causeId];
     return db.query(query, params);
 };
@@ -14,6 +13,11 @@ const findAllByCauseId = (causeId) => {
 
 const findAllByEventId = (eventId) => {
     const query = "SELECT * FROM event_cause WHERE event_id=$1";
+    return db.query(query, [eventId]);
+};
+
+const findCauseIdsByEventId = (eventId) => {
+    const query = "SELECT cause_id FROM event_cause WHERE event_id=$1";
     return db.query(query, [eventId]);
 };
 
@@ -40,4 +44,5 @@ module.exports = {
     find,
     removeByEventId,
     removeByEventCreatorId,
+    findCauseIdsByEventId,
 };

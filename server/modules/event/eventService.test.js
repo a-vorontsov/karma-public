@@ -22,7 +22,7 @@ jest.mock("../../util/util");
 jest.mock("../filtering");
 jest.mock("../sorting/event");
 
-let address, event, signUp, eventWithAllData, peaceEvent, animalsEvent;
+let address, event, signUp, eventWithAllData, peaceEvent, animalsEvent, cause;
 
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
@@ -31,6 +31,7 @@ beforeEach(() => {
     eventWithAllData = testHelpers.getEventWithAllData();
     peaceEvent = testHelpers.getPeaceEvent();
     animalsEvent = testHelpers.getAnimalsEvent();
+    cause = testHelpers.getCause();
 });
 
 afterEach(() => {
@@ -41,6 +42,7 @@ test("creating event with known address works", async () => {
     util.checkUserId.mockResolvedValue({status: 200});
     util.isIndividual.mockResolvedValue(false);
     event.addressId = 1;
+    event.causes = [1,2,3];
     eventRepository.insert.mockResolvedValue({
         rows: [{
             ...event,
@@ -48,9 +50,16 @@ test("creating event with known address works", async () => {
         }],
     });
 
+    eventCauseRepository.insert.mockResolvedValue({
+        rows: [{
+            eventId: 1,
+            causeId: 2,
+        }],
+    });
+
     const createEventResult = await eventService.createNewEvent(event);
     createEventResult.data.event.creationDate = event.creationDate;
-
+    expect(eventCauseRepository.insert).toHaveBeenCalledTimes(3);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);
     expect(createEventResult.data.event).toMatchObject({
@@ -63,6 +72,7 @@ test("creating event with known address works", async () => {
 test("creating event with no addressId creates new address and event", async () => {
     util.checkUserId.mockResolvedValue({status: 200});
     util.isIndividual.mockResolvedValue(false);
+    event.causes = [1,2,3];
     const eventNoAddressId = {
         ...event,
         address: address,
@@ -82,6 +92,13 @@ test("creating event with no addressId creates new address and event", async () 
         }],
     });
 
+    eventCauseRepository.insert.mockResolvedValue({
+        rows: [{
+            eventId: 1,
+            causeId: 2,
+        }],
+    });
+
     const createEventResult = await eventService.createNewEvent(eventNoAddressId);
 
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
@@ -90,6 +107,7 @@ test("creating event with no addressId creates new address and event", async () 
         ...event,
         id: 1,
     });
+    expect(eventCauseRepository.insert).toHaveBeenCalledTimes(3);
     expect(createEventResult.status).toBe(200);
 });
 
@@ -140,13 +158,19 @@ test("requesting specific event data works", async () => {
         rows: [address],
     });
 
+    eventCauseRepository.findCauseIdsByEventId.mockResolvedValue({
+        rows: [{
+            causeId: 1,
+            causeId: 2,
+        }],
+    });
     const getEventResult = await eventService.getEventData(3);
 
     expect(signUpRepository.findAllByEventId).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledWith(3);
     expect(addressRepository.findById).toHaveBeenCalledWith(event.addressId);
-    expect(getEventResult.data.event).toStrictEqual({
+    expect(getEventResult.data.event).toMatchObject({
         address: address,
         ...event,
         id: 3,
