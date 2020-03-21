@@ -5,7 +5,6 @@ const {
     JWK, // JSON Web Key (JWK)
     JWKS, // JSON Web Key Set (JWKS)
     JWT, // JSON Web Token (JWT)
-    errors, // errors utilized by jose
 } = jose;
 
 /**
