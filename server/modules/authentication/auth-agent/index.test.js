@@ -412,7 +412,7 @@ test("visiting a no-auth route already authenticated redirects as expected", asy
 
     expect(response.body.message).toBe("Request is already authenticated.");
     expect(response.statusCode).toBe(200);
-    expect(response.body.data.alreadyAuth).toBe(true);
+    expect(response.body.data.alreadyAuthenticated).toBe(true);
 });
 
 test("visiting an internal route with a blacklisted token fails as expected", async () => {

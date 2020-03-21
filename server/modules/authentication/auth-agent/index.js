@@ -32,7 +32,6 @@ const requireAuthentication = (req, res, next) => {
         // pass on derived userId in request
         req.body.userId = userId;
         req.query.userId = userId;
-        req.params.userId = userId;
         next();
     } catch (e) {
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
@@ -79,7 +78,7 @@ const requireNoAuthentication = (req, res, next) => {
  * @param {HTTP} next
  * @return {Function} next or redirect
  */
-const anyAuth = (req, res, next) => {
+const acceptAnyAuthentication = (req, res, next) => {
     if (process.env.NO_AUTH == true) {
         return next();
     }
@@ -104,7 +103,7 @@ const anyAuth = (req, res, next) => {
  * @param {HTTP} next
  * @return {Function} next or redirect
  */
-const redirAuth = (req, res, next) => {
+const requireRedirectionAuthentication = (req, res, next) => {
     if (process.env.NO_AUTH == true) {
         return next();
     }
@@ -221,8 +220,8 @@ const logOut = async (authToken) => {
 module.exports = {
     requireAuthentication,
     requireNoAuthentication,
-    anyAuth,
-    redirAuth,
+    acceptAnyAuthentication,
+    requireRedirectionAuthentication,
     logInUser,
     logInAdmin,
     logOut,

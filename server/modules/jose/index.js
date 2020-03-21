@@ -311,12 +311,7 @@ const decryptAndBlacklistJWE = async (jwe) => {
 const fetchBlacklist = async () => {
     blacklist.clear();
     const dbResult = await authRepo.findAll();
-    const dbResCount = dbResult.rows.length;
-    if (dbResCount > 0) {
-        for (let i = 0; i < dbResCount; i++) {
-            addSigToBlacklistCache(dbResult.rows[i].token);
-        }
-    };
+    dbResult.rows.map(row => row.token).forEach(addSigToBlacklistCache);
 };
 
 /**

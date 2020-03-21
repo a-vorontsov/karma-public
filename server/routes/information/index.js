@@ -33,7 +33,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get information entry
  *  @function
  */
-router.get("/", authAgent.anyAuth, async (req, res) => {
+router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const type = req.query.type;
 

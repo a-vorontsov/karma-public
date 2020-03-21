@@ -14,19 +14,17 @@ const geocode = async (address) => {
     if (process.env.SKIP_GEOCODING == true) {
         return null;
     }
-    return geocoder.geocode(
-        address.addressLine1 + " " +
-        address.addressLine2 + " " +
-        address.postCode + " " +
-        address.townCity + " " +
-        address.countryState)
-        .then(function(res) {
-            return res;
-        })
-        .catch(function(err) {
-            console.log(err);
-            return null;
-        });
+    try {
+        return await geocoder.geocode(
+            address.addressLine1 + " " +
+            address.addressLine2 + " " +
+            address.postCode + " " +
+            address.townCity + " " +
+            address.countryState);
+    } catch (error) {
+        console.log("Geocoding error: " + error);
+        return null;
+    }
 };
 
 module.exports = {

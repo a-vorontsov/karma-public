@@ -29,7 +29,7 @@ const alreadyAuth = {
     status: 200,
     message: "Request is already authenticated.",
     data: {
-        alreadyAuth: true,
+        alreadyAuthenticated: true,
     },
 };
 

@@ -45,7 +45,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * @name Send bug report
  * @function
  */
-router.post("/", authAgent.anyAuth, async (req, res) => {
+router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
