@@ -164,6 +164,8 @@ const getEventData = async (id) => {
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
+    const volunteerResult = await signUpRepository.findUsersSignedUp(event.id);
+    const volunteers = volunteerResult.rows;
     return ({
         status: 200,
         message: "Event fetched successfully",
@@ -171,6 +173,7 @@ const getEventData = async (id) => {
             event: {
                 ...event,
                 address: address,
+                volunteers,
             },
         },
     });
