@@ -120,7 +120,7 @@ class NotificationsScreen extends Component {
         const {monthNotifications} = this.state;
 
         return monthNotifications.map(n => {
-            return <NotificationItem notification={n} />;
+            return <NotificationItem notification={n} key={n.id} />;
         });
     };
 

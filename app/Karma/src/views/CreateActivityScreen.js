@@ -84,7 +84,7 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
-                const volunteers = activity.volunteers; 
+                const volunteers = activity.volunteers;
                 this.setState({
                     eventId: activity.id,
                     isUpdate: true,

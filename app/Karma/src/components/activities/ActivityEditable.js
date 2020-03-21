@@ -16,7 +16,7 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import request from "superagent";
-import { getData } from "../../util/GetCredentials";
+import {getData} from "../../util/GetCredentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -42,11 +42,9 @@ const ActivityEditable = props => {
             navigation.navigate("Profile");
             sendNotification(
                 "EventCancellation",
-                `Event named ${
-                    activity.name
-                } has been cancelled.`,
+                `Event named ${activity.name} has been cancelled.`,
                 Number(credentials.username),
-                volunteers
+                volunteers,
             );
         });
     };
@@ -104,10 +102,6 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        sendNotification(
-                                            "Message",
-                                            "has sent you a message - check your inbox!",
-                                        );
                                         Communications.email(
                                             null,
                                             null,
@@ -123,7 +117,6 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        
                                         Alert.alert(
                                             "Are you sure you want to delete this event?",
                                             "",
