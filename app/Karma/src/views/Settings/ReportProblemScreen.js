@@ -13,9 +13,10 @@ import {RegularText} from "../../components/text";
 import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
+import {getData} from "../../util/credentials";
 import Colours from "../../styles/Colours";
 
-//const request = require("superagent");
+const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 
@@ -36,8 +37,44 @@ class ReportProblemScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            category:problemTypes[0].value,
+            problem:"",
+            email:"",
+        };
+        this.submitBugReport = this.submitBugReport.bind(this);
+        this.onChangeText = this.onChangeText.bind(this);
+    }
+    async submitBugReport() {
+        console.log(this.state);
+        const credentials = await getData();
+        const authToken = credentials.password;
+        const userId = credentials.username;
+        request
+        .post("http://localhost:8000/bugreport")
+        .send({
+            authToken: authToken,
+            userId: userId,
+            data:{
+                email:this.state.email,
+                report: this.state.category + ": " + this.state.problem,
+            }
+        })
+        .then(res => {
+            console.log(res.body.message);
+        })
+        .catch(er => {
+            console.log(er.message);
+        });
+
     }
 
+    onChangeText(event) {
+        const {name, text} = event;
+        this.setState({
+            [name]: text,
+        });
+    }
     render() {
         return (
             <TouchableWithoutFeedback
@@ -62,9 +99,10 @@ class ReportProblemScreen extends Component {
                             baseColor={Colours.blue}
                             textColor={Colours.black}
                             itemTextStyle={{fontFamily: "OpenSans-Regular"}}
-                            value={problemTypes[0].value}
+                            value={this.state.category}
                             data={problemTypes}
                             animationDuration={200}
+                            onChangeText={(value)=>this.setState({category:value})}
                         />
                         <RegularText style={[Styles.pb24, {paddingTop: 20}]}>
                             Describe your problem:
@@ -75,8 +113,7 @@ class ReportProblemScreen extends Component {
                             }
                             placeholder="I encountered X on screen Y..."
                             returnKeyType="next"
-                            onChange={() => {}}
-                            onChangeText={this.onChangeText}
+                            onChange={this.onChangeText}
                             onKeyPress={this.onKeyPress}
                             onSubmitEditing={Keyboard.dismiss()}
                             multiline={true}
@@ -90,22 +127,21 @@ class ReportProblemScreen extends Component {
                                 width: FORM_WIDTH,
                                 borderRadius: 10,
                             }}
-                            name="problemDescriptionInput"
+                            name="problem"
                         />
                         <RegularText
                             style={[Styles.pb24, {color: Colours.grey}]}>
                             When you submit a report, we may contact you at:
                         </RegularText>
                         <TextInput
-                            inputRef={ref => (this.userEmailInput = ref)}
-                            placeholder="team-team@gmail.com"
-                            name="userEmailInput"
-                            editable={false}
+                            placeholder="email@address.com"
+                            name="email"
+                            editable={true}
+                            onChange={this.onChangeText}
                         />
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
-                                onPress={() => null}
-                                onChange={() => {}}
+                                onPress={this.submitBugReport}
                                 styles={[Styles.white, {color: Colours.blue}]}
                                 title="Submit Bug Report"
                             />
