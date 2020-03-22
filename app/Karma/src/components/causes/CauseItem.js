@@ -19,10 +19,12 @@ export default class CauseItem extends React.Component {
         this.props.onPress({
             name: cause.name,
             id: cause.id,
+            title: cause.title,
         });
     }
     render() {
         const {cause, selected} = this.props;
+       
         const ItemContent = (
             <>
                 <View>

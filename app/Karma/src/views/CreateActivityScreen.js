@@ -18,17 +18,24 @@ import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
 import {RegularText, SemiBoldText} from "../components/text";
 import AddressInput from "../components/input/AddressInput";
-
+import BottomModal from "../components/BottomModal";
+import CauseContainer from "../components/causes/CauseContainer";
 import {GradientButton} from "../components/buttons";
 
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 import {getData} from "../util/GetCredentials";
+import CauseItem from "../components/causes/CauseItem";
+import CauseStyles from "../styles/CauseStyles";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 
+
+const icons = {
+    new_cause: require("../assets/images/general-logos/new_cause.png"),
+};
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -52,13 +59,15 @@ export default class CreateActivityScreen extends React.Component {
             minEndDate: new Date(),
             minSlotDate: new Date(),
             address1: "",
-
             region: "",
             city: "",
             postcode: "",
+            displaySignupModal: false,
+            causes: []
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         console.disableYellowBox = true;
     }
 
@@ -106,6 +115,24 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Server Error", err);
             }
         }
+    }
+
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+
+    handleError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
+    };
+
+    onUpdateCauses = inputState => {
+        
+        this.setState({
+            causes: inputState.selectedCauses
+        })
+        this.toggleModal();
     }
 
     /**
@@ -493,7 +520,7 @@ export default class CreateActivityScreen extends React.Component {
                                         Who to contact
                                     </SemiBoldText>
                                     <TextInput
-                                        placeholder="team-team@gmail.com"
+                                        placeholder={this.props.navigation.getParam("email")}
                                         style={{marginTop: 0}}
                                         editable="false"
                                     />
@@ -612,6 +639,45 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAddressVisible}
                                     />
                                 </View>
+                                </View>
+                               
+                                    
+                                   <View style={{width:FORM_WIDTH}}>
+                                    <View
+                                        style={{alignItems:"flex-start"}}
+                                    >
+                                        <RegularText>Pick Related Causes</RegularText>
+                                        <TouchableOpacity
+                                        onPress={this.toggleModal}>
+                                        <Image
+                                            source={icons.new_cause}
+                                            style={{
+                                                width: 60,
+                                                height: 60,
+                                                resizeMode: "contain",
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                    </View>
+                                    </View>
+                                    <View style={{flexDirection: "row", justifyContent:"flex-end", width:width}}>
+                                        {this.state.causes.length > 0 ? (
+                                            <View style={CauseStyles.container}> 
+                                                {this.state.causes.map(cause => {
+                                                    return (
+                                                        <CauseItem 
+                                                            cause={cause}
+                                                            key={cause.id}
+                                                            isDisabled={true}
+                                                        />
+                                                    )
+                                                })}
+                                            </View>
+                                        ) : (undefined)}
+                                    </View>
+
+                                
+                               <View>
                                 <SemiBoldText
                                     style={{
                                         alignItems: "flex-start",
@@ -628,8 +694,19 @@ export default class CreateActivityScreen extends React.Component {
                                     city={this.state.city}
                                     onChange={this.onInputChange}
                                 />
+                                </View>
                             </View>
-                        </View>
+                    
+                        <BottomModal
+                            visible={this.state.displaySignupModal}
+                            toggleModal={this.toggleModal}>
+                            <CauseContainer
+                                onUpdateCauses={this.onUpdateCauses}
+                                isActivity={true}
+                                onSubmit={this.toggleModal}
+                                onError={this.handleError}
+                            />
+                        </BottomModal>
                     </ScrollView>
                 </KeyboardAvoidingView>
 
