@@ -66,8 +66,8 @@ class ProfileEditScreen extends Component {
             },
             organisation: {
                 name: profile.orgName,
-                pocFirstName:profile.pocFirstName,
-                pocLastName:profile.pocLastName,
+                pocFirstName: profile.pocFirstName,
+                pocLastName: profile.pocLastName,
                 organisationType: profile.organisationType,
                 orgPhoneNumber: profile.orgPhoneNumber,
                 address: {
@@ -332,8 +332,7 @@ class ProfileEditScreen extends Component {
                                                   .firstName +
                                               " " +
                                               this.baseState.individual
-                                                  .lastName
-                                        }
+                                                  .lastName}
                                     </Text>
                                 </View>
                                 <View
@@ -411,28 +410,57 @@ class ProfileEditScreen extends Component {
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                 }}>
-                                <RegularText style={styles.bioHeader}>
-                                    First Name
-                                </RegularText>
-                                <TextInput
-                                    value={individual.firstName}
-                                    name="firstName"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() =>
-                                        this.lastName.focus()
-                                    }
-                                />
-                                <RegularText style={styles.bioHeader}>
-                                    Last Name
-                                </RegularText>
-                                <TextInput
-                                    value={individual.lastName}
-                                    name="lastName"
-                                    onChange={this.onChangeText}
-                                    onSubmitEditing={() =>
-                                        this.username.focus()
-                                    }
-                                />
+                                {isOrganisation ? (
+                                    <View>
+                                        <RegularText style={styles.bioHeader}>
+                                            Point of Contact First Name
+                                        </RegularText>
+                                        <TextInput
+                                            value={organisation.pocFirstName}
+                                            name="pocFirstName"
+                                            onChange={this.onChangeText}
+                                            onSubmitEditing={() =>
+                                                this.lastName.focus()
+                                            }
+                                        />
+                                        <RegularText style={styles.bioHeader}>
+                                            Point of Contact Last Name
+                                        </RegularText>
+                                        <TextInput
+                                            value={organisation.pocLastName}
+                                            name="pocLastName"
+                                            onChange={this.onChangeText}
+                                            onSubmitEditing={() =>
+                                                this.username.focus()
+                                            }
+                                        />
+                                    </View>
+                                ) : (
+                                    <View>
+                                        <RegularText style={styles.bioHeader}>
+                                            First Name
+                                        </RegularText>
+                                        <TextInput
+                                            value={individual.firstName}
+                                            name="firstName"
+                                            onChange={this.onChangeText}
+                                            onSubmitEditing={() =>
+                                                this.lastName.focus()
+                                            }
+                                        />
+                                        <RegularText style={styles.bioHeader}>
+                                            Last Name
+                                        </RegularText>
+                                        <TextInput
+                                            value={individual.lastName}
+                                            name="lastName"
+                                            onChange={this.onChangeText}
+                                            onSubmitEditing={() =>
+                                                this.username.focus()
+                                            }
+                                        />
+                                    </View>
+                                )}
                                 <RegularText style={styles.bioHeader}>
                                     User Name
                                 </RegularText>
@@ -443,23 +471,32 @@ class ProfileEditScreen extends Component {
                                     onChange={this.onChangeText}
                                     name="username"
                                 />
-                                <RegularText style={styles.bioHeader}>
-                                    Gender
-                                </RegularText>
-                                <RadioInput
-                                    values={[
-                                        {value: "male", title: "Male"},
-                                        {value: "female", title: "Female"},
-                                        {
-                                            value: "non-binary",
-                                            title: "Non-Binary",
-                                        },
-                                    ]}
-                                    value={this.getGender(
-                                        this.state.individual.gender,
-                                    )}
-                                    onValue={value => this.setGender(value)}
-                                />
+                                {!isOrganisation && (
+                                    <View>
+                                        <RegularText style={styles.bioHeader}>
+                                            Gender
+                                        </RegularText>
+                                        <RadioInput
+                                            values={[
+                                                {value: "male", title: "Male"},
+                                                {
+                                                    value: "female",
+                                                    title: "Female",
+                                                },
+                                                {
+                                                    value: "non-binary",
+                                                    title: "Non-Binary",
+                                                },
+                                            ]}
+                                            value={this.getGender(
+                                                this.state.individual.gender,
+                                            )}
+                                            onValue={value =>
+                                                this.setGender(value)
+                                            }
+                                        />
+                                    </View>
+                                )}
                                 <RegularText style={styles.bioHeader}>
                                     Bio
                                 </RegularText>
