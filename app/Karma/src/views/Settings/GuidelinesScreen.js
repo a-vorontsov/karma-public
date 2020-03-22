@@ -8,13 +8,13 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/guidelines.png");
 
-function loadGuidelines(screen) {
+loadGuidelines = screen => {
     request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
+        .get("http://localhost:8000/information?type=guidelines")
         .then(res => {
-            console.log(res.body);
+            console.log(res.body.message);
             screen.setState({
-                guidelinesText: res.body,
+                guidelinesText: res.body.data.information.content,
             });
         })
         .catch(er => {
