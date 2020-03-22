@@ -69,7 +69,7 @@ class ProfileEditScreen extends Component {
                 pocFirstName: profile.pocFirstName,
                 pocLastName: profile.pocLastName,
                 organisationType: profile.organisationType,
-                orgPhoneNumber: profile.orgPhoneNumber,
+                phoneNumber: profile.orgPhoneNumber,
                 address: {
                     addressLine1: profile.address.addressLine1,
                     addressLine2: profile.address.addressLine2,
@@ -118,9 +118,11 @@ class ProfileEditScreen extends Component {
                     };
                 });
                 break;
-            case "name":
+            case "orgName":
+            case "pocFirstName":
+            case "pocLastName":
             case "organisationType":
-            case "orgPhoneNumber":
+            case "phoneNumber":
                 this.setState(prevState => {
                     return {
                         organisation: {
@@ -342,9 +344,21 @@ class ProfileEditScreen extends Component {
                                     <Text style={styles.usernameText}>
                                         {this.baseState.user.username}
                                     </Text>
-                                    <Text style={styles.locationText}>
-                                        {this.state.location}
-                                    </Text>
+                                    {this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={2}
+                                            style={styles.usernameText}>
+                                            {" | " +
+                                                organisation.organisationType}
+                                        </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.locationText}>
+                                            {this.state.location}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
@@ -471,6 +485,18 @@ class ProfileEditScreen extends Component {
                                     onChange={this.onChangeText}
                                     name="username"
                                 />
+                                {isOrganisation &&
+                                <View>
+                                <RegularText style={styles.bioHeader}>
+                                Organisation Phone Number
+                            </RegularText>
+                            <TextInput
+                                value={organisation.phoneNumber}
+                                name="phoneNumber"
+                                onChange={this.onChangeText}
+                            />
+                            </View>
+                            }
                                 {!isOrganisation && (
                                     <View>
                                         <RegularText style={styles.bioHeader}>
