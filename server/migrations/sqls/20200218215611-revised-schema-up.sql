@@ -213,8 +213,8 @@ CREATE TABLE authentication
         CREATE TABLE setting
         (
             user_id int NOT NULL,
-            email int NOT NULL,
-            notifications int NOT NULL,
+            email int DEFAULT 0,
+            notifications int DEFAULT 0,
             CONSTRAINT setting_pk PRIMARY KEY (user_id)
         );
 

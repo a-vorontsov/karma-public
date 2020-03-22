@@ -10,6 +10,7 @@ const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
 const authAgent = require("./auth-agent");
 const geocoder = require("../geocoder");
+const settingsRepo = require("../../models/databaseRepositories/settingsRepository");
 
 /**
  * Register a new record in the registration table.
@@ -64,6 +65,7 @@ async function registerUser(email, username, password, pub) {
     });
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
+    await settingsRepo.insertUserId(userId);
     const authToken = authAgent.logInUser(userId, pub);
     return ({
         status: 200,

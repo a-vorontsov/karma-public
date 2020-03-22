@@ -39,6 +39,7 @@ app.use("/error", require("./routes/error"));
 app.use("/bugreport", require("./routes/bugreport"));
 app.use("/notification", require("./routes/notification"));
 app.use("/information", require("./routes/information"));
+app.use("/settings", require("./routes/settings"));
 
 app.use("/causes", require("./routes/causes"));
 app.use("/causes/select", require("./routes/causes/select"));
