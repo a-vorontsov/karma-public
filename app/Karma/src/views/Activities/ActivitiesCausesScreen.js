@@ -4,7 +4,6 @@ import ActivityCauseCarousel from "../../components/activities/ActivityCauseCaro
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 
-
 const request = require("superagent");
 
 class ActivitiesCausesScreen extends Component {

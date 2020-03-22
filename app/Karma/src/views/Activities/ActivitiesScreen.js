@@ -128,7 +128,8 @@ class ActivitiesScreen extends Component {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 this.setState({
-                                                    calendarVisible: !this.state.calendarVisible,
+                                                    calendarVisible: !this.state
+                                                        .calendarVisible,
                                                 });
                                             }}>
                                             <Image
@@ -226,7 +227,8 @@ class ActivitiesScreen extends Component {
                                                 thumbColor={Colours.grey}
                                                 onChange={() =>
                                                     this.setState({
-                                                        womenOnly: !this.state.womenOnly,
+                                                        womenOnly: !this.state
+                                                            .womenOnly,
                                                     })
                                                 }
                                                 value={this.state.womenOnly}
@@ -255,10 +257,14 @@ class ActivitiesScreen extends Component {
                                                 thumbColor={Colours.grey}
                                                 onChange={() =>
                                                     this.setState({
-                                                        physicalActivity: !this.state.physicalActivity,
+                                                        physicalActivity: !this
+                                                            .state
+                                                            .physicalActivity,
                                                     })
                                                 }
-                                                value={this.state.physicalActivity}
+                                                value={
+                                                    this.state.physicalActivity
+                                                }
                                             />
                                         </View>
                                     </View>
@@ -284,10 +290,14 @@ class ActivitiesScreen extends Component {
                                                 thumbColor={Colours.grey}
                                                 onChange={() =>
                                                     this.setState({
-                                                        locationVisible: !this.state.locationVisible,
+                                                        locationVisible: !this
+                                                            .state
+                                                            .locationVisible,
                                                     })
                                                 }
-                                                value={this.state.locationVisible}
+                                                value={
+                                                    this.state.locationVisible
+                                                }
                                             />
                                         </View>
                                     </View>

@@ -1,5 +1,14 @@
 import React, {Component} from "react";
-import {View, StyleSheet, Alert, TouchableOpacity, Image, ScrollView, Dimensions, SafeAreaView} from "react-native";
+import {
+    View,
+    StyleSheet,
+    Alert,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    Dimensions,
+    SafeAreaView,
+} from "react-native";
 import Styles from "../styles/Styles";
 import Colours from "../styles/Colours";
 import {GradientButton} from "../components/buttons";
@@ -8,7 +17,6 @@ import PageHeader from "../components/PageHeader";
 import PhotoUpload from "react-native-photo-upload";
 const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
-
 
 const icons = {
     passport: require("../assets/images/general-logos/passport-icon.png"),
@@ -58,59 +66,89 @@ class VerifyScreen extends Component {
             <SafeAreaView>
                 <ScrollView>
                     <View style={[Styles.ph24]}>
-                        <PageHeader title="Sign Up" onPress={this.goToPrevious()}/>
+                        <PageHeader
+                            title="Sign Up"
+                            onPress={this.goToPrevious()}
+                        />
                     </View>
-                    <View style={[Styles.ph24, {paddingVertical: 40, alignItems: "center",justifyContent:"center"}]}>
-                        <Image 
+                    <View
+                        style={[
+                            Styles.ph24,
+                            {
+                                paddingVertical: 40,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            },
+                        ]}>
+                        <Image
                             source={icons.passport}
-                            style={{flex: 7 / 8, height:formWidth, width: formWidth}}
+                            style={{
+                                flex: 7 / 8,
+                                height: formWidth,
+                                width: formWidth,
+                            }}
                             resizeMode="contain"
                         />
-                        <RegularText style={[Styles.pv16, {fontSize: 24, color: Colours.blue, fontWeight: "500"}]}>
+                        <RegularText
+                            style={[
+                                Styles.pv16,
+                                {
+                                    fontSize: 24,
+                                    color: Colours.blue,
+                                    fontWeight: "500",
+                                },
+                            ]}>
                             Verify your account
                         </RegularText>
-                            <View>
-                                <RegularText style={[{fontSize: 18, textAlign: "center"}]}>
-                                We need you to verify who you are for your safety and the safety of others.
-                                </RegularText>
-                                <RegularText style={[Styles.pv24, {fontSize: 18, textAlign: "center"}]}>
-                                    Please upload a photo of your ID below to be verified.
-                                </RegularText>
-                            </View>
-                            <View style={[styles.header, {paddingRight: 20}]}>
-                                <PhotoUpload
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
-                                    <Image
-                                        style={{
-                                            width: 50,
-                                            height: 50,
-                                        }}
-                                        resizeMode="cover"
-                                        source={require("../assets/images/general-logos/photo-logo.png")}
-                                    />
-                                </PhotoUpload>
-                                <TouchableOpacity
-                                    style={styles.uploadButton}
-                                    onPress={() =>
-                                        this.uploadPhoto(this.state.photo)
+                        <View>
+                            <RegularText
+                                style={[{fontSize: 18, textAlign: "center"}]}>
+                                We need you to verify who you are for your
+                                safety and the safety of others.
+                            </RegularText>
+                            <RegularText
+                                style={[
+                                    Styles.pv24,
+                                    {fontSize: 18, textAlign: "center"},
+                                ]}>
+                                Please upload a photo of your ID below to be
+                                verified.
+                            </RegularText>
+                        </View>
+                        <View style={[styles.header, {paddingRight: 20}]}>
+                            <PhotoUpload
+                                onPhotoSelect={avatar => {
+                                    if (avatar) {
+                                        console.log(
+                                            "Image base64 string: ",
+                                            avatar,
+                                        );
+                                        this.setPhoto(avatar);
+                                    }
+                                }}>
+                                <Image
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                    }}
+                                    resizeMode="cover"
+                                    source={require("../assets/images/general-logos/photo-logo.png")}
+                                />
+                            </PhotoUpload>
+                            <TouchableOpacity
+                                style={styles.uploadButton}
+                                onPress={() =>
+                                    this.uploadPhoto(this.state.photo)
+                                }>
+                                <RegularText
+                                    style={
+                                        (styles.buttonText,
+                                        {fontSize: 20, color: "gray"})
                                     }>
-                                    <RegularText
-                                        style={
-                                            (styles.buttonText,
-                                            {fontSize: 20, color: "gray"})
-                                        }>
-                                        Upload Photo
-                                    </RegularText>
-                                </TouchableOpacity>
-                            </View>
+                                    Upload Photo
+                                </RegularText>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ScrollView>
 
@@ -124,7 +162,9 @@ class VerifyScreen extends Component {
                     <View style={{width: formWidth}}>
                         <GradientButton
                             title="Verify now"
-                            onPress={() => this.props.navigation.navigate("Activities")}
+                            onPress={() =>
+                                this.props.navigation.navigate("Activities")
+                            }
                         />
                     </View>
                 </View>

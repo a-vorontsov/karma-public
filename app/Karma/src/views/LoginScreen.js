@@ -1,5 +1,11 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView} from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    SafeAreaView,
+} from "react-native";
 import Styles from "../styles/Styles";
 import Colours from "../styles/Colours";
 import {RegularText} from "../../components/text";
@@ -19,7 +25,9 @@ class LoginScreen extends Component {
                     <TouchableOpacity
                         style={[styles.button, {marginBottom: 20}]}
                         onPress={this._onPressButton}>
-                        <RegularText style={[styles.text, {fontSize: 20}]}>Login</RegularText>
+                        <RegularText style={[styles.text, {fontSize: 20}]}>
+                            Login
+                        </RegularText>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
