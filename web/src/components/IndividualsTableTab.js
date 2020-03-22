@@ -27,9 +27,9 @@ export function IndividualsTableTab() {
         });
 
         rowData.banned = !rowData.banned;
-        const indivs = individuals.slice();
-        indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
-        setIndividuals(indivs);
+        const individualsCopy = individuals.slice();
+        individualsCopy.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
+        setIndividuals(individualsCopy);
     };
 
     const fetchProfileDetails = async (profile) => {
