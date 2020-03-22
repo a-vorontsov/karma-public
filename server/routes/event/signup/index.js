@@ -188,7 +188,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
 
 /**
  * Endpoint called whenever a user updates their attendance confirmation in an event.<br/>
- <p><b>Route: </b>/event/signUp/update/:id (POST)</p>
+ <p><b>Route: </b>/event/:eventId/signUp/update/ (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>

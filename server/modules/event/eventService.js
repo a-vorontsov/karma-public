@@ -53,9 +53,10 @@ const createNewEvent = async (event) => {
 };
 
 const addEventCause = async (causeId, eventId) => {
-    const eventCause = {};
-    eventCause.causeId = causeId;
-    eventCause.eventId = eventId;
+    const eventCause = {
+        causeId,
+        eventId,
+    };
     return await eventCauseRepository.insert(eventCause);
 };
 
