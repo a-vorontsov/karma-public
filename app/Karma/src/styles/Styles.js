@@ -9,6 +9,7 @@ import {hasNotch} from "react-native-device-info";
 import Colours from "./Colours";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 // based on iphone 5s's scale
 const scale = SCREEN_WIDTH / 375;
@@ -148,6 +149,13 @@ const Styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 10,
     },
+    roundButtonOpaque: {
+        padding: 12,
+        alignItems: "center",
+        borderRadius: 20,
+        backgroundColor: Colours.blue,
+        opacity:1,
+    },
     disabledButton: {
         opacity: 0.2,
     },
@@ -219,6 +227,7 @@ const Styles = StyleSheet.create({
 
         borderRadius: 10,
     },
+
 });
 
 export default Styles;

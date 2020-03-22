@@ -9,6 +9,7 @@ import ChangePasswordInput from "../../components/input/ChangePasswordInput";
 import {GradientButton} from "../../components/buttons";
 import {RegularText, SubTitleText} from "../../components/text";
 import { getData } from "../../util/credentials";
+import { set } from "react-native-reanimated";
 
 const request = require("superagent");
 
@@ -22,6 +23,7 @@ export default class ChangePasswordScreen extends Component {
             isFirstOpened: true,
             oldPasswordInput: "",
             passwordInput: "",
+            oldPassMatch: false,
         };
     }
     onChange = event => {
@@ -31,7 +33,6 @@ export default class ChangePasswordScreen extends Component {
 
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
-        console.log("owo" +this.state.oldPasswordInput);
         this.setState({isFirstOpened: false});
         const credentials = await getData();
         await request
@@ -44,12 +45,20 @@ export default class ChangePasswordScreen extends Component {
                 
             })
             .then(res => {
+                // password is of correct format
                     Alert.alert("Successful password change", "You've successfully changed your password!", [
-                        {text: "OK", onPress: () => navigate("SettingsMenu")},
-                    ]);
+                    {text: "OK", onPress: () => navigate("SettingsMenu")},
+                ]);
+                    
             })
             .catch(err => {
-                console.log(err);
+            
+                if(err.message==="{\"message\":\"Incorrect old password.\"}"){
+                    Alert.alert("Incorrect old password", "Please try again.", [
+                        {text: "OK", onPress: () => null},
+                        ]);
+                }
+                
             });
     };
 
@@ -65,7 +74,11 @@ export default class ChangePasswordScreen extends Component {
                 <View style={Styles.ph24}>
                     <PageHeader title="Change Password" />
                 </View>
+                
                 <View style={{alignItems: "center", flex: 1, top: 20}}>
+                <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="always">
                     <View style={{flex: 1}}>
                         <SubTitleText
                             style={{textAlign: "left", alignSelf: "stretch"}}>
@@ -86,6 +99,7 @@ export default class ChangePasswordScreen extends Component {
                             firstOpen={this.state.isFirstOpened}
                         />
                     </View>
+                    </ScrollView>
                     <View
                     style={{
                         width: FORM_WIDTH,
@@ -97,6 +111,7 @@ export default class ChangePasswordScreen extends Component {
                         title="Change"
                     />
                 </View>
+                
                 </View>
                 
             </SafeAreaView>

@@ -8,6 +8,7 @@ import {
     Dimensions,
     KeyboardAvoidingView,
     SafeAreaView,
+    Alert,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
@@ -214,7 +215,6 @@ export default class WelcomeScreen extends Component {
 
                 console.log("correct code");
                 this.setState({isCodeValid: true});
-                //TODO navigate to new Password screen
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,
                 });
@@ -222,8 +222,9 @@ export default class WelcomeScreen extends Component {
             .catch(err => {
                 // code incorrect
                 this.setState({isCodeValid: false});
-                console.log("incorrect code");
-                console.log(err.message);
+                Alert.alert("Incorrect code", "Please try again.", [
+                    {text: "OK", onPress: () => null},
+                ]);
             });
     }
 
@@ -249,14 +250,15 @@ export default class WelcomeScreen extends Component {
                     navigate("UserSignUp", {
                         email: this.state.emailInput,
                     });
-                } else {
-                    // code incorrect
-                    this.setState({isCodeValid: false});
-                    console.log("incorrect code");
-                }
+                } 
             })
             .catch(err => {
-                console.log(err.message);
+                // code incorrect
+                this.setState({isCodeValid: false});
+                Alert.alert("Incorrect code", "Please try again.", [
+                    {text: "OK", onPress: () => null},
+                ]);
+               
             });
     }
 
@@ -339,9 +341,10 @@ export default class WelcomeScreen extends Component {
                                     }
                                     text={
                                         this.state.isForgotPassPressed
-                                            ? "Please enter the 6 digit code sent to your recovery email."
+                                            ? "Please enter the 6 digit code sent to your email."
                                             : "Please enter your email verification code below."
                                     }
+                                    
                                 />
                             )}
                         </View>
