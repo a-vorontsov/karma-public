@@ -62,6 +62,14 @@ services:
     depends_on:
       - server
     command: ["sh", "-c", "chmod 777 /var/www && exec nginx -g 'daemon off;'"]
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    environment:
+      - DOZZLE_TAILSIZE=100
+      - DOZZLE_FILTER=name=karma
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   db-data: {}
