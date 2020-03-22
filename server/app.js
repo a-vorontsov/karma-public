@@ -56,7 +56,7 @@ app.use("/admin", require("./routes/admin"));
 app.use("/admin/information", require("./routes/admin/information"));
 
 // import OAuth routes and dependencies if applicable
-log.info("OAUTH enabled: " + Boolean(process.env.ENABLE_OAUTH));
+log.info("OAUTH enabled: %s, AUTH enabled: %s", Boolean(process.env.ENABLE_OAUTH), !Boolean(process.env.NO_AUTH));
 if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
     require("./modules/authentication/passport-config");

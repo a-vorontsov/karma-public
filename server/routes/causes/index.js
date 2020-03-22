@@ -1,7 +1,7 @@
 /**
  * @module Causes
  */
-
+const log = require("../../util/log");
 const express = require('express');
 const router = express.Router();
 const causeRepository = require("../../models/databaseRepositories/causeRepository");
@@ -18,6 +18,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @function
  */
 router.get('/', authAgent.requireAuthentication, (req, res) => {
+    log.info("Getting all causes");
     causeRepository.findAll()
         .then(result => res.status(200).json({data: result.rows}))
         .catch(err => res.status(500).send(err));
@@ -38,6 +39,7 @@ router.get('/', authAgent.requireAuthentication, (req, res) => {
  */
 router.get('/:id', authAgent.requireAuthentication, (req, res) => {
     const id = req.params.id;
+    log.info("Getting cause id %d", id);
     if (!id) return res.status(400).send("No id was specified");
     if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
     causeRepository.findById(id)

@@ -1,7 +1,7 @@
 /**
  * @module Event
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -126,6 +126,7 @@ router.use("/", eventSelectRoute);
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
+        log.info("Getting 'All' activities for user id '%d'", userId);
         const filters = {booleans: req.query.filter};
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
@@ -135,7 +136,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
         getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -195,10 +196,11 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
 router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
+        log.info("Getting event id '%d' data", id);
         const getEventResult = await eventService.getEventData(id);
         return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
-        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        log.error("Event fetching failed for event id '" + req.params.id + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -282,6 +284,7 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Creating new event");
         const event = req.body;
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
@@ -290,7 +293,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         const eventCreationResult = await eventService.createNewEvent(event);
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
-        console.log("Event creation failed: " + e);
+        log.error("Event creation failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -357,6 +360,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const event = {...req.body, id: Number.parseInt(req.params.id)};
+        log.info("Updating event id '%d'", event.id);
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -365,7 +369,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
         const eventUpdateResult = await eventService.updateEvent(event);
         return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
-        console.log("Event updating failed: " + e);
+        log.error("Event updating failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -405,10 +409,11 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
 router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
+        log.info("Deleting event id '%d'", id);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
         return httpUtil.sendResult(eventDeleteResult, res);
     } catch (e) {
-        console.log("Event updating failed: " + e);
+        log.error("Event updating failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

@@ -1,4 +1,6 @@
 require("dotenv").config();
+process.env.environment = 'development';
+require("../util/log");
 require('twilio');
 const db = require("../database/connection");
 

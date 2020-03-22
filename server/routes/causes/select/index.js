@@ -1,3 +1,4 @@
+const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
@@ -11,6 +12,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 router.post('/', authAgent.requireAuthentication, (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
+    log.info("Selecting causes for user" + userId);
     if (!causes) {
         return res.status(400).send("No causes were specified in the body");
     }

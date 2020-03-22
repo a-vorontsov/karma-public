@@ -2,6 +2,7 @@
  * @module Sign-up-Organisation
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
@@ -50,6 +51,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Signing up organisation");
         const organisation = {
             organisationNumber: req.body.data.organisation.organisationNumber,
             name: req.body.data.organisation.name,
@@ -75,6 +77,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Organisation registration successful.",
         });
     } catch (e) {
+        log.error("Signing up organisation failed");
         res.status(400).send({
             message: e.message,
         });
