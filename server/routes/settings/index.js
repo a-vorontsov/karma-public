@@ -75,7 +75,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.query.userId;
         const settingsResult = await settingsService.getCurrentSettings(userId);
         return httpUtil.sendResult(settingsResult, res);
     } catch (e) {

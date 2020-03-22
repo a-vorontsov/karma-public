@@ -27,9 +27,9 @@ test("settings fetching endpoint works", async () => {
     });
 
     const response = await request(app)
-        .get(`/settings`)
-        .send(setting);
+        .get(`/settings?userId=${setting.userId}`);
 
+    setting.userId = setting.userId.toString();
     expect(settingsService.getCurrentSettings).toHaveBeenCalledTimes(1);
     expect(settingsService.getCurrentSettings).toHaveBeenCalledWith(setting.userId);
     delete setting.userId;
