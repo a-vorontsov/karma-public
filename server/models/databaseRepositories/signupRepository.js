@@ -24,13 +24,13 @@ const find = (individualId, eventId) => {
 };
 
 const update = (signup) => {
-    const query = "UPDATE sign_up SET confirmed = $1 WHERE individual_id = $2 AND event_id = $3 RETURNING *";
-    const params = [signup.confirmed, signup.individualId, signup.eventId];
+    const query = "UPDATE sign_up SET confirmed = $1, attended = $2 WHERE individual_id = $3 AND event_id = $4 RETURNING *";
+    const params = [signup.confirmed, signup.attended, signup.individualId, signup.eventId];
     return db.query(query, params);
 };
 
 const findUsersSignedUp = (eventId) => {
-    const query = "SELECT event_id,individual_id,confirmed,firstname,lastname,user_id,email,username,date_registered " +
+    const query = "SELECT event_id,individual_id,confirmed,attended,firstname,lastname,user_id,email,username,date_registered " +
         "FROM sign_up LEFT JOIN individual ON individual_id = id(individual) RIGHT JOIN \"user\" ON user_id=id(\"user\")" +
         "WHERE event_id = $1";
     return db.query(query, [eventId]);

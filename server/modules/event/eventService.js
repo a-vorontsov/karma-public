@@ -39,11 +39,25 @@ const createNewEvent = async (event) => {
 
     event.creationDate = new Date();
     const eventResult = await eventRepository.insert(event);
+    const eventId = eventResult.rows[0].id;
+    const causesResult = event.causes;
+    const causes = (await Promise.all(causesResult.map(id => addEventCause(id, eventId)))).map(result => result.rows[0]);
     return ({
         status: 200,
         message: "Event created successfully",
-        data: {event: eventResult.rows[0]},
+        data: {
+            event: eventResult.rows[0],
+            causes,
+        },
     });
+};
+
+const addEventCause = async (causeId, eventId) => {
+    const eventCause = {
+        causeId,
+        eventId,
+    };
+    return await eventCauseRepository.insert(eventCause);
 };
 
 /**
@@ -114,7 +128,7 @@ const getEvents = async (filters, userId) => {
     return ({
         status: 200,
         message: "Events fetched successfully",
-        data: {events: events},
+        data: {events},
     });
 };
 
@@ -169,6 +183,8 @@ const getEventData = async (id) => {
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
+    const causesResult = await eventCauseRepository.findCausesByEventId(event.id);
+    const causes = causesResult.rows;
     return ({
         status: 200,
         message: "Event fetched successfully",
@@ -176,6 +192,7 @@ const getEventData = async (id) => {
             event: {
                 ...event,
                 address: address,
+                causes,
             },
         },
     });

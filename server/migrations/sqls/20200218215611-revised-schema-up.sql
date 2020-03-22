@@ -213,8 +213,8 @@ CREATE TABLE authentication
         CREATE TABLE setting
         (
             user_id int NOT NULL,
-            email int NOT NULL,
-            notifications int NOT NULL,
+            email int NOT NULL DEFAULT 0,
+            notifications int NOT NULL DEFAULT 0,
             CONSTRAINT setting_pk PRIMARY KEY (user_id)
         );
 
@@ -224,6 +224,7 @@ CREATE TABLE authentication
             individual_id int NOT NULL,
             event_id int NOT NULL,
             confirmed boolean DEFAULT NULL,
+            attended boolean NOT NULL DEFAULT FALSE,
             CONSTRAINT sign_up_pk PRIMARY KEY (individual_id,event_id)
         );
 

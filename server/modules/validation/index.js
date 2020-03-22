@@ -59,6 +59,7 @@ const eventSchema = {
         "userId": {"type": "number"},
         "creationDate": {"type": ["string", "date-time"]},
         "address": {"$ref": "/Address"},
+        "causes": {"type": "array", "items": {"type": "number"}},
     },
     "required": ["name", "womenOnly", "spots", "addressVisible", "minimumAge", "photoId",
         "physical", "addInfo", "content", "date", "userId"],
@@ -107,8 +108,9 @@ const signupSchema = {
         "individualId": {"type": "number"},
         "eventId": {"type": "number"},
         "confirmed": {"type": "boolean"},
+        "attended": {"type": "boolean"},
     },
-    "required": ["individualId", "confirmed"],
+    "required": ["individualId", "confirmed", "attended"],
 };
 
 const informationSchema = {
