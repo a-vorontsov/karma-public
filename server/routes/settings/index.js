@@ -9,6 +9,36 @@ const httpUtil = require("../../util/httpUtil");
 const settingsService = require("../../modules/settings/");
 const authAgent = require("../../modules/authentication/auth-agent");
 
+/**
+ * Endpoint called whenever a user wants to update the settings.<br/>
+ * URL example: POST http://localhost:8000/settings
+ <p><b>Route: </b>/settings (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {Settings} req.body - Information regarding the setting flags to update
+ <pre>
+ {
+    "email": 1,
+    "notifications": 1
+}
+ </pre>
+ * @returns {Object}
+ *  status: 200, description: The settings were fetched successfully.<br/>
+ *  status: 400, description: Wrong input format.
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Settings fetched successfully",
+    "data": {
+        "settings": {
+            "email": 1,
+            "notifications": 0
+        }
+    }
+}
+ </pre>
+ *  @name Post settings
+ *  @function
+ */
 router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const settings = req.body;
@@ -20,6 +50,29 @@ router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     }
 });
 
+/**
+ * Endpoint called whenever a user wants to check the current settings.<br/>
+ * URL example: GET http://localhost:8000/settings
+ <p><b>Route: </b>/settings (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @returns {Object}
+ *  status: 200, description: The settings were fetched successfully.<br/>
+ *  status: 400, description: Wrong input format.
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Settings fetched successfully",
+    "data": {
+        "settings": {
+            "email": 1,
+            "notifications": 0
+        }
+    }
+}
+ </pre>
+ *  @name Get settings
+ *  @function
+ */
 router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const userId = req.body.userId;

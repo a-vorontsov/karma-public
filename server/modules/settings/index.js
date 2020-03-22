@@ -6,19 +6,20 @@ const settingsRepository = require("../../models/databaseRepositories/settingsRe
  * Fails if something goes wrong in db.
  */
 const changeSettings = async (settings) => {
-
     const currentSettings = await settingsRepository.findByUserId(settings.userId);
     if (settings.email !== undefined) {
         currentSettings.email = settings.email;
     }
-    if (settings.notification !== undefined) {
-        currentSettings.notification = settings.notification;
+    if (settings.notifications !== undefined) {
+        currentSettings.notifications = settings.notifications;
     }
     const settingsResult = await settingsRepository.update(settings);
+    const updatedSettings = settingsResult.rows[0];
+    delete updatedSettings.userId;
     return ({
         status: 200,
         message: "Settings updated successfully.",
-        data: {settings: settingsResult.rows[0]},
+        data: {settings: updatedSettings},
     });
 };
 
@@ -30,6 +31,7 @@ const changeSettings = async (settings) => {
 const getCurrentSettings = async (userId) => {
     const settingsResult = await settingsRepository.findByUserId(userId);
     const settings = settingsResult.rows[0];
+    delete settings.userId;
     return ({
         status: 200,
         message: "Settings fetched successfully",

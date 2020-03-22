@@ -25,7 +25,7 @@ const removeByUserId = (userId) => {
 
 const update = (setting) => {
     const query = "UPDATE setting SET email = $1, notifications = $2 WHERE user_id = $3 RETURNING *";
-    const params = [setting.email, setting.notification, setting.userId];
+    const params = [setting.email, setting.notifications, setting.userId];
     return db.query(query, params);
 };
 
