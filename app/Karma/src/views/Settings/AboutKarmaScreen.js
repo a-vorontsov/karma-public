@@ -8,13 +8,13 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/K-logo.png");
 
-function loadAboutText(screen) {
+loadAboutText = screen => {
     request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
+        .get("http://localhost:8000/information?type=about")
         .then(res => {
-            console.log(res.body);
+            console.log(res.body.message);
             screen.setState({
-                aboutText: res.body,
+                aboutText: res.body.data.information.content,
             });
         })
         .catch(er => {

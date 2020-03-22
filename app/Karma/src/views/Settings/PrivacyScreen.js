@@ -12,7 +12,7 @@ loadPrivacyPolicy = screen => {
     request
         .get("http://localhost:8000/information?type=privacyPolicy")
         .then(res => {
-            console.log(res.body);
+            console.log(res.body.message);
             screen.setState({
                 privacyPolicyText: res.body.data.information.content,
             });
