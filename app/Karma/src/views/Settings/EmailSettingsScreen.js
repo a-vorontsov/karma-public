@@ -108,7 +108,7 @@ class EmailSettingsScreen extends Component {
                     />
                     <RegularText style={Styles.pb24} />
                     <RegularText style={Styles.pb24}>
-                        Receive Email Notifications:
+                        Receive Notifications Through Email:
                     </RegularText>
                     <Switch
                         style={Styles.switch}
