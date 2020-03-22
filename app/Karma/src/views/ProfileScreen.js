@@ -100,6 +100,7 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
+        console.log(this.state.address);
     }
 
     setupOrganisationProfile(res) {

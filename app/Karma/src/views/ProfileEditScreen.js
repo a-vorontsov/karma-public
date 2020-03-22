@@ -46,6 +46,7 @@ class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         const profile = this.props.navigation.getParam("profile");
+        console.log(profile.address.countryState);
         this.state = {
             points: profile.points,
             location: profile.location,
@@ -534,7 +535,7 @@ class ProfileEditScreen extends Component {
                                             ? organisation.address.townCity
                                             : individual.address.townCity
                                     }
-                                    countryState={
+                                    region={
                                         isOrganisation
                                             ? organisation.address.countryState
                                             : individual.address.countryState
