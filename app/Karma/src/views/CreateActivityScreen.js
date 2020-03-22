@@ -146,7 +146,7 @@ export default class CreateActivityScreen extends React.Component {
                 ]);
                 sendNotification(
                     "EventUpdate",
-                    `The activity named ${event.name} has been updated!`,
+                    `${event.name}`,
                     Number(userId),
                     this.state.volunteers,
                 );

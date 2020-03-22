@@ -43,7 +43,7 @@ const ActivityEditable = props => {
             navigation.navigate("Profile");
             sendNotification(
                 "EventCancellation",
-                `Event named ${activity.name} has been cancelled.`,
+                `${activity.name}`,
                 Number(credentials.username),
                 volunteers,
             );
@@ -85,7 +85,7 @@ const ActivityEditable = props => {
 
         sendNotification(
             "Message",
-            "has sent you a message - check your inbox!",
+            "",
             Number(credentials.username),
             volunteers,
         );
