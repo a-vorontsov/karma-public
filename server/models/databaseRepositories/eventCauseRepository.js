@@ -16,8 +16,8 @@ const findAllByEventId = (eventId) => {
     return db.query(query, [eventId]);
 };
 
-const findCauseIdsByEventId = (eventId) => {
-    const query = "SELECT cause_id FROM event_cause WHERE event_id=$1";
+const findCausesByEventId = (eventId) => {
+    const query = "SELECT cause_id as id,name,title, description FROM event_cause INNER JOIN cause on id(cause) = cause_id WHERE event_id=$1";
     return db.query(query, [eventId]);
 };
 
@@ -44,5 +44,5 @@ module.exports = {
     find,
     removeByEventId,
     removeByEventCreatorId,
-    findCauseIdsByEventId,
+    findCausesByEventId,
 };

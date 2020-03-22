@@ -178,13 +178,10 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             }
             "causes": [
                 {
-                    "causeId": 1
-                },
-                {
-                    "causeId": 2
-                },
-                {
-                    "causeId": 3
+                    "id": 1,
+                    "name": "animals",
+                    "title": "Animals",
+                    "description": "Morbi accumsan laoreet ipsum. Curabitur"
                 }
             ]
         }
