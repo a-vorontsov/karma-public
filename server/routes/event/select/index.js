@@ -267,7 +267,7 @@ router.get("/going", authAgent.requireAuthentication, async (req, res) => {
         const getGoingEventsResult = await eventSignupService.getGoingEvents(userId);
         return httpUtil.sendResult(getGoingEventsResult, res);
     } catch (e) {
-        console.log("Going events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("Going events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

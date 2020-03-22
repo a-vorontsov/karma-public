@@ -36,6 +36,7 @@ services:
       BUG_REPORT_EMAIL_ADDRESS: ${BUG_REPORT_EMAIL_ADDRESS}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       MAPQUEST_API: ${MAPQUEST_API}
+      NO_AUTH: ${NO_AUTH}
 
       # TODO: Enable these sometime in the future
       ENABLE_OAUTH: 0
