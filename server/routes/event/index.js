@@ -409,7 +409,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
 router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
-        log.info("Deleting event id '%d'", id);
+        log.info("Deleting event id '%d'", eventId);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
         return httpUtil.sendResult(eventDeleteResult, res);
     } catch (e) {
