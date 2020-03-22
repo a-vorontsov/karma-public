@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
         })
         .then(insertResult =>{
             res.status(200).send({
-                message: ("Successfully selected causes for user " + userId),
+                message: "Successfully selected causes for user " + userId,
                 data: insertResult.rows,
             });
         })

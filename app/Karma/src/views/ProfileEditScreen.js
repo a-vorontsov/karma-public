@@ -485,18 +485,18 @@ class ProfileEditScreen extends Component {
                                     onChange={this.onChangeText}
                                     name="username"
                                 />
-                                {isOrganisation &&
-                                <View>
-                                <RegularText style={styles.bioHeader}>
-                                Organisation Phone Number
-                            </RegularText>
-                            <TextInput
-                                value={organisation.phoneNumber}
-                                name="phoneNumber"
-                                onChange={this.onChangeText}
-                            />
-                            </View>
-                            }
+                                {isOrganisation && (
+                                    <View>
+                                        <RegularText style={styles.bioHeader}>
+                                            Organisation Phone Number
+                                        </RegularText>
+                                        <TextInput
+                                            value={organisation.phoneNumber}
+                                            name="phoneNumber"
+                                            onChange={this.onChangeText}
+                                        />
+                                    </View>
+                                )}
                                 {!isOrganisation && (
                                     <View>
                                         <RegularText style={styles.bioHeader}>
