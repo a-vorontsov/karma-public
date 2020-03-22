@@ -81,7 +81,8 @@ router.use("/", eventSelectRoute);
                 ],
                 "going": true,
                 "spotsRemaining": 8,
-                "distance": 0.18548890708299523
+                "distance": 0.18548890708299523,
+                "causes": [1,2,3]
             },
             {
                 "eventId": 3,
@@ -109,7 +110,8 @@ router.use("/", eventSelectRoute);
                 ],
                 "going": true,
                 "spotsRemaining": 28,
-                "distance": 7.399274608089304
+                "distance": 7.399274608089304,
+                "causes": [1,2,3]
             }
         ]
     }
@@ -174,6 +176,14 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 "lat": 51.5237740,
                 "long": -0.1585340
             }
+            "causes": [
+                {
+                    "id": 1,
+                    "name": "animals",
+                    "title": "Animals",
+                    "description": "Morbi accumsan laoreet ipsum. Curabitur"
+                }
+            ]
         }
     }
 }
@@ -221,6 +231,7 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
     "content": "fun event yay",
     "date": "2004-10-19 10:23:54",
     "userId": 3
+    "causes": [1,2,4]
  }
  </pre>
  * "address" can be substituted with <pre>"addressId: {Integer}"</pre> in which case the existing address is reused.
@@ -228,11 +239,12 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  *  status: 200, description: The event object created with its id and addressId set to the ones stored in the database<br/>
  <pre>
  {
-    "message": "New event created",
+    "message": "Event created successfully",
     "data": {
         "event": {
+            "id": 106,
             "name": "event",
-            "addressId": 5,
+            "addressId": 106,
             "womenOnly": true,
             "spots": 3,
             "addressVisible": true,
@@ -241,12 +253,27 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
             "physical": true,
             "addInfo": true,
             "content": "fun event yay",
-            "date": "2004-10-19 10:23:54",
+            "date": "2004-10-19T09:23:54.000Z",
             "userId": 3,
-            "creationDate": "2019-10-19 10:23:54"
-        }
+            "pictureId": null,
+            "creationDate": "2020-03-21T23:07:18.020Z"
+        },
+        "causes": [
+            {
+                "eventId": 106,
+                "causeId": 1
+            },
+            {
+                "eventId": 106,
+                "causeId": 2
+            },
+            {
+                "eventId": 106,
+                "causeId": 3
+            }
+        ]
     }
- }
+}
  </pre>
  *  status: 400, description: User has reached their monthly event creation limit.<br/>
  *  status: 500, description: DB error
@@ -260,7 +287,6 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
         }
-
         const eventCreationResult = await eventService.createNewEvent(event);
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {

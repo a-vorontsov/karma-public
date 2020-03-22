@@ -224,6 +224,7 @@ CREATE TABLE authentication
             individual_id int NOT NULL,
             event_id int NOT NULL,
             confirmed boolean DEFAULT NULL,
+            attended boolean NOT NULL DEFAULT FALSE,
             CONSTRAINT sign_up_pk PRIMARY KEY (individual_id,event_id)
         );
 
