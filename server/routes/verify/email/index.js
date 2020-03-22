@@ -15,15 +15,12 @@ const httpUtil = require("../../../util/httpUtil");
  * only for 15 minutes.
  <p><b>Route: </b>/verify/email (POST)</p>
  <p><b>Permissions: </b>require not auth</p>
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {string} req.headers.authorization authToken
  * @param {string} req.body.data.email email address of the user
  * @param {string} req.body.data.token the user input email verification token
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
             "token": "123456",

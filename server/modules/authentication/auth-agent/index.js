@@ -32,6 +32,7 @@ const requireAuthentication = (req, res, next) => {
         // pass on derived userId in request
         req.body.userId = userId;
         req.query.userId = userId;
+        req.params.userId = userId;
         next();
     } catch (e) {
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());

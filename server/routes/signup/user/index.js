@@ -22,14 +22,11 @@ const httpUtil = require("../../../util/httpUtil");
  * successful registration.
  <p><b>Route: </b>/signup/user (POST)</p>
  <p><b>Permissions: </b>require not auth</p>
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {string} req.headers.authorization authToken (can be null at this stage)
  * @param {object} req.body.data.user the user input values for their user account
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "user": &#123;
                 "email": "paul&#64;karma.com",

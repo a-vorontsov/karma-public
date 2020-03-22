@@ -18,14 +18,11 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
  * registration status.
  <p><b>Route: </b>/signin/email (POST)</p>
  <p><b>Permissions: </b>require not auth</p>
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {string} req.headers.authorization authToken (can be null at this stage)
  * @param {string} req.body.data.email input email address of the user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
         &#125;

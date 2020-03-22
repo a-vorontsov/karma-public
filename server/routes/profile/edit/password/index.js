@@ -14,8 +14,7 @@ const owasp = require("owasp-password-strength-test");
  * new password (and a confirmPassword).
  <p><b>Route: </b>/profile/edit/password (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {HTTP} req
- * @param {HTTP} res
+ * @param {string} req.headers.authorization authToken
  * @param {string} oldPassword
  * @param {string} newPassword
  * @param {string} confirmPassword

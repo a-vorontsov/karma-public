@@ -14,6 +14,7 @@ const httpUtil = require("../../util/httpUtil");
  * URL example: POST http://localhost:8000/notification/
  <p><b>Route: </b>/notification (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Notification} req.body - Information regarding the notification containing the same properties as this example,
  * including user IDs:
  <pre>
@@ -76,11 +77,10 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 
 /**
  * Endpoint called whenever a user wants to see all current notifications for a UserId.<br/>
- * URL example: GET http://localhost:8000/notification?userId=6
- * // TODO: change not to use query params
+ * The userID will be derived from the authToken.
  <p><b>Route: </b>/notification (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: An array of notification objects containing the userIds.<br/>
  *  status: 400, description: The userId is not an integer.

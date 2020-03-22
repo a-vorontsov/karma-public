@@ -18,8 +18,7 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
  * Endpoint called whenever a user wishes to get their profile.<br/>
  <p><b>Route: </b>/profile (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user logged in
- * @param {String} req.body.authToken
+ * @param {string} req.headers.authorization authToken
  * @returns {object}
  * status: 400, description: error - for example an undefined indicating missing profile <br/>
  * status: 200, description: A message variable stating successfully
