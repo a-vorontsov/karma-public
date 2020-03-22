@@ -6,7 +6,7 @@ log4js.configure({
         out: {
             type: 'stdout',
             layout: {
-                type: 'pattern', pattern: '%[ %d %p %f{2}:%l%]: %m',
+                type: 'pattern', pattern: '%[ %d %f{2}:%l%]: %m',
             },
         },
     },

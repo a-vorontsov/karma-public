@@ -66,6 +66,7 @@ services:
     environment:
       - DOZZLE_TAILSIZE=100
       - DOZZLE_FILTER=name=karma
+      - DOZZLE_BASE=/logs
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
