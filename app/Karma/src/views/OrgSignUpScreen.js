@@ -39,6 +39,7 @@ export default class OrgSignUpScreen extends React.Component {
         this.state = {
             orgType: "NGO (Non-Government Organisation",
             orgName: "",
+            charityNumber: "0",
             fname: "",
             lname: "",
             phone: "",
@@ -106,6 +107,7 @@ export default class OrgSignUpScreen extends React.Component {
         const organisation = {
             name: this.state.orgName,
             organisationType: this.state.orgType,
+            charityNumber: this.state.charityNumber,
             lowIncome: this.state.isLowIncome,
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
