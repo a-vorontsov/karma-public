@@ -122,7 +122,7 @@ export default class CreateActivityScreen extends React.Component {
         }
 
         const credentials = await getData();
-        const event = this.createEvent(102);
+        const event = this.createEvent(credentials.username);
 
         const {navigate} = this.props.navigation;
 
@@ -180,7 +180,7 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: userId,
+            userId: Number(userId),
             creationDate: new Date(), //returns current date
         };
         return event;

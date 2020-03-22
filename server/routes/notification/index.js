@@ -6,11 +6,14 @@ const express = require("express");
 const router = express.Router();
 const notificationService = require("../../modules/notification");
 const validation = require("../../modules/validation");
+const authAgent = require("../../modules/authentication/auth-agent");
 const httpUtil = require("../../util/httpUtil");
 
 /**
  * Endpoint called whenever a user sends a new notification.<br/>
  * URL example: POST http://localhost:8000/notification/
+ <p><b>Route: </b>/notification (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Notification} req.body - Information regarding the notification containing the same properties as this example,
  * including user IDs:
  <pre>
@@ -52,7 +55,7 @@ const httpUtil = require("../../util/httpUtil");
  *  @name Create new notifications
  *  @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const notification = req.body;
         const validationResult = validation.validateNotification(notification);
@@ -74,6 +77,9 @@ router.post("/", async (req, res) => {
 /**
  * Endpoint called whenever a user wants to see all current notifications for a UserId.<br/>
  * URL example: GET http://localhost:8000/notification?userId=6
+ * // TODO: change not to use query params
+ <p><b>Route: </b>/notification (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user
  * @returns {Object}
  *  status: 200, description: An array of notification objects containing the userIds.<br/>
@@ -99,7 +105,7 @@ router.post("/", async (req, res) => {
  *  @name Get notifications
  *  @function
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
         if (Number.isInteger(id)) {

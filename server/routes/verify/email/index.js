@@ -13,7 +13,8 @@ const httpUtil = require("../../../util/httpUtil");
  * The user only inputs their email verification token and a response
  * is generated based on the validity of the token. The token is valid
  * only for 15 minutes.
- * @route {POST} /verify/email
+ <p><b>Route: </b>/verify/email (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {string} req.body.data.email email address of the user

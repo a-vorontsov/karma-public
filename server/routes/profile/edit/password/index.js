@@ -12,7 +12,8 @@ const owasp = require("owasp-password-strength-test");
  * Attempt to change the password for a given user.
  * Requires the user to input their old and a strong-enough
  * new password (and a confirmPassword).
- * @route {POST} /profile/edit/password
+ <p><b>Route: </b>/profile/edit/password (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {HTTP} req
  * @param {HTTP} res
  * @param {string} oldPassword
