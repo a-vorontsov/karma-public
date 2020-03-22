@@ -8,20 +8,6 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/terms.png");
 
-loadUsageTerms = screen => {
-    request
-    .get("http://localhost:8000/information?type=terms")
-    .then(res => {
-        console.log(res.body.message);
-        screen.setState({
-            termsText: res.body.data.information.content,
-        });
-    })
-    .catch(er => {
-        console.log(er.message);
-    });
-}
-
 class TermsScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -32,8 +18,22 @@ class TermsScreen extends Component {
         this.state = {
             termsText: "Loading...",
         };
-        loadUsageTerms(this);
+        this.loadUsageTerms();
     }
+
+    loadUsageTerms = () => {
+        request
+            .get("http://localhost:8000/information?type=terms")
+            .then(res => {
+                console.log(res.body.message);
+                this.setState({
+                    termsText: res.body.data.information.content,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    };
 
     render() {
         return (

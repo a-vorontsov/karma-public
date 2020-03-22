@@ -39,9 +39,9 @@ class ReportProblemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            category:problemTypes[0].value,
-            problem:"",
-            email:"",
+            category: problemTypes[0].value,
+            problem: "",
+            email: "",
         };
         this.submitBugReport = this.submitBugReport.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -52,25 +52,30 @@ class ReportProblemScreen extends Component {
         const userId = credentials.username;
         Toast.showWithGravity("Sending report...", Toast.SHORT, Toast.BOTTOM);
         request
-        .post("http://localhost:8000/bugreport")
-        .send({
-            authToken: authToken,
-            userId: userId,
-            data:{
-                email:this.state.email,
-                report: this.state.category + ": " + this.state.problem,
-            }
-        })
-        .then(res => {
-            console.log(res.body.message);
-            Toast.showWithGravity("Your report has been sent.", Toast.SHORT, Toast.BOTTOM);
-            setTimeout(() => this.props.navigation.navigate("SettingsMenu"), 1500); //1.5 seconds delay so users can admire the toast
-
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
-
+            .post("http://localhost:8000/bugreport")
+            .send({
+                authToken: authToken,
+                userId: userId,
+                data: {
+                    email: this.state.email,
+                    report: this.state.category + ": " + this.state.problem,
+                },
+            })
+            .then(res => {
+                console.log(res.body.message);
+                Toast.showWithGravity(
+                    "Your report has been sent.",
+                    Toast.SHORT,
+                    Toast.BOTTOM,
+                );
+                setTimeout(
+                    () => this.props.navigation.navigate("SettingsMenu"),
+                    1500,
+                ); //1.5 seconds delay so users can admire the toast
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
     }
 
     onChangeText(event) {
@@ -106,7 +111,9 @@ class ReportProblemScreen extends Component {
                             value={this.state.category}
                             data={problemTypes}
                             animationDuration={200}
-                            onChangeText={(value)=>this.setState({category:value})}
+                            onChangeText={value =>
+                                this.setState({category: value})
+                            }
                         />
                         <RegularText style={[Styles.pb24, {paddingTop: 20}]}>
                             Describe your problem:

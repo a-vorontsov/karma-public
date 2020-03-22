@@ -8,20 +8,6 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/guidelines.png");
 
-loadGuidelines = screen => {
-    request
-        .get("http://localhost:8000/information?type=guidelines")
-        .then(res => {
-            console.log(res.body.message);
-            screen.setState({
-                guidelinesText: res.body.data.information.content,
-            });
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
-}
-
 class GuidelinesScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -32,8 +18,22 @@ class GuidelinesScreen extends Component {
         this.state = {
             guidelinesText: "Loading...",
         };
-        loadGuidelines(this);
+        this.loadGuidelines();
     }
+
+    loadGuidelines = () => {
+        request
+            .get("http://localhost:8000/information?type=guidelines")
+            .then(res => {
+                console.log(res.body.message);
+                this.setState({
+                    guidelinesText: res.body.data.information.content,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    };
 
     render() {
         return (

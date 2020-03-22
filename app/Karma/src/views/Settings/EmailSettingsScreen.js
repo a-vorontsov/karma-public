@@ -22,52 +22,56 @@ class EmailSettingsScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email:"",
-            promotionalEmails:0,
-            notifications:0
-        }
+            email: "",
+            promotionalEmails: 0,
+            notifications: 0,
+        };
         this.loadSettings();
         this.saveSettings = this.saveSettings.bind(this);
     }
-    async loadSettings(){
+    async loadSettings() {
         const credentials = await getData();
         //const authToken = credentials.password;
         const userId = credentials.username;
         request
-        .get("http://localhost:8000/settings")
-        .query({userId:userId})
-        .then(res => {
-            this.setState({
-                email: res.body.data.settings.email,
-                promotionalEmails:res.body.data.settings.promotionalEmails,
-                notifications: res.body.data.settings.notifications,
+            .get("http://localhost:8000/settings")
+            .query({userId: userId})
+            .then(res => {
+                this.setState({
+                    email: res.body.data.settings.email,
+                    promotionalEmails: res.body.data.settings.promotionalEmails,
+                    notifications: res.body.data.settings.notifications,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
             });
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
     }
 
-    async saveSettings(){
+    async saveSettings() {
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
         request
-        .post("http://localhost:8000/settings")
-        .send({
-            authToken:authToken,
-            userId:userId,
-            email:this.state.promotionalEmails,
-            notifications:this.state.notifications,
-        })
-        .then(res => {
-            console.log(res.body.message);
-            Toast.showWithGravity("Settings updated successfully.", Toast.SHORT, Toast.BOTTOM);
-            this.props.navigation.navigate("SettingsMenu")
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
+            .post("http://localhost:8000/settings")
+            .send({
+                authToken: authToken,
+                userId: userId,
+                email: this.state.promotionalEmails,
+                notifications: this.state.notifications,
+            })
+            .then(res => {
+                console.log(res.body.message);
+                Toast.showWithGravity(
+                    "Settings updated successfully.",
+                    Toast.SHORT,
+                    Toast.BOTTOM,
+                );
+                this.props.navigation.navigate("SettingsMenu");
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
     }
 
     render() {
@@ -90,13 +94,17 @@ class EmailSettingsScreen extends Component {
                     </RegularText>
                     <Switch
                         style={Styles.switch}
-                        value={this.state.promotionalEmails===1?true:false}
+                        value={
+                            this.state.promotionalEmails === 1 ? true : false
+                        }
                         trackColor={{
                             true: "#A9DCDF",
                             false: Colours.grey,
                         }}
                         thumbColor={Colours.grey}
-                        onValueChange={(value)=> this.setState({promotionalEmails: value? 1: 0})}
+                        onValueChange={value =>
+                            this.setState({promotionalEmails: value ? 1 : 0})
+                        }
                     />
                     <RegularText style={Styles.pb24} />
                     <RegularText style={Styles.pb24}>
@@ -104,13 +112,15 @@ class EmailSettingsScreen extends Component {
                     </RegularText>
                     <Switch
                         style={Styles.switch}
-                        value={this.state.notifications===1?true:false}
+                        value={this.state.notifications === 1 ? true : false}
                         trackColor={{
                             true: "#A9DCDF",
                             false: Colours.grey,
                         }}
                         thumbColor={Colours.grey}
-                        onValueChange={(value)=> this.setState({notifications: value? 1: 0})}
+                        onValueChange={value =>
+                            this.setState({notifications: value ? 1 : 0})
+                        }
                     />
                     <RegularText style={Styles.pb24} />
                     <RegularText style={Styles.pb24}>
@@ -123,13 +133,8 @@ class EmailSettingsScreen extends Component {
                         editable={false}
                     />
                 </View>
-                <View style={
-                    {width: formWidth,marginLeft:69,marginTop:69}
-            }>
-                    <GradientButton
-                        onPress={this.saveSettings}
-                        title="Save"
-                    />
+                <View style={{width: formWidth, marginLeft: 69, marginTop: 69}}>
+                    <GradientButton onPress={this.saveSettings} title="Save" />
                 </View>
             </SafeAreaView>
         );
