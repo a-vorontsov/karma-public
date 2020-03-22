@@ -63,7 +63,8 @@ export default class CreateActivityScreen extends React.Component {
             city: "",
             postcode: "",
             displaySignupModal: false,
-            causes: []
+            causes: [],
+            causeIds: [],
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
@@ -128,9 +129,13 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     onUpdateCauses = inputState => {
-        
+        let causeIds = []
+        inputState.selectedCauses.forEach(c => {
+            causeIds.push(c.id);
+        })
         this.setState({
-            causes: inputState.selectedCauses
+            causes: inputState.selectedCauses,
+            causeIds,
         })
         this.toggleModal();
     }
@@ -209,6 +214,7 @@ export default class CreateActivityScreen extends React.Component {
             date: this.state.startDate,
             userId: Number(userId),
             creationDate: new Date(), //returns current date
+            causes: this.state.causeIds,
         };
         return event;
     }
@@ -315,6 +321,10 @@ export default class CreateActivityScreen extends React.Component {
         }
         const credentials = await getData();
         const event = this.createEvent(credentials.username);
+        if(event.causes.length === 0){
+            Alert.alert("An activity must be related to at least one cause");
+        }
+        
         // send a request to update the db with the new event
         await request
             .post("http://localhost:8000/event")
