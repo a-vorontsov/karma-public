@@ -37,6 +37,7 @@
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modals": "^0.19.9",
     "react-native-paper": "^3.6.0",
+    "react-native-phone-input": "^0.2.4",
     "react-native-photo-upload": "^1.3.0",
     "react-native-popup-menu": "^0.15.7",
     "react-native-progress-bar": "^0.1.2",

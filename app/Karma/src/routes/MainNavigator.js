@@ -12,6 +12,7 @@ import PrivacyScreen from "../views/Settings/PrivacyScreen";
 import TermsScreen from "../views/Settings/TermsScreen";
 import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import CreateActivityScreen from "../views/CreateActivityScreen";
+import VerifyScreen from "../views/VerifyScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
@@ -33,9 +34,6 @@ const MainNavigator = createStackNavigator(
         About: {
             screen: AboutScreen,
         },
-        ContactInfo: {
-            screen: ContactInfoScreen,
-        },
         Tab: MainTabNavigator,
         Privacy: {
             screen: PrivacyScreen,
@@ -48,6 +46,9 @@ const MainNavigator = createStackNavigator(
         },
         PickCauses: {
             screen: PickCausesScreen,
+        },
+        Verify: {
+            screen: VerifyScreen,
         },
         Profile: {
             screen: ProfileScreen,

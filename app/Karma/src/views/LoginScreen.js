@@ -1,11 +1,14 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView} from "react-native";
+import Styles from "../styles/Styles";
+import Colours from "../styles/Colours";
+import {RegularText} from "../../components/text";
 
 class LoginScreen extends Component {
     static navigationOptions = {headerShown: false};
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View
                     style={{
                         flex: 1,
@@ -16,29 +19,23 @@ class LoginScreen extends Component {
                     <TouchableOpacity
                         style={[styles.button, {marginBottom: 20}]}
                         onPress={this._onPressButton}>
-                        <Text style={[styles.text, {fontSize: 20}]}>Login</Text>
+                        <RegularText style={[styles.text, {fontSize: 20}]}>Login</RegularText>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-    },
     text: {
         justifyContent: "center",
         textAlign: "center",
-        color: "black",
+        color: Colours.black,
     },
     button: {
         alignItems: "center",
         backgroundColor: "transparent",
-        borderColor: "white",
+        borderColor: Colours.white,
         borderWidth: 2,
         borderRadius: 30,
         paddingHorizontal: 125,

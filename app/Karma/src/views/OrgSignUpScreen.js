@@ -39,7 +39,6 @@ export default class OrgSignUpScreen extends React.Component {
         this.state = {
             orgType: "NGO (Non-Government Organisation",
             orgName: "",
-            charityNumber: "",
             fname: "",
             lname: "",
             phone: "",
@@ -105,7 +104,6 @@ export default class OrgSignUpScreen extends React.Component {
 
     createOrganisation() {
         const organisation = {
-            organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
             lowIncome: this.state.isLowIncome,
@@ -129,7 +127,6 @@ export default class OrgSignUpScreen extends React.Component {
         this.setState({submitPressed: true});
         if (
             !this.state.orgName ||
-            !this.state.charityNumber ||
             !this.state.phone
         ) {
             return;
@@ -212,27 +209,11 @@ export default class OrgSignUpScreen extends React.Component {
                             <TextInput
                                 placeholder="Charity or Organisation name"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() =>
-                                    this.charityNumber.focus()
-                                }
+                                onSubmitEditing={() => this.password.focus()}
                                 name="orgName"
                                 showError={
                                     this.state.submitPressed
                                         ? !this.state.orgName
-                                        : false
-                                }
-                            />
-                            <TextInput
-                                inputRef={ref => (this.charityNumber = ref)}
-                                placeholder="Charity Number"
-                                onChange={this.onChangeText}
-                                name="charityNumber"
-                                onSubmitEditing={() => this.password.focus()}
-                                showError={
-                                    this.state.submitPressed
-                                        ? !this.state.charityNumber &&
-                                          !this.state.isExempt &&
-                                          !this.state.isLowIncome
                                         : false
                                 }
                             />
