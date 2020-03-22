@@ -43,9 +43,9 @@ class NotificationsScreen extends Component {
         const credentials = await getData();
         const userId = credentials.username;
         try {
-            const response = await request.get(
-                "http://localhost:8000/notification?userId=" + userId,
-            );
+            const response = await request
+                .get("http://localhost:8000/notification")
+                .query({userId: userId});
             this.setState({
                 notifications: response.body.data.notifications,
                 userId: Number(userId),
@@ -53,6 +53,7 @@ class NotificationsScreen extends Component {
 
             this.parseNotifications();
         } catch (error) {
+            console.log(error);
             Alert.alert("Unable to fetch new notifications");
         }
     };

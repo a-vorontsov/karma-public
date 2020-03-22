@@ -34,6 +34,7 @@ class ActivitiesAllScreen extends Component {
                 });
             })
             .catch(er => {
+                console.log(er);
                 Alert.alert("No activities could be found!");
             });
     }

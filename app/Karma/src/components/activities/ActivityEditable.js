@@ -58,12 +58,10 @@ const ActivityEditable = props => {
         const credentials = await getData();
 
         let attendees = [];
-
-        for (const volunteer of volunteers) {
-            let volId = volunteer;
+        for (let i = 0; i < volunteers.length; ++i) {
             const volunteerProfile = await request
                 .get("http://localhost:8000/profile/")
-                .query({userId: volId})
+                .query({userId: volunteers[i]})
                 .send({authToken: credentials.password})
                 .then(res => {
                     return res.body.data;

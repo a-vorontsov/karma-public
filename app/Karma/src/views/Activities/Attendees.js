@@ -32,17 +32,16 @@ class Attendees extends Component {
         let volunteers = Array.from(activity.volunteers);
         let attendees = [];
         let attendeeIds = [];
-        for (const volunteer of volunteers) {
-            let volId = volunteer;
+        for (let i = 0; i < volunteers.length; ++i) {
             const volunteerProfile = await request
                 .get("http://localhost:8000/profile/")
-                .query({userId: volId})
+                .query({userId: volunteers[i]})
                 .send({authToken: credentials.password})
                 .then(res => {
                     return res.body.data;
                 });
             attendees.push(volunteerProfile);
-            attendeeIds.push(volunteer);
+            attendeeIds.push(volunteers[i]);
         }
 
         this.setState({
