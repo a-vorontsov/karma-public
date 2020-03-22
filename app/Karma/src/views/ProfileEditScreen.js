@@ -85,7 +85,6 @@ class ProfileEditScreen extends Component {
         this.onChangeText = this.onChangeText.bind(this);
         this.getGender = this.getGender.bind(this);
         this.baseState = this.state;
-        console.log(this.state.organisation.name);
     }
 
     static navigationOptions = {
