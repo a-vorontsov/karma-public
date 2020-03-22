@@ -17,7 +17,8 @@ const findAllByEventId = (eventId) => {
 };
 
 const findCausesByEventId = (eventId) => {
-    const query = "SELECT cause_id as id,name,title, description FROM event_cause INNER JOIN cause on id(cause) = cause_id WHERE event_id=$1";
+    const query = "SELECT cause_id as id,name,title, description FROM event_cause "+
+    "INNER JOIN cause on id(cause) = cause_id WHERE event_id=$1";
     return db.query(query, [eventId]);
 };
 
