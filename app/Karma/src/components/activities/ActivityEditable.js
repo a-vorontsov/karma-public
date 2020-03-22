@@ -29,7 +29,8 @@ const icons = {
 const ActivityEditable = props => {
     const navigation = useNavigation();
     const {activity, creatorName} = props;
-    const volunteers = activity.volunteers; //todo get from activity object
+    const volunteers = activity.volunteers;
+
     /**
      * Delete the event selected
      */
@@ -47,6 +48,50 @@ const ActivityEditable = props => {
                 volunteers,
             );
         });
+    };
+
+    /**
+     * Fetches each volunteer's profile.
+     * This is used to then get the full name and email of each volunteer.
+     */
+    const fetchAttendeeInfo = async () => {
+        const credentials = await getData();
+
+        let attendees = [];
+
+        for (const volunteer of volunteers) {
+            let volId = volunteer;
+            const volunteerProfile = await request
+                .get("http://localhost:8000/profile/")
+                .query({userId: volId})
+                .send({authToken: credentials.password})
+                .then(res => {
+                    return res.body.data;
+                });
+            attendees.push(volunteerProfile);
+        }
+
+        return attendees;
+    };
+
+    const sendMessageToAttendees = async () => {
+        const credentials = await getData();
+
+        let attendees = await fetchAttendeeInfo();
+        let attendeeEmails = [];
+        attendees.forEach(a => {
+            attendeeEmails.push(a.user.email);
+        });
+
+        sendNotification(
+            "Message",
+            "has sent you a message - check your inbox!",
+            Number(credentials.username),
+            volunteers,
+        );
+
+        //Placing emails in the 'BCC' section so attendees can only see their own emails
+        Communications.email(null, null, attendeeEmails, null, null);
     };
 
     return (
@@ -102,14 +147,7 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        Communications.email(
-                                            null,
-                                            null,
-                                            // BCC – array of recipients
-                                            ["emailAddress1", "emailAddress2"],
-                                            null,
-                                            null,
-                                        );
+                                        sendMessageToAttendees();
                                     }}>
                                     <RegularText style={styles.settingsText}>
                                         Message Attendees

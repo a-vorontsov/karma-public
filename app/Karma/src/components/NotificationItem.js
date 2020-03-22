@@ -23,7 +23,7 @@ export default class NotificationItem extends Component {
     }
 
     async componentDidMount() {
-        const {notification} = this.props
+        const {notification} = this.props;
         this.getSenderName(notification.senderId);
     }
 
@@ -53,10 +53,13 @@ export default class NotificationItem extends Component {
                     return res.body.data;
                 });
 
-            let sender = response.individual ? response.individual : response.organisation;
-           
-            let senderName = sender.name ? sender.name : sender.firstName + " " + sender.lastName;
-            
+            let sender = response.individual
+                ? response.individual
+                : response.organisation;
+
+            let senderName = sender.name
+                ? sender.name
+                : sender.firstName + " " + sender.lastName;
 
             this.setState({
                 senderName: senderName,
@@ -82,7 +85,11 @@ export default class NotificationItem extends Component {
                             borderRadius: 20,
                             alignSelf: "center",
                         }}
-                        source={{uri: `https://picsum.photos/seed/${notification.id}/200`}}
+                        source={{
+                            uri: `https://picsum.photos/seed/${
+                                notification.id
+                            }/200`,
+                        }}
                     />
                     <View
                         style={[

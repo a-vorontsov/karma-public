@@ -36,7 +36,7 @@ export default class AttendeeButton extends React.Component {
         let name = userType.firstName
             ? userType.firstName + " " + userType.lastName
             : userType.name;
-        console.log(attendeeId);
+
         this.setState({
             email: email,
             name: name,
