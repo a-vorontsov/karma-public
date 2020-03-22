@@ -55,6 +55,7 @@ const getIndividualLocation = (userId) => {
     "from individual inner join address on address_id = id(address) where user_id = $1";
     return db.query(query, [userId]);
 };
+
 const update = (individual) => {
     const query =
     "UPDATE individual SET firstname = $1, lastname = $2, phone = $3, banned = $4, " +

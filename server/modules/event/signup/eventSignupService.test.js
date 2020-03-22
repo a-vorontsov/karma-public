@@ -5,21 +5,24 @@ const individualRepository = require("../../../models/databaseRepositories/indiv
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const eventSorter = require("../../sorting/event");
+const profileRepo = require("../../../models/databaseRepositories/profileRepository");
 const util = require("../../../util/util");
 
 jest.mock("../../../models/databaseRepositories/signupRepository");
 jest.mock("../../../models/databaseRepositories/eventRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
+jest.mock("../../../models/databaseRepositories/profileRepository");
 jest.mock("../../../util/util");
 jest.mock("../../sorting/event");
 
-let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2;
+let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2, profile;
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
     signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
     event1 = testHelpers.getEventWithLocationExample1();
     event2 = testHelpers.getEventWithLocationExample2();
+    profile = testHelpers.getProfile();
     return testHelpers.clearDatabase();
 });
 
@@ -49,6 +52,18 @@ test('updating works', async () => {
     signupRepository.update.mockResolvedValue({
         rows: [{
             signUp,
+        }],
+    });
+
+    signupRepository.find.mockResolvedValue({
+        rows: [{
+            signUp,
+        }],
+    });
+
+    profileRepo.updateKarmaPoints.mockResolvedValue({
+        rows: [{
+            profile,
         }],
     });
 
