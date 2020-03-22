@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: postgres:12
+    image: postgres:12.2-alpine
     volumes:
     - db-data:/var/lib/postgresql/data
     container_name: karma-postgres
