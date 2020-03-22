@@ -14,6 +14,7 @@ import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
 import {getData} from "../../util/credentials";
+import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
 
 const request = require("superagent");
@@ -50,6 +51,7 @@ class ReportProblemScreen extends Component {
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
+        Toast.showWithGravity("Sending report...", Toast.SHORT, Toast.BOTTOM);
         request
         .post("http://localhost:8000/bugreport")
         .send({
@@ -62,6 +64,9 @@ class ReportProblemScreen extends Component {
         })
         .then(res => {
             console.log(res.body.message);
+            Toast.showWithGravity("Your report has been sent.", Toast.SHORT, Toast.BOTTOM);
+            setTimeout(() => this.props.navigation.navigate("SettingsMenu"), 2000);
+
         })
         .catch(er => {
             console.log(er.message);
