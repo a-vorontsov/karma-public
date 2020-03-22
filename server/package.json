@@ -6,7 +6,7 @@
   "scripts": {
     "test": "env CI=true jest -i",
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "env NODE_ENV=development nodemon server.js",
     "db-migrate": "db-migrate",
     "docs": "jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes",
     "dev-start": "nodemon ./server",

@@ -205,7 +205,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  *  status: 200, description: The signup object updated<br/>
  <pre>
  {
-    "message": "Favourite added successfully",
+    "message": "Signup updated successfully",
     "data": {
         "signup": {
             "individualId": 7,
