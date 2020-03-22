@@ -25,8 +25,7 @@ test('insert setting and findByUserId work', async () => {
     const insertSettingResult = await settingRepository.insert(settingExample);
     const findSettingResultByUserId = await settingRepository.findByUserId(insertUserResult.rows[0].id);
 
-    expect(insertSettingResult.rows[0].email).toBe(findSettingResultByUserId.rows[0].promotionalEmails);
-    expect(insertSettingResult.rows[0].notification).toBe(findSettingResultByUserId.rows[0].notification);
+    expect(insertSettingResult.rows[0]).toMatchObject(findSettingResultByUserId.rows[0]);
     expect(settingExample).toMatchObject(findSettingResultByUserId.rows[0]);
 });
 
@@ -38,10 +37,10 @@ test('insert settingByUserId and findByUserId work', async () => {
     settingExample.userId = insertUserResult.rows[0].id;
     const insertSettingResult = await settingRepository.insertUserId(settingExample.userId);
     const findSettingResultByUserId = await settingRepository.findByUserId(insertUserResult.rows[0].id);
+
     settingExample.email = 0;
     settingExample.notification = 0;
-    expect(insertSettingResult.rows[0].email).toBe(findSettingResultByUserId.rows[0].promotionalEmails);
-    expect(insertSettingResult.rows[0].notification).toBe(findSettingResultByUserId.rows[0].notification);
+    expect(insertSettingResult.rows[0]).toMatchObject(findSettingResultByUserId.rows[0]);
     expect(settingExample).toMatchObject(findSettingResultByUserId.rows[0]);
 });
 
@@ -57,8 +56,7 @@ test('insert setting and updates work', async () => {
     settingExample.email = settingExample.email + 10;
     const updateSettingResult = await settingRepository.update(settingExample);
     const findAfterUpdate = await settingRepository.findByUserId(settingExample.userId);
-    expect(findAfterUpdate.rows[0].email).toBe(findSettingResultByUserId.rows[0].promotionalEmails);
-    expect(findAfterUpdate.rows[0].notification).toBe(findSettingResultByUserId.rows[0].notification);
+    expect(findAfterUpdate.rows[0]).not.toMatchObject(findSettingResultByUserId.rows[0]);
     expect(updateSettingResult.rows[0]).toMatchObject(findAfterUpdate.rows[0]);
     expect(findAfterUpdate.rows[0].email).toBe(settingExample.email);
     expect(settingExample).toMatchObject(findAfterUpdate.rows[0]);

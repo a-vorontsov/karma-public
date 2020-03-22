@@ -29,7 +29,7 @@ const changeSettings = async (settings) => {
  * Fails if database calls fail.
  */
 const getCurrentSettings = async (userId) => {
-    const settingsResult = await settingsRepository.findByUserId(userId);
+    const settingsResult = await settingsRepository.findByUserIdWithEmail(userId);
     const settings = settingsResult.rows[0];
     return ({
         status: 200,

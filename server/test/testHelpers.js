@@ -564,8 +564,7 @@ const complaint = {
 const getComplaint = () => ({...complaint});
 
 const setting = {
-    email: "test@gmail.com",
-    promotional_emails: 1,
+    email: 1,
     notifications: 0,
     userId: -1,
 };
