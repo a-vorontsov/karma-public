@@ -9,10 +9,11 @@ const eventSignupService = require("../../../modules/event/signup/eventSignupSer
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
-
+const authAgent = require("../../../modules/authentication/auth-agent");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
- * URL example: POST http://localhost:8000/event/5/signUp
+ <p><b>Route: </b>/event/:id/signUp (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -38,7 +39,7 @@ const validation = require("../../../modules/validation");
  *  @name Sign up to event
  *  @function
  */
-router.post('/:eventId/signUp', async (req, res) => {
+router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
 
@@ -59,7 +60,8 @@ router.post('/:eventId/signUp', async (req, res) => {
 
 /**
  * Endpoint called to get all users signed up to an event.<br/>
- * URL example: GET http://localhost:8000/event/1/signUp
+ <p><b>Route: </b>/event/:id/signUp (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.params.eventId - id of the event.
  * @returns {object}
  *  status: 200, description: Array of all users signed up with necessary details named users<br/>
@@ -92,7 +94,7 @@ router.post('/:eventId/signUp', async (req, res) => {
  *  @name See signed up users
  *  @function
  */
-router.get('/:eventId/signUp', async (req, res) => {
+router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.eventId);
         const signupsResult = await eventSignupService.getAllSignupsForEvent(eventId);
@@ -106,6 +108,8 @@ router.get('/:eventId/signUp', async (req, res) => {
 /**
  * Endpoint called whenever a user wishes to see all events they have attended. This only shows past events<br/>
  * URL example: GET http://localhost:8000/event/signUp/history?userId=1
+ <p><b>Route: </b>/event/signUp/history (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Object} req.query.userId - id of user requesting their signup history
  * @returns {Object}
  *  status: 200, description: Array of all events the user has signed up to<br/>
@@ -166,7 +170,7 @@ router.get('/:eventId/signUp', async (req, res) => {
  *  @name See signup history
  *  @function
  */
-router.get('/signUp/history', async (req, res) => {
+router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         const individualId = await util.getIndividualIdFromUserId(userId);
@@ -184,7 +188,8 @@ router.get('/signUp/history', async (req, res) => {
 
 /**
  * Endpoint called whenever a user updates their attendance confirmation in an event.<br/>
- * URL example: POST http://localhost:8000/event/5/signUp/update
+ <p><b>Route: </b>/event/:id/signUp/update (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -210,7 +215,7 @@ router.get('/signUp/history', async (req, res) => {
  *  @name Update signup status for event
  *  @function
  */
-router.post('/:eventId/signUp/update', async (req, res) => {
+router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const individualId = await util.getIndividualIdFromUserId(signup.userId);

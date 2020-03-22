@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * gets called when user selects causes
  * body should contain causes array holding cause objects
  * cause objects need property id
  * */
-router.post('/', (req, res) => {
+router.post('/', authAgent.requireAuthentication, (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
     if (!causes) {

@@ -13,6 +13,7 @@ const favouriteRepository = require("../../../models/databaseRepositories/favour
 let favourite;
 
 beforeEach(() => {
+    process.env.NO_AUTH = 1;
     favourite = testHelpers.getFavourite();
     return testHelpers.clearDatabase();
 });

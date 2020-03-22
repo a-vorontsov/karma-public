@@ -26,8 +26,11 @@ const iAmATeapot = {
 // Bad requests
 
 const alreadyAuth = {
-    status: 400,
+    status: 200,
     message: "Request is already authenticated.",
+    data: {
+        alreadyAuthenticated: true,
+    },
 };
 
 const getMissingVarInRequest = (varName) => {

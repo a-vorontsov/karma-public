@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:12
     volumes:
-    - db_data:/var/lib/postgresql/data
+    - db-data:/var/lib/postgresql/data
     container_name: karma-postgres
     environment:
       POSTGRES_DB: karma-db
@@ -14,4 +14,4 @@ services:
       - 5432:5432
 
 volumes:
-  db_data: {}
+  db-data: {}
