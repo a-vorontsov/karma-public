@@ -8,7 +8,7 @@ export default class RadioInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: null,
+            value: props.value,
         };
         this.onValue = this.onValue.bind(this);
     }
