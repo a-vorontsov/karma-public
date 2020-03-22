@@ -4,7 +4,7 @@
   "description": "Karma server",
   "main": "app.js",
   "scripts": {
-    "test": "jest -i",
+    "test": "env CI=true jest -i",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db-migrate": "db-migrate",
@@ -30,6 +30,7 @@
     "jose": "^1.25.0",
     "js-base64": "^2.5.2",
     "jsonschema": "^1.2.5",
+    "log4js": "^6.1.2",
     "method-override": "^3.0.0",
     "node-geocoder": "^3.25.1",
     "nodemailer": "^6.4.2",

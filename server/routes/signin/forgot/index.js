@@ -2,6 +2,7 @@
  * @module Sign-in-Forgot
  */
 
+const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
@@ -24,8 +25,9 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
     const email = req.body.data.email;
+    log.info("Resetting password for email '%s'", email);
     const checkEmailResult = await util.checkEmail(email);
-    if (checkEmailResult.status != 200) {
+    if (checkEmailResult.status !== 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);
     }
     try {
@@ -34,6 +36,7 @@ router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
             message: "Code sent successfully to " + email,
         });
     } catch (e) {
+        log.error("Resetting password failed: " + e);
         httpUtil.sendGenericError(e, res);
     }
 });
@@ -57,6 +60,7 @@ router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
 router.post('/confirm', authAgent.requireNoAuthentication, async (req, res) => {
     const tokenRecieved = req.body.data.token;
     const email = req.body.data.email;
+    log.info("Confirming password reset token for email '%s'", email);
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status != 200) {
         return res.status(checkEmailResult.status).send(checkEmailResult.message);

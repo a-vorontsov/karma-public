@@ -1,7 +1,7 @@
 /**
  * @module Settings
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -36,16 +36,17 @@ const authAgent = require("../../modules/authentication/auth-agent");
     }
 }
  </pre>
- *  @name Post settings
+ *  @name Change settings
  *  @function
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Changing settings");
         const settings = req.body;
         const settingsResult = await settingsService.changeSettings(settings);
         return httpUtil.sendResult(settingsResult, res);
     } catch (e) {
-        console.log(e);
+        log.error("Changing settings failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -76,10 +77,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
+        log.info("Getting settings for user id '%d'", userId);
         const settingsResult = await settingsService.getCurrentSettings(userId);
         return httpUtil.sendResult(settingsResult, res);
     } catch (e) {
-        console.log(e);
+        log.error("Gettings settings failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
