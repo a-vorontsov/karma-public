@@ -158,7 +158,7 @@ test("requesting specific event data works", async () => {
         rows: [address],
     });
 
-    eventCauseRepository.findCauseIdsByEventId.mockResolvedValue({
+    eventCauseRepository.findCausesByEventId.mockResolvedValue({
         rows: [{
             causeId: 1,
             causeId: 2,

@@ -183,7 +183,7 @@ const getEventData = async (id) => {
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
-    const causesResult = await eventCauseRepository.findCauseIdsByEventId(event.id);
+    const causesResult = await eventCauseRepository.findCausesByEventId(event.id);
     const causes = causesResult.rows;
     return ({
         status: 200,
