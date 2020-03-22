@@ -40,20 +40,6 @@ const blacklist = new Set(); // TODO: fetch when starting app
 
 /**
  * Get the public key used for encryption-decryption
- * in JSON Web Key format.
- * @return {object} enc public key in JWK format
- */
-const getEncPubAsJWK = () => { // TODO: ENFORCE PEM
-    return keystore.get({
-        kty: config.kty,
-        crv: config.crvOrSize,
-        use: "enc",
-        key_ops: ["deriveKey"],
-    });
-};
-
-/**
- * Get the public key used for encryption-decryption
  * in Privacy-Enhanced Mail format
  * @return {object} enc public key in PEM format
  */
@@ -64,20 +50,6 @@ const getEncPubAsPEM = () => {
         use: "enc",
         key_ops: ["deriveKey"],
     }).toPEM();
-};
-
-/**
- * Get the public key used for signing-verifying
- * in JSON Web Key format.
- * @return {object} sig public key in JWK format
- */
-const getSigPubAsJWK = () => { // TODO: ENFORCE PEM
-    return keystore.get({
-        kty: config.kty,
-        crv: config.crvOrSize,
-        use: "sig",
-        key_ops: ["sign", "verify"],
-    });
 };
 
 /**
@@ -358,9 +330,7 @@ const getEncryptedConfig = (pub) => {
 };
 
 module.exports = {
-    getEncPubAsJWK, // TODO: ENFORCE PEM
     getEncPubAsPEM,
-    getSigPubAsJWK, // TODO: ENFORCE PEM
     getSigPubAsPEM,
     getPublicConfig,
     getEncryptedConfig,

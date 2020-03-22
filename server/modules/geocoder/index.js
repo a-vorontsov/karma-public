@@ -23,7 +23,6 @@ const geocode = async (address) => {
             address.countryState);
     } catch (error) {
         console.log("Geocoding error: " + error);
-        return null;
     }
 };
 
