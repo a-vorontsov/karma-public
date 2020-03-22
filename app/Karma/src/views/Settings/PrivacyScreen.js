@@ -8,13 +8,13 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");
 
-function loadPrivacyPolicy(screen) {
+loadPrivacyPolicy = screen => {
     request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
+        .get("http://localhost:8000/information?type=privacyPolicy")
         .then(res => {
             console.log(res.body);
             screen.setState({
-                privacyPolicyText: res.body,
+                privacyPolicyText: res.body.data.information.content,
             });
         })
         .catch(er => {
