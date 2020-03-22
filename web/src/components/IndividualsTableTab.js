@@ -1,9 +1,13 @@
 import * as React from "react";
 import {useEffect} from "react";
 import MaterialTable from 'material-table'
+import {IndividualDetails} from "./IndividualDetails";
 
 export function IndividualsTableTab() {
     const [individuals, setIndividuals] = React.useState([]);
+
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
 
     useEffect(() => {
         async function fetchData() {
@@ -14,17 +18,28 @@ export function IndividualsTableTab() {
         fetchData();
     }, []);
 
-    const toggleBan = async (event, rowData) => {
-        if (!window.confirm(rowData.banned ? "Unban " : "Ban " + rowData.firstname + " " + rowData.lastname + "?")) return;
-        rowData.banned = !rowData.banned;
-        const indivs = individuals.slice();
-        indivs.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
-        setIndividuals(indivs);
-        await fetch(process.env.REACT_APP_API_URL + "/admin/toggleBan", {
+    const toggleBan = (event, rowData) => {
+        if (!window.confirm((rowData.banned ? "Unban " : "Ban ") + rowData.firstname + " " + rowData.lastname + "?")) return;
+        fetch(process.env.REACT_APP_API_URL + "/admin/toggleBan", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({data: {individual: rowData}}),
         });
+
+        rowData.banned = !rowData.banned;
+        const individualsCopy = individuals.slice();
+        individualsCopy.map(individual => individual.id === rowData.id ? {...individual, banned: !individual.banned} : individual);
+        setIndividuals(individualsCopy);
+    };
+
+    const fetchProfileDetails = async (profile) => {
+        const details = await fetch(process.env.REACT_APP_API_URL + "/profile?userId=" + profile.userId)
+            .then(res => res.json());
+        profile.details = details.data;
+        const indivs = individuals.slice();
+        indivs.map(individual => individual.id === profile.id ? {...individual, details} : individual);
+        setIndividuals(individuals);
+        forceUpdate();
     };
 
     return (
@@ -45,7 +60,19 @@ export function IndividualsTableTab() {
                     })
                 ]}
                 data={individuals}
-                options={{pageSize: 15, pageSizeOptions: [5, 15, 25]}}
+                options={{pageSize: 15, pageSizeOptions: [5, 15, 25, 50]}}
+
+                detailPanel={
+                    rowData => {
+                        if (!rowData.details) fetchProfileDetails(rowData);
+                        return <IndividualDetails details={rowData.details}/>
+                    }
+                }
+
+                onRowClick={(event, rowData, togglePanel) => {
+                    togglePanel();
+                }}
+
                 title="Users"
             />
         </div>
