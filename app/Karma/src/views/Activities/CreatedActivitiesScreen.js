@@ -7,15 +7,6 @@ import PageHeader from "../../components/PageHeader";
 import {SafeAreaView} from "react-navigation";
 import {ScrollView} from "react-native-gesture-handler";
 
-// const getCreatedActivities = async () => {
-//     try {
-//         if (wpm != null) {
-//             return activities;
-//         }
-//         return 252;
-//     } catch (error) {}
-// };
-
 class CreatedActivitiesScreen extends Component {
     constructor(props) {
         super(props);

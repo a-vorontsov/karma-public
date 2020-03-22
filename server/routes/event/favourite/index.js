@@ -8,11 +8,12 @@ const router = express.Router();
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const httpUtil = require("../../../util/httpUtil");
 const validation = require("../../../modules/validation");
-
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite
+ <p><b>Route: </b>/event/:id/favourite (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -36,7 +37,7 @@ const validation = require("../../../modules/validation");
  *  @name Favourite an event
  *  @function
  */
-router.post('/:eventId/favourite', async (req, res) => {
+router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
     try {
         const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
@@ -54,7 +55,8 @@ router.post('/:eventId/favourite', async (req, res) => {
 
 /**
  * Endpoint called whenever a user unfavourites an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite/delete
+ <p><b>Route: </b>/event/:id/favourite/delete (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -78,7 +80,7 @@ router.post('/:eventId/favourite', async (req, res) => {
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:eventId/favourite/delete', async (req, res) => {
+router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
     try {
         const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);

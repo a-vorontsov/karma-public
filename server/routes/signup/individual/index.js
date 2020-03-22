@@ -5,6 +5,7 @@
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * This is the fourth step of the signup flow (after user
@@ -15,7 +16,8 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * number for identification.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /signup/individual
+ <p><b>Route: </b>/signup/individual (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.individual the user input values for their profile
@@ -45,7 +47,7 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @name Sign-up Individual
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const individual = {
             title: req.body.data.individual.title,
