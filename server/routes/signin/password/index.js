@@ -51,7 +51,7 @@ const httpUtil = require("../../../util/httpUtil");
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
         const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
-        httpUtil.sendAuthResult(signInResult, res);
+        httpUtil.sendResult(signInResult, res);
     } catch (e) {
         res.status(400).send({
             message: e.message,

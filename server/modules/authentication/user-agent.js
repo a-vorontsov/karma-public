@@ -68,8 +68,9 @@ async function registerUser(email, username, password, pub) {
     return ({
         status: 200,
         message: "User registration successful. Go to individual/org registration selection",
-        userId: userId,
-        authToken: authToken,
+        data: {
+            authToken: authToken,
+        },
     });
 }
 
@@ -253,8 +254,9 @@ const signIn = async (email, password, pub) => {
         return ({
             status: 200,
             message: "Successful authentication with email & password.",
-            userId: user.id,
-            authToken: authToken,
+            data: {
+                authToken: authToken,
+            },
         });
     } else {
         return ({

@@ -71,7 +71,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 req.body.data.user.password,
                 req.body.pub,
             );
-            httpUtil.sendAuthResult(signupResult, res);
+            httpUtil.sendResult(signupResult, res);
         } catch (e) {
             res.status(400).send({
                 message: e.message,

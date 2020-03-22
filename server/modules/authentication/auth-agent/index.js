@@ -21,7 +21,7 @@ const requireAuthentication = (req, res, next) => {
     if (process.env.NO_AUTH == true) {
         return next();
     }
-    const authToken = req.body.authToken;
+    const authToken = req.headers.authorization;
     if (authToken === undefined) {
         return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }
@@ -53,7 +53,7 @@ const requireNoAuthentication = (req, res, next) => {
     if (process.env.NO_AUTH == true) {
         return next();
     }
-    const authToken = req.body.authToken;
+    const authToken = req.headers.authorization;
     if (authToken === undefined) {
         return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }
@@ -82,7 +82,7 @@ const acceptAnyAuthentication = (req, res, next) => {
     if (process.env.NO_AUTH == true) {
         return next();
     }
-    const authToken = req.body.authToken;
+    const authToken = req.headers.authorization;
     if (authToken === undefined) {
         return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }

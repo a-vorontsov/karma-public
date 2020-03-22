@@ -102,6 +102,9 @@ const getSigPubAsPEM = () => {
  * @return {string} JWE object as string
  */
 const encrypt = (cleartext, pub) => {
+    if (pub === undefined && process.env.SKIP_ASYNC_KEY_EXCHANGE == true) {
+        pub = getEncPubAsPEM();
+    };
     return JWE.encrypt(cleartext, JWK.asKey(pub),
         {
             enc: config.enc,
@@ -179,9 +182,6 @@ const verify = (jwt, aud) => {
  * @return {string} JWE object as string
  */
 const signAndEncrypt = (payload, pub, exp) => {
-    if (pub === undefined && process.env.SKIP_ASYNC_KEY_EXCHANGE == true) {
-        pub = getEncPubAsPEM();
-    };
     const jwt = sign(payload, exp);
     return encrypt(jwt, pub);
 };
