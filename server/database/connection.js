@@ -24,7 +24,7 @@ const query = (text, params, callback) => {
     }
     return pool.query(text, params, callback)
         .then(res => {
-            log.debug("<<< %s", res.rows);
+            log.debug("<<< %o", res.rows);
             return res;
         });
 };
