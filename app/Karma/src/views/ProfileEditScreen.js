@@ -46,7 +46,6 @@ class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
         const profile = this.props.navigation.getParam("profile");
-        console.log(profile.address.countryState);
         this.state = {
             points: profile.points,
             location: profile.location,
@@ -66,9 +65,11 @@ class ProfileEditScreen extends Component {
                 },
             },
             organisation: {
-                name: "",
-                organisationType: "",
-                orgPhoneNumber: "",
+                name: profile.orgName,
+                pocFirstName:profile.pocFirstName,
+                pocLastName:profile.pocLastName,
+                organisationType: profile.organisationType,
+                orgPhoneNumber: profile.orgPhoneNumber,
                 address: {
                     addressLine1: profile.address.addressLine1,
                     addressLine2: profile.address.addressLine2,
@@ -84,6 +85,7 @@ class ProfileEditScreen extends Component {
         this.onChangeText = this.onChangeText.bind(this);
         this.getGender = this.getGender.bind(this);
         this.baseState = this.state;
+        console.log(this.state.organisation.name);
     }
 
     static navigationOptions = {
@@ -324,13 +326,14 @@ class ProfileEditScreen extends Component {
                                             styles.nameText,
                                             {position: "absolute", top: -35},
                                         ]}>
-                                        {this.isOrganisation
+                                        {isOrganisation
                                             ? this.baseState.organisation.name
                                             : this.baseState.individual
                                                   .firstName +
                                               " " +
                                               this.baseState.individual
-                                                  .lastName}
+                                                  .lastName
+                                        }
                                     </Text>
                                 </View>
                                 <View

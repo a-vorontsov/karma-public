@@ -100,7 +100,6 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
-        console.log(this.state.address);
     }
 
     setupOrganisationProfile(res) {
@@ -126,6 +125,8 @@ class ProfileScreen extends Component {
             upcomingEvents: createdEvents,
             pastEvents: createdPastEvents,
             address: organisation.address,
+            pocFirstName: organisation.pocFirstName,
+            pocLastName: organisation.pocLastName,
         });
     }
 
