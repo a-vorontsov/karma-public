@@ -33,7 +33,7 @@ test("updating settings works", async () => {
     const settingResult = await settingsService.changeSettings(setting);
     delete setting.userId;
     expect(settingsRepository.update).toHaveBeenCalledTimes(1);
-    expect(settingsRepository.findByUserIdWithEmail).toHaveBeenCalledTimes(1);
+    expect(settingsRepository.findByUserId).toHaveBeenCalledTimes(1);
     expect(settingResult.data.settings).toMatchObject({
         ...setting,
     });
