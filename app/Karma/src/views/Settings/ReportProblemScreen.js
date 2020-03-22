@@ -47,7 +47,6 @@ class ReportProblemScreen extends Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
     async submitBugReport() {
-        console.log(this.state);
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
@@ -65,7 +64,7 @@ class ReportProblemScreen extends Component {
         .then(res => {
             console.log(res.body.message);
             Toast.showWithGravity("Your report has been sent.", Toast.SHORT, Toast.BOTTOM);
-            setTimeout(() => this.props.navigation.navigate("SettingsMenu"), 2000);
+            setTimeout(() => this.props.navigation.navigate("SettingsMenu"), 1500); //1.5 seconds delay so users can admire the toast
 
         })
         .catch(er => {

@@ -17,6 +17,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * @param {Settings} req.body - Information regarding the setting flags to update
  <pre>
  {
+     userId:1,
     "email": 1,
     "notifications": 1
 }
@@ -55,6 +56,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  * URL example: GET http://localhost:8000/settings
  <p><b>Route: </b>/settings (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {Number} req.query.userId - ID of user logged in
  * @returns {Object}
  *  status: 200, description: The settings were fetched successfully.<br/>
  *  status: 400, description: Wrong input format.
@@ -64,7 +66,8 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
     "message": "Settings fetched successfully",
     "data": {
         "settings": {
-            "email": 1,
+            "email": "houssammahlous123@gmail.com",
+            "promotionalEmails": 0,
             "notifications": 0
         }
     }

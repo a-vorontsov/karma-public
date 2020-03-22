@@ -14,7 +14,8 @@ const insertUserId = (userId) => {
 };
 
 const findByUserId = (userId) => {
-    const query = "SELECT * FROM setting WHERE user_id=$1";
+    const query = "SELECT email(\"user\"), email(setting) as promotional_emails,notifications "+
+    "FROM setting INNER JOIN \"user\" on user_id(setting) = id(\"user\") WHERE user_id=$1";
     return db.query(query, [userId]);
 };
 
