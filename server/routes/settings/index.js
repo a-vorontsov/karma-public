@@ -39,7 +39,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Post settings
  *  @function
  */
-router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const settings = req.body;
         const settingsResult = await settingsService.changeSettings(settings);
@@ -73,7 +73,7 @@ router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
  *  @name Get settings
  *  @function
  */
-router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = req.body.userId;
         const settingsResult = await settingsService.getCurrentSettings(userId);
