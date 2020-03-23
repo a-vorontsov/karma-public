@@ -2,6 +2,7 @@
  * @module Sign-in-Email
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
@@ -64,6 +65,7 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
+        log.info("Starting sign-in with email");
         if (!(await regStatus.emailExists(req.body.data.email))) {
             try {
                 await userAgent.registerEmail(req.body.data.email);
@@ -144,6 +146,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         }
     } catch (e) {
         // in case of invalid queries, an error may be thrown
+        log.error("Sign-in with email failed: " + e);
         res.status(500).send({
             message: e.message,
         });

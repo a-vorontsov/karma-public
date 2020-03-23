@@ -1,5 +1,5 @@
+const log = require("../../util/log");
 const NodeGeocoder = require('node-geocoder');
-
 const options = {
     provider: 'mapquest',
     // Optional depending on the providers
@@ -22,7 +22,12 @@ const geocode = async (address) => {
             address.townCity + " " +
             address.countryState);
     } catch (error) {
+<<<<<<< HEAD
         console.log("Geocoding error: " + error);
+=======
+        log.error("Geocoding error: " + error);
+        return null;
+>>>>>>> dev
     }
 };
 

@@ -1,7 +1,7 @@
 /**
  * @module Admin
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -45,10 +45,11 @@ const authAgent = require("../../modules/authentication/auth-agent");
  */
 router.get("/users", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Fetching all users for administrator");
         const usersResult = await adminService.getAllUsers();
         return httpUtil.sendResult(usersResult, res);
     } catch (e) {
-        console.log("Users fetching failed: " + e);
+        log.error("Users fetching failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -83,10 +84,11 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
 router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
+        log.info("Deleting all user data for %d", userId);
         const deletionResult = await deletionModule.deleteAllInformation(userId);
         return httpUtil.sendResult(deletionResult, res);
     } catch (e) {
-        console.log("User couldn't be deleted: " + e);
+        log.error("User couldn't be deleted: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -139,10 +141,11 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  */
 router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Fetching all individuals for administrator");
         const individualsResult = await adminService.getAllIndividuals();
         return httpUtil.sendResult(individualsResult, res);
     } catch (e) {
-        console.log("Individuals fetching failed: " + e);
+        log.error("Individuals fetching failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -180,6 +183,7 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  */
 router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Toggling ban for individual");
         const individual = req.body.data.individual;
         const validationResult = validation.validateIndividual(individual);
         if (validationResult.errors.length > 0) {
@@ -189,7 +193,7 @@ router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
         const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
         return httpUtil.sendResult(bannedIndividualResult, res);
     } catch (e) {
-        console.log("Banning individual failed: " + e);
+        log.error("Banning individual failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

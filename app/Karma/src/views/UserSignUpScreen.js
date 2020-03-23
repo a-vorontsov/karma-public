@@ -48,13 +48,12 @@ class SignUpScreen extends React.Component {
     };
 
     createUser() {
-        const user = {
+        return {
             email: this.state.email,
             username: this.state.username,
             password: this.state.password,
             confirmPassword: this.state.confPassword,
         };
-        return user;
     }
     signUserUp = async () => {
         const user = this.createUser();

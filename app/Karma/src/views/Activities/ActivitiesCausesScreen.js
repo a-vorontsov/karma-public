@@ -24,7 +24,7 @@ class ActivitiesCausesScreen extends Component {
             .set("authorization", authToken)
             .then(result => {
                 let activitiesByCause = result.body.data;
-                console.log(activitiesByCause);
+                console.log(result.body.message);
                 this.setState({
                     activitiesByCause,
                 });

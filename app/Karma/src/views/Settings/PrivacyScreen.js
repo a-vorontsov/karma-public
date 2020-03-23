@@ -8,20 +8,6 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");
 
-function loadPrivacyPolicy(screen) {
-    request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
-        .then(res => {
-            console.log(res.body);
-            screen.setState({
-                privacyPolicyText: res.body,
-            });
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
-}
-
 class PrivacyScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -32,8 +18,22 @@ class PrivacyScreen extends Component {
         this.state = {
             privacyPolicyText: "Loading...",
         };
-        loadPrivacyPolicy(this);
+        this.loadPrivacyPolicy();
     }
+
+    loadPrivacyPolicy = () => {
+        request
+            .get("http://localhost:8000/information?type=privacyPolicy")
+            .then(res => {
+                console.log(res.body.message);
+                this.setState({
+                    privacyPolicyText: res.body.data.information.content,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    };
 
     render() {
         return (

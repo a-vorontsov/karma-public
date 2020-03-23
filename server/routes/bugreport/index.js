@@ -1,7 +1,7 @@
 /**
  * @module Send-bug-report
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
@@ -36,9 +36,11 @@ const authAgent = require("../../modules/authentication/auth-agent");
  */
 router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
+        log.info("Sending bug report");
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
     } catch (e) {
+        log.error("Sending bug report failed " + e);
         httpUtil.sendGenericError(e, res);
     }
 });

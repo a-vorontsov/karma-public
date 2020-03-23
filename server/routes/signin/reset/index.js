@@ -2,6 +2,7 @@
  * @module Sign-in-Reset
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
@@ -54,6 +55,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @function
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
+    log.info("Resetting password");
     const passStrengthTest = owasp.test(req.body.data.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
         return res.status(400).send({
@@ -71,6 +73,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Password successfully updated. Go to sign-in screen.",
         }, res);
     } catch (e) {
+        log.error("Resetting password failed: " + e);
         httpUtil.sendGenericError(e, res);
     }
 });

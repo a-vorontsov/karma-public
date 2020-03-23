@@ -1,7 +1,7 @@
 /**
  * @module Event-Favourite
  */
-
+const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 
@@ -40,6 +40,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Favouriting event");
         const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {
@@ -49,7 +50,7 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
         const favouriteResult = await eventFavouriteService.createEventFavourite(favouriteRequest);
         return httpUtil.sendResult(favouriteResult, res);
     } catch (e) {
-        console.log("Error while favouriting event: " + e.message);
+        log.error("Error while favouriting event: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -84,6 +85,7 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  */
 router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Unfavouriting event");
         const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);
         if (validationResult.errors.length > 0) {
@@ -93,7 +95,7 @@ router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async
         const deleteFavouriteResult = await eventFavouriteService.deleteEventFavourite(deleteFavouriteRequest);
         return httpUtil.sendResult(deleteFavouriteResult, res);
     } catch (e) {
-        console.log("Error while unfavouriting event: " + e.message);
+        log.error("Error while unfavouriting event: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });

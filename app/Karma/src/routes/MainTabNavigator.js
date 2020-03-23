@@ -22,6 +22,7 @@ import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
 import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
 import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
 import LogOutScreen from "../views/Settings/LogOutScreen";
+import DeleteAccountScreen from "../views/Settings/DeleteAccountScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
 
@@ -35,6 +36,7 @@ const SettingsNavigator = createStackNavigator(
         Terms: {screen: TermsScreen},
         EmailSettings: {screen: EmailSettingsScreen},
         LogOut: {screen: LogOutScreen},
+        DeleteAccount: {screen: DeleteAccountScreen},
     },
     {
         headerMode: "none",

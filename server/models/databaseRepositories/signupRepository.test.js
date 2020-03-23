@@ -62,10 +62,11 @@ test('updating works', async () => {
 
     signUp.eventId = insertEventResult.rows[0].id;
     signUp.individualId = insertIndividualResult.rows[0].id;
-    const insertSignupResult = await signupRepository.insert(signUp);
+    await signupRepository.insert(signUp);
 
     signUp.confirmed = !signUp.confirmed;
-    const updateSignupResult = await signupRepository.update(signUp);
+    signUp.attended = !signUp.attended;
+    await signupRepository.update(signUp);
 
     const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
     expect(findResult.rows[0]).toMatchObject(signUp);

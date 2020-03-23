@@ -43,7 +43,8 @@ export default class SignUpActivity extends React.Component {
             .post(`http://localhost:8000/event/${eventId}/signUp`)
             .set("authorization", authToken)
             .send({
-                confirmed: true,
+                confirmed: false,
+                attended: false,
             })
             .then(() => {
                 Toast.showWithGravity(

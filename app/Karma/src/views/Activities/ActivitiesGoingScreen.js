@@ -26,7 +26,7 @@ class ActivitiesGoingScreen extends Component {
             .get("http://localhost:8000/event/going")
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.data);
+                console.log(result.body.message);
                 let activities = result.body.data.events;
                 this.setState({
                     activities,

@@ -1,7 +1,7 @@
 /**
  * @module Notification
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const notificationService = require("../../modules/notification");
@@ -58,6 +58,7 @@ const httpUtil = require("../../util/httpUtil");
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Creating new notification");
         const notification = req.body;
         const validationResult = validation.validateNotification(notification);
         if (validationResult.errors.length !== 0) {
@@ -70,7 +71,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         const notificationResult = await notificationService.createNotifications(notification);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log("Notification creation failed: " + e);
+        log.error("Notification creation failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -108,6 +109,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
+        log.info("Getting notifications for user id '%d'", id);
         if (Number.isInteger(id)) {
             return res.status(400).send({message: "ID is not a number."});
         }
@@ -115,7 +117,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
         const notificationResult = await notificationService.getNotification(id);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log("Fetching Notifications failed: " + e);
+        log.error("Fetching Notifications failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

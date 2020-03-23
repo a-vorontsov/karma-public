@@ -1,7 +1,7 @@
 /**
  * @module Profile-Edit-Password
  */
-
+const log = require("../../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../../modules/authentication/user-agent");
@@ -43,6 +43,7 @@ const owasp = require("owasp-password-strength-test");
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
+    log.info("Updating password");
     if (req.body.newPassword !== req.body.confirmPassword) {
         res.status(400).send({
             message: "Passwords do not match.",

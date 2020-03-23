@@ -1,7 +1,7 @@
 /**
  * @module Admin-Information
  */
-
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -14,8 +14,12 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * Endpoint called whenever an admin wants to upload new information such as Privacy Policy, Community Guidelines.<br/>
  <p><b>Route: </b>/admin/information (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+<<<<<<< HEAD
  * @param {string} req.headers.authorization authToken
  * @param {Information} req.body - Information regarding the information containing the same properties as this example:
+=======
+ * @param {Object} req.body - Information regarding the information containing the same properties as this example:
+>>>>>>> dev
  <pre>
  {
     "type": "privacyPolicy",
@@ -42,6 +46,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Updating app information type '%s' initiated by administrator", req.body.type);
         const information = req.body;
         const validationResult = validation.validateInformation(information);
         if (validationResult.errors.length > 0) {
@@ -51,7 +56,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         const informationResult = await informationService.changeInformation(information);
         return httpUtil.sendResult(informationResult, res);
     } catch (e) {
-        console.log("Information creation failed: " + e);
+        log.error("Information update/creation failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
