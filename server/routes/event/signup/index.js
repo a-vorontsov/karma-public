@@ -2,6 +2,7 @@
  * @module Event-Signup
  */
 
+const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 
@@ -42,9 +43,9 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        log.info("Signing up user id '%d' to event id '%d'", signup.userId, signup.eventId);
 
-        const individualId = await util.getIndividualIdFromUserId(signup.userId);
-        signup.individualId = individualId;
+        signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -53,7 +54,7 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
         const signupResult = await eventSignupService.createSignup(signup);
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
-        console.log("Error while creating signup: " + e.message);
+        log.error("Error while creating signup: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -97,10 +98,11 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
 router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.eventId);
+        log.info("Getting all users signed up to event id '%d'", eventId);
         const signupsResult = await eventSignupService.getAllSignupsForEvent(eventId);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        console.log("Error while fetching signups: " + e.message);
+        log.error("Error while fetching signups: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -173,6 +175,7 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
 router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
+        log.info("Getting signup history for user id '%d'", userId);
         const individualId = await util.getIndividualIdFromUserId(userId);
         if (individualId === undefined) {
             return res.send(400).body({message: "IndividualId not specified"});
@@ -181,7 +184,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
         const signupsResult = await eventSignupService.getSignupHistory(individualId);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        console.log("Error while fetching signup history: " + e.message);
+        log.error("Error while fetching signup history: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -202,7 +205,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  *  status: 200, description: The signup object updated<br/>
  <pre>
  {
-    "message": "Favourite added successfully",
+    "message": "Signup updated successfully",
     "data": {
         "signup": {
             "individualId": 7,
@@ -220,8 +223,8 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
 router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        const individualId = await util.getIndividualIdFromUserId(signup.userId);
-        signup.individualId = individualId;
+        log.info("Updating signup for user id '%d' to event id '%d'", signup.userId, signup.eventId);
+        signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -229,6 +232,7 @@ router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (r
         const signupsResult = await eventSignupService.updateSignUp(signup);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
+        log.error("Updating signup failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

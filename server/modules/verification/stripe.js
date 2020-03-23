@@ -33,7 +33,6 @@ async function uploadFile(userId) {
         timestamp: Date.now(),
         verified: false,
     });
-    // console.log(accounts);
 }
 
 /**

@@ -1,7 +1,7 @@
 /**
  * @module Profile-Edit
  */
-
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
@@ -67,6 +67,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         // update user profile if specified in request
+        log.info("Updating profile");
         if (req.body.data.user !== undefined) {
             await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
@@ -157,6 +158,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Operation successful. Please GET the view profile endpoint to see the updated profile record.",
         });
     } catch (e) {
+        log.error("Updating profile failed");
         res.status(500).send({
             message: e.message,
         });

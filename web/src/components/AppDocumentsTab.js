@@ -32,7 +32,7 @@ export function AppDocumentsTab() {
     };
 
     const submitChange = event => {
-        fetch(process.env.REACT_APP_API_URL + "/information", {
+        fetch(process.env.REACT_APP_API_URL + "/admin/information", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({type: document, content: value})
