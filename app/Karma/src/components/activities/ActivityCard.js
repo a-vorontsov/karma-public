@@ -69,8 +69,8 @@ class ActivityCard extends React.Component {
         this.state = {
             displaySignupModal: false,
             favourited: null,
+            userId: -1,
         };
-        this.fetchActivityInfo();
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
     }
@@ -84,17 +84,24 @@ class ActivityCard extends React.Component {
         Alert.alert(errorTitle, errorMessage);
     };
 
-    async fetchActivityInfo() {
+    async componentDidMount() {
         const credentials = await getData();
         //const authToken = credentials.password;
         const userId = credentials.username;
+        await this.setState({
+            userId: userId,
+        });
+        this.fetchActivityInfo();
+    }
+
+    async fetchActivityInfo() {
+        const userId = this.state.userId;
         request
             .get("http://localhost:8000/event/favourites")
             .query({userId: userId})
-            .then(result => {
-                console.log(result.body.message);
+            .then(async result => {
                 const events = result.body.data.events;
-                const eventIds = events.map(event => event.eventid)
+                const eventIds = await events.map(event => event.eventId);
                 this.setState({
                     favourited: eventIds.includes(
                         Number.parseInt(this.props.activity.eventId),
@@ -105,15 +112,9 @@ class ActivityCard extends React.Component {
                 console.log(er);
             });
     }
-    componentDidMount() {
-        this.fetchActivityInfo();
-    }
 
     async toggleFavourite() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
-
+        const userId = this.state.userId;
         if (!this.state.favourited) {
             request
                 .post(
@@ -151,7 +152,7 @@ class ActivityCard extends React.Component {
         }
     }
     render() {
-        const {activity, signedup, favorited} = this.props;
+        const {activity, signedup} = this.props;
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
