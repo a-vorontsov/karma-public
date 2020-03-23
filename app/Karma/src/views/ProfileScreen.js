@@ -398,9 +398,11 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                 }}>
                                 <GradientButton
-                                    onPress={() => navigate("CreateActivity", {
-                                        email: this.state.email
-                                    })}
+                                    onPress={() =>
+                                        navigate("CreateActivity", {
+                                            email: this.state.email,
+                                        })
+                                    }
                                     title="Create Activity"
                                     width={350}
                                 />

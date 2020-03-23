@@ -3,15 +3,15 @@ import {SafeAreaView, View} from "react-native";
 import Styles from "../../styles/Styles";
 import SignUpRequest from "../../components/activities/SignUpRequest";
 import request from "superagent";
-import { RegularText } from "../../components/text";
+import {RegularText} from "../../components/text";
 
 class SignUpRequests extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             signUpRequests: [],
-        }
-        this.getSignUps()
+        };
+        this.getSignUps();
     }
     static navigationOptions = {
         headerShown: false,
@@ -27,53 +27,59 @@ class SignUpRequests extends Component {
         this.willFocusListener.remove();
     }
 
-    getSignUps = async() => {
+    getSignUps = async () => {
         const {activity} = this.props;
-        const response = await request.get(`http://localhost:8000/event/${activity.id}/signUp`)
-        .then(res => {
-            return res.body.data;
-        })
-        .catch(err => {
-            console.log(err);
-        })
-
+        const response = await request
+            .get(`http://localhost:8000/event/${activity.id}/signUp`)
+            .then(res => {
+                return res.body.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
         let signUpRequests = [];
         Array.from(response.users).forEach(user => {
             //if confirmed == true/false then the user has already been accepted/rejected
-            if(user.confirmed === null){
+            if (user.confirmed === null) {
                 signUpRequests.push(user);
             }
-            
-        })
+        });
 
         this.setState({
             signUpRequests,
         });
-
-        
-    }
+    };
 
     /**
      * When a sign up request is confirmed/rejected, refetch the requests
      */
     onSubmit = () => {
-        
         this.getSignUps();
-    }
+    };
 
     render() {
         const {signUpRequests} = this.state;
-        const{activity} = this.props;
+        const {activity} = this.props;
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph16}>
-                    {signUpRequests && signUpRequests.length > 0 ? 
-                    signUpRequests.map(s => {
-                        return <SignUpRequest user={s} key={s.userId} activity={activity}
-                        onSubmit={this.onSubmit}/>
-                    }) : 
-                    <RegularText>Currently, there are no requests!</RegularText> }
+                    {signUpRequests && signUpRequests.length > 0 ? (
+                        signUpRequests.map(s => {
+                            return (
+                                <SignUpRequest
+                                    user={s}
+                                    key={s.userId}
+                                    activity={activity}
+                                    onSubmit={this.onSubmit}
+                                /> );
+
+                        })
+                    ) : (
+                        <RegularText>
+                            Currently, there are no requests!
+                        </RegularText>
+                    )}
                 </View>
             </SafeAreaView>
         );

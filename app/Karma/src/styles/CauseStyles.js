@@ -62,7 +62,7 @@ const CauseStyles = StyleSheet.create({
         alignItems: "flex-start",
         paddingBottom: 16,
         overflow: "visible",
-    }
+    },
 });
 
 export default CauseStyles;

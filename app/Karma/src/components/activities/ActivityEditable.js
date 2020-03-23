@@ -28,7 +28,7 @@ const icons = {
 const ActivityEditable = props => {
     const navigation = useNavigation();
     const {activity, email} = props;
-    
+
     /**
      * Delete the event selected
      */

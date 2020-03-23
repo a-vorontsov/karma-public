@@ -53,17 +53,16 @@ export default class CauseContainer extends React.Component {
             });
     }
 
-    passUpState(){
+    passUpState() {
         const {selectedCauses} = this.state;
         this.props.onUpdateCauses({
             selectedCauses,
-            displayModal: false
-        })
+            displayModal: false,
+        });
         Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
     }
 
     render() {
-       
         const {causes} = this.state;
         return (
             <View>
@@ -86,7 +85,11 @@ export default class CauseContainer extends React.Component {
                 <View style={[Styles.ph24, Styles.pt16, Styles.bgWhite]}>
                     <GradientButton
                         title="Save"
-                        onPress={() => this.props.isActivity ? this.passUpState() : this.selectCauses()}
+                        onPress={() =>
+                            this.props.isActivity
+                                ? this.passUpState()
+                                : this.selectCauses()
+                        }
                     />
                 </View>
             </View>

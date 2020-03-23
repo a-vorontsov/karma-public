@@ -33,7 +33,6 @@ const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
 const CAUSES_WIDTH = 0.9 * width;
 
-
 const icons = {
     new_cause: require("../assets/images/general-logos/new_cause.png"),
 };
@@ -94,7 +93,7 @@ export default class CreateActivityScreen extends React.Component {
                 const city = activity.city;
                 const postcode = activity.postcode;
                 const causeIds = activity.causes;
-                
+
                 const causes = await this.fetchSelectedCauses(causeIds);
 
                 this.setState({
@@ -116,7 +115,7 @@ export default class CreateActivityScreen extends React.Component {
                     isAddressVisible,
                     isIDReq,
                     causeIds,
-                    causes
+                    causes,
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
@@ -135,32 +134,33 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     onUpdateCauses = inputState => {
-        let causeIds = []
+        let causeIds = [];
         inputState.selectedCauses.forEach(c => {
             causeIds.push(c.id);
-        })
+        });
         this.setState({
             causes: inputState.selectedCauses,
             causeIds,
-        })
+        });
         this.toggleModal();
-    }
+    };
 
-    fetchSelectedCauses = async(causeIds) => {
-        const response = await request.get("http://localhost:8000/causes")
-        .then(res => {
-            return res.body.data;
-        })
+    fetchSelectedCauses = async causeIds => {
+        const response = await request
+            .get("http://localhost:8000/causes")
+            .then(res => {
+                return res.body.data;
+            });
 
         let causes = [];
         Array.from(response).forEach(cause => {
-            if(causeIds.includes(cause.id)) {
+            if (causeIds.includes(cause.id)) {
                 causes.push(cause);
             }
-        })
+        });
 
         return causes;
-    }
+    };
 
     /**
      * Updates the user's already created event
@@ -343,11 +343,11 @@ export default class CreateActivityScreen extends React.Component {
         }
         const credentials = await getData();
         const event = this.createEvent(credentials.username);
-        if(event.causes.length === 0){
+        if (event.causes.length === 0) {
             Alert.alert("An activity must be related to at least one cause");
             return;
         }
-        
+
         // send a request to update the db with the new event
         await request
             .post("http://localhost:8000/event")
@@ -360,7 +360,7 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.data)
+                console.log(res.body.data);
             })
             .catch(er => {
                 console.log(er.message);
@@ -554,7 +554,9 @@ export default class CreateActivityScreen extends React.Component {
                                         Who to contact
                                     </SemiBoldText>
                                     <TextInput
-                                        placeholder={this.props.navigation.getParam("email")}
+                                        placeholder={this.props.navigation.getParam(
+                                            "email",
+                                        )}
                                         style={{marginTop: 0}}
                                         editable="false"
                                     />
@@ -673,15 +675,14 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAddressVisible}
                                     />
                                 </View>
-                                </View>
-                               
-                                    
-                                   <View style={{width:FORM_WIDTH}}>
-                                    <View
-                                        style={{alignItems:"flex-start"}}
-                                    >
-                                        <RegularText style={{fontSize: 20}}>Pick Related Causes</RegularText>
-                                        <TouchableOpacity
+                            </View>
+
+                            <View style={{width: FORM_WIDTH}}>
+                                <View style={{alignItems: "flex-start"}}>
+                                    <RegularText style={{fontSize: 20}}>
+                                        Pick Related Causes
+                                    </RegularText>
+                                    <TouchableOpacity
                                         onPress={this.toggleModal}>
                                         <Image
                                             source={icons.new_cause}
@@ -692,56 +693,65 @@ export default class CreateActivityScreen extends React.Component {
                                             }}
                                         />
                                     </TouchableOpacity>
-                                    </View>
-                                            </View>
-                                    <View style={{flexDirection: "row", width:CAUSES_WIDTH, justifyContent:"flex-end", alignSelf: "center"}}>
-                                        {this.state.causes && this.state.causes.length > 0 ? (
-                                            <View style={CauseStyles.createActivityContainer}> 
-                                                {this.state.causes.map(cause => {
-                                                    return (
-                                                        <CauseItem 
-                                                            cause={cause}
-                                                            key={cause.id}
-                                                            isDisabled={true}
-                                                        />
-                                                    )
-                                                })}
-                                            </View>
-                                        ) : (undefined)}
-                                    </View>
-                                    
-
-                                
-                               <View>
-                                <SemiBoldText
-                                    style={{
-                                        alignItems: "flex-start",
-                                        fontSize: 20,
-                                    }}>
-                                    What is the location?
-                                </SemiBoldText>
-
-                                <AddressInput
-                                    address1={this.state.address1}
-                                    address2={this.state.address2}
-                                    postcode={this.state.postcode}
-                                    region={this.state.region}
-                                    city={this.state.city}
-                                    onChange={this.onInputChange}
-                                />
                                 </View>
                             </View>
-                    
-                        <BottomModal
-                            visible={this.state.displaySignupModal}
-                            toggleModal={this.toggleModal}>
-                            <CauseContainer
-                                onUpdateCauses={this.onUpdateCauses}
-                                isActivity={true}
-                                onSubmit={this.toggleModal}
-                                onError={this.handleError}
-                            />
-                        </BottomModal>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    width: CAUSES_WIDTH,
+                                    justifyContent: "flex-end",
+                                    alignSelf: "center",
+                                }}>
+                                {this.state.causes &&
+                                this.state.causes.length > 0 ? (
+                                    <View
+                                        style={
+                                            CauseStyles.createActivityContainer
+                                        }>
+                                        {this.state.causes.map(cause => {
+                                            return (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            );
+                                        })}
+                                    </View>
+                                ) : (
+                                    undefined
+                                )}
+                                <View>
+                                    <SemiBoldText
+                                        style={{
+                                            alignItems: "flex-start",
+                                            fontSize: 20,
+                                        }}>
+                                        What is the location?
+                                    </SemiBoldText>
+
+                                    <AddressInput
+                                        address1={this.state.address1}
+                                        address2={this.state.address2}
+                                        postcode={this.state.postcode}
+                                        region={this.state.region}
+                                        city={this.state.city}
+                                        onChange={this.onInputChange}
+                                    />
+                                </View>
+                            </View>
+
+                            <BottomModal
+                                visible={this.state.displaySignupModal}
+                                toggleModal={this.toggleModal}>
+                                <CauseContainer
+                                    onUpdateCauses={this.onUpdateCauses}
+                                    isActivity={true}
+                                    onSubmit={this.toggleModal}
+                                    onError={this.handleError}
+                                />
+                            </BottomModal>
+                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
 

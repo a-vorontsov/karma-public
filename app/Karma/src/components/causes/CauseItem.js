@@ -24,7 +24,7 @@ export default class CauseItem extends React.Component {
     }
     render() {
         const {cause, selected} = this.props;
-       
+
         const ItemContent = (
             <>
                 <View>
