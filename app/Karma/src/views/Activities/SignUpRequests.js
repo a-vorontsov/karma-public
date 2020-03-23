@@ -72,8 +72,8 @@ class SignUpRequests extends Component {
                                     key={s.userId}
                                     activity={activity}
                                     onSubmit={this.onSubmit}
-                                /> );
-
+                                />
+                            );
                         })
                     ) : (
                         <RegularText>

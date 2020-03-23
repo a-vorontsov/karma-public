@@ -66,8 +66,8 @@ class Attendees extends Component {
                                     user={a}
                                     key={a.userId}
                                     activity={activity}
-                                /> );
-
+                                />
+                            );
                         })
                     ) : (
                         <RegularText>
