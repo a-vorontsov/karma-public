@@ -31,6 +31,7 @@ const changeSettings = async (settings) => {
 const getCurrentSettings = async (userId) => {
     const settingsResult = await settingsRepository.findByUserId(userId);
     const settings = settingsResult.rows[0];
+    delete settings.userId;
     return ({
         status: 200,
         message: "Settings fetched successfully",
