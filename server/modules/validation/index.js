@@ -51,7 +51,7 @@ const eventSchema = {
         "spots": {"type": "number", "minimum": 0},
         "addressVisible": {"type": "boolean"},
         "minimumAge": {"type": "number", "minimum": 0},
-        "photoId": {"type": "boolean"},
+        "pictureId": {"type": "boolean"},
         "physical": {"type": "boolean"},
         "addInfo": {"type": "boolean"},
         "content": {"type": "string"},
@@ -60,7 +60,7 @@ const eventSchema = {
         "creationDate": {"type": ["string", "date-time"]},
         "address": {"$ref": "/Address"},
     },
-    "required": ["name", "womenOnly", "spots", "addressVisible", "minimumAge", "photoId",
+    "required": ["name", "womenOnly", "spots", "addressVisible", "minimumAge", "pictureId",
         "physical", "addInfo", "content", "date", "userId"],
 };
 

@@ -59,7 +59,7 @@ CREATE TABLE authentication
         spots int NOT NULL,
         address_visible boolean NOT NULL,
         minimum_age int NOT NULL,
-        photo_id boolean NOT NULL,
+        picture_id boolean NOT NULL,
         physical boolean NOT NULL,
         add_info boolean NOT NULL,
         content text NOT NULL,
