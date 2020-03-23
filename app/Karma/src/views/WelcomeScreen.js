@@ -273,19 +273,6 @@ export default class WelcomeScreen extends Component {
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
 
-                    <TouchableOpacity
-                        onPress={() =>
-                            this.props.navigation.navigate("ChangePassword")
-                        }>
-                        <RegularText>change pass</RegularText>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() =>
-                            this.props.navigation.navigate("ForgotPassword")
-                        }>
-                        <RegularText>forgot pass</RegularText>
-                    </TouchableOpacity>
                 </View>
 
                 <KeyboardAvoidingView
