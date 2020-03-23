@@ -2,11 +2,11 @@ const db = require("../../database/connection");
 
 const insert = (event) => {
     const query = "INSERT INTO event(name, address_id, women_only, spots, address_visible, minimum_age, " +
-        "picture_id, physical, add_info, content, date, user_id, creation_date) " +
+        "photo_id, physical, add_info, content, date, user_id, creation_date) " +
         "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) " +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
     const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
-        event.minimumAge, event.pictureId, event.physical, event.addInfo, event.content, event.date, event.userId,
+        event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
         event.creationDate,
     ];
     return db.query(query, params);
@@ -51,11 +51,11 @@ const removeById = (id) => {
 
 const update = (event) => {
     const query = "UPDATE event SET name = $1, address_id = $2, women_only = $3, spots = $4, address_visible = $5, " +
-        "minimum_age = $6, picture_id = $7, physical = $8, add_info = $9, content = $10, " +
+        "minimum_age = $6, photo_id = $7, physical = $8, add_info = $9, content = $10, " +
         "date = $11, user_id = $12, creation_date = $13 WHERE id = $14" +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
     const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
-        event.minimumAge, event.pictureId, event.physical, event.addInfo, event.content, event.date, event.userId,
+        event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
         event.creationDate, event.id,
     ];
     return db.query(query, params);
@@ -63,7 +63,7 @@ const update = (event) => {
 
 const findAllWithAllData = (whereClause) => {
     whereClause = whereClause || ""; // if whereClause is not defined, default value is empty string
-    const query = "SELECT id(event) as event_id,name,women_only,spots,address_visible,minimum_age,picture_id," +
+    const query = "SELECT id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id," +
         "address_1,address_2,postcode,city,region,lat,long,"+
         "ARRAY(SELECT user_id from sign_up "+
