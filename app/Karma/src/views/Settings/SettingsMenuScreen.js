@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";
@@ -13,14 +13,35 @@ const icons = {
     privacy: require("../../assets/images/settings-logos/privacy.png"),
     report: require("../../assets/images/settings-logos/report-problem.png"),
     terms: require("../../assets/images/settings-logos/terms.png"),
+
     key: require("../../assets/images/settings-logos/key.png"),
+
+    bin: require("../../assets/images/settings-logos/bin.png"),
+
 };
 
 class SettingsMenuScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+        };
+    }
+    componentDidMount() {
+        const {navigation} = this.props;
+        const user = navigation.getParam("user");
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.setState({
+                user: user,
+            });
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -33,7 +54,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("ReportProblem")}
+                            onPress={() =>
+                                navigate("ReportProblem", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="About KARMA"
@@ -58,7 +83,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("EmailSettings")}
+                            onPress={() =>
+                                navigate("EmailSettings", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="Change Password"
@@ -69,6 +98,11 @@ class SettingsMenuScreen extends Component {
                             title="Log Out"
                             icon={icons.logout}
                             onPress={() => navigate("LogOut")}
+                        />
+                        <SettingsButton
+                            title="Delete Account"
+                            icon={icons.bin}
+                            onPress={() => navigate("DeleteAccount")}
                         />
                     </View>
                 </ScrollView>

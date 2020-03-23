@@ -79,6 +79,7 @@ export default class WelcomeScreen extends Component {
             })
             .then(res => {
                 //show code
+                console.log(res.body.message);
                 this.setState({showCode: true});
             })
             .catch(err => {
@@ -103,11 +104,6 @@ export default class WelcomeScreen extends Component {
             this.setState(this.baseState);
         }
     }
-
-    onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
-    };
 
     async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
@@ -184,9 +180,12 @@ export default class WelcomeScreen extends Component {
                 this.setState({isValidPass: true});
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
+                await Keychain.resetGenericPassword();
                 await Keychain.setGenericPassword(userId.toString(), authToken);
+                console.log(
+                    `User id ${userId} successfully stored in keychain.`,
+                );
                 navigate("PickCauses");
-                return;
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});
@@ -207,9 +206,13 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
+
                 console.log("in welcome screen");
 
                 console.log("correct code");
+
+                console.log(res.body.message);
+
                 this.setState({isCodeValid: true});
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,

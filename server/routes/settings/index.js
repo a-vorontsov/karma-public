@@ -65,7 +65,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
     "message": "Settings fetched successfully",
     "data": {
         "settings": {
-            "email": 1,
+            "email": 0,
             "notifications": 0
         }
     }

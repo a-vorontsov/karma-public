@@ -17,7 +17,6 @@ const findByUserId = (userId) => {
     const query = "SELECT * FROM setting WHERE user_id=$1";
     return db.query(query, [userId]);
 };
-
 const removeByUserId = (userId) => {
     const query = "DELETE FROM setting WHERE user_id = $1 RETURNING *";
     return db.query(query, [userId]);
