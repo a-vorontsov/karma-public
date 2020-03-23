@@ -19,7 +19,7 @@ export default class AttendeeButton extends React.Component {
 
         this.state = {
             email: "",
-            name: "",
+            attendeeId: -1,
         };
     }
 
@@ -28,36 +28,29 @@ export default class AttendeeButton extends React.Component {
     }
 
     parseProfileInfo = () => {
-        const {profile, attendeeId} = this.props;
-        let email = profile.user.email;
-        let userType = profile.individual
-            ? profile.individual
-            : profile.organisation;
-        let name = userType.firstName
-            ? userType.firstName + " " + userType.lastName
-            : userType.name;
-
+        const {user} = this.props;
+        const email = user.email;
+        const attendeeId = user.userId;
         this.setState({
-            email: email,
-            name: name,
-            attendeeId: Number(attendeeId),
+            email,
+            attendeeId,
         });
     };
 
     openEmail = async () => {
         const credentials = await getData();
-        const {email} = this.state;
+        const {email, attendeeId} = this.state;
         sendNotification(
             "Message",
             "has sent you a message - check your inbox!",
             Number(credentials.username),
-            [this.state.attendeeId],
+            [attendeeId],
         );
         Communications.email([email], null, null, null, null);
     };
 
     render() {
-        const {name} = this.state;
+        const {user} = this.props;
         return (
             <View style={[Styles.pv8]}>
                 <View

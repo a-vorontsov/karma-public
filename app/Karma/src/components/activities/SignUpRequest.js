@@ -6,6 +6,8 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import request from "superagent";
+import {sendNotification} from "../../util/SendNotification";
+import {getData} from "../../util/GetCredentials";
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),
     cancel: require("../../assets/images/general-logos/cancel.png"),
@@ -21,12 +23,23 @@ export default class SignUpRequest extends React.Component {
             attended: false,
         };
 
+        const credentials = await getData();
+
         await request
             .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
             .send(body)
             .then(res => {
                 console.log(res.body.data);
                 this.props.onSubmit();
+                let type = accept
+                    ? "AttendanceConfirmation"
+                    : "AttendanceCancellation";
+                sendNotification(
+                    type,
+                    `${activity.name}`,
+                    Number(credentials.username),
+                    [user.userId],
+                );
             })
             .catch(err => {
                 if (accept) {
