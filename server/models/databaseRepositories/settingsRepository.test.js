@@ -43,7 +43,6 @@ test('insert settingByUserId and findByUserId work', async () => {
     expect(insertSettingResult.rows[0]).toMatchObject(findSettingResultByUserId.rows[0]);
     expect(settingExample).toMatchObject(findSettingResultByUserId.rows[0]);
 });
-
 test('insert setting and updates work', async () => {
     const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationRepository.rows[0].email;

@@ -96,13 +96,14 @@ export default class SignUpRequest extends React.Component {
                                 resizeMode="contain"
                             />
                         </TouchableOpacity>
-                        <View style={{width: 50}} />
+                        <View style={{paddingLeft: 50}}>
                         {/** DISAPPROVE A USER */}
                         <TouchableOpacity
                             onPress={() =>
                                 {this.signUserUp(false)}
                             }
                             style={{
+                                
                                 width: 30,
                                 paddingRight: 27,
                                 justifyContent: "flex-end",
@@ -117,7 +118,9 @@ export default class SignUpRequest extends React.Component {
                                 }}
                                 resizeMode="contain"
                             />
+                            
                         </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

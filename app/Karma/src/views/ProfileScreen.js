@@ -46,9 +46,8 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             activeSlide: 0,
-            fname: "",
-            lname: "",
-            username: "",
+            name: "",
+            user: {},
             location: "",
             bio: "",
             causes: [],
@@ -86,9 +85,8 @@ class ProfileScreen extends Component {
         this.setState({
             email: user.email,
             isOrganisation: false,
-            fname: individual.firstName,
-            lname: individual.lastName,
-            username: user.username,
+            name: individual.firstName + " " + individual.lastName,
+            user: user,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
             bio: individual.bio,
@@ -116,7 +114,7 @@ class ProfileScreen extends Component {
             isOrganisation: true,
             orgName: organisation.name,
             organisationType: organisation.organisationType,
-            username: user.username,
+            user: user,
             location:
                 organisation.address.townCity +
                 " " +
@@ -215,9 +213,17 @@ class ProfileScreen extends Component {
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigate("SettingsMenu")}>
+                                onPress={() =>
+                                    navigate("SettingsMenu", {
+                                        user: this.state.user,
+                                    })
+                                }>
                                 <Image
-                                    onPress={() => navigate("SettingsMenu")}
+                                    onPress={() =>
+                                        navigate("SettingsMenu", {
+                                            user: this.state.user,
+                                        })
+                                    }
                                     source={icons.cog}
                                     style={{
                                         height: 25,
@@ -282,9 +288,7 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.fname +
-                                                " " +
-                                                this.state.lname}
+                                            {this.state.name}
                                         </Text>
                                     )}
                                 </View>
@@ -295,7 +299,7 @@ class ProfileScreen extends Component {
                                     <Text
                                         numberOfLines={1}
                                         style={styles.usernameText}>
-                                        {this.state.username}
+                                        {this.state.user.username}
                                     </Text>
                                     {this.state.isOrganisation && (
                                         <Text

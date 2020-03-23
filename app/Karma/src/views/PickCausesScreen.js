@@ -41,7 +41,7 @@ export default class PickCausesScreen extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.data);
+                console.log(res.body.message);
                 this.props.navigation.navigate("Activities");
             })
             .catch(err => {

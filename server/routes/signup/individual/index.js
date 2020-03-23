@@ -2,6 +2,7 @@
  * @module Sign-up-Individual
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
@@ -49,6 +50,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Signing up individual");
         const individual = {
             title: req.body.data.individual.title,
             firstName: req.body.data.individual.firstName,
@@ -72,6 +74,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Individual registration successful.",
         });
     } catch (e) {
+        log.error("Signing up individual failed: " + e);
         res.status(400).send({
             message: e.message,
         });

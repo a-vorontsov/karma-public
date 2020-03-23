@@ -693,7 +693,7 @@ export default class CreateActivityScreen extends React.Component {
                                         />
                                     </TouchableOpacity>
                                     </View>
-                                    </View>
+                                            </View>
                                     <View style={{flexDirection: "row", width:CAUSES_WIDTH, justifyContent:"flex-end", alignSelf: "center"}}>
                                         {this.state.causes && this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.createActivityContainer}> 

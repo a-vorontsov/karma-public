@@ -41,7 +41,7 @@ export default class CauseContainer extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.data);
+                console.log(res.body.message);
                 Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
                 this.props.onSubmit();
             })

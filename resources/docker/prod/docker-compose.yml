@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: postgres:12
+    image: postgres:12.2-alpine
     volumes:
       - ./db-data:/var/lib/postgresql/data
     container_name: karma-postgres
@@ -36,14 +36,13 @@ services:
       BUG_REPORT_EMAIL_ADDRESS: ${BUG_REPORT_EMAIL_ADDRESS}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       MAPQUEST_API: ${MAPQUEST_API}
+      NO_AUTH: ${NO_AUTH}
 
       # TODO: Enable these sometime in the future
       ENABLE_OAUTH: 0
       SKIP_PASSWORD_CHECKS: 0
       SKIP_AUTH_CHECKS_FOR_TESTING: 0
       SKIP_MAIL_SENDING_FOR_TESTING: 0
-    ports:
-      - 8000:8000
     depends_on:
       - db
     command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
@@ -61,6 +60,15 @@ services:
     depends_on:
       - server
     command: ["sh", "-c", "chmod 777 /var/www && exec nginx -g 'daemon off;'"]
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    environment:
+      - DOZZLE_TAILSIZE=100
+      - DOZZLE_FILTER=name=karma
+      - DOZZLE_BASE=/logs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   db-data: {}

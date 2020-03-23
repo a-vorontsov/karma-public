@@ -2,6 +2,7 @@
  * @module Sign-up-User
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
@@ -57,6 +58,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+    log.info("Signing up user");
     const passStrengthTest = owasp.test(req.body.data.user.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
         res.status(400).send({
@@ -73,6 +75,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
             );
             httpUtil.sendAuthResult(signupResult, res);
         } catch (e) {
+            log.error("Signing up user failed: " + e);
             res.status(400).send({
                 message: e.message,
             });

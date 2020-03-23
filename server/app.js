@@ -1,4 +1,5 @@
 require("dotenv").config();
+const log = require("./util/log");
 const express = require("express");
 const app = express();
 const jose = require("./modules/jose");
@@ -7,8 +8,9 @@ const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 
+app.use('/favicon.ico', express.static('favicon.ico'));
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
@@ -55,6 +57,9 @@ app.use("/admin", require("./routes/admin"));
 app.use("/admin/information", require("./routes/admin/information"));
 
 // import OAuth routes and dependencies if applicable
+if (process.env.NODE_ENV !== 'testing') {
+    log.info("OAUTH enabled: %s, AUTH enabled: %s", Boolean(process.env.ENABLE_OAUTH), !Boolean(process.env.NO_AUTH));
+}
 if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
     require("./modules/authentication/passport-config");

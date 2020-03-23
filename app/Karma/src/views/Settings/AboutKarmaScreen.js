@@ -8,20 +8,6 @@ const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/K-logo.png");
 
-function loadAboutText(screen) {
-    request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
-        .then(res => {
-            console.log(res.body);
-            screen.setState({
-                aboutText: res.body,
-            });
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
-}
-
 class AboutKarmaScreen extends Component {
     static navigationOptions = {
         headerShown: false,
@@ -32,8 +18,22 @@ class AboutKarmaScreen extends Component {
         this.state = {
             aboutText: "Loading...",
         };
-        loadAboutText(this);
+        this.loadAboutText();
     }
+
+    loadAboutText = () => {
+        request
+            .get("http://localhost:8000/information?type=about")
+            .then(res => {
+                console.log(res.body.message);
+                this.setState({
+                    aboutText: res.body.data.information.content,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    };
 
     render() {
         return (

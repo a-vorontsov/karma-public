@@ -22,6 +22,11 @@ const findAll = () => {
     return db.query(query);
 };
 
+const updateKarmaPoints = (individualId) => {
+    const query = "UPDATE profile SET karma_points = (karma_points + 1) WHERE individual_id = $1 RETURNING *";
+    return db.query(query, [individualId]);
+};
+
 const update = (profile) => {
     const query = "UPDATE profile SET karma_points = $1, bio = $2, women_only = $3  WHERE id=$4 RETURNING *";
     const params = [
@@ -45,4 +50,5 @@ module.exports = {
     findByIndividualId,
     update,
     removeByIndividualId,
+    updateKarmaPoints,
 };

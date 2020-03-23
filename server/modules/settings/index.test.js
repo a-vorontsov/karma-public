@@ -41,7 +41,6 @@ test("updating settings works", async () => {
 });
 
 test("fetching settings works", async () => {
-
     settingsRepository.findByUserId.mockResolvedValue({
         rows: [{
             ...setting,
