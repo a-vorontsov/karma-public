@@ -5,8 +5,8 @@
 const express = require("express");
 const router = express.Router();
 const aws = require('aws-sdk');
-const fs = require("fs");
 const path = require('path');
+const authAgent = require("../../modules/authentication/auth-agent");
 
 const imgFetch = require("./fetch-image");
 const imgUpload = require("./upload-image");
@@ -23,6 +23,10 @@ aws.config.update({
 });
 
 router.get("/:pictureId", imgFetch.getPicture);
+
+router.post("/upload/event/:eventId", authAgent.requireAuthentication, (req, res) => {
+    imgUpload.updateEventPicture(req, res);
+});
 
 router.get("/event/:eventId", imgFetch.getEventPicture);
 

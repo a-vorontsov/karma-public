@@ -58,7 +58,7 @@ router.post("/upload/individual", authAgent.requireAuthentication, (req, res) =>
  - etc.
 
  req.body:
- - avatar: {...[IMAGE DATA], etc.}
+ - picture: {...[IMAGE DATA], etc.}
  </pre></code>
  * @returns:
  * status: 200, description: The file was uploaded & database updated.
