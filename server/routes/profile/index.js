@@ -121,7 +121,6 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
         // set userId according to whose profile is to be viewed
         const userId = req.query.notMyId !== undefined ? req.query.notMyId : req.query.userId;
         const now = new Date();
-        const userId = req.query.userId;
         log.info("Getting profile data for user id '%d'", userId);
         const userResult = await userRepo.findById(userId);
         const user = userResult.rows[0];
