@@ -16,26 +16,15 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * the mailSender module.
  <p><b>Route: </b>/bugreport (POST)</p>
  <p><b>Permissions: </b>any</p>
- * @param {number} req.body.userId can be anything
- * @param {string} req.body.authToken can be anything
+ * @param {string} req.headers.authorization authToken or null
  * @param {object} req.body.data.email user input email address
  * @param {object} req.body.data.report user input bug report
  * @param {object} req.body Here are some examples of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
-        "data": &#123;
-            "email": "ihaveabug@gmail.com",
-            "report": "I can't date",
-        &#125;
-    &#125;
-    &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "icantlogin@gmail.com",
-            "report": "I can't sign-in to the app and don't receive a token. Fix pls!",
+            "report": "I can't sign-in to the app and don't receive a token. Help pls!",
         &#125;
     &#125;
 </code></pre>
