@@ -52,8 +52,6 @@ class ReportProblemScreen extends Component {
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
-        console.log(Toast.SHORT);
-        console.log(Toast.LONG);
         Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
         request
             .post("http://localhost:8000/bugreport")

@@ -16,7 +16,8 @@ import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
-
+import {getData} from "../../util/credentials";
+const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
     fave_active: require("../../assets/images/general-logos/heart-red.png"),
@@ -67,23 +68,13 @@ class ActivityCard extends React.Component {
         super(props);
         this.state = {
             displaySignupModal: false,
+            favourited: null,
         };
+        this.fetchActivityInfo();
         this.toggleModal = this.toggleModal.bind(this);
+        this.toggleFavourite = this.toggleFavourite.bind(this);
     }
 
-    setFav = handlePress => {
-        return false;
-    };
-
-    renderTruncatedFooter = handlePress => {
-        return (
-            <Text
-                style={{color: "#00A8A6", marginTop: 5}}
-                onPress={() => this.props.navigation.navigate("ActivityInfo")}>
-                READ MORE
-            </Text>
-        );
-    };
     toggleModal = () => {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
@@ -92,6 +83,56 @@ class ActivityCard extends React.Component {
     handleSignupError = (errorTitle, errorMessage) => {
         Alert.alert(errorTitle, errorMessage);
     };
+
+    async fetchActivityInfo() {
+        const credentials = await getData();
+        //const authToken = credentials.password;
+        const userId = credentials.username;
+        request
+            .get("http://localhost:8000/event/favourites")
+            .query({userId: userId})
+            .then(result => {
+                console.log(result.body.message);
+                const events = result.body.data.events;
+                const eventIds = events.map(event => event.eventid)
+                this.setState({
+                    favourited: eventIds.includes(
+                        Number.parseInt(this.props.activity.eventId),
+                    ),
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
+    }
+    componentDidMount() {
+        this.fetchActivityInfo();
+    }
+
+    async toggleFavourite() {
+        await this.setState({
+            favourited: !this.state.favourited,
+        });
+
+        if (this.state.favourited){
+            const credentials = await getData();
+            //const authToken = credentials.password;
+            const userId = credentials.username;
+            request
+                .post(
+                    `http://localhost:8000/event/${
+                        this.props.activity.eventId
+                    }/favourite`,
+                )
+                .send({individualId: 1})
+                .then(result => {
+                    console.log(result.body.message);
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        }
+    }
     render() {
         const {activity, signedup, favorited} = this.props;
         return (
@@ -157,12 +198,14 @@ class ActivityCard extends React.Component {
                                     alignItems: "flex-end",
                                     justifyContent: "flex-end",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "center"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "center"}}
+                                    onPress={this.toggleFavourite}>
                                     <Image
                                         source={
-                                            favorited
-                                                ? icons.fave_inactive
-                                                : icons.fave_active
+                                            this.state.favourited
+                                                ? icons.fave_active
+                                                : icons.fave_inactive
                                         }
                                         style={{
                                             width: 30,
@@ -170,8 +213,8 @@ class ActivityCard extends React.Component {
                                             resizeMode: "contain",
                                             marginRight: 10,
                                         }}
-                                        // onPress={this.setFav(!props.favorited)}
                                     />
+
                                 </TouchableOpacity>
                             </View>
                         </View>
