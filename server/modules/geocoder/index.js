@@ -22,12 +22,8 @@ const geocode = async (address) => {
             address.townCity + " " +
             address.countryState);
     } catch (error) {
-<<<<<<< HEAD
-        console.log("Geocoding error: " + error);
-=======
         log.error("Geocoding error: " + error);
         return null;
->>>>>>> dev
     }
 };
 
