@@ -8,6 +8,7 @@ const authAgent = require("./modules/authentication/auth-agent");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 
+
 app.use('/favicon.ico', express.static('favicon.ico'));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
