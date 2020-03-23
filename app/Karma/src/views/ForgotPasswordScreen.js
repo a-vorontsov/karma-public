@@ -7,11 +7,11 @@ import PageHeader from "../components/PageHeader";
 import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
-import { getData } from "../util/credentials";
+import {getData} from "../util/credentials";
 
 const request = require("superagent");
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 export default class ForgotPasswordScreen extends Component {
@@ -34,13 +34,15 @@ export default class ForgotPasswordScreen extends Component {
                 userId: credentials.username,
                 //authToken: credentials.password,
                 data: {
-                    password: this.state.passwordInput
-                }
+                    password: this.state.passwordInput,
+                },
             })
             .then(res => {
-                    Alert.alert("Successful password reset", "You've successfully reset your password!", [
-                        {text: "OK", onPress: () => navigate("Welcome")},
-                    ]);
+                Alert.alert(
+                    "Successful password reset",
+                    "You've successfully reset your password!",
+                    [{text: "OK", onPress: () => navigate("Welcome")}],
+                );
             })
             .catch(err => {
                 console.log(err);

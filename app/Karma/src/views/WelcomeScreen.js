@@ -5,7 +5,6 @@ import {
     StatusBar,
     Platform,
     Image,
-    Dimensions,
     KeyboardAvoidingView,
     SafeAreaView,
     Alert,
@@ -17,12 +16,9 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import * as Keychain from "react-native-keychain";
-import {Button} from "../components/buttons";
-import LinearGradient from "react-native-linear-gradient";
 
 const request = require("superagent");
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
-const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
+
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -221,6 +217,7 @@ export default class WelcomeScreen extends Component {
             })
             .catch(err => {
                 // code incorrect
+                console.log(err);
                 this.setState({isCodeValid: false});
                 Alert.alert("Incorrect code", "Please try again.", [
                     {text: "OK", onPress: () => null},
@@ -250,15 +247,15 @@ export default class WelcomeScreen extends Component {
                     navigate("UserSignUp", {
                         email: this.state.emailInput,
                     });
-                } 
+                }
             })
             .catch(err => {
                 // code incorrect
+                console.log(err);
                 this.setState({isCodeValid: false});
                 Alert.alert("Incorrect code", "Please try again.", [
                     {text: "OK", onPress: () => null},
                 ]);
-               
             });
     }
 
@@ -344,7 +341,6 @@ export default class WelcomeScreen extends Component {
                                             ? "Please enter the 6 digit code sent to your email."
                                             : "Please enter your email verification code below."
                                     }
-                                    
                                 />
                             )}
                         </View>

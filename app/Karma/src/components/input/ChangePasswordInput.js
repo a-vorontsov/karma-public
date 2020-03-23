@@ -1,25 +1,15 @@
 import React, {Component} from "react";
-import {
-    View,
-    StyleSheet,
-    Keyboard,
-    Alert,
-    Dimensions,
-    TouchableOpacity,
-} from "react-native";
+import {View, Keyboard, Dimensions, TouchableOpacity} from "react-native";
 import {TextInput} from "../input";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
-import SignUpStyles from "../../styles/SignUpStyles";
-import { SafeAreaView } from "react-navigation";
-import { GradientButton } from "../buttons";
-import { color } from "react-native-reanimated";
+import {SafeAreaView} from "react-navigation";
 import LinearGradient from "react-native-linear-gradient";
 import Colours from "../../styles/Colours";
 
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 export default class ChangePasswordInput extends Component {
     constructor(props) {
@@ -36,11 +26,11 @@ export default class ChangePasswordInput extends Component {
         this.passUpState = this.passUpState.bind(this);
     }
 
-    onChangeText(event){
+    onChangeText(event) {
         const {name, text} = event;
         this.setState({[name]: text});
         //TODO: call passupstate here
-    };
+    }
 
     passUpState() {
         const confPassword = this.state;
@@ -93,10 +83,13 @@ export default class ChangePasswordInput extends Component {
     render() {
         const showError = this.showError();
         return (
-            <SafeAreaView style={{flex:1}}>
-                
-                <View style={{flexDirection: "row", alignItems: "center",flex:0.4}}>
-                
+            <SafeAreaView style={{flex: 1}}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flex: 0.4,
+                    }}>
                     <TextInput
                         placeholder="Password"
                         autoCapitalize="none"
@@ -127,8 +120,8 @@ export default class ChangePasswordInput extends Component {
                         <RegularText style={Styles.cyan}>Show</RegularText>
                     </TouchableOpacity>
                 </View>
-                
-                <View >
+
+                <View>
                     <TextInput
                         placeholder="Confirm Password"
                         name="confPassword"
@@ -161,26 +154,27 @@ export default class ChangePasswordInput extends Component {
                     </TouchableOpacity>
                 </View>
 
-                    <View style={{width: FORM_WIDTH, flex:2}}>
-                        
-                        <LinearGradient start={{x: 0, y: 0}}
+                <View style={{width: FORM_WIDTH, flex: 2}}>
+                    <LinearGradient
+                        start={{x: 0, y: 0}}
                         end={{x: 1, y: 0}}
                         colors={[Colours.blue, Colours.lightBlue]}
                         style={Styles.roundButton}
                         opacity={0.8}>
-
-                            <RegularText style={{flexWrap:"wrap",},[Styles.white, Styles.small, Styles.textCenter]}>
-                                Passwords need at least: {'\n'}
-                                Ten characters {'\n'}
-                                One uppercase letter{'\n'}
-                                One lowercase letter {'\n'}
-                                One number {'\n'}
-                                One special character
-                                </RegularText>
-                        
-                        </LinearGradient>
-                    </View>    
-                   
+                        <RegularText
+                            style={
+                                ({flexWrap: "wrap"},
+                                [Styles.white, Styles.small, Styles.textCenter])
+                            }>
+                            Passwords need at least: {"\n"}
+                            Ten characters {"\n"}
+                            One uppercase letter{"\n"}
+                            One lowercase letter {"\n"}
+                            One number {"\n"}
+                            One special character
+                        </RegularText>
+                    </LinearGradient>
+                </View>
             </SafeAreaView>
         );
     }
