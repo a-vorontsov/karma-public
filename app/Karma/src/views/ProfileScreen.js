@@ -418,6 +418,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                email: this.state.email,
                                             })
                                         }
                                     />

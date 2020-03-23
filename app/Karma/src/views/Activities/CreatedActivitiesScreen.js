@@ -31,6 +31,7 @@ class CreatedActivitiesScreen extends Component {
                             this.state.activities.map(activity => {
                                 return (
                                     <ActivityEditable
+                                        email={this.props.navigation.getParam("email")}
                                         activity={activity}
                                         key={activity.id}
                                     />
