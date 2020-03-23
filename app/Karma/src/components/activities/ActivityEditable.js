@@ -16,6 +16,7 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import request from "superagent";
+import {getData} from "../../util/GetCredentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -27,17 +28,68 @@ const icons = {
 
 const ActivityEditable = props => {
     const navigation = useNavigation();
-    const {activity, creatorName} = props;
+    const {activity, creatorName, email} = props;
+    const volunteers = activity.volunteers;
 
     /**
      * Delete the event selected
      */
     const deleteEvent = async () => {
         const activityId = activity.id;
+        const credentials = await getData();
+
         const url = `http://localhost:8000/event/${activityId}/delete/`;
         await request.post(url).then(res => {
             navigation.navigate("Profile");
+            sendNotification(
+                "EventCancellation",
+                `${activity.name}`,
+                Number(credentials.username),
+                volunteers,
+            );
         });
+    };
+
+    /**
+     * Fetches each volunteer's profile.
+     * This is used to then get the full name and email of each volunteer.
+     */
+    const fetchAttendeeInfo = async () => {
+        const credentials = await getData();
+
+        let attendees = [];
+        for (let i = 0; i < volunteers.length; ++i) {
+            const volunteerProfile = await request
+                .get("http://localhost:8000/profile/")
+                .query({userId: volunteers[i]})
+                .send({authToken: credentials.password})
+                .then(res => {
+                    return res.body.data;
+                });
+            attendees.push(volunteerProfile);
+        }
+
+        return attendees;
+    };
+
+    const sendMessageToAttendees = async () => {
+        const credentials = await getData();
+
+        let attendees = await fetchAttendeeInfo();
+        let attendeeEmails = [];
+        attendees.forEach(a => {
+            attendeeEmails.push(a.user.email);
+        });
+
+        sendNotification(
+            "Message",
+            "",
+            Number(credentials.username),
+            volunteers,
+        );
+
+        //Placing emails in the 'BCC' section so attendees can only see their own emails
+        Communications.email(null, null, attendeeEmails, null, null);
     };
 
     return (
@@ -75,6 +127,7 @@ const ActivityEditable = props => {
                                         navigation.navigate("CreateActivity", {
                                             activity: activity,
                                             creatorName: creatorName,
+                                            email: email,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>
@@ -93,18 +146,7 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        sendNotification(
-                                            "Message",
-                                            "has sent you a message - check your inbox!",
-                                        );
-                                        Communications.email(
-                                            null,
-                                            null,
-                                            // BCC – array of recipients
-                                            ["emailAddress1", "emailAddress2"],
-                                            null,
-                                            null,
-                                        );
+                                        sendMessageToAttendees();
                                     }}>
                                     <RegularText style={styles.settingsText}>
                                         Message Attendees
@@ -112,12 +154,6 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        // sendNotification(
-                                        //     "EventCancellation",
-                                        //     `"Event named ${
-                                        //         activity.name
-                                        //     } has been cancelled"`,
-                                        // );
                                         Alert.alert(
                                             "Are you sure you want to delete this event?",
                                             "",

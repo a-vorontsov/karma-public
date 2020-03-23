@@ -23,20 +23,21 @@ export default class NotificationItem extends Component {
     }
 
     async componentDidMount() {
-        this.getSenderName(2);
+        const {notification} = this.props;
+        this.getSenderName(notification.senderId);
     }
 
     /**
      * Opens email app on the user's phone
      */
-    _sendReply = () => {
+    viewEmail = () => {
         //open email here
     };
 
     _renderReplyButton = () => {
         return (
-            <TouchableOpacity onPress={() => this._sendReply()}>
-                <SemiBoldText style={{color: Colours.blue}}>Reply</SemiBoldText>
+            <TouchableOpacity onPress={() => this.viewEmail()}>
+                <SemiBoldText style={{color: Colours.blue}}>View</SemiBoldText>
             </TouchableOpacity>
         );
     };
@@ -52,11 +53,13 @@ export default class NotificationItem extends Component {
                     return res.body.data;
                 });
 
-            let senderName = response.individual.name;
+            let sender = response.individual
+                ? response.individual
+                : response.organisation;
 
-            if (!senderName) {
-                senderName = response.individual.firstName;
-            }
+            let senderName = sender.name
+                ? sender.name
+                : sender.firstName + " " + sender.lastName;
 
             this.setState({
                 senderName: senderName,
@@ -64,8 +67,6 @@ export default class NotificationItem extends Component {
         } catch (error) {
             console.log(error);
         }
-
-        //get org name from profile endpoint
     };
 
     render() {
@@ -84,7 +85,11 @@ export default class NotificationItem extends Component {
                             borderRadius: 20,
                             alignSelf: "center",
                         }}
-                        source={{uri: "https://picsum.photos/200"}}
+                        source={{
+                            uri: `https://picsum.photos/seed/${
+                                notification.id
+                            }/200`,
+                        }}
                     />
                     <View
                         style={[

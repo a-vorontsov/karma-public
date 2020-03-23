@@ -2,9 +2,11 @@
  * @module Sign-up-Organisation
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * This is the fourth step of the signup flow (after user
@@ -16,7 +18,8 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * authentication.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /signup/organisation
+ <p><b>Route: </b>/signup/organisation (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.organisation the user input values for their profile
@@ -46,8 +49,9 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @name Sign-up Organisation
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Signing up organisation");
         const organisation = {
             organisationNumber: req.body.data.organisation.organisationNumber,
             name: req.body.data.organisation.name,
@@ -73,6 +77,7 @@ router.post("/", async (req, res) => {
             message: "Organisation registration successful.",
         });
     } catch (e) {
+        log.error("Signing up organisation failed");
         res.status(400).send({
             message: e.message,
         });

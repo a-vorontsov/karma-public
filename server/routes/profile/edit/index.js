@@ -1,7 +1,7 @@
 /**
  * @module Profile-Edit
  */
-
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
@@ -15,7 +15,8 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  * Endpoint called whenever a user wishes to update their profile <br/>
  * Any data that does not need to be updated can and should be
  * left out from the POST request to avoid unnecessary computation.<br/>
- * URL example: POST http://localhost:8000/profile/edit/
+ <p><b>Route: </b>/profile/edit (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {number} req.body.userId the user's id, as in every request
  * @param {string} req.body.authToken the user's valid authToken, as in every request
  * @param {object} req.body.data.user if anything for user has changed
@@ -66,6 +67,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
 router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         // update user profile if specified in request
+        log.info("Updating profile");
         if (req.body.data.user !== undefined) {
             await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
@@ -79,9 +81,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const profile = profileResult.rows[0];
             const profileCopy = {...profile};
 
-            const addressResult = await addressRepo.findById(individual.addressId);
-            await updateAddress(req.body.data.individual.address, addressResult.rows[0]);
-
+            if (req.body.data.individual.address !== undefined) {
+                const oldAddressResult = await addressRepo.findById(individual.addressId);
+                const newAddressResult = await createNewAddress(req.body.data.individual.address, oldAddressResult.rows[0]);
+                individual.addressId = newAddressResult.rows[0].id;
+            }
             if (req.body.data.individual.firstName !== undefined) {
                 individual.firstname = req.body.data.individual.firstName;
             }
@@ -116,9 +120,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const organisation = orgResult.rows[0];
             const orgCopy = {...organisation};
 
-            const addressResult = await addressRepo.findById(organisation.addressId);
-            await updateAddress(req.body.data.organisation.address, addressResult.rows[0]);
-
+            if (req.body.data.organisation.address !== undefined) {
+                const oldAddressResult = await addressRepo.findById(organisation.addressId);
+                const newAddressResult = await createNewAddress(req.body.data.organisation.address, oldAddressResult.rows[0]);
+                organisation.addressId = newAddressResult.rows[0].id;
+            }
             if (req.body.data.organisation.name !== undefined) {
                 organisation.orgName = req.body.data.organisation.name;
             }
@@ -144,7 +150,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
                 organisation.exempt = req.body.data.organisation.exempt;
             }
 
-            if (organisation !== orgCopy) {
+            if (JSON.stringify(organisation) !== JSON.stringify(orgCopy)) {
                 await orgRepo.update(organisation);
             }
         }
@@ -152,6 +158,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Operation successful. Please GET the view profile endpoint to see the updated profile record.",
         });
     } catch (e) {
+        log.error("Updating profile failed");
         res.status(500).send({
             message: e.message,
         });
@@ -164,7 +171,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  * @param {Object} address in request body
  * @param {Object} storedAddress in db
  */
-async function updateAddress(address, storedAddress) {
+async function createNewAddress(address, storedAddress) {
     if (address === undefined) {
         return;
     }
@@ -187,8 +194,8 @@ async function updateAddress(address, storedAddress) {
         addressObj.region = address.countryState;
     }
 
-    if (addressObj !== storedAddress) {
-        await addressRepo.update(addressObj);
+    if (JSON.stringify(addressObj) !== JSON.stringify(storedAddress)) {
+        return await addressRepo.insert(addressObj);
     }
 }
 

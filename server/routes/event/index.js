@@ -1,7 +1,7 @@
 /**
- * @module Events
+ * @module Event
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -13,6 +13,7 @@ const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
 const paginator = require("../../modules/pagination");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -23,7 +24,8 @@ router.use("/", eventSelectRoute);
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
  * URL example: REACT_APP_API_URL/event?userId=1&pageSize=2&currentPage=1
 &filter[]=!womenOnly&filter[]=physical&availabilityStart=2020-03-03&availabilityEnd=2020-12-03&maxDistance=5000<br/>
- * route {GET} /event
+ <p><b>Route: </b>/event (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
@@ -79,7 +81,8 @@ router.use("/", eventSelectRoute);
                 ],
                 "going": true,
                 "spotsRemaining": 8,
-                "distance": 0.18548890708299523
+                "distance": 0.18548890708299523,
+                "causes": [1,2,3]
             },
             {
                 "eventId": 3,
@@ -107,7 +110,8 @@ router.use("/", eventSelectRoute);
                 ],
                 "going": true,
                 "spotsRemaining": 28,
-                "distance": 7.399274608089304
+                "distance": 7.399274608089304,
+                "causes": [1,2,3]
             }
         ]
     }
@@ -119,9 +123,10 @@ router.use("/", eventSelectRoute);
  *  @function
  *  @name Get "All" Activities tab
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
+        log.info("Getting 'All' activities for user id '%d'", userId);
         const filters = {booleans: req.query.filter};
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
@@ -131,14 +136,15 @@ router.get("/", async (req, res) => {
         getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        console.log("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
 
 /**
  * Endpoint called whenever a user requests information about an event.
- * URL example: GET http://localhost:8000/event/5
+ <p><b>Route: </b>/event/:id (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} id - id of requested event.
  * @returns {object}
  *  status: 200, description: Information regarding the event containing the same properties as this example
@@ -171,6 +177,14 @@ router.get("/", async (req, res) => {
                 "lat": 51.5237740,
                 "long": -0.1585340
             }
+            "causes": [
+                {
+                    "id": 1,
+                    "name": "animals",
+                    "title": "Animals",
+                    "description": "Morbi accumsan laoreet ipsum. Curabitur"
+                }
+            ]
         }
     }
 }
@@ -179,13 +193,14 @@ router.get("/", async (req, res) => {
  *  @function
  *  @name Get event by id
  *  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
+        log.info("Getting event id '%d' data", id);
         const getEventResult = await eventService.getEventData(id);
         return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
-        console.log("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        log.error("Event fetching failed for event id '" + req.params.id + "' : " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -193,7 +208,8 @@ router.get("/:id", async (req, res) => {
 /**
  * Endpoint called whenever a user creates a new event.<br/>
  * If an existing addressId is specified in the request, it is reused and no new address is created.<br/>
- * URL example: POST http://localhost:8000/event/
+ <p><b>Route: </b>/event (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -217,6 +233,7 @@ router.get("/:id", async (req, res) => {
     "content": "fun event yay",
     "date": "2004-10-19 10:23:54",
     "userId": 3
+    "causes": [1,2,4]
  }
  </pre>
  * "address" can be substituted with <pre>"addressId: {Integer}"</pre> in which case the existing address is reused.
@@ -224,11 +241,12 @@ router.get("/:id", async (req, res) => {
  *  status: 200, description: The event object created with its id and addressId set to the ones stored in the database<br/>
  <pre>
  {
-    "message": "New event created",
+    "message": "Event created successfully",
     "data": {
         "event": {
+            "id": 106,
             "name": "event",
-            "addressId": 5,
+            "addressId": 106,
             "womenOnly": true,
             "spots": 3,
             "addressVisible": true,
@@ -237,37 +255,53 @@ router.get("/:id", async (req, res) => {
             "physical": true,
             "addInfo": true,
             "content": "fun event yay",
-            "date": "2004-10-19 10:23:54",
+            "date": "2004-10-19T09:23:54.000Z",
             "userId": 3,
-            "creationDate": "2019-10-19 10:23:54"
-        }
+            "pictureId": null,
+            "creationDate": "2020-03-21T23:07:18.020Z"
+        },
+        "causes": [
+            {
+                "eventId": 106,
+                "causeId": 1
+            },
+            {
+                "eventId": 106,
+                "causeId": 2
+            },
+            {
+                "eventId": 106,
+                "causeId": 3
+            }
+        ]
     }
- }
+}
  </pre>
  *  status: 400, description: User has reached their monthly event creation limit.<br/>
  *  status: 500, description: DB error
  *  @name Create new event
  *  @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Creating new event");
         const event = req.body;
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
         }
-
         const eventCreationResult = await eventService.createNewEvent(event);
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
-        console.log("Event creation failed: " + e);
+        log.error("Event creation failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
 
 /**
  * Endpoint called whenever a user updates an event.<br/>
- * URL example: POST http://localhost:8000/event/update/5
+ <p><b>Route: </b>/event/update/:id (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -323,9 +357,10 @@ router.post("/", async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", async (req, res) => {
+router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
     try {
         const event = {...req.body, id: Number.parseInt(req.params.id)};
+        log.info("Updating event id '%d'", event.id);
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -334,14 +369,15 @@ router.post("/update/:id", async (req, res) => {
         const eventUpdateResult = await eventService.updateEvent(event);
         return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
-        console.log("Event updating failed: " + e);
+        log.error("Event updating failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
 
 /**
  * Endpoint called whenever a user deletes an event. <br/>
- * URL example: POST http://localhost:8000/event/5/delete/
+ <p><b>Route: </b>/event/:id/delete/ (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @returns {object}
  *  status: 200, description: The deleted event object.<br/>
  <pre>
@@ -370,13 +406,14 @@ router.post("/update/:id", async (req, res) => {
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", async (req, res) => {
+router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
+        log.info("Deleting event id '%d'", eventId);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
         return httpUtil.sendResult(eventDeleteResult, res);
     } catch (e) {
-        console.log("Event updating failed: " + e);
+        log.error("Event updating failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

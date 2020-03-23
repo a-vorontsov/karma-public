@@ -11,6 +11,7 @@ validation.validateNotification.mockReturnValue({errors: ""});
 let notification;
 
 beforeEach(() => {
+    process.env.NO_AUTH = 1;
     notification = testHelpers.getNotification();
 });
 

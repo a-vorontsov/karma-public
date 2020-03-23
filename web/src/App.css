@@ -66,3 +66,28 @@ header .header-title {
   margin-bottom: 50px;
   min-height: 200px;
 }
+
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detailsSection {
+  margin: 10px 10px 25px 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.detailsSection .entry {
+  display: block;
+}
+
+.detailsSection .entry p {
+  text-align: left;
+}
+
+.detailsSection .entry p.key {
+  font-weight: bold;
+}
+

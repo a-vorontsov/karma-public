@@ -7,12 +7,48 @@ import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import Communications from "react-native-communications";
 import {sendNotification} from "../../util/SendNotification";
+import {getData} from "../../util/GetCredentials";
 
 const icons = {
     email: require("../../assets/images/general-logos/mail.png"),
 };
 
 export default class AttendeeButton extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            email: "",
+            attendeeId: -1,
+        };
+    }
+
+    async componentDidMount() {
+        this.parseProfileInfo();
+    }
+
+    parseProfileInfo = () => {
+        const {user} = this.props;
+        const email = user.email;
+        const attendeeId = user.userId;
+        this.setState({
+            email,
+            attendeeId,
+        });
+    };
+
+    openEmail = async () => {
+        const credentials = await getData();
+        const {email, attendeeId} = this.state;
+        sendNotification(
+            "Message",
+            "has sent you a message - check your inbox!",
+            Number(credentials.username),
+            [attendeeId],
+        );
+        Communications.email([email], null, null, null, null);
+    };
+
     render() {
         const {user} = this.props;
         return (
@@ -29,41 +65,35 @@ export default class AttendeeButton extends React.Component {
                         },
                     ]}
                     activeOpacity={0.9}>
-                    <TouchableOpacity>
+                    <View style={{flex: 9}}>
                         <RegularText style={[Styles.ph8, {fontSize: 20}]}>
-                            {user}
+                            {user.firstName
+                                ? user.firstName + " " + user.lastName
+                                : user.name}
                         </RegularText>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            sendNotification(
-                                "Message",
-                                "has sent you a message - check your inbox!",
-                            );
-                            Communications.email(
-                                ["userEmail"],
-                                null,
-                                null,
-                                null,
-                                null,
-                            );
-                        }}
-                        style={{
-                            width: 30,
-                            paddingRight: 15,
-                            justifyContent: "flex-end",
-                            alignItems: "flex-end",
-                        }}>
-                        <Image
-                            source={icons.email}
-                            style={{
-                                height: 30,
-                                alignSelf: "center",
-                                justifyContent: "flex-end",
+                    </View>
+                    <View style={{flex: 1}}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.openEmail();
                             }}
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
+                            style={{
+                                width: 30,
+                                paddingRight: 15,
+                                justifyContent: "flex-end",
+                                alignItems: "flex-end",
+                            }}>
+                            <Image
+                                source={icons.email}
+                                style={{
+                                    height: 30,
+                                    alignSelf: "center",
+                                    justifyContent: "flex-end",
+                                }}
+                                resizeMode="contain"
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );

@@ -19,7 +19,7 @@ beforeEach(() => {
     user = testHelpers.getUserExample4();
     registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
     changePasswordRequest.oldPassword = "password";
     changePasswordRequest.confirmPassword = "new_plaintext";
     return testHelpers.clearDatabase();

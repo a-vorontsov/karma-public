@@ -6,7 +6,7 @@ import {hasNotch} from "react-native-device-info";
 import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
-import {ScrollView} from "react-native-gesture-handler";
+import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {getData} from "../util/GetCredentials";
 const request = require("superagent");
 
@@ -43,9 +43,9 @@ class NotificationsScreen extends Component {
         const credentials = await getData();
         const userId = credentials.username;
         try {
-            const response = await request.get(
-                "http://localhost:8000/notification?userId=" + userId,
-            );
+            const response = await request
+                .get("http://localhost:8000/notification")
+                .query({userId: userId});
             this.setState({
                 notifications: response.body.data.notifications,
                 userId: Number(userId),
@@ -53,6 +53,7 @@ class NotificationsScreen extends Component {
 
             this.parseNotifications();
         } catch (error) {
+            console.log(error);
             Alert.alert("Unable to fetch new notifications");
         }
     };
@@ -70,7 +71,7 @@ class NotificationsScreen extends Component {
      * Only displays notifications that the user/org has
      * received rather than sent
      */
-    parseNotifications = () => {
+    parseNotifications = cleared => {
         const {notifications} = this.state;
 
         let received = [];
@@ -78,7 +79,13 @@ class NotificationsScreen extends Component {
         //get all received notifications
         notifications.forEach(n => {
             if (n.receiverId === this.state.userId) {
-                received.push(n);
+                let timestamp = new Date(n.timestampSent);
+                //if the 'clear' button is clicked, dont show any old notifications
+                if (cleared || timestamp < this.state.minTimestamp) {
+                    this.setState({minTimestamp: new Date()});
+                } else {
+                    received.push(n);
+                }
             }
         });
 
@@ -120,7 +127,7 @@ class NotificationsScreen extends Component {
         const {monthNotifications} = this.state;
 
         return monthNotifications.map(n => {
-            return <NotificationItem notification={n} />;
+            return <NotificationItem notification={n} key={n.id} />;
         });
     };
 
@@ -136,7 +143,7 @@ class NotificationsScreen extends Component {
         }
 
         return weekNotifications.map(n => {
-            return <NotificationItem notification={n} />;
+            return <NotificationItem key={n.id} notification={n} />;
         });
     };
 
@@ -179,9 +186,27 @@ class NotificationsScreen extends Component {
                                             }
                                         />
                                     }>
-                                    <SemiBoldText style={[Styles.pb16]}>
-                                        This Week
-                                    </SemiBoldText>
+                                    <View style={{flexDirection: "row"}}>
+                                        <View style={{flex: 1}}>
+                                            <SemiBoldText style={[Styles.pb16]}>
+                                                This Week
+                                            </SemiBoldText>
+                                        </View>
+                                        <View
+                                            style={{
+                                                flex: 1,
+                                                alignItems: "flex-end",
+                                            }}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    this.parseNotifications(
+                                                        true,
+                                                    );
+                                                }}>
+                                                <RegularText>Clear</RegularText>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
                                     {this._renderWeekNotifications()}
                                     <SemiBoldText style={[Styles.pb16]}>
                                         This Month
