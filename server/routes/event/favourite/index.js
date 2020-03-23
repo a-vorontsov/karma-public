@@ -7,6 +7,7 @@ const router = express.Router();
 
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const httpUtil = require("../../../util/httpUtil");
+const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
 const authAgent = require("../../../modules/authentication/auth-agent");
 
@@ -17,7 +18,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -39,7 +40,8 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  */
 router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
     try {
-        const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        const favouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -60,7 +62,7 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -82,7 +84,8 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  */
 router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
     try {
-        const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        const deleteFavouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);

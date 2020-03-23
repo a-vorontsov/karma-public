@@ -110,23 +110,40 @@ class ActivityCard extends React.Component {
     }
 
     async toggleFavourite() {
-        await this.setState({
-            favourited: !this.state.favourited,
-        });
+        const credentials = await getData();
+        //const authToken = credentials.password;
+        const userId = credentials.username;
 
-        if (this.state.favourited){
-            const credentials = await getData();
-            //const authToken = credentials.password;
-            const userId = credentials.username;
+        if (!this.state.favourited) {
             request
                 .post(
                     `http://localhost:8000/event/${
                         this.props.activity.eventId
                     }/favourite`,
                 )
-                .send({individualId: 1})
+                .send({userId: userId})
                 .then(result => {
                     console.log(result.body.message);
+                    this.setState({
+                        favourited: true,
+                    });
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        } else {
+            request
+                .post(
+                    `http://localhost:8000/event/${
+                        this.props.activity.eventId
+                    }/favourite/delete`,
+                )
+                .send({userId: userId})
+                .then(result => {
+                    console.log(result.body.message);
+                    this.setState({
+                        favourited: false,
+                    });
                 })
                 .catch(er => {
                     console.log(er);
