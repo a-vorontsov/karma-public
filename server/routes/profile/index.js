@@ -138,11 +138,11 @@ router.get("/", async (req, res) => {
             const profile = profileResult.rows[0];
             const signUpResult = await signUpRepo.findAllByIndividualId(individual.id);
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
-                .map(eventId => eventRepo.findById(eventId))))
+                .map(eventId => eventRepo.findByIdConfirmed(eventId))))
                 .map(eventResult => eventResult.rows[0])
                 .filter(event => event.date < now);
             const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
-                .map(eventId => eventRepo.findById(eventId))))
+                .map(eventId => eventRepo.findByIdConfirmed(eventId))))
                 .map(eventResult => eventResult.rows[0])
                 .filter(event => event.date > now);
 

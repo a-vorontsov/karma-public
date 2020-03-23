@@ -17,6 +17,11 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
+const findByIdConfirmed = (id) => {
+    const query = "SELECT * FROM event, sign_up WHERE id=$1 and confirmed=true";
+    return db.query(query, [id]);
+};
+
 const findAll = () => {
     const query = "SELECT * FROM event";
     return db.query(query);
@@ -84,4 +89,5 @@ module.exports = {
     findAllWithAllData,
     findAllByUserIdWithLocation,
     removeById,
+    findByIdConfirmed,
 };
