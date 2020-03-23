@@ -31,6 +31,7 @@ import CauseStyles from "../styles/CauseStyles";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
+const CAUSES_WIDTH = 0.9 * width;
 
 
 const icons = {
@@ -92,8 +93,10 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
-                const causes = activity.causes;
-                console.log(activity);
+                const causeIds = activity.causes;
+                
+                const causes = await this.fetchSelectedCauses(causeIds);
+
                 this.setState({
                     eventId: activity.id,
                     isUpdate: true,
@@ -112,7 +115,8 @@ export default class CreateActivityScreen extends React.Component {
                     isPhysical,
                     isAddressVisible,
                     isIDReq,
-                    causes,
+                    causeIds,
+                    causes
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
@@ -140,6 +144,22 @@ export default class CreateActivityScreen extends React.Component {
             causeIds,
         })
         this.toggleModal();
+    }
+
+    fetchSelectedCauses = async(causeIds) => {
+        const response = await request.get("http://localhost:8000/causes")
+        .then(res => {
+            return res.body.data;
+        })
+
+        let causes = [];
+        Array.from(response).forEach(cause => {
+            if(causeIds.includes(cause.id)) {
+                causes.push(cause);
+            }
+        })
+
+        return causes;
     }
 
     /**
@@ -327,7 +347,6 @@ export default class CreateActivityScreen extends React.Component {
             Alert.alert("An activity must be related to at least one cause");
             return;
         }
-        console.log(event)
         
         // send a request to update the db with the new event
         await request
@@ -661,7 +680,7 @@ export default class CreateActivityScreen extends React.Component {
                                     <View
                                         style={{alignItems:"flex-start"}}
                                     >
-                                        <RegularText>Pick Related Causes</RegularText>
+                                        <RegularText style={{fontSize: 20}}>Pick Related Causes</RegularText>
                                         <TouchableOpacity
                                         onPress={this.toggleModal}>
                                         <Image
@@ -674,8 +693,8 @@ export default class CreateActivityScreen extends React.Component {
                                         />
                                     </TouchableOpacity>
                                     </View>
-                                   
-                                    <View style={{flexDirection: "row", justifyContent:"flex-end", width:width}}>
+                                    </View>
+                                    <View style={{flexDirection: "row", width:CAUSES_WIDTH, justifyContent:"flex-end", alignSelf: "center"}}>
                                         {this.state.causes && this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.createActivityContainer}> 
                                                 {this.state.causes.map(cause => {
@@ -690,7 +709,7 @@ export default class CreateActivityScreen extends React.Component {
                                             </View>
                                         ) : (undefined)}
                                     </View>
-                                    </View>
+                                    
 
                                 
                                <View>
