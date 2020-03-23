@@ -9,11 +9,11 @@ export default class AddressInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            address1: null,
-            address2: null,
-            city: null,
-            region: null,
-            postcode: null,
+            address1: props.address1,
+            address2: props.address2,
+            city: props.city,
+            region: props.region,
+            postcode: props.postcode,
             correctPostCode: true,
         };
         this.onChangeText = this.onChangeText.bind(this);

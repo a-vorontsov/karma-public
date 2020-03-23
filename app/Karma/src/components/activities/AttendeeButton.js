@@ -74,7 +74,9 @@ export default class AttendeeButton extends React.Component {
                     activeOpacity={0.9}>
                     <View style={{flex: 9}}>
                         <RegularText style={[Styles.ph8, {fontSize: 20}]}>
-                            {name}
+                            {user.firstName
+                                ? user.firstName + " " + user.lastName
+                                : user.name}
                         </RegularText>
                     </View>
                     <View style={{flex: 1}}>

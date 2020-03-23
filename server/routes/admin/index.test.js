@@ -15,6 +15,7 @@ let user, individual;
 
 beforeEach(() => {
     jest.clearAllMocks();
+    process.env.NO_AUTH = 1;
     user = testHelpers.getUserExample1();
     individual = testHelpers.getIndividual();
 });

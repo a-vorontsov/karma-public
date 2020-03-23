@@ -1,6 +1,7 @@
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
+const profileRepository = require("../../../models/databaseRepositories/profileRepository");
 const util = require("../../../util/util");
 const eventSorter = require("../../sorting/event");
 
@@ -94,6 +95,10 @@ const getGoingEvents = async (userId) => {
  * Fails if database call fails.
  */
 const updateSignUp = async (signup) => {
+    const oldSignup = await signupRepository.find(signup.individualId, signup.eventId);
+    if (oldSignup.rows[0].attended === false && signup.attended === true) {
+        await profileRepository.updateKarmaPoints(signup.individualId);
+    };
     const signupResult = await signupRepository.update(signup);
     return ({
         status: 200,

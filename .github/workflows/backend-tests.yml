@@ -5,6 +5,7 @@ on:
   push:
     branches: # == run tests only on push to following branches: ==
       - master # master (rerun tests after merging a PR)
+      - dev
     paths:
       - "server/**" # limit workflow tests only to changes in backend folder
   pull_request:
@@ -20,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     # setup node, build, and run tests
     steps:
-      - name: checkout GitHub repo
+      - name: checkout GitHub repository
         uses: actions/checkout@v2
 
       - name: set up Node.js 12.x
@@ -39,6 +40,19 @@ jobs:
         working-directory: ./server
         run: npx eslint ./
 
+      - name: Generate API documentation
+        if: github.ref == 'refs/heads/dev'
+        run: npm run docs
+        working-directory: ./server
+
+      - name: Create API documentation artifact
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/upload-artifact@v1
+        with:
+          name: docs
+          path: server/out
+
+
   test:
     needs: build
     services:
@@ -50,7 +64,7 @@ jobs:
           POSTGRES_DB: karma-db
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
+        # needed because the postgres container does not provide a health check
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     env:
       CI: true
@@ -65,9 +79,11 @@ jobs:
       SKIP_MAIL_SENDING_FOR_TESTING: 1
       DB_HOST: localhost
       DB_DATABASE: karma-db
+      SKIP_GEOCODING: 1
+      MAPQUEST_API: fake5
     runs-on: ubuntu-latest
     steps:
-      - name: checkout Github repo
+      - name: checkout Github repository
         uses: actions/checkout@v2
 
       - name: set up Node.js 12.x
@@ -87,6 +103,26 @@ jobs:
       - name: npm test
         run: npm test
         working-directory: ./server
+
+  publish:
+    if: github.ref == 'refs/heads/dev'
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download docs artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: docs
+    - name: Deploy docs
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "docs/**"
+        target: "web-data"
+        strip_components: 1
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on

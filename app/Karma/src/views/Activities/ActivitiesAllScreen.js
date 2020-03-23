@@ -3,8 +3,7 @@ import {View, Alert} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
-import {getData} from "../../util/GetCredentials";
-
+import {getData} from "../../util/credentials";
 const request = require("superagent");
 
 class ActivitiesAllScreen extends Component {
@@ -22,12 +21,13 @@ class ActivitiesAllScreen extends Component {
 
     async fetchAllActivities() {
         const credentials = await getData();
-
+        //const authToken = credentials.password;
+        const userId = credentials.username;
         request
             .get("http://localhost:8000/event")
-            .query({userId: credentials.username, Page: 1, pageSize: 2})
+            .query({userId: userId, Page: 1, pageSize: 2})
             .then(result => {
-                console.log(result.body.data);
+                console.log(result.body.message);
                 let activities = result.body.data.events;
                 this.setState({
                     activities,

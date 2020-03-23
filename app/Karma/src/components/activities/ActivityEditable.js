@@ -28,7 +28,7 @@ const icons = {
 
 const ActivityEditable = props => {
     const navigation = useNavigation();
-    const {activity, creatorName} = props;
+    const {activity, creatorName, email} = props;
     const volunteers = activity.volunteers;
 
     /**
@@ -127,6 +127,7 @@ const ActivityEditable = props => {
                                         navigation.navigate("CreateActivity", {
                                             activity: activity,
                                             creatorName: creatorName,
+                                            email: email,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>

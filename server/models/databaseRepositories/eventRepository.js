@@ -13,7 +13,9 @@ const insert = (event) => {
 };
 
 const findById = (id) => {
-    const query = "SELECT * FROM event WHERE id=$1";
+    const query = "SELECT *, " +
+        "ARRAY(SELECT cause_id from event_cause where event_id = id(event)) as causes " +
+        "FROM event WHERE id=$1";
     return db.query(query, [id]);
 };
 
@@ -29,7 +31,8 @@ const findAllByUserId = (userId) => {
 
 const findAllByUserIdWithLocation = (userId) => {
     const query = "SELECT *, id(event) as id, ARRAY(SELECT user_id from sign_up left join individual on id(individual) = individual_id " +
-        "where event_id = id(event)) as volunteers FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1";
+        "where event_id = id(event)) as volunteers, ARRAY(SELECT cause_id from event_cause where event_id = id(event)) " +
+        "as causes FROM event LEFT JOIN address ON address_id = id(address) WHERE user_id=$1"; 
     return db.query(query, [userId]);
 };
 
@@ -68,7 +71,8 @@ const findAllWithAllData = (whereClause) => {
         "physical,add_info,content,date,user_id as event_creator_id," +
         "address_1,address_2,postcode,city,region,lat,long,"+
         "ARRAY(SELECT user_id from sign_up "+
-        "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers " +
+        "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers, " +
+        "ARRAY(SELECT cause_id from event_cause where event_id = id(event)) as causes " +
         "from event inner join address on id(address) = address_id" + whereClause;
     return db.query(query);
 };

@@ -1,16 +1,19 @@
 /**
  * @module Notification
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const notificationService = require("../../modules/notification");
 const validation = require("../../modules/validation");
+const authAgent = require("../../modules/authentication/auth-agent");
 const httpUtil = require("../../util/httpUtil");
 
 /**
  * Endpoint called whenever a user sends a new notification.<br/>
  * URL example: POST http://localhost:8000/notification/
+ <p><b>Route: </b>/notification (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Notification} req.body - Information regarding the notification containing the same properties as this example,
  * including user IDs:
  <pre>
@@ -52,8 +55,9 @@ const httpUtil = require("../../util/httpUtil");
  *  @name Create new notifications
  *  @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Creating new notification");
         const notification = req.body;
         const validationResult = validation.validateNotification(notification);
         if (validationResult.errors.length !== 0) {
@@ -66,7 +70,7 @@ router.post("/", async (req, res) => {
         const notificationResult = await notificationService.createNotifications(notification);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log("Notification creation failed: " + e);
+        log.error("Notification creation failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -74,6 +78,9 @@ router.post("/", async (req, res) => {
 /**
  * Endpoint called whenever a user wants to see all current notifications for a UserId.<br/>
  * URL example: GET http://localhost:8000/notification?userId=6
+ * // TODO: change not to use query params
+ <p><b>Route: </b>/notification (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user
  * @returns {Object}
  *  status: 200, description: An array of notification objects containing the userIds.<br/>
@@ -99,9 +106,10 @@ router.post("/", async (req, res) => {
  *  @name Get notifications
  *  @function
  */
-router.get("/", async (req, res) => {
+router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
+        log.info("Getting notifications for user id '%d'", id);
         if (Number.isInteger(id)) {
             return res.status(400).send({message: "ID is not a number."});
         }
@@ -109,7 +117,7 @@ router.get("/", async (req, res) => {
         const notificationResult = await notificationService.getNotification(id);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        console.log("Fetching Notifications failed: " + e);
+        log.error("Fetching Notifications failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

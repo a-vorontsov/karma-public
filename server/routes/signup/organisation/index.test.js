@@ -10,6 +10,7 @@ beforeEach(() => {
     user = testHelpers.getUserExample4();
     registration = testHelpers.getRegistrationExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
+    process.env.NO_AUTH = 1;
     return testHelpers.clearDatabase();
 });
 

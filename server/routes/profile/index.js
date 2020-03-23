@@ -1,7 +1,7 @@
 /**
  * @module Profile
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../modules/authentication/auth-agent");
@@ -16,7 +16,8 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 
 /**
  * Endpoint called whenever a user wishes to get their profile.<br/>
- * URL example: GET http://localhost:8000/profile/
+ <p><b>Route: </b>/profile (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
  * @param {Number} req.query.userId - ID of user logged in
  * @param {String} req.body.authToken
  * @returns {object}
@@ -57,7 +58,8 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
                     "content": "id, libero. Donectristique neque vs. Etiam bibendum fermentum metus. Aenean",
                     "date": "2020-10-20T23:00:00.000Z",
                     "userId": 80,
-                    "creationDate": "2019-11-06T00:00:00.000Z"
+                    "creationDate": "2019-11-06T00:00:00.000Z",
+                    "causes": [1,2,4]
                     }
                  ],
                  "pastEvents": [
@@ -75,8 +77,9 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
                     "content": "frat. Cras dipis nec mauris blandit mattis. Cras eget nisi dictum augue",
                     "date": "2019-07-15T23:00:00.000Z",
                     "userId": 45,
-                    "creationDate": "2019-07-06T23:00:00.000Z"
-                            }
+                    "creationDate": "2019-07-06T23:00:00.000Z",
+                    "causes": [1,2,4]
+                 }
                  {
                     "id": 45,
                     "name": "turpis nec mauris blandit mattis.",
@@ -91,7 +94,8 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
                     "content": "am vitae Sed nec metus facilisis lorem",
                     "date": "2019-08-19T23:00:00.000Z",
                     "userId": 53,
-                    "creationDate": "2020-07-26T23:00:00.000Z"
+                    "creationDate": "2020-07-26T23:00:00.000Z",
+                    "causes": [1,2,4]
                             }
                  ],
                  "causes": {
@@ -114,7 +118,9 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const now = new Date();
-        const userResult = await userRepo.findById(req.query.userId);
+        const userId = req.query.userId;
+        log.info("Getting profile data for user id '%d'", userId);
+        const userResult = await userRepo.findById(userId);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,
@@ -216,6 +222,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
             });
         }
     } catch (e) {
+        log.error("Getting profile failed");
         res.status(400).send({
             message: e.message,
         });

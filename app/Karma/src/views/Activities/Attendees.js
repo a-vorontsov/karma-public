@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {SafeAreaView, View} from "react-native";
 import Styles from "../../styles/Styles";
 import AttendeeButton from "../../components/activities/AttendeeButton";
-import {getData} from "../../util/GetCredentials";
 import request from "superagent";
 import {RegularText} from "../../components/text";
 
@@ -12,70 +11,70 @@ class Attendees extends Component {
 
         this.state = {
             attendees: [],
-            attendeeIds: [],
         };
-        this.fetchAttendeeInfo();
+        this.getAttendees();
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
-    /**
-     * Fetches each volunteer's profile.
-     * This is used to then get the full name and email of each volunteer.
-     */
-    fetchAttendeeInfo = async () => {
-        const {activity} = this.props;
-        const credentials = await getData();
+    componentDidMount() {
+        const {navigation} = this.props;
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.getAttendees();
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
 
-        let volunteers = Array.from(activity.volunteers);
+    getAttendees = async () => {
+        const {activity} = this.props;
+        const response = await request
+            .get(`http://localhost:8000/event/${activity.id}/signUp`)
+            .then(res => {
+                return res.body.data;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
         let attendees = [];
-        let attendeeIds = [];
-        for (let i = 0; i < volunteers.length; ++i) {
-            const volunteerProfile = await request
-                .get("http://localhost:8000/profile/")
-                .query({userId: volunteers[i]})
-                .send({authToken: credentials.password})
-                .then(res => {
-                    return res.body.data;
-                });
-            attendees.push(volunteerProfile);
-            attendeeIds.push(volunteers[i]);
-        }
+        Array.from(response.users).forEach(user => {
+            if (user.confirmed) {
+                attendees.push(user);
+            }
+        });
 
         this.setState({
-            attendees: attendees,
-            attendeeIds: attendeeIds,
-        });
-    };
-
-    _renderAttendees = () => {
-        const {attendees, attendeeIds} = this.state;
-        return attendees.map((user, idx) => {
-            return (
-                <AttendeeButton
-                    profile={user}
-                    attendeeId={attendeeIds[idx]}
-                    key={attendeeIds[idx]}
-                />
-            );
+            attendees,
         });
     };
 
     render() {
-        const isEmpty = this.state.attendees.length === 0;
+        const {activity} = this.props;
+        const {attendees} = this.state;
+
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                {isEmpty ? (
-                    <View style={{alignSelf: "center"}}>
+                <View style={Styles.ph16}>
+                    {attendees && attendees.length > 0 ? (
+                        attendees.map(a => {
+                            return (
+                                <AttendeeButton
+                                    user={a}
+                                    key={a.userId}
+                                    activity={activity}
+                                />
+                            );
+                        })
+                    ) : (
                         <RegularText>
-                            Currently, there are no volunteers signed up!
+                            Currently, there are no users attending your event!
                         </RegularText>
-                    </View>
-                ) : (
-                    <View style={Styles.ph16}>{this._renderAttendees()}</View>
-                )}
+                    )}
+                </View>
             </SafeAreaView>
         );
     }
