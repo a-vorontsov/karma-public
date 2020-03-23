@@ -48,6 +48,7 @@ app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 app.use("/profile", require("./routes/profile"));
 
 app.use("/avatars", require("./routes/avatars"));
+app.use("/picture", require("./routes/picture"));
 
 app.use("/admin", require("./routes/admin"));
 

@@ -12,9 +12,9 @@ const findById = (id) => {
     return db.query(query, [id]);
 };
 
-const findByUrl = (id) => {
-    const query = "SELECT * FROM \"picture\" WHERE picture_location=$1";
-    return db.query(query, [id]);
+const findByUrl = (url) => {
+    const query = "SELECT * FROM picture WHERE picture_location=$1";
+    return db.query(query, [url]);
 };
 
 const update = (picture) => {
@@ -50,6 +50,8 @@ const updateIndividualAvatar = (individual, picture) => {
     ];
     return db.query(query, params);
 };
+
+// == Organisations == //
 
 const getOrganisationAvatar = (organisation) => {
     const query =

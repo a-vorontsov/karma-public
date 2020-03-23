@@ -16,15 +16,15 @@ aws.config.update({
 });
 
 const s3 = new aws.S3();
+const userTypes = ['individual', 'organisation'];
 
 /**
  * Update avatar for a user (individual or organisation)
  * @param {Request} req HTTP request object
  * @param {Response} res HTTP response object
- * @param {string} userType The type of User, i.e. one of: individual, organisation
+ * @param {string} userType The type of User, i.e. one of: 'individual', 'organisation'
  */
 function updateAvatar(req, res, userType) {
-    const userTypes = ['individual', 'organisation'];
     if (!userType || !userTypes.includes(userType)) {
         res.json({
             message: `User type not specified, specify one of: ${userTypes.join(', ')}`,
@@ -32,11 +32,11 @@ function updateAvatar(req, res, userType) {
         return;
     }
     const userRepo = userType === 'individual' ? individualRepository : organisationRepository;
-    userRepo.findById(req.params.id).then(function(result) {
+    userRepo.findByUserID(req.query.userId).then(function(result) {
         if (result.rowCount < 1) {
             res.status(500);
             res.json({
-                message: `There is no ${userType} with ID ${req.params.id}`,
+                message: `There is no ${userType} with user ID ${req.query.userId}`,
             });
         } else {
             const avatarDir = `avatars-${userType}/`;
@@ -48,7 +48,7 @@ function updateAvatar(req, res, userType) {
                     Bucket: process.env.S3_BUCKET_NAME,
                     Key: function(req, file, cb) {
                         const hash = crypto.createHash('md5')
-                            .update(`karma_${userType}_${req.params.id}`)
+                            .update(`karma_${userType}_${req.query.userId}`)
                             .digest('hex');
                         const filename = (avatarDir + hash + '.png');
                         cb(null, filename);
@@ -81,7 +81,7 @@ function updateAvatar(req, res, userType) {
                             imageRepository.updateOrganisationAvatar;
                         updateUserImg(user, picture).then((result) => {
                             res.status(200).send({
-                                message: `Avatar successfully updated for ${userType} with ID ${req.params.id}`,
+                                message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
                                 location: `${req.file.Location}`,
                             });
                         }).catch((error) => {

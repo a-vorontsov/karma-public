@@ -156,6 +156,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 banned: individual.banned,
                 bio: profile.bio,
                 karmaPoints: profile.karmaPoints,
+                pictureId: individual.pictureId,
                 address: {
                     addressLine1: address.address1,
                     addressLine2: address.address2,
@@ -196,6 +197,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 pocLastName: organisation.pocLastname,
                 phoneNumber: organisation.phone,
                 banned: organisation.banned,
+                pictureId: organisation.pictureId,
                 address: {
                     addressLine1: address.address1,
                     addressLine2: address.address2,
