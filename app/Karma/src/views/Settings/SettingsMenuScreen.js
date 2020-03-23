@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";
@@ -32,7 +32,13 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("ReportProblem")}
+                            onPress={() =>
+                                navigate("ReportProblem", {
+                                    user: this.props.navigation.getParam(
+                                        "user",
+                                    ),
+                                })
+                            }
                         />
                         <SettingsButton
                             title="About KARMA"

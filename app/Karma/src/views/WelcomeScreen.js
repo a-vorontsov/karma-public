@@ -180,7 +180,11 @@ class WelcomeScreen extends Component {
                 this.setState({isValidPass: true});
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
+                await Keychain.resetGenericPassword();
                 await Keychain.setGenericPassword(userId.toString(), authToken);
+                console.log(
+                    "User id successfully stored in keychain. is " + userId,
+                );
                 navigate("PickCauses");
                 return;
             })

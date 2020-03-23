@@ -37,11 +37,12 @@ class ReportProblemScreen extends Component {
     };
 
     constructor(props) {
+        const {email} = props.navigation.getParam("user");
         super(props);
         this.state = {
             category: problemTypes[0].value,
             problem: "",
-            email: "",
+            email: email,
         };
         this.submitBugReport = this.submitBugReport.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -145,10 +146,9 @@ class ReportProblemScreen extends Component {
                             When you submit a report, we may contact you at:
                         </RegularText>
                         <TextInput
-                            placeholder="email@address.com"
+                            value={this.state.email}
                             name="email"
-                            editable={true}
-                            onChange={this.onChangeText}
+                            editable={false}
                         />
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
