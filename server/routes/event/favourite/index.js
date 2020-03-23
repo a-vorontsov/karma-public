@@ -40,7 +40,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
     try {
         const individualId = await util.getIndividualIdFromUserId(req.body.userId);
-              log.info("Favouriting event");
+        log.info("Favouriting event");
         const favouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {

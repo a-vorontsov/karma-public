@@ -4,7 +4,6 @@ import {InfoBar} from "../buttons";
 import {
     Image,
     StyleSheet,
-    Text,
     View,
     TouchableOpacity,
     Alert,
@@ -232,7 +231,6 @@ class ActivityCard extends React.Component {
                                             marginRight: 10,
                                         }}
                                     />
-
                                 </TouchableOpacity>
                             </View>
                         </View>
