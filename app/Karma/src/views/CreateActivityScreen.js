@@ -92,7 +92,8 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
-
+                const causes = activity.causes;
+                console.log(activity);
                 this.setState({
                     eventId: activity.id,
                     isUpdate: true,
@@ -111,6 +112,7 @@ export default class CreateActivityScreen extends React.Component {
                     isPhysical,
                     isAddressVisible,
                     isIDReq,
+                    causes,
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
@@ -323,7 +325,9 @@ export default class CreateActivityScreen extends React.Component {
         const event = this.createEvent(credentials.username);
         if(event.causes.length === 0){
             Alert.alert("An activity must be related to at least one cause");
+            return;
         }
+        console.log(event)
         
         // send a request to update the db with the new event
         await request
@@ -337,6 +341,7 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
+                console.log(res.body.data)
             })
             .catch(er => {
                 console.log(er.message);
@@ -669,10 +674,10 @@ export default class CreateActivityScreen extends React.Component {
                                         />
                                     </TouchableOpacity>
                                     </View>
-                                    </View>
+                                   
                                     <View style={{flexDirection: "row", justifyContent:"flex-end", width:width}}>
-                                        {this.state.causes.length > 0 ? (
-                                            <View style={CauseStyles.container}> 
+                                        {this.state.causes && this.state.causes.length > 0 ? (
+                                            <View style={CauseStyles.createActivityContainer}> 
                                                 {this.state.causes.map(cause => {
                                                     return (
                                                         <CauseItem 
@@ -684,6 +689,7 @@ export default class CreateActivityScreen extends React.Component {
                                                 })}
                                             </View>
                                         ) : (undefined)}
+                                    </View>
                                     </View>
 
                                 

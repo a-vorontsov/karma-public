@@ -1,19 +1,51 @@
 import React from "react";
 
-import {TouchableOpacity, View, Image} from "react-native";
+import {TouchableOpacity, View, Image, Alert} from "react-native";
 
 import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import {sendNotification} from "../../util/SendNotification";
 import Colours from "../../styles/Colours";
+import request from "superagent";
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),
     cancel: require("../../assets/images/general-logos/cancel.png"),
 };
 
 export default class SignUpRequest extends React.Component {
+
+    signUserUp = async(accept) => {
+        const {user, activity} = this.props;
+        
+        const body = {
+            userId : user.userId,
+            confirmed: accept,
+            attended: false
+        }
+        
+        await request.post(`http://localhost:8000/event/${activity.id}/signUp/update`)
+        .send(body)
+        .then(res => {
+            console.log(res.body.data); 
+            this.props.onSubmit();
+        })
+        .catch(err => {
+            if(accept) {
+                Alert.alert("Unable to confirm a user's sign up at this time.", err);
+            }
+            else {
+                Alert.alert("Unable to confirm a user's sign up at this time.", err);
+            }
+        })
+
+
+    }
+
+   
+
     render() {
         const {user} = this.props;
+       
         return (
             <View style={[Styles.pv8, Styles.ph8]}>
                 <View
@@ -31,7 +63,9 @@ export default class SignUpRequest extends React.Component {
                     activeOpacity={0.9}>
                     <TouchableOpacity style={{width: 150}}>
                         <RegularText style={[Styles.ph8, {fontSize: 20}]}>
-                            {user}
+                            {user.firstName ? user.firstName + " " + user.lastName :
+                                user.name
+                            }
                         </RegularText>
                     </TouchableOpacity>
                     <View
@@ -41,11 +75,10 @@ export default class SignUpRequest extends React.Component {
                         }}>
                         {/** APPROVE A USER */}
                         <TouchableOpacity
-                            onPress={() =>
-                                sendNotification(
-                                    "AttendanceConfirmation",
-                                    "Your attendance has been confirmed for event [EVENT NAME]",
-                                )
+                            onPress={() => {
+                                this.signUserUp(true);
+                            }
+                                
                             }
                             style={{
                                 width: 30,
@@ -67,10 +100,7 @@ export default class SignUpRequest extends React.Component {
                         {/** DISAPPROVE A USER */}
                         <TouchableOpacity
                             onPress={() =>
-                                sendNotification(
-                                    "AttendanceCancellation",
-                                    "Your attendance has been cancelled for event [EVENT NAME]",
-                                )
+                                {this.signUserUp(false)}
                             }
                             style={{
                                 width: 30,

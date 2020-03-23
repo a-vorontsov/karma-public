@@ -31,7 +31,7 @@ export default class AttendeeButton extends React.Component {
                     activeOpacity={0.9}>
                     <TouchableOpacity>
                         <RegularText style={[Styles.ph8, {fontSize: 20}]}>
-                            {user}
+                            {user.firstName ? user.firstName + " " + user.lastName : user.name}
                         </RegularText>
                     </TouchableOpacity>
                     <TouchableOpacity

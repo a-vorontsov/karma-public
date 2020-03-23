@@ -13,7 +13,6 @@ export default class CausePicker extends React.Component {
     }
     onPress(item) {
         const newItems = this.state.items;
-        console.log(newItems)
         const ids = [...newItems.map(cause => cause.id)];
         const index = ids.indexOf(item.id);
         if (index === -1) {

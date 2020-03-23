@@ -88,7 +88,7 @@ class ViewSignUpsScreen extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
-                        <this.state.display activity={activity} />
+                        <this.state.display activity={activity} navigation={this.props.navigation} />
                     </View>
                 </ScrollView>
             </SafeAreaView>

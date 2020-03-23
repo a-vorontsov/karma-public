@@ -26,7 +26,6 @@ class ActivitiesGoingScreen extends Component {
             .get("http://localhost:8000/event/going")
             .query({userId: credentials.username})
             .then(result => {
-                console.log(result.body.data);
                 let activities = result.body.data.events;
                 this.setState({
                     activities,
