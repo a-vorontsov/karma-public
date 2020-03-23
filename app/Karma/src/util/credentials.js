@@ -6,7 +6,7 @@ export const getAuthToken = async () => {
         if (authToken) {
             return authToken;
         } else {
-            console.log("No token stored");
+            return "";
         }
     } catch (error) {
         console.log("Token couldn't be accessed!", error);
