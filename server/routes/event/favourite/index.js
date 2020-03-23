@@ -4,7 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
