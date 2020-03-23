@@ -169,7 +169,7 @@ INSERT INTO "registration"
     verification_token,
     expiry_date)
 VALUES
-    ('houssammahlous123@gmail.com', 1, 1, 1, 0, 'token', '2020-12-10 00:00:00-00'),
+    ('houssammahlous123@gmail.com', 1, 1, 1, 1, 'token', '2020-12-10 00:00:00-00'),
     ('magna.Sed.eu@eget.org', 0, 0, 0, 0, 'token', '2020-12-10 00:00:00-00'),
     ('nunc.Quisque.ornare@maurisanunc.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
     ('augue.eu@ipsumDonec.co.uk', 1, 0, 0, 1, 'token', '2020-12-10 00:00:00-00'),
@@ -283,7 +283,6 @@ INSERT INTO "user"
     salt,
     date_registered)
 VALUES
-    ('houssammahlous123@gmail.com', 'houssam966', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00'),
     ('magna.Sed.eu@eget.org', 'Aenean', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-11-19 00:00:00-00'),
     ('nunc.Quisque.ornare@maurisanunc.co.uk', 'fringilla', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-10-17 00:00:00-00'),
     ('augue.eu@ipsumDonec.co.uk', 'arcu', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-07-08 00:00:00-00'),
@@ -382,7 +381,8 @@ VALUES
     ('feugiat.nec@lectusrutrumurna.net', 'id', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-09-07 00:00:00-00'),
     ('sit.amet@nequeetnunc.com', 'tincidunt,', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-07-27 00:00:00-00'),
     ('sed.libero@auctor.com', 'senectus', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-04-26 00:00:00-00'),
-    ('ridiculus@utmiDuis.org', 'nec,', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'false', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-06-04 00:00:00-00');
+    ('ridiculus@utmiDuis.org', 'nec,', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'false', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-06-04 00:00:00-00'),
+    ('houssammahlous123@gmail.com', 'houssam966', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00');
 
 
 ALTER SEQUENCE organisation_id_seq RESTART WITH 1;
@@ -469,7 +469,7 @@ INSERT INTO "individual"
     gender,
     birthday)
 VALUES
-    ('Houssam', 'Mahlous', '07333333', 'false', 1, 1, 'm', '2000-07-17'),
+    ('Houssam', 'Mahlous', '07333333', 'false', 100, 1, 'm', '2000-07-17'),
     ('Jocelyn', 'Lancaster', '(016977) 7982', 'false', 51, 35, 'm', '1939-10-27'),
     ('Sydnee', 'Adkins', '0500 916538', 'true', 52, 67, 'm', '1997-04-09'),
     ('Julie', 'Lowe', '076 3276 7223', 'false', 53, 16, 'm', '1966-07-07'),
@@ -650,7 +650,7 @@ INSERT INTO "profile"
     women_only,
     bio)
 VALUES
-    (1, 32, 'false', 'purus. Nullam scelerisque neque sed sem egestas blandit. Nam nulla magna, malesuada vel, convallis in, cursus et, eros. Proin ultrices. Duis volutpat nunc sit amet metus. Aliquam'),
+    (1, 32, 'false', 'I am the lorax and i speak for the trees, reject me to your event and i ll break your knees.'),
     (2, 35, 'true', 'interdum ligula eu enim. Etiam imperdiet dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est ac facilisis facilisis, magna tellus faucibus leo, in lobortis tellus justo sit amet nulla. Donec non justo. Proin non massa non ante bibendum ullamcorper. Duis cursus, diam at pretium aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus.'),
     (3, 0, 'false', 'ipsum sodales purus, in molestie tortor nibh sit amet orci. Ut sagittis lobortis mauris. Suspendisse aliquet molestie tellus. Aenean egestas hendrerit neque. In ornare sagittis felis. Donec tempor, est ac mattis semper, dui lectus rutrum urna, nec luctus felis purus ac tellus. Suspendisse sed dolor. Fusce mi lorem, vehicula et, rutrum eu, ultrices sit amet, risus. Donec nibh enim, gravida sit amet, dapibus id, blandit at, nisi. Cum sociis natoque penatibus'),
     (4, 63, 'true', 'magna sed dui. Fusce aliquam, enim nec tempus scelerisque, lorem ipsum sodales purus, in molestie tortor nibh sit amet orci. Ut sagittis lobortis mauris. Suspendisse aliquet molestie tellus. Aenean egestas hendrerit neque. In ornare sagittis felis. Donec tempor, est ac mattis semper, dui lectus rutrum urna, nec'),

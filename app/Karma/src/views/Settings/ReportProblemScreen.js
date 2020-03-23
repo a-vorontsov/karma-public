@@ -37,11 +37,13 @@ class ReportProblemScreen extends Component {
     };
 
     constructor(props) {
+        console.log("In report problem screen");
+        console.log(props.navigation.getParam("user"))
         super(props);
         this.state = {
             category: problemTypes[0].value,
             problem: "",
-            user: this.props.navigation.getParam("user"),
+            user: props.navigation.getParam("user"),
         };
         this.submitBugReport = this.submitBugReport.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -69,6 +71,8 @@ class ReportProblemScreen extends Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
+                console.log("Going Back to settings main menu.");
+                console.log(this.state.user);
                 setTimeout(
                     () =>
                         this.props.navigation.navigate("SettingsMenu", {

@@ -181,7 +181,7 @@ class WelcomeScreen extends Component {
                 console.log(
                     `User id ${userId} successfully stored in keychain.`,
                 );
-                navigate("PickCauses");
+                navigate("Activities");
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});

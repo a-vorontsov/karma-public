@@ -20,6 +20,8 @@ class EmailSettingsScreen extends Component {
     };
 
     constructor(props) {
+        console.log("In email settings screen");
+        console.log(props.navigation.getParam("user"))
         super(props);
         this.state = {
             user: props.navigation.getParam("user"),

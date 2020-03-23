@@ -25,7 +25,9 @@ class SettingsMenuScreen extends Component {
             user: {},
         };
     }
+
     componentDidMount() {
+        console.log("In setting menu screen");
         const {navigation} = this.props;
         const user = navigation.getParam("user");
         this.willFocusListener = navigation.addListener("willFocus", () => {
@@ -33,6 +35,7 @@ class SettingsMenuScreen extends Component {
                 user: user,
             });
         });
+        console.log(this.state.user);
     }
     componentWillUnmount() {
         this.willFocusListener.remove();

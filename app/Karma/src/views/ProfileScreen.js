@@ -81,7 +81,6 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             isOrganisation: false,
             name: individual.firstName + " " + individual.lastName,
@@ -286,9 +285,7 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.fname +
-                                                " " +
-                                                this.state.lname}
+                                            {this.state.name}
                                         </Text>
                                     )}
                                 </View>
