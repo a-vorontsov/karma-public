@@ -24,7 +24,7 @@ import {GradientButton} from "../components/buttons";
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
-import {getData} from "../util/GetCredentials";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -121,8 +121,8 @@ export default class CreateActivityScreen extends React.Component {
             return;
         }
 
-        const credentials = await getData();
-        const event = this.createEvent(credentials.username);
+        const authToken = await getAuthToken();
+        const event = this.createEvent();
 
         const {navigate} = this.props.navigation;
 
@@ -131,9 +131,8 @@ export default class CreateActivityScreen extends React.Component {
         });
         await request
             .post("http://localhost:8000/event/update/" + this.state.eventId)
+            .set("authorization", authToken)
             .send({
-                // authToken: "ffa234124",
-                userId: credentials.username,
                 ...event,
             })
             .then(res => {
@@ -157,7 +156,7 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    createEvent(userId) {
+    createEvent() {
         const event = {
             address: {
                 id: this.state.addressId,
@@ -180,7 +179,6 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: Number(userId),
             creationDate: new Date(), //returns current date
         };
         return event;
@@ -286,14 +284,13 @@ export default class CreateActivityScreen extends React.Component {
         ) {
             return;
         }
-        const credentials = await getData();
-        const event = this.createEvent(credentials.username);
+        const authToken = await getAuthToken();
+        const event = this.createEvent();
         // send a request to update the db with the new event
         await request
             .post("http://localhost:8000/event")
+            .set("authorization", authToken)
             .send({
-                authToken: "ffa234124",
-                userId: credentials.username,
                 ...event,
             })
             .then(res => {

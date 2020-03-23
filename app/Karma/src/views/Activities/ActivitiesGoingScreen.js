@@ -3,7 +3,7 @@ import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
-import {getData} from "../../util/GetCredentials";
+import {getAuthToken} from "../../util/credentials";
 
 const request = require("superagent");
 
@@ -21,10 +21,10 @@ class ActivitiesGoingScreen extends Component {
     };
 
     async fetchAllActivities() {
-        const credentials = await getData();
+        const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/event/going")
-            .query({userId: credentials.username})
+            .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.data);
                 let activities = result.body.data.events;

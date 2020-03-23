@@ -12,7 +12,7 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
-import * as Keychain from "react-native-keychain";
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -66,9 +66,8 @@ class WelcomeScreen extends Component {
         //send 6 digit code to email through forgot password route
         await request
             .post("http://localhost:8000/signin/forgot")
+            .set("authorization", "")
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     email: this.state.emailInput,
                 },
@@ -111,9 +110,8 @@ class WelcomeScreen extends Component {
         if (isValid) {
             await request
                 .post("http://localhost:8000/signin/email")
+                .set("authorization", "")
                 .send({
-                    authToken: null,
-                    userId: null,
                     data: {
                         email: this.state.emailInput,
                     },
@@ -167,9 +165,8 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         await request
             .post("http://localhost:8000/signin/password")
+            .set("authorization", "")
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     email: this.state.emailInput,
                     password: this.state.passInput,
@@ -178,9 +175,8 @@ class WelcomeScreen extends Component {
             .then(async res => {
                 // if password correct
                 this.setState({isValidPass: true});
-                const authToken = res.body.authToken;
-                const userId = res.body.userId;
-                await Keychain.setGenericPassword(userId.toString(), authToken);
+                const authToken = res.body.data.authToken;
+                await AsyncStorage.setItem("t", authToken);
                 navigate("PickCauses");
                 return;
             })
@@ -193,9 +189,8 @@ class WelcomeScreen extends Component {
     async confirmForgotPasswordCode(code) {
         await request
             .post("http://localhost:8000/signin/forgot/confirm")
+            .set("authorization", "")
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     email: this.state.emailInput,
                     token: code,
@@ -219,9 +214,8 @@ class WelcomeScreen extends Component {
         //check with register route
         await request
             .post("http://localhost:8000/verify/email")
+            .set("authorization", "")
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     email: this.state.emailInput,
                     token: code,

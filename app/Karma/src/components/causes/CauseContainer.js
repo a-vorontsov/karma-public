@@ -7,7 +7,7 @@ import CausePicker from "./CausePicker";
 import Toast from "react-native-simple-toast";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 
 export default class CauseContainer extends React.Component {
     constructor(props) {
@@ -20,7 +20,10 @@ export default class CauseContainer extends React.Component {
     }
     async componentDidMount() {
         try {
-            const response = await request.get("http://localhost:8000/causes");
+            const authToken = await getAuthToken();
+            const response = await request
+                .get("http://localhost:8000/causes")
+                .set("authorization", authToken);
             this.setState({
                 causes: response.body.data,
             });
@@ -29,18 +32,15 @@ export default class CauseContainer extends React.Component {
         }
     }
     async selectCauses() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         await request
             .post("http://localhost:8000/causes/select")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.data);
                 Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
                 this.props.onSubmit();
             })

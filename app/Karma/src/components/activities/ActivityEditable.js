@@ -35,9 +35,12 @@ const ActivityEditable = props => {
     const deleteEvent = async () => {
         const activityId = activity.id;
         const url = `http://localhost:8000/event/${activityId}/delete/`;
-        await request.post(url).then(res => {
-            navigation.navigate("Profile");
-        });
+        await request
+            .post(url)
+            .set("authorization", "")
+            .then(res => {
+                navigation.navigate("Profile");
+            });
     };
 
     return (
