@@ -17,8 +17,6 @@ const icons = {
 
 class SettingsMenuScreen extends Component {
     constructor(props) {
-        console.log("constructor");
-        super(props);
         super(props);
         this.state = {
             user: {},
@@ -28,7 +26,6 @@ class SettingsMenuScreen extends Component {
         headerShown: false,
     };
     componentDidMount() {
-        console.log("In setting menu screen");
         const {navigation} = this.props;
         const user = navigation.getParam("user");
         this.willFocusListener = navigation.addListener("willFocus", () => {
@@ -36,28 +33,9 @@ class SettingsMenuScreen extends Component {
                 user: user,
             });
         });
-        console.log(this.state.user);
     }
     componentWillUnmount() {
         this.willFocusListener.remove();
-    }
-    componentWillUpdate(nextProps, nextState, nextContext) {
-        console.log("NEXT PROPS");
-        console.log(nextProps);
-        console.log("NEXT STATE");
-        console.log(nextState);
-        console.log("NEXT CONTEXT");
-        console.log(nextContext);
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("componentDidUpdate");
-    }
-    componentWillMount() {
-        console.log("componentWillMount");
-    }
-    componentWillReceiveProps(nextProps, nextContext) {
-        console.log("componentWillReceiveProps");
     }
 
     render() {

@@ -37,8 +37,6 @@ class ReportProblemScreen extends Component {
     };
 
     constructor(props) {
-        console.log("In report problem screen");
-        console.log(props.navigation.getParam("user"))
         super(props);
         this.state = {
             category: problemTypes[0].value,
@@ -54,7 +52,9 @@ class ReportProblemScreen extends Component {
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
-        Toast.showWithGravity("Sending report...", Toast.SHORT, Toast.BOTTOM);
+        console.log(Toast.SHORT);
+        console.log(Toast.LONG);
+        Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
         request
             .post("http://localhost:8000/bugreport")
             .send({
@@ -67,21 +67,14 @@ class ReportProblemScreen extends Component {
             })
             .then(res => {
                 console.log(res.body.message);
-                Toast.hideAll();
                 Toast.showWithGravity(
                     "Your report has been sent.",
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
-                console.log("Going Back to settings main menu.");
-                console.log(this.state.user);
-                setTimeout(
-                    () =>
-                        navigate("SettingsMenu", {
-                            user: this.state.user,
-                        }),
-                    1500,
-                ); //1.5 seconds delay so users can admire the toast
+                navigate("SettingsMenu", {
+                    user: this.state.user,
+                });
             })
             .catch(er => {
                 console.log(er.message);
