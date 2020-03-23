@@ -48,14 +48,13 @@ const getIndividualAvatar = (req, res) => {
                         fs.access(defaultPic, error => {
                             if (!error) {
                                 res.status(200).send({
-                                    message: "Fetched image for user!",
+                                    message: "No image for user, sending default",
                                     picture_url: (req.connection.encrypted ? "https://" : "http://") +
                                         req.headers.host + "/avatars/default/organisation",
                                 });
                             } else {
-                                // no profile picture is associated with given user
                                 res.status(200).send({
-                                    message: "Fetched image for user!",
+                                    message: "Image not found",
                                     picture_url: (req.connection.encrypted ? "https://" : "http://") +
                                         req.headers.host + "/picture/default/404",
                                 });
@@ -80,7 +79,7 @@ const getIndividualAvatar = (req, res) => {
             message: e.message,
         });
     }
-}
+};
 
 /**
  * Fetch the profile picture for an organisation user, fetching default if none is found.
@@ -144,6 +143,11 @@ const getCompanyAvatar = (req, res) => {
     }
 };
 
+/**
+ * Fetch the picture for a given event, fetching default (with 404) if none is found.
+ * @param {Request} req HTTP request object
+ * @param {Response} res HTTP response object
+ */
 const getEventPicture = (req, res) => {
     try {
         eventRepository.findById(req.params.eventId).then((eventResult) => {
@@ -183,6 +187,11 @@ const getEventPicture = (req, res) => {
     }
 };
 
+/**
+ * Fetch the picture location for a given picture by ID, fetching default (with 404) if none is found.
+ * @param {Request} req HTTP request object
+ * @param {Response} res HTTP response object
+ */
 const getPicture = (req, res) => {
     try {
         imageRepository.findById(req.params.pictureId).then((pictureResult) => {

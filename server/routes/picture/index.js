@@ -12,8 +12,6 @@ const imgFetch = require("./fetch-image");
 const imgUpload = require("./upload-image");
 const imgDelete = require("./delete-image");
 
-// directories where picture are found
-const AVATAR_DIR = "./avatars/";
 const NOT_FOUND_IMAGE = "_notFound.png";
 
 aws.config.update({
@@ -26,6 +24,10 @@ router.get("/:pictureId", imgFetch.getPicture);
 
 router.post("/upload/event/:eventId", authAgent.requireAuthentication, (req, res) => {
     imgUpload.updateEventPicture(req, res);
+});
+
+router.post("/delete/event/:eventId", authAgent.requireAuthentication, (req, res) => {
+    imgDelete.deleteEventPicture(req, res);
 });
 
 router.get("/event/:eventId", imgFetch.getEventPicture);

@@ -73,12 +73,12 @@ router.post("/upload/organisation", authAgent.requireAuthentication, (req, res) 
 
 // == Profile Photo Deletion == //
 
-router.get("/delete/individual", authAgent.requireAuthentication, (req, res) => {
-    imgUpload.deleteAvatar(req, res, 'individual');
+router.post("/delete/individual", authAgent.requireAuthentication, (req, res) => {
+    imgDelete.deleteAvatar(req, res, 'individual');
 });
 
-router.get("/delete/organisation", authAgent.requireAuthentication, (req, res) => {
-    imgUpload.deleteAvatar(req, res, 'organisation');
+router.post("/delete/organisation", authAgent.requireAuthentication, (req, res) => {
+    imgDelete.deleteAvatar(req, res, 'organisation');
 });
 
 // == Profile Photo Fetching == //
@@ -98,5 +98,6 @@ router.get("/organisation/:userId", imgFetch.getCompanyAvatar);
 // Fetch as current authed user
 router.get("/individual", authAgent.requireAuthentication, imgFetch.getIndividualAvatar);
 router.get("/organisation", authAgent.requireAuthentication, imgFetch.getCompanyAvatar);
+
 
 module.exports = router;
