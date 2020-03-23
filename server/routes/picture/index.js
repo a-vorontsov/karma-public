@@ -14,8 +14,6 @@ const imgDelete = require("./delete-image");
 
 // directories where picture are found
 const AVATAR_DIR = "./avatars/";
-const INDIVIDUAL_AVATAR_DIR = AVATAR_DIR + "individual/";
-const ORGANISATION_AVATAR_DIR = AVATAR_DIR + "organisation/";
 const NOT_FOUND_IMAGE = "_notFound.png";
 
 aws.config.update({
@@ -25,6 +23,8 @@ aws.config.update({
 });
 
 router.get("/:pictureId", imgFetch.getPicture);
+
+router.get("/event/:eventId", imgFetch.getEventPicture);
 
 router.get("/default/404", (req, res) => {
     res.sendFile(path.resolve(__dirname + "/" + NOT_FOUND_IMAGE));

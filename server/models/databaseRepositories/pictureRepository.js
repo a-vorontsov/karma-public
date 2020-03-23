@@ -75,6 +75,30 @@ const updateOrganisationAvatar = (organisation, picture) => {
     return db.query(query, params);
 };
 
+// == Events == //
+
+const getEventPicture = (event) => {
+    const query =
+        "SELECT p.picture_location FROM event e " +
+        "LEFT JOIN picture p ON p.id = e.picture_id " +
+        "WHERE e.id = $1 ";
+    const params = [
+        event.id,
+    ];
+    return db.query(query, params);
+};
+
+const updateEventPicture = (event, picture) => {
+    const query =
+        "UPDATE event SET picture_id = $1 WHERE id = $2 " +
+        "RETURNING *";
+    const params = [
+        picture.id,
+        event.id,
+    ];
+    return db.query(query, params);
+};
+
 module.exports = {
     insert,
     findById,
@@ -86,6 +110,8 @@ module.exports = {
     updateIndividualAvatar,
     getOrganisationAvatar,
     updateOrganisationAvatar,
+    getEventPicture,
+    updateEventPicture,
 };
 
 

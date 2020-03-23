@@ -7,6 +7,7 @@ const path = require("path");
 const individualRepository = require("../../models/databaseRepositories/individualRepository");
 const organisationRepository = require("../../models/databaseRepositories/organisationRepository");
 const imageRepository = require("../../models/databaseRepositories/pictureRepository");
+const eventRepository = require("../../models/databaseRepositories/eventRepository");
 
 // directories where picture are found
 const AVATAR_DIR = "./avatars/";
@@ -24,11 +25,15 @@ aws.config.update({
  * @param {Request} req HTTP request object
  * @param {Response} res HTTP response object
  */
-function getIndividualAvatar(req, res) {
+const getIndividualAvatar = (req, res) => {
     try {
+        // allow for authed endpoint ID completion, and manually specified ID
+        if (req.query.userId) {
+            req.params.userId = req.query.userId;
+        }
         individualRepository.findByUserID(req.params.userId).then((userResult) => {
             if (!userResult.rows.length) {
-                res.status(200).send({
+                res.status(400).send({
                     message: `Could not find individual with user ID of ${req.params.userId}`,
                 });
             } else {
@@ -39,18 +44,20 @@ function getIndividualAvatar(req, res) {
                     if (!picture || !picture.pictureLocation) {
                         const defaultPic = path.join(__dirname, INDIVIDUAL_AVATAR_DIR + "_default.png");
 
-                        // check existence of profile picture and send response
+                        // check existence of default profile picture icons - send correct placeholder
                         fs.access(defaultPic, error => {
                             if (!error) {
                                 res.status(200).send({
                                     message: "Fetched image for user!",
                                     picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                                        req.headers.host + "/avatars/default/individual",
+                                        req.headers.host + "/avatars/default/organisation",
                                 });
                             } else {
                                 // no profile picture is associated with given user
-                                res.status(500).send({
-                                    message: `Cannot find default image at ${defaultPic}`,
+                                res.status(200).send({
+                                    message: "Fetched image for user!",
+                                    picture_url: (req.connection.encrypted ? "https://" : "http://") +
+                                        req.headers.host + "/picture/default/404",
                                 });
                             }
                         });
@@ -80,11 +87,15 @@ function getIndividualAvatar(req, res) {
  * @param {Request} req HTTP request object
  * @param {Response} res HTTP response object
  */
-function getCompanyAvatar(req, res) {
+const getCompanyAvatar = (req, res) => {
     try {
+        // allow for authed endpoint ID completion, and manually specified ID
+        if (req.query.userId) {
+            req.params.userId = req.query.userId;
+        }
         organisationRepository.findByUserID(req.params.userId).then((userResult) => {
             if (!userResult.rows.length) {
-                res.status(200).send({
+                res.status(400).send({
                     message: `Could not find organisation with user ID of ${req.params.userId}`,
                 });
             } else {
@@ -95,7 +106,7 @@ function getCompanyAvatar(req, res) {
                     if (!picture || !picture.pictureLocation) {
                         const defaultPic = path.join(__dirname, ORGANISATION_AVATAR_DIR + "_default.png");
 
-                        // check existence of profile picture and send response
+                        // check existence of default profile picture icons - send correct placeholder
                         fs.access(defaultPic, error => {
                             if (!error) {
                                 res.status(200).send({
@@ -105,8 +116,10 @@ function getCompanyAvatar(req, res) {
                                 });
                             } else {
                                 // no profile picture is associated with given user
-                                res.status(500).send({
-                                    message: `Cannot find default image at ${defaultPic}`,
+                                res.status(200).send({
+                                    message: "Fetched image for user!",
+                                    picture_url: (req.connection.encrypted ? "https://" : "http://") +
+                                        req.headers.host + "/picture/default/404",
                                 });
                             }
                         });
@@ -125,31 +138,92 @@ function getCompanyAvatar(req, res) {
             }
         });
     } catch (e) {
-        res.status(400).send({
+        res.status(500).send({
             message: e.message,
         });
     }
-}
+};
 
-function getPicture(req, res) {
+const getEventPicture = (req, res) => {
+    try {
+        eventRepository.findById(req.params.eventId).then((eventResult) => {
+            if (!eventResult.rows.length) {
+                res.status(400).send({
+                    message: `Could not find event with ID of ${req.params.eventId}`,
+                });
+            } else {
+                const event = eventResult.rows[0];
+                imageRepository.getEventPicture(event).then((pictureResults) => {
+                    const picture = pictureResults.rows[0];
+                    if (!picture || !picture.pictureLocation) {
+                        // no picture is associated with given event
+                        res.status(200).send({
+                            message: "No image associated with this event",
+                            picture_url: (req.connection.encrypted ? "https://" : "http://") +
+                                req.headers.host + "/picture/default/404",
+                        });
+                    } else {
+                        // return s3 image url
+                        res.status(200).send({
+                            message: "Fetched image for event!",
+                            picture_url: picture.pictureLocation,
+                        });
+                    }
+                }).catch((e) => {
+                    res.status(400).send({
+                        message: e.message,
+                    });
+                });
+            }
+        });
+    } catch (e) {
+        res.status(500).send({
+            message: e.message,
+        });
+    }
+};
+
+const getPicture = (req, res) => {
     try {
         imageRepository.findById(req.params.pictureId).then((pictureResult) => {
-            const picture = pictureResults.rows[0];
-
+            if (!pictureResult.rows.length) {
+                res.status(400).send({
+                    message: `Could not find picture with ID of ${req.params.pictureId}`,
+                    picture_url: (req.connection.encrypted ? "https://" : "http://") +
+                        req.headers.host + "/picture/default/404",
+                });
+            } else {
+                const picture = pictureResult.rows[0];
+                if (!picture || !picture.pictureLocation) {
+                    // check existence of default profile picture icons - send correct placeholder
+                    res.status(400).send({
+                        message: "No picture location was given",
+                        picture_url: (req.connection.encrypted ? "https://" : "http://") +
+                            req.headers.host + "/picture/default/404",
+                    });
+                } else {
+                    // return s3 image url
+                    res.status(200).send({
+                        message: `Fetched image with ${req.params.pictureId}`,
+                        picture_url: picture.pictureLocation,
+                    });
+                }
+            }
         }).catch((e) => {
             res.status(400).send({
                 message: e.message,
             });
         });
     } catch (e) {
-        res.status(400).send({
+        res.status(500).send({
             message: e.message,
         });
     }
-}
+};
 
 module.exports = {
     getIndividualAvatar,
     getCompanyAvatar,
+    getEventPicture,
     getPicture,
 };

@@ -95,6 +95,8 @@ router.get("/default/organisation", (req, res) => {
 router.get("/individual/:userId", imgFetch.getIndividualAvatar);
 router.get("/organisation/:userId", imgFetch.getCompanyAvatar);
 
-// TODO - add picture endpoint by picture ID
+// Fetch as current authed user
+router.get("/individual", authAgent.requireAuthentication, imgFetch.getIndividualAvatar);
+router.get("/organisation", authAgent.requireAuthentication, imgFetch.getCompanyAvatar);
 
 module.exports = router;
