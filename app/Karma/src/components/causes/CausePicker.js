@@ -28,6 +28,7 @@ export default class CausePicker extends React.Component {
     render() {
         const {causes} = this.props;
         const {items} = this.state;
+
         return (
             <View style={CauseStyles.container}>
                 {causes.map(c => {

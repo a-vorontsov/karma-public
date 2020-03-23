@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, SafeAreaView, View} from "react-native";
+import {SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";

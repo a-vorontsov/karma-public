@@ -83,6 +83,7 @@ class ProfileScreen extends Component {
         } = res.body.data;
 
         this.setState({
+            email: user.email,
             isOrganisation: false,
             name: individual.firstName + " " + individual.lastName,
             user: user,
@@ -109,6 +110,7 @@ class ProfileScreen extends Component {
             organisation,
         } = res.body.data;
         this.setState({
+            email: user.email,
             isOrganisation: true,
             orgName: organisation.name,
             organisationType: organisation.organisationType,
@@ -286,9 +288,7 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.fname +
-                                                " " +
-                                                this.state.lname}
+                                            {this.state.name}
                                         </Text>
                                     )}
                                 </View>
@@ -398,7 +398,11 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                 }}>
                                 <GradientButton
-                                    onPress={() => navigate("CreateActivity")}
+                                    onPress={() =>
+                                        navigate("CreateActivity", {
+                                            email: this.state.email,
+                                        })
+                                    }
                                     title="Create Activity"
                                     width={350}
                                 />
@@ -420,6 +424,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                email: this.state.email,
                                             })
                                         }
                                     />
