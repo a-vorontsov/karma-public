@@ -8,6 +8,7 @@ const information = testHelpers.getInformation();
 const favourite = testHelpers.getFavourite();
 const individual = testHelpers.getIndividual();
 const notificationExampleTwo = testHelpers.getNotificationExample2();
+const signUpExample = testHelpers.getSignUp();
 
 test("correct addresses accepted", () => {
     const correctAddress = {...address};
@@ -75,6 +76,17 @@ test("incorrect information rejected", () => {
 test("correct favourites accepted", () => {
     const correctFavourite = {...favourite};
     expect(validation.validateFavourite(correctFavourite).errors.length).toBe(0);
+});
+
+test("incorrect signup rejected", () => {
+    const incorrectSignup = {...signUpExample};
+    incorrectSignup.attended = "wrlks";
+    expect(validation.validateSignup(incorrectSignup).errors.length).toBe(1);
+});
+
+test("correct signup accepted", () => {
+    const correctSignup = {...signUpExample};
+    expect(validation.validateSignup(correctSignup).errors.length).toBe(0);
 });
 
 test("incorrect addresses rejected", () => {

@@ -13,7 +13,7 @@ validation.validateSignup.mockReturnValue({errors: ""});
 
 let signUp, event, signedUpUserExample1, signedUpUserExample2;
 beforeEach(() => {
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
     signUp = testHelpers.getSignUp();
     event = testHelpers.getEvent();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();

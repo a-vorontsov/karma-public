@@ -1,7 +1,7 @@
 /**
  * @module Information
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
@@ -33,10 +33,10 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get information entry
  *  @function
  */
-router.get("/", authAgent.anyAuth, async (req, res) => {
+router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
         const type = req.query.type;
-
+        log.info("Getting information type '%s'", type);
         if (type === undefined) {
             return res.status(400).send({message: "Type is not specified"});
         }
@@ -44,7 +44,7 @@ router.get("/", authAgent.anyAuth, async (req, res) => {
         const informationResult = await informationService.getInformationData(type);
         return httpUtil.sendResult(informationResult, res);
     } catch (e) {
-        console.log(e);
+        log.error("Getting information failed: " + e);
         return httpUtil.sendGenericError(e, res);
     }
 });

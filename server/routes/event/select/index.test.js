@@ -25,7 +25,7 @@ validation.validateEvent.mockReturnValue({errors: ""});
 let eventWithLocationExample1, eventWithLocationExample2, eventWithAllData, animalsEvent,peaceEvent, event1, event2;
 
 beforeEach(() => {
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 1;
+    process.env.NO_AUTH = 1;
     eventWithLocationExample1 = testHelpers.getEventWithLocationExample1();
     eventWithLocationExample2 = testHelpers.getEventWithLocationExample2();
     womenOnlyEvent = testHelpers.getWomenOnlyEvent();

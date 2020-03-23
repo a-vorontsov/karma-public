@@ -2,6 +2,7 @@
  * @module Sign-in-Password
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
@@ -50,9 +51,11 @@ const httpUtil = require("../../../util/httpUtil");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
+        log.info("Starting sign-in with password");
         const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
         httpUtil.sendAuthResult(signInResult, res);
     } catch (e) {
+        log.error("Sign-in with password failed: " + e);
         res.status(400).send({
             message: e.message,
         });

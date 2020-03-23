@@ -22,11 +22,13 @@ class ActivitiesGoingScreen extends Component {
 
     async fetchAllActivities() {
         const credentials = await getData();
+        //const authToken = credentials.password;
+        const userId = credentials.username;
         request
             .get("http://localhost:8000/event/going")
-            .query({userId: credentials.username})
+            .query({userId: userId})
             .then(result => {
-                console.log(result.body.data);
+                console.log(result.body.message);
                 let activities = result.body.data.events;
                 this.setState({
                     activities,

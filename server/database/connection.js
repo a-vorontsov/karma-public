@@ -1,4 +1,5 @@
 // following this example https://node-postgres.com/guides/project-structure
+const log = require("../util/log");
 const pg = require('pg');
 const pgCamelCase = require('pg-camelcase');
 const {Pool} = pg;
@@ -16,9 +17,19 @@ const pool = new Pool({
     port: 5432,
 });
 
+const query = (text, params, callback) => {
+    log.debug(">>> %s", text);
+    if (params && params.length > 0) {
+        log.debug(">>> %s", params);
+    }
+    return pool.query(text, params, callback)
+        .then(res => {
+            log.debug("<<< %s", JSON.stringify(res.rows));
+            return res;
+        });
+};
+
 module.exports = {
-    query: (text, params, callback) => {
-        return pool.query(text, params, callback);
-    },
+    query,
     end: () => pool.end(),
 };

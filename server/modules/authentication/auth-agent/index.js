@@ -1,8 +1,8 @@
 const httpUtil = require("../../../util/httpUtil");
-const httpErr = require("../../../util/httpErrors");
+const httpRes = require("../../../util/httpResponses");
 const digest = require("../digest");
 const jose = require("../../jose");
-const permConfig = require("../../../config").permissions;
+const permConfig = require("../../../config").josePermissions;
 const permissions = new Map(Object.entries(permConfig));
 const redirectCache = new Set();
 /**
@@ -18,12 +18,12 @@ const redirectCache = new Set();
  * @return {Function} next or redirect
  */
 const requireAuthentication = (req, res, next) => {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+    if (process.env.NO_AUTH == true) {
         return next();
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
+        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }
     try {
         const baseUrl = req.baseUrl;
@@ -32,7 +32,6 @@ const requireAuthentication = (req, res, next) => {
         // pass on derived userId in request
         req.body.userId = userId;
         req.query.userId = userId;
-        req.params.userId = userId;
         next();
     } catch (e) {
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
@@ -51,16 +50,16 @@ const requireAuthentication = (req, res, next) => {
  * @return {Function} next or redirect
  */
 const requireNoAuthentication = (req, res, next) => {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+    if (process.env.NO_AUTH == true) {
         return next();
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
+        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }
     try { // if it does not fail user already auth
         jose.decryptAndVerify(authToken);
-        httpUtil.sendBuiltInErrorWithRedirect(httpErr.getAlreadyAuth(), res, redirToken());
+        httpUtil.sendBuiltInErrorWithRedirect(httpRes.getAlreadyAuth(), res, redirToken());
     } catch (e) {
         next(); // if it does fail, user is not auth as needed
     }
@@ -68,7 +67,7 @@ const requireNoAuthentication = (req, res, next) => {
 
 /**
  * Explicitly specify that a route can be
- * accessed by a user of authentication
+ * accessed by any authentication
  * and authorisation status.
  * This is to ensure all routes have a
  * well-defined authentication requirement
@@ -79,13 +78,13 @@ const requireNoAuthentication = (req, res, next) => {
  * @param {HTTP} next
  * @return {Function} next or redirect
  */
-const anyAuth = (req, res, next) => {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+const acceptAnyAuthentication = (req, res, next) => {
+    if (process.env.NO_AUTH == true) {
         return next();
     }
     const authToken = req.body.authToken;
     if (authToken === undefined) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getMissingVarInRequest("authToken"), res, redirToken());
+        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getMissingVarInRequest("authToken"), res, redirToken());
     }
     next();
 };
@@ -104,13 +103,13 @@ const anyAuth = (req, res, next) => {
  * @param {HTTP} next
  * @return {Function} next or redirect
  */
-const redirAuth = (req, res, next) => {
-    if (process.env.SKIP_AUTH_CHECKS_FOR_TESTING == true) {
+const requireRedirectionAuthentication = (req, res, next) => {
+    if (process.env.NO_AUTH == true) {
         return next();
     }
     const authToken = req.query.token;
     if (authToken === undefined || !(redirectCache.has(authToken))) {
-        return httpUtil.sendBuiltInErrorWithRedirect(httpErr.getForbidden(), res, redirToken());
+        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getForbidden(), res, redirToken());
     }
     redirectCache.delete(authToken);
     next();
@@ -221,8 +220,8 @@ const logOut = async (authToken) => {
 module.exports = {
     requireAuthentication,
     requireNoAuthentication,
-    anyAuth,
-    redirAuth,
+    acceptAnyAuthentication,
+    requireRedirectionAuthentication,
     logInUser,
     logInAdmin,
     logOut,

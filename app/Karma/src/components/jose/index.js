@@ -1,5 +1,4 @@
 const jose = require("jose");
-const config = {};
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -7,19 +6,7 @@ const {
     JWT, // JSON Web Token (JWT)
 } = jose;
 
-/**
- * Assign new config object to jose config.
- * @param {object} newConfig
- */
-const setConfig = newConfig => {
-    Object.assign(config, newConfig);
-};
-
-// const initialise = () => {
-// TODO: fetch at app start
-const publicConf = require("./config").jose;
-setConfig(publicConf);
-// }
+let config = {...require("./config").jose};
 
 /**
  * Synchronously generate an encryption key with
@@ -120,12 +107,20 @@ const verify = (token, pub, aud) => {
 };
 
 /**
+ * Set a new configuration for jose.
+ * @param {object} newConfig
+ */
+const setNewConfig = newConfig => {
+    config = {...newConfig};
+};
+
+/**
  * Decrypt and parse input encrypted config
  * object and set it as new config.
  * @param {string} encryptedNewConfig as JWE
  */
-const setEncryptedConfig = encryptedNewConfig => {
-    setConfig(JSON.parse(decrypt(encryptedNewConfig)));
+const setNewEncryptedConfig = encryptedNewConfig => {
+    setNewConfig(JSON.parse(decrypt(encryptedNewConfig)));
 };
 
 module.exports = {
@@ -134,5 +129,6 @@ module.exports = {
     encrypt,
     decrypt,
     verify,
-    setEncryptedConfig, // TODO: run at comm start
+    setNewConfig,
+    setNewEncryptedConfig, // TODO: run at comm start
 };

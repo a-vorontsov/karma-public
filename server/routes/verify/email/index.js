@@ -2,6 +2,7 @@
  * @module Verify-Email
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const emailVerification = require("../../../modules/verification/email");
@@ -42,9 +43,11 @@ const httpUtil = require("../../../util/httpUtil");
  */
 router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
     try {
+        log.info("Verifying user email");
         const verificationResult = await emailVerification.verifyEmail(req.body.data.email, req.body.data.token);
         return httpUtil.sendResult(verificationResult, res);
     } catch (e) {
+        log.error("User email verification failed:" + e);
         httpUtil.sendGenericError(e, res);
     }
 });
