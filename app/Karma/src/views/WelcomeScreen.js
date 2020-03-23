@@ -75,6 +75,7 @@ class WelcomeScreen extends Component {
             })
             .then(res => {
                 //show code
+                console.log(res.body.message);
                 this.setState({showCode: true});
             })
             .catch(err => {
@@ -99,11 +100,6 @@ class WelcomeScreen extends Component {
             this.setState(this.baseState);
         }
     }
-
-    onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
-    };
 
     async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
@@ -183,10 +179,9 @@ class WelcomeScreen extends Component {
                 await Keychain.resetGenericPassword();
                 await Keychain.setGenericPassword(userId.toString(), authToken);
                 console.log(
-                    "User id successfully stored in keychain. is " + userId,
+                    `User id ${userId} successfully stored in keychain.`,
                 );
                 navigate("PickCauses");
-                return;
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});
@@ -206,7 +201,7 @@ class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
-                console.log("correct code");
+                console.log(res.body.message);
                 this.setState({isCodeValid: true});
                 //TODO navigate to new Password screen
             })
