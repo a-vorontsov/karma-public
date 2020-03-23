@@ -30,7 +30,8 @@ const update = (signup) => {
 };
 
 const findUsersSignedUp = (eventId) => {
-    const query = "SELECT event_id,individual_id,confirmed,attended,firstname as first_name,lastname as last_name,user_id,email,username,date_registered " +
+    const query = "SELECT event_id,individual_id,confirmed,attended,firstname as first_name,lastname as last_name," +
+    "user_id,email,username,date_registered " +
         "FROM sign_up LEFT JOIN individual ON individual_id = id(individual) RIGHT JOIN \"user\" ON user_id=id(\"user\")" +
         "WHERE event_id = $1";
     return db.query(query, [eventId]);
