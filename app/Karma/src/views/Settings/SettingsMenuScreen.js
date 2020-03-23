@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";
@@ -20,7 +20,24 @@ class SettingsMenuScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+        };
+    }
+    componentDidMount() {
+        const {navigation} = this.props;
+        const user = navigation.getParam("user");
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.setState({
+                user: user,
+            });
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -33,7 +50,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("ReportProblem")}
+                            onPress={() =>
+                                navigate("ReportProblem", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="About KARMA"
@@ -58,7 +79,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("EmailSettings")}
+                            onPress={() =>
+                                navigate("EmailSettings", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="Log Out"

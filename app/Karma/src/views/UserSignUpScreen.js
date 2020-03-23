@@ -48,13 +48,12 @@ class SignUpScreen extends React.Component {
     };
 
     createUser() {
-        const user = {
+        return {
             email: this.state.email,
             username: this.state.username,
             password: this.state.password,
             confirmPassword: this.state.confPassword,
         };
-        return user;
     }
     signUserUp = async () => {
         const user = this.createUser();
@@ -70,7 +69,11 @@ class SignUpScreen extends React.Component {
             .then(async res => {
                 const authToken = res.body.authToken;
                 const userId = res.body.userId;
+                await Keychain.resetGenericPassword();
                 await Keychain.setGenericPassword(userId.toString(), authToken);
+                console.log(
+                    `User id ${userId} successfully stored in keychain.`,
+                );
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");
             })
