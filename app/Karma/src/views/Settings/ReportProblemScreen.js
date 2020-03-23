@@ -37,16 +37,16 @@ class ReportProblemScreen extends Component {
     };
 
     constructor(props) {
-        const {email} = props.navigation.getParam("user");
         super(props);
         this.state = {
             category: problemTypes[0].value,
             problem: "",
-            email: email,
+            user: this.props.navigation.getParam("user"),
         };
         this.submitBugReport = this.submitBugReport.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
     }
+
     async submitBugReport() {
         const credentials = await getData();
         const authToken = credentials.password;
@@ -58,7 +58,7 @@ class ReportProblemScreen extends Component {
                 authToken: authToken,
                 userId: userId,
                 data: {
-                    email: this.state.email,
+                    email: this.state.user.email,
                     report: this.state.category + ": " + this.state.problem,
                 },
             })
@@ -70,7 +70,10 @@ class ReportProblemScreen extends Component {
                     Toast.BOTTOM,
                 );
                 setTimeout(
-                    () => this.props.navigation.navigate("SettingsMenu"),
+                    () =>
+                        this.props.navigation.navigate("SettingsMenu", {
+                            user: this.state.user,
+                        }),
                     1500,
                 ); //1.5 seconds delay so users can admire the toast
             })
@@ -146,7 +149,7 @@ class ReportProblemScreen extends Component {
                             When you submit a report, we may contact you at:
                         </RegularText>
                         <TextInput
-                            value={this.state.email}
+                            value={this.state.user.email}
                             name="email"
                             editable={false}
                         />

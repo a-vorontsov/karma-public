@@ -17,11 +17,6 @@ const findByUserId = (userId) => {
     const query = "SELECT * FROM setting WHERE user_id=$1";
     return db.query(query, [userId]);
 };
-const findByUserIdWithEmail = (userId) => {
-    const query = "SELECT email(\"user\"), email(setting) as promotional_emails,notifications "+
-    "FROM setting INNER JOIN \"user\" on user_id(setting) = id(\"user\") WHERE user_id=$1";
-    return db.query(query, [userId]);
-};
 const removeByUserId = (userId) => {
     const query = "DELETE FROM setting WHERE user_id = $1 RETURNING *";
     return db.query(query, [userId]);
@@ -39,5 +34,4 @@ module.exports = {
     findByUserId,
     insertUserId,
     update,
-    findByUserIdWithEmail,
 };

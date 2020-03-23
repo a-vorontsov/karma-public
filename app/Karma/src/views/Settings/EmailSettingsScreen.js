@@ -22,7 +22,7 @@ class EmailSettingsScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
+            user: props.navigation.getParam("user"),
             promotionalEmails: 0,
             notifications: 0,
         };
@@ -38,8 +38,7 @@ class EmailSettingsScreen extends Component {
             .query({userId: userId})
             .then(res => {
                 this.setState({
-                    email: res.body.data.settings.email,
-                    promotionalEmails: res.body.data.settings.promotionalEmails,
+                    promotionalEmails: res.body.data.settings.email,
                     notifications: res.body.data.settings.notifications,
                 });
             })
@@ -67,7 +66,9 @@ class EmailSettingsScreen extends Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
-                this.props.navigation.navigate("SettingsMenu");
+                this.props.navigation.navigate("SettingsMenu", {
+                    user: this.state.user,
+                });
             })
             .catch(er => {
                 console.log(er.message);
@@ -127,8 +128,7 @@ class EmailSettingsScreen extends Component {
                         Your email address (read-only):
                     </RegularText>
                     <TextInput
-                        inputRef={ref => (this.userEmailInput = ref)}
-                        placeholder={this.state.email}
+                        value={this.state.user.email}
                         name="userEmailInput"
                         editable={false}
                     />

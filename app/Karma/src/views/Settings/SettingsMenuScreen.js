@@ -19,7 +19,24 @@ class SettingsMenuScreen extends Component {
     static navigationOptions = {
         headerShown: false,
     };
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+        };
+    }
+    componentDidMount() {
+        const {navigation} = this.props;
+        const user = navigation.getParam("user");
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.setState({
+                user: user,
+            });
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -34,9 +51,7 @@ class SettingsMenuScreen extends Component {
                             icon={icons.report}
                             onPress={() =>
                                 navigate("ReportProblem", {
-                                    user: this.props.navigation.getParam(
-                                        "user",
-                                    ),
+                                    user: this.state.user,
                                 })
                             }
                         />
@@ -63,7 +78,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("EmailSettings")}
+                            onPress={() =>
+                                navigate("EmailSettings", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="Log Out"
