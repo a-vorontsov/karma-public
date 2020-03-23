@@ -49,8 +49,8 @@ test("fetching settings works", async () => {
 
     const getSettingResult = await settingsService.getCurrentSettings(setting.userId);
 
-    expect(settingsRepository.findByUserIdWithEmail).toHaveBeenCalledTimes(1);
-    expect(settingsRepository.findByUserIdWithEmail).toHaveBeenCalledWith(setting.userId);
+    expect(settingsRepository.findByUserId).toHaveBeenCalledTimes(1);
+    expect(settingsRepository.findByUserId).toHaveBeenCalledWith(setting.userId);
     delete setting.userId;
     expect(getSettingResult.data.settings).toMatchObject({
         ...setting,
