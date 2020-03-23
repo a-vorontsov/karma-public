@@ -50,6 +50,7 @@ class ReportProblemScreen extends Component {
     }
 
     async submitBugReport() {
+        const {navigate} = this.props.navigation;
         const credentials = await getData();
         const authToken = credentials.password;
         const userId = credentials.username;
@@ -66,6 +67,7 @@ class ReportProblemScreen extends Component {
             })
             .then(res => {
                 console.log(res.body.message);
+                Toast.hideAll();
                 Toast.showWithGravity(
                     "Your report has been sent.",
                     Toast.SHORT,
@@ -75,7 +77,7 @@ class ReportProblemScreen extends Component {
                 console.log(this.state.user);
                 setTimeout(
                     () =>
-                        this.props.navigation.navigate("SettingsMenu", {
+                        navigate("SettingsMenu", {
                             user: this.state.user,
                         }),
                     1500,

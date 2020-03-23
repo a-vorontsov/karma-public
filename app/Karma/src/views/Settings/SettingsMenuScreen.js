@@ -16,16 +16,17 @@ const icons = {
 };
 
 class SettingsMenuScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
     constructor(props) {
+        console.log("constructor");
+        super(props);
         super(props);
         this.state = {
             user: {},
         };
     }
-
+    static navigationOptions = {
+        headerShown: false,
+    };
     componentDidMount() {
         console.log("In setting menu screen");
         const {navigation} = this.props;
@@ -40,6 +41,25 @@ class SettingsMenuScreen extends Component {
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        console.log("NEXT PROPS");
+        console.log(nextProps);
+        console.log("NEXT STATE");
+        console.log(nextState);
+        console.log("NEXT CONTEXT");
+        console.log(nextContext);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("componentDidUpdate");
+    }
+    componentWillMount() {
+        console.log("componentWillMount");
+    }
+    componentWillReceiveProps(nextProps, nextContext) {
+        console.log("componentWillReceiveProps");
+    }
+
     render() {
         const {navigate} = this.props.navigation;
         return (
