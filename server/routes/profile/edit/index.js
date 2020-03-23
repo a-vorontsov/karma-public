@@ -80,9 +80,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const profile = profileResult.rows[0];
             const profileCopy = {...profile};
 
-            const addressResult = await addressRepo.findById(individual.addressId);
-            await updateAddress(req.body.data.individual.address, addressResult.rows[0]);
-
+            if (req.body.data.individual.address !== undefined) {
+                const oldAddressResult = await addressRepo.findById(individual.addressId);
+                const newAddressResult = await createNewAddress(req.body.data.individual.address, oldAddressResult.rows[0]);
+                individual.addressId = newAddressResult.rows[0].id;
+            }
             if (req.body.data.individual.firstName !== undefined) {
                 individual.firstname = req.body.data.individual.firstName;
             }
@@ -117,9 +119,11 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             const organisation = orgResult.rows[0];
             const orgCopy = {...organisation};
 
-            const addressResult = await addressRepo.findById(organisation.addressId);
-            await updateAddress(req.body.data.organisation.address, addressResult.rows[0]);
-
+            if (req.body.data.organisation.address !== undefined) {
+                const oldAddressResult = await addressRepo.findById(organisation.addressId);
+                const newAddressResult = await createNewAddress(req.body.data.organisation.address, oldAddressResult.rows[0]);
+                organisation.addressId = newAddressResult.rows[0].id;
+            }
             if (req.body.data.organisation.name !== undefined) {
                 organisation.orgName = req.body.data.organisation.name;
             }
@@ -145,7 +149,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
                 organisation.exempt = req.body.data.organisation.exempt;
             }
 
-            if (organisation !== orgCopy) {
+            if (JSON.stringify(organisation) !== JSON.stringify(orgCopy)) {
                 await orgRepo.update(organisation);
             }
         }
@@ -165,7 +169,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  * @param {Object} address in request body
  * @param {Object} storedAddress in db
  */
-async function updateAddress(address, storedAddress) {
+async function createNewAddress(address, storedAddress) {
     if (address === undefined) {
         return;
     }
@@ -188,8 +192,8 @@ async function updateAddress(address, storedAddress) {
         addressObj.region = address.countryState;
     }
 
-    if (addressObj !== storedAddress) {
-        await addressRepo.update(addressObj);
+    if (JSON.stringify(addressObj) !== JSON.stringify(storedAddress)) {
+        return await addressRepo.insert(addressObj);
     }
 }
 

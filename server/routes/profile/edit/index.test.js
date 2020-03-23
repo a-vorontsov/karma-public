@@ -119,14 +119,14 @@ test("editing organisation profile works", async () => {
 
     const updatedUserRes = await userRepo.findById(userId);
     const updatedOrgRes = await orgRepo.findByUserID(userId);
-    const updatedAddrRes = await addressRepo.findById(addressId);
+    const updatedAddrRes = await addressRepo.findById(updatedOrgRes.rows[0].addressId);
     const updatedUser = updatedUserRes.rows[0];
     const updatedOrg = updatedOrgRes.rows[0];
     const updatedAddr = updatedAddrRes.rows[0];
 
     expect(updatedUser.username).toBe(user.username);
     expect(updatedOrg.phone).toBe(profileChangeRequest2.data.organisation.phoneNumber);
-    expect(updatedOrg.addressId).toBe(organisation.addressId);
+    expect(updatedOrg.addressId).toBe(organisation.addressId + 1);
     expect(updatedAddr.address1).toBe(profileChangeRequest2.data.organisation.address.addressLine1);
     expect(updatedAddr.postcode).toBe(profileChangeRequest2.data.organisation.address.postCode);
     expect(updatedAddr.address2).toBe(address.addressLine2);
