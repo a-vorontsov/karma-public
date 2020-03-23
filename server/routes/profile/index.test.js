@@ -3,6 +3,7 @@ const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();
@@ -43,7 +44,53 @@ const profileViewRequest = {
     userId: 99999999999999999,
 };
 
-test("viewing individual profile works", async () => {
+test("viewing my own profile works", async () => {
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+    registerIndividualRequest.userId = userId;
+
+    const response = await request(app)
+        .post("/signup/individual")
+        .send(registerIndividualRequest);
+
+    expect(response.body.message).toBe("Individual registration successful.");
+    expect(response.statusCode).toBe(200);
+
+    const authToken = authAgent.logInUser(userId);
+
+    process.env.NO_AUTH = 0;
+    const profileResponse = await request(app)
+        .get(`/profile`)
+        .set("authorization", authToken)
+        .send(); // notMyId is undefined
+
+    expect(profileResponse.body.message).toBe(
+        "Found individual profile for user.",
+    );
+    expect(profileResponse.body.data.individual.address.postCode).toBe(registerIndividualRequest.data.individual.address.postCode);
+    expect(profileResponse.body.data.individual.firstName).toBe(
+        registerIndividualRequest.data.individual.firstName,
+    );
+    expect(profileResponse.body.data.individual.lastName).toBe(
+        registerIndividualRequest.data.individual.lastName,
+    );
+    expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
+        Date(registerIndividualRequest.data.individual.dateOfBirth)
+    );
+    expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.data.individual.gender);
+    expect(profileResponse.body.data.individual.phoneNumber).toBe(
+        registerIndividualRequest.data.individual.phoneNumber,
+    );
+    expect(profileResponse.body.data.individual.address.addressLine1).toBe(
+        registerIndividualRequest.data.individual.address.addressLine1,
+    );
+    expect(profileResponse.body.data.user.username).toBe(user.username);
+    expect(profileResponse.body.data.user.email).toBe(registration.email);
+    expect(profileResponse.statusCode).toBe(200);
+});
+
+test("viewing some else's profile works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
@@ -58,7 +105,7 @@ test("viewing individual profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get(`/profile?userId=${profileViewRequest.userId}`);
+        .get(`/profile?notMyId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",

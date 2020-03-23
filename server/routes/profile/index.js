@@ -15,10 +15,12 @@ const signUpRepo = require("../../models/databaseRepositories/signupRepository")
 const eventRepo = require("../../models/databaseRepositories/eventRepository");
 
 /**
- * Endpoint called whenever a user wishes to get their profile.<br/>
+ * Endpoint called whenever a user wishes to get their own or another user's profile.<br/>
+ * If notMyId is undefined the current user's id derived from the authToken will be used.<br/>
  <p><b>Route: </b>/profile (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
+ * @param {string} req.query.notMyId another user's ID whose profile the active user wishes to view OR undefined
  * @returns {object}
  * status: 400, description: error - for example an undefined indicating missing profile <br/>
  * status: 200, description: A message variable stating successfully
@@ -113,20 +115,22 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
  */
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        // set userId according to whose profile is to be viewed
+        const userId = req.query.notMyId !== undefined ? req.query.notMyId : req.query.userId;
         const now = new Date();
-        const userResult = await userRepo.findById(req.query.userId);
+        const userResult = await userRepo.findById(userId);
         const user = userResult.rows[0];
         const userToSend = {
             username: user.username,
             email: user.email,
         };
 
-        const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(req.query.userId);
+        const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
-        const causeResult = await selectedCauseRepo.findByUserId(req.query.userId);
+        const causeResult = await selectedCauseRepo.findByUserId(userId);
         const causes = causeResult.rows;
-        const indivResult = await indivRepo.findByUserID(req.query.userId);
+        const indivResult = await indivRepo.findByUserID(userId);
         // send appropriate profile
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
@@ -154,6 +158,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 gender: individual.gender,
                 phoneNumber: individual.phone,
                 banned: individual.banned,
+                pictureId: individual.pictureId,
                 bio: profile.bio,
                 karmaPoints: profile.karmaPoints,
                 address: {
@@ -179,7 +184,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
                 },
             });
         } else {
-            const orgResult = await orgRepo.findByUserID(req.query.userId);
+            const orgResult = await orgRepo.findByUserID(userId);
             const organisation = orgResult.rows[0];
 
             const addressResult = await addressRepo.findById(organisation.addressId);
