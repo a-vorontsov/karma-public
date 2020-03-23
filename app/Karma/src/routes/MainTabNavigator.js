@@ -17,7 +17,6 @@ import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
 import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
-
 const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},

@@ -4,6 +4,7 @@ const signUpRepository = require("../../models/databaseRepositories/signupReposi
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
 const favouriteEventRepository = require("../../models/databaseRepositories/favouriteRepository");
+const causeRepo = require("../../models/databaseRepositories/causeRepository");
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
@@ -41,13 +42,16 @@ const createNewEvent = async (event) => {
     const eventResult = await eventRepository.insert(event);
     const eventId = eventResult.rows[0].id;
     const causesResult = event.causes;
-    const causes = (await Promise.all(causesResult.map(id => addEventCause(id, eventId)))).map(result => result.rows[0]);
+    const causes = (await Promise.all(causesResult.map(id => addEventCause(id, eventId))))
+        .map(result => result.rows[0]);
+    const newCauses = (await Promise.all(causes.map(async cause => await causeRepo.findById(cause.causeId))))
+        .map(result => result.rows[0]);
     return ({
         status: 200,
         message: "Event created successfully",
         data: {
             event: eventResult.rows[0],
-            causes,
+            causes: newCauses,
         },
     });
 };

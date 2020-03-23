@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, SafeAreaView, View} from "react-native";
+import {SafeAreaView, View} from "react-native";
 import {ScrollView} from "react-native-gesture-handler";
 import SettingsButton from "../../components/buttons/SettingsButton";
 import PageHeader from "../../components/PageHeader";
@@ -13,6 +13,7 @@ const icons = {
     privacy: require("../../assets/images/settings-logos/privacy.png"),
     report: require("../../assets/images/settings-logos/report-problem.png"),
     terms: require("../../assets/images/settings-logos/terms.png"),
+    bin: require("../../assets/images/settings-logos/bin.png"),
 };
 
 class SettingsMenuScreen extends Component {
@@ -89,6 +90,11 @@ class SettingsMenuScreen extends Component {
                             title="Log Out"
                             icon={icons.logout}
                             onPress={() => navigate("LogOut")}
+                        />
+                        <SettingsButton
+                            title="Delete Account"
+                            icon={icons.bin}
+                            onPress={() => navigate("DeleteAccount")}
                         />
                     </View>
                 </ScrollView>
