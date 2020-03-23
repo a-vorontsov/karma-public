@@ -1,13 +1,7 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {
-    Image,
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Alert,
-} from "react-native";
+import {Image, StyleSheet, View, TouchableOpacity, Alert} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import ReadMore from "react-native-read-more-text";
@@ -103,7 +97,7 @@ class ActivityCard extends React.Component {
                 const eventIds = await events.map(event => event.eventId);
                 this.setState({
                     favourited: eventIds.includes(
-                        Number.parseInt(this.props.activity.eventId),
+                        Number.parseInt(this.props.activity.eventId, 10),
                     ),
                 });
             })
