@@ -84,7 +84,8 @@ class ProfileScreen extends Component {
         this.setState({
             email: user.email,
             isOrganisation: false,
-            name: individual.firstName + " " + individual.lastName,
+            firstName: individual.firstName,
+            lastName: individual.lastName,
             user: user,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
@@ -286,7 +287,9 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.name}
+                                            {`${this.state.firstName} ${
+                                                this.state.lastName
+                                            }`}
                                         </Text>
                                     )}
                                 </View>

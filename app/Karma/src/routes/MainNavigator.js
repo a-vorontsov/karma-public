@@ -6,7 +6,6 @@ import InitSignUpScreen from "../views/InitSignupScreen";
 import UserSignUpScreen from "../views/UserSignUpScreen";
 import OrgSignUpScreen from "../views/OrgSignUpScreen";
 import AboutScreen from "../views/AboutScreen";
-import ContactInfoScreen from "../views/ContactInfoScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
 import PrivacyScreen from "../views/Settings/PrivacyScreen";
 import TermsScreen from "../views/Settings/TermsScreen";
