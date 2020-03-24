@@ -108,7 +108,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
         log.info("Getting notifications for user id '%d'", id);
-        if (Number.isInteger(id)) {
+        if (isNaN(id)) {
             return res.status(400).send({message: "ID is not a number."});
         }
 

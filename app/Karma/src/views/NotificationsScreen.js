@@ -52,20 +52,26 @@ class NotificationsScreen extends Component {
             const response = await request
                 .get("http://localhost:8000/notification")
                 .set("authorization", authToken);
-
+            console.log(response.body.data);
             this.setState({
                 notifications: response.body.data.notifications,
             });
 
             this.parseNotifications();
         } catch (error) {
-            console.log(error);
-            Alert.alert("Unable to fetch new notifications");
+            Alert.alert("Unable to fetch new notifications", error);
+            this.setState({refreshing: true});
         }
     };
 
     async componentDidMount() {
-        this.getNotifications();
+        const {navigation} = this.props;
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.getNotifications();
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     getDaysBetween = (d1, d2) => {
@@ -84,16 +90,12 @@ class NotificationsScreen extends Component {
 
         //get all received notifications
         notifications.forEach(n => {
-            // if (n.receiverId === this.state.userId) {
-            //     let timestamp = new Date(n.timestampSent);
-            //     //if the 'clear' button is clicked, dont show any old notifications
-            //     if (cleared || timestamp < this.state.minTimestamp) {
-            //         this.setState({minTimestamp: new Date()});
-            //     } else {
-            //         received.push(n);
-            //     }
-            // }
-            received.push(n);
+            const timestamp = new Date(n.timestampSent);
+            if (cleared || timestamp < this.state.minTimestamp) {
+                this.setState({minTimestamp: new Date()});
+            } else {
+                received.push(n);
+            }
         });
 
         received.sort(compare);

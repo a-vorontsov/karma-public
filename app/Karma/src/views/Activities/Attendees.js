@@ -4,6 +4,7 @@ import Styles from "../../styles/Styles";
 import AttendeeButton from "../../components/activities/AttendeeButton";
 import request from "superagent";
 import {RegularText} from "../../components/text";
+import {getAuthToken} from "../../util/credentials";
 
 class Attendees extends Component {
     constructor(props) {
@@ -31,8 +32,10 @@ class Attendees extends Component {
 
     getAttendees = async () => {
         const {activity} = this.props;
+        const authToken = await getAuthToken();
         const response = await request
             .get(`http://localhost:8000/event/${activity.id}/signUp`)
+            .set("authorization", authToken)
             .then(res => {
                 return res.body.data;
             })

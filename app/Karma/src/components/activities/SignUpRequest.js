@@ -18,17 +18,17 @@ export default class SignUpRequest extends React.Component {
         const {user, activity} = this.props;
 
         const body = {
-            userId: user.userId,
+            otherUserId: user.userId,
             confirmed: accept,
             attended: false,
         };
 
-        const credentials = await getAuthToken();
+        const authToken = await getAuthToken();
 
         await request
             .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
             .send(body)
-            .set("authorization", credentials.password)
+            .set("authorization", authToken)
             .then(res => {
                 console.log(res.body.message);
                 this.props.onSubmit();

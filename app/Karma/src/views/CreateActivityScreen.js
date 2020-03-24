@@ -151,8 +151,10 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     fetchSelectedCauses = async causeIds => {
+        const authToken = await getAuthToken();
         const response = await request
             .get("http://localhost:8000/causes")
+            .set("authorization", authToken)
             .then(res => {
                 return res.body.data;
             });
