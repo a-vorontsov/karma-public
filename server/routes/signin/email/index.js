@@ -9,8 +9,6 @@ const authAgent = require("../../../modules/authentication/auth-agent");
 const regStatus = require("../../../modules/authentication/registration-status");
 const userAgent = require("../../../modules/authentication/user-agent");
 const tokenSender = require("../../../modules/verification/tokenSender");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
 
 /**
  * This is the first step of the signup flow.
@@ -135,23 +133,8 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else {
-            // try to construct the records in the registration and user
-            // tables for debugging the error
-            const regRecord = [];
-            const userRecord = [];
-            try {
-                const regResult = await regRepo.findByEmail(req.body.data.email);
-                regRecord = regResult.rows[0];
-                const userResult = await userRepo.findByEmail(req.body.data.email);
-                userRecord = userResult.rows[0];
-            } catch (e) {
-                userRecord = e.message;
-            }
             res.status(500).send({
-                message:
-                "Logical or internal system error. Please debug the registration and user objects:",
-                regStatus: regRecord,
-                userStatus: userRecord,
+                message: "Logical or internal system error. Please debug the registration and user objects:",
             });
         }
     } catch (e) {
