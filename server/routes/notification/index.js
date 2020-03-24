@@ -20,7 +20,6 @@ const httpUtil = require("../../util/httpUtil");
  {
     "type": "Cancellation",
     "message": "This event is cancelled thanks",
-    "senderId": 1,
     "receiverIds": [1,2,3,4,5]
  }
  </pre>
@@ -38,7 +37,6 @@ const httpUtil = require("../../util/httpUtil");
                 "type": "Cancellation",
                 "message": "This event is cancelled thanks",
                 "timestampSent": "2020-03-19T21:56:14.862Z",
-                "senderId": 1,
                 "receiverId": 1
             },
             {
