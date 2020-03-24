@@ -1,13 +1,20 @@
 import React, {Component} from "react";
-import {RefreshControl, View, StatusBar, Dimensions, Alert} from "react-native";
+import {
+    RefreshControl,
+    View,
+    StatusBar,
+    Dimensions,
+    Alert,
+    TouchableOpacity,
+} from "react-native";
 import Styles from "../styles/Styles";
 import PageHeader from "../components/PageHeader";
 import {hasNotch} from "react-native-device-info";
 import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
-import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
-import {getData} from "../util/GetCredentials";
+import {ScrollView} from "react-native-gesture-handler";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -40,15 +47,14 @@ class NotificationsScreen extends Component {
 
     getNotifications = async () => {
         this.setState({refreshing: true});
-        const credentials = await getData();
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         try {
             const response = await request
                 .get("http://localhost:8000/notification")
-                .query({userId: userId});
+                .set("authorization", authToken);
+
             this.setState({
                 notifications: response.body.data.notifications,
-                userId: Number(userId),
             });
 
             this.parseNotifications();
@@ -78,15 +84,16 @@ class NotificationsScreen extends Component {
 
         //get all received notifications
         notifications.forEach(n => {
-            if (n.receiverId === this.state.userId) {
-                let timestamp = new Date(n.timestampSent);
-                //if the 'clear' button is clicked, dont show any old notifications
-                if (cleared || timestamp < this.state.minTimestamp) {
-                    this.setState({minTimestamp: new Date()});
-                } else {
-                    received.push(n);
-                }
-            }
+            // if (n.receiverId === this.state.userId) {
+            //     let timestamp = new Date(n.timestampSent);
+            //     //if the 'clear' button is clicked, dont show any old notifications
+            //     if (cleared || timestamp < this.state.minTimestamp) {
+            //         this.setState({minTimestamp: new Date()});
+            //     } else {
+            //         received.push(n);
+            //     }
+            // }
+            received.push(n);
         });
 
         received.sort(compare);

@@ -16,7 +16,7 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import request from "superagent";
-import {getData} from "../../util/GetCredentials";
+import {getAuthToken} from "../../util/credentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -36,18 +36,15 @@ const ActivityEditable = props => {
      */
     const deleteEvent = async () => {
         const activityId = activity.id;
-        const credentials = await getData();
-
+        const authToken = await getAuthToken();
         const url = `http://localhost:8000/event/${activityId}/delete/`;
-        await request.post(url).then(res => {
-            navigation.navigate("Profile");
-            sendNotification(
-                "EventCancellation",
-                `${activity.name}`,
-                Number(credentials.username),
-                volunteers,
-            );
-        });
+        await request
+            .post(url)
+            .set("authorization", authToken)
+            .then(res => {
+                navigation.navigate("Profile");
+            });
+        sendNotification("EventCancellation", `${activity.name}`, volunteers);
     };
 
     /**
@@ -55,7 +52,7 @@ const ActivityEditable = props => {
      * This is used to then get the full name and email of each volunteer.
      */
     const fetchAttendeeInfo = async () => {
-        const credentials = await getData();
+        const credentials = await getAuthToken();
 
         let attendees = [];
         for (let i = 0; i < volunteers.length; ++i) {
@@ -73,20 +70,13 @@ const ActivityEditable = props => {
     };
 
     const sendMessageToAttendees = async () => {
-        const credentials = await getData();
-
         let attendees = await fetchAttendeeInfo();
         let attendeeEmails = [];
         attendees.forEach(a => {
             attendeeEmails.push(a.user.email);
         });
 
-        sendNotification(
-            "Message",
-            "",
-            Number(credentials.username),
-            volunteers,
-        );
+        sendNotification("Message", "", volunteers);
 
         //Placing emails in the 'BCC' section so attendees can only see their own emails
         Communications.email(null, null, attendeeEmails, null, null);

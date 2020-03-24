@@ -7,7 +7,6 @@ import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import Communications from "react-native-communications";
 import {sendNotification} from "../../util/SendNotification";
-import {getData} from "../../util/GetCredentials";
 
 const icons = {
     email: require("../../assets/images/general-logos/mail.png"),
@@ -38,12 +37,10 @@ export default class AttendeeButton extends React.Component {
     };
 
     openEmail = async () => {
-        const credentials = await getData();
         const {email, attendeeId} = this.state;
         sendNotification(
             "Message",
             "has sent you a message - check your inbox!",
-            Number(credentials.username),
             [attendeeId],
         );
         Communications.email([email], null, null, null, null);

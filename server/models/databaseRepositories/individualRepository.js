@@ -28,8 +28,8 @@ const findByUserID = (userId) => {
 };
 
 const findFavouriteEvents = (userId) => {
-    const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
-        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id(event) as eventCreatorId, " +
+    const query = "SELECT id(event) as event_id, name, women_only, spots, address_visible, " +
+        "minimum_age, photo_id, physical, add_info, content, date, user_id(event) as event_creator_id, " +
         "address_1, address_2, postcode, city, region, lat, long " +
         "FROM event LEFT JOIN favourite ON event_id = id INNER JOIN individual on individual_id = id(individual) "+
         "INNER JOIN address ON id(address)=address_id(event) WHERE user_id(individual)=$1";
@@ -38,8 +38,8 @@ const findFavouriteEvents = (userId) => {
 
 const findGoingEvents = (userId) => {
     const now = new Date();
-    const query = "SELECT id(event) as eventId, name, women_only, spots, address_visible as addressVisible, " +
-        "minimum_age AS minimumAge, photo_id as photoId, physical, add_info as addInfo, content, date, user_id(event) as eventCreatorId, " +
+    const query = "SELECT id(event) as event_id, name, women_only, spots, address_visible, " +
+        "minimum_age, photo_id, physical, add_info, content, date, user_id(event) as event_creator_id, " +
         "address_1, address_2, postcode, city, region, lat, long " +
         "FROM event LEFT JOIN sign_up on event_id = id(event) INNER JOIN address ON id(address) = address_id(event) "+
         "INNER JOIN individual ON individual_id = id(individual) WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";

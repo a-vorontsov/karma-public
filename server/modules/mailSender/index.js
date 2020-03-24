@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const log = require("../../util/log");
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -18,6 +19,7 @@ const transporter = nodemailer.createTransport({
  * @return {Promise}
  */
 const sendEmail = (email, subject, text) => {
+    log.info("Sending email to %s", email);
     return new Promise((resolve, reject) => {
         const mailOptions = {
             from: process.env.EMAIL_ADDRESS,
@@ -26,6 +28,7 @@ const sendEmail = (email, subject, text) => {
             text: text,
         };
         if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
+            log.debug("Skipping actual email sending");
             const result = {
                 status: 200,
                 info: "testing",
@@ -40,6 +43,7 @@ const sendEmail = (email, subject, text) => {
                         info: err,
                         message: "Email sending failed to " + email,
                     };
+                    log.info("Email sending to %s failed: %s", email, err);
                     resolve(result);
                 } else {
                     const result = {
@@ -47,6 +51,7 @@ const sendEmail = (email, subject, text) => {
                         info: info,
                         message: "Email sent to " + email,
                     };
+                    log.info("Email successfullt sent to %s", email);
                     resolve(result);
                 }
             });
@@ -64,6 +69,7 @@ const sendEmail = (email, subject, text) => {
  * @return {Promise}
  */
 const sendBugReport = (email, report) => {
+    log.info("Sending bug report: '%s'", report);
     const toEmail = process.env.BUG_REPORT_EMAIL_ADDRESS;
     const subject = "Bug Report";
     const text = "Bug report from " + email + ": " + report;
@@ -71,6 +77,6 @@ const sendBugReport = (email, report) => {
 };
 
 module.exports = {
-    sendEmail: sendEmail,
-    sendBugReport: sendBugReport,
+    sendEmail,
+    sendBugReport,
 };

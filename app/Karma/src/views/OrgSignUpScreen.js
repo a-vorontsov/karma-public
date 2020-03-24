@@ -25,7 +25,7 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -134,17 +134,15 @@ export default class OrgSignUpScreen extends React.Component {
         ) {
             return;
         }
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         const org = this.createOrganisation();
 
         await request
             .post("http://localhost:8000/signup/organisation")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
-                data: {organisation: {userId, ...org}},
+                data: {organisation: {...org}},
             })
             .then(res => {
                 navigate("PickCauses");
