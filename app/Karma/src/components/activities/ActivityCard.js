@@ -9,7 +9,7 @@ import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -62,7 +62,6 @@ class ActivityCard extends React.Component {
         this.state = {
             displaySignupModal: false,
             favourited: null,
-            userId: -1,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
@@ -78,20 +77,14 @@ class ActivityCard extends React.Component {
     };
 
     async componentDidMount() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
-        await this.setState({
-            userId: userId,
-        });
         this.fetchActivityInfo();
     }
 
     async fetchActivityInfo() {
-        const userId = this.state.userId;
+        const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/event/favourites")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(async result => {
                 const events = result.body.data.events;
                 const eventIds = await events.map(event => event.eventId);
@@ -107,7 +100,7 @@ class ActivityCard extends React.Component {
     }
 
     async toggleFavourite() {
-        const userId = this.state.userId;
+        const authToken = await getAuthToken();
         if (!this.state.favourited) {
             request
                 .post(
@@ -115,7 +108,7 @@ class ActivityCard extends React.Component {
                         this.props.activity.eventId
                     }/favourite`,
                 )
-                .send({userId: userId})
+                .set("authorization", authToken)
                 .then(result => {
                     console.log(result.body.message);
                     this.setState({
@@ -132,7 +125,7 @@ class ActivityCard extends React.Component {
                         this.props.activity.eventId
                     }/favourite/delete`,
                 )
-                .send({userId: userId})
+                .set("authorization", authToken)
                 .then(result => {
                     console.log(result.body.message);
                     this.setState({

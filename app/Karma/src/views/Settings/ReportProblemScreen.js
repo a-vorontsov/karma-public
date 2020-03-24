@@ -13,7 +13,7 @@ import {RegularText} from "../../components/text";
 import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
 
@@ -49,15 +49,12 @@ class ReportProblemScreen extends Component {
 
     async submitBugReport() {
         const {navigate} = this.props.navigation;
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
         request
             .post("http://localhost:8000/bugreport")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: {
                     email: this.state.user.email,
                     report: this.state.category + ": " + this.state.problem,
