@@ -81,7 +81,6 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             email: user.email,
             isOrganisation: false,

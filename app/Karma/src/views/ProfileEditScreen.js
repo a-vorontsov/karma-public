@@ -23,8 +23,8 @@ import Colours from "../styles/Colours";
 import CauseContainer from "../components/causes/CauseContainer";
 import {TextInput} from "../components/input";
 import AddressInput from "../components/input/AddressInput";
+import {getAuthToken} from "../util/credentials";
 import {RadioInput} from "../components/radio";
-import {getData} from "../util/GetCredentials";
 const request = require("superagent");
 const _ = require("lodash");
 
@@ -169,9 +169,7 @@ class ProfileEditScreen extends Component {
 
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         const dataChanged = {};
         if (!_.isEqual(this.state.user, this.baseState.user)) {
             dataChanged.user = this.state.user;
@@ -206,9 +204,8 @@ class ProfileEditScreen extends Component {
         }
         await request
             .post("http://localhost:8000/profile/edit")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: dataChanged,
             })
             .then(async res => {
