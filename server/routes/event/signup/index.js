@@ -197,7 +197,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "userId": "3",
+    "otherUserId": "3",
     "confirmed": false,
     "attended": true,
   }
@@ -224,8 +224,8 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
 router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        log.info("Updating signup for user id '%d' to event id '%d'", signup.userId, signup.eventId);
-        signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
+        log.info("Updating signup for user id '%d' to event id '%d'", signup.otherUserId, signup.eventId);
+        signup.individualId = await util.getIndividualIdFromUserId(signup.otherUserId);
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
