@@ -1,5 +1,5 @@
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
-const users = require("../authentication/user-agent");
+const users = require("../../../user");
 
 /**
  * Passport's boilerplate.

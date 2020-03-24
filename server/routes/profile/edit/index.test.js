@@ -6,7 +6,7 @@ const regRepo = require("../../../models/databaseRepositories/registrationReposi
 const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
 const indivRepo = require("../../../models/databaseRepositories/individualRepository");
 const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const userAgent = require("../../../modules/authentication/user-agent");
+const userAgent = require("../../../modules/user");
 const profileRepo = require("../../../models/databaseRepositories/profileRepository");
 
 const user = testHelpers.getUserExample4();

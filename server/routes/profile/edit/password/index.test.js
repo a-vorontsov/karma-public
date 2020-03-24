@@ -4,7 +4,7 @@ const testHelpers = require("../../../../test/testHelpers");
 const owasp = require("owasp-password-strength-test");
 const userRepo = require("../../../../models/databaseRepositories/userRepository");
 const regRepo = require("../../../../models/databaseRepositories/registrationRepository");
-const userAgent = require("../../../../modules/authentication/user-agent");
+const userAgent = require("../../../../modules/user");
 
 jest.mock("owasp-password-strength-test");
 let user, registration;

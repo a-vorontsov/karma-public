@@ -4,7 +4,7 @@
 const log = require("../../../../util/log");
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../../../modules/authentication/user-agent");
+const userAgent = require("../../../../modules/user");
 const authAgent = require("../../../../modules/authentication/");
 const owasp = require("owasp-password-strength-test");
 

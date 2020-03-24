@@ -20,7 +20,7 @@ const {
 } = npmjose;
 const joseConf = require("../../config").jose;
 const adminService = require("../admin");
-const userAgent = require("./user-agent");
+const userAgent = require("../user");
 
 const user = testHelpers.getUserExample4();
 const profile = testHelpers.getProfile();

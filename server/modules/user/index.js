@@ -1,6 +1,6 @@
-const digest = require("./digest");
+const digest = require("../authentication/digest");
 const log = require("../../util/log");
-const regStatus = require("./registration-status");
+const regStatus = require("../../util/registration-status");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const individualRepo = require("../../models/databaseRepositories/individualRepository");
@@ -9,7 +9,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
-const authAgent = require("./");
+const authAgent = require("../authentication");
 const geocoder = require("../geocoder");
 const settingsRepo = require("../../models/databaseRepositories/settingsRepository");
 

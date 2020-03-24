@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/");
-const userAgent = require("../../../modules/authentication/user-agent");
+const userAgent = require("../../../modules/user");
 const httpUtil = require("../../../util/httpUtil");
 
 /**

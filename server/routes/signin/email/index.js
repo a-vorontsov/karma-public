@@ -6,8 +6,8 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/");
-const regStatus = require("../../../modules/authentication/registration-status");
-const userAgent = require("../../../modules/authentication/user-agent");
+const regStatus = require("../../../util/registration-status");
+const userAgent = require("../../../modules/user");
 const tokenSender = require("../../../modules/verification/tokenSender");
 
 /**

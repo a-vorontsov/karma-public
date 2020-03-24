@@ -1,5 +1,5 @@
 const FacebookStrategy = require("passport-facebook").Strategy;
-const users = require("../authentication/user-agent");
+const users = require("../../../user");
 
 /**
  * Passport's boilerplate.
