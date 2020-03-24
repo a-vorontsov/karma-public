@@ -191,10 +191,9 @@ export default class CreateActivityScreen extends React.Component {
         await request
             .post("http://localhost:8000/event/update/" + this.state.eventId)
             .send({
-                authToken: credentials.password,
-                userId: userId,
                 ...event,
             })
+            .set("authorization", credentials.password)
             .then(res => {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
@@ -363,10 +362,9 @@ export default class CreateActivityScreen extends React.Component {
         await request
             .post("http://localhost:8000/event")
             .send({
-                authToken: "ffa234124",
-                userId: credentials.username,
                 ...event,
             })
+            .set("authorization", credentials.password)
             .then(res => {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},

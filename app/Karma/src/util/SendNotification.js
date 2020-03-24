@@ -1,4 +1,5 @@
 import {Alert} from "react-native";
+import {getData} from "./GetCredentials";
 const request = require("superagent");
 
 export const sendNotification = async (
@@ -13,10 +14,12 @@ export const sendNotification = async (
         senderId: senderId,
         receiverIds: receiverIds,
     };
+    const credentials = await getData();
 
     await request
         .post("http://localhost:8000/notification/")
         .send(options)
+        .set("authorization", credentials.password)
         .catch(err => {
             Alert.alert("Server Error", err.message);
         });

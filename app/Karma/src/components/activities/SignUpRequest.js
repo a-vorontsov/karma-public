@@ -28,6 +28,7 @@ export default class SignUpRequest extends React.Component {
         await request
             .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
             .send(body)
+            .set("authorization", credentials.password)
             .then(res => {
                 console.log(res.body.message);
                 this.props.onSubmit();

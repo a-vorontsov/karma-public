@@ -42,10 +42,10 @@ export default class SignUpActivity extends React.Component {
         request
             .post(`http://localhost:8000/event/${eventId}/signUp`)
             .send({
-                userId: credentials.username,
                 confirmed: null,
                 attended: false,
             })
+            .set("authorization", credentials.password)
             .then(() => {
                 Toast.showWithGravity(
                     "You have successfully signed up!",
@@ -69,9 +69,9 @@ export default class SignUpActivity extends React.Component {
         request
             .post(`http://localhost:8000/event/${eventId}/signUp/update`)
             .send({
-                userId: credentials.username,
                 confirmed: false,
             })
+            .set("authorization", credentials.password)
             .then(() => {
                 Toast.showWithGravity(
                     "You have successfully signed out of the activity.",

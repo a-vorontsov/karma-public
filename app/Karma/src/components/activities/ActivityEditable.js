@@ -62,7 +62,7 @@ const ActivityEditable = props => {
             const volunteerProfile = await request
                 .get("http://localhost:8000/profile/")
                 .query({userId: volunteers[i]})
-                .send({authToken: credentials.password})
+                .set("authorization", credentials.password)
                 .then(res => {
                     return res.body.data;
                 });
