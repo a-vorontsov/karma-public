@@ -80,6 +80,9 @@ const updateAvatar = (req, res) => {
                                 imageRepository.updateIndividualAvatar :
                                 imageRepository.updateOrganisationAvatar;
                             updateUserImg(user, picture).then((result) => {
+                                log.info(`Updated avatar for ${userType}` +
+                                 `with user ID ${req.query.userId} to ${req.file.location}`);
+
                                 res.status(200).send({
                                     message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
                                     picture_url: `${req.file.Location}`,
@@ -153,6 +156,8 @@ const updateEventPicture = (req, res) => {
                         }).then((pictureResult) => {
                             const picture = pictureResult.rows[0];
                             imageRepository.updateEventPicture(event, picture).then(() => {
+                                log.info(`Updated picture for event` +
+                                    `with ID ${req.params.eventId} to ${req.file.location}`);
                                 res.status(200).send({
                                     message: `Image successfully updated for event with ID ${req.params.eventId}`,
                                     picture_url: `${req.file.Location}`,

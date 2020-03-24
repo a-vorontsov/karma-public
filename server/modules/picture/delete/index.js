@@ -62,13 +62,14 @@ const deleteAvatar = (req, res) => {
                             Key: key,
                         }, (err, data) => {
                             if (err) {
-                                res.status(500);
-                                res.json({
+                                log.error(`Failed to delete picture for ${userType} with user ID ${req.query.userId}.` +
+                                    ` Error code ${err.code}: ${err.message}`);
+                                res.status(500).send({
                                     message: err.message,
                                 });
                             } else {
-                                res.status(200);
-                                res.json({
+                                log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
+                                res.status(200).send({
                                     message: `Successfully deleted image!`,
                                     old_location: pictureLocation,
                                 });
@@ -129,13 +130,14 @@ const deleteEventPicture = (req, res) => {
                                 Key: key,
                             }, (err, data) => {
                                 if (err) {
-                                    res.status(500);
-                                    res.json({
+                                    log.error(`Failed to delete picture for event with ID ${req.params.eventId}. ` +
+                                        `Error code ${err.code}: ${err.message}`);
+                                    res.status(500).send({
                                         message: err.message,
                                     });
                                 } else {
-                                    res.status(200);
-                                    res.json({
+                                    log.info(`Deleted picture for event with ID ${req.params.eventId}`);
+                                    res.status(200).send({
                                         message: `Successfully deleted image!`,
                                         old_location: pictureLocation,
                                     });
@@ -143,8 +145,7 @@ const deleteEventPicture = (req, res) => {
                             });
                         }
                     }).catch((error) => {
-                        res.status(500);
-                        res.json({
+                        res.status(500).send({
                             message: `${error}`,
                         });
                     });

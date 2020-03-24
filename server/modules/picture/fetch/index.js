@@ -80,6 +80,8 @@ const getAvatar = (req, res) => {
                             });
                         } else {
                             // return s3 image url
+                            log.info(`Fetched picture URL for ${userType} with user ID ` +
+                                `${req.params.userId}, at ${picture.pictureLocation}`);
                             res.status(200).send({
                                 message: "Fetched image for user!",
                                 picture_url: picture.pictureLocation,
@@ -125,6 +127,8 @@ const getEventPicture = (req, res) => {
                         });
                     } else {
                         // return s3 image url
+                        log.info(`Fetched picture URL for event with ID ` +
+                            `${req.params.eventId}, at ${picture.pictureLocation}`);
                         res.status(200).send({
                             message: "Fetched image for event!",
                             picture_url: picture.pictureLocation,
@@ -169,6 +173,8 @@ const getPicture = (req, res) => {
                     });
                 } else {
                     // return s3 image url
+                    log.info(`Fetched picture URL for picture with ID ` +
+                        `${req.params.pictureId}, at ${picture.pictureLocation}`);
                     res.status(200).send({
                         message: `Fetched image with ${req.params.pictureId}`,
                         picture_url: picture.pictureLocation,
