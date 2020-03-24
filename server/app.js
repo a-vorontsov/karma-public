@@ -64,7 +64,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
-    require("./modules/authentication/passport-config");
+    require("./modules/authentication/passport/");
     app.use(passport.initialize());
     app.use("signin/oauth/facebook", require("./routes/signin/OAuth/facebook"));
     app.use("signin/oauth/google", require("./routes/signin/OAuth/google"));
