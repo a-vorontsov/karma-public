@@ -9,7 +9,7 @@ import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
-import {getAuthToken} from "../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
