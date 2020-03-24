@@ -1,6 +1,6 @@
 import React from "react";
 
-import {View} from "react-native";
+import {View, KeyboardAvoidingView} from "react-native";
 import Carousel, {Pagination} from "react-native-snap-carousel";
 import {SafeAreaView} from "react-native-safe-area-context";
 
@@ -38,15 +38,19 @@ export default class InitSignupScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={Styles.container}>
+                <View
+                    style={Platform.OS === "ios" ? {paddingVertical:20} : undefined}/>
                 <View style={[Styles.pt16, Styles.ph24]}>
                     <TitleText>
                         Welcome to&nbsp;
                         <LogoText style={Styles.xxlarge}>Karma</LogoText>
                     </TitleText>
+                    <View style={Platform.OS === "ios" ? {paddingVertical:20} : undefined}>
                     <RegularText style={[Styles.pv16, Styles.small]}>
                         Lorem ipsum dolor sit amet, consectetur adip isicing
                         elit, sed do eiusmod.
                     </RegularText>
+                    </View>
                 </View>
                 <View>
                     <Carousel
@@ -87,20 +91,6 @@ export default class InitSignupScreen extends React.Component {
                         inactiveDotScale={0.8}
                     />
                 </View>
-                {/* <View style={[Styles.bottom]}>
-                    <View
-                        style={[
-                            Styles.ph24,
-                            Styles.pb24,
-                            Styles.pt8,
-                            Styles.bgWhite,
-                        ]}>
-                        <SemiBoldText style={[Styles.pv16, Styles.medium]}>
-                            Already on Karma?
-                        </SemiBoldText>
-                        <TransparentButton title="Log in" />
-                    </View>
-                </View> */}
             </SafeAreaView>
         );
     }
