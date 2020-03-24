@@ -2,10 +2,10 @@ const request = require("supertest");
 const app = require("../../../app");
 const testHelpers = require("../../../test/testHelpers");
 const validation = require("../../../modules/validation");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
+const eventFavouriteService = require("../../../modules/event/favourite");
 const util = require("../../../util/util");
 
-jest.mock("../../../modules/event/favourite/eventFavouriteService");
+jest.mock("../../../modules/event/favourite");
 jest.mock("../../../modules/validation");
 jest.mock("../../../util/util");
 validation.validateFavourite.mockReturnValue({errors: ""});

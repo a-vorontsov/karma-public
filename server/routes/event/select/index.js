@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const httpUtil = require("../../../util/httpUtil");
 const eventService = require("../../../modules/event");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
+const eventFavouriteService = require("../../../modules/event/favourite");
 const eventSignupService = require("../../../modules/event/signup");
 const authAgent = require("../../../modules/authentication/");
 

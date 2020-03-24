@@ -4,7 +4,7 @@ const testHelpers = require("../../../test/testHelpers");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
 const eventService = require("../../../modules/event");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
+const eventFavouriteService = require("../../../modules/event/favourite");
 const eventSignUpService = require("../../../modules/event/signup");
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
@@ -15,7 +15,7 @@ jest.mock("../../../models/databaseRepositories/individualRepository");
 jest.mock("../../../models/databaseRepositories/userRepository");
 
 jest.mock("../../../modules/event");
-jest.mock("../../../modules/event/favourite/eventFavouriteService");
+jest.mock("../../../modules/event/favourite");
 jest.mock("../../../modules/event/signup");
 
 jest.mock("../../../util/util");

@@ -1,5 +1,5 @@
 const testHelpers = require("../../../test/testHelpers");
-const eventFavouriteService = require("./eventFavouriteService");
+const eventFavouriteService = require("./");
 const eventSorter = require("../../sorting/event");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
