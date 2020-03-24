@@ -1,129 +1,121 @@
 import React, {Component} from "react";
-import {View, FlatList, RefreshControl, ActivityIndicator} from "react-native";
+import {
+    View,
+    FlatList,
+    StyleSheet,
+    ActivityIndicator,
+    Dimensions,
+} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
+import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
-import {SafeAreaView} from "react-navigation";
-
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const formWidth = 0.6 * SCREEN_WIDTH;
 const request = require("superagent");
 
 class ActivitiesAllScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false, // activity list loading
-            isRefreshing: false, //for pull to refresh
-            activitiesList: [],
-            error: "",
-            page: 1,
+            loading: true, // Loading state used while loading the data for the first time
+            activitiesList: [], // Data Source for the FlatList
+            fetchingDataFromServer: false, // Loading state used while loading more data
         };
+        this.page = 1;
+        this.loadMoreActivities = this.loadMoreActivities.bind(this);
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
-    componentDidMount() {
-        console.log("heeeere");
-        this.fetchAllActivities(this.state.page);
-    }
-
-    async fetchAllActivities(page) {
+    async componentDidMount() {
         const authToken = await getAuthToken();
-        this.setState({
-            loading: true,
-        });
-        await request
-            .get("http://localhost:8000/event")
-            .set("authorization", authToken)
-            .query({currentPage: page, pageSize: 15})
-            .then(async res => {
-                console.log(res.body.message);
-                const listData = this.state.activitiesList;
-                let activitiesList = listData.concat(res.body.data.events);
-                await this.setState({
-                    loading: false,
-                    activitiesList: activitiesList,
-                });
-            })
-            .catch(er => {
-                console.log(er);
-                this.setState({
-                    loading: false,
-                    error: "Can't load more activities at the moment",
-                });
-            });
-    }
-
-    renderFooter = () => {
-        //it will show indicator at the bottom of the list when data is loading otherwise it returns null
-        if (!this.state.loading) {
-            return null;
-        }
-        return <ActivityIndicator style={{color: "#000"}} />;
-    };
-
-    handleLoadMore = info => {
-        console.log(info);
-        if (!this.state.loading) {
-            this.setState({page: this.state.page + 1});
-            this.fetchAllActivities(this.state.page); // method for API call
-        }
-    };
-
-    async onRefresh() {
-        const authToken = await getAuthToken();
-        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         request
             .get("http://localhost:8000/event")
             .set("authorization", authToken)
-            .query({currentPage: this.state.page, pageSize: 5})
-            .then(res => {
-                let data = res.body.data.events;
+            .query({currentPage: this.page, pageSize: 5})
+            .then(async res => {
+                console.log(res.body.message);
+                this.page = this.page + 1; //Increasing the offset for the next API call.
                 this.setState({
-                    isRefreshing: false,
-                    activitiesList: data,
-                }); // false isRefreshing flag for disable pull to refresh indicator, and clear all data and store only first page data
+                    loading: false,
+                    activitiesList: [
+                        ...this.state.activitiesList,
+                        ...res.body.data.events,
+                    ], //adding the new data with old one available in Data Source of the List
+                });
             })
             .catch(er => {
                 console.log(er);
-                this.setState({
-                    isRefreshing: false,
-                    error: "Can't load more activities at the moment",
-                });
             });
+    }
+
+    async loadMoreActivities() {
+        this.setState({fetchingDataFromServer: true});
+        const authToken = await getAuthToken();
+        request
+            .get("http://localhost:8000/event")
+            .set("authorization", authToken)
+            .query({currentPage: this.page, pageSize: 5})
+            .then(res => {
+                console.log(res.body.message);
+                this.page = this.page + 1; //Increasing the offset for the next API call.
+                this.setState({
+                    fetchingDataFromServer: false,
+                    activitiesList: [
+                        ...this.state.activitiesList,
+                        ...res.body.data.events,
+                    ], //adding the new data with old one available in Data Source of the List
+                });
+            })
+            .catch(er => {
+                console.log(er);
+            });
+    }
+
+    renderFooter() {
+        return (
+            //Footer View with Load More button
+            <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
+                {this.state.fetchingDataFromServer ? (
+                    <ActivityIndicator color="grey" style={{marginLeft: 8}} />
+                ) : (
+                    <GradientButton
+                        onPress={this.loadMoreActivities}
+                        title="Load More"
+                    />
+                )}
+            </View>
+        );
     }
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
-                {this.state.activitiesList.length > 0 ? (
+            <View>
+                {this.state.loading ? (
+                    <ActivityIndicator size="large" />
+                ) : (
                     <FlatList
+                        style={{width: "100%"}}
+                        keyExtractor={activity => activity.eventId}
                         data={this.state.activitiesList}
-                        extraData={this.state}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.isRefreshing}
-                                onRefresh={this.onRefresh.bind(this)}
-                            />
-                        }
                         renderItem={({item}) => (
                             <ActivityDisplayCard activity={item} />
                         )}
-                        keyExtractor={(activity, index) => index.toString()}
-                        ListFooterComponent={this.renderFooter.bind(this)}
-                        onEndReachedThreshold={0.8}
-                        onEndReached={this.handleLoadMore.bind(this)}
+                        ListFooterComponent={this.renderFooter.bind(this)} //Adding Load More button as footer component
+                        ListEmptyComponent={
+                            <View style={Styles.ph24}>
+                                <RegularText>
+                                    Could not find any activities (Refresh)
+                                </RegularText>
+                            </View>
+                        }
                     />
-                ) : (
-                    <View style={Styles.ph24}>
-                        <RegularText>
-                            Could not find any activities (Refresh)
-                        </RegularText>
-                    </View>
                 )}
-            </SafeAreaView>
+            </View>
         );
     }
 }
