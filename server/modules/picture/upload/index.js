@@ -57,6 +57,9 @@ const updateAvatar = (req, res) => {
                             width: 500,
                             height: 500,
                         },
+                        toFormat: {
+                            type: 'png',
+                        },
                     }),
                 }).single('picture');
 

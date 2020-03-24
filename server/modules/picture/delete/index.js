@@ -31,7 +31,7 @@ const deleteAvatar = (req, res) => {
         return;
     }
     const userRepo = userType === 'individual' ? individualRepository : organisationRepository;
-    userRepo.findById(req.query.userId).then((result) => {
+    userRepo.findByUserID(req.query.userId).then((result) => {
         if (result.rowCount < 1) {
             res.status(404).send({
                 message: `There is no ${userType} with ID ${req.query.userId}`,
