@@ -1,4 +1,4 @@
-const twilio = require("./twilio");
+const twilio = require("./");
 
 test("invalid numbers rejected", () => {
     expect(twilio.isPhoneNumberValid("123")).toBe(false);
