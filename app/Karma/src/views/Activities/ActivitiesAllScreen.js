@@ -25,7 +25,7 @@ class ActivitiesAllScreen extends Component {
         const userId = credentials.username;
         request
             .get("http://localhost:8000/event")
-            .query({userId: userId, Page: 1, pageSize: 2})
+            .query({userId: userId, Page: 1, pageSize: 103})
             .then(result => {
                 console.log(result.body.message);
                 let activities = result.body.data.events;

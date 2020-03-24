@@ -29,7 +29,7 @@ export default class SignUpRequest extends React.Component {
             .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
             .send(body)
             .then(res => {
-                console.log(res.body.data);
+                console.log(res.body.message);
                 this.props.onSubmit();
                 let type = accept
                     ? "AttendanceConfirmation"

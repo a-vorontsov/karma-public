@@ -139,7 +139,7 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     onUpdateCauses = inputState => {
-        let causeIds = [];
+        const causeIds = [];
         inputState.selectedCauses.forEach(c => {
             causeIds.push(c.id);
         });
@@ -205,6 +205,7 @@ export default class CreateActivityScreen extends React.Component {
                     Number(userId),
                     this.state.volunteers,
                 );
+                console.log(res.body.message);
             })
             .catch(er => {
                 Alert.alert("Server Error", er);
@@ -370,7 +371,7 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.data);
+                console.log(res.body.message);
             })
             .catch(er => {
                 console.log(er.message);
@@ -731,24 +732,24 @@ export default class CreateActivityScreen extends React.Component {
                                 ) : (
                                     undefined
                                 )}
-                                <View>
-                                    <SemiBoldText
-                                        style={{
-                                            alignItems: "flex-start",
-                                            fontSize: 20,
-                                        }}>
-                                        What is the location?
-                                    </SemiBoldText>
+                            </View>
+                            <View>
+                                <SemiBoldText
+                                    style={{
+                                        alignItems: "flex-start",
+                                        fontSize: 20,
+                                    }}>
+                                    What is the location?
+                                </SemiBoldText>
 
-                                    <AddressInput
-                                        address1={this.state.address1}
-                                        address2={this.state.address2}
-                                        postcode={this.state.postcode}
-                                        region={this.state.region}
-                                        city={this.state.city}
-                                        onChange={this.onInputChange}
-                                    />
-                                </View>
+                                <AddressInput
+                                    address1={this.state.address1}
+                                    address2={this.state.address2}
+                                    postcode={this.state.postcode}
+                                    region={this.state.region}
+                                    city={this.state.city}
+                                    onChange={this.onInputChange}
+                                />
                             </View>
 
                             <BottomModal

@@ -43,7 +43,7 @@ export default class SignUpActivity extends React.Component {
             .post(`http://localhost:8000/event/${eventId}/signUp`)
             .send({
                 userId: credentials.username,
-                confirmed: false,
+                confirmed: null,
                 attended: false,
             })
             .then(() => {
@@ -54,7 +54,8 @@ export default class SignUpActivity extends React.Component {
                 );
                 onConfirm();
             })
-            .catch(() => {
+            .catch(err => {
+                console.log(err);
                 onError(
                     "There has been an error with signing up to this activity.",
                     "Please try again later or contact us if this issue persists.",
