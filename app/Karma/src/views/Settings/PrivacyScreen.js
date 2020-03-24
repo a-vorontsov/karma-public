@@ -1,9 +1,9 @@
 import React, {Component} from "react";
+import AsyncStorage from "@react-native-community/async-storage";
 import {Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");
@@ -18,22 +18,25 @@ class PrivacyScreen extends Component {
         this.state = {
             privacyPolicyText: "Loading...",
         };
-        this.loadPrivacyPolicy();
     }
 
-    loadPrivacyPolicy = () => {
-        request
-            .get("http://localhost:8000/information?type=privacyPolicy")
-            .then(res => {
-                console.log(res.body.message);
-                this.setState({
-                    privacyPolicyText: res.body.data.information.content,
+    async componentDidMount() {
+        let privacy = await AsyncStorage.getItem("policy");
+        if (privacy === "") {
+            request
+                .get("http://localhost:8000/information")
+                .query({type: "privacyPolicy"})
+                .then(res => {
+                    privacy = res.body.data.information.content;
+                })
+                .catch(er => {
+                    console.log(er.message);
                 });
-            })
-            .catch(er => {
-                console.log(er.message);
-            });
-    };
+        }
+        this.setState({
+            privacyPolicyText: JSON.parse(privacy),
+        });
+    }
 
     render() {
         return (

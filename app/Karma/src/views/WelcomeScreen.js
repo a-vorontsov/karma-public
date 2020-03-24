@@ -13,6 +13,7 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -64,9 +65,10 @@ class WelcomeScreen extends Component {
         // remove the password field
         this.setState({showPassField: false});
         //send 6 digit code to email through forgot password route
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/signin/forgot")
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -104,15 +106,17 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
+            const authToken = await getAuthToken();
             await request
                 .post("http://localhost:8000/signin/email")
-                .set("authorization", "")
+                .set("authorization", authToken)
                 .send({
                     data: {
                         email: this.state.emailInput,
                     },
                 })
                 .then(res => {
+                    console.log(res.body);
                     if (res.body.data.isFullySignedUp) {
                         //if user isFullySignedUp, returning user
                         this.setState({
@@ -159,9 +163,10 @@ class WelcomeScreen extends Component {
     // verify password is correct
     async checkPass() {
         const {navigate} = this.props.navigation;
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/signin/password")
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -182,9 +187,10 @@ class WelcomeScreen extends Component {
     }
 
     async confirmForgotPasswordCode(code) {
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/signin/forgot/confirm")
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -207,9 +213,10 @@ class WelcomeScreen extends Component {
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;
         //check with register route
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/verify/email")
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,

@@ -1,5 +1,6 @@
 import React from "react";
 import {View, ScrollView, Dimensions} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Styles from "../../styles/Styles";
 import {SubTitleText} from "../text";
 import {GradientButton} from "../buttons";
@@ -21,12 +22,19 @@ export default class CauseContainer extends React.Component {
     }
     async componentDidMount() {
         try {
+            let causes = await AsyncStorage.getItem("causes");
+            causes = JSON.parse(causes);
             const authToken = await getAuthToken();
-            const response = await request
-                .get("http://localhost:8000/causes")
-                .set("authorization", authToken);
+            if (causes.length === 0) {
+                request
+                    .get("http://localhost:8000/causes")
+                    .set("authorization", authToken)
+                    .then(res => {
+                        causes = res.body.data;
+                    });
+            }
             this.setState({
-                causes: response.body.data,
+                causes,
             });
         } catch (error) {
             console.log(error);

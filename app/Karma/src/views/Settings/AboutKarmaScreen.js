@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import AsyncStorage from "@react-native-community/async-storage";
 import {Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
@@ -18,22 +19,29 @@ class AboutKarmaScreen extends Component {
         this.state = {
             aboutText: "Loading...",
         };
-        this.loadAboutText();
     }
 
-    loadAboutText = () => {
-        request
-            .get("http://localhost:8000/information?type=about")
-            .then(res => {
-                console.log(res.body.message);
-                this.setState({
-                    aboutText: res.body.data.information.content,
-                });
-            })
-            .catch(er => {
-                console.log(er.message);
+    async componentDidMount() {
+        try {
+            let about = AsyncStorage.getItem("about");
+            if (about === "") {
+                request
+                    .get("http://localhost:8000/information")
+                    .query({type: about})
+                    .then(res => {
+                        about = res.body.data.information.content;
+                    })
+                    .catch(er => {
+                        console.log(er.message);
+                    });
+            }
+            this.setState({
+                aboutText: about,
             });
-    };
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     render() {
         return (
