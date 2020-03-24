@@ -178,7 +178,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
         log.info("Getting signup history for user id '%d'", userId);
         const individualId = await util.getIndividualIdFromUserId(userId);
         if (individualId === undefined) {
-            return res.send(400).body({message: "IndividualId not specified"});
+            return res.status(400).send("IndividualId not specified");
         }
 
         const signupsResult = await eventSignupService.getSignupHistory(individualId);
