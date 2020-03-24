@@ -122,6 +122,7 @@ const getEvents = async (filters, userId) => {
     let events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(userId),
+            favourited: (event.favourited).includes(userId),
             spotsRemaining: event.spots - (event.volunteers).length,
         };
     });
@@ -157,6 +158,7 @@ const getEventsBySelectedCauses = async (filters, userId) => {
     let events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(userId),
+            favourited: (event.favourited).includes(userId),
             spotsRemaining: event.spots - (event.volunteers).length,
         };
     });

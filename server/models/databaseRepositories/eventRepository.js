@@ -72,6 +72,8 @@ const findAllWithAllData = (whereClause) => {
         "address_1,address_2,postcode,city,region,lat,long,"+
         "ARRAY(SELECT user_id from sign_up "+
         "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers, " +
+        "ARRAY(SELECT user_id from favourite "+
+        "left join individual on id(individual) = individual_id where event_id = id(event)) as favourited, " +
         "ARRAY(SELECT cause_id from event_cause where event_id = id(event)) as causes " +
         "from event inner join address on id(address) = address_id" + whereClause;
     return db.query(query);
