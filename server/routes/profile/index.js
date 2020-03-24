@@ -16,11 +16,11 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 
 /**
  * Endpoint called whenever a user wishes to get their own or another user's profile.<br/>
- * If notMyId is undefined the current user's id derived from the authToken will be used.<br/>
+ * If otherUserId is undefined the current user's id derived from the authToken will be used.<br/>
  <p><b>Route: </b>/profile (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
- * @param {string} req.query.notMyId another user's ID whose profile the active user wishes to view OR undefined
+ * @param {string} req.query.otherUserId another user's ID whose profile the active user wishes to view OR undefined
  * @returns {object}
  * status: 400, description: error - for example an undefined indicating missing profile <br/>
  * status: 200, description: A message variable stating successfully
@@ -119,7 +119,7 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
 router.get("/", authAgent.requireAuthentication, async (req, res) => {
     try {
         // set userId according to whose profile is to be viewed
-        const userId = req.query.notMyId !== undefined ? req.query.notMyId : req.query.userId;
+        const userId = req.query.otherUserId !== undefined ? req.query.otherUserId : req.query.userId;
         const now = new Date();
         log.info("Getting profile data for user id '%d'", userId);
         const userResult = await userRepo.findById(userId);

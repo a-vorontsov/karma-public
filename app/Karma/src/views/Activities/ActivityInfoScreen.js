@@ -89,7 +89,7 @@ class ActivityInfoScreen extends Component {
         const response = await request
             .get("http://localhost:8000/profile")
             .set("authorization", authToken)
-            .query({notMyId: id})
+            .query({otherUserId: id})
             .then(res => {
                 return res.body.data;
             });

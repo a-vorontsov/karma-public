@@ -45,7 +45,7 @@ export default class NotificationItem extends Component {
     getSenderName = async senderId => {
         try {
             const authToken = await getAuthToken();
-            const body = {notMyId: senderId};
+            const body = {otherUserId: senderId};
 
             const response = await request
                 .get("http://localhost:8000/profile")

@@ -63,7 +63,7 @@ test("viewing my own profile works", async () => {
     const profileResponse = await request(app)
         .get(`/profile`)
         .set("authorization", authToken)
-        .send(); // notMyId is undefined
+        .send(); // otherUserId is undefined
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
@@ -105,7 +105,7 @@ test("viewing some else's profile works", async () => {
 
     profileViewRequest.userId = userId;
     const profileResponse = await request(app)
-        .get(`/profile?notMyId=${profileViewRequest.userId}`);
+        .get(`/profile?otherUserId=${profileViewRequest.userId}`);
 
     expect(profileResponse.body.message).toBe(
         "Found individual profile for user.",
