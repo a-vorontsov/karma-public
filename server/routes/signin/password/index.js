@@ -18,15 +18,12 @@ const httpUtil = require("../../../util/httpUtil");
  * userId as well as a new and valid authToken for the user.
  <p><b>Route: </b>/signin/password (POST)</p>
  <p><b>Permissions: </b>require not auth</p>
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ * @param {string} req.headers.authorization authToken
  * @param {string} req.body.data.email the email address of the user
  * @param {string} req.body.data.password the input password of the user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
             "password": "securePassword123!"
@@ -53,7 +50,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
         log.info("Starting sign-in with password");
         const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
-        httpUtil.sendAuthResult(signInResult, res);
+        httpUtil.sendResult(signInResult, res);
     } catch (e) {
         log.error("Sign-in with password failed: " + e);
         res.status(400).send({

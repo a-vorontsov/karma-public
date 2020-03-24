@@ -16,6 +16,7 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import request from "superagent";
+import {getAuthToken} from "../../util/credentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -34,10 +35,14 @@ const ActivityEditable = props => {
      */
     const deleteEvent = async () => {
         const activityId = activity.id;
+        const authToken = await getAuthToken();
         const url = `http://localhost:8000/event/${activityId}/delete/`;
-        await request.post(url).then(res => {
-            navigation.navigate("Profile");
-        });
+        await request
+            .post(url)
+            .set("authorization", authToken)
+            .then(res => {
+                navigation.navigate("Profile");
+            });
     };
 
     return (

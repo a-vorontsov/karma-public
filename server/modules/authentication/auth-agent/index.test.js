@@ -69,6 +69,7 @@ test("visiting an internal route with a valid token works", async () => {
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", authToken)
         .send(viewCausesRequest)
         .redirects(0);
 
@@ -124,6 +125,7 @@ test("visiting an internal route with a null token fails as expected", async () 
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", null)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -150,6 +152,7 @@ test("visiting an internal route with a forged token validation tag fails as exp
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -176,6 +179,7 @@ test("visiting an internal route with modified pub params in the protected token
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -201,6 +205,7 @@ test("visiting an internal route with a modified algo in the protected token hea
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -226,6 +231,7 @@ test("visiting an internal route with a forged algo in the protected token heade
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -252,6 +258,7 @@ test("visiting an internal route with a forged CEK fails as expected", async () 
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -278,6 +285,7 @@ test("visiting an internal route with a forged initialisation vector fails as ex
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -304,6 +312,7 @@ test("visiting an internal route with tampered data fails as expected", async ()
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -330,6 +339,7 @@ test("visiting an internal route with a stolen token fails as expected", async (
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -348,6 +358,7 @@ test("visiting a no-auth route un-authenticated with null token works", async ()
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", signUpEmailReq.authToken)
         .send(signUpEmailReq)
         .redirects(0);
 
@@ -366,6 +377,7 @@ test("visiting a no-auth route un-authenticated with invalid token works", async
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", signUpEmailReq.authToken)
         .send(signUpEmailReq)
         .redirects(0);
 
@@ -407,6 +419,7 @@ test("visiting a no-auth route already authenticated redirects as expected", asy
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", signUpEmailReq.authToken)
         .send(signUpEmailReq)
         .redirects(1);
 
@@ -435,6 +448,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(0);
 
@@ -448,6 +462,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
 
     const response2 = await request(app)
         .get("/causes")
+        .set("authorization", viewCausesRequest.authToken)
         .send(viewCausesRequest)
         .redirects(1);
 
@@ -474,6 +489,7 @@ test("visiting a no-auth route with auth-checks disabled works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", signUpEmailReq.authToken)
         .send(signUpEmailReq)
         .redirects(1);
 
@@ -499,6 +515,7 @@ test("visiting an internal route with auth-checks disabled works", async () => {
 
     const response = await request(app)
         .get("/causes")
+        .set("authorization", null)
         .send(viewCausesRequest)
         .redirects(0);
 
@@ -530,6 +547,7 @@ test("visiting an admin route with a valid token works", async () => {
 
     const response = await request(app)
         .get("/admin/users")
+        .set("authorization", adminRequest.authToken)
         .send(adminRequest)
         .redirects(0);
 
@@ -556,6 +574,7 @@ test("visiting an admin route with a user token fails as expected", async () => 
 
     const response = await request(app)
         .get("/admin/users")
+        .set("authorization", adminRequest.authToken)
         .send(adminRequest)
         .redirects(1);
 
@@ -580,6 +599,7 @@ test("visiting the reset route with a regular user token fails as expected", asy
 
     const response = await request(app)
         .post("/reset")
+        .set("authorization", resetRequest.authToken)
         .send(resetRequest)
         .redirects(1);
 
@@ -604,6 +624,7 @@ test("visiting the reset route with a password reset token works", async () => {
 
     const response = await request(app)
         .post("/reset")
+        .set("authorization", resetRequest.authToken)
         .send(resetRequest)
         .redirects(0);
 
@@ -623,6 +644,7 @@ test("visiting the reset route without a token fails as expected", async () => {
 
     const response = await request(app)
         .post("/reset")
+        .set("authorization", resetRequest.authToken)
         .send(resetRequest)
         .redirects(1);
 

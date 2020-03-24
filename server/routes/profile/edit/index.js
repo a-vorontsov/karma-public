@@ -17,8 +17,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  * left out from the POST request to avoid unnecessary computation.<br/>
  <p><b>Route: </b>/profile/edit (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {number} req.body.userId the user's id, as in every request
- * @param {string} req.body.authToken the user's valid authToken, as in every request
+ * @param {string} req.headers.authorization authToken
  * @param {object} req.body.data.user if anything for user has changed
  * @param {object} req.body.data.individual if anything for indiv prof has changed
  * @param {object} req.body.data.organisation if anything for org prof has changed
@@ -26,8 +25,6 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
 <pre><code>
     // example 1 (user wishes to change username, phoneNumber, and set/update their bio & filter to women only events)
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
         "data": &#123;
             "user": &#123;
                 "username": "newUserName",

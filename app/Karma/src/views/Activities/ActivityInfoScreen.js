@@ -21,6 +21,7 @@ import {getDate, formatAMPM} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
+import {getAuthToken} from "../../util/credentials";
 
 import request from "superagent";
 
@@ -84,9 +85,11 @@ class ActivityInfoScreen extends Component {
     };
 
     getCreatorInfo = async id => {
+        const authToken = await getAuthToken();
         const response = await request
             .get("http://localhost:8000/profile")
-            .query({userId: id})
+            .set("authorization", authToken)
+            .query({otherUserId: id})
             .then(res => {
                 return res.body.data;
             });

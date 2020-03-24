@@ -14,6 +14,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * URL example: GET http://localhost:8000/information?type=privacyPolicy
  <p><b>Route: </b>/information (GET)</p>
  <p><b>Permissions: </b>any</p>
+ * @param {string} req.headers.authorization authToken or null
  * @param {String} req.query.type - type of information
  * @returns {Object}
  *  status: 200, description: The information of the requested type.<br/>

@@ -3,7 +3,8 @@ import {View} from "react-native";
 import {RegularText} from "../../components/text";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import Styles from "../../styles/Styles";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
+
 const request = require("superagent");
 
 class ActivitiesFavouritesScreen extends Component {
@@ -20,12 +21,10 @@ class ActivitiesFavouritesScreen extends Component {
     };
 
     async fetchAllActivities() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/event/favourites")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);
                 let activities = result.body.data.events;

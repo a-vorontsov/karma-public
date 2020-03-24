@@ -21,8 +21,6 @@ afterEach(() => {
 });
 
 const signInEmailRequest = {
-    userId: null,
-    authToken: null,
     data: {
         email: "test4@gmail.com",
     }
@@ -31,6 +29,7 @@ const signInEmailRequest = {
 test("sign-in with email works", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -44,6 +43,7 @@ test("sign-in with unverified email works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -57,6 +57,7 @@ test("sign-in with verified email works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -70,6 +71,7 @@ test("sign-in with verified email but no registration works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -84,6 +86,7 @@ test("sign-in with partial registration works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -98,6 +101,7 @@ test("sign-in with full registration works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);

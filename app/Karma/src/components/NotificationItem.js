@@ -4,6 +4,7 @@ import {RegularText, BoldText, SemiBoldText} from "../components/text";
 import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 
 /**
@@ -43,11 +44,12 @@ export default class NotificationItem extends Component {
 
     getSenderName = async senderId => {
         try {
-            const body = {userId: senderId};
+            const authToken = await getAuthToken();
 
             const response = await request
                 .get("http://localhost:8000/profile")
-                .query(body)
+                .set("authorization", authToken)
+                .query({otherUserId: senderId})
                 .then(res => {
                     return res.body.data;
                 });

@@ -15,6 +15,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * Endpoint called whenever an admin requests to see all users.<br/>
  <p><b>Route: </b>/admin/users (GET)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: All users signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -58,6 +59,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  * specific user.<br/>
  <p><b>Route: </b>/admin/user/delete?userId=2 (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: The deleted user.<br/>
  *  status: 500, description: DB error
@@ -96,6 +98,7 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  * Endpoint called whenever an admin requests to see all individuals.<br/>
  <p><b>Route: </b>/admin/individuals (GET)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: All individuals signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -151,6 +154,7 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  * Endpoint called whenever an admin requests to toggle the ban status of an individual.<br/>
  <p><b>Route: </b>/admin/toggleban (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
  *  status: 500, description: DB error
