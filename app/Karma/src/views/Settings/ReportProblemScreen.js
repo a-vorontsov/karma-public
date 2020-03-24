@@ -13,7 +13,7 @@ import {RegularText} from "../../components/text";
 import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
 
@@ -41,22 +41,20 @@ class ReportProblemScreen extends Component {
         this.state = {
             category: problemTypes[0].value,
             problem: "",
-            user: this.props.navigation.getParam("user"),
+            user: props.navigation.getParam("user"),
         };
         this.submitBugReport = this.submitBugReport.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
     }
 
     async submitBugReport() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
-        Toast.showWithGravity("Sending report...", Toast.SHORT, Toast.BOTTOM);
+        const {navigate} = this.props.navigation;
+        const authToken = await getAuthToken();
+        Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
         request
             .post("http://localhost:8000/bugreport")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: {
                     email: this.state.user.email,
                     report: this.state.category + ": " + this.state.problem,
@@ -69,13 +67,9 @@ class ReportProblemScreen extends Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
-                setTimeout(
-                    () =>
-                        this.props.navigation.navigate("SettingsMenu", {
-                            user: this.state.user,
-                        }),
-                    1500,
-                ); //1.5 seconds delay so users can admire the toast
+                navigate("SettingsMenu", {
+                    user: this.state.user,
+                });
             })
             .catch(er => {
                 console.log(er.message);

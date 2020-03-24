@@ -7,8 +7,9 @@ import Colours from "../../styles/Colours";
 import {TextInput} from "../../components/input";
 import Toast from "react-native-simple-toast";
 import {GradientButton} from "../../components/buttons";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 const request = require("superagent");
+
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.6 * SCREEN_WIDTH;
 
@@ -30,12 +31,10 @@ class EmailSettingsScreen extends Component {
         this.saveSettings = this.saveSettings.bind(this);
     }
     async loadSettings() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/settings")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(res => {
                 this.setState({
                     promotionalEmails: res.body.data.settings.email,
@@ -48,14 +47,11 @@ class EmailSettingsScreen extends Component {
     }
 
     async saveSettings() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
             .post("http://localhost:8000/settings")
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 email: this.state.promotionalEmails,
                 notifications: this.state.notifications,
             })
