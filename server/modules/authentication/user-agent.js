@@ -1,4 +1,5 @@
 const digest = require("./digest");
+const log = require("../../util/log");
 const regStatus = require("./registration-status");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
@@ -251,6 +252,7 @@ const signIn = async (email, password, pub) => {
     const userResult = await userRepo.findByEmail(email);
     const user = userResult.rows[0];
     if (isCorrectPassword(user, password)) {
+        log.info("Signing in '%s': correct password", email);
         const authToken = authAgent.logInUser(user.id, pub);
         return ({
             status: 200,
@@ -259,6 +261,7 @@ const signIn = async (email, password, pub) => {
             authToken: authToken,
         });
     } else {
+        log.info("Signing in '%s': incorrect password", email);
         return ({
             status: 400,
             message: "Invalid password.",
