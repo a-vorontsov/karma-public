@@ -1,15 +1,15 @@
 const authAgent = require("./");
-const testHelpers = require("../../../test/testHelpers");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const authRepo = require("../../../models/databaseRepositories/authenticationRepository");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
-const causeRepo = require("../../../models/databaseRepositories/causeRepository");
+const testHelpers = require("../../test/testHelpers");
+const userRepo = require("../../models/databaseRepositories/userRepository");
+const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const indivRepo = require("../../models/databaseRepositories/individualRepository");
+const addressRepo = require("../../models/databaseRepositories/addressRepository");
+const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const profileRepo = require("../../models/databaseRepositories/profileRepository");
+const causeRepo = require("../../models/databaseRepositories/causeRepository");
 const request = require("supertest");
-const app = require("../../../app");
-const jose = require("../../jose");
+const app = require("../../app");
+const jose = require("../jose");
 const npmjose = require('jose');
 const {
     JWE, // JSON Web Encryption (JWE)
@@ -18,16 +18,16 @@ const {
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = npmjose;
-const joseConf = require("../../../config").jose;
-const adminService = require("../../admin/adminService");
-const userAgent = require("../user-agent");
+const joseConf = require("../../config").jose;
+const adminService = require("../admin");
+const userAgent = require("./user-agent");
 
 const user = testHelpers.getUserExample4();
 const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
-jest.mock("../../../models/databaseRepositories/causeRepository");
-jest.mock("../../admin/adminService");
+jest.mock("../../models/databaseRepositories/causeRepository");
+jest.mock("../admin/");
 
 beforeEach(() => {
     return testHelpers.clearDatabase();

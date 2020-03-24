@@ -13,7 +13,7 @@ const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event/eventService");
 const paginator = require("../../modules/pagination");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);

@@ -8,7 +8,7 @@ const httpUtil = require("../../../util/httpUtil");
 const eventService = require("../../../modules/event/eventService");
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const eventSignupService = require("../../../modules/event/signup/eventSignupService");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>

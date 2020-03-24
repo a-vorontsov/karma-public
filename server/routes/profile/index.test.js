@@ -3,7 +3,7 @@ const app = require("../../app");
 const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();

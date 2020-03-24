@@ -5,7 +5,7 @@
 const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wishes to sign-out from the

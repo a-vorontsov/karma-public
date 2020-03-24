@@ -8,7 +8,7 @@ const eventFavouriteService = require("../../../modules/event/favourite/eventFav
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>

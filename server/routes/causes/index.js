@@ -5,7 +5,7 @@ const log = require("../../util/log");
 const express = require('express');
 const router = express.Router();
 const causeRepository = require("../../models/databaseRepositories/causeRepository");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Gets all causes.<br/>

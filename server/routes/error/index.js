@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 router.get("/", authAgent.requireRedirectionAuthentication, (req, res) => {
     const status = req.query.status !== undefined ? req.query.status : 500;

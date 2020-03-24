@@ -9,7 +9,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/tokenSender");
-const authAgent = require("./auth-agent");
+const authAgent = require("./");
 const geocoder = require("../geocoder");
 const settingsRepo = require("../../models/databaseRepositories/settingsRepository");
 

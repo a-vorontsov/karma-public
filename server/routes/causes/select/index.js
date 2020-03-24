@@ -2,7 +2,7 @@ const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 /**
  * gets called when user selects causes

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const stripeVerification = require("../../../modules/verification/stripe");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 router.post('/create', (req, res) => {
     try {

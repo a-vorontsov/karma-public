@@ -9,7 +9,7 @@ const resetRepository = require("../../../models/databaseRepositories/resetRepos
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
 const tokenSender = require("../../../modules/verification/tokenSender");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
  <p><b>Route: </b>/signin/forgot (POST)</p>

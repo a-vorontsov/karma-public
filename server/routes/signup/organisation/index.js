@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 /**
  * This is the fourth step of the signup flow (after user

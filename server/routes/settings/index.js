@@ -7,7 +7,7 @@ const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
 const settingsService = require("../../modules/settings/");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wants to update the settings.<br/>

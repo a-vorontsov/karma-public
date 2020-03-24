@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
 const httpUtil = require("../../util/httpUtil");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Attempt send a bug report to admin email account.

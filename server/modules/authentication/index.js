@@ -1,8 +1,8 @@
-const httpUtil = require("../../../util/httpUtil");
-const httpRes = require("../../../util/httpResponses");
-const digest = require("../digest");
-const jose = require("../../jose");
-const permConfig = require("../../../config").josePermissions;
+const httpUtil = require("../../util/httpUtil");
+const httpRes = require("../../util/httpResponses");
+const digest = require("./digest");
+const jose = require("../jose");
+const permConfig = require("../../config").josePermissions;
 const permissions = new Map(Object.entries(permConfig));
 const redirectCache = new Set();
 /**

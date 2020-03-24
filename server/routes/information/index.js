@@ -7,7 +7,7 @@ const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
 const informationService = require("../../modules/informationService/");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user requests information about an information type.<br/>

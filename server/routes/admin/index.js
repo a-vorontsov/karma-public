@@ -7,9 +7,9 @@ const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
 const deletionModule = require("../../modules/deletion");
-const adminService = require("../../modules/admin/adminService");
+const adminService = require("../../modules/admin/");
 const validation = require("../../modules/validation");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authAgent = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin requests to see all users.<br/>

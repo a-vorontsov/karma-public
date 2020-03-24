@@ -8,7 +8,7 @@ const router = express.Router();
 const httpUtil = require("../../../util/httpUtil");
 const validation = require("../../../modules/validation");
 const informationService = require("../../../modules/informationService/");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin wants to upload new information such as Privacy Policy, Community Guidelines.<br/>

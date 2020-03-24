@@ -1,5 +1,5 @@
 const testHelpers = require("../../test/testHelpers");
-const adminService = require("./adminService");
+const adminService = require("./");
 
 const userRepository = require("../../models/databaseRepositories/userRepository");
 const individualRepository = require("../../models/databaseRepositories/individualRepository");

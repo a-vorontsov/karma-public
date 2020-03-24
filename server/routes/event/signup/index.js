@@ -10,7 +10,7 @@ const eventSignupService = require("../../../modules/event/signup/eventSignupSer
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authAgent = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
