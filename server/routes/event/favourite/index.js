@@ -5,8 +5,8 @@ const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 const eventFavouriteService = require("../../../modules/event/favourite");
-const httpUtil = require("../../../util/httpUtil");
-const util = require("../../../util/util");
+const httpUtil = require("../../../util/http");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
 const authService = require("../../../modules/authentication/");
 

@@ -1,5 +1,5 @@
 const stripe = require("./");
-const util = require("../../../util/util");
+const util = require("../../../util");
 
 test("immediate response is false", async () => {
     await stripe.uploadFile(1);

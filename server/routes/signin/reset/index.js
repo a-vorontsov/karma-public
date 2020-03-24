@@ -8,7 +8,7 @@ const router = express.Router();
 const userAgent = require("../../../modules/user");
 const authService = require("../../../modules/authentication/");
 const owasp = require("owasp-password-strength-test");
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 
 /**
  * Attempt to reset the password for a given user.<br/>

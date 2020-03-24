@@ -15,7 +15,7 @@ const complaintRepository = require("../../models/databaseRepositories/complaint
 const reportUserRepository = require("../../models/databaseRepositories/reportUserRepository");
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const settingRepository = require("../../models/databaseRepositories/settingsRepository");
-const util = require("../../util/util");
+const util = require("../../util");
 
 /**
  * Deletes all information about a user.

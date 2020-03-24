@@ -6,7 +6,7 @@ const eventCauseRepository = require("../../models/databaseRepositories/eventCau
 const favouriteEventRepository = require("../../models/databaseRepositories/favouriteRepository");
 const causeRepo = require("../../models/databaseRepositories/causeRepository");
 const eventSorter = require("../sorting");
-const util = require("../../util/util");
+const util = require("../../util");
 const filterer = require("../filtering");
 const geocoder = require("../geocoder");
 /**

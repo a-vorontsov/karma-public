@@ -3,12 +3,12 @@ const eventFavouriteService = require("./");
 const eventSorter = require("../../sorting");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
-const util = require("../../../util/util");
+const util = require("../../../util");
 
 jest.mock("../../../models/databaseRepositories/favouriteRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
 jest.mock("../../sorting");
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 
 
 let favourite, event1, event2;

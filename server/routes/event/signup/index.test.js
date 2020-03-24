@@ -3,11 +3,11 @@ const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
 const validation = require("../../../modules/validation");
 const eventSignupService = require("../../../modules/event/signup");
-const util = require("../../../util/util");
+const util = require("../../../util");
 
 jest.mock("../../../modules/event/signup");
 jest.mock("../../../modules/validation");
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 
 validation.validateSignup.mockReturnValue({errors: ""});
 

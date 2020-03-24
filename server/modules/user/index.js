@@ -1,6 +1,6 @@
 const digest = require("../authentication/digest");
 const log = require("../../util/log");
-const regStatus = require("../../util/registration-status");
+const regStatus = require("../../util/registration");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const individualRepo = require("../../models/databaseRepositories/individualRepository");

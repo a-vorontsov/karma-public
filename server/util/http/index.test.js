@@ -1,4 +1,4 @@
-const httpUtil = require("./httpUtil");
+const httpUtil = require("./");
 
 afterEach(() => jest.clearAllMocks());
 

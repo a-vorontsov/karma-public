@@ -6,13 +6,13 @@ const signupRepository = require("../../../models/databaseRepositories/signupRep
 const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 const eventSorter = require("../../sorting");
 const profileRepo = require("../../../models/databaseRepositories/profileRepository");
-const util = require("../../../util/util");
+const util = require("../../../util");
 
 jest.mock("../../../models/databaseRepositories/signupRepository");
 jest.mock("../../../models/databaseRepositories/eventRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
 jest.mock("../../../models/databaseRepositories/profileRepository");
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 jest.mock("../../sorting");
 
 let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2, profile;

@@ -6,8 +6,8 @@ const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
-const util = require("../../../util/util");
-const httpUtil = require("../../../util/httpUtil");
+const util = require("../../../util");
+const httpUtil = require("../../../util/http");
 const tokenSender = require("../../../modules/verification/token");
 const authService = require("../../../modules/authentication/");
 /**

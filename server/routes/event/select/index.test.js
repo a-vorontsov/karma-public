@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../../../app");
 const testHelpers = require("../../../test/testHelpers");
-const util = require("../../../util/util");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
 const eventService = require("../../../modules/event");
 const eventFavouriteService = require("../../../modules/event/favourite");
@@ -18,7 +18,7 @@ jest.mock("../../../modules/event");
 jest.mock("../../../modules/event/favourite");
 jest.mock("../../../modules/event/signup");
 
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 jest.mock("../../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 

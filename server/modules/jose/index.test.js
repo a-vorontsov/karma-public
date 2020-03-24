@@ -1,6 +1,6 @@
 const jose = require('jose');
 const Base64 = require('js-base64').Base64;
-const util = require("../../util/util");
+const util = require("../../util");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)

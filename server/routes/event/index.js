@@ -9,7 +9,7 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const validation = require("../../modules/validation");
 const eventService = require("../../modules/event");
 const paginator = require("../../modules/pagination");

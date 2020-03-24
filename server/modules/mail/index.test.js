@@ -1,5 +1,5 @@
 const mailSender = require("./index");
-const util = require("../../util/util");
+const util = require("../../util");
 
 mailOptions = {
     email: process.env.EMAIL_ADDRESS,

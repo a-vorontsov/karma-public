@@ -2,7 +2,7 @@ const eventRepository = require("../../../models/databaseRepositories/eventRepos
 const signupRepository = require("../../../models/databaseRepositories/signupRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const profileRepository = require("../../../models/databaseRepositories/profileRepository");
-const util = require("../../../util/util");
+const util = require("../../../util");
 const eventSorter = require("../../sorting");
 
 /**

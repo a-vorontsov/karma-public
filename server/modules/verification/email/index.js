@@ -1,5 +1,5 @@
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const util = require("../../../util/util");
+const util = require("../../../util");
 
 /**
  * Verify email address with given token.

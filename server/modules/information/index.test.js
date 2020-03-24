@@ -3,7 +3,7 @@ const informationService = require("./");
 const informationRepository = require("../../models/databaseRepositories/informationRepository");
 
 jest.mock("../../models/databaseRepositories/informationRepository");
-jest.mock("../../util/util");
+jest.mock("../../util");
 
 let information;
 

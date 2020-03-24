@@ -18,7 +18,7 @@ const complaintRepository = require("../../models/databaseRepositories/complaint
 const reportUserRepository = require("../../models/databaseRepositories/reportUserRepository");
 const resetRepository = require("../../models/databaseRepositories/resetRepository");
 const settingRepository = require("../../models/databaseRepositories/settingsRepository");
-const util = require("../../util/util");
+const util = require("../../util");
 
 jest.mock("../../models/databaseRepositories/addressRepository");
 jest.mock("../../models/databaseRepositories/favouriteRepository");
@@ -37,7 +37,7 @@ jest.mock("../../models/databaseRepositories/complaintRepository");
 jest.mock("../../models/databaseRepositories/reportUserRepository");
 jest.mock("../../models/databaseRepositories/resetRepository");
 jest.mock("../../models/databaseRepositories/settingsRepository");
-jest.mock("../../util/util");
+jest.mock("../../util");
 
 let user, individual, organisation;
 

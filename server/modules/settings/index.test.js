@@ -3,7 +3,7 @@ const settingsService = require("./");
 const settingsRepository = require("../../models/databaseRepositories/settingsRepository");
 
 jest.mock("../../models/databaseRepositories/settingsRepository");
-jest.mock("../../util/util");
+jest.mock("../../util");
 
 let setting;
 

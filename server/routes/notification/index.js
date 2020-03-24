@@ -7,7 +7,7 @@ const router = express.Router();
 const notificationService = require("../../modules/notification");
 const validation = require("../../modules/validation");
 const authService = require("../../modules/authentication/");
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 
 /**
  * Endpoint called whenever a user sends a new notification.<br/>

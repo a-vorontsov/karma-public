@@ -1,6 +1,6 @@
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
-const util = require("../../../util/util");
+const util = require("../../../util");
 const eventSorter = require("../../sorting");
 /**
  * Creates a new event favourite to be added to the database.

@@ -1,5 +1,5 @@
-const httpUtil = require("../../util/httpUtil");
-const httpRes = require("../../util/httpResponses");
+const httpUtil = require("../../util/http");
+const httpRes = require("../../util/http/responses");
 const digest = require("./digest");
 const jose = require("../jose");
 const permConfig = require("../../config").josePermissions;

@@ -7,8 +7,8 @@ const express = require('express');
 const router = express.Router();
 
 const eventSignupService = require("../../../modules/event/signup");
-const httpUtil = require("../../../util/httpUtil");
-const util = require("../../../util/util");
+const httpUtil = require("../../../util/http");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
 const authService = require("../../../modules/authentication/");
 /**

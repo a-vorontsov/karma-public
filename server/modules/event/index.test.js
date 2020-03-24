@@ -8,7 +8,7 @@ const signUpRepository = require("../../models/databaseRepositories/signupReposi
 const addressRepository = require("../../models/databaseRepositories/addressRepository");
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const eventSorter = require("../sorting");
-const util = require("../../util/util");
+const util = require("../../util");
 const filterer = require("../filtering");
 
 
@@ -18,7 +18,7 @@ jest.mock("../../models/databaseRepositories/signupRepository");
 jest.mock("../../models/databaseRepositories/selectedCauseRepository");
 jest.mock("../../models/databaseRepositories/favouriteRepository");
 jest.mock("../../models/databaseRepositories/eventCauseRepository");
-jest.mock("../../util/util");
+jest.mock("../../util");
 jest.mock("../filtering");
 jest.mock("../sorting");
 

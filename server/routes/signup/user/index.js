@@ -8,7 +8,7 @@ const router = express.Router();
 const userAgent = require("../../../modules/user");
 const authService = require("../../../modules/authentication");
 const owasp = require("owasp-password-strength-test");
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 
 /**
  * This is the third step of the signup flow (after email

@@ -7,7 +7,7 @@ const express = require("express");
 const router = express.Router();
 const authService = require("../../../modules/authentication/");
 const userAgent = require("../../../modules/user");
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 
 /**
  * Attempt to log in an existing user with given email & password.<br/>
