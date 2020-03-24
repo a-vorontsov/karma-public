@@ -1,5 +1,5 @@
 const addressRepository = require("./addressRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
 let address;
 

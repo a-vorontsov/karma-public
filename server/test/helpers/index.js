@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../../database/connection");
 const date = require("date-and-time");
 
 const registrationExample1 = {

@@ -1,4 +1,4 @@
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const eventSignupService = require("./");
 
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");

@@ -2,7 +2,7 @@ const userRepository = require("./userRepository");
 const individualRepository = require("./individualRepository");
 const addressRepository = require("./addressRepository");
 const profileRepository = require("./profileRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const registrationRepository = require("./registrationRepository");
 
 let registration, user, individual, profile, address;

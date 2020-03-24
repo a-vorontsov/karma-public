@@ -1,6 +1,6 @@
 const userRepository = require("./userRepository");
 const complaintRepository = require("./complaintRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const registrationRepository = require("./registrationRepository");
 
 let registrationExample1, userExample1, complaint;

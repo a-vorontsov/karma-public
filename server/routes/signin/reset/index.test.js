@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
 const userRepo = require("../../../models/databaseRepositories/userRepository");
 const userAgent = require("../../../modules/user");

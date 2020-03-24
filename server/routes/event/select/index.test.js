@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const util = require("../../../util");
 const validation = require("../../../modules/validation");
 const eventService = require("../../../modules/event");

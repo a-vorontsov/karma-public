@@ -11,7 +11,7 @@ const {
 const authRepo = require("../../models/databaseRepositories/authenticationRepository");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
 const joseOnServer = require("./");
 

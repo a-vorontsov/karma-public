@@ -1,4 +1,4 @@
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const adminService = require("./");
 
 const userRepository = require("../../models/databaseRepositories/userRepository");

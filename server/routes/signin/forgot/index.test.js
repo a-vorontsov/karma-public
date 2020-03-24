@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../../app');
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const jose = require("../../../modules/jose");
 const userRepository = require("../../../models/databaseRepositories/userRepository");
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");

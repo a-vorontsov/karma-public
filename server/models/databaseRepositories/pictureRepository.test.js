@@ -1,5 +1,5 @@
 const pictureRepository = require("./pictureRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
 let pictureExample1;
 

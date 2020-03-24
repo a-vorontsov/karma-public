@@ -1,5 +1,5 @@
 const authService = require("./");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
 const indivRepo = require("../../models/databaseRepositories/individualRepository");

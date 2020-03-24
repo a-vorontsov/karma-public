@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const owasp = require("owasp-password-strength-test");
 const regRepo = require("../../../models/databaseRepositories/registrationRepository");
 const jose = require("../../../modules/jose");

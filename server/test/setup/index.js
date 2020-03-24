@@ -1,8 +1,8 @@
 require("dotenv").config();
 process.env.NODE_ENV = 'test';
-require("../util/log");
+require("../../util/log");
 require('twilio');
-const db = require("../database/connection");
+const db = require("../../database/connection");
 
 jest.mock("twilio", () => jest.fn()); // prevent actual initalization of Twilio client in tests
 

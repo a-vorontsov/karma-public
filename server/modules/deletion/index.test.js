@@ -1,4 +1,4 @@
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const deletionService = require("./index");
 
 const addressRepository = require("../../models/databaseRepositories/addressRepository");

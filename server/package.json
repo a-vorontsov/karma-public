@@ -69,7 +69,7 @@
       "html"
     ],
     "setupFilesAfterEnv": [
-      "./test/setupTests"
+      "./test/setup"
     ]
   }
 }

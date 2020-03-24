@@ -1,7 +1,7 @@
 const userRepository = require("../models/databaseRepositories/userRepository");
 const individualRepository = require("../models/databaseRepositories/individualRepository");
 const addressRepository = require("../models/databaseRepositories/addressRepository");
-const testHelpers = require("../test/testHelpers");
+const testHelpers = require("../test/helpers");
 const util = require("../util");
 const registrationRepository = require("../models/databaseRepositories/registrationRepository");
 

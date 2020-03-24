@@ -1,7 +1,7 @@
 const userRepository = require("./userRepository");
 const organisationRepository = require("./organisationRepository");
 const addressRepository = require("./addressRepository");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const registrationRepository = require("./registrationRepository");
 
 let registration, user, address, organisation;
