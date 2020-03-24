@@ -2,6 +2,7 @@
  * @module Verify-Email
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const emailVerification = require("../../../modules/verification/email");
@@ -13,16 +14,14 @@ const httpUtil = require("../../../util/httpUtil");
  * The user only inputs their email verification token and a response
  * is generated based on the validity of the token. The token is valid
  * only for 15 minutes.
- * @route {POST} /verify/email
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ <p><b>Route: </b>/verify/email (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
+ * @param {string} req.headers.authorization authToken
  * @param {string} req.body.data.email email address of the user
  * @param {string} req.body.data.token the user input email verification token
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
             "token": "123456",
@@ -41,9 +40,11 @@ const httpUtil = require("../../../util/httpUtil");
  */
 router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
     try {
+        log.info("Verifying user email");
         const verificationResult = await emailVerification.verifyEmail(req.body.data.email, req.body.data.token);
         return httpUtil.sendResult(verificationResult, res);
     } catch (e) {
+        log.error("User email verification failed:" + e);
         httpUtil.sendGenericError(e, res);
     }
 });

@@ -13,12 +13,31 @@ const icons = {
     privacy: require("../../assets/images/settings-logos/privacy.png"),
     report: require("../../assets/images/settings-logos/report-problem.png"),
     terms: require("../../assets/images/settings-logos/terms.png"),
+    bin: require("../../assets/images/settings-logos/bin.png"),
 };
 
 class SettingsMenuScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+        };
+    }
     static navigationOptions = {
         headerShown: false,
     };
+    componentDidMount() {
+        const {navigation} = this.props;
+        const user = navigation.getParam("user");
+        this.willFocusListener = navigation.addListener("willFocus", () => {
+            this.setState({
+                user: user,
+            });
+        });
+    }
+    componentWillUnmount() {
+        this.willFocusListener.remove();
+    }
 
     render() {
         const {navigate} = this.props.navigation;
@@ -32,7 +51,11 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Report A Problem"
                             icon={icons.report}
-                            onPress={() => navigate("ReportProblem")}
+                            onPress={() =>
+                                navigate("ReportProblem", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="About KARMA"
@@ -57,12 +80,21 @@ class SettingsMenuScreen extends Component {
                         <SettingsButton
                             title="Emails Settings"
                             icon={icons.email}
-                            onPress={() => navigate("EmailSettings")}
+                            onPress={() =>
+                                navigate("EmailSettings", {
+                                    user: this.state.user,
+                                })
+                            }
                         />
                         <SettingsButton
                             title="Log Out"
                             icon={icons.logout}
                             onPress={() => navigate("LogOut")}
+                        />
+                        <SettingsButton
+                            title="Delete Account"
+                            icon={icons.bin}
+                            onPress={() => navigate("DeleteAccount")}
                         />
                     </View>
                 </ScrollView>

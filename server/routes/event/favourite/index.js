@@ -1,22 +1,24 @@
 /**
  * @module Event-Favourite
  */
-
+const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-
 const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
 const httpUtil = require("../../../util/httpUtil");
+const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
-
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite
+ <p><b>Route: </b>/event/:id/favourite (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -36,9 +38,11 @@ const validation = require("../../../modules/validation");
  *  @name Favourite an event
  *  @function
  */
-router.post('/:eventId/favourite', async (req, res) => {
+router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
     try {
-        const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        log.info("Favouriting event");
+        const favouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -47,18 +51,20 @@ router.post('/:eventId/favourite', async (req, res) => {
         const favouriteResult = await eventFavouriteService.createEventFavourite(favouriteRequest);
         return httpUtil.sendResult(favouriteResult, res);
     } catch (e) {
-        console.log("Error while favouriting event: " + e.message);
+        log.error("Error while favouriting event: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });
 
 /**
  * Endpoint called whenever a user unfavourites an event.<br/>
- * URL example: POST http://localhost:8000/event/5/favourite/delete
+ <p><b>Route: </b>/event/:id/favourite/delete (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -78,9 +84,11 @@ router.post('/:eventId/favourite', async (req, res) => {
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:eventId/favourite/delete', async (req, res) => {
+router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
     try {
-        const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        log.info("Unfavouriting event");
+        const deleteFavouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -89,7 +97,7 @@ router.post('/:eventId/favourite/delete', async (req, res) => {
         const deleteFavouriteResult = await eventFavouriteService.deleteEventFavourite(deleteFavouriteRequest);
         return httpUtil.sendResult(deleteFavouriteResult, res);
     } catch (e) {
-        console.log("Error while unfavouriting event: " + e.message);
+        log.error("Error while unfavouriting event: " + e.message);
         return httpUtil.sendGenericError(e, res);
     }
 });

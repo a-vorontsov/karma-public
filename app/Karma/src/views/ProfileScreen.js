@@ -24,7 +24,7 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
-import {getData} from "../util/GetCredentials";
+import {getAuthToken} from "../util/credentials";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -47,7 +47,7 @@ class ProfileScreen extends Component {
         this.state = {
             activeSlide: 0,
             name: "",
-            username: "",
+            user: {},
             location: "",
             bio: "",
             causes: [],
@@ -60,6 +60,9 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             organisationType: "",
             orgPhoneNumber: "",
+            orgName: "",
+            address: {},
+            gender: null,
         };
         this.fetchProfileInfo();
     }
@@ -78,11 +81,11 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
+            email: user.email,
             isOrganisation: false,
             name: individual.firstName + " " + individual.lastName,
-            username: user.username,
+            user: user,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
             bio: individual.bio,
@@ -92,8 +95,11 @@ class ProfileScreen extends Component {
             pastEvents: pastEvents,
             createdEvents: createdEvents,
             createdPastEvents: createdPastEvents,
+            address: individual.address,
+            gender: individual.gender,
         });
     }
+
     setupOrganisationProfile(res) {
         const {
             causes,
@@ -103,10 +109,11 @@ class ProfileScreen extends Component {
             organisation,
         } = res.body.data;
         this.setState({
+            email: user.email,
             isOrganisation: true,
-            name: organisation.name,
+            orgName: organisation.name,
             organisationType: organisation.organisationType,
-            username: user.username,
+            user: user,
             location:
                 organisation.address.townCity +
                 " " +
@@ -116,6 +123,9 @@ class ProfileScreen extends Component {
             orgPhoneNumber: organisation.phoneNumber,
             upcomingEvents: createdEvents,
             pastEvents: createdPastEvents,
+            address: organisation.address,
+            pocFirstName: organisation.pocFirstName,
+            pocLastName: organisation.pocLastName,
         });
     }
 
@@ -130,13 +140,13 @@ class ProfileScreen extends Component {
     }
 
     async fetchProfileInfo() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         request
             .get("http://localhost:8000/profile")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(res => {
+                console.log(res.body.message);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -186,7 +196,11 @@ class ProfileScreen extends Component {
                                 flexDirection: "row-reverse",
                             }}>
                             <TouchableOpacity
-                                onPress={() => navigate("ProfileEdit")}>
+                                onPress={() =>
+                                    navigate("ProfileEdit", {
+                                        profile: this.state,
+                                    })
+                                }>
                                 <Image
                                     source={icons.edit_white}
                                     style={{
@@ -197,9 +211,17 @@ class ProfileScreen extends Component {
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigate("SettingsMenu")}>
+                                onPress={() =>
+                                    navigate("SettingsMenu", {
+                                        user: this.state.user,
+                                    })
+                                }>
                                 <Image
-                                    onPress={() => navigate("SettingsMenu")}
+                                    onPress={() =>
+                                        navigate("SettingsMenu", {
+                                            user: this.state.user,
+                                        })
+                                    }
                                     source={icons.cog}
                                     style={{
                                         height: 25,
@@ -253,11 +275,20 @@ class ProfileScreen extends Component {
                                     flex: 1,
                                 }}>
                                 <View>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={[styles.nameText]}>
-                                        {this.state.name}
-                                    </Text>
+                                    {this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.orgName}
+                                        </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.name}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
@@ -266,7 +297,7 @@ class ProfileScreen extends Component {
                                     <Text
                                         numberOfLines={1}
                                         style={styles.usernameText}>
-                                        {this.state.username}
+                                        {this.state.user.username}
                                     </Text>
                                     {this.state.isOrganisation && (
                                         <Text
@@ -365,7 +396,11 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                 }}>
                                 <GradientButton
-                                    onPress={() => navigate("CreateActivity")}
+                                    onPress={() =>
+                                        navigate("CreateActivity", {
+                                            email: this.state.email,
+                                        })
+                                    }
                                     title="Create Activity"
                                     width={350}
                                 />
@@ -387,6 +422,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                email: this.state.email,
                                             })
                                         }
                                     />

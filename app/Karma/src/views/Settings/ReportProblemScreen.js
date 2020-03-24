@@ -13,9 +13,11 @@ import {RegularText} from "../../components/text";
 import {TransparentButton} from "../../components/buttons";
 import {Dropdown} from "react-native-material-dropdown";
 import {TextInput} from "../../components/input";
+import {getAuthToken} from "../../util/credentials";
+import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
 
-//const request = require("superagent");
+const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/report-problem.png");
 
@@ -36,8 +38,50 @@ class ReportProblemScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            category: problemTypes[0].value,
+            problem: "",
+            user: props.navigation.getParam("user"),
+        };
+        this.submitBugReport = this.submitBugReport.bind(this);
+        this.onChangeText = this.onChangeText.bind(this);
     }
 
+    async submitBugReport() {
+        const {navigate} = this.props.navigation;
+        const authToken = await getAuthToken();
+        Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
+        request
+            .post("http://localhost:8000/bugreport")
+            .set("authorization", authToken)
+            .send({
+                data: {
+                    email: this.state.user.email,
+                    report: this.state.category + ": " + this.state.problem,
+                },
+            })
+            .then(res => {
+                console.log(res.body.message);
+                Toast.showWithGravity(
+                    "Your report has been sent.",
+                    Toast.SHORT,
+                    Toast.BOTTOM,
+                );
+                navigate("SettingsMenu", {
+                    user: this.state.user,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    }
+
+    onChangeText(event) {
+        const {name, text} = event;
+        this.setState({
+            [name]: text,
+        });
+    }
     render() {
         return (
             <TouchableWithoutFeedback
@@ -62,9 +106,12 @@ class ReportProblemScreen extends Component {
                             baseColor={Colours.blue}
                             textColor={Colours.black}
                             itemTextStyle={{fontFamily: "OpenSans-Regular"}}
-                            value={problemTypes[0].value}
+                            value={this.state.category}
                             data={problemTypes}
                             animationDuration={200}
+                            onChangeText={value =>
+                                this.setState({category: value})
+                            }
                         />
                         <RegularText style={[Styles.pb24, {paddingTop: 20}]}>
                             Describe your problem:
@@ -75,8 +122,7 @@ class ReportProblemScreen extends Component {
                             }
                             placeholder="I encountered X on screen Y..."
                             returnKeyType="next"
-                            onChange={() => {}}
-                            onChangeText={this.onChangeText}
+                            onChange={this.onChangeText}
                             onKeyPress={this.onKeyPress}
                             onSubmitEditing={Keyboard.dismiss()}
                             multiline={true}
@@ -90,22 +136,20 @@ class ReportProblemScreen extends Component {
                                 width: FORM_WIDTH,
                                 borderRadius: 10,
                             }}
-                            name="problemDescriptionInput"
+                            name="problem"
                         />
                         <RegularText
                             style={[Styles.pb24, {color: Colours.grey}]}>
                             When you submit a report, we may contact you at:
                         </RegularText>
                         <TextInput
-                            inputRef={ref => (this.userEmailInput = ref)}
-                            placeholder="team-team@gmail.com"
-                            name="userEmailInput"
+                            value={this.state.user.email}
+                            name="email"
                             editable={false}
                         />
                         <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
                             <TransparentButton
-                                onPress={() => null}
-                                onChange={() => {}}
+                                onPress={this.submitBugReport}
                                 styles={[Styles.white, {color: Colours.blue}]}
                                 title="Submit Bug Report"
                             />

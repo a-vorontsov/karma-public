@@ -2,9 +2,11 @@
  * @module Sign-up-Individual
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
+const authAgent = require("../../../modules/authentication/auth-agent");
 
 /**
  * This is the fourth step of the signup flow (after user
@@ -15,15 +17,13 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * number for identification.<br/>
  * A HTTP response is generated based on the outcome of the
  * operation.
- * @route {POST} /signup/individual
- * @param {number} req.body.userId the user's id, as in every request
- * @param {string} req.body.authToken the user's valid authToken, as in every request
+ <p><b>Route: </b>/signup/individual (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {object} req.body.data.individual the user input values for their profile
  * @param {object} req.body Here is an example of an appropriate request json:
  <pre><code>
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
         "data": &#123;
             "individual": &#123;
                 "title": "Mr.",
@@ -45,8 +45,9 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * @name Sign-up Individual
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.requireAuthentication, async (req, res) => {
     try {
+        log.info("Signing up individual");
         const individual = {
             title: req.body.data.individual.title,
             firstName: req.body.data.individual.firstName,
@@ -70,6 +71,7 @@ router.post("/", async (req, res) => {
             message: "Individual registration successful.",
         });
     } catch (e) {
+        log.error("Signing up individual failed: " + e);
         res.status(400).send({
             message: e.message,
         });

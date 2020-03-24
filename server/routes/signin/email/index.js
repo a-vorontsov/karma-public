@@ -2,35 +2,32 @@
  * @module Sign-in-Email
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
 const regStatus = require("../../../modules/authentication/registration-status");
 const userAgent = require("../../../modules/authentication/user-agent");
 const tokenSender = require("../../../modules/verification/tokenSender");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
 
 /**
  * This is the first step of the signup flow.
  * The user only inputs their email address, and
  * a HTTP response will be sent based on the user's
  * registration status.
- * @route {POST} /signin/email
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ <p><b>Route: </b>/signin/email (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
+ * @param {string} req.headers.authorization authToken (can be null at this stage)
  * @param {string} req.body.data.email input email address of the user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
         &#125;
     &#125;
 </code></pre>
- * @return {HTTP} one of the following HTTP responses:<br/>
+ * @return {Object} one of the following HTTP responses:<br/>
  * - if user/request already authenticated, 400 - already auth<br/>
  * - if user fully registered, 200 - go to login<br/>
  * - if email != exist, store email in DB, 400 - go to email verif<br/>
@@ -66,9 +63,12 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        if (!(await regStatus.emailExists(req.body.data.email))) {
+        log.info("Starting sign-in with email");
+        const email = req.body.data.email;
+        if (!(await regStatus.emailExists(email))) {
+            log.info("Sign-in with new account, registering email %s", email);
             try {
-                await userAgent.registerEmail(req.body.data.email);
+                await userAgent.registerEmail(email);
                 res.status(200).send({
                     message: "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
                     data: {
@@ -78,6 +78,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     },
                 });
             } catch (e) {
+                log.error("Registering email '%s' failed: %s", email, e);
                 res.status(500).send({
                     message: "Email did not exist. Error in recording user's email in database. Please see error message: " + e.message,
                     data: {
@@ -87,8 +88,9 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     },
                 });
             }
-        } else if (!(await regStatus.isEmailVerified(req.body.data.email))) {
-            await tokenSender.storeAndSendEmailVerificationToken(req.body.data.email);
+        } else if (!(await regStatus.isEmailVerified(email))) {
+            log.info("Sign-in with existing account, but email '%s' not verified. Initiating verification", email);
+            await tokenSender.storeAndSendEmailVerificationToken(email);
             res.status(200).send({
                 message: "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
                 data: {
@@ -97,7 +99,8 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     isFullySignedUp: false,
                 },
             });
-        } else if (!(await regStatus.userAccountExists(req.body.data.email))) {
+        } else if (!(await regStatus.userAccountExists(email))) {
+            log.info("Sign-in to '%s' with existing account and verified email but no user created", email);
             res.status(200).send({
                 message: "Email verified, but no user account. Go to user registration screen.",
                 data: {
@@ -106,7 +109,8 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     isFullySignedUp: false,
                 },
             });
-        } else if (await regStatus.isPartlyRegistered(req.body.data.email)) {
+        } else if (await regStatus.isPartlyRegistered(email)) {
+            log.info("Sign-in to '%s' with existing account and verified email but partly registered email", email);
             res.status(200).send({
                 message: "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
                 data: {
@@ -116,6 +120,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (await regStatus.isFullyRegisteredByEmail(req.body.data.email)) {
+            log.info("Sign-in to '%s' with existing account. Initiating login", email);
             res.status(200).send({
                 message: "Fully registered. Go to login screen.",
                 data: {
@@ -125,27 +130,13 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else {
-            // try to construct the records in the registration and user
-            // tables for debugging the error
-            const regRecord = [];
-            const userRecord = [];
-            try {
-                const regResult = await regRepo.findByEmail(req.body.data.email);
-                regRecord = regResult.rows[0];
-                const userResult = await userRepo.findByEmail(req.body.data.email);
-                userRecord = userResult.rows[0];
-            } catch (e) {
-                userRecord = e.message;
-            }
             res.status(500).send({
-                message:
-                "Logical or internal system error. Please debug the registration and user objects:",
-                regStatus: regRecord,
-                userStatus: userRecord,
+                message: "Logical or internal system error. Please debug the registration and user objects:",
             });
         }
     } catch (e) {
         // in case of invalid queries, an error may be thrown
+        log.error("Sign-in with email failed: " + e);
         res.status(500).send({
             message: e.message,
         });

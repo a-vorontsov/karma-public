@@ -1,4 +1,5 @@
 const Validator = require('jsonschema').Validator;
+const log = require("../../util/log");
 const validator = new Validator();
 
 
@@ -59,6 +60,7 @@ const eventSchema = {
         "userId": {"type": "number"},
         "creationDate": {"type": ["string", "date-time"]},
         "address": {"$ref": "/Address"},
+        "causes": {"type": "array", "items": {"type": "number"}},
     },
     "required": ["name", "womenOnly", "spots", "addressVisible", "minimumAge", "photoId",
         "physical", "addInfo", "content", "date", "userId"],
@@ -106,9 +108,10 @@ const signupSchema = {
     "properties": {
         "individualId": {"type": "number"},
         "eventId": {"type": "number"},
-        "confirmed": {"type": "boolean"},
+        "confirmed": {"type": ["boolean", "null"]},
+        "attended": {"type": "boolean"},
     },
-    "required": ["individualId", "confirmed"],
+    "required": ["individualId", "confirmed", "attended"],
 };
 
 const informationSchema = {
@@ -147,19 +150,30 @@ validator.addSchema(signupSchema, "/Signup");
 validator.addSchema(informationSchema, "/Information");
 validator.addSchema(individualSchema, "/Individual");
 
-const validateAddress = (address) => validator.validate(address, addressSchema);
+const validateAddress = (address) => validate(address, addressSchema);
 
-const validateEvent = (event) => validator.validate(event, eventSchema);
+const validateEvent = (event) => validate(event, eventSchema);
 
-const validateNotification = (notification) => validator.validate(notification, notificationSchema);
+const validateNotification = (notification) => validate(notification, notificationSchema);
 
-const validateFavourite = (favourite) => validator.validate(favourite, favouriteSchema);
+const validateFavourite = (favourite) => validate(favourite, favouriteSchema);
 
-const validateSignup = (signup) => validator.validate(signup, signupSchema);
+const validateSignup = (signup) => validate(signup, signupSchema);
 
-const validateInformation = (information) => validator.validate(information, informationSchema);
+const validateInformation = (information) => validate(information, informationSchema);
 
-const validateIndividual = (individual) => validator.validate(individual, individualSchema);
+const validateIndividual = (individual) => validate(individual, individualSchema);
+
+
+const validate = (instance, schema) => {
+    const result = validator.validate(instance, schema);
+    if (result.errors.length > 0) {
+        log.warn("Schema validation against '%s' schema failed for object %o", schema.id, instance);
+    } else {
+        log.debug("Schema validation against %s schema successful for object %o", schema.id, instance);
+    }
+    return result;
+};
 
 module.exports = {
     validateAddress,

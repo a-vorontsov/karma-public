@@ -6,12 +6,11 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
 
 let registrationExample4, registrationExample5, registrationExample6, user4;
 beforeEach(() => {
-    registrationExample1 = testHelpers.getRegistrationExample4();
-    registrationExample2 = testHelpers.getRegistrationExample5();
+    registrationExample4 = testHelpers.getRegistrationExample4();
+    registrationExample5 = testHelpers.getRegistrationExample5();
     registrationExample6 = testHelpers.getRegistrationExample6();
     user4 = testHelpers.getUserExample4();
     process.env.SKIP_PASSWORD_CHECKS = 0;
-    process.env.SKIP_AUTH_CHECKS_FOR_TESTING = 0;
     process.env.SKIP_MAIL_SENDING_FOR_TESTING = 1;
     return testHelpers.clearDatabase();
 });
@@ -22,8 +21,6 @@ afterEach(() => {
 });
 
 const signInEmailRequest = {
-    userId: null,
-    authToken: null,
     data: {
         email: "test4@gmail.com",
     }
@@ -32,6 +29,7 @@ const signInEmailRequest = {
 test("sign-in with email works", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -41,10 +39,11 @@ test("sign-in with email works", async () => {
 });
 
 test("sign-in with unverified email works", async () => {
-    await regRepo.insert(registrationExample1);
+    await regRepo.insert(registrationExample4);
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -54,10 +53,11 @@ test("sign-in with unverified email works", async () => {
 });
 
 test("sign-in with verified email works", async () => {
-    await regRepo.insert(registrationExample2);
+    await regRepo.insert(registrationExample5);
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -71,6 +71,7 @@ test("sign-in with verified email but no registration works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -80,11 +81,12 @@ test("sign-in with verified email but no registration works", async () => {
 });
 
 test("sign-in with partial registration works", async () => {
-    await regRepo.insert(registrationExample2);
+    await regRepo.insert(registrationExample5);
     await userRepo.insert(user4);
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);
@@ -99,6 +101,7 @@ test("sign-in with full registration works", async () => {
 
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.statusCode).toBe(200);

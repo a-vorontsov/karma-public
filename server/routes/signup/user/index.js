@@ -2,11 +2,13 @@
  * @module Sign-up-User
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/authentication/user-agent");
 const authAgent = require("../../../modules/authentication/auth-agent");
 const owasp = require("owasp-password-strength-test");
+const httpUtil = require("../../../util/httpUtil");
 
 /**
  * This is the third step of the signup flow (after email
@@ -19,15 +21,13 @@ const owasp = require("owasp-password-strength-test");
  * A HTTP response is generated based on the outcome of the
  * operation. It will contain the new user's id following a
  * successful registration.
- * @route {POST} /signup/user
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ <p><b>Route: </b>/signup/user (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
+ * @param {string} req.headers.authorization authToken (can be null at this stage)
  * @param {object} req.body.data.user the user input values for their user account
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "user": &#123;
                 "email": "paul&#64;karma.com",
@@ -55,6 +55,7 @@ const owasp = require("owasp-password-strength-test");
  * @function
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+    log.info("Signing up user");
     const passStrengthTest = owasp.test(req.body.data.user.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
         res.status(400).send({
@@ -63,14 +64,15 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         });
     } else {
         try {
-            const userId = await userAgent.registerUser(req.body.data.user.email, req.body.data.user.username, req.body.data.user.password);
-            const authToken = await authAgent.logIn(userId);
-            res.status(200).send({
-                message: "User registration successful. Go to individual/org registration selection",
-                userId: userId,
-                authToken: authToken,
-            });
+            const signupResult = await userAgent.registerUser(
+                req.body.data.user.email,
+                req.body.data.user.username,
+                req.body.data.user.password,
+                req.body.pub,
+            );
+            httpUtil.sendResult(signupResult, res);
         } catch (e) {
+            log.error("Signing up user failed: " + e);
             res.status(400).send({
                 message: e.message,
             });

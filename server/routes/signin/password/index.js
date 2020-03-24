@@ -2,10 +2,12 @@
  * @module Sign-in-Password
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
 const userAgent = require("../../../modules/authentication/user-agent");
+const httpUtil = require("../../../util/httpUtil");
 
 /**
  * Attempt to log in an existing user with given email & password.<br/>
@@ -14,16 +16,14 @@ const userAgent = require("../../../modules/authentication/user-agent");
  * the sing-in operation & password validation will not continue.<br/>
  * Upon a successful login attempt, the response will contain the
  * userId as well as a new and valid authToken for the user.
- * @route {POST} /signin/password
- * @param {number} req.body.userId since no userId yet, null here
- * @param {string} req.body.authToken since no authToken yet, null here
+ <p><b>Route: </b>/signin/password (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
+ * @param {string} req.headers.authorization authToken
  * @param {string} req.body.data.email the email address of the user
  * @param {string} req.body.data.password the input password of the user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "paul&#64;karma.com",
             "password": "securePassword123!"
@@ -48,20 +48,11 @@ const userAgent = require("../../../modules/authentication/user-agent");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
-        if (await userAgent.isCorrectPasswordByEmail(req.body.data.email, req.body.data.password)) {
-            const userId = await userAgent.getUserId(req.body.data.email);
-            const authToken = await authAgent.logIn(userId);
-            res.status(200).send({
-                message: "Successful authentication with email & password.",
-                userId: userId,
-                authToken: authToken,
-            });
-        } else {
-            res.status(400).send({
-                message: "Invalid password.",
-            });
-        }
+        log.info("Starting sign-in with password");
+        const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);
+        httpUtil.sendResult(signInResult, res);
     } catch (e) {
+        log.error("Sign-in with password failed: " + e);
         res.status(400).send({
             message: e.message,
         });

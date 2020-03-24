@@ -18,17 +18,24 @@ import DatePicker from "react-native-date-picker";
 import PageHeader from "../components/PageHeader";
 import {RegularText, SemiBoldText} from "../components/text";
 import AddressInput from "../components/input/AddressInput";
-
+import BottomModal from "../components/BottomModal";
+import CauseContainer from "../components/causes/CauseContainer";
 import {GradientButton} from "../components/buttons";
 
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
-import {getData} from "../util/GetCredentials";
+import {getAuthToken} from "../util/credentials";
+import CauseItem from "../components/causes/CauseItem";
+import CauseStyles from "../styles/CauseStyles";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
+const CAUSES_WIDTH = 0.9 * width;
 
+const icons = {
+    new_cause: require("../assets/images/general-logos/new_cause.png"),
+};
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -52,13 +59,16 @@ export default class CreateActivityScreen extends React.Component {
             minEndDate: new Date(),
             minSlotDate: new Date(),
             address1: "",
-
             region: "",
             city: "",
             postcode: "",
+            displaySignupModal: false,
+            causes: [],
+            causeIds: [],
         };
         this.addSlot = this.addSlot.bind(this);
         this.removeSlot = this.removeSlot.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         console.disableYellowBox = true;
     }
 
@@ -82,6 +92,9 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
+                const causeIds = activity.causes;
+
+                const causes = await this.fetchSelectedCauses(causeIds);
 
                 this.setState({
                     eventId: activity.id,
@@ -101,12 +114,53 @@ export default class CreateActivityScreen extends React.Component {
                     isPhysical,
                     isAddressVisible,
                     isIDReq,
+                    causeIds,
+                    causes,
                 });
             } catch (err) {
                 Alert.alert("Server Error", err);
             }
         }
     }
+
+    toggleModal = () => {
+        this.setState({
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
+
+    handleError = (errorTitle, errorMessage) => {
+        Alert.alert(errorTitle, errorMessage);
+    };
+
+    onUpdateCauses = inputState => {
+        const causeIds = [];
+        inputState.selectedCauses.forEach(c => {
+            causeIds.push(c.id);
+        });
+        this.setState({
+            causes: inputState.selectedCauses,
+            causeIds,
+        });
+        this.toggleModal();
+    };
+
+    fetchSelectedCauses = async causeIds => {
+        const response = await request
+            .get("http://localhost:8000/causes")
+            .then(res => {
+                return res.body.data;
+            });
+
+        let causes = [];
+        Array.from(response).forEach(cause => {
+            if (causeIds.includes(cause.id)) {
+                causes.push(cause);
+            }
+        });
+
+        return causes;
+    };
 
     /**
      * Updates the user's already created event
@@ -121,8 +175,8 @@ export default class CreateActivityScreen extends React.Component {
             return;
         }
 
-        const credentials = await getData();
-        const event = this.createEvent(102);
+        const authToken = await getAuthToken();
+        const event = this.createEvent();
 
         const {navigate} = this.props.navigation;
 
@@ -131,16 +185,15 @@ export default class CreateActivityScreen extends React.Component {
         });
         await request
             .post("http://localhost:8000/event/update/" + this.state.eventId)
+            .set("authorization", authToken)
             .send({
-                // authToken: "ffa234124",
-                userId: credentials.username,
                 ...event,
             })
             .then(res => {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.data);
+                console.log(res.body.message);
             })
             .catch(er => {
                 Alert.alert("Server Error", er);
@@ -157,7 +210,7 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
-    createEvent(userId) {
+    createEvent() {
         const event = {
             address: {
                 id: this.state.addressId,
@@ -180,8 +233,8 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            userId: userId,
             creationDate: new Date(), //returns current date
+            causes: this.state.causeIds,
         };
         return event;
     }
@@ -286,20 +339,25 @@ export default class CreateActivityScreen extends React.Component {
         ) {
             return;
         }
-        const credentials = await getData();
-        const event = this.createEvent(credentials.username);
+        const authToken = await getAuthToken();
+        const event = this.createEvent();
+        if (event.causes.length === 0) {
+            Alert.alert("An activity must be related to at least one cause");
+            return;
+        }
+
         // send a request to update the db with the new event
         await request
             .post("http://localhost:8000/event")
+            .set("authorization", authToken)
             .send({
-                authToken: "ffa234124",
-                userId: credentials.username,
                 ...event,
             })
             .then(res => {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
+                console.log(res.body.message);
             })
             .catch(er => {
                 console.log(er.message);
@@ -493,7 +551,9 @@ export default class CreateActivityScreen extends React.Component {
                                         Who to contact
                                     </SemiBoldText>
                                     <TextInput
-                                        placeholder="team-team@gmail.com"
+                                        placeholder={this.props.navigation.getParam(
+                                            "email",
+                                        )}
                                         style={{marginTop: 0}}
                                         editable="false"
                                     />
@@ -612,6 +672,54 @@ export default class CreateActivityScreen extends React.Component {
                                         value={this.state.isAddressVisible}
                                     />
                                 </View>
+                            </View>
+
+                            <View style={{width: FORM_WIDTH}}>
+                                <View style={{alignItems: "flex-start"}}>
+                                    <RegularText style={{fontSize: 20}}>
+                                        Pick Related Causes
+                                    </RegularText>
+                                    <TouchableOpacity
+                                        onPress={this.toggleModal}>
+                                        <Image
+                                            source={icons.new_cause}
+                                            style={{
+                                                width: 60,
+                                                height: 60,
+                                                resizeMode: "contain",
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    width: CAUSES_WIDTH,
+                                    justifyContent: "flex-end",
+                                    alignSelf: "center",
+                                }}>
+                                {this.state.causes &&
+                                this.state.causes.length > 0 ? (
+                                    <View
+                                        style={
+                                            CauseStyles.createActivityContainer
+                                        }>
+                                        {this.state.causes.map(cause => {
+                                            return (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            );
+                                        })}
+                                    </View>
+                                ) : (
+                                    undefined
+                                )}
+                            </View>
+                            <View>
                                 <SemiBoldText
                                     style={{
                                         alignItems: "flex-start",
@@ -629,6 +737,17 @@ export default class CreateActivityScreen extends React.Component {
                                     onChange={this.onInputChange}
                                 />
                             </View>
+
+                            <BottomModal
+                                visible={this.state.displaySignupModal}
+                                toggleModal={this.toggleModal}>
+                                <CauseContainer
+                                    onUpdateCauses={this.onUpdateCauses}
+                                    isActivity={true}
+                                    onSubmit={this.toggleModal}
+                                    onError={this.handleError}
+                                />
+                            </BottomModal>
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>

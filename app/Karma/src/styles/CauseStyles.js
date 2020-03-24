@@ -56,6 +56,13 @@ const CauseStyles = StyleSheet.create({
         height: 32,
         width: 32,
     },
+    createActivityContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "flex-start",
+        paddingBottom: 16,
+        overflow: "visible",
+    },
 });
 
 export default CauseStyles;

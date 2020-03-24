@@ -21,7 +21,7 @@ import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -123,16 +123,12 @@ class AboutScreen extends React.Component {
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
         if (gender && fname !== "" && lname !== "" && dateSelected) {
-            const credentials = await getData();
-            const authToken = credentials.password;
-            const userId = credentials.username;
-            console.log(userId);
+            const authToken = await getAuthToken();
             const individual = this.createIndividual();
             await request
                 .post("http://localhost:8000/signup/individual")
+                .set("authorization", authToken)
                 .send({
-                    authToken: authToken,
-                    userId: userId,
                     data: {individual: {...individual}},
                 })
                 .then(res => {

@@ -16,6 +16,11 @@ import VerifyScreen from "../views/VerifyScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
+import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
+import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
+import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
+import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
+import LogOutScreen from "../views/Settings/LogOutScreen";
 
 const MainNavigator = createStackNavigator(
     {
@@ -40,6 +45,21 @@ const MainNavigator = createStackNavigator(
         },
         Terms: {
             screen: TermsScreen,
+        },
+        ReportProblem: {
+            screen: ReportProblemScreen,
+        },
+        AboutKarma: {
+            screen: AboutKarmaScreen,
+        },
+        Guidelines: {
+            screen: GuidelinesScreen,
+        },
+        EmailSettings: {
+            screen: EmailSettingsScreen,
+        },
+        LogOut: {
+            screen: LogOutScreen,
         },
         SettingsMenu: {
             screen: SettingsMenuScreen,

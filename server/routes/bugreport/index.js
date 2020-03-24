@@ -1,11 +1,12 @@
 /**
  * @module Send-bug-report
  */
-
+const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const mailSender = require("../../modules/mailSender/index");
 const httpUtil = require("../../util/httpUtil");
+const authAgent = require("../../modules/authentication/auth-agent");
 
 /**
  * Attempt send a bug report to admin email account.
@@ -13,27 +14,17 @@ const httpUtil = require("../../util/httpUtil");
  * by the app user (as bugs may occur when a user is not
  * signed-in). Returns success or an error message from
  * the mailSender module.
- * @route {POST} /bugreport
- * @param {number} req.body.userId can be anything
- * @param {string} req.body.authToken can be anything
+ <p><b>Route: </b>/bugreport (POST)</p>
+ <p><b>Permissions: </b>any</p>
+ * @param {string} req.headers.authorization authToken or null
  * @param {object} req.body.data.email user input email address
  * @param {object} req.body.data.report user input bug report
  * @param {object} req.body Here are some examples of an appropriate request json:
 <pre><code>
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
-        "data": &#123;
-            "email": "ihaveabug@gmail.com",
-            "report": "I can't date",
-        &#125;
-    &#125;
-    &#123;
-        "userId": null,
-        "authToken": null,
         "data": &#123;
             "email": "icantlogin@gmail.com",
-            "report": "I can't sign-in to the app and don't receive a token. Fix pls!",
+            "report": "I can't sign-in to the app and don't receive a token. Help pls!",
         &#125;
     &#125;
 </code></pre>
@@ -43,11 +34,13 @@ const httpUtil = require("../../util/httpUtil");
  * @name Send bug report
  * @function
  */
-router.post("/", async (req, res) => {
+router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
     try {
+        log.info("Sending bug report");
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
     } catch (e) {
+        log.error("Sending bug report failed " + e);
         httpUtil.sendGenericError(e, res);
     }
 });

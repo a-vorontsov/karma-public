@@ -15,6 +15,8 @@ import {
     MenuOptions,
     MenuTrigger,
 } from "react-native-popup-menu";
+import request from "superagent";
+import {getAuthToken} from "../../util/credentials";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -26,7 +28,23 @@ const icons = {
 
 const ActivityEditable = props => {
     const navigation = useNavigation();
-    const {activity} = props;
+    const {activity, email} = props;
+
+    /**
+     * Delete the event selected
+     */
+    const deleteEvent = async () => {
+        const activityId = activity.id;
+        const authToken = await getAuthToken();
+        const url = `http://localhost:8000/event/${activityId}/delete/`;
+        await request
+            .post(url)
+            .set("authorization", authToken)
+            .then(res => {
+                navigation.navigate("Profile");
+            });
+    };
+
     return (
         <View>
             <View
@@ -35,8 +53,7 @@ const ActivityEditable = props => {
                     height: 30,
                     alignItems: "flex-end",
                 }}>
-                <View style={{}}>
-                    {/* <TouchableOpacity onPress={() => navigation.navigate("ActivityEdit")}> */}
+                <View>
                     <TouchableOpacity>
                         <Menu>
                             <MenuTrigger>
@@ -62,6 +79,7 @@ const ActivityEditable = props => {
                                     onSelect={() =>
                                         navigation.navigate("CreateActivity", {
                                             activity: activity,
+                                            email: email,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>
@@ -99,14 +117,29 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        sendNotification(
-                                            "EventCancellation",
-                                            `"Event named ${
-                                                activity.name
-                                            } has been cancelled"`,
-                                        );
+                                        // sendNotification(
+                                        //     "EventCancellation",
+                                        //     `"Event named ${
+                                        //         activity.name
+                                        //     } has been cancelled"`,
+                                        // );
                                         Alert.alert(
-                                            "Are you sure you want to delete?",
+                                            "Are you sure you want to delete this event?",
+                                            "",
+                                            [
+                                                {
+                                                    text: "Confirm",
+                                                    onPress: () =>
+                                                        deleteEvent(),
+                                                },
+                                                {
+                                                    text: "Cancel",
+                                                    onPress: () =>
+                                                        console.log(
+                                                            "Cancelled the deletion of an event",
+                                                        ),
+                                                },
+                                            ],
                                         );
                                     }}>
                                     <RegularText style={styles.settingsText}>

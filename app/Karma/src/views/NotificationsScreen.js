@@ -7,6 +7,7 @@ import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
 import {ScrollView} from "react-native-gesture-handler";
+import {getAuthToken} from "../util/credentials";
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -30,7 +31,6 @@ class NotificationsScreen extends Component {
         this.state = {
             notifications: [],
             hasNotifications: false,
-            userId: 1,
             weekNotifications: [],
             monthNotifications: [],
             refreshing: false,
@@ -39,11 +39,11 @@ class NotificationsScreen extends Component {
 
     getNotifications = async () => {
         this.setState({refreshing: true});
+        const authToken = await getAuthToken();
         try {
-            const response = await request.get(
-                "http://localhost:8000/notification?userId=" +
-                    this.state.userId,
-            );
+            const response = await request
+                .get("http://localhost:8000/notification")
+                .set("authorization", authToken);
 
             this.setState({
                 notifications: response.body.data.notifications,
@@ -75,9 +75,7 @@ class NotificationsScreen extends Component {
 
         //get all received notifications
         notifications.forEach(n => {
-            if (n.receiverId === this.state.userId) {
-                received.push(n);
-            }
+            received.push(n);
         });
 
         received.sort(compare);

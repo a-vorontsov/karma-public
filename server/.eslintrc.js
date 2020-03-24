@@ -16,12 +16,12 @@ module.exports = {
   },
   rules:{
     "linebreak-style": 0,
-    "indent": ["error", 4],
+    "indent": ["error", 4, { "SwitchCase": 1 }],
     "new-cap": 0,
     "quotes": 0,
     "arrow-parens": 0,
     "max-len": ["error", {"code": 140}],
   },
-  "ignorePatterns": ["migrations/", "*.test.js", "out/"],
+  "ignorePatterns": ["migrations/", "*.test.js", "out/", "jsdoc/"],
 
 };
