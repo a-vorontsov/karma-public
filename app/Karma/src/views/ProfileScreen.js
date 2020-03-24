@@ -84,7 +84,8 @@ class ProfileScreen extends Component {
         this.setState({
             email: user.email,
             isOrganisation: false,
-            name: individual.firstName + " " + individual.lastName,
+            firstName: individual.firstName,
+            lastName: individual.lastName,
             user: user,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
@@ -147,6 +148,7 @@ class ProfileScreen extends Component {
             .set("authorization", authToken)
             .then(res => {
                 console.log(res.body.message);
+                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -171,6 +173,7 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
+        console.log(this.state);
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -286,7 +289,7 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.name}
+                                            {`${this.state.firstName} ${this.state.lastName}`}
                                         </Text>
                                     )}
                                 </View>

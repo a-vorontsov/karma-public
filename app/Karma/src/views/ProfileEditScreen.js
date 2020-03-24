@@ -52,8 +52,8 @@ class ProfileEditScreen extends Component {
             user: {username: profile.username},
             isOrganisation: profile.isOrganisation,
             individual: {
-                firstName: profile.fname,
-                lastName: profile.lname,
+                firstName: profile.firstName,
+                lastName: profile.lastName,
                 gender: profile.gender,
                 bio: profile.bio,
                 address: {
