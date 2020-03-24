@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
-const informationService = require("../../modules/informationService/");
+const informationService = require("../../modules/information/");
 const authAgent = require("../../modules/authentication/");
 
 /**

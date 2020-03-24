@@ -1,4 +1,4 @@
-const distanceCalculator = require('../distanceCalculator');
+const distanceCalculator = require('../distance');
 
 const sortByTime = (events) => {
     events.sort((event1, event2) => {
