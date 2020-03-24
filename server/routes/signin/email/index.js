@@ -8,7 +8,7 @@ const router = express.Router();
 const authAgent = require("../../../modules/authentication/");
 const regStatus = require("../../../util/registration-status");
 const userAgent = require("../../../modules/user");
-const tokenSender = require("../../../modules/verification/tokenSender");
+const tokenSender = require("../../../modules/verification/token");
 
 /**
  * This is the first step of the signup flow.

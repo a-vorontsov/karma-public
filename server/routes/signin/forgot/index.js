@@ -8,7 +8,7 @@ const router = express.Router();
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
 const util = require("../../../util/util");
 const httpUtil = require("../../../util/httpUtil");
-const tokenSender = require("../../../modules/verification/tokenSender");
+const tokenSender = require("../../../modules/verification/token");
 const authAgent = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user requests a reset password token.<br/>
