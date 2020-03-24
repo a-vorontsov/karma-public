@@ -11,7 +11,7 @@ const eventSelectRoute = require("./select/");
 
 const httpUtil = require("../../util/httpUtil");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/event/eventService");
+const eventService = require("../../modules/event");
 const paginator = require("../../modules/pagination");
 const authAgent = require("../../modules/authentication/");
 
