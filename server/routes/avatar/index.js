@@ -34,7 +34,7 @@ const imgDelete = require("../../modules/picture/delete");
     req.body:
      - picture: {...[IMAGE DATA], etc.}
  </pre>
- * @returns:
+ * @returns {Object}
  * status: 200, description: The file was uploaded & database updated.<br/>
  * status: 400, description: Request was malformed, e.g. lacking correct field, or target doesn't exist.<br/>
  * status: 500, description: Database or S3 Connection error.<br/>
@@ -61,7 +61,7 @@ router.post("/upload/:userType", authAgent.requireAuthentication, (req, res) => 
  * <p><b>Permissions: </b>require user permissions</p>
  * @param {userId} user ID for the user, from auth
  * @param {userType} must be one of individual, organisation
- * @returns:
+ * @returns {Object}
  * status: 200, description: The file was deleted successful, or deleting image was not necessary.<br/>
  * status: 400, description: Request was malformed, e.g. lacking correct field, or target doesn't exist.<br/>
  * status: 500, description: Database or S3 Connection error.<br/>
@@ -86,7 +86,7 @@ router.post("/delete/:userType", authAgent.requireAuthentication, (req, res) => 
  *  <p><b>Route: </b>/avatar/:userType/:userId (POST)</p>
  * @param {userType} must be one of individual, organisation
  * @param {userId} user ID for the user
- * @returns:
+ * @returns {Object}
  * status: 200, description: The file was fetched successful, or default image was sent.<br/>
  * status: 400, description: Request was malformed, e.g. lacking correct field, or target doesn't exist.<br/>
  * status: 500, description: Database or S3 Connection error.<br/>
@@ -108,7 +108,7 @@ router.get("/:userType/:userId", imgFetch.getAvatar);
  * <p><b>Permissions: </b>require user permissions</p>
  * @param {userType} must be one of individual, organisation
  * @param {userId}   user ID for the user, from auth
- * @returns:
+ * @returns {Object}
  * status: 200, description: The file was fetched successful, or default image was sent.<br/>
  * status: 400, description: Request was malformed, e.g. lacking correct field, or target doesn't exist.<br/>
  * status: 500, description: Database or S3 Connection error.<br/>
@@ -129,7 +129,7 @@ router.get("/:userType", authAgent.requireAuthentication, imgFetch.getAvatar);
  * Endpoint called to fetch default profile picture for current user type.<br/>
  * URL example: GET http://localhost:8000/avatar/default/organisation"
  * @param {userType} must be one of individual, organisation
- * @returns:
+ * @returns {Object}
  * status: 200, description: Success<br/>
  * status: 400, description: Invalid userType was given, or request was malformed.<br/>
  *  @name Fetch Current Profile Photo for Individuals and Organisations
