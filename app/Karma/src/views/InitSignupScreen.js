@@ -87,7 +87,7 @@ export default class InitSignupScreen extends React.Component {
                         inactiveDotScale={0.8}
                     />
                 </View>
-                <View style={[Styles.bottom]}>
+                {/* <View style={[Styles.bottom]}>
                     <View
                         style={[
                             Styles.ph24,
@@ -100,7 +100,7 @@ export default class InitSignupScreen extends React.Component {
                         </SemiBoldText>
                         <TransparentButton title="Log in" />
                     </View>
-                </View>
+                </View> */}
             </SafeAreaView>
         );
     }
