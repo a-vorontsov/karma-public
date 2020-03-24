@@ -148,7 +148,6 @@ class ProfileScreen extends Component {
             .set("authorization", authToken)
             .then(res => {
                 console.log(res.body.message);
-                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -173,7 +172,6 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
-        console.log(this.state);
         return (
             <KeyboardAvoidingView
                 style={styles.container}
