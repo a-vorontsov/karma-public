@@ -3,7 +3,7 @@ const signupRepository = require("../../../models/databaseRepositories/signupRep
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const profileRepository = require("../../../models/databaseRepositories/profileRepository");
 const util = require("../../../util/util");
-const eventSorter = require("../../sorting/event");
+const eventSorter = require("../../sorting");
 
 /**
  * Creates a new event signup to be added to the database.

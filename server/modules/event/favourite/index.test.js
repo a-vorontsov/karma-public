@@ -1,13 +1,13 @@
 const testHelpers = require("../../../test/testHelpers");
 const eventFavouriteService = require("./");
-const eventSorter = require("../../sorting/event");
+const eventSorter = require("../../sorting");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 const util = require("../../../util/util");
 
 jest.mock("../../../models/databaseRepositories/favouriteRepository");
 jest.mock("../../../models/databaseRepositories/individualRepository");
-jest.mock("../../sorting/event");
+jest.mock("../../sorting");
 jest.mock("../../../util/util");
 
 

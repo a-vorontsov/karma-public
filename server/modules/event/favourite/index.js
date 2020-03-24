@@ -1,7 +1,7 @@
 const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
 const individualRepository = require("../../../models/databaseRepositories/individualRepository");
 const util = require("../../../util/util");
-const eventSorter = require("../../sorting/event");
+const eventSorter = require("../../sorting");
 /**
  * Creates a new event favourite to be added to the database.
  * @param {object} favouriteRequest An object containing a valid individualId and a valid eventId.
