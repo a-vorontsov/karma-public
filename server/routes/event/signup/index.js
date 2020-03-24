@@ -10,7 +10,7 @@ const eventSignupService = require("../../../modules/event/signup");
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/");
+const authService = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
@@ -40,7 +40,7 @@ const authAgent = require("../../../modules/authentication/");
  *  @name Sign up to event
  *  @function
  */
-router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/signUp', authService.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         log.info("Signing up user id '%d' to event id '%d'", signup.userId, signup.eventId);
@@ -96,7 +96,7 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
  *  @name See signed up users
  *  @function
  */
-router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
+router.get('/:eventId/signUp', authService.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.eventId);
         log.info("Getting all users signed up to event id '%d'", eventId);
@@ -172,7 +172,7 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
  *  @name See signup history
  *  @function
  */
-router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
+router.get('/signUp/history', authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting signup history for user id '%d'", userId);
@@ -221,7 +221,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  *  @name Update signup status for event
  *  @function
  */
-router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/signUp/update', authService.requireAuthentication, async (req, res) => {
     try {
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         log.info("Updating signup for user id '%d' to event id '%d'", signup.userId, signup.eventId);

@@ -9,7 +9,7 @@ const addressRepo = require("../../models/databaseRepositories/addressRepository
 const profileRepo = require("../../models/databaseRepositories/profileRepository");
 const date = require("date-and-time");
 const tokenSender = require("../verification/token");
-const authAgent = require("../authentication");
+const authService = require("../authentication");
 const geocoder = require("../geocoder");
 const settingsRepo = require("../../models/databaseRepositories/settingsRepository");
 
@@ -67,7 +67,7 @@ async function registerUser(email, username, password, pub) {
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
     await settingsRepo.insertUserId(userId);
-    const authToken = authAgent.logInUser(userId, pub);
+    const authToken = authService.logInUser(userId, pub);
     return ({
         status: 200,
         message: "User registration successful. Go to individual/org registration selection",
@@ -254,7 +254,7 @@ const signIn = async (email, password, pub) => {
     const user = userResult.rows[0];
     if (isCorrectPassword(user, password)) {
         log.info("Signing in '%s': correct password", email);
-        const authToken = authAgent.logInUser(user.id, pub);
+        const authToken = authService.logInUser(user.id, pub);
         return ({
             status: 200,
             message: "Successful authentication with email & password.",

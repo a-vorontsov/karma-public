@@ -4,7 +4,7 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/");
+const authService = require("../../../modules/authentication/");
 const userRepo = require("../../../models/databaseRepositories/userRepository");
 const indivRepo = require("../../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
@@ -61,7 +61,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  *  @name Edit profile
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         // update user profile if specified in request
         log.info("Updating profile");

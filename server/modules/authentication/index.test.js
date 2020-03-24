@@ -1,4 +1,4 @@
-const authAgent = require("./");
+const authService = require("./");
 const testHelpers = require("../../test/testHelpers");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");
@@ -43,7 +43,7 @@ test("log-in works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 });
 
@@ -63,7 +63,7 @@ test("visiting an internal route with a valid token works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     viewCausesRequest.authToken = authToken;
 
@@ -94,7 +94,7 @@ test("visiting an internal route with a missing token fails as expected", async 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -120,7 +120,7 @@ test("visiting an internal route with a null token fails as expected", async () 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -147,7 +147,7 @@ test("visiting an internal route with a forged token validation tag fails as exp
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -174,7 +174,7 @@ test("visiting an internal route with modified pub params in the protected token
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -201,7 +201,7 @@ test("visiting an internal route with a modified algo in the protected token hea
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     const response = await request(app)
         .get("/causes")
@@ -227,7 +227,7 @@ test("visiting an internal route with a forged algo in the protected token heade
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     const response = await request(app)
         .get("/causes")
@@ -253,7 +253,7 @@ test("visiting an internal route with a forged CEK fails as expected", async () 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -280,7 +280,7 @@ test("visiting an internal route with a forged initialisation vector fails as ex
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -307,7 +307,7 @@ test("visiting an internal route with tampered data fails as expected", async ()
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -334,7 +334,7 @@ test("visiting an internal route with a stolen token fails as expected", async (
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
 
     const response = await request(app)
@@ -413,7 +413,7 @@ test("visiting a no-auth route already authenticated redirects as expected", asy
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     signUpEmailReq.authToken = authToken;
 
@@ -442,7 +442,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     viewCausesRequest.authToken = authToken;
 
@@ -458,7 +458,7 @@ test("visiting an internal route with a blacklisted token fails as expected", as
         id: 1,
     }]);
 
-    await authAgent.logOut(authToken);
+    await authService.logOut(authToken);
 
     const response2 = await request(app)
         .get("/causes")
@@ -481,7 +481,7 @@ test("visiting a no-auth route with auth-checks disabled works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     signUpEmailReq.authToken = authToken;
 
@@ -541,7 +541,7 @@ test("visiting an admin route with a valid token works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInAdmin(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInAdmin(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken, "/admin")).toStrictEqual(userId);
     adminRequest.authToken = authToken;
 
@@ -568,7 +568,7 @@ test("visiting an admin route with a user token fails as expected", async () => 
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     adminRequest.authToken = authToken;
 
@@ -593,7 +593,7 @@ test("visiting the reset route with a regular user token fails as expected", asy
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.logInUser(userId, jose.getEncPubAsPEM());
+    const authToken = authService.logInUser(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken)).toStrictEqual(userId);
     resetRequest.authToken = authToken;
 
@@ -618,7 +618,7 @@ test("visiting the reset route with a password reset token works", async () => {
     await regRepo.insert(registration);
     const insertUserResult = await userRepo.insert(user);
     const userId = insertUserResult.rows[0].id;
-    const authToken = authAgent.grantResetAccess(userId, jose.getEncPubAsPEM());
+    const authToken = authService.grantResetAccess(userId, jose.getEncPubAsPEM());
     expect(jose.decryptVerifyAndGetUserId(authToken, "/reset")).toStrictEqual(userId);
     resetRequest.authToken = authToken;
 

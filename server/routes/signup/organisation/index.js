@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/user");
-const authAgent = require("../../../modules/authentication/");
+const authService = require("../../../modules/authentication/");
 
 /**
  * This is the fourth step of the signup flow (after user
@@ -46,7 +46,7 @@ const authAgent = require("../../../modules/authentication/");
  * @name Sign-up Organisation
  * @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Signing up organisation");
         const organisation = {

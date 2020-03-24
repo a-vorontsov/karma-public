@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const jose = require("./modules/jose");
 jose.fetchBlacklist();
-const authAgent = require("./modules/authentication/");
+const authService = require("./modules/authentication/");
 const methodOverride = require("method-override");
 const helmet = require("helmet");
 
@@ -72,6 +72,6 @@ if (process.env.ENABLE_OAUTH === 1) {
 }
 
 // TODO: regex that excludes only requireNotAuth routes
-app.all("*", authAgent.requireAuthentication);
+app.all("*", authService.requireAuthentication);
 
 module.exports = app;

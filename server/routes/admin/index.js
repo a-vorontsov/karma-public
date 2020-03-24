@@ -9,7 +9,7 @@ const httpUtil = require("../../util/httpUtil");
 const deletionModule = require("../../modules/deletion");
 const adminService = require("../../modules/admin/");
 const validation = require("../../modules/validation");
-const authAgent = require("../../modules/authentication/");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin requests to see all users.<br/>
@@ -43,7 +43,7 @@ const authAgent = require("../../modules/authentication/");
  *  @name Get all users
  *  @function
  */
-router.get("/users", authAgent.requireAuthentication, async (req, res) => {
+router.get("/users", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Fetching all users for administrator");
         const usersResult = await adminService.getAllUsers();
@@ -81,7 +81,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  *  @name Post delete user info
  *  @function
  */
-router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
+router.post("/user/delete", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
         log.info("Deleting all user data for %d", userId);
@@ -139,7 +139,7 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  *  @function
 
  */
-router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
+router.get("/individuals", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Fetching all individuals for administrator");
         const individualsResult = await adminService.getAllIndividuals();
@@ -181,7 +181,7 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  *  @name Ban individual
  *  @function
  */
-router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
+router.post("/toggleBan", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Toggling ban for individual");
         const individual = req.body.data.individual;

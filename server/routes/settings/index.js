@@ -7,7 +7,7 @@ const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
 const settingsService = require("../../modules/settings/");
-const authAgent = require("../../modules/authentication/");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wants to update the settings.<br/>
@@ -39,7 +39,7 @@ const authAgent = require("../../modules/authentication/");
  *  @name Change settings
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Changing settings");
         const settings = req.body;
@@ -74,7 +74,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  *  @name Get settings
  *  @function
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
         log.info("Getting settings for user id '%d'", userId);

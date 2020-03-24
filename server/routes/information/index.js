@@ -7,7 +7,7 @@ const router = express.Router();
 
 const httpUtil = require("../../util/httpUtil");
 const informationService = require("../../modules/information/");
-const authAgent = require("../../modules/authentication/");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user requests information about an information type.<br/>
@@ -34,7 +34,7 @@ const authAgent = require("../../modules/authentication/");
  *  @name Get information entry
  *  @function
  */
-router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
+router.get("/", authService.acceptAnyAuthentication, async (req, res) => {
     try {
         const type = req.query.type;
         log.info("Getting information type '%s'", type);

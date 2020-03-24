@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const userAgent = require("../../../modules/user");
-const authAgent = require("../../../modules/authentication/");
+const authService = require("../../../modules/authentication/");
 const owasp = require("owasp-password-strength-test");
 const httpUtil = require("../../../util/httpUtil");
 
@@ -54,7 +54,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @name Reset password
  * @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     log.info("Resetting password");
     const passStrengthTest = owasp.test(req.body.data.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {

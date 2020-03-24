@@ -4,7 +4,7 @@
 const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/");
+const authService = require("../../modules/authentication/");
 const userRepo = require("../../models/databaseRepositories/userRepository");
 const indivRepo = require("../../models/databaseRepositories/individualRepository");
 const orgRepo = require("../../models/databaseRepositories/organisationRepository");
@@ -116,7 +116,7 @@ const eventRepo = require("../../models/databaseRepositories/eventRepository");
  *  @name Get profile
  *  @function
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         // set userId according to whose profile is to be viewed
         const userId = req.query.otherUserId !== undefined ? req.query.otherUserId : req.query.userId;

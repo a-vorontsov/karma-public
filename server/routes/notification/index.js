@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 const notificationService = require("../../modules/notification");
 const validation = require("../../modules/validation");
-const authAgent = require("../../modules/authentication/");
+const authService = require("../../modules/authentication/");
 const httpUtil = require("../../util/httpUtil");
 
 /**
@@ -56,7 +56,7 @@ const httpUtil = require("../../util/httpUtil");
  *  @name Create new notifications
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Creating new notification");
         const notification = req.body;
@@ -106,7 +106,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  *  @name Get notifications
  *  @function
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
         log.info("Getting notifications for user id '%d'", id);

@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const emailVerification = require("../../../modules/verification/email");
-const authAgent = require("../../../modules/authentication/");
+const authService = require("../../../modules/authentication/");
 const httpUtil = require("../../../util/httpUtil");
 
 /**
@@ -38,7 +38,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @name Verify Email
  * @function
  */
-router.post('/', authAgent.requireNoAuthentication, async (req, res) => {
+router.post('/', authService.requireNoAuthentication, async (req, res) => {
     try {
         log.info("Verifying user email");
         const verificationResult = await emailVerification.verifyEmail(req.body.data.email, req.body.data.token);
