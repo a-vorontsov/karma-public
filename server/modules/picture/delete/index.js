@@ -1,11 +1,10 @@
-/* jshint esversion: 9 */
-
+const log = require("../../../util/log");
 const aws = require('aws-sdk');
 
-const individualRepository = require("../../models/databaseRepositories/individualRepository");
-const organisationRepository = require("../../models/databaseRepositories/organisationRepository");
-const imageRepository = require("../../models/databaseRepositories/pictureRepository");
-const eventRepository = require("../../models/databaseRepositories/eventRepository");
+const individualRepository = require("../../../models/databaseRepositories/individualRepository");
+const organisationRepository = require("../../../models/databaseRepositories/organisationRepository");
+const imageRepository = require("../../../models/databaseRepositories/pictureRepository");
+const eventRepository = require("../../../models/databaseRepositories/eventRepository");
 
 aws.config.update({
     secretAccessKey: process.env.S3_SECRET_ACCESS,
@@ -20,30 +19,28 @@ const AWS_REGEX = /https?:\/\/.*\.amazonaws\.com\//;
 /**
  * Remove avatar for a user (individual or organisation)
  * @param {Request} req HTTP request object
+ * inc. req.params.userType - The type of User, i.e. one of: 'individual', 'organisation'
  * @param {Response} res HTTP response object
- * @param {string} userType The type of User, i.e. one of: 'individual', 'organisation'
  */
-const deleteAvatar = (req, res, userType) => {
-    // delete from s3 only if no other findByUrl results
+const deleteAvatar = (req, res) => {
+    const userType = req.params.userType;
     if (!userType || !userTypes.includes(userType)) {
-        res.json({
+        res.status(400).send({
             message: `User type not specified, specify one of: ${userTypes.join(', ')}`,
         });
         return;
     }
     const userRepo = userType === 'individual' ? individualRepository : organisationRepository;
-    userRepo.findById(req.query.userId).then(function(result) {
+    userRepo.findById(req.query.userId).then((result) => {
         if (result.rowCount < 1) {
-            res.status(500);
-            res.json({
+            res.status(404).send({
                 message: `There is no ${userType} with ID ${req.query.userId}`,
             });
         } else {
             const user = result.rows[0];
 
             if (!user.pictureId) {
-                res.status(200);
-                res.json({
+                res.status(200).send({
                     message: `The ${userType} with user ID ${req.query.userId} has no image`,
                 });
             } else {
@@ -51,10 +48,9 @@ const deleteAvatar = (req, res, userType) => {
                 user.pictureId = null;
                 userRepo.update(user);
 
-                imageRepository.findById(pictureId).then(function(pictureResult) {
+                imageRepository.findById(pictureId).then((pictureResult) => {
                     if (!pictureResult.rows.length) {
-                        res.status(200);
-                        res.json({
+                        res.status(200).send({
                             message: `The image associated with with user ID ${req.query.userId} no longer exists`,
                         });
                     } else {
@@ -64,7 +60,7 @@ const deleteAvatar = (req, res, userType) => {
                         s3.deleteObject({
                             Bucket: process.env.S3_BUCKET_NAME,
                             Key: key,
-                        }, function(err, data) {
+                        }, (err, data) => {
                             if (err) {
                                 res.status(500);
                                 res.json({
@@ -96,7 +92,7 @@ const deleteAvatar = (req, res, userType) => {
  * @param {Response} res HTTP response object
  */
 const deleteEventPicture = (req, res) => {
-    eventRepository.findById(req.params.eventId).then(function(result) {
+    eventRepository.findById(req.params.eventId).then((result) => {
         if (result.rowCount < 1) {
             res.json({
                 message: `There is no event with ID ${req.params.eventId}`,
@@ -118,7 +114,7 @@ const deleteEventPicture = (req, res) => {
                     event.pictureId = null;
                     eventRepository.update(event);
 
-                    imageRepository.findById(pictureId).then(function(pictureResult) {
+                    imageRepository.findById(pictureId).then((pictureResult) => {
                         if (!pictureResult.rows.length) {
                             res.status(200);
                             res.json({
@@ -131,7 +127,7 @@ const deleteEventPicture = (req, res) => {
                             s3.deleteObject({
                                 Bucket: process.env.S3_BUCKET_NAME,
                                 Key: key,
-                            }, function(err, data) {
+                            }, (err, data) => {
                                 if (err) {
                                     res.status(500);
                                     res.json({
