@@ -2,6 +2,7 @@
  * @module Sign-in-Email
  */
 
+const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authAgent = require("../../../modules/authentication/auth-agent");
@@ -16,7 +17,8 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
  * The user only inputs their email address, and
  * a HTTP response will be sent based on the user's
  * registration status.
- * @route {POST} /signin/email
+ <p><b>Route: </b>/signin/email (POST)</p>
+ <p><b>Permissions: </b>require not auth</p>
  * @param {number} req.body.userId since no userId yet, null here
  * @param {string} req.body.authToken since no authToken yet, null here
  * @param {string} req.body.data.email input email address of the user
@@ -66,6 +68,7 @@ const userRepo = require("../../../models/databaseRepositories/userRepository");
  */
 router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
     try {
+        log.info("Starting sign-in with email");
         if (!(await regStatus.emailExists(req.body.data.email))) {
             try {
                 await userAgent.registerEmail(req.body.data.email);
@@ -146,6 +149,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
         }
     } catch (e) {
         // in case of invalid queries, an error may be thrown
+        log.error("Sign-in with email failed: " + e);
         res.status(500).send({
             message: e.message,
         });

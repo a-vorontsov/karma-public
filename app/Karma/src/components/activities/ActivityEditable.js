@@ -6,6 +6,7 @@ import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
 import {sendNotification} from "../../util/SendNotification";
+import {getMonthName, formatAMPM, getDate} from "../../util/DateTimeInfo";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
 import {
@@ -14,6 +15,7 @@ import {
     MenuOptions,
     MenuTrigger,
 } from "react-native-popup-menu";
+import request from "superagent";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -23,49 +25,21 @@ const icons = {
     location: require("../../assets/images/general-logos/location-logo.png"),
 };
 
-function formatAMPM(d) {
-    let date = new Date(d);
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    let strTime = hours + ":" + minutes + " " + ampm;
-    return strTime;
-}
-
-function getMonthName(d, long = false) {
-    let date = new Date(d);
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-    var name = monthNames[date.getMonth()];
-    if (!long) {
-        name = name.substring(0, 3);
-    }
-    return name;
-}
-// returns date string in the format day/month/year
-function getDate(d) {
-    const date = new Date(d);
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
-}
-
 const ActivityEditable = props => {
     const navigation = useNavigation();
-    const {activity} = props;
+    const {activity, email} = props;
+
+    /**
+     * Delete the event selected
+     */
+    const deleteEvent = async () => {
+        const activityId = activity.id;
+        const url = `http://localhost:8000/event/${activityId}/delete/`;
+        await request.post(url).then(res => {
+            navigation.navigate("Profile");
+        });
+    };
+
     return (
         <View>
             <View
@@ -74,8 +48,7 @@ const ActivityEditable = props => {
                     height: 30,
                     alignItems: "flex-end",
                 }}>
-                <View style={{}}>
-                    {/* <TouchableOpacity onPress={() => navigation.navigate("ActivityEdit")}> */}
+                <View>
                     <TouchableOpacity>
                         <Menu>
                             <MenuTrigger>
@@ -101,6 +74,7 @@ const ActivityEditable = props => {
                                     onSelect={() =>
                                         navigation.navigate("CreateActivity", {
                                             activity: activity,
+                                            email: email,
                                         })
                                     }>
                                     <RegularText style={styles.settingsText}>
@@ -138,14 +112,29 @@ const ActivityEditable = props => {
                                 </MenuOption>
                                 <MenuOption
                                     onSelect={() => {
-                                        sendNotification(
-                                            "EventCancellation",
-                                            `"Event named ${
-                                                activity.name
-                                            } has been cancelled"`,
-                                        );
+                                        // sendNotification(
+                                        //     "EventCancellation",
+                                        //     `"Event named ${
+                                        //         activity.name
+                                        //     } has been cancelled"`,
+                                        // );
                                         Alert.alert(
-                                            "Are you sure you want to delete?",
+                                            "Are you sure you want to delete this event?",
+                                            "",
+                                            [
+                                                {
+                                                    text: "Confirm",
+                                                    onPress: () =>
+                                                        deleteEvent(),
+                                                },
+                                                {
+                                                    text: "Cancel",
+                                                    onPress: () =>
+                                                        console.log(
+                                                            "Cancelled the deletion of an event",
+                                                        ),
+                                                },
+                                            ],
                                         );
                                     }}>
                                     <RegularText style={styles.settingsText}>

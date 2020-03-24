@@ -4,9 +4,11 @@ const signUpRepository = require("../../models/databaseRepositories/signupReposi
 const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
 const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
 const favouriteEventRepository = require("../../models/databaseRepositories/favouriteRepository");
+const causeRepo = require("../../models/databaseRepositories/causeRepository");
 const eventSorter = require("../sorting/event");
 const util = require("../../util/util");
 const filterer = require("../filtering");
+const geocoder = require("../geocoder");
 /**
  * Creates a new event to be added to the database.
  * @param {object} event A valid event, an address inside the event object or addressId set to an existing address,
@@ -28,17 +30,38 @@ const createNewEvent = async (event) => {
     }
 
     if (!event.addressId) { // address doesn't exist in database yet
-        const addressResult = await addressRepository.insert(event.address);
+        const address = event.address;
+        const geoCode = await geocoder.geocode(address);
+        address.lat = geoCode == true ? geoCode[0].latitude : 0;
+        address.long = geoCode == true ? geoCode[0].longitude : 0;
+        const addressResult = await addressRepository.insert(address);
         event.addressId = addressResult.rows[0].id;
     }
 
     event.creationDate = new Date();
     const eventResult = await eventRepository.insert(event);
+    const eventId = eventResult.rows[0].id;
+    const causesResult = event.causes;
+    const causes = (await Promise.all(causesResult.map(id => addEventCause(id, eventId))))
+        .map(result => result.rows[0]);
+    const newCauses = (await Promise.all(causes.map(async cause => await causeRepo.findById(cause.causeId))))
+        .map(result => result.rows[0]);
     return ({
         status: 200,
         message: "Event created successfully",
-        data: {event: eventResult.rows[0]},
+        data: {
+            event: eventResult.rows[0],
+            causes: newCauses,
+        },
     });
+};
+
+const addEventCause = async (causeId, eventId) => {
+    const eventCause = {
+        causeId,
+        eventId,
+    };
+    return await eventCauseRepository.insert(eventCause);
 };
 
 /**
@@ -109,7 +132,7 @@ const getEvents = async (filters, userId) => {
     return ({
         status: 200,
         message: "Events fetched successfully",
-        data: {events: events},
+        data: {events},
     });
 };
 
@@ -164,6 +187,8 @@ const getEventData = async (id) => {
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
+    const causesResult = await eventCauseRepository.findCausesByEventId(event.id);
+    const causes = causesResult.rows;
     return ({
         status: 200,
         message: "Event fetched successfully",
@@ -171,6 +196,7 @@ const getEventData = async (id) => {
             event: {
                 ...event,
                 address: address,
+                causes,
             },
         },
     });

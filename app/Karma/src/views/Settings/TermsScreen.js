@@ -6,21 +6,7 @@ import {RegularText} from "../../components/text";
 
 const request = require("superagent");
 
-const logo = require("../../assets/images/settings-logos/privacy.png");
-
-function loadUsageTerms(screen) {
-    request
-        .post("https://baconipsum.com/api/?type=meat-and-filler")
-        .then(res => {
-            console.log(res.body);
-            screen.setState({
-                termsText: res.body,
-            });
-        })
-        .catch(er => {
-            console.log(er.message);
-        });
-}
+const logo = require("../../assets/images/settings-logos/terms.png");
 
 class TermsScreen extends Component {
     static navigationOptions = {
@@ -32,14 +18,28 @@ class TermsScreen extends Component {
         this.state = {
             termsText: "Loading...",
         };
-        loadUsageTerms(this);
+        this.loadUsageTerms();
     }
+
+    loadUsageTerms = () => {
+        request
+            .get("http://localhost:8000/information?type=terms")
+            .then(res => {
+                console.log(res.body.message);
+                this.setState({
+                    termsText: res.body.data.information.content,
+                });
+            })
+            .catch(er => {
+                console.log(er.message);
+            });
+    };
 
     render() {
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph24}>
-                    <PageHeader title="Privacy Policy Guidelines" />
+                    <PageHeader title="Terms of Use" />
                 </View>
                 <View
                     style={{

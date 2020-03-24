@@ -8,6 +8,7 @@ jest.mock("../../models/databaseRepositories/causeRepository");
 
 
 beforeEach(() => {
+    process.env.NO_AUTH = 1;
     return testHelpers.clearDatabase();
 });
 

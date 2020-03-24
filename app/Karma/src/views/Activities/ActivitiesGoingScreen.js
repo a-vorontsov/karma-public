@@ -3,6 +3,7 @@ import {View} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
+import {getData} from "../../util/GetCredentials";
 
 const request = require("superagent");
 
@@ -19,12 +20,15 @@ class ActivitiesGoingScreen extends Component {
         headerShown: false,
     };
 
-    fetchAllActivities() {
+    async fetchAllActivities() {
+        const credentials = await getData();
+        //const authToken = credentials.password;
+        const userId = credentials.username;
         request
             .get("http://localhost:8000/event/going")
-            .query({userId: 51})
+            .query({userId: userId})
             .then(result => {
-                console.log(result.body.data);
+                console.log(result.body.message);
                 let activities = result.body.data.events;
                 this.setState({
                     activities,
@@ -44,6 +48,7 @@ class ActivitiesGoingScreen extends Component {
                             <ActivityDisplayCard
                                 activity={activity}
                                 key={activity.id}
+                                signedup={true} //TODO
                             />
                         );
                     })

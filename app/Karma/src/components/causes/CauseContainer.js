@@ -17,6 +17,7 @@ export default class CauseContainer extends React.Component {
             selectedCauses: [],
         };
         this.selectCauses = this.selectCauses.bind(this);
+        this.passUpState = this.passUpState.bind(this);
     }
     async componentDidMount() {
         try {
@@ -40,7 +41,7 @@ export default class CauseContainer extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.data);
+                console.log(res.body.message);
                 Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
                 this.props.onSubmit();
             })
@@ -51,6 +52,16 @@ export default class CauseContainer extends React.Component {
                 );
             });
     }
+
+    passUpState() {
+        const {selectedCauses} = this.state;
+        this.props.onUpdateCauses({
+            selectedCauses,
+            displayModal: false,
+        });
+        Toast.showWithGravity("Saved", Toast.SHORT, Toast.BOTTOM);
+    }
+
     render() {
         const {causes} = this.state;
         return (
@@ -74,7 +85,11 @@ export default class CauseContainer extends React.Component {
                 <View style={[Styles.ph24, Styles.pt16, Styles.bgWhite]}>
                     <GradientButton
                         title="Save"
-                        onPress={() => this.selectCauses()}
+                        onPress={() =>
+                            this.props.isActivity
+                                ? this.passUpState()
+                                : this.selectCauses()
+                        }
                     />
                 </View>
             </View>

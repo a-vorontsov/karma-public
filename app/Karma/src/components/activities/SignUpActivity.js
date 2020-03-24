@@ -6,6 +6,7 @@ import Toast from "react-native-simple-toast";
 import RNCalendarEvents from "react-native-calendar-events";
 import Styles from "../../styles/Styles";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
+import {getData} from "../../util/GetCredentials";
 const moment = require("moment");
 const request = require("superagent");
 const icons = {
@@ -34,13 +35,16 @@ export default class SignUpActivity extends React.Component {
             });
         }
     }
-    confirmSignUp() {
+    async confirmSignUp() {
         const {activity, onConfirm, onError} = this.props;
+        const credentials = await getData();
+        const eventId = activity.eventId;
         request
-            .post(`http://localhost:8000/event/${activity.eventId}/signUp`)
+            .post(`http://localhost:8000/event/${eventId}/signUp`)
             .send({
-                userId: 51,
-                confirmed: true,
+                userId: credentials.username,
+                confirmed: false,
+                attended: false,
             })
             .then(() => {
                 Toast.showWithGravity(
@@ -57,14 +61,14 @@ export default class SignUpActivity extends React.Component {
                 );
             });
     }
-    cancelSignUp() {
+    async cancelSignUp() {
         const {activity, onConfirm, onError} = this.props;
+        const credentials = await getData();
+        const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
         request
-            .post(
-                `http://localhost:8000/event/${activity.eventId}/signUp/update`,
-            )
+            .post(`http://localhost:8000/event/${eventId}/signUp/update`)
             .send({
-                userId: 51,
+                userId: credentials.username,
                 confirmed: false,
             })
             .then(() => {
