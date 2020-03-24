@@ -187,7 +187,7 @@ const getEventData = async (id) => {
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
-    const volunteerResult = await signUpRepository.findUsersSignedUp(event.id);
+    const volunteerResult = await signUpRepository.findUsersSignedUpConfirmed(event.id);
     const volunteers = volunteerResult.rows;
     const causesResult = await eventCauseRepository.findCausesByEventId(event.id);
     const causes = causesResult.rows;

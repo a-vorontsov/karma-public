@@ -23,7 +23,7 @@ const findAllByEventId = (eventId) => {
 };
 
 const findAllByEventIdConfirmed = (eventId) => {
-    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true";
+    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true RETURNING *";
     return db.query(query, [eventId]);
 };
 
@@ -44,6 +44,14 @@ const findUsersSignedUp = (eventId) => {
     "user_id,email,username,date_registered " +
         "FROM sign_up LEFT JOIN individual ON individual_id = id(individual) RIGHT JOIN \"user\" ON user_id=id(\"user\")" +
         "WHERE event_id = $1";
+    return db.query(query, [eventId]);
+};
+
+const findUsersSignedUpConfirmed = (eventId) => {
+    const query = "SELECT event_id,individual_id,confirmed,attended,firstname as first_name,lastname as last_name," +
+        "user_id,email,username,date_registered " +
+        "FROM sign_up LEFT JOIN individual ON individual_id = id(individual) RIGHT JOIN \"user\" ON user_id=id(\"user\")" +
+        "WHERE event_id = $1 and confirmed=true";
     return db.query(query, [eventId]);
 };
 
@@ -74,4 +82,5 @@ module.exports = {
     removeByEventId,
     findAllByIndividualIdConfirmed,
     findAllByEventIdConfirmed,
+    findUsersSignedUpConfirmed,
 };
