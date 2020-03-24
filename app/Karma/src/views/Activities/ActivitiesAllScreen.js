@@ -1,16 +1,11 @@
 import React, {Component} from "react";
-import {
-    View,
-    FlatList,
-    StyleSheet,
-    ActivityIndicator,
-    Dimensions,
-} from "react-native";
+import {View, FlatList, ActivityIndicator, Dimensions} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import {SafeAreaView} from "react-navigation";
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.6 * SCREEN_WIDTH;
 const request = require("superagent");
@@ -94,7 +89,7 @@ class ActivitiesAllScreen extends Component {
 
     render() {
         return (
-            <View>
+            <SafeAreaView style={{flex: 1}}>
                 {this.state.loading ? (
                     <ActivityIndicator size="large" />
                 ) : (
@@ -115,7 +110,7 @@ class ActivitiesAllScreen extends Component {
                         }
                     />
                 )}
-            </View>
+            </SafeAreaView>
         );
     }
 }
