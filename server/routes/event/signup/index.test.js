@@ -2,10 +2,10 @@ const request = require('supertest');
 const app = require('../../../app');
 const testHelpers = require("../../../test/testHelpers");
 const validation = require("../../../modules/validation");
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const eventSignupService = require("../../../modules/event/signup");
 const util = require("../../../util/util");
 
-jest.mock("../../../modules/event/signup/eventSignupService");
+jest.mock("../../../modules/event/signup");
 jest.mock("../../../modules/validation");
 jest.mock("../../../util/util");
 

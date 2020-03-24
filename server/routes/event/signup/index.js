@@ -6,7 +6,7 @@ const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
+const eventSignupService = require("../../../modules/event/signup");
 const httpUtil = require("../../../util/httpUtil");
 const util = require("../../../util/util");
 const validation = require("../../../modules/validation");
