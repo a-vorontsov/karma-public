@@ -172,7 +172,7 @@ class WelcomeScreen extends Component {
                 // if password correct
                 this.setState({isValidPass: true});
                 const authToken = res.body.data.authToken;
-                await AsyncStorage.setItem("t", authToken);
+                await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
                 navigate("PickCauses");
             })
             .catch(err => {
