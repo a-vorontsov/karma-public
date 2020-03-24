@@ -39,7 +39,7 @@ export default class OrgSignUpScreen extends React.Component {
         this.state = {
             orgType: "NGO (Non-Government Organisation",
             orgName: "",
-            charityNumber: "",
+            charityNumber: "0",
             fname: "",
             lname: "",
             phone: "",
@@ -105,9 +105,9 @@ export default class OrgSignUpScreen extends React.Component {
 
     createOrganisation() {
         const organisation = {
-            organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
+            charityNumber: this.state.charityNumber,
             lowIncome: this.state.isLowIncome,
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
@@ -127,11 +127,7 @@ export default class OrgSignUpScreen extends React.Component {
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (
-            !this.state.orgName ||
-            !this.state.charityNumber ||
-            !this.state.phone
-        ) {
+        if (!this.state.orgName || !this.state.phone) {
             return;
         }
         const authToken = await getAuthToken();
@@ -210,27 +206,11 @@ export default class OrgSignUpScreen extends React.Component {
                             <TextInput
                                 placeholder="Charity or Organisation name"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() =>
-                                    this.charityNumber.focus()
-                                }
+                                onSubmitEditing={() => this.password.focus()}
                                 name="orgName"
                                 showError={
                                     this.state.submitPressed
                                         ? !this.state.orgName
-                                        : false
-                                }
-                            />
-                            <TextInput
-                                inputRef={ref => (this.charityNumber = ref)}
-                                placeholder="Charity Number"
-                                onChange={this.onChangeText}
-                                name="charityNumber"
-                                onSubmitEditing={() => this.password.focus()}
-                                showError={
-                                    this.state.submitPressed
-                                        ? !this.state.charityNumber &&
-                                          !this.state.isExempt &&
-                                          !this.state.isLowIncome
                                         : false
                                 }
                             />
