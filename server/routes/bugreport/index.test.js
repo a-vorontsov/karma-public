@@ -2,9 +2,9 @@ const request = require('supertest');
 const app = require('../../app');
 const testHelpers = require("../../test/testHelpers");
 
-const mailSender = require("../../modules/mailSender");
+const mailSender = require("../../modules/mail");
 
-jest.mock("../../modules/mailSender");
+jest.mock("../../modules/mail");
 
 
 beforeEach(() => {

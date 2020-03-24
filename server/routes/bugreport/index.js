@@ -4,7 +4,7 @@
 const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
-const mailSender = require("../../modules/mailSender/index");
+const mailSender = require("../../modules/mail/index");
 const httpUtil = require("../../util/httpUtil");
 const authAgent = require("../../modules/authentication/");
 

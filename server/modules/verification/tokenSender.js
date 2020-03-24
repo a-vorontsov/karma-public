@@ -1,6 +1,6 @@
 const randomize = require('randomatic');
 const log = require("../../util/log");
-const mailSender = require('../mailSender');
+const mailSender = require('../mail');
 const date = require("date-and-time");
 const resetRepo = require("../../models/databaseRepositories/resetRepository");
 const regRepo = require("../../models/databaseRepositories/registrationRepository");

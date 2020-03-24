@@ -4,11 +4,11 @@ const testHelpers = require("../../../test/testHelpers");
 const jose = require("../../../modules/jose");
 const userRepository = require("../../../models/databaseRepositories/userRepository");
 const resetRepository = require("../../../models/databaseRepositories/resetRepository");
-const mailSender = require("../../../modules/mailSender");
+const mailSender = require("../../../modules/mail");
 
 jest.mock("../../../models/databaseRepositories/resetRepository");
 jest.mock("../../../models/databaseRepositories/userRepository");
-jest.mock("../../../modules/mailSender");
+jest.mock("../../../modules/mail");
 
 let user, reset1, reset2;
 
