@@ -142,13 +142,13 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
 
             const profileResult = await profileRepo.findByIndividualId(individual.id);
             const profile = profileResult.rows[0];
-            const signUpResult = await signUpRepo.findAllByIndividualId(individual.id);
+            const signUpResult = await signUpRepo.findAllByIndividualIdConfirmed(individual.id);
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
-                .map(eventId => eventRepo.findByIdConfirmed(eventId))))
+                .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
                 .filter(event => event.date < now);
             const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
-                .map(eventId => eventRepo.findByIdConfirmed(eventId))))
+                .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
                 .filter(event => event.date > now);
 

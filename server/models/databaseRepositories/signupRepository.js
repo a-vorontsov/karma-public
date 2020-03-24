@@ -12,8 +12,18 @@ const findAllByIndividualId = (individualId) => {
     return db.query(query, [individualId]);
 };
 
+const findAllByIndividualIdConfirmed = (individualId) => {
+    const query = "SELECT * FROM sign_up WHERE individual_id=$1 AND confirmed=true";
+    return db.query(query, [individualId]);
+};
+
 const findAllByEventId = (eventId) => {
     const query = "SELECT * FROM sign_up WHERE event_id=$1";
+    return db.query(query, [eventId]);
+};
+
+const findAllByEventIdConfirmed = (eventId) => {
+    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true";
     return db.query(query, [eventId]);
 };
 
@@ -62,4 +72,6 @@ module.exports = {
     removeByIndividualId,
     removeByEventCreatorId,
     removeByEventId,
+    findAllByIndividualIdConfirmed,
+    findAllByEventIdConfirmed,
 };

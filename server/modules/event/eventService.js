@@ -182,7 +182,7 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 const getEventData = async (id) => {
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
-    const eventSignUps = await signUpRepository.findAllByEventId(event.id);
+    const eventSignUps = await signUpRepository.findAllByEventIdConfirmed(event.id);
     const spotsRemaining = event.spots - eventSignUps.rowCount;
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
