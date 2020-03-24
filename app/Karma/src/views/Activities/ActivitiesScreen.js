@@ -35,7 +35,9 @@ class ActivitiesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            womenOnlyValue: false,
+            womenOnly: false,
+            locationVisible: false,
+            physicalActivity: false,
             distance: 90,
             display: ActivitiesAllScreen,
             visible: false,
@@ -106,7 +108,7 @@ class ActivitiesScreen extends Component {
                             height={
                                 this.state.calendarVisible
                                     ? SCREEN_HEIGHT * 0.5
-                                    : SCREEN_HEIGHT * 0.4
+                                    : SCREEN_HEIGHT * 0.55
                             }
                             width={formWidth}
                             onTouchOutside={() => {
@@ -126,7 +128,8 @@ class ActivitiesScreen extends Component {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 this.setState({
-                                                    calendarVisible: true,
+                                                    calendarVisible: !this.state
+                                                        .calendarVisible,
                                                 });
                                             }}>
                                             <Image
@@ -217,18 +220,83 @@ class ActivitiesScreen extends Component {
                                         <View style={styles.leftItem}>
                                             <Switch
                                                 style={styles.switch}
-                                                value={
-                                                    this.state.womenOnlyValue
-                                                }
                                                 trackColor={{
                                                     true: "#A9DCDF",
                                                     false: Colours.grey,
                                                 }}
                                                 thumbColor={Colours.grey}
-                                                onChange={prevState =>
+                                                onChange={() =>
                                                     this.setState({
-                                                        womenOnlyValue: !prevState.womenOnlyValue,
+                                                        womenOnly: !this.state
+                                                            .womenOnly,
                                                     })
+                                                }
+                                                value={this.state.womenOnly}
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {/* PHYSICAL ACTIVITY */}
+                                {!this.state.calendarVisible && (
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingBottom: 10,
+                                        }}>
+                                        <RegularText style={styles.contentText}>
+                                            Requires Physical Activity:
+                                        </RegularText>
+                                        <View style={styles.leftItem}>
+                                            <Switch
+                                                style={styles.switch}
+                                                trackColor={{
+                                                    true: "#A9DCDF",
+                                                    false: Colours.grey,
+                                                }}
+                                                thumbColor={Colours.grey}
+                                                onChange={() =>
+                                                    this.setState({
+                                                        physicalActivity: !this
+                                                            .state
+                                                            .physicalActivity,
+                                                    })
+                                                }
+                                                value={
+                                                    this.state.physicalActivity
+                                                }
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {/* LOCATION VISIBLE */}
+                                {!this.state.calendarVisible && (
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingBottom: 10,
+                                        }}>
+                                        <RegularText style={styles.contentText}>
+                                            Full Location Visible:
+                                        </RegularText>
+                                        <View style={styles.leftItem}>
+                                            <Switch
+                                                style={styles.switch}
+                                                trackColor={{
+                                                    true: "#A9DCDF",
+                                                    false: Colours.grey,
+                                                }}
+                                                thumbColor={Colours.grey}
+                                                onChange={() =>
+                                                    this.setState({
+                                                        locationVisible: !this
+                                                            .state
+                                                            .locationVisible,
+                                                    })
+                                                }
+                                                value={
+                                                    this.state.locationVisible
                                                 }
                                             />
                                         </View>
