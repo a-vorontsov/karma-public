@@ -29,8 +29,6 @@ const signInEmailRequest = {
 };
 
 const verifyEmailRequest = {
-    userId: null,
-    authToken: null,
     data: {
         email: "test4@gmail.com",
         token: "tbd",
@@ -40,6 +38,7 @@ const verifyEmailRequest = {
 test("email verification works", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -55,6 +54,7 @@ test("email verification works", async () => {
 
     const verifyResponse = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send(verifyEmailRequest);
 
     expect(verifyResponse.body.message).toBe("Email successfully verified. Go to registration screen.");
@@ -64,6 +64,7 @@ test("email verification works", async () => {
 test("invalid token is rejected", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -79,6 +80,7 @@ test("invalid token is rejected", async () => {
 
     const verifyResponse = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send(verifyEmailRequest);
 
     expect(verifyResponse.body.message).toBe("Invalid token");
@@ -88,6 +90,7 @@ test("invalid token is rejected", async () => {
 test("request without email address is rejected", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -100,9 +103,8 @@ test("request without email address is rejected", async () => {
 
     const verifyResponse = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send({
-            userId: null,
-            authToken: null,
             data: {
                 token: "tbd",
             }});
@@ -114,6 +116,7 @@ test("request without email address is rejected", async () => {
 test("request without token is rejected", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -126,9 +129,8 @@ test("request without token is rejected", async () => {
 
     const verifyResponse = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send({
-            userId: null,
-            authToken: null,
             data: {
                 email: "test4@gmail.com",
             }
@@ -141,6 +143,7 @@ test("request without token is rejected", async () => {
 test("email verification works", async () => {
     const response = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(response.body.message).toBe(
@@ -159,6 +162,7 @@ test("email verification works", async () => {
 
     const secondResponse = await request(app)
         .post("/signin/email")
+        .set("authorization", null)
         .send(signInEmailRequest);
 
     expect(secondResponse.body.message).toBe(
@@ -173,6 +177,7 @@ test("email verification works", async () => {
     // sending first - old token instead of new
     const verifyResponse2 = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send(verifyEmailRequest);
 
     expect(verifyResponse2.body.message).toBe("Invalid token");
@@ -183,6 +188,7 @@ test("email verification works", async () => {
 
     const verifyResponse3 = await request(app)
         .post("/verify/email")
+        .set("authorization", null)
         .send(verifyEmailRequest);
 
     expect(verifyResponse3.body.message).toBe("Email successfully verified. Go to registration screen.");

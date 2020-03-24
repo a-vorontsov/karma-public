@@ -17,12 +17,11 @@ log4js.configure({
 
 const log = log4js.getLogger();
 
-log.level = process.env.NODE_ENV === "development" ? "debug" : "info";
 switch (process.env.NODE_ENV) {
-    case "development":
+    case "test":
         log.level = "debug";
         break;
-    case "testing":
+    case "development":
         log.level = "debug";
         break;
     default:

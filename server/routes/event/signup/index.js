@@ -15,10 +15,10 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "userId": "3",
     "confirmed": "true"
   }
  </pre>
@@ -63,6 +63,7 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
  * Endpoint called to get all users signed up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Number} req.params.eventId - id of the event.
  * @returns {object}
  *  status: 200, description: Array of all users signed up with necessary details named users<br/>
@@ -109,10 +110,9 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
 
 /**
  * Endpoint called whenever a user wishes to see all events they have attended. This only shows past events<br/>
- * URL example: GET http://localhost:8000/event/signUp/history?userId=1
  <p><b>Route: </b>/event/signUp/history (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Object} req.query.userId - id of user requesting their signup history
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: Array of all events the user has signed up to<br/>
  <pre>
@@ -193,6 +193,7 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  * Endpoint called whenever a user updates their attendance confirmation in an event.<br/>
  <p><b>Route: </b>/event/:eventId/signUp/update/ (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {

@@ -3,7 +3,7 @@ import {View} from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 
 const request = require("superagent");
 
@@ -18,12 +18,10 @@ class ActivitiesCausesScreen extends Component {
     }
 
     async fetchAllActivities() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/event/causes")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(result => {
                 let activitiesByCause = result.body.data;
                 console.log(result.body.message);

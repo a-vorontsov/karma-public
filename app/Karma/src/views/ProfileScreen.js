@@ -24,7 +24,7 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
-import {getData} from "../util/GetCredentials";
+import {getAuthToken} from "../util/credentials";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -140,12 +140,11 @@ class ProfileScreen extends Component {
     }
 
     async fetchProfileInfo() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         request
             .get("http://localhost:8000/profile")
-            .query({userId: userId})
+            .set("authorization", authToken)
             .then(res => {
                 console.log(res.body.message);
                 res.body.data.organisation

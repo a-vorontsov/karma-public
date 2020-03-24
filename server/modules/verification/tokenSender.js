@@ -1,4 +1,5 @@
 const randomize = require('randomatic');
+const log = require("../../util/log");
 const mailSender = require('../mailSender');
 const date = require("date-and-time");
 const resetRepo = require("../../models/databaseRepositories/resetRepository");
@@ -42,6 +43,7 @@ const storeAndSendEmailVerificationToken = async (email) => {
  */
 const storeAndSendVerificationToken = async (validMinutes, dbUpdateFunction, dbId, customSubject, toEmail) => {
     // generate 6 digit code
+    log.info("Generating verification token");
     const token = randomize('0', 6);
     const expiryDate = date.format(
         date.addMinutes(new Date(), validMinutes),

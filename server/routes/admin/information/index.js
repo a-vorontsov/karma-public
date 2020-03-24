@@ -14,7 +14,8 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * Endpoint called whenever an admin wants to upload new information such as Privacy Policy, Community Guidelines.<br/>
  <p><b>Route: </b>/admin/information (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
- * @param {Object} req.body - Information regarding the information containing the same properties as this example:
+ * @param {string} req.headers.authorization authToken
+ * @param {Information} req.body - Information regarding the information containing the same properties as this example:
  <pre>
  {
     "type": "privacyPolicy",

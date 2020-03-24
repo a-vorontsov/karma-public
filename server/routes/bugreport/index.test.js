@@ -30,6 +30,7 @@ test('bug report sending works', async () => {
     );
     const response = await request(app)
         .post("/bugreport")
+        .set("authorization", null)
         .send(bugReport);
 
     expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
@@ -48,6 +49,7 @@ test('bug report endpoint gives correct response if mail-sending fails', async (
     );
     const response = await request(app)
         .post("/bugreport")
+        .set("authorization", null)
         .send(bugReport);
 
     expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
