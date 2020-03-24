@@ -81,6 +81,7 @@ jobs:
       DB_DATABASE: karma-db
       SKIP_GEOCODING: 1
       MAPQUEST_API: fake5
+      SKIP_ASYNC_KEY_EXCHANGE: 0
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository
