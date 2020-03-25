@@ -155,6 +155,10 @@ class WelcomeScreen extends Component {
                         });
                         return;
                     }
+                    if (res.body.data.alreadyAuthenticated) {
+                        navigate("Activities");
+                        return;
+                    }
                     //if email is not verified, show code field
                     this.setState({
                         showPassField: false,
