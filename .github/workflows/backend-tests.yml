@@ -81,6 +81,10 @@ jobs:
       DB_DATABASE: karma-db
       SKIP_GEOCODING: 1
       MAPQUEST_API: fake5
+      S3_SECRET_ACCESS: s3secret1
+      S3_KEY_ID: s3key1
+      S3_REGION: s3region1
+      S3_BUCKET_NAME: s3bucket1
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository
