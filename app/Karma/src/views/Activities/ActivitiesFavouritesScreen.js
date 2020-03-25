@@ -46,6 +46,7 @@ class ActivitiesFavouritesScreen extends Component {
                 }
             });
     }
+
     onRefresh() {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
@@ -66,6 +67,7 @@ class ActivitiesFavouritesScreen extends Component {
                 });
             });
     }
+
     render() {
         return (
             <ScrollView
