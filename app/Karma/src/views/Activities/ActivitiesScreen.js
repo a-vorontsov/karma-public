@@ -10,6 +10,7 @@ import {
     Switch,
     Dimensions,
 } from "react-native";
+import CheckBox from "react-native-check-box";
 import Slider from "@react-native-community/slider";
 import Modal, {ModalContent} from "react-native-modals";
 import {RegularText} from "../../components/text";
@@ -43,6 +44,7 @@ class ActivitiesScreen extends Component {
             calendarVisible: false,
             availabilityStart: null,
             availabilityEnd: null,
+            filtersEnabled: false,
         };
     }
 
@@ -123,6 +125,28 @@ class ActivitiesScreen extends Component {
                                 this.setState({visible: false});
                             }}>
                             <ModalContent>
+                                {!this.state.calendarVisible && (
+                                    <View>
+                                        <CheckBox
+                                            style={{flex: 1, padding: 13}}
+                                            onClick={() => {
+                                                this.setState({
+                                                    filtersEnabled: !this.state
+                                                        .filtersEnabled,
+                                                });
+                                            }}
+                                            isChecked={
+                                                this.state.filtersEnabled
+                                            }
+                                            rightText={"Enable filtering?"}
+                                            rightTextStyle={{
+                                                fontSize: 18,
+                                                color: Colours.grey,
+                                                paddingVertical: 30,
+                                            }}
+                                        />
+                                    </View>
+                                )}
                                 {/* AVAILABILITY */}
                                 <View
                                     style={{
@@ -187,7 +211,6 @@ class ActivitiesScreen extends Component {
                                         </View>
                                     </View>
                                 )}
-
                                 {/* DISTANCE */}
                                 {!this.state.calendarVisible && (
                                     <View>
@@ -422,6 +445,7 @@ class ActivitiesScreen extends Component {
                         </View>
                     </View>
                     <this.state.display
+                        filtersEnabled={this.state.filtersEnabled}
                         filters={{
                             booleanFilters: [
                                 ...(this.state.womenOnly

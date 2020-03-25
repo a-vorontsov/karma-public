@@ -44,21 +44,50 @@ class ActivitiesAllScreen extends Component {
         this.fetchActivities();
     }
 
+    getDateString(date) {
+        if (date) {
+            const dateString = JSON.stringify(date)
+                .split("T")[0] // get rid of the timezone
+                .slice(1); //get rid of the " at the beginning of the string
+            return dateString;
+        }
+        return null;
+    }
+    getFiltersObject() {
+        const {
+            maxDistance,
+            availabilityStart,
+            availabilityEnd,
+        } = this.props.filters;
+        if (this.props.filtersEnabled) {
+            return {
+                maxDistance: maxDistance,
+                availabilityStart: this.getDateString(availabilityStart),
+                availabilityEnd: this.getDateString(availabilityEnd),
+            };
+        }
+        return {};
+    }
+    getBooleanFilters() {
+        if (this.props.filtersEnabled) {
+            return queryString.stringify(
+                {filter: this.props.filters.booleanFilters},
+                {arrayFormat: "bracket", encode: false},
+            );
+        }
+        return "";
+    }
     async fetchActivities() {
-        console.log(this.props);
         const authToken = await getAuthToken();
         this.setState({fetchingDataFromServer: true});
-        const filtersQuery = queryString.stringify(
-            {filter: this.props.filters.booleanFilters},
-            {arrayFormat: "bracket", encode: false},
-        );
+
         request
-            .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
+            .get(`${REACT_APP_API_URL}/event?${this.getBooleanFilters()}`)
             .set("authorization", authToken)
             .query({
                 currentPage: this.page,
                 pageSize: 5,
-                maxDistance: this.props.filters.maxDistance,
+                ...this.getFiltersObject(),
             })
             .then(async res => {
                 console.log(res.body.message);
@@ -83,6 +112,7 @@ class ActivitiesAllScreen extends Component {
     }
 
     renderFooter() {
+        if (this.state.activitiesList.length === 0) return null;
         return (
             //Footer View with Load More button
             <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
@@ -99,21 +129,16 @@ class ActivitiesAllScreen extends Component {
     }
 
     async onRefresh() {
-        this.page = 1;
-        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         const authToken = await getAuthToken();
-        const filtersQuery = queryString.stringify(
-            {filter: this.props.filters.booleanFilters},
-            {arrayFormat: "bracket", encode: false},
-        );
-        console.log(this.props);
+        this.setState({isRefreshing: true});
+        this.page = 1;
         request
-            .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
+            .get(`${REACT_APP_API_URL}/event?${this.getBooleanFilters()}`)
             .set("authorization", authToken)
             .query({
                 currentPage: this.page,
                 pageSize: 5,
-                maxDistance: this.props.filters.maxDistance,
+                ...this.getFiltersObject(),
             })
             .then(async res => {
                 console.log(res.body.message);

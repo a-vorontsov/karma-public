@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StyleSheet, ScrollView, Dimensions} from "react-native";
+import {StyleSheet, View, Dimensions} from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import Colours from "../styles/Colours";
 
@@ -41,7 +41,7 @@ export default class Calendar extends Component {
         const maxDate = new Date(2020, 6, 3);
 
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 <CalendarPicker
                     startFromMonday={true}
                     allowRangeSelection={true}
@@ -55,7 +55,7 @@ export default class Calendar extends Component {
                     onDateChange={this.onDateChange}
                     width={formWidth}
                 />
-            </ScrollView>
+            </View>
         );
     }
 }
