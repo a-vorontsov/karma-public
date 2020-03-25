@@ -38,8 +38,8 @@ class ActivitiesAllScreen extends Component {
     };
 
     async componentDidMount() {
-        this.setState({loading: true});
-        this.fetchActivities();
+        await this.setState({loading: true});
+        await this.fetchActivities();
     }
 
     async fetchActivities() {

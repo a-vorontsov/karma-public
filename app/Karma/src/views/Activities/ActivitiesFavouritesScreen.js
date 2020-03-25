@@ -22,8 +22,8 @@ class ActivitiesFavouritesScreen extends Component {
         headerShown: false,
     };
 
-    componentDidMount() {
-        this.fetchAllActivities();
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
