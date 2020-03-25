@@ -15,7 +15,7 @@ import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
@@ -126,7 +126,7 @@ class AboutScreen extends React.Component {
             const authToken = await getAuthToken();
             const individual = this.createIndividual();
             await request
-                .post("http://localhost:8000/signup/individual")
+                .post(`${REACT_APP_API_URL}/signup/individual`)
                 .set("authorization", authToken)
                 .send({
                     data: {individual: {...individual}},

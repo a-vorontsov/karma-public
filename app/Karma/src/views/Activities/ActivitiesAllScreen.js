@@ -1,13 +1,21 @@
 import React, {Component} from "react";
-import {View, FlatList, ActivityIndicator, Dimensions} from "react-native";
+import {
+    View,
+    FlatList,
+    ActivityIndicator,
+    Dimensions,
+    Alert,
+} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import {SafeAreaView} from "react-navigation";
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.6 * SCREEN_WIDTH;
+
 const request = require("superagent");
 
 class ActivitiesAllScreen extends Component {
@@ -29,7 +37,7 @@ class ActivitiesAllScreen extends Component {
     async componentDidMount() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event")
+            .get(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(async res => {
@@ -45,6 +53,7 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
+                Alert.alert("No activities could be found!");
             });
     }
 

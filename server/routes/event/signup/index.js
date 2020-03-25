@@ -178,7 +178,7 @@ router.get('/signUp/history', authService.requireAuthentication, async (req, res
         const userId = Number.parseInt(req.query.userId);
         const individualId = await util.getIndividualIdFromUserId(userId);
         if (individualId === undefined) {
-            return res.send(400).body({message: "IndividualId not specified"});
+            return res.status(400).send({message: "IndividualId not specified"});
         }
 
         const signupsResult = await eventSignupService.getSignupHistory(individualId);
@@ -197,7 +197,7 @@ router.get('/signUp/history', authService.requireAuthentication, async (req, res
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "userId": "3",
+    "otherUserId": "3",
     "confirmed": false,
     "attended": true,
   }
@@ -223,9 +223,10 @@ router.get('/signUp/history', authService.requireAuthentication, async (req, res
  */
 router.post('/:eventId/signUp/update', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("User id '%d': Updating signup to event id '%d'", req.query.userId, req.params.eventId);
+        log.info("User id '%d': Updating signup to event id '%d' for user id '%d'", req.query.userId, req.params.eventId,
+            req.body.otherUserId);
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
+        signup.individualId = await util.getIndividualIdFromUserId(signup.otherUserId);
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -233,7 +234,8 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
         const signupsResult = await eventSignupService.updateSignUp(signup);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        log.error("User id '%d': Failed updating signup to event id '%d': " + e, req.query.userId, req.params.eventId);
+        log.error("User id '%d': Failed updating signup to event id '%d' for user id '%d': " + e, req.query.userId,
+            req.params.eventId, req.body.otherUserId);
         return httpUtil.sendGenericError(e, res);
     }
 });

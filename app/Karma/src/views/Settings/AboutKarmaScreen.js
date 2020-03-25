@@ -3,7 +3,7 @@ import {Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/K-logo.png");
@@ -23,7 +23,7 @@ class AboutKarmaScreen extends Component {
 
     loadAboutText = () => {
         request
-            .get("http://localhost:8000/information?type=about")
+            .get(`${REACT_APP_API_URL}/information?type=about`)
             .then(res => {
                 console.log(res.body.message);
                 this.setState({

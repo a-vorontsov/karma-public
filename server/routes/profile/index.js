@@ -144,7 +144,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
 
             const profileResult = await profileRepo.findByIndividualId(individual.id);
             const profile = profileResult.rows[0];
-            const signUpResult = await signUpRepo.findAllByIndividualId(individual.id);
+            const signUpResult = await signUpRepo.findAllByIndividualIdConfirmed(individual.id);
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])

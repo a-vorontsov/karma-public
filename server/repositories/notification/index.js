@@ -8,7 +8,7 @@ const insert = (notification) => {
 };
 
 const findByUserId = (id) => {
-    const query = "SELECT * FROM notification WHERE sender_id=$1 OR receiver_id=$1";
+    const query = "SELECT * FROM notification WHERE receiver_id=$1";
     return db.query(query, [id]);
 };
 
