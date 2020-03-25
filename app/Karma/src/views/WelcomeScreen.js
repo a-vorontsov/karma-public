@@ -13,6 +13,7 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -65,7 +66,7 @@ class WelcomeScreen extends Component {
         this.setState({showPassField: false});
         //send 6 digit code to email through forgot password route
         await request
-            .post("http://localhost:8000/signin/forgot")
+            .post(`${REACT_APP_API_URL}/signin/forgot`)
             .set("authorization", "")
             .send({
                 data: {
@@ -105,7 +106,7 @@ class WelcomeScreen extends Component {
         // email is of a valid format
         if (isValid) {
             await request
-                .post("http://localhost:8000/signin/email")
+                .post(`${REACT_APP_API_URL}/signin/email`)
                 .set("authorization", "")
                 .send({
                     data: {
@@ -160,7 +161,7 @@ class WelcomeScreen extends Component {
     async checkPass() {
         const {navigate} = this.props.navigation;
         await request
-            .post("http://localhost:8000/signin/password")
+            .post(`${REACT_APP_API_URL}/signin/password`)
             .set("authorization", "")
             .send({
                 data: {
@@ -183,7 +184,7 @@ class WelcomeScreen extends Component {
 
     async confirmForgotPasswordCode(code) {
         await request
-            .post("http://localhost:8000/signin/forgot/confirm")
+            .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
             .set("authorization", "")
             .send({
                 data: {
@@ -208,7 +209,7 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         //check with register route
         await request
-            .post("http://localhost:8000/verify/email")
+            .post(`${REACT_APP_API_URL}/verify/email`)
             .set("authorization", "")
             .send({
                 data: {

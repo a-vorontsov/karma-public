@@ -1,6 +1,8 @@
 import {Alert} from "react-native";
 import {getAuthToken} from "./credentials";
 const request = require("superagent");
+import { REACT_APP_API_URL } from 'react-native-dotenv';
+
 
 export const sendNotification = async (type, eventName, receiverIds) => {
     let options = {
@@ -11,7 +13,7 @@ export const sendNotification = async (type, eventName, receiverIds) => {
     const authToken = await getAuthToken();
 
     await request
-        .post("http://localhost:8000/notification/")
+        .post(`${REACT_APP_API_URL}/notification/`)
         .send(options)
         .set("authorization", authToken)
         .catch(err => {

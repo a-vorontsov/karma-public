@@ -25,6 +25,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -143,10 +144,10 @@ class ProfileScreen extends Component {
         const authToken = await getAuthToken();
 
         request
-            .get("http://localhost:8000/profile")
+            .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
+                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);

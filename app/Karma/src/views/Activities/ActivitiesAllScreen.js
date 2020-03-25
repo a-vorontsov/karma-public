@@ -4,6 +4,7 @@ import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
 
 const request = require("superagent");
 
@@ -23,7 +24,7 @@ class ActivitiesAllScreen extends Component {
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event")
+            .get(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .query({Page: 1, pageSize: 2})
             .then(result => {

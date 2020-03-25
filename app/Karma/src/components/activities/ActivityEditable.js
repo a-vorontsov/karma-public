@@ -9,6 +9,8 @@ import {sendNotification} from "../../util/SendNotification";
 import {getMonthName, formatAMPM, getDate} from "../../util/DateTimeInfo";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
+
 import {
     Menu,
     MenuOption,
@@ -37,7 +39,7 @@ const ActivityEditable = props => {
     const deleteEvent = async () => {
         const activityId = activity.id;
         const authToken = await getAuthToken();
-        const url = `http://localhost:8000/event/${activityId}/delete/`;
+        const url = `${REACT_APP_API_URL}/event/${activityId}/delete/`;
         await request
             .post(url)
             .set("authorization", authToken)
@@ -52,14 +54,15 @@ const ActivityEditable = props => {
      * This is used to then get the full name and email of each volunteer.
      */
     const fetchAttendeeInfo = async () => {
-        const credentials = await getAuthToken();
+        const authToken = await getAuthToken();
 
         let attendees = [];
         for (let i = 0; i < volunteers.length; ++i) {
+            
             const volunteerProfile = await request
-                .get("http://localhost:8000/profile/")
-                .query({userId: volunteers[i]})
-                .set("authorization", credentials.password)
+                .get(`${REACT_APP_API_URL}/profile/`)
+                .query({otherUserId: volunteers[i]})
+                .set("authorization", authToken)
                 .then(res => {
                     return res.body.data;
                 });
@@ -79,7 +82,7 @@ const ActivityEditable = props => {
         sendNotification("Message", "", volunteers);
 
         //Placing emails in the 'BCC' section so attendees can only see their own emails
-        Communications.email(null, null, attendeeEmails, null, null);
+        Communications.email(null, null, attendeeEmails, `Karma - ${activity.name}`, null);
     };
 
     return (

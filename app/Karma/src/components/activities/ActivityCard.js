@@ -10,6 +10,7 @@ import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
 import {getAuthToken} from "../../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
 const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -83,7 +84,7 @@ class ActivityCard extends React.Component {
     async fetchActivityInfo() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event/favourites")
+            .get(`${REACT_APP_API_URL}/event/favourites`)
             .set("authorization", authToken)
             .then(async result => {
                 const events = result.body.data.events;
@@ -104,7 +105,7 @@ class ActivityCard extends React.Component {
         if (!this.state.favourited) {
             request
                 .post(
-                    `http://localhost:8000/event/${
+                    `${REACT_APP_API_URL}/event/${
                         this.props.activity.eventId
                     }/favourite`,
                 )
@@ -121,7 +122,7 @@ class ActivityCard extends React.Component {
         } else {
             request
                 .post(
-                    `http://localhost:8000/event/${
+                    `${REACT_APP_API_URL}/event/${
                         this.props.activity.eventId
                     }/favourite/delete`,
                 )

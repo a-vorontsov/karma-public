@@ -5,6 +5,8 @@ import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
 import {getAuthToken} from "../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
+import { openInbox } from 'react-native-email-link'
 const request = require("superagent");
 
 /**
@@ -32,7 +34,7 @@ export default class NotificationItem extends Component {
      * Opens email app on the user's phone
      */
     viewEmail = () => {
-        //open email here
+        openInbox();
     };
 
     _renderReplyButton = () => {
@@ -48,7 +50,7 @@ export default class NotificationItem extends Component {
             const authToken = await getAuthToken();
 
             const response = await request
-                .get("http://localhost:8000/profile")
+                .get(`${REACT_APP_API_URL}/profile`)
                 .set("authorization", authToken)
                 .query({otherUserId: senderId})
                 .then(res => {

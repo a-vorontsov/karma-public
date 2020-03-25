@@ -8,6 +8,8 @@ import {TextInput} from "../../components/input";
 import Toast from "react-native-simple-toast";
 import {GradientButton} from "../../components/buttons";
 import {getAuthToken} from "../../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
+
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -33,7 +35,7 @@ class EmailSettingsScreen extends Component {
     async loadSettings() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/settings")
+            .get(`${REACT_APP_API_URL}/settings`)
             .set("authorization", authToken)
             .then(res => {
                 this.setState({
@@ -49,7 +51,7 @@ class EmailSettingsScreen extends Component {
     async saveSettings() {
         const authToken = await getAuthToken();
         request
-            .post("http://localhost:8000/settings")
+            .post(`${REACT_APP_API_URL}/settings`)
             .set("authorization", authToken)
             .send({
                 email: this.state.promotionalEmails,

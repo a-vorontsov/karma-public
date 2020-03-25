@@ -21,7 +21,7 @@ import AddressInput from "../components/input/AddressInput";
 import BottomModal from "../components/BottomModal";
 import CauseContainer from "../components/causes/CauseContainer";
 import {GradientButton} from "../components/buttons";
-
+import { REACT_APP_API_URL } from 'react-native-dotenv';
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
@@ -153,7 +153,7 @@ export default class CreateActivityScreen extends React.Component {
     fetchSelectedCauses = async causeIds => {
         const authToken = await getAuthToken();
         const response = await request
-            .get("http://localhost:8000/causes")
+            .get(`${REACT_APP_API_URL}/causes`)
             .set("authorization", authToken)
             .then(res => {
                 return res.body.data;
@@ -191,7 +191,7 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: true,
         });
         await request
-            .post("http://localhost:8000/event/update/" + this.state.eventId)
+            .post(`${REACT_APP_API_URL}/event/update/${this.state.eventId}`)
             .set("authorization", authToken)
             .send({
                 ...event,
@@ -362,7 +362,7 @@ export default class CreateActivityScreen extends React.Component {
 
         // send a request to update the db with the new event
         await request
-            .post("http://localhost:8000/event")
+            .post(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .send({
                 ...event,

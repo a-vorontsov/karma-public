@@ -27,23 +27,30 @@ export default class AttendeeButton extends React.Component {
     }
 
     parseProfileInfo = () => {
-        const {user} = this.props;
+        const {user, activity} = this.props;
         const email = user.email;
         const attendeeId = user.userId;
         this.setState({
             email,
             attendeeId,
+            activity,
         });
     };
 
     openEmail = async () => {
-        const {email, attendeeId} = this.state;
+        const {email, attendeeId, activity} = this.state;
         sendNotification(
             "Message",
             "has sent you a message - check your inbox!",
             [attendeeId],
         );
-        Communications.email([email], null, null, null, null);
+        Communications.email(
+            [email],
+            null,
+            null,
+            `Karma - ${activity.name}`,
+            null,
+        );
     };
 
     render() {

@@ -8,6 +8,8 @@ import Colours from "../../styles/Colours";
 import request from "superagent";
 import {sendNotification} from "../../util/SendNotification";
 import {getAuthToken} from "../../util/credentials";
+import { REACT_APP_API_URL } from 'react-native-dotenv';
+
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),
     cancel: require("../../assets/images/general-logos/cancel.png"),
@@ -26,7 +28,7 @@ export default class SignUpRequest extends React.Component {
         const authToken = await getAuthToken();
 
         await request
-            .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
+            .post(`${REACT_APP_API_URL}/event/${activity.id}/signUp/update`)
             .send(body)
             .set("authorization", authToken)
             .then(res => {
