@@ -30,16 +30,9 @@ export default class NotificationItem extends Component {
         this.getSenderName(notification.senderId);
     }
 
-    /**
-     * Opens email app on the user's phone
-     */
-    viewEmail = () => {
-        openInbox();
-    };
-
     _renderReplyButton = () => {
         return (
-            <TouchableOpacity onPress={() => this.viewEmail()}>
+            <TouchableOpacity onPress={() => openInbox()}>
                 <SemiBoldText style={{color: Colours.blue}}>View</SemiBoldText>
             </TouchableOpacity>
         );
