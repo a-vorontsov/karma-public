@@ -570,7 +570,7 @@ export default class CreateActivityScreen extends React.Component {
                                             "email",
                                         )}
                                         style={{marginTop: 0}}
-                                        editable="false"
+                                        editable={false}
                                     />
                                 </View>
                                 <SemiBoldText
