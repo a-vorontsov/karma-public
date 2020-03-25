@@ -32,6 +32,11 @@ class ActivitiesCausesScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
+                if (er.status == 404) {
+                    this.setState({
+                        activitiesByCause: [],
+                    });
+                }
             });
     }
 
@@ -39,7 +44,7 @@ class ActivitiesCausesScreen extends Component {
         headerShown: false,
     };
 
-    onRefresh(title, message) {
+    onRefresh() {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
             .then(() => {
