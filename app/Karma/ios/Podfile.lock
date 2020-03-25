@@ -269,6 +269,8 @@ PODS:
     - React
   - RNGestureHandler (1.6.0):
     - React
+  - RNKeychain (5.0.1):
+    - React
   - RNReanimated (1.7.0):
     - React
   - RNScreens (2.3.0):
@@ -322,6 +324,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -411,6 +414,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -439,7 +444,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-calendar-events: 2fe35a9294af05de0ed819d3a1b5dac048d2c010
+  react-native-calendar-events: eaa63134881d97488feb21ea114158f712894018
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
   react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
   react-native-google-maps: 773b7bcef4f92005847cbf455ca1fa76a21e74c7
@@ -462,6 +467,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
+  RNKeychain: a5623de13ec5378bfb8035422e3dee4fa538660d
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
@@ -470,5 +476,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
 
-
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.4
