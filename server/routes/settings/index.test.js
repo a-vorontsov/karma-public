@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../app");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 const settingsService = require("../../modules/settings");
 
 jest.mock("../../modules/settings");

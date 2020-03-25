@@ -4,6 +4,7 @@ import {Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");
@@ -24,7 +25,7 @@ class PrivacyScreen extends Component {
         let privacy = await AsyncStorage.getItem("policy");
         if (privacy === "") {
             request
-                .get("http://localhost:8000/information")
+                .get(`${REACT_APP_API_URL}/information`)
                 .query({type: "privacyPolicy"})
                 .then(res => {
                     privacy = res.body.data.information.content;

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "env CI=true jest -i",
+    "test-nologs": "jest -i",
     "start": "node server.js",
     "dev": "env NODE_ENV=development nodemon server.js",
     "db-migrate": "db-migrate",
@@ -68,7 +69,7 @@
       "html"
     ],
     "setupFilesAfterEnv": [
-      "./test/setupTests"
+      "./test/setup"
     ]
   }
 }

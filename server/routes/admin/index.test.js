@@ -1,12 +1,12 @@
 const request = require("supertest");
 const app = require("../../app");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
 const validation = require("../../modules/validation");
-const adminService = require("../../modules/admin/adminService");
+const adminService = require("../../modules/admin/");
 const deletion = require("../../modules/deletion");
 
-jest.mock("../../modules/admin/adminService");
+jest.mock("../../modules/admin/");
 jest.mock("../../modules/validation");
 jest.mock("../../modules/deletion");
 validation.validateIndividual.mockReturnValue({errors: ""});

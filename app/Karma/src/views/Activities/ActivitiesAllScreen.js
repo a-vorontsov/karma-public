@@ -1,9 +1,20 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {
+    View,
+    FlatList,
+    ActivityIndicator,
+    Dimensions,
+    Alert,
+} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
+import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+import {SafeAreaView} from "react-navigation";
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const formWidth = 0.6 * SCREEN_WIDTH;
 
 const request = require("superagent");
 
@@ -11,25 +22,57 @@ class ActivitiesAllScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activities: [],
+            loading: true, // Loading state used while loading the data for the first time
+            activitiesList: [], // Data Source for the FlatList
+            fetchingDataFromServer: false, // Loading state used while loading more data
         };
-        this.fetchAllActivities();
+        this.page = 1;
+        this.loadMoreActivities = this.loadMoreActivities.bind(this);
     }
 
     static navigationOptions = {
         headerShown: false,
     };
 
-    async fetchAllActivities() {
+    async componentDidMount() {
+        const authToken = await getAuthToken();
+        request
+            .get(`${REACT_APP_API_URL}/event`)
+            .set("authorization", authToken)
+            .query({currentPage: this.page, pageSize: 5})
+            .then(async res => {
+                console.log(res.body.message);
+                this.page = this.page + 1; //Increasing the offset for the next API call.
+                this.setState({
+                    loading: false,
+                    activitiesList: [
+                        ...this.state.activitiesList,
+                        ...res.body.data.events,
+                    ], //adding the new data with old one available in Data Source of the List
+                });
+            })
+            .catch(er => {
+                console.log(er);
+                Alert.alert("No activities could be found!");
+            });
+    }
+
+    async loadMoreActivities() {
+        this.setState({fetchingDataFromServer: true});
         const authToken = await getAuthToken();
         request
             .get("http://localhost:8000/event")
             .set("authorization", authToken)
-            .query({Page: 1, pageSize: 2})
-            .then(result => {
-                let activities = result.body.data.events;
+            .query({currentPage: this.page, pageSize: 5})
+            .then(res => {
+                console.log(res.body.message);
+                this.page = this.page + 1; //Increasing the offset for the next API call.
                 this.setState({
-                    activities,
+                    fetchingDataFromServer: false,
+                    activitiesList: [
+                        ...this.state.activitiesList,
+                        ...res.body.data.events,
+                    ], //adding the new data with old one available in Data Source of the List
                 });
             })
             .catch(er => {
@@ -37,27 +80,46 @@ class ActivitiesAllScreen extends Component {
             });
     }
 
-    render() {
+    renderFooter() {
         return (
-            <View>
-                {this.state.activities.length > 0 ? (
-                    this.state.activities.map(activity => {
-                        return (
-                            <ActivityDisplayCard
-                                activity={activity}
-                                key={activity.eventId}
-                                signedup={activity.going}
-                            />
-                        );
-                    })
+            //Footer View with Load More button
+            <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
+                {this.state.fetchingDataFromServer ? (
+                    <ActivityIndicator color="grey" style={{marginLeft: 8}} />
                 ) : (
-                    <View style={Styles.ph24}>
-                        <RegularText>
-                            Could not find any activities (Refresh)
-                        </RegularText>
-                    </View>
+                    <GradientButton
+                        onPress={this.loadMoreActivities}
+                        title="Load More"
+                    />
                 )}
             </View>
+        );
+    }
+
+    render() {
+        return (
+            <SafeAreaView style={{flex: 1}}>
+                {this.state.loading ? (
+                    <ActivityIndicator size="large" />
+                ) : (
+                    <FlatList
+                        style={{width: "100%"}}
+                        keyExtractor={activity => activity.eventId}
+                        data={this.state.activitiesList}
+                        renderItem={({item}) => (
+                            <ActivityDisplayCard activity={item} />
+                        )}
+                        ListFooterComponent={this.renderFooter.bind(this)} //Adding Load More button as footer component
+                        ListEmptyComponent={
+                            <View style={Styles.ph24}>
+                                <RegularText>
+                                    Could not find any activities (Refresh)
+                                </RegularText>
+                            </View>
+                        }
+                    />
+                )}
+            </SafeAreaView>
         );
     }
 }

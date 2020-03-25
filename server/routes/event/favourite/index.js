@@ -4,11 +4,11 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const httpUtil = require("../../../util/httpUtil");
-const util = require("../../../util/util");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const httpUtil = require("../../../util/http");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authService = require("../../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
@@ -38,7 +38,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @name Favourite an event
  *  @function
  */
-router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/favourite', authService.requireAuthentication, async (req, res) => {
     try {
         const individualId = await util.getIndividualIdFromUserId(req.body.userId);
         log.info("Favouriting event");
@@ -84,7 +84,7 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/favourite/delete', authService.requireAuthentication, async (req, res) => {
     try {
         const individualId = await util.getIndividualIdFromUserId(req.body.userId);
         log.info("Unfavouriting event");

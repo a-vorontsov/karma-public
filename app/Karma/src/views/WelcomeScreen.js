@@ -14,6 +14,7 @@ import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 class WelcomeScreen extends Component {
@@ -67,7 +68,7 @@ class WelcomeScreen extends Component {
         //send 6 digit code to email through forgot password route
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/signin/forgot")
+            .post(`${REACT_APP_API_URL}/signin/forgot`)
             .set("authorization", authToken)
             .send({
                 data: {
@@ -108,7 +109,7 @@ class WelcomeScreen extends Component {
         if (isValid) {
             const authToken = await getAuthToken();
             await request
-                .post("http://localhost:8000/signin/email")
+                .post(`${REACT_APP_API_URL}/signin/email`)
                 .set("authorization", authToken)
                 .send({
                     data: {
@@ -165,7 +166,7 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/signin/password")
+            .post(`${REACT_APP_API_URL}/signin/password`)
             .set("authorization", authToken)
             .send({
                 data: {
@@ -189,7 +190,7 @@ class WelcomeScreen extends Component {
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/signin/forgot/confirm")
+            .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
             .set("authorization", authToken)
             .send({
                 data: {
@@ -215,7 +216,7 @@ class WelcomeScreen extends Component {
         //check with register route
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/verify/email")
+            .post(`${REACT_APP_API_URL}/verify/email`)
             .set("authorization", authToken)
             .send({
                 data: {

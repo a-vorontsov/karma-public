@@ -22,7 +22,7 @@ import MapView from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
 import {getAuthToken} from "../../util/credentials";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import request from "superagent";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
@@ -87,7 +87,7 @@ class ActivityInfoScreen extends Component {
     getCreatorInfo = async id => {
         const authToken = await getAuthToken();
         const response = await request
-            .get("http://localhost:8000/profile")
+            .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
             .query({otherUserId: id})
             .then(res => {

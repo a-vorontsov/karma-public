@@ -4,12 +4,12 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
+const authService = require("../../../modules/authentication/");
+const userRepo = require("../../../repositories/user");
+const indivRepo = require("../../../repositories/individual");
+const orgRepo = require("../../../repositories/organisation");
+const addressRepo = require("../../../repositories/address");
+const profileRepo = require("../../../repositories/profile");
 
 /**
  * Endpoint called whenever a user wishes to update their profile <br/>
@@ -61,7 +61,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  *  @name Edit profile
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         // update user profile if specified in request
         log.info("Updating profile");

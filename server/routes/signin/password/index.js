@@ -5,9 +5,9 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const userAgent = require("../../../modules/authentication/user-agent");
-const httpUtil = require("../../../util/httpUtil");
+const authService = require("../../../modules/authentication/");
+const userAgent = require("../../../modules/user");
+const httpUtil = require("../../../util/http");
 
 /**
  * Attempt to log in an existing user with given email & password.<br/>
@@ -46,7 +46,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @name Sign-in with Password
  * @function
  */
-router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+router.post("/", authService.requireNoAuthentication, async (req, res) => {
     try {
         log.info("Starting sign-in with password");
         const signInResult = await userAgent.signIn(req.body.data.email, req.body.data.password, req.body.pub);

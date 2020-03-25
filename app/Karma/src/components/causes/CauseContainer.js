@@ -9,6 +9,7 @@ import Toast from "react-native-simple-toast";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 export default class CauseContainer extends React.Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export default class CauseContainer extends React.Component {
             const authToken = await getAuthToken();
             if (causes.length === 0) {
                 request
-                    .get("http://localhost:8000/causes")
+                    .get(`${REACT_APP_API_URL}/causes`)
                     .set("authorization", authToken)
                     .then(res => {
                         causes = res.body.data;
@@ -44,7 +45,7 @@ export default class CauseContainer extends React.Component {
         const authToken = await getAuthToken();
 
         await request
-            .post("http://localhost:8000/causes/select")
+            .post(`${REACT_APP_API_URL}/causes/select`)
             .set("authorization", authToken)
             .send({
                 data: {causes: this.state.selectedCauses},
