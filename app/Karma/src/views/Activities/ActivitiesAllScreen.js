@@ -92,7 +92,7 @@ class ActivitiesAllScreen extends Component {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event")
+            .get(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(async res => {

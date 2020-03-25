@@ -52,7 +52,6 @@ class ActivitiesFavouritesScreen extends Component {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
             .then(() => {
-                console.log(this.state.activities.length);
                 this.setState({
                     isRefreshing: false,
                 });
