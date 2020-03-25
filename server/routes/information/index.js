@@ -36,8 +36,8 @@ const authService = require("../../modules/authentication/");
  */
 router.get("/", authService.acceptAnyAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting information type '%s'", req.query.userId, req.query.type);
         const type = req.query.type;
-        log.info("Getting information type '%s'", type);
         if (type === undefined) {
             return res.status(400).send({message: "Type is not specified"});
         }
@@ -45,7 +45,7 @@ router.get("/", authService.acceptAnyAuthentication, async (req, res) => {
         const informationResult = await informationService.getInformationData(type);
         return httpUtil.sendResult(informationResult, res);
     } catch (e) {
-        log.error("Getting information failed: " + e);
+        log.error("User id '%d': Failed getting information type '%s'", req.query.userId, req.query.type);
         return httpUtil.sendGenericError(e, res);
     }
 });

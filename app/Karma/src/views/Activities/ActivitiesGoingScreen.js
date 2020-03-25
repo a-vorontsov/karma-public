@@ -14,13 +14,11 @@ class ActivitiesGoingScreen extends Component {
             activities: [],
             isRefreshing: false,
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
+    async componentDidMount() {
+        await this.fetchAllActivities();
+    }
 
     async fetchAllActivities() {
         const authToken = await getAuthToken();

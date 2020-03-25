@@ -16,8 +16,10 @@ class ActivitiesCausesScreen extends Component {
             activitiesByCause: [],
             activeSlide: 0,
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
+    }
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
@@ -35,10 +37,6 @@ class ActivitiesCausesScreen extends Component {
                 console.log(er);
             });
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     onRefresh() {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator

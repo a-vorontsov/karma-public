@@ -87,10 +87,6 @@ class ProfileEditScreen extends Component {
         this.baseState = this.state;
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     toggleModal = () => {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,

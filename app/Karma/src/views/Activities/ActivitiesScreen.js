@@ -51,10 +51,6 @@ class ActivitiesScreen extends Component {
         }
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     setScreen(selectedScreen) {
         this.setState({
             display: selectedScreen,

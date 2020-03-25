@@ -48,7 +48,7 @@ const authService = require("../../../modules/authentication/");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Signing up organisation");
+        log.info("User id '%d': Signing up organisation", req.body.userId);
         const organisation = {
             organisationNumber: req.body.data.organisation.organisationNumber,
             name: req.body.data.organisation.name,
@@ -74,7 +74,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             message: "Organisation registration successful.",
         });
     } catch (e) {
-        log.error("Signing up organisation failed");
+        log.error("User id '%d': Failed signing up organisation: " + e, req.body.userId);
         res.status(400).send({
             message: e.message,
         });

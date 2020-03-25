@@ -67,9 +67,12 @@ class NotificationsScreen extends Component {
 
     async componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.getNotifications();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.getNotifications();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();

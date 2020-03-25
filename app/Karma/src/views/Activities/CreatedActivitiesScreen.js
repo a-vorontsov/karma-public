@@ -16,9 +16,6 @@ class CreatedActivitiesScreen extends Component {
             creatorName: this.props.navigation.getParam("creatorName"),
         };
     }
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     render() {
         return (

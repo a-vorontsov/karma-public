@@ -47,7 +47,7 @@ test("deleting all user data endpoint works", async () => {
     });
 
     const response = await request(app)
-        .post("/admin/user/delete?userId=3");
+        .post("/admin/user/delete?deleteUserId=3");
 
     expect(deletion.deleteAllInformation).toHaveBeenCalledTimes(1);
     expect(response.body.data.user).toMatchObject(user);

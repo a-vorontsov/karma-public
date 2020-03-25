@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
  * @return {Promise}
  */
 const sendEmail = (email, subject, text) => {
-    log.info("Sending email to %s", email);
+    log.info("'%s': Sending email", email);
     return new Promise((resolve, reject) => {
         const mailOptions = {
             from: process.env.EMAIL_ADDRESS,
@@ -28,7 +28,7 @@ const sendEmail = (email, subject, text) => {
             text: text,
         };
         if (process.env.SKIP_MAIL_SENDING_FOR_TESTING == true) {
-            log.debug("Skipping actual email sending");
+            log.debug("'%s': Skipping email sending", email);
             const result = {
                 status: 200,
                 info: "testing",
@@ -38,20 +38,20 @@ const sendEmail = (email, subject, text) => {
         } else {
             transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
+                    log.error("'%s': Email sending failed: " + err, email);
                     const result = {
                         status: 500,
                         info: err,
                         message: "Email sending failed to " + email,
                     };
-                    log.info("Email sending to %s failed: %s", email, err);
                     resolve(result);
                 } else {
+                    log.info("'%s': Email sent successfully", email);
                     const result = {
                         status: 200,
                         info: info,
                         message: "Email sent to " + email,
                     };
-                    log.info("Email successfullt sent to %s", email);
                     resolve(result);
                 }
             });

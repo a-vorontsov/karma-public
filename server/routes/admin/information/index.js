@@ -15,7 +15,7 @@ const authService = require("../../../modules/authentication/");
  <p><b>Route: </b>/admin/information (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
  * @param {string} req.headers.authorization authToken
- * @param {Information} req.body - Information regarding the information containing the same properties as this example:
+ * @param {Object} req.body - Information regarding the information containing the same properties as this example:
  <pre>
  {
     "type": "privacyPolicy",
@@ -42,7 +42,7 @@ const authService = require("../../../modules/authentication/");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Updating app information type '%s' initiated by administrator", req.body.type);
+        log.info("Admin (user id %d): Updating app information '%s'", req.body.userId, req.body.type);
         const information = req.body;
         const validationResult = validation.validateInformation(information);
         if (validationResult.errors.length > 0) {
@@ -52,7 +52,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
         const informationResult = await informationService.changeInformation(information);
         return httpUtil.sendResult(informationResult, res);
     } catch (e) {
-        log.error("Information update/creation failed: " + e);
+        log.error("Admin (user id %d): Information update/creation failed: " + e, req.body.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

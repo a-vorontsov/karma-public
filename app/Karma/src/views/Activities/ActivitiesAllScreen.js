@@ -33,10 +33,6 @@ class ActivitiesAllScreen extends Component {
         this.onRefresh = this.onRefresh.bind(this);
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     async componentDidMount() {
         await this.setState({loading: true});
         await this.fetchActivities();
