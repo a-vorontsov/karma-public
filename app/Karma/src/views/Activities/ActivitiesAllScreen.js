@@ -151,7 +151,7 @@ class ActivitiesAllScreen extends Component {
                             ListEmptyComponent={
                                 <View style={Styles.ph24}>
                                     <RegularText>
-                                        Could not find any activities (Refresh)
+                                        Could not find any activities (Pull to Refresh)
                                     </RegularText>
                                 </View>
                             }

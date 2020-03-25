@@ -88,7 +88,7 @@ class ActivitiesGoingScreen extends Component {
                         <View style={Styles.ph24}>
                             <RegularText>
                                 You have not selected any activities to attend
-                                (Refresh)
+                                (Pull to Refresh)
                             </RegularText>
                         </View>
                     )}

@@ -96,7 +96,7 @@ class ActivitiesCausesScreen extends Component {
                         )
                     ) : (
                         <RegularText>
-                            Could not find any activities (Refresh)
+                            Could not find any activities (Pull to Refresh)
                         </RegularText>
                     )}
                 </View>

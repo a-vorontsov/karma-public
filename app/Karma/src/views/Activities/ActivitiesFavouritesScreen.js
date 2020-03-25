@@ -92,8 +92,8 @@ class ActivitiesFavouritesScreen extends Component {
                         <View style={Styles.ph24}>
                             <RegularText>
                                 {" "}
-                                You haven't favourited any activities yet
-                                (Refresh)
+                                You haven't favourited any activities yet (Pull
+                                to Refresh)
                             </RegularText>
                         </View>
                     )}
