@@ -38,7 +38,7 @@ class ActivitiesAllScreen extends Component {
     async componentDidMount() {
         this.setState({loading: true});
         this.fetchActivities();
-}
+    }
 
     getDateString(date) {
         if (date) {
@@ -103,7 +103,9 @@ class ActivitiesAllScreen extends Component {
     }
 
     renderFooter() {
-        if (this.state.activitiesList.length === 0) return null;
+        if (this.state.activitiesList.length === 0) {
+            return null;
+        }
         return (
             //Footer View with Load More button
             <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
