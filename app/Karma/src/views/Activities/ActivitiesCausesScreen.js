@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {RefreshControl, ScrollView, View} from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
@@ -11,10 +11,12 @@ class ActivitiesCausesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isRefreshing: false,
             activitiesByCause: [],
             activeSlide: 0,
         };
         this.fetchAllActivities();
+        this.onRefresh = this.onRefresh.bind(this);
     }
 
     async fetchAllActivities() {
@@ -23,10 +25,9 @@ class ActivitiesCausesScreen extends Component {
             .get("http://localhost:8000/event/causes")
             .set("authorization", authToken)
             .then(result => {
-                let activitiesByCause = result.body.data;
                 console.log(result.body.message);
                 this.setState({
-                    activitiesByCause,
+                    activitiesByCause: result.body.data,
                 });
             })
             .catch(er => {
@@ -38,27 +39,58 @@ class ActivitiesCausesScreen extends Component {
         headerShown: false,
     };
 
+    onRefresh() {
+        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
+        this.fetchAllActivities()
+            .then(() => {
+                this.setState({
+                    isRefreshing: false,
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    isRefreshing: false,
+                });
+            });
+    }
+
     render() {
         return (
-            <View style={Styles.ph24}>
-                {Object.keys(this.state.activitiesByCause).length > 0 ? (
-                    Object.entries(this.state.activitiesByCause).map(
-                        ([cause, activities]) => {
-                            return (
-                                <ActivityCauseCarousel
-                                    key={activities.eventId}
-                                    cause={cause}
-                                    activities={activities}
-                                />
-                            );
-                        },
-                    )
-                ) : (
-                    <RegularText>
-                        Could not find any activities (Refresh)
-                    </RegularText>
-                )}
-            </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this.onRefresh}
+                    />
+                }>
+                <View
+                    style={{
+                        ...Styles.ph24,
+                        flex: 1,
+                        marginTop: 10,
+                        marginBottom: 100,
+                    }}>
+                    {Object.keys(this.state.activitiesByCause).length > 0 ? (
+                        Object.entries(this.state.activitiesByCause).map(
+                            ([cause, activities]) => {
+                                return (
+                                    <ActivityCauseCarousel
+                                        key={activities.eventId}
+                                        cause={cause}
+                                        activities={activities}
+                                    />
+                                );
+                            },
+                        )
+                    ) : (
+                        <RegularText>
+                            Could not find any activities (Refresh)
+                        </RegularText>
+                    )}
+                </View>
+            </ScrollView>
         );
     }
 }
