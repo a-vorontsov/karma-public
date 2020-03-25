@@ -1,14 +1,14 @@
 const request = require('supertest');
 const app = require('../../../app');
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const jose = require("../../../modules/jose");
-const userRepository = require("../../../models/databaseRepositories/userRepository");
-const resetRepository = require("../../../models/databaseRepositories/resetRepository");
-const mailSender = require("../../../modules/mailSender");
+const userRepository = require("../../../repositories/user");
+const resetRepository = require("../../../repositories/reset");
+const mailSender = require("../../../modules/mail");
 
-jest.mock("../../../models/databaseRepositories/resetRepository");
-jest.mock("../../../models/databaseRepositories/userRepository");
-jest.mock("../../../modules/mailSender");
+jest.mock("../../../repositories/reset");
+jest.mock("../../../repositories/user");
+jest.mock("../../../modules/mail");
 
 let user, reset1, reset2;
 

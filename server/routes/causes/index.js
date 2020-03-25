@@ -4,8 +4,8 @@
 const log = require("../../util/log");
 const express = require('express');
 const router = express.Router();
-const causeRepository = require("../../models/databaseRepositories/causeRepository");
-const authAgent = require("../../modules/authentication/auth-agent");
+const causeRepository = require("../../repositories/cause");
+const authService = require("../../modules/authentication/");
 
 /**
  * Gets all causes.<br/>
@@ -17,7 +17,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get all causes
  *  @function
  */
-router.get('/', authAgent.requireAuthentication, (req, res) => {
+router.get('/', authService.requireAuthentication, (req, res) => {
     log.info("Getting all causes");
     causeRepository.findAll()
         .then(result => res.status(200).json({data: result.rows}))
@@ -37,7 +37,7 @@ router.get('/', authAgent.requireAuthentication, (req, res) => {
  *  @name Get by ID
  *  @function
  */
-router.get('/:id', authAgent.requireAuthentication, (req, res) => {
+router.get('/:id', authService.requireAuthentication, (req, res) => {
     const id = req.params.id;
     log.info("Getting cause id %d", id);
     if (!id) return res.status(400).send("No id was specified");

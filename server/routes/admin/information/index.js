@@ -5,10 +5,10 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 const validation = require("../../../modules/validation");
-const informationService = require("../../../modules/informationService/");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const informationService = require("../../../modules/information/");
+const authService = require("../../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin wants to upload new information such as Privacy Policy, Community Guidelines.<br/>
@@ -40,7 +40,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @name Create new information entry
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Updating app information type '%s' initiated by administrator", req.body.type);
         const information = req.body;

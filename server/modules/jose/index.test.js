@@ -1,6 +1,6 @@
 const jose = require('jose');
 const Base64 = require('js-base64').Base64;
-const util = require("../../util/util");
+const util = require("../../util");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -8,10 +8,10 @@ const {
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = jose;
-const authRepo = require("../../models/databaseRepositories/authenticationRepository");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const testHelpers = require("../../test/testHelpers");
+const authRepo = require("../../repositories/authentication");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
+const testHelpers = require("../../test/helpers");
 
 const joseOnServer = require("./");
 

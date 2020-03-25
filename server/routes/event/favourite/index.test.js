@@ -1,16 +1,16 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const validation = require("../../../modules/validation");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const util = require("../../../util/util");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const util = require("../../../util");
 
-jest.mock("../../../modules/event/favourite/eventFavouriteService");
+jest.mock("../../../modules/event/favourite");
 jest.mock("../../../modules/validation");
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 validation.validateFavourite.mockReturnValue({errors: ""});
 
-const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
+const favouriteRepository = require("../../../repositories/favourite");
 
 let favourite;
 
