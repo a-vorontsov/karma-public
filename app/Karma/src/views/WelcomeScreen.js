@@ -26,7 +26,7 @@ export default class WelcomeScreen extends Component {
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,
-            emailInput: "houssammahlous123@gmail.com",
+            emailInput: "",
             passInput: "",
             showEmailError: false,
             showPassError: false,
