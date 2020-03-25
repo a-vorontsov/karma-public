@@ -91,7 +91,7 @@ test("sign-in with partial registration works", async () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe(
-        "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
+        "User account registered, but no indiv/org profile. Ask for password and then go to indiv/org selection screen.",
     );
 });
 

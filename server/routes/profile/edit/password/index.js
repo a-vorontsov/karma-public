@@ -43,12 +43,14 @@ const owasp = require("owasp-password-strength-test");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     const passStrengthTest = owasp.test(req.body.newPassword);
-    log.info("Updating password");
+    log.info("User id '%d': Updating password", req.body.userId);
     if (req.body.newPassword !== req.body.confirmPassword) {
+        log.warn("User id '%d': Updating password failed: New/confirmed password fields do not match", req.body.userId);
         res.status(400).send({
             message: "Passwords do not match.",
         });
     } else if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
+        log.warn("User id '%d': Updating password failed: New password too weak", req.body.userId);
         res.status(400).send({
             message: "Weak password.",
             errors: passStrengthTest.errors,
@@ -60,15 +62,18 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
                     req.body.userId,
                     req.body.newPassword,
                 );
+                log.info("User id '%d': Updating password successful", req.body.userId);
                 res.status(200).send({
                     message: "Password successfully updated.",
                 });
             } else {
+                log.warn("User id '%d': Updating password failed: Old/new password fields do not match", req.body.userId);
                 res.status(400).send({
                     message: "Incorrect old password.",
                 });
             }
         } catch (e) {
+            log.error("User id '%d': Failed updating password: " + e, req.body.userId);
             res.status(500).send({
                 message: e.message,
             });

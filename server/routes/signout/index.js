@@ -27,13 +27,13 @@ const authService = require("../../modules/authentication/");
  */
 router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Logging user out");
+        log.info("User id '%d': Logging out", req.query.userId);
         authService.logOut(req.body.authToken);
         res.status(200).send({
             message: "User successfully logged out.",
         });
     } catch (e) {
-        log.error("Logging user out failed");
+        log.error("User id '%d': Failed logging out: " + e, req.query.userId);
         res.status(500).send({
             message: e.message,
         });

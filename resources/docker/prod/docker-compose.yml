@@ -37,8 +37,8 @@ services:
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       MAPQUEST_API: ${MAPQUEST_API}
       NO_AUTH: ${NO_AUTH}
+      SKIP_ASYNC_KEY_EXCHANGE: ${SKIP_ASYNC_KEY_EXCHANGE}
 
-      # TODO: Enable these sometime in the future
       ENABLE_OAUTH: 0
       SKIP_PASSWORD_CHECKS: 0
       SKIP_AUTH_CHECKS_FOR_TESTING: 0

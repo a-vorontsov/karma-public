@@ -40,11 +40,11 @@ const httpUtil = require("../../../util/http");
  */
 router.post('/', authService.requireNoAuthentication, async (req, res) => {
     try {
-        log.info("Verifying user email");
+        log.info("'%s': Starting email verification", req.body.data.email);
         const verificationResult = await emailVerification.verifyEmail(req.body.data.email, req.body.data.token);
         return httpUtil.sendResult(verificationResult, res);
     } catch (e) {
-        log.error("User email verification failed:" + e);
+        log.info("'%s': Failed email verification: " + e, req.body.data.email);
         httpUtil.sendGenericError(e, res);
     }
 });
