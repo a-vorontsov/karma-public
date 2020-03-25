@@ -14,8 +14,8 @@ const httpUtil = require("../../util/http");
  * @param {string} req.headers.authorization authToken
  * @returns {object}
  * status: 200, description: Successful authentication
- * status: 401 - unauthenticated, description: Reason for failed authentication
  * status: 400 - invalid request, description: Missing authorisation header
+ * status: 401 - unauthenticated, description: Reason for failed authentication
  * @name Check authentication status
  * @function
  */
@@ -24,7 +24,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
     httpUtil.sendResult({
         status: 200,
         message: "Successfully authenticated with user privileges.",
-        data: null,
+        data: {},
     }, res);
 });
 

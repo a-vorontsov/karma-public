@@ -38,7 +38,7 @@ const requireAuthentication = (req, res, next) => {
         next();
     } catch (e) {
         log.error("An unsuccessful authentication attempt (req-auth) for '%s', " +
-            "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
+            "error:'%s', ref:'%s'", req.originalUrl, e.message, jose.getSignatureFromJWE(authToken));
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
     }
 };
@@ -118,6 +118,8 @@ const requireRedirectionAuthentication = (req, res, next) => {
     }
     const authToken = req.query.token;
     if (authToken === undefined || !(redirectCache.has(authToken))) {
+        log.error("An unsuccessful authentication attempt (redir-auth) for '%s', " +
+            "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getForbidden(), res, redirToken());
     }
     redirectCache.delete(authToken);
