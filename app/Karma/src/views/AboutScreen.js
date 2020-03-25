@@ -40,6 +40,7 @@ class AboutScreen extends React.Component {
             townCity: "",
             countryState: "",
             postCode: "",
+            firstOpen: true
         };
     }
 
