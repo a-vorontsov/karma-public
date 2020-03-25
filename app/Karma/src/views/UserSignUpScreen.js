@@ -18,7 +18,7 @@ import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 

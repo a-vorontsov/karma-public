@@ -8,7 +8,7 @@ import Colours from "../../styles/Colours";
 import request from "superagent";
 import {sendNotification} from "../../util/SendNotification";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),

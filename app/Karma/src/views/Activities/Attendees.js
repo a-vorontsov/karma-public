@@ -5,7 +5,7 @@ import AttendeeButton from "../../components/activities/AttendeeButton";
 import request from "superagent";
 import {RegularText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 class Attendees extends Component {
     constructor(props) {

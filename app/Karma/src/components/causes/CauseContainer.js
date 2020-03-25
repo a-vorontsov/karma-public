@@ -8,8 +8,7 @@ import Toast from "react-native-simple-toast";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 export default class CauseContainer extends React.Component {
     constructor(props) {

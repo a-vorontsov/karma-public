@@ -5,8 +5,8 @@ import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
 import {getAuthToken} from "../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
-import { openInbox } from 'react-native-email-link'
+import {REACT_APP_API_URL} from "react-native-dotenv";
+import {openInbox} from "react-native-email-link";
 const request = require("superagent");
 
 /**

@@ -8,7 +8,7 @@ import {TextInput} from "../../components/input";
 import Toast from "react-native-simple-toast";
 import {GradientButton} from "../../components/buttons";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 

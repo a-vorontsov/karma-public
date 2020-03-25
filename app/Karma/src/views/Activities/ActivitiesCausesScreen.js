@@ -4,7 +4,7 @@ import ActivityCauseCarousel from "../../components/activities/ActivityCauseCaro
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 

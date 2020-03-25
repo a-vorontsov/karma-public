@@ -7,7 +7,7 @@ import RNCalendarEvents from "react-native-calendar-events";
 import Styles from "../../styles/Styles";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const moment = require("moment");
 const request = require("superagent");
 const icons = {

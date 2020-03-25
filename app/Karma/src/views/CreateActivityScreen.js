@@ -21,7 +21,7 @@ import AddressInput from "../components/input/AddressInput";
 import BottomModal from "../components/BottomModal";
 import CauseContainer from "../components/causes/CauseContainer";
 import {GradientButton} from "../components/buttons";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";

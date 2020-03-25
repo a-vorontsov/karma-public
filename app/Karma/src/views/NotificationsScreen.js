@@ -15,9 +15,8 @@ import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
 import {ScrollView} from "react-native-gesture-handler";
 import {getAuthToken} from "../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
-
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.85 * SCREEN_WIDTH;
@@ -54,7 +53,7 @@ class NotificationsScreen extends Component {
             const response = await request
                 .get(`${REACT_APP_API_URL}/notification`)
                 .set("authorization", authToken);
-            
+
             this.setState({
                 notifications: response.body.data.notifications,
             });

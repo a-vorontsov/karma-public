@@ -27,7 +27,7 @@ import {getAuthToken} from "../util/credentials";
 import {RadioInput} from "../components/radio";
 const request = require("superagent");
 const _ = require("lodash");
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;

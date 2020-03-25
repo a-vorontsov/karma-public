@@ -15,7 +15,7 @@ import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";

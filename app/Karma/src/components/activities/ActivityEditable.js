@@ -9,7 +9,7 @@ import {sendNotification} from "../../util/SendNotification";
 import {getMonthName, formatAMPM, getDate} from "../../util/DateTimeInfo";
 import Styles from "../../styles/Styles";
 import Communications from "react-native-communications";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 import {
     Menu,
@@ -58,7 +58,6 @@ const ActivityEditable = props => {
 
         let attendees = [];
         for (let i = 0; i < volunteers.length; ++i) {
-            
             const volunteerProfile = await request
                 .get(`${REACT_APP_API_URL}/profile/`)
                 .query({otherUserId: volunteers[i]})
@@ -82,7 +81,13 @@ const ActivityEditable = props => {
         sendNotification("Message", "", volunteers);
 
         //Placing emails in the 'BCC' section so attendees can only see their own emails
-        Communications.email(null, null, attendeeEmails, `Karma - ${activity.name}`, null);
+        Communications.email(
+            null,
+            null,
+            attendeeEmails,
+            `Karma - ${activity.name}`,
+            null,
+        );
     };
 
     return (

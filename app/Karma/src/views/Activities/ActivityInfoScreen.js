@@ -22,7 +22,7 @@ import MapView from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
 import {getAuthToken} from "../../util/credentials";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import request from "superagent";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");

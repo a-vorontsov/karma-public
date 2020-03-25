@@ -16,7 +16,7 @@ import {TextInput} from "../../components/input";
 import {getAuthToken} from "../../util/credentials";
 import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 

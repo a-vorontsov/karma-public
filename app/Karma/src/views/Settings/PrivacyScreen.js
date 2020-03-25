@@ -3,7 +3,7 @@ import {Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
-import { REACT_APP_API_URL } from 'react-native-dotenv';
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");

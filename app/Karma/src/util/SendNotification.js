@@ -1,8 +1,7 @@
 import {Alert} from "react-native";
 import {getAuthToken} from "./credentials";
 const request = require("superagent");
-import { REACT_APP_API_URL } from 'react-native-dotenv';
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 export const sendNotification = async (type, eventName, receiverIds) => {
     let options = {
