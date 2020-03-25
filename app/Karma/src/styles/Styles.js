@@ -148,6 +148,13 @@ const Styles = StyleSheet.create({
         backgroundColor: "transparent",
         padding: 10,
     },
+    roundButtonOpaque: {
+        padding: 12,
+        alignItems: "center",
+        borderRadius: 20,
+        backgroundColor: Colours.blue,
+        opacity: 1,
+    },
     disabledButton: {
         opacity: 0.2,
     },

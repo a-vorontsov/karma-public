@@ -18,10 +18,6 @@ const formWidth = 0.6 * SCREEN_WIDTH;
 const logo = require("../../assets/images/settings-logos/email.png");
 
 class EmailSettingsScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -29,8 +25,10 @@ class EmailSettingsScreen extends Component {
             promotionalEmails: 0,
             notifications: 0,
         };
-        this.loadSettings();
         this.saveSettings = this.saveSettings.bind(this);
+    }
+    async componentDidMount() {
+        await this.loadSettings();
     }
     async loadSettings() {
         const authToken = await getAuthToken();

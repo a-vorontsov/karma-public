@@ -69,10 +69,6 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     setupIndividualProfile(res) {
         const {
             causes,
@@ -133,9 +129,12 @@ class ProfileScreen extends Component {
 
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.fetchProfileInfo();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.fetchProfileInfo();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();

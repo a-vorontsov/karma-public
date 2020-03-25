@@ -55,9 +55,10 @@ const httpUtil = require("../../../util/http");
  * @function
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
-    log.info("Resetting password");
+    log.info("User id '%d': Resetting password", req.body.userId);
     const passStrengthTest = owasp.test(req.body.data.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
+        log.warn("User id '%d': Resetting password failed: New password too weak", req.body.userId);
         return res.status(400).send({
             message: "Weak password.",
             errors: passStrengthTest.errors,
@@ -68,12 +69,13 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             req.body.userId,
             req.body.data.password,
         );
+        log.info("User id '%d': Resetting password successful", req.body.userId);
         httpUtil.sendResult({
             status: 200,
             message: "Password successfully updated. Go to sign-in screen.",
         }, res);
     } catch (e) {
-        log.error("Resetting password failed: " + e);
+        log.error("User id '%d': Failed resetting password: " + e, req.body.userId);
         httpUtil.sendGenericError(e, res);
     }
 });

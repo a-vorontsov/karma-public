@@ -1,4 +1,4 @@
-const digest = require("../authentication/digest");
+const digest = require("../digest");
 const log = require("../../util/log");
 const regStatus = require("../../util/registration");
 const regRepo = require("../../repositories/registration");
@@ -253,7 +253,7 @@ const signIn = async (email, password, pub) => {
     const userResult = await userRepo.findByEmail(email);
     const user = userResult.rows[0];
     if (isCorrectPassword(user, password)) {
-        log.info("Signing in '%s': correct password", email);
+        log.info("'%s': Signing in successful - correct password", email);
         const authToken = authService.logInUser(user.id, pub);
         return ({
             status: 200,
@@ -263,7 +263,7 @@ const signIn = async (email, password, pub) => {
             },
         });
     } else {
-        log.info("Signing in '%s': incorrect password", email);
+        log.warn("'%s': Signing in unsuccessful - incorrect password", email);
         return ({
             status: 400,
             message: "Invalid password.",

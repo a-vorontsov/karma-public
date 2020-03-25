@@ -1,6 +1,7 @@
 import React from "react";
 import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 import PageHeader from "../components/PageHeader";
 import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
@@ -22,12 +23,19 @@ export default class PickCausesScreen extends React.Component {
     }
     async componentDidMount() {
         try {
+            let causes = await AsyncStorage.getItem("causes");
+            causes = JSON.parse(causes);
             const authToken = await getAuthToken();
-            const response = await request
-                .get(`${REACT_APP_API_URL}/causes`)
-                .set("authorization", authToken);
+            if (causes.length === 0) {
+                request
+                    .get(`${REACT_APP_API_URL}/causes`)
+                    .set("authorization", authToken)
+                    .then(res => {
+                        causes = res.body.data;
+                    });
+            }
             this.setState({
-                causes: response.body.data,
+                causes,
             });
         } catch (error) {
             console.log(error);
@@ -37,7 +45,7 @@ export default class PickCausesScreen extends React.Component {
     async selectCauses() {
         const authToken = await getAuthToken();
 
-        await request
+        request
             .post(`${REACT_APP_API_URL}/causes/select`)
             .set("authorization", authToken)
             .send({

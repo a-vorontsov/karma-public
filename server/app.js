@@ -23,6 +23,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
+app.use("/authentication", require("./routes/authentication"));
+
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/forgot", require("./routes/signin/forgot"));
@@ -59,7 +61,7 @@ app.use("/admin/information", require("./routes/admin/information"));
 
 // import OAuth routes and dependencies if applicable
 if (process.env.NODE_ENV !== 'test') {
-    log.info("OAUTH enabled: %s, AUTH enabled: %s", Boolean(process.env.ENABLE_OAUTH), !Boolean(process.env.NO_AUTH));
+    log.info("OAUTH enabled: %s, AUTH enabled: %s", process.env.ENABLE_OAUTH === "1", process.env.NO_AUTH === "0");
 }
 
 if (process.env.ENABLE_OAUTH === 1) {

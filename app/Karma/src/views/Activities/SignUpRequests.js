@@ -14,15 +14,15 @@ class SignUpRequests extends Component {
         };
         this.getSignUps();
     }
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.getSignUps();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.getSignUps();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();

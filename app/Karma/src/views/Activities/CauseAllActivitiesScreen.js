@@ -6,10 +6,6 @@ import PageHeader from "../../components/PageHeader";
 import {SafeAreaView} from "react-navigation";
 
 class CauseAllActivitiesScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     render() {
         return (
             <View>

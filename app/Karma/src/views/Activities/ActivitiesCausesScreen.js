@@ -15,7 +15,9 @@ class ActivitiesCausesScreen extends Component {
             activitiesByCause: [],
             activeSlide: 0,
         };
-        this.fetchAllActivities();
+    }
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
@@ -34,10 +36,6 @@ class ActivitiesCausesScreen extends Component {
                 console.log(er);
             });
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     render() {
         return (
