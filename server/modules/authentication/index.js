@@ -37,7 +37,8 @@ const requireAuthentication = (req, res, next) => {
         req.params.userId = userId;
         next();
     } catch (e) {
-        log.error("An unsuccessful authentication attempt (req-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
+        log.error("An unsuccessful authentication attempt (req-auth) for '%s', " +
+            "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
     }
 };
@@ -63,10 +64,12 @@ const requireNoAuthentication = (req, res, next) => {
     }
     try { // if it does not fail user already auth
         jose.decryptAndVerify(authToken);
-        log.error("An unsuccessful authentication attempt (no-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
+        log.error("An unsuccessful authentication attempt (no-auth) for '%s', " +
+            "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         httpUtil.sendBuiltInErrorWithRedirect(httpRes.getAlreadyAuth(), res, redirToken());
     } catch (e) {
-        log.info("A successful authentication attempt (no-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
+        log.info("A successful authentication attempt (no-auth) for '%s', " +
+            "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         next(); // if it does fail, user is not auth as needed
     }
 };
