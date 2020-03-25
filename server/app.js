@@ -23,6 +23,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
+app.use("/authentication", require("./routes/authentication"));
+
 app.use("/signin/email", require("./routes/signin/email"));
 app.use("/signin/password", require("./routes/signin/password"));
 app.use("/signin/forgot", require("./routes/signin/forgot"));
