@@ -28,7 +28,7 @@ router.use("/", eventSelectRoute);
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
- * booleanfiltersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
+ * The boolean filters allowed are: "women_only", "physical", "photo_id", "address_visible", "add_info".
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
  * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
  * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
