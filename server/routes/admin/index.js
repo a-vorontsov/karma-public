@@ -45,11 +45,11 @@ const authService = require("../../modules/authentication/");
  */
 router.get("/users", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin: Fetching all users");
+        log.info("Admin (user id %d): Fetching all users", req.query.userId);
         const usersResult = await adminService.getAllUsers();
         return httpUtil.sendResult(usersResult, res);
     } catch (e) {
-        log.error("Admin: Users fetching failed: " + e);
+        log.error("Admin (user id %d): Users fetching failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -57,9 +57,10 @@ router.get("/users", authService.requireAuthentication, async (req, res) => {
 /**
  * Endpoint called whenever an admin requests to delete all information in database for
  * specific user.<br/>
- <p><b>Route: </b>/admin/user/delete?userId=2 (POST)</p>
+ <p><b>Route: </b>/admin/user/delete?deleteUserId=2 (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
  * @param {string} req.headers.authorization authToken
+ * @param {string} req.query.deleteUserId id of user to be deleted
  * @returns {Object}
  *  status: 200, description: The deleted user.<br/>
  *  status: 500, description: DB error
@@ -83,12 +84,12 @@ router.get("/users", authService.requireAuthentication, async (req, res) => {
  */
 router.post("/user/delete", authService.requireAuthentication, async (req, res) => {
     try {
-        const userId = req.query.userId;
-        log.info("Admin: Deleting all user data for user id '%d'", userId);
-        const deletionResult = await deletionModule.deleteAllInformation(userId);
+        const deleteUserId = req.query.deleteUserId;
+        log.info("Admin (user id %d): Deleting all user data for user id '%d'", req.query.userId, deleteUserId);
+        const deletionResult = await deletionModule.deleteAllInformation(deleteUserId);
         return httpUtil.sendResult(deletionResult, res);
     } catch (e) {
-        log.error("Admin: User id '%d' couldn't be deleted: " + e, req.query.userId);
+        log.error("Admin (user id %d): User id '%d' couldn't be deleted: " + e, req.query.userId, req.query.deleteUserId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -141,11 +142,11 @@ router.post("/user/delete", authService.requireAuthentication, async (req, res) 
  */
 router.get("/individuals", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin: Fetching all individuals");
+        log.info("Admin (user id %d): Fetching all individuals", req.query.userId);
         const individualsResult = await adminService.getAllIndividuals();
         return httpUtil.sendResult(individualsResult, res);
     } catch (e) {
-        log.error("Admin: Individuals fetching failed: " + e);
+        log.error("Admin (user id %d): Individuals fetching failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -183,7 +184,7 @@ router.get("/individuals", authService.requireAuthentication, async (req, res) =
  */
 router.post("/toggleBan", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin: Toggling ban for user id '%d'", req.body.data.individual.userId);
+        log.info("Admin (user id %d): Toggling ban for user id '%d'", req.body.userId, req.body.data.individual.userId);
         const individual = req.body.data.individual;
         const validationResult = validation.validateIndividual(individual);
         if (validationResult.errors.length > 0) {
@@ -193,7 +194,7 @@ router.post("/toggleBan", authService.requireAuthentication, async (req, res) =>
         const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
         return httpUtil.sendResult(bannedIndividualResult, res);
     } catch (e) {
-        log.error("Admin: Toggling ban for user id '%d' failed: " + e, req.body.data.individual.userId);
+        log.error("Admin (user id %d): Toggling ban for user id '%d' failed: " + e, req.body.userId, req.body.data.individual.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

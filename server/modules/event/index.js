@@ -116,7 +116,6 @@ const getEvents = async (filters, userId) => {
     }
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
-    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found", data: {events: []}});
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {

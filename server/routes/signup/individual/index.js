@@ -47,7 +47,7 @@ const authService = require("../../../modules/authentication/");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Signing up individual");
+        log.info("User id '%d': Signing up individual", req.body.userId);
         const individual = {
             title: req.body.data.individual.title,
             firstName: req.body.data.individual.firstName,
@@ -71,7 +71,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             message: "Individual registration successful.",
         });
     } catch (e) {
-        log.error("Signing up individual failed: " + e);
+        log.error("User id '%d': Failed signing up individual: " + e, req.body.userId);
         res.status(400).send({
             message: e.message,
         });
