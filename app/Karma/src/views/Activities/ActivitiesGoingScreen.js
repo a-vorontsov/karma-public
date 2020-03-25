@@ -4,7 +4,7 @@ import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 class ActivitiesGoingScreen extends Component {
@@ -13,17 +13,15 @@ class ActivitiesGoingScreen extends Component {
         this.state = {
             activities: [],
         };
-        this.fetchAllActivities();
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
+    async componentDidMount() {
+        await this.fetchAllActivities();
+    }
 
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event/going")
+            .get(`${REACT_APP_API_URL}/event/going`)
             .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);
@@ -45,7 +43,7 @@ class ActivitiesGoingScreen extends Component {
                         return (
                             <ActivityDisplayCard
                                 activity={activity}
-                                key={activity.id}
+                                key={activity.eventId}
                                 signedup={true} //TODO
                             />
                         );

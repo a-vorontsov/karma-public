@@ -5,10 +5,10 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const regStatus = require("../../../modules/authentication/registration-status");
-const userAgent = require("../../../modules/authentication/user-agent");
-const tokenSender = require("../../../modules/verification/tokenSender");
+const authService = require("../../../modules/authentication/");
+const regStatus = require("../../../util/registration");
+const userAgent = require("../../../modules/user");
+const tokenSender = require("../../../modules/verification/token");
 
 /**
  * This is the first step of the signup flow.
@@ -61,14 +61,15 @@ const tokenSender = require("../../../modules/verification/tokenSender");
  * @name Sign-in with Email
  * @function
  */
-router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+router.post("/", authService.requireNoAuthentication, async (req, res) => {
     try {
-        log.info("Starting sign-in with email");
+        log.info("'%s': Starting sign-in email sign-in", req.body.data.email);
         const email = req.body.data.email;
         if (!(await regStatus.emailExists(email))) {
-            log.info("Sign-in with new account, registering email %s", email);
+            log.info("'%s': Sign-in with new account, registering email");
             try {
                 await userAgent.registerEmail(email);
+                log.info("'%s': Registering email successful", email);
                 res.status(200).send({
                     message: "Email did not exist. Email successfully recorded, wait for user to input email verification code.",
                     data: {
@@ -78,7 +79,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                     },
                 });
             } catch (e) {
-                log.error("Registering email '%s' failed: %s", email, e);
+                log.error("'%s': Registering email failed: " + e, email);
                 res.status(500).send({
                     message: "Email did not exist. Error in recording user's email in database. Please see error message: " + e.message,
                     data: {
@@ -89,7 +90,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 });
             }
         } else if (!(await regStatus.isEmailVerified(email))) {
-            log.info("Sign-in with existing account, but email '%s' not verified. Initiating verification", email);
+            log.info("'%s': Sign-in with existing unverified email. Starting email verification", email);
             await tokenSender.storeAndSendEmailVerificationToken(email);
             res.status(200).send({
                 message: "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
@@ -100,7 +101,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (!(await regStatus.userAccountExists(email))) {
-            log.info("Sign-in to '%s' with existing account and verified email but no user created", email);
+            log.info("'%s': Sign-in with verified email. Starting user sign-up", email);
             res.status(200).send({
                 message: "Email verified, but no user account. Go to user registration screen.",
                 data: {
@@ -110,9 +111,9 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (await regStatus.isPartlyRegistered(email)) {
-            log.info("Sign-in to '%s' with existing account and verified email but partly registered email", email);
+            log.info("'%s': Sign-in with existing incomplete user. Starting profile creation", email);
             res.status(200).send({
-                message: "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
+                message: "User account registered, but no indiv/org profile. Ask for password and then go to indiv/org selection screen.",
                 data: {
                     isEmailVerified: true,
                     isSignedUp: true,
@@ -120,7 +121,7 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else if (await regStatus.isFullyRegisteredByEmail(req.body.data.email)) {
-            log.info("Sign-in to '%s' with existing account. Initiating login", email);
+            log.info("'%s': Sign-in with existing account.", email);
             res.status(200).send({
                 message: "Fully registered. Go to login screen.",
                 data: {
@@ -130,13 +131,14 @@ router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
                 },
             });
         } else {
+            log.error("'%s': Sign-in failed", email);
             res.status(500).send({
                 message: "Logical or internal system error. Please debug the registration and user objects:",
             });
         }
     } catch (e) {
         // in case of invalid queries, an error may be thrown
-        log.error("Sign-in with email failed: " + e);
+        log.error("'%s': Sign-in failed: " + e, req.body.data.email);
         res.status(500).send({
             message: e.message,
         });

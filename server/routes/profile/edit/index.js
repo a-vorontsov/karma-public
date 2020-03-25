@@ -4,12 +4,12 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
+const authService = require("../../../modules/authentication/");
+const userRepo = require("../../../repositories/user");
+const indivRepo = require("../../../repositories/individual");
+const orgRepo = require("../../../repositories/organisation");
+const addressRepo = require("../../../repositories/address");
+const profileRepo = require("../../../repositories/profile");
 
 /**
  * Endpoint called whenever a user wishes to update their profile <br/>
@@ -61,10 +61,10 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  *  @name Edit profile
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Updating profile", req.body.userId);
         // update user profile if specified in request
-        log.info("Updating profile");
         if (req.body.data.user !== undefined) {
             await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
@@ -100,6 +100,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             }
             if (req.body.data.individual.womenOnly !== undefined) {
                 if (individual.gender !== "f") {
+                    log.warn("User id '%d': Non-woman updating women-only filter", req.body.userId);
                     return res.status(400).send({message: "Only women can filter by women only events."});
                 } else {
                     profile.womenOnly = req.body.data.individual.womenOnly;
@@ -155,7 +156,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Operation successful. Please GET the view profile endpoint to see the updated profile record.",
         });
     } catch (e) {
-        log.error("Updating profile failed");
+        log.error("User id '%d': Failed updating profile: " + e, req.body.userId);
         res.status(500).send({
             message: e.message,
         });

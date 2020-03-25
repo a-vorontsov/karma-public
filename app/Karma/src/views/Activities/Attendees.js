@@ -4,6 +4,8 @@ import Styles from "../../styles/Styles";
 import AttendeeButton from "../../components/activities/AttendeeButton";
 import request from "superagent";
 import {RegularText} from "../../components/text";
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 class Attendees extends Component {
     constructor(props) {
@@ -15,15 +17,14 @@ class Attendees extends Component {
         this.getAttendees();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.getAttendees();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.getAttendees();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();
@@ -31,8 +32,10 @@ class Attendees extends Component {
 
     getAttendees = async () => {
         const {activity} = this.props;
+        const authToken = await getAuthToken();
         const response = await request
-            .get(`http://localhost:8000/event/${activity.id}/signUp`)
+            .get(`${REACT_APP_API_URL}/event/${activity.id}/signUp`)
+            .set("authorization", authToken)
             .then(res => {
                 return res.body.data;
             })

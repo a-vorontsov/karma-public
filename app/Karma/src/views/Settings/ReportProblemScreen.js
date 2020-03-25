@@ -16,6 +16,7 @@ import {TextInput} from "../../components/input";
 import {getAuthToken} from "../../util/credentials";
 import Toast from "react-native-simple-toast";
 import Colours from "../../styles/Colours";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -32,10 +33,6 @@ const problemTypes = [
 ];
 
 class ReportProblemScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -52,7 +49,7 @@ class ReportProblemScreen extends Component {
         const authToken = await getAuthToken();
         Toast.showWithGravity("Sending report...", 1, Toast.BOTTOM);
         request
-            .post("http://localhost:8000/bugreport")
+            .post(`${REACT_APP_API_URL}/bugreport`)
             .set("authorization", authToken)
             .send({
                 data: {

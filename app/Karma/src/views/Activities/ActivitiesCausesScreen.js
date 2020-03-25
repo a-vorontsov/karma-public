@@ -4,6 +4,7 @@ import ActivityCauseCarousel from "../../components/activities/ActivityCauseCaro
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -14,13 +15,15 @@ class ActivitiesCausesScreen extends Component {
             activitiesByCause: [],
             activeSlide: 0,
         };
-        this.fetchAllActivities();
+    }
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event/causes")
+            .get(`${REACT_APP_API_URL}/event/causes`)
             .set("authorization", authToken)
             .then(result => {
                 let activitiesByCause = result.body.data;
@@ -33,10 +36,6 @@ class ActivitiesCausesScreen extends Component {
                 console.log(er);
             });
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     render() {
         return (

@@ -1,4 +1,4 @@
-const settingsRepository = require("../../models/databaseRepositories/settingsRepository");
+const settingsRepository = require("../../repositories/settings");
 
 /**
  * Updates the current settings for a user.
