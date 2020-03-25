@@ -41,6 +41,8 @@ class ActivitiesScreen extends Component {
             display: ActivitiesAllScreen,
             visible: false,
             calendarVisible: false,
+            availabilityStart: null,
+            availabilityEnd: null,
         };
     }
 
@@ -60,6 +62,13 @@ class ActivitiesScreen extends Component {
             display: selectedScreen,
         });
     }
+
+    onInputChange = inputState => {
+        this.setState({
+            availabilityStart: inputState.selectedStartDate,
+            availabilityEnd: inputState.selectedEndDate,
+        });
+    };
 
     render() {
         return (
@@ -150,7 +159,15 @@ class ActivitiesScreen extends Component {
                                             alignItems: "center",
                                         }}>
                                         <View>
-                                            <Calendar />
+                                            <Calendar
+                                                onChange={this.onInputChange}
+                                                startDate={
+                                                    this.state.availabilityStart
+                                                }
+                                                endDate={
+                                                    this.state.availabilityEnd
+                                                }
+                                            />
                                         </View>
                                         <View
                                             style={{

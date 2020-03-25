@@ -45,6 +45,7 @@ class ActivitiesAllScreen extends Component {
     }
 
     async fetchActivities() {
+        console.log(this.props);
         const authToken = await getAuthToken();
         this.setState({fetchingDataFromServer: true});
         const filtersQuery = queryString.stringify(
@@ -105,6 +106,7 @@ class ActivitiesAllScreen extends Component {
             {filter: this.props.filters.booleanFilters},
             {arrayFormat: "bracket", encode: false},
         );
+        console.log(this.props);
         request
             .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
             .set("authorization", authToken)

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Dimensions} from "react-native";
+import {StyleSheet, ScrollView, Dimensions} from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import Colours from "../styles/Colours";
 
@@ -10,43 +10,52 @@ export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedStartDate: null,
-            selectedEndDate: null,
+            selectedStartDate: props.startDate,
+            selectedEndDate: props.endDate,
         };
         this.onDateChange = this.onDateChange.bind(this);
     }
 
-    onDateChange(date, type) {
+    async onDateChange(date, type) {
         if (type === "END_DATE") {
-            this.setState({
+            await this.setState({
                 selectedEndDate: date,
             });
         } else {
-            this.setState({
+            await this.setState({
                 selectedStartDate: date,
                 selectedEndDate: null,
             });
         }
+        this.passUpState();
     }
-
+    passUpState() {
+        const {selectedStartDate, selectedEndDate} = this.state;
+        this.props.onChange({
+            selectedStartDate,
+            selectedEndDate,
+        });
+    }
     render() {
         const minDate = new Date(); // Today
         const maxDate = new Date(2020, 6, 3);
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <CalendarPicker
                     startFromMonday={true}
                     allowRangeSelection={true}
                     minDate={minDate}
                     maxDate={maxDate}
+                    selectedStartDate={this.state.selectedStartDate}
+                    selectedEndDate={this.state.selectedEndDate}
                     todayBackgroundColor={Colours.grey}
                     selectedDayColor={Colours.blue}
                     selectedDayTextColor="#FFFFFF"
                     onDateChange={this.onDateChange}
                     width={formWidth}
                 />
-            </View>
+            </ScrollView>
         );
     }
 }
