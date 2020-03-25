@@ -5,11 +5,7 @@ import Carousel, {Pagination} from "react-native-snap-carousel";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 import {SignupCard} from "../components/signup";
-import {
-    RegularText,
-    TitleText,
-    LogoText,
-} from "../components/text";
+import {RegularText, TitleText, LogoText} from "../components/text";
 
 import Styles from "../styles/Styles";
 import CarouselStyles, {itemWidth, sliderWidth} from "../styles/CarouselStyles";

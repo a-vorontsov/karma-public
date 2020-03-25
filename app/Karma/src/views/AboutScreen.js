@@ -40,7 +40,7 @@ class AboutScreen extends React.Component {
             townCity: "",
             countryState: "",
             postCode: "",
-            firstOpen: true
+            firstOpen: true,
         };
     }
 
@@ -119,7 +119,7 @@ class AboutScreen extends React.Component {
 
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
-        if (fname === "" || lname === ""){
+        if (fname === "" || lname === "") {
             this.setState({
                 firstOpen: false,
             });
