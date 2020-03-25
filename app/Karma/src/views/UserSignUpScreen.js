@@ -17,8 +17,8 @@ import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
-import * as Keychain from "react-native-keychain";
-
+import AsyncStorage from "@react-native-community/async-storage";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
@@ -57,23 +57,19 @@ class SignUpScreen extends React.Component {
     }
     signUserUp = async () => {
         const user = this.createUser();
+
         await request
-            .post("http://localhost:8000/signup/user")
+            .post(`${REACT_APP_API_URL}/signup/user`)
+            .set("authorization", "")
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     user: {...user},
                 },
             })
             .then(async res => {
-                const authToken = res.body.authToken;
-                const userId = res.body.userId;
-                await Keychain.resetGenericPassword();
-                await Keychain.setGenericPassword(userId.toString(), authToken);
-                console.log(
-                    `User id ${userId} successfully stored in keychain.`,
-                );
+                console.log(res.body.message);
+                const authToken = res.body.data.authToken;
+                await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");
             })

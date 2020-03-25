@@ -1,4 +1,4 @@
-const notificationRepository = require("../../models/databaseRepositories/notificationRepository");
+const notificationRepository = require("../../repositories/notification");
 
 /**
  * Creates notifications for each receiver in receiverId

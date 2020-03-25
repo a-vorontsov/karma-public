@@ -5,16 +5,17 @@ const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const deletionModule = require("../../modules/deletion");
-const adminService = require("../../modules/admin/adminService");
+const adminService = require("../../modules/admin/");
 const validation = require("../../modules/validation");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin requests to see all users.<br/>
  <p><b>Route: </b>/admin/users (GET)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: All users signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -42,7 +43,7 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get all users
  *  @function
  */
-router.get("/users", authAgent.requireAuthentication, async (req, res) => {
+router.get("/users", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Fetching all users for administrator");
         const usersResult = await adminService.getAllUsers();
@@ -58,6 +59,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  * specific user.<br/>
  <p><b>Route: </b>/admin/user/delete?userId=2 (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: The deleted user.<br/>
  *  status: 500, description: DB error
@@ -79,7 +81,7 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  *  @name Post delete user info
  *  @function
  */
-router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
+router.post("/user/delete", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = req.query.userId;
         log.info("Deleting all user data for %d", userId);
@@ -96,6 +98,7 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  * Endpoint called whenever an admin requests to see all individuals.<br/>
  <p><b>Route: </b>/admin/individuals (GET)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: All individuals signed up to the app.<br/>
  *  status: 500, description: DB error
@@ -136,7 +139,7 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  *  @function
 
  */
-router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
+router.get("/individuals", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Fetching all individuals for administrator");
         const individualsResult = await adminService.getAllIndividuals();
@@ -151,6 +154,7 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  * Endpoint called whenever an admin requests to toggle the ban status of an individual.<br/>
  <p><b>Route: </b>/admin/toggleban (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
  *  status: 500, description: DB error
@@ -177,7 +181,7 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  *  @name Ban individual
  *  @function
  */
-router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
+router.post("/toggleBan", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Toggling ban for individual");
         const individual = req.body.data.individual;

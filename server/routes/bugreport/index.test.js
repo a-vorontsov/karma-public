@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../../app');
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
-const mailSender = require("../../modules/mailSender");
+const mailSender = require("../../modules/mail");
 
-jest.mock("../../modules/mailSender");
+jest.mock("../../modules/mail");
 
 
 beforeEach(() => {
@@ -30,6 +30,7 @@ test('bug report sending works', async () => {
     );
     const response = await request(app)
         .post("/bugreport")
+        .set("authorization", null)
         .send(bugReport);
 
     expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
@@ -48,6 +49,7 @@ test('bug report endpoint gives correct response if mail-sending fails', async (
     );
     const response = await request(app)
         .post("/bugreport")
+        .set("authorization", null)
         .send(bugReport);
 
     expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);

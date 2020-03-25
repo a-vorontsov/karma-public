@@ -18,15 +18,15 @@ const icons = {
 };
 
 class SettingsMenuScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
     constructor(props) {
         super(props);
         this.state = {
             user: {},
         };
     }
+    static navigationOptions = {
+        headerShown: false,
+    };
     componentDidMount() {
         const {navigation} = this.props;
         const user = navigation.getParam("user");
@@ -39,6 +39,7 @@ class SettingsMenuScreen extends Component {
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
+
     render() {
         const {navigate} = this.props.navigation;
         return (

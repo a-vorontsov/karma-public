@@ -4,6 +4,9 @@ import {RegularText, BoldText, SemiBoldText} from "../components/text";
 import Styles from "../styles/Styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Colours from "../styles/Colours";
+import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+import {openInbox} from "react-native-email-link";
 const request = require("superagent");
 
 /**
@@ -23,40 +26,37 @@ export default class NotificationItem extends Component {
     }
 
     async componentDidMount() {
-        this.getSenderName(2);
+        const {notification} = this.props;
+        this.getSenderName(notification.senderId);
     }
-
-    /**
-     * Opens email app on the user's phone
-     */
-    _sendReply = () => {
-        //open email here
-    };
 
     _renderReplyButton = () => {
         return (
-            <TouchableOpacity onPress={() => this._sendReply()}>
-                <SemiBoldText style={{color: Colours.blue}}>Reply</SemiBoldText>
+            <TouchableOpacity onPress={() => openInbox()}>
+                <SemiBoldText style={{color: Colours.blue}}>View</SemiBoldText>
             </TouchableOpacity>
         );
     };
 
     getSenderName = async senderId => {
         try {
-            const body = {userId: senderId};
+            const authToken = await getAuthToken();
 
             const response = await request
-                .get("http://localhost:8000/profile")
-                .query(body)
+                .get(`${REACT_APP_API_URL}/profile`)
+                .set("authorization", authToken)
+                .query({otherUserId: senderId})
                 .then(res => {
                     return res.body.data;
                 });
 
-            let senderName = response.individual.name;
+            let sender = response.individual
+                ? response.individual
+                : response.organisation;
 
-            if (!senderName) {
-                senderName = response.individual.firstName;
-            }
+            let senderName = sender.name
+                ? sender.name
+                : sender.firstName + " " + sender.lastName;
 
             this.setState({
                 senderName: senderName,
@@ -64,8 +64,6 @@ export default class NotificationItem extends Component {
         } catch (error) {
             console.log(error);
         }
-
-        //get org name from profile endpoint
     };
 
     render() {
@@ -84,7 +82,11 @@ export default class NotificationItem extends Component {
                             borderRadius: 20,
                             alignSelf: "center",
                         }}
-                        source={{uri: "https://picsum.photos/200"}}
+                        source={{
+                            uri: `https://picsum.photos/seed/${
+                                notification.id
+                            }/200`,
+                        }}
                     />
                     <View
                         style={[

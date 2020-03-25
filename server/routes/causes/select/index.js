@@ -1,15 +1,15 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const selectedCauseRepository = require("../../../repositories/cause/selected");
+const authService = require("../../../modules/authentication/");
 
 /**
  * gets called when user selects causes
  * body should contain causes array holding cause objects
  * cause objects need property id
  * */
-router.post('/', authAgent.requireAuthentication, (req, res) => {
+router.post('/', authService.requireAuthentication, (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
     log.info("Selecting causes for user" + userId);

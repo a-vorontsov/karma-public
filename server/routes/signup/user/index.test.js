@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const owasp = require("owasp-password-strength-test");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
+const regRepo = require("../../../repositories/registration");
 const jose = require("../../../modules/jose");
 
 let registration;
@@ -23,8 +23,6 @@ afterEach(() => {
 });
 
 const registerUserRequest = {
-    userId: null,
-    authToken: null,
     data: {
         user: {
             password: "new_plaintext",
@@ -42,12 +40,12 @@ test("user registration works", async () => {
 
     const response = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
     expect(response.body.message).toBe("User registration successful. Go to individual/org registration selection");
     expect(response.statusCode).toBe(200);
-    expect(response.body.userId).toBeGreaterThan(-1);
 });
 
 test("weak password fails", async () => {
@@ -56,6 +54,7 @@ test("weak password fails", async () => {
 
     const response = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -69,6 +68,7 @@ test("weak password fails", async () => {
 
     const response = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
@@ -82,15 +82,16 @@ test("duplicate user registration fails", async () => {
 
     const response = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe("User registration successful. Go to individual/org registration selection");
-    expect(response.body.userId).toBeGreaterThan(-1);
 
     const duplicateResponse = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(2);
@@ -105,6 +106,7 @@ test("invalid email fails", async () => {
 
     const response = await request(app)
         .post("/signup/user")
+        .set("authorization", null)
         .send(registerUserRequest);
 
     expect(owasp.test).toHaveBeenCalledTimes(1);

@@ -9,11 +9,11 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/event/eventService");
+const eventService = require("../../modules/event");
 const paginator = require("../../modules/pagination");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -22,11 +22,11 @@ router.use("/", eventSelectRoute);
 
 /**
  * Endpoint called when "All" tab is pressed in Activities homepage<br/>
- * URL example: REACT_APP_API_URL/event?userId=1&pageSize=2&currentPage=1
+ * URL example: REACT_APP_API_URL/event?pageSize=2&currentPage=1
 &filter[]=!womenOnly&filter[]=physical&availabilityStart=2020-03-03&availabilityEnd=2020-12-03&maxDistance=5000<br/>
  <p><b>Route: </b>/event (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user logged in
+ * @param {string} req.headers.authorization authToken
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
  * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
@@ -123,7 +123,7 @@ router.use("/", eventSelectRoute);
  *  @function
  *  @name Get "All" Activities tab
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'All' activities for user id '%d'", userId);
@@ -145,6 +145,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
  * Endpoint called whenever a user requests information about an event.
  <p><b>Route: </b>/event/:id (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Number} id - id of requested event.
  * @returns {object}
  *  status: 200, description: Information regarding the event containing the same properties as this example
@@ -193,7 +194,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get event by id
  *  */
-router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
+router.get("/:id", authService.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
         log.info("Getting event id '%d' data", id);
@@ -210,6 +211,7 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  * If an existing addressId is specified in the request, it is reused and no new address is created.<br/>
  <p><b>Route: </b>/event (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -282,7 +284,7 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  *  @name Create new event
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Creating new event");
         const event = req.body;
@@ -302,6 +304,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  * Endpoint called whenever a user updates an event.<br/>
  <p><b>Route: </b>/event/update/:id (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
@@ -357,7 +360,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
+router.post("/update/:id", authService.requireAuthentication, async (req, res) => {
     try {
         const event = {...req.body, id: Number.parseInt(req.params.id)};
         log.info("Updating event id '%d'", event.id);
@@ -406,7 +409,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/:id/delete/", authService.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
         log.info("Deleting event id '%d'", eventId);

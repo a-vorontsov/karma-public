@@ -5,8 +5,8 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../../modules/authentication/user-agent");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const userAgent = require("../../../modules/user");
+const authService = require("../../../modules/authentication/");
 
 /**
  * This is the fourth step of the signup flow (after user
@@ -20,14 +20,11 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * operation.
  <p><b>Route: </b>/signup/organisation (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {number} req.body.userId the user's id, as in every request
- * @param {string} req.body.authToken the user's valid authToken, as in every request
+ * @param {string} req.headers.authorization authToken
  * @param {object} req.body.data.organisation the user input values for their profile
  * @param {object} req.body Here is an example of an appropriate request json:
  <pre><code>
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
         "data": &#123;
             "organisation": &#123;
                 "name": "WWF",
@@ -49,7 +46,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  * @name Sign-up Organisation
  * @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Signing up organisation");
         const organisation = {

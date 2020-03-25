@@ -81,6 +81,7 @@ jobs:
       DB_DATABASE: karma-db
       SKIP_GEOCODING: 1
       MAPQUEST_API: fake5
+      SKIP_ASYNC_KEY_EXCHANGE: 1
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository
@@ -103,6 +104,12 @@ jobs:
       - name: npm test
         run: npm test
         working-directory: ./server
+      - name: Create test coverage artifact
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/upload-artifact@v1
+        with:
+          name: coverage
+          path: server/coverage
 
   publish:
     if: github.ref == 'refs/heads/dev'
@@ -122,7 +129,19 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "docs/**"
         target: "web-data"
-        strip_components: 1
+    - name: Download coverage artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: coverage
+    - name: Deploy coverage
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "coverage/**"
+        target: "web-data"
 
 # For help, see:
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on

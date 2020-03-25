@@ -2,16 +2,17 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Karma server",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "env CI=true jest -i",
+    "test-nologs": "jest -i",
     "start": "node server.js",
     "dev": "env NODE_ENV=development nodemon server.js",
     "db-migrate": "db-migrate",
     "docs": "jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes",
     "dev-start": "nodemon ./server",
-    "prod-start": "NODE_ENV=production nodemon ./server",
-    "check-all": "db-migrate down; db-migrate down; db-migrate down; db-migrate up; jest -i; jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes; eslint ./ --fix"
+    "prod-start": "env NODE_ENV=production nodemon ./server",
+    "check-all": "db-migrate reset; db-migrate up; jest -i; jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes; eslint ./ --fix"
   },
   "author": "",
   "license": "ISC",
@@ -68,7 +69,7 @@
       "html"
     ],
     "setupFilesAfterEnv": [
-      "./test/setupTests"
+      "./test/setup"
     ]
   }
 }
