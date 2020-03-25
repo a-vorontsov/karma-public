@@ -30,9 +30,8 @@ export default class ForgotPasswordScreen extends Component {
         const credentials = await getData();
         await request
             .post("http://localhost:8000/reset")
+            .set("authorization", credentials.password)
             .send({
-                userId: credentials.username,
-                //authToken: credentials.password,
                 data: {
                     password: this.state.passwordInput,
                 },

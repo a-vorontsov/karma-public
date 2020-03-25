@@ -35,8 +35,8 @@ export default class ChangePasswordScreen extends Component {
         const credentials = await getData();
         await request
             .post("http://localhost:8000/profile/edit/password")
+            .set("authorization", credentials.password)
             .send({
-                userId: credentials.username,
                 oldPassword: this.state.oldPasswordInput,
                 newPassword: this.state.passwordInput,
                 confirmPassword: this.state.passwordInput,

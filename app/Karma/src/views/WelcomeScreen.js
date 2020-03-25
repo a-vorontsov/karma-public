@@ -197,16 +197,14 @@ export default class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         await request
             .post("http://localhost:8000/signin/forgot/confirm")
+            .set("authorization", credentials.password)
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     email: this.state.emailInput,
                     token: code,
                 },
             })
             .then(res => {
-
                 console.log("in welcome screen");
 
                 console.log("correct code");
@@ -275,7 +273,6 @@ export default class WelcomeScreen extends Component {
                         }}
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
-
                 </View>
 
                 <KeyboardAvoidingView
