@@ -4,11 +4,11 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-const httpUtil = require("../../../util/httpUtil");
-const eventService = require("../../../modules/event/eventService");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const httpUtil = require("../../../util/http");
+const eventService = require("../../../modules/event");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const eventSignupService = require("../../../modules/event/signup");
+const authService = require("../../../modules/authentication/");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
@@ -100,7 +100,7 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @function
  *  @name Get "Causes" Activites tab
  *  */
-router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
+router.get("/causes", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'Causes' tab for %d", userId);
@@ -182,7 +182,7 @@ router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get "Favourites" Activites tab
  *  */
-router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
+router.get("/favourites", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'Favourites' tab for %d", userId);
@@ -260,7 +260,7 @@ router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get "Going" Activites tab
  *  */
-router.get("/going", authAgent.requireAuthentication, async (req, res) => {
+router.get("/going", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'Going' tab for %d", userId);

@@ -5,10 +5,10 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../../modules/authentication/user-agent");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const userAgent = require("../../../modules/user");
+const authService = require("../../../modules/authentication");
 const owasp = require("owasp-password-strength-test");
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 
 /**
  * This is the third step of the signup flow (after email
@@ -54,7 +54,7 @@ const httpUtil = require("../../../util/httpUtil");
  * @name Sign-up User
  * @function
  */
-router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+router.post("/", authService.requireNoAuthentication, async (req, res) => {
     log.info("Signing up user");
     const passStrengthTest = owasp.test(req.body.data.user.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {

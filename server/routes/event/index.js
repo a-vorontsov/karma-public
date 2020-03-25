@@ -9,11 +9,11 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/event/eventService");
+const eventService = require("../../modules/event");
 const paginator = require("../../modules/pagination");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -123,7 +123,7 @@ router.use("/", eventSelectRoute);
  *  @function
  *  @name Get "All" Activities tab
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'All' activities for user id '%d'", userId);
@@ -194,7 +194,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get event by id
  *  */
-router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
+router.get("/:id", authService.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
         log.info("Getting event id '%d' data", id);
@@ -284,7 +284,7 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  *  @name Create new event
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Creating new event");
         const event = req.body;
@@ -360,7 +360,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
+router.post("/update/:id", authService.requireAuthentication, async (req, res) => {
     try {
         const event = {...req.body, id: Number.parseInt(req.params.id)};
         log.info("Updating event id '%d'", event.id);
@@ -409,7 +409,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/:id/delete/", authService.requireAuthentication, async (req, res) => {
     try {
         const eventId = Number.parseInt(req.params.id);
         log.info("Deleting event id '%d'", eventId);

@@ -5,10 +5,10 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const regStatus = require("../../../modules/authentication/registration-status");
-const userAgent = require("../../../modules/authentication/user-agent");
-const tokenSender = require("../../../modules/verification/tokenSender");
+const authService = require("../../../modules/authentication/");
+const regStatus = require("../../../util/registration");
+const userAgent = require("../../../modules/user");
+const tokenSender = require("../../../modules/verification/token");
 
 /**
  * This is the first step of the signup flow.
@@ -61,7 +61,7 @@ const tokenSender = require("../../../modules/verification/tokenSender");
  * @name Sign-in with Email
  * @function
  */
-router.post("/", authAgent.requireNoAuthentication, async (req, res) => {
+router.post("/", authService.requireNoAuthentication, async (req, res) => {
     try {
         log.info("Starting sign-in with email");
         const email = req.body.data.email;
