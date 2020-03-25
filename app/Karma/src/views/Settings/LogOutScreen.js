@@ -9,7 +9,7 @@ class LogOutScreen extends Component {
     }
 
     async componentDidMount() {
-        await AsyncStorage.clear();
+        await AsyncStorage.removeItem("ACCESS_TOKEN");
         this.props.navigation.navigate("Welcome");
     }
 

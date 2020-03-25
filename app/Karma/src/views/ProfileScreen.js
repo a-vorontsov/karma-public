@@ -287,7 +287,8 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {`${this.state.firstName} ${this.state.lastName}`}
+                                            {this.state.firstName}{" "}
+                                            {this.state.lastName}
                                         </Text>
                                     )}
                                 </View>
