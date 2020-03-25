@@ -11,7 +11,7 @@ const httpUtil = require("../../util/http");
 /**
  * Gets all causes.<br/>
  <p><b>Route: </b>/causes (GET)</p>
- <p><b>Permissions: </b>require user permissions</p>
+ <p><b>Permissions: </b>any</p>
  * @returns
  *  status: 200, description: Array of all cause objects<br/>
  *  status: 500, description: Most probably a database error occurred
@@ -28,7 +28,7 @@ router.get('/', authService.acceptAnyAuthentication, (req, res) => {
 /**
  * Gets a cause specified by id.<br/>
  <p><b>Route: </b>/causes/:id (GET)</p>
- <p><b>Permissions: </b>require user permissions</p>
+ <p><b>Permissions: </b>any</p>
  * @param {number} req.params.id - ID of the cause required
  * @returns
  *  status: 200, description: cause object with given id <br/>

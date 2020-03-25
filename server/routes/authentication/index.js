@@ -8,13 +8,13 @@ const httpUtil = require("../../util/http");
 /**
  * Endpoint called whenever a client wishes to check the active
  * user's authentication status with minimum overhead and
- * avoiding any unnecessary transmission of data
+ * avoiding any unnecessary transmission of data.
  <p><b>Route: </b>/authentication (GET)</p>
  <p><b>Permissions: </b>any</p>
  * @param {string} req.headers.authorization authToken
  * @returns {object}
- * status: 200, description: Successful authentication
- * status: 400 - invalid request, description: Missing authorisation header
+ * status: 200, description: Successful authentication <br/>
+ * status: 400 - invalid request, description: Missing authorisation header <br/>
  * status: 401 - unauthenticated, description: Reason for failed authentication
  * @name Check authentication status
  * @function
