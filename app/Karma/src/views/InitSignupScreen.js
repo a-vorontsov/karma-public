@@ -1,15 +1,13 @@
 import React from "react";
 
-import {View, KeyboardAvoidingView} from "react-native";
+import {View, Platform} from "react-native";
 import Carousel, {Pagination} from "react-native-snap-carousel";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 import {SignupCard} from "../components/signup";
-import {TransparentButton} from "../components/buttons";
 import {
     RegularText,
     TitleText,
-    SemiBoldText,
     LogoText,
 } from "../components/text";
 
@@ -39,17 +37,27 @@ export default class InitSignupScreen extends React.Component {
         return (
             <SafeAreaView style={Styles.container}>
                 <View
-                    style={Platform.OS === "ios" ? {paddingVertical:20} : undefined}/>
+                    style={
+                        Platform.OS === "ios"
+                            ? {paddingVertical: 20}
+                            : undefined
+                    }
+                />
                 <View style={[Styles.pt16, Styles.ph24]}>
                     <TitleText>
                         Welcome to&nbsp;
                         <LogoText style={Styles.xxlarge}>Karma</LogoText>
                     </TitleText>
-                    <View style={Platform.OS === "ios" ? {paddingVertical:20} : undefined}>
-                    <RegularText style={[Styles.pv16, Styles.small]}>
-                        Lorem ipsum dolor sit amet, consectetur adip isicing
-                        elit, sed do eiusmod.
-                    </RegularText>
+                    <View
+                        style={
+                            Platform.OS === "ios"
+                                ? {paddingVertical: 20}
+                                : undefined
+                        }>
+                        <RegularText style={[Styles.pv16, Styles.small]}>
+                            Lorem ipsum dolor sit amet, consectetur adip isicing
+                            elit, sed do eiusmod.
+                        </RegularText>
                     </View>
                 </View>
                 <View>

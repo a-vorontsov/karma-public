@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         fontWeight: "400",
-        color: "gray",
+        color: Colours.lightGrey,
     },
 });
 

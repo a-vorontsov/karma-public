@@ -456,7 +456,6 @@ class ProfileScreen extends Component {
                                             />
                                         </TouchableOpacity>
                                     </View>
-                                    
                                 </View>
                                 <View
                                     style={{
@@ -468,24 +467,25 @@ class ProfileScreen extends Component {
                                         {this.state.bio}
                                     </RegularText>
                                     {this.state.bio !== "" ? (
-                                            <View style={CauseStyles.container}>
-                                                {this.state.causes.map(cause => {
-                                                    return (
-                                                        <CauseItem
-                                                            cause={cause}
-                                                            key={cause.id}
-                                                            isDisabled={true}
-                                                        />
-                                                    );
-                                                })}
-                                            </View>
-                                        ) : (
-                                            <View style={Styles.ph24}>
-                                                <RegularText>
-                                                    You do not have a bio. Please edit your profile to add on.
-                                                </RegularText>
-                                            </View>
-                                        )}
+                                        <View style={CauseStyles.container}>
+                                            {this.state.causes.map(cause => {
+                                                return (
+                                                    <CauseItem
+                                                        cause={cause}
+                                                        key={cause.id}
+                                                        isDisabled={true}
+                                                    />
+                                                );
+                                            })}
+                                        </View>
+                                    ) : (
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You do not have a bio. Please
+                                                edit your profile to add on.
+                                            </RegularText>
+                                        </View>
+                                    )}
                                 </View>
                                 <RegularText style={styles.bioHeader}>
                                     Causes
@@ -513,7 +513,7 @@ class ProfileScreen extends Component {
                                             onPress={() =>
                                                 navigate("ProfileEdit")
                                             }>
-                                           <Image
+                                            <Image
                                                 source={icons.new_cause}
                                                 style={{
                                                     height: width / 3.6,
