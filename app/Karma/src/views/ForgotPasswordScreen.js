@@ -9,7 +9,6 @@ import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
 import {getAuthToken} from "../util/credentials";
 
-
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -38,11 +37,10 @@ export default class ForgotPasswordScreen extends Component {
                 },
             })
             .then(res => {
-                
                 Alert.alert(
                     "Successful password reset",
                     "You've successfully reset your password!",
-                    
+
                     [{text: "OK", onPress: () => navigate("Welcome")}],
                 );
             })
