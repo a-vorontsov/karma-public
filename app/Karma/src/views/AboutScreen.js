@@ -125,6 +125,7 @@ class AboutScreen extends React.Component {
         if (gender && fname !== "" && lname !== "" && dateSelected) {
             const authToken = await getAuthToken();
             const individual = this.createIndividual();
+            console.log(authToken);
             await request
                 .post(`${REACT_APP_API_URL}/signup/individual`)
                 .set("authorization", authToken)

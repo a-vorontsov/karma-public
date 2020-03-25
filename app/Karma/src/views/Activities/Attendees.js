@@ -57,7 +57,7 @@ class Attendees extends Component {
     };
 
     render() {
-        const {activity} = this.props;
+        const {activity, navigation} = this.props;
         const {attendees} = this.state;
 
         return (
@@ -67,6 +67,7 @@ class Attendees extends Component {
                         attendees.map(a => {
                             return (
                                 <AttendeeButton
+                                    navigation={navigation}
                                     user={a}
                                     key={a.userId}
                                     activity={activity}
