@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {Alert, RefreshControl, ScrollView, View} from "react-native";
 import {RegularText} from "../../components/text";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import Styles from "../../styles/Styles";
@@ -12,8 +12,10 @@ class ActivitiesFavouritesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isRefreshing: false,
             activities: [],
         };
+        this.onRefresh = this.onRefresh.bind(this);
     }
 
     async componentDidMount() {
@@ -27,9 +29,8 @@ class ActivitiesFavouritesScreen extends Component {
             .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);
-                let activities = result.body.data.events;
                 this.setState({
-                    activities,
+                    activities: result.body.data.events,
                 });
             })
             .catch(er => {
@@ -37,27 +38,57 @@ class ActivitiesFavouritesScreen extends Component {
             });
     }
 
+    onRefresh() {
+        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
+        this.fetchAllActivities()
+            .then(() => {
+                this.setState({
+                    isRefreshing: false,
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                Alert.alert(
+                    "An error occurred",
+                    "Cannot refresh at the moment.",
+                );
+                this.setState({
+                    isRefreshing: false,
+                });
+            });
+    }
+
     render() {
         return (
-            <View>
-                {this.state.activities.length > 0 ? (
-                    this.state.activities.map(activity => {
-                        return (
-                            <ActivityDisplayCard
-                                activity={activity}
-                                key={activity.eventId}
-                            />
-                        );
-                    })
-                ) : (
-                    <View style={Styles.ph24}>
-                        <RegularText>
-                            {" "}
-                            You haven't favourited any activities yet (Refresh)
-                        </RegularText>
-                    </View>
-                )}
-            </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this.onRefresh}
+                    />
+                }>
+                <View>
+                    {this.state.activities.length > 0 ? (
+                        this.state.activities.map(activity => {
+                            return (
+                                <ActivityDisplayCard
+                                    activity={activity}
+                                    key={activity.eventId}
+                                />
+                            );
+                        })
+                    ) : (
+                        <View style={Styles.ph24}>
+                            <RegularText>
+                                {" "}
+                                You haven't favourited any activities yet (Pull
+                                to Refresh)
+                            </RegularText>
+                        </View>
+                    )}
+                </View>
+            </ScrollView>
         );
     }
 }
