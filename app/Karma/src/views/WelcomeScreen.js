@@ -211,6 +211,7 @@ export default class WelcomeScreen extends Component {
 
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
+        const {navigate} = this.props.navigation;
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
             .set("authorization", authToken)
@@ -221,8 +222,8 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(async res => {
-                const authToken = res.body.data.authToken;
-                await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
+                const authenticationToken = res.body.data.authToken;
+                await AsyncStorage.setItem("ACCESS_TOKEN", authenticationToken);
                 console.log(res.body.message);
                 this.setState({isCodeValid: true});
                 navigate("ForgotPassword", {
