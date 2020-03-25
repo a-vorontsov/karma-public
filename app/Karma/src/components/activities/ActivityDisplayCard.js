@@ -101,7 +101,6 @@ class ActivityDisplayCard extends React.Component {
                     <View style={[CarouselStyles.item3]}>
                         <ActivityCard
                             activity={props.activity}
-                            favorited={props.favorited}
                             signedup={props.signedup}
                         />
                     </View>
