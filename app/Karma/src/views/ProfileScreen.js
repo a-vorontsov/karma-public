@@ -212,12 +212,7 @@ class ProfileScreen extends Component {
                                         alignItems: "flex-start",
                                         width: formWidth,
                                     }}>
-                                    <PageHeader
-                                        fontSize={18}
-                                        title={`${otherProfile.firstName} ${
-                                            otherProfile.lastName
-                                        }'s profile`}
-                                    />
+                                    <PageHeader title={"Viewing profile"} />
                                 </View>
                             )}
                             {!otherProfile && (
