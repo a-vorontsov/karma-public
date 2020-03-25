@@ -10,10 +10,6 @@ const request = require("superagent");
 const logo = require("../../assets/images/settings-logos/K-logo.png");
 
 class AboutKarmaScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -23,13 +19,15 @@ class AboutKarmaScreen extends Component {
 
     async componentDidMount() {
         try {
-            let about = AsyncStorage.getItem("about");
+            let about = await AsyncStorage.getItem("about");
             if (about === "") {
                 request
                     .get(`${REACT_APP_API_URL}/information`)
+                    .set("authorization")
                     .query({type: about})
                     .then(res => {
-                        about = res.body.data.information.content;
+                        console.log(res.body);
+                        about = "";
                     })
                     .catch(er => {
                         console.log(er.message);
@@ -44,6 +42,7 @@ class AboutKarmaScreen extends Component {
     }
 
     render() {
+        console.log(this.state);
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph24}>

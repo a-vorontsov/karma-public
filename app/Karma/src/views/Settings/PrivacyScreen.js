@@ -10,10 +10,6 @@ const request = require("superagent");
 const logo = require("../../assets/images/settings-logos/privacy.png");
 
 class PrivacyScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {

@@ -78,7 +78,7 @@ class ActivityCard extends React.Component {
     };
 
     async componentDidMount() {
-        this.fetchActivityInfo();
+        await this.fetchActivityInfo();
     }
 
     async fetchActivityInfo() {

@@ -68,10 +68,6 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     setupIndividualProfile(res) {
         const {
             causes,
@@ -133,9 +129,12 @@ class ProfileScreen extends Component {
 
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.fetchProfileInfo();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.fetchProfileInfo();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();
@@ -482,15 +481,13 @@ class ProfileScreen extends Component {
                                     }}>
                                     {this.state.causes.length > 0 ? (
                                         <View style={CauseStyles.container}>
-                                            {this.state.causes.map(cause => {
-                                                return (
-                                                    <CauseItem
-                                                        cause={cause}
-                                                        key={cause.id}
-                                                        isDisabled={true}
-                                                    />
-                                                );
-                                            })}
+                                            {this.state.causes.map(cause => (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            ))}
                                         </View>
                                     ) : (
                                         <View style={Styles.ph24}>

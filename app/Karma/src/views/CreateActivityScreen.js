@@ -11,6 +11,7 @@ import {
     Keyboard,
     Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Styles from "../styles/Styles";
 import {hasNotch} from "react-native-device-info";
 import PhotoUpload from "react-native-photo-upload";
@@ -151,16 +152,18 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     fetchSelectedCauses = async causeIds => {
+        let causes = await AsyncStorage.getItem("causes");
+        causes = JSON.parse(causes);
         const authToken = await getAuthToken();
-        const response = await request
-            .get(`${REACT_APP_API_URL}/causes`)
-            .set("authorization", authToken)
-            .then(res => {
-                return res.body.data;
-            });
-
-        let causes = [];
-        Array.from(response).forEach(cause => {
+        if (causes.length === 0) {
+            request
+                .get(`${REACT_APP_API_URL}/causes`)
+                .set("authorization", authToken)
+                .then(res => {
+                    causes = res.body.data;
+                });
+        }
+        Array.from(causes).forEach(cause => {
             if (causeIds.includes(cause.id)) {
                 causes.push(cause);
             }

@@ -47,6 +47,21 @@ class WelcomeScreen extends Component {
         this.baseState = this.state;
     }
 
+    async componentDidMount() {
+        try {
+            const authToken = await getAuthToken();
+            const response = await request
+                .get(`${REACT_APP_API_URL}/authentication`)
+                .set("authorization", authToken);
+            if (response.status === 200) {
+                const {navigate} = this.props.navigation;
+                navigate("Activities");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     onInputChange = (name, value) => {
         this.setState({
             [name]: value,
@@ -164,7 +179,7 @@ class WelcomeScreen extends Component {
     // verify password is correct
     async checkPass() {
         const {navigate} = this.props.navigation;
-        const authToken = await getAuthToken();
+        let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/password`)
             .set("authorization", authToken)
@@ -177,9 +192,9 @@ class WelcomeScreen extends Component {
             .then(async res => {
                 // if password correct
                 this.setState({isValidPass: true});
-                const authToken = res.body.data.authToken;
+                authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-                navigate("PickCauses");
+                navigate("Activities");
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});

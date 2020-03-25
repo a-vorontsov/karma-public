@@ -14,7 +14,7 @@ class LogOutScreen extends Component {
     }
 
     render() {
-        return <View></View>;
+        return <View />;
     }
 }
 

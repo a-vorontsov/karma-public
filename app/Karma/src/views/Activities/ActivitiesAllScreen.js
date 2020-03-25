@@ -30,10 +30,6 @@ class ActivitiesAllScreen extends Component {
         this.loadMoreActivities = this.loadMoreActivities.bind(this);
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     async componentDidMount() {
         const authToken = await getAuthToken();
         request
@@ -61,7 +57,7 @@ class ActivitiesAllScreen extends Component {
         this.setState({fetchingDataFromServer: true});
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event")
+            .get(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(res => {

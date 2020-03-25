@@ -60,7 +60,7 @@ class SignUpScreen extends React.Component {
     signUserUp = async () => {
         const user = this.createUser();
 
-        const authToken = await getAuthToken();
+        let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
             .set("authorization", authToken)
@@ -71,7 +71,7 @@ class SignUpScreen extends React.Component {
             })
             .then(async res => {
                 console.log(res.body.message);
-                const authToken = res.body.data.authToken;
+                authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");

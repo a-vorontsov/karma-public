@@ -13,12 +13,10 @@ class ActivitiesGoingScreen extends Component {
         this.state = {
             activities: [],
         };
-        this.fetchAllActivities();
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
+    async componentDidMount() {
+        await this.fetchAllActivities();
+    }
 
     async fetchAllActivities() {
         const authToken = await getAuthToken();
@@ -45,7 +43,7 @@ class ActivitiesGoingScreen extends Component {
                         return (
                             <ActivityDisplayCard
                                 activity={activity}
-                                key={activity.id}
+                                key={activity.eventId}
                                 signedup={true} //TODO
                             />
                         );

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAuthToken} from "./credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 let authToken = "";
@@ -7,7 +8,7 @@ let authToken = "";
 export const getCauses = async () => {
     try {
         const response = await request
-            .get("http://localhost:8000/causes")
+            .get(`${REACT_APP_API_URL}/causes`)
             .set("authorization", authToken);
         const causes = response.body.data;
         return causes;
@@ -29,7 +30,7 @@ export const storeCauses = async () => {
 export const getPolicy = async () => {
     try {
         const response = await request
-            .get("http://localhost:8000/information")
+            .get(`${REACT_APP_API_URL}/information`)
             .set("authorization", authToken)
             .query({type: "privacyPolicy"});
         const {information} = response.body.data;
@@ -52,7 +53,7 @@ export const storePolicy = async () => {
 export const getTerms = async () => {
     try {
         const response = await request
-            .get("http://localhost:8000/information")
+            .get(`${REACT_APP_API_URL}/information`)
             .set("authorization", authToken)
             .query({type: "terms"});
         const {information} = response.body.data;
@@ -75,7 +76,7 @@ export const storeTerms = async () => {
 export const getAbout = async () => {
     try {
         const response = await request
-            .get("http://localhost:8000/information")
+            .get(`${REACT_APP_API_URL}/information`)
             .set("authorization", authToken)
             .query({type: "about"});
         const {information} = response.body.data;

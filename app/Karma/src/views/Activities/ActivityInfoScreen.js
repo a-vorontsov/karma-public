@@ -70,10 +70,6 @@ class ActivityInfoScreen extends Component {
         };
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     toggleModal = () => {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
@@ -152,7 +148,7 @@ class ActivityInfoScreen extends Component {
         const activity = this.props.navigation.getParam("activity");
 
         this.getEventInfo(activity);
-        this.getCreatorInfo(
+        await this.getCreatorInfo(
             activity.eventCreatorId
                 ? activity.eventCreatorId
                 : activity.eventcreatorid,
