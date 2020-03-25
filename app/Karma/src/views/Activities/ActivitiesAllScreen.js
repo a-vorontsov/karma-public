@@ -5,7 +5,8 @@ import {
     ActivityIndicator,
     Dimensions,
     RefreshControl,
-    ScrollView, Alert,
+    ScrollView,
+    Alert,
 } from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
@@ -62,7 +63,7 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status == 404) {
+                if (er.status === 404) {
                     this.setState({
                         activitiesList: [],
                     });

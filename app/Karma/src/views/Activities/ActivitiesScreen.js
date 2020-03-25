@@ -3,7 +3,6 @@ import {
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
-    ScrollView,
     StyleSheet,
     TouchableOpacity,
     View,
