@@ -45,6 +45,12 @@ export default class ForgotPasswordScreen extends Component {
                 );
             })
             .catch(err => {
+                Alert.alert(
+                    "Unsuccessful password reset",
+                    "We didn't manage to reset your password, please try again.",
+
+                    [{text: "OK", onPress: () => navigate("Welcome")}],
+                );
                 console.log(err);
             });
     };

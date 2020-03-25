@@ -20,7 +20,7 @@ export default class ChangePasswordInput extends Component {
             showError: false,
             passwordMatch: true,
             password: "",
-            confPassword: "",
+            confirmPassword: "",
         };
         this.onChangeText = this.onChangeText.bind(this);
         this.passUpState = this.passUpState.bind(this);
@@ -33,10 +33,10 @@ export default class ChangePasswordInput extends Component {
     }
 
     passUpState() {
-        const confPassword = this.state;
-        if (confPassword) {
+        const confirmPassword = this.state;
+        if (confirmPassword) {
             this.props.onChange({
-                confPassword,
+                confirmPassword,
                 valid: true,
             });
         }
@@ -61,7 +61,7 @@ export default class ChangePasswordInput extends Component {
             return true;
         }
         // passwords don't match
-        if (this.state.password !== this.state.confPassword) {
+        if (this.state.password !== this.state.confirmPassword) {
             if (!this.state.isSubmitted) {
                 this.setState({passwordMatch: false, isSubmitted: true});
             }
@@ -101,7 +101,7 @@ export default class ChangePasswordInput extends Component {
                         errorText={this.whichErrorText()}
                         inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
-                            this.confPassword.focus();
+                            this.confirmPassword.focus();
                         }}
                         returnKeyType="next"
                     />
@@ -124,9 +124,9 @@ export default class ChangePasswordInput extends Component {
                 <View>
                     <TextInput
                         placeholder="Confirm Password"
-                        name="confPassword"
+                        name="confirmPassword"
                         autoCapitalize="none"
-                        inputRef={ref => (this.confPassword = ref)}
+                        inputRef={ref => (this.confirmPassword = ref)}
                         onSubmitEditing={() => {
                             Keyboard.dismiss();
                         }}

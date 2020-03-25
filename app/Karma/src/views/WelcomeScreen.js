@@ -199,12 +199,7 @@ export default class WelcomeScreen extends Component {
             .then(async res => {
                 const authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-                console.log("in welcome screen");
-
-                console.log("correct code");
-
                 console.log(res.body.message);
-
                 this.setState({isCodeValid: true});
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,
