@@ -405,12 +405,7 @@ class ActivitiesScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View
-                            style={{flex: 1, marginTop: 10, marginBottom: 100}}>
-                            <this.state.display />
-                        </View>
-                    </ScrollView>
+                    <this.state.display />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );
