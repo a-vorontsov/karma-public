@@ -1,6 +1,7 @@
 const httpUtil = require("../../util/http");
 const httpRes = require("../../util/http/responses");
-const digest = require("./digest");
+const log = require("../../util/log");
+const digest = require("../digest");
 const jose = require("../jose");
 const permConfig = require("../../config").josePermissions;
 const permissions = new Map(Object.entries(permConfig));
@@ -29,12 +30,14 @@ const requireAuthentication = (req, res, next) => {
         const baseUrl = req.baseUrl;
         const aud = permissions.has(baseUrl) ? permissions.get(baseUrl) : undefined;
         const userId = jose.decryptVerifyAndGetUserId(authToken, aud);
+        log.info("User id '%d': Successfully authenticated for '%s'", userId, req.originalUrl);
         // pass on derived userId in request
         req.body.userId = userId;
         req.query.userId = userId;
         req.params.userId = userId;
         next();
     } catch (e) {
+        log.error("An unsuccessful authentication attempt (req-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         httpUtil.sendErrorWithRedirect(401, e.message, res, redirToken());
     }
 };
@@ -60,8 +63,10 @@ const requireNoAuthentication = (req, res, next) => {
     }
     try { // if it does not fail user already auth
         jose.decryptAndVerify(authToken);
+        log.error("An unsuccessful authentication attempt (no-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         httpUtil.sendBuiltInErrorWithRedirect(httpRes.getAlreadyAuth(), res, redirToken());
     } catch (e) {
+        log.info("A successful authentication attempt (no-auth) for '%s', ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
         next(); // if it does fail, user is not auth as needed
     }
 };

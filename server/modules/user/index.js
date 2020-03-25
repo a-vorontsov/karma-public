@@ -1,4 +1,4 @@
-const digest = require("../authentication/digest");
+const digest = require("../digest");
 const log = require("../../util/log");
 const regStatus = require("../../util/registration");
 const regRepo = require("../../repositories/registration");
