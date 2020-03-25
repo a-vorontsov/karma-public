@@ -44,7 +44,7 @@ export default class CauseContainer extends React.Component {
     async selectCauses() {
         const authToken = await getAuthToken();
 
-        await request
+        request
             .post(`${REACT_APP_API_URL}/causes/select`)
             .set("authorization", authToken)
             .send({
