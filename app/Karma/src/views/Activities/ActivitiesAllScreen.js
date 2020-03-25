@@ -15,6 +15,7 @@ import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const queryString = require("query-string");
 const formWidth = 0.6 * SCREEN_WIDTH;
 
 const request = require("superagent");
@@ -22,6 +23,7 @@ const request = require("superagent");
 class ActivitiesAllScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isRefreshing: false,
             loading: true, // Loading state used while loading the data for the first time
@@ -38,15 +40,19 @@ class ActivitiesAllScreen extends Component {
     };
 
     async componentDidMount() {
-        this.setState({loading: true});
+        this.setState({loading: true, filters: this.props.filters});
         this.fetchActivities();
     }
 
     async fetchActivities() {
         const authToken = await getAuthToken();
         this.setState({fetchingDataFromServer: true});
+        const filtersQuery = queryString.stringify(
+            {filter: this.props.filters.booleanFilters},
+            {arrayFormat: "bracket", encode: false},
+        );
         request
-            .get(`${REACT_APP_API_URL}/event`)
+            .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(async res => {
@@ -91,8 +97,12 @@ class ActivitiesAllScreen extends Component {
         this.page = 1;
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         const authToken = await getAuthToken();
+        const filtersQuery = queryString.stringify(
+            {filter: this.props.filters.booleanFilters},
+            {arrayFormat: "bracket", encode: false},
+        );
         request
-            .get(`${REACT_APP_API_URL}/event`)
+            .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(async res => {
@@ -142,7 +152,9 @@ class ActivitiesAllScreen extends Component {
                     ) : (
                         <FlatList
                             style={{width: "100%"}}
-                            keyExtractor={activity => activity.eventId}
+                            keyExtractor={activity =>
+                                activity.eventId.toString()
+                            }
                             data={this.state.activitiesList}
                             renderItem={({item}) => (
                                 <ActivityDisplayCard activity={item} />

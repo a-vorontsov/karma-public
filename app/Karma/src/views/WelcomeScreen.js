@@ -22,7 +22,7 @@ class WelcomeScreen extends Component {
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,
-            emailInput: "",
+            emailInput: "houssammahlous123@gmail.com",
             passInput: "",
             showEmailError: false,
             showPassError: false,

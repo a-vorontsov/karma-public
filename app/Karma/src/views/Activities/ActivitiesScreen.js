@@ -34,7 +34,7 @@ class ActivitiesScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            womenOnly: false,
+            womenOnly: true,
             locationVisible: false,
             physicalActivity: false,
             distance: 90,
@@ -404,7 +404,24 @@ class ActivitiesScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <this.state.display />
+                    <this.state.display
+                        filters={{
+                            booleanFilters: [
+                                ...(this.state.womenOnly
+                                    ? ["women_only"]
+                                    : ["!women_only"]),
+                                ...(this.state.physicalActivity
+                                    ? ["physical"]
+                                    : ["!physical"]),
+                                ...(this.state.locationVisible
+                                    ? ["address_visible"]
+                                    : ["!address_visible"]),
+                            ],
+                            maxDistance: this.state.distance,
+                            availabilityStart: this.state.availabilityStart,
+                            availabilityEnd: this.state.availabilityEnd,
+                        }}
+                    />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );

@@ -28,6 +28,7 @@ router.use("/", eventSelectRoute);
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
+ * booleanfiltersAllowed = ["women_only", "physical", "photo_id", "address_visible", "add_info"];
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
  * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
  * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
@@ -125,9 +126,12 @@ router.use("/", eventSelectRoute);
  */
 router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
+        console.log(req.query);
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'All' activities for user id '%d'", userId);
         const filters = {booleans: req.query.filter};
+        console.log("HEEEEEEEEEEEERE");
+        console.log(req.query);
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
         filters.maxDistance = req.query.maxDistance;
