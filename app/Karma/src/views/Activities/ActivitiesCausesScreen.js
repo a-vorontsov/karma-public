@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {RefreshControl, ScrollView, View} from "react-native";
+import {RefreshControl, ScrollView, View, Alert} from "react-native";
 import ActivityCauseCarousel from "../../components/activities/ActivityCauseCarousel";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
@@ -39,7 +39,7 @@ class ActivitiesCausesScreen extends Component {
         headerShown: false,
     };
 
-    onRefresh() {
+    onRefresh(title, message) {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
             .then(() => {
@@ -49,6 +49,10 @@ class ActivitiesCausesScreen extends Component {
             })
             .catch(err => {
                 console.log(err);
+                Alert.alert(
+                    "An error occurred",
+                    "Cannot refresh at the moment.",
+                );
                 this.setState({
                     isRefreshing: false,
                 });
