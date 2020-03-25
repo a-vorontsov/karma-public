@@ -40,8 +40,8 @@ const authService = require("../../../modules/authentication/");
  */
 router.post('/:eventId/favourite', authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Favouriting event id '%d'", req.body.userId, req.params.eventId);
         const individualId = await util.getIndividualIdFromUserId(req.body.userId);
-        log.info("Favouriting event");
         const favouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {
@@ -51,7 +51,7 @@ router.post('/:eventId/favourite', authService.requireAuthentication, async (req
         const favouriteResult = await eventFavouriteService.createEventFavourite(favouriteRequest);
         return httpUtil.sendResult(favouriteResult, res);
     } catch (e) {
-        log.error("Error while favouriting event: " + e.message);
+        log.error("User id '%d': Favouriting event id '%d' failed: " + e, req.body.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -87,7 +87,7 @@ router.post('/:eventId/favourite', authService.requireAuthentication, async (req
 router.post('/:eventId/favourite/delete', authService.requireAuthentication, async (req, res) => {
     try {
         const individualId = await util.getIndividualIdFromUserId(req.body.userId);
-        log.info("Unfavouriting event");
+        log.info("User id '%d': Unfavouriting event id '%d'", req.body.userId, req.params.eventId);
         const deleteFavouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);
         if (validationResult.errors.length > 0) {
@@ -97,7 +97,7 @@ router.post('/:eventId/favourite/delete', authService.requireAuthentication, asy
         const deleteFavouriteResult = await eventFavouriteService.deleteEventFavourite(deleteFavouriteRequest);
         return httpUtil.sendResult(deleteFavouriteResult, res);
     } catch (e) {
-        log.error("Error while unfavouriting event: " + e.message);
+        log.error("User id '%d': Unfavouriting event id '%d' failed: " + e, req.body.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });

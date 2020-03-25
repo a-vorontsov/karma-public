@@ -120,8 +120,8 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         // set userId according to whose profile is to be viewed
         const userId = req.query.otherUserId !== undefined ? req.query.otherUserId : req.query.userId;
+        log.info("User id '%d': Getting profile data for user id '%d'", req.query.userId, userId);
         const now = new Date();
-        log.info("Getting profile data for user id '%d'", userId);
         const userResult = await userRepo.findById(userId);
         const user = userResult.rows[0];
         const userToSend = {
@@ -225,7 +225,8 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
             });
         }
     } catch (e) {
-        log.error("Getting profile failed");
+        log.error("User id '%d': Failed getting profile data for user id '%d': " + e, req.query.userId,
+            req.query.otherUserId !== undefined ? req.query.otherUserId : req.query.userId);
         res.status(400).send({
             message: e.message,
         });

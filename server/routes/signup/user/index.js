@@ -55,7 +55,7 @@ const httpUtil = require("../../../util/http");
  * @function
  */
 router.post("/", authService.requireNoAuthentication, async (req, res) => {
-    log.info("Signing up user");
+    log.info("'%s': Signing up user", req.body.data.user.email);
     const passStrengthTest = owasp.test(req.body.data.user.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
         res.status(400).send({
@@ -72,7 +72,7 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
             );
             httpUtil.sendResult(signupResult, res);
         } catch (e) {
-            log.error("Signing up user failed: " + e);
+            log.info("'%s': Failed signing up user: " + e, req.body.data.user.email);
             res.status(400).send({
                 message: e.message,
             });

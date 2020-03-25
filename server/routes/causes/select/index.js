@@ -12,7 +12,7 @@ const authService = require("../../../modules/authentication/");
 router.post('/', authService.requireAuthentication, (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
-    log.info("Selecting causes for user" + userId);
+    log.info("User id '%d': Selecting causes '%s'", userId, causes.map(cause => cause.title).join(", "));
     if (!causes) {
         return res.status(400).send("No causes were specified in the body");
     }
