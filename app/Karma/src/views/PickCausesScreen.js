@@ -7,6 +7,8 @@ import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
 import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
@@ -22,7 +24,7 @@ export default class PickCausesScreen extends React.Component {
         try {
             const authToken = await getAuthToken();
             const response = await request
-                .get("http://localhost:8000/causes")
+                .get(`${REACT_APP_API_URL}/causes`)
                 .set("authorization", authToken);
             this.setState({
                 causes: response.body.data,
@@ -34,8 +36,9 @@ export default class PickCausesScreen extends React.Component {
 
     async selectCauses() {
         const authToken = await getAuthToken();
+
         await request
-            .post("http://localhost:8000/causes/select")
+            .post(`${REACT_APP_API_URL}/causes/select`)
             .set("authorization", authToken)
             .send({
                 data: {causes: this.state.selectedCauses},

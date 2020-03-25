@@ -182,11 +182,13 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 const getEventData = async (id) => {
     const eventResult = await eventRepository.findById(id);
     const event = eventResult.rows[0];
-    const eventSignUps = await signUpRepository.findAllByEventId(event.id);
+    const eventSignUps = await signUpRepository.findAllByEventIdConfirmed(event.id);
     const spotsRemaining = event.spots - eventSignUps.rowCount;
     event.spotsRemaining = spotsRemaining;
     const addressResult = await addressRepository.findById(event.addressId);
     const address = addressResult.rows[0];
+    const volunteerResult = await signUpRepository.findUsersSignedUpConfirmed(event.id);
+    const volunteers = volunteerResult.rows;
     const causesResult = await eventCauseRepository.findCausesByEventId(event.id);
     const causes = causesResult.rows;
     return ({
@@ -196,6 +198,7 @@ const getEventData = async (id) => {
             event: {
                 ...event,
                 address: address,
+                volunteers,
                 causes,
             },
         },

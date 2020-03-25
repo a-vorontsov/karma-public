@@ -7,6 +7,7 @@ import RNCalendarEvents from "react-native-calendar-events";
 import Styles from "../../styles/Styles";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const moment = require("moment");
 const request = require("superagent");
 const icons = {
@@ -40,10 +41,10 @@ export default class SignUpActivity extends React.Component {
         const authToken = await getAuthToken();
         const eventId = activity.eventId;
         request
-            .post(`http://localhost:8000/event/${eventId}/signUp`)
+            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp`)
             .set("authorization", authToken)
             .send({
-                confirmed: false,
+                confirmed: null,
                 attended: false,
             })
             .then(() => {
@@ -54,7 +55,8 @@ export default class SignUpActivity extends React.Component {
                 );
                 onConfirm();
             })
-            .catch(() => {
+            .catch(err => {
+                console.log(err);
                 onError(
                     "There has been an error with signing up to this activity.",
                     "Please try again later or contact us if this issue persists.",
@@ -66,7 +68,7 @@ export default class SignUpActivity extends React.Component {
         const authToken = await getAuthToken();
         const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
         request
-            .post(`http://localhost:8000/event/${eventId}/signUp/update`)
+            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp/update`)
             .set("authorization", authToken)
             .send({
                 confirmed: false,

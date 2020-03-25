@@ -148,9 +148,15 @@ test("requesting specific event data works", async () => {
             id: 3,
         }],
     });
-    signUpRepository.findAllByEventId.mockResolvedValue({
+    signUpRepository.findAllByEventIdConfirmed.mockResolvedValue({
         rows: [{
             ...signUp,
+            id: 1,
+        }],
+    });
+    signUpRepository.findUsersSignedUpConfirmed.mockResolvedValue({
+        rows: [{
+            ...event,
             id: 1,
         }],
     });
@@ -166,7 +172,7 @@ test("requesting specific event data works", async () => {
     });
     const getEventResult = await eventService.getEventData(3);
 
-    expect(signUpRepository.findAllByEventId).toHaveBeenCalledTimes(1);
+    expect(signUpRepository.findAllByEventIdConfirmed).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledTimes(1);
     expect(eventRepository.findById).toHaveBeenCalledWith(3);
     expect(addressRepository.findById).toHaveBeenCalledWith(event.addressId);

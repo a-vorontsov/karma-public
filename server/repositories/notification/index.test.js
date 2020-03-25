@@ -27,8 +27,8 @@ test('insert notification and findByUserId work', async () => {
     userExample2.email = insertRegistrationRepository2.rows[0].email;
     const insertUserResult2 = await userRepository.insert(userExample2);
 
-    notification.senderId = insertUserResult.rows[0].id;
-    notification.receiverId = insertUserResult2.rows[0].id;
+    notification.senderId = insertUserResult2.rows[0].id;
+    notification.receiverId = insertUserResult.rows[0].id;
     const insertNotificationResult = await notificationRepository.insert(notification);
     const findNotificationResult = await notificationRepository.findByUserId(insertUserResult.rows[0].id);
 

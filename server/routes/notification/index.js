@@ -21,7 +21,6 @@ const httpUtil = require("../../util/http");
  {
     "type": "Cancellation",
     "message": "This event is cancelled thanks",
-    "senderId": 1,
     "receiverIds": [1,2,3,4,5]
  }
  </pre>
@@ -39,7 +38,6 @@ const httpUtil = require("../../util/http");
                 "type": "Cancellation",
                 "message": "This event is cancelled thanks",
                 "timestampSent": "2020-03-19T21:56:14.862Z",
-                "senderId": 1,
                 "receiverId": 1
             },
             {
@@ -47,7 +45,6 @@ const httpUtil = require("../../util/http");
                 "type": "Cancellation",
                 "message": "This event is cancelled thanks",
                 "timestampSent": "2020-03-19T21:56:14.862Z",
-                "senderId": 1,
                 "receiverId": 2
             }
     }
@@ -60,6 +57,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
         log.info("Creating new notification");
         const notification = req.body;
+        notification.senderId = req.body.userId;
         const validationResult = validation.validateNotification(notification);
         if (validationResult.errors.length !== 0) {
             res.status(400).send({
@@ -110,7 +108,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const id = req.query.userId;
         log.info("Getting notifications for user id '%d'", id);
-        if (Number.isInteger(id)) {
+        if (isNaN(id)) {
             return res.status(400).send({message: "ID is not a number."});
         }
 

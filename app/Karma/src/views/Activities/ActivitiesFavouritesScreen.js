@@ -4,6 +4,7 @@ import {RegularText} from "../../components/text";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -23,7 +24,7 @@ class ActivitiesFavouritesScreen extends Component {
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event/favourites")
+            .get(`${REACT_APP_API_URL}/event/favourites`)
             .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);
