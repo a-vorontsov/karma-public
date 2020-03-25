@@ -133,7 +133,9 @@ class ActivitiesAllScreen extends Component {
                     ) : (
                         <FlatList
                             style={{width: "100%"}}
-                            keyExtractor={activity => activity.eventId}
+                            keyExtractor={activity =>
+                                activity.eventId.toString()
+                            }
                             data={this.state.activitiesList}
                             renderItem={({item}) => (
                                 <ActivityDisplayCard activity={item} />
@@ -142,7 +144,8 @@ class ActivitiesAllScreen extends Component {
                             ListEmptyComponent={
                                 <View style={Styles.ph24}>
                                     <RegularText>
-                                        Could not find any activities (Pull to Refresh)
+                                        Could not find any activities (Pull to
+                                        Refresh)
                                     </RegularText>
                                 </View>
                             }

@@ -22,10 +22,6 @@ class ActivitiesFavouritesScreen extends Component {
         await this.fetchAllActivities();
     }
 
-    async componentDidMount() {
-        await this.fetchAllActivities();
-    }
-
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
