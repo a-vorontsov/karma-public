@@ -213,9 +213,10 @@ class ProfileScreen extends Component {
                                         width: formWidth,
                                     }}>
                                     <PageHeader
-                                        title={`Viewing ${
-                                            otherProfile.firstName
-                                        } ${otherProfile.lastName}'s profile`}
+                                        fontSize={18}
+                                        title={`${otherProfile.firstName} ${
+                                            otherProfile.lastName
+                                        }'s profile`}
                                     />
                                 </View>
                             )}
