@@ -287,9 +287,7 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {`${this.state.firstName} ${
-                                                this.state.lastName
-                                            }`}
+                                            {`${this.state.firstName} ${this.state.lastName}`}
                                         </Text>
                                     )}
                                 </View>
@@ -451,7 +449,9 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                navigate("ProfileEdit")
+                                                navigate("ProfileEdit", {
+                                                    profile: this.state,
+                                                })
                                             }>
                                             <Image
                                                 source={icons.edit_grey}
@@ -500,7 +500,9 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                navigate("ProfileEdit")
+                                                navigate("ProfileEdit", {
+                                                    profile: this.state,
+                                                })
                                             }>
                                             <Image
                                                 source={icons.edit_grey}
