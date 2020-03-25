@@ -62,7 +62,7 @@ class ActivityCard extends React.Component {
         super(props);
         this.state = {
             displaySignupModal: false,
-            favourited: props.activity.favourited
+            favourited: props.activity.favourited,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
