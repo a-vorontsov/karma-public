@@ -196,7 +196,6 @@ export default class CreateActivityScreen extends React.Component {
             .send({
                 ...event,
             })
-            .set("authorization", authToken)
             .then(res => {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
@@ -367,7 +366,7 @@ export default class CreateActivityScreen extends React.Component {
             .send({
                 ...event,
             })
-            .set("authorization", authToken)
+
             .then(res => {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},

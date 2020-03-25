@@ -47,7 +47,6 @@ export default class SignUpActivity extends React.Component {
                 confirmed: null,
                 attended: false,
             })
-            .set("authorization", authToken)
             .then(() => {
                 Toast.showWithGravity(
                     "You have successfully signed up!",
