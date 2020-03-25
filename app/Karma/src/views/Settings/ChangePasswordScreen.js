@@ -7,7 +7,7 @@ import {TextInput} from "../../components/input";
 import ChangePasswordInput from "../../components/input/ChangePasswordInput";
 import {GradientButton} from "../../components/buttons";
 import {SubTitleText} from "../../components/text";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
 
 const request = require("superagent");
 
@@ -32,10 +32,10 @@ export default class ChangePasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
-        const credentials = await getData();
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/profile/edit/password")
-            .set("authorization", credentials.password)
+            .set("authorization", authToken)
             .send({
                 oldPassword: this.state.oldPasswordInput,
                 newPassword: this.state.passwordInput,

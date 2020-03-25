@@ -7,7 +7,8 @@ import PageHeader from "../components/PageHeader";
 import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
+
 
 const request = require("superagent");
 
@@ -27,19 +28,21 @@ export default class ForgotPasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
-        const credentials = await getData();
+        const authToken = await getAuthToken();
         await request
             .post("http://localhost:8000/reset")
-            .set("authorization", credentials.password)
+            .set("authorization", authToken)
             .send({
                 data: {
                     password: this.state.passwordInput,
                 },
             })
             .then(res => {
+                
                 Alert.alert(
                     "Successful password reset",
                     "You've successfully reset your password!",
+                    
                     [{text: "OK", onPress: () => navigate("Welcome")}],
                 );
             })
