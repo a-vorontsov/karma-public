@@ -13,6 +13,7 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
+import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
@@ -46,6 +47,21 @@ class WelcomeScreen extends Component {
         this.baseState = this.state;
     }
 
+    async componentDidMount() {
+        try {
+            const authToken = await getAuthToken();
+            const response = await request
+                .get(`${REACT_APP_API_URL}/authentication`)
+                .set("authorization", authToken);
+            if (response.status === 200) {
+                const {navigate} = this.props.navigation;
+                navigate("Activities");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     onInputChange = (name, value) => {
         this.setState({
             [name]: value,
@@ -65,9 +81,10 @@ class WelcomeScreen extends Component {
         // remove the password field
         this.setState({showPassField: false});
         //send 6 digit code to email through forgot password route
+        const authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -105,15 +122,17 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
+            const authToken = await getAuthToken();
             await request
                 .post(`${REACT_APP_API_URL}/signin/email`)
-                .set("authorization", "")
+                .set("authorization", authToken)
                 .send({
                     data: {
                         email: this.state.emailInput,
                     },
                 })
                 .then(res => {
+                    console.log(res.body);
                     if (res.body.data.isFullySignedUp) {
                         //if user isFullySignedUp, returning user
                         this.setState({
@@ -134,6 +153,10 @@ class WelcomeScreen extends Component {
                         navigate("UserSignUp", {
                             email: this.state.emailInput,
                         });
+                        return;
+                    }
+                    if (res.body.data.alreadyAuthenticated) {
+                        navigate("Activities");
                         return;
                     }
                     //if email is not verified, show code field
@@ -160,9 +183,10 @@ class WelcomeScreen extends Component {
     // verify password is correct
     async checkPass() {
         const {navigate} = this.props.navigation;
+        let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/password`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -172,9 +196,9 @@ class WelcomeScreen extends Component {
             .then(async res => {
                 // if password correct
                 this.setState({isValidPass: true});
-                const authToken = res.body.data.authToken;
+                authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-                navigate("PickCauses");
+                navigate("Activities");
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});
@@ -183,9 +207,10 @@ class WelcomeScreen extends Component {
     }
 
     async confirmForgotPasswordCode(code) {
+        const authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -208,9 +233,10 @@ class WelcomeScreen extends Component {
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;
         //check with register route
+        const authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/verify/email`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,

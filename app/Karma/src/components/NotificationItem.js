@@ -27,7 +27,7 @@ export default class NotificationItem extends Component {
 
     async componentDidMount() {
         const {notification} = this.props;
-        this.getSenderName(notification.senderId);
+        await this.getSenderName(notification.senderId);
     }
 
     _renderReplyButton = () => {
