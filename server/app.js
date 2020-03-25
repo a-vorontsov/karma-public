@@ -59,7 +59,7 @@ app.use("/admin/information", require("./routes/admin/information"));
 
 // import OAuth routes and dependencies if applicable
 if (process.env.NODE_ENV !== 'test') {
-    log.info("OAUTH enabled: %s, AUTH enabled: %s", Boolean(process.env.ENABLE_OAUTH), !Boolean(process.env.NO_AUTH));
+    log.info("OAUTH enabled: %s, AUTH enabled: %s", process.env.ENABLE_OAUTH === "1", process.env.NO_AUTH === "0");
 }
 
 if (process.env.ENABLE_OAUTH === 1) {
