@@ -58,7 +58,8 @@ const httpUtil = require("../../util/http");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Creating new notification");
+        log.info("User id '%d': Creating and sending new notification to id(s) '%s'", req.body.userId,
+            req.body.receiverId === undefined ? req.body.receiverIds.join(", ") : req.body.receiverId);
         const notification = req.body;
         const validationResult = validation.validateNotification(notification);
         if (validationResult.errors.length !== 0) {
@@ -71,7 +72,8 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
         const notificationResult = await notificationService.createNotifications(notification);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        log.error("Notification creation failed: " + e);
+        log.error("User id '%d': Failed creating and sending new notification to id(s) '%s': " + e, req.body.userId,
+            req.body.receiverId === undefined ? req.body.receiverIds.join(", ") : req.body.receiverId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -108,8 +110,8 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
  */
 router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting notifications", req.query.userId);
         const id = req.query.userId;
-        log.info("Getting notifications for user id '%d'", id);
         if (Number.isInteger(id)) {
             return res.status(400).send({message: "ID is not a number."});
         }
@@ -117,7 +119,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
         const notificationResult = await notificationService.getNotification(id);
         return httpUtil.sendResult(notificationResult, res);
     } catch (e) {
-        log.error("Fetching Notifications failed: " + e);
+        log.error("User id '%d': Failed getting notifications: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

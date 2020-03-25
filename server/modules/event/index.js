@@ -104,7 +104,7 @@ const deleteEvent = async (eventId) => {
 
 /**
  * Gets data about all events in the database.
- * @param {Array} filters filters to be applied to the events
+ * @param {Object} filters filters to be applied to the events
  * @param {Number} userId id of the user
   * @return {object} result in httpUtil's sendResult format
  * Fails if database calls fail.
@@ -116,7 +116,7 @@ const getEvents = async (filters, userId) => {
     }
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
-    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found"});
+    if (eventResult.rows.length === 0) return ({status: 404, message: "No events found", data: {events: []}});
 
     // add going and spotsRemaining properties to all event objects
     let events = eventResult.rows.map(event => {

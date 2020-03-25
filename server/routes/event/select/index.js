@@ -102,8 +102,8 @@ const authService = require("../../../modules/authentication/");
  *  */
 router.get("/causes", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Causes' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Causes' tab for %d", userId);
         const filters = {booleans: req.query.filter};
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
@@ -111,7 +111,7 @@ router.get("/causes", authService.requireAuthentication, async (req, res) => {
         const getEventsResult = await eventService.getEventsBySelectedCauses(filters, userId);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        log.error("'Causes' tab fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Causes' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -184,12 +184,12 @@ router.get("/causes", authService.requireAuthentication, async (req, res) => {
  *  */
 router.get("/favourites", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Favourites' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Favourites' tab for %d", userId);
         const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(userId);
         return httpUtil.sendResult(getFavouriteEventsResult, res);
     } catch (e) {
-        log.error("Favourite events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Favourites' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -262,12 +262,12 @@ router.get("/favourites", authService.requireAuthentication, async (req, res) =>
  *  */
 router.get("/going", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Going' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Going' tab for %d", userId);
         const getGoingEventsResult = await eventSignupService.getGoingEvents(userId);
         return httpUtil.sendResult(getGoingEventsResult, res);
     } catch (e) {
-        log.error("Going events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Going' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

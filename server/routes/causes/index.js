@@ -18,7 +18,7 @@ const authService = require("../../modules/authentication/");
  *  @function
  */
 router.get('/', authService.requireAuthentication, (req, res) => {
-    log.info("Getting all causes");
+    log.info("User id '%d': Getting all causes", req.query.userId);
     causeRepository.findAll()
         .then(result => res.status(200).json({data: result.rows}))
         .catch(err => res.status(500).send(err));
@@ -39,7 +39,7 @@ router.get('/', authService.requireAuthentication, (req, res) => {
  */
 router.get('/:id', authService.requireAuthentication, (req, res) => {
     const id = req.params.id;
-    log.info("Getting cause id %d", id);
+    log.info("User id '%d': Getting cause id '%d'", req.query.userId, id);
     if (!id) return res.status(400).send("No id was specified");
     if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
     causeRepository.findById(id)

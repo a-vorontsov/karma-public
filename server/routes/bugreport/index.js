@@ -36,11 +36,11 @@ const authService = require("../../modules/authentication/");
  */
 router.post("/", authService.acceptAnyAuthentication, async (req, res) => {
     try {
-        log.info("Sending bug report");
+        log.info("User id '%d': Sending bug report", req.body.userId);
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
     } catch (e) {
-        log.error("Sending bug report failed " + e);
+        log.error("User id '%d': Sending bug report failed " + e, req.body.userId);
         httpUtil.sendGenericError(e, res);
     }
 });
