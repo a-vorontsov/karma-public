@@ -118,19 +118,18 @@ const getEvents = async (filters, userId) => {
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
     let events = eventResult.rows;
 
-    if (eventResult.rows.length !== 0) {
-        // add going and spotsRemaining properties to all event objects
-        events = eventResult.rows.map(event => {
-            return {...event,
-                going: (event.volunteers).includes(userId),
-                spotsRemaining: event.spots - (event.volunteers).length,
-            };
-        });
-        const user = userIdCheckResponse.user;
-        eventSorter.sortByTimeAndDistance(events, user);
 
-        if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
-    }
+    // add going and spotsRemaining properties to all event objects
+    events = eventResult.rows.map(event => {
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spots - (event.volunteers).length,
+        };
+    });
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTimeAndDistance(events, user);
+
+    if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
 
     return ({
         status: 200,
@@ -155,21 +154,19 @@ const getEventsBySelectedCauses = async (filters, userId) => {
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
     let events = eventResult.rows;
-    if (eventResult.rows.length !== 0) {
-        // add going and spotsRemaining properties to all event objects
-        events = eventResult.rows.map(event => {
-            return {...event,
-                going: (event.volunteers).includes(userId),
-                spotsRemaining: event.spots - (event.volunteers).length,
-            };
-        });
+    // add going and spotsRemaining properties to all event objects
+    events = eventResult.rows.map(event => {
+        return {...event,
+            going: (event.volunteers).includes(userId),
+            spotsRemaining: event.spots - (event.volunteers).length,
+        };
+    });
 
-        const user = userIdCheckResponse.user;
-        eventSorter.sortByTimeAndDistance(events, user);
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTimeAndDistance(events, user);
 
-        if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
-        events = await eventSorter.groupByCause(events);
-    }
+    if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
+    events = await eventSorter.groupByCause(events);
 
     return ({
         status: 200,
