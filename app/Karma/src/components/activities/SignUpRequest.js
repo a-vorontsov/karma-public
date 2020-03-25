@@ -6,6 +6,10 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import request from "superagent";
+import {sendNotification} from "../../util/SendNotification";
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+
 const icons = {
     check: require("../../assets/images/general-logos/green-check.png"),
     cancel: require("../../assets/images/general-logos/cancel.png"),
@@ -16,17 +20,24 @@ export default class SignUpRequest extends React.Component {
         const {user, activity} = this.props;
 
         const body = {
-            userId: user.userId,
+            otherUserId: user.userId,
             confirmed: accept,
             attended: false,
         };
 
+        const authToken = await getAuthToken();
+
         await request
-            .post(`http://localhost:8000/event/${activity.id}/signUp/update`)
+            .post(`${REACT_APP_API_URL}/event/${activity.id}/signUp/update`)
             .send(body)
+            .set("authorization", authToken)
             .then(res => {
                 console.log(res.body.message);
                 this.props.onSubmit();
+                let type = accept
+                    ? "AttendanceConfirmation"
+                    : "AttendanceCancellation";
+                sendNotification(type, `${activity.name}`, [user.userId]);
             })
             .catch(err => {
                 if (accept) {

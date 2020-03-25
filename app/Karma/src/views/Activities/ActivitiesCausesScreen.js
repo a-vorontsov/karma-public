@@ -4,6 +4,7 @@ import ActivityCauseCarousel from "../../components/activities/ActivityCauseCaro
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -22,7 +23,7 @@ class ActivitiesCausesScreen extends Component {
     async fetchAllActivities() {
         const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/event/causes")
+            .get(`${REACT_APP_API_URL}/event/causes`)
             .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);

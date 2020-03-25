@@ -5,15 +5,17 @@ import {
     ActivityIndicator,
     Dimensions,
     RefreshControl,
-    ScrollView,
+    ScrollView, Alert,
 } from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.6 * SCREEN_WIDTH;
+
 const request = require("superagent");
 
 class ActivitiesAllScreen extends Component {
@@ -43,7 +45,7 @@ class ActivitiesAllScreen extends Component {
         const authToken = await getAuthToken();
         this.setState({fetchingDataFromServer: true});
         request
-            .get("http://localhost:8000/event")
+            .get(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .query({currentPage: this.page, pageSize: 5})
             .then(async res => {
@@ -60,6 +62,11 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
+                if (er.status == 404) {
+                    this.setState({
+                        activitiesList: [],
+                    });
+                }
             });
     }
 
@@ -97,11 +104,13 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status == 404) {
-                    this.setState({
-                        activitiesList: [],
-                    });
-                }
+                Alert.alert(
+                    "An error occurred",
+                    "Cannot refresh at the moment.",
+                );
+                this.setState({
+                    isRefreshing: false,
+                });
             });
     }
 
