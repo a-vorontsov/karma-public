@@ -136,7 +136,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
         getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        log.error("User id '%': Getting 'All' tab failed: " + e, req.query.userId);
+        log.error("User id '%d': Getting 'All' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
