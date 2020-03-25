@@ -126,12 +126,9 @@ router.use("/", eventSelectRoute);
  */
 router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
-        console.log(req.query);
         const userId = Number.parseInt(req.query.userId);
         log.info("Getting 'All' activities for user id '%d'", userId);
         const filters = {booleans: req.query.filter};
-        console.log("HEEEEEEEEEEEERE");
-        console.log(req.query);
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
         filters.maxDistance = req.query.maxDistance;

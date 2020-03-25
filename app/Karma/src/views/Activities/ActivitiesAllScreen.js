@@ -54,7 +54,11 @@ class ActivitiesAllScreen extends Component {
         request
             .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
             .set("authorization", authToken)
-            .query({currentPage: this.page, pageSize: 5})
+            .query({
+                currentPage: this.page,
+                pageSize: 5,
+                maxDistance: this.props.filters.maxDistance,
+            })
             .then(async res => {
                 console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
@@ -104,7 +108,11 @@ class ActivitiesAllScreen extends Component {
         request
             .get(`${REACT_APP_API_URL}/event?${filtersQuery}`)
             .set("authorization", authToken)
-            .query({currentPage: this.page, pageSize: 5})
+            .query({
+                currentPage: this.page,
+                pageSize: 5,
+                maxDistance: this.props.filters.maxDistance,
+            })
             .then(async res => {
                 console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
