@@ -33,7 +33,7 @@ const findFavouriteEvents = (userId) => {
         "address_1, address_2, postcode, city, region, lat, long, " +
         "event_id(favourite) is not null as favourited " +
         "FROM event " +
-        "LEFT JOIN favourite on event_id(favourite) = id(event)" +
+        "LEFT JOIN favourite on event_id(favourite) = id(event) " +
         "INNER JOIN individual on individual_id(favourite) = id(individual) "+
         "INNER JOIN address ON id(address)=address_id(event) " +
         "WHERE user_id(individual)=$1";
