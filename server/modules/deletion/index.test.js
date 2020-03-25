@@ -148,3 +148,11 @@ test("deleting user who is org works", async () => {
     });
     expect(deleteAllInformation.status).toBe(200);
 });
+
+test("deleting with invalid userId fails as expected", async () => {
+    util.checkUserId.mockResolvedValue({status: 400});
+
+    const deleteAllInformation = await deletionService.deleteAllInformation(69000);
+
+    expect(deleteAllInformation.status).toBe(400);
+});

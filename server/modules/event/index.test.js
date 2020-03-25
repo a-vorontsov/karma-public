@@ -205,6 +205,35 @@ test("requests with invalid userIds rejected", async () => {
 });
 
 test("getting all events works", async () => {
+    const eventsArray = [{
+        ...eventWithAllData,
+        favourited: [1],
+        id: 1,
+    },
+    {
+        ...eventWithAllData,
+        favourited: [1],
+        id: 2,
+    }];
+    util.checkUser.mockResolvedValue({ status: 200 });
+    filterer.getWhereClause.mockResolvedValue("");
+    eventRepository.findAllWithAllData.mockResolvedValue({
+        rows: eventsArray,
+    });
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
+    const getEventsResult = await eventService.getEvents({}, 1);
+
+    expect(util.checkUser).toHaveBeenCalledTimes(1);
+    expect(eventRepository.findAllWithAllData).toHaveBeenCalledTimes(1);
+    expect(filterer.getWhereClause).toHaveBeenCalledWith({});
+    expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
+    eventsArray[0].favourited = true;
+    eventsArray[1].favourited = true;
+    expect(getEventsResult.data.events).toMatchObject(eventsArray);
+    expect(getEventsResult.status).toBe(200);
+});
+
+test("getting all events within a distance works", async () => {
     const eventsArray =[{
         ...eventWithAllData,
         favourited: [1],
@@ -221,11 +250,11 @@ test("getting all events works", async () => {
         rows: eventsArray,
     });
     eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
-    const getEventsResult = await eventService.getEvents({},1);
+    const getEventsResult = await eventService.getEvents({maxDistance: 69000},1);
 
     expect(util.checkUser).toHaveBeenCalledTimes(1);
     expect(eventRepository.findAllWithAllData).toHaveBeenCalledTimes(1);
-    expect(filterer.getWhereClause).toHaveBeenCalledWith({});
+    expect(filterer.getWhereClause).toHaveBeenCalledWith({ maxDistance: 69000 });
     expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
     eventsArray[0].favourited = true;
     eventsArray[1].favourited = true;
@@ -301,4 +330,46 @@ test("deleting events works", async () => {
     });
     expect(deleteResult.message).toBe("Event deleted successfully");
     expect(deleteResult.status).toBe(200);
+});
+
+test("creating event with known geocoded address works", async () => {
+    jest.clearAllMocks();
+    util.checkUserId.mockResolvedValue({ status: 200 });
+    util.isIndividual.mockResolvedValue(false);
+    const myEvent = testHelpers.getEventWithBHAddress();
+    myEvent.causes = [1, 2, 3];
+
+    eventRepository.insert.mockResolvedValue({
+        rows: [{
+            ...myEvent,
+            id: 1,
+        }],
+    });
+
+    eventCauseRepository.insert.mockResolvedValue({
+        rows: [{
+            eventId: 1,
+            causeId: 2,
+        }],
+    });
+
+    addressRepository.insert.mockResolvedValue({
+        rows: [myEvent.address],
+    });
+
+    process.env.SKIP_GEOCODING=0;
+    const createEventResult = await eventService.createNewEvent(myEvent);
+
+    expect(createEventResult.status).toBe(200);
+    process.env.SKIP_GEOCODING=1;
+});
+
+test("deleting event with invalid id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({status:400, message:"invalid id"});
+    expect(eventService.deleteEvent(6900)).rejects.toEqual(new Error("invalid id"))
+});
+
+test("getting an event with invalid userId fails as expected", async () => {
+    util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
+    expect(eventService.getEvents({}, 6900)).rejects.toEqual(new Error("invalid id"))
 });

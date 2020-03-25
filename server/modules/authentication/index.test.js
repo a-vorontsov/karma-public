@@ -561,3 +561,104 @@ test("visiting the reset route without a token fails as expected", async () => {
     expect(response.body.message).toBe("JWE malformed or invalid serialization");
     expect(response.statusCode).toBe(401);
 });
+
+test("visiting an any auth route works as expected", async () => {
+    const infoRequest = {
+        // no userId specified!!!
+        authToken: "none.none.none",
+    };
+
+    const response = await request(app)
+        .get("/information?type=about")
+        .set("authorization", infoRequest.authToken)
+        .send(infoRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("Information entry fetched successfully");
+    expect(response.statusCode).toBe(200);
+});
+
+test("visiting an any auth route without an authorisation header fails as expected", async () => {
+    const infoRequest = {
+        // no userId specified!!!
+        // no auth token set
+    };
+
+    const response = await request(app)
+        .get("/information?type=about")
+        .send(infoRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("No authToken specified in incoming request.");
+    expect(response.statusCode).toBe(400);
+});
+
+test("visiting a redir auth route without an authorisation token fails as expected", async () => {
+    const errorRequest = {
+        // no userId specified!!!
+        // no auth token set
+    };
+
+    const response = await request(app)
+        .get("/error?status=418&message=brew")
+        .send(errorRequest)
+        .redirects(5);
+
+    expect(response.body.message).toBe("Invalid permissions.");
+    expect(response.statusCode).toBe(403);
+});
+
+test("visiting a redir auth route with a forged token fails as expected", async () => {
+    const errorRequest = {
+        // no userId specified!!!
+        // no auth token set
+    };
+
+    const response = await request(app)
+        .get("/error?status=418&message=brew&token=Sten")
+        .send(errorRequest)
+        .redirects(5);
+
+    expect(response.body.message).toBe("Invalid permissions.");
+    expect(response.statusCode).toBe(403);
+});
+
+test("visiting an redir auth route with auth-checks disabled works", async () => {
+    const errorRequest = {
+        abc: "abc",
+        // no userId specified!!!
+        // no auth token set
+    };
+
+    process.env.NO_AUTH = 1;
+
+    const response = await request(app)
+        .get("/error/?status=418&message=brew&data={}")
+        .send(errorRequest)
+        .redirects(0);
+
+    expect(response.body.message).toBe("brew");
+    expect(response.statusCode).toBe(418);
+
+    process.env.NO_AUTH = 0;
+});
+
+
+test("visiting an any auth route without an authorisation header with auth-checks disabled works", async () => {
+    const infoRequest = {
+        // no userId specified!!!
+        // no auth token set
+    };
+
+    process.env.NO_AUTH = 1;
+
+    const response = await request(app)
+        .get("/information?type=about")
+        .send(infoRequest)
+        .redirects(1);
+
+    expect(response.body.message).toBe("Information entry fetched successfully");
+    expect(response.statusCode).toBe(200);
+
+    process.env.NO_AUTH = 0;
+});

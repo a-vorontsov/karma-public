@@ -36,6 +36,10 @@ if (process.env.CI) {
     log.level = "off";
 }
 
+if (process.env.LOG_INFO == true) {
+    log.level = "info";
+}
+
 log.info("Logging at level: %s", log.level);
 
 module.exports = log;
