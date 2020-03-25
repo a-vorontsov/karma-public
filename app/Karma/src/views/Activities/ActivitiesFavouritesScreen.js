@@ -15,16 +15,11 @@ class ActivitiesFavouritesScreen extends Component {
             isRefreshing: false,
             activities: [],
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
-    componentDidMount() {
-        this.fetchAllActivities();
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
@@ -40,11 +35,6 @@ class ActivitiesFavouritesScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status === 404) {
-                    this.setState({
-                        activities: [],
-                    });
-                }
             });
     }
 
@@ -92,8 +82,8 @@ class ActivitiesFavouritesScreen extends Component {
                         <View style={Styles.ph24}>
                             <RegularText>
                                 {" "}
-                                You haven't favourited any activities yet
-                                (Refresh)
+                                You haven't favourited any activities yet (Pull
+                                to Refresh)
                             </RegularText>
                         </View>
                     )}

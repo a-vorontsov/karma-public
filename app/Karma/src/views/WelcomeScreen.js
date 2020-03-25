@@ -6,17 +6,21 @@ import {
     Platform,
     Image,
     KeyboardAvoidingView,
+    SafeAreaView,
+    Alert,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
+import {ScrollView} from "react-native-gesture-handler";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
+import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
-class WelcomeScreen extends Component {
+export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +33,7 @@ class WelcomeScreen extends Component {
             showPassField: false,
             showCode: false,
             isCodeValid: false,
-            buttonText: "Sign Up/ Log In",
+            buttonText: "Sign Up/Log In",
         };
         StatusBar.setBarStyle("dark-content");
         if (Platform.OS === "android") {
@@ -44,6 +48,21 @@ class WelcomeScreen extends Component {
         );
         this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
+    }
+
+    async componentDidMount() {
+        try {
+            const authToken = await getAuthToken();
+            const response = await request
+                .get(`${REACT_APP_API_URL}/authentication`)
+                .set("authorization", authToken);
+            if (response.status === 200) {
+                const {navigate} = this.props.navigation;
+                navigate("Activities");
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     onInputChange = (name, value) => {
@@ -65,9 +84,10 @@ class WelcomeScreen extends Component {
         // remove the password field
         this.setState({showPassField: false});
         //send 6 digit code to email through forgot password route
+        const authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -105,15 +125,17 @@ class WelcomeScreen extends Component {
         const {navigate} = this.props.navigation;
         // email is of a valid format
         if (isValid) {
+            const authToken = await getAuthToken();
             await request
                 .post(`${REACT_APP_API_URL}/signin/email`)
-                .set("authorization", "")
+                .set("authorization", authToken)
                 .send({
                     data: {
                         email: this.state.emailInput,
                     },
                 })
                 .then(res => {
+                    console.log(res.body);
                     if (res.body.data.isFullySignedUp) {
                         //if user isFullySignedUp, returning user
                         this.setState({
@@ -134,6 +156,10 @@ class WelcomeScreen extends Component {
                         navigate("UserSignUp", {
                             email: this.state.emailInput,
                         });
+                        return;
+                    }
+                    if (res.body.data.alreadyAuthenticated) {
+                        navigate("Activities");
                         return;
                     }
                     //if email is not verified, show code field
@@ -160,9 +186,10 @@ class WelcomeScreen extends Component {
     // verify password is correct
     async checkPass() {
         const {navigate} = this.props.navigation;
+        let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/password`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -172,9 +199,9 @@ class WelcomeScreen extends Component {
             .then(async res => {
                 // if password correct
                 this.setState({isValidPass: true});
-                const authToken = res.body.data.authToken;
+                authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-                navigate("PickCauses");
+                navigate("Activities");
             })
             .catch(err => {
                 this.setState({isValidPass: false, showPassError: true});
@@ -183,34 +210,43 @@ class WelcomeScreen extends Component {
     }
 
     async confirmForgotPasswordCode(code) {
+        const authToken = await getAuthToken();
+        const {navigate} = this.props.navigation;
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
                     token: code,
                 },
             })
-            .then(res => {
+            .then(async res => {
+                const authenticationToken = res.body.data.authToken;
+                await AsyncStorage.setItem("ACCESS_TOKEN", authenticationToken);
                 console.log(res.body.message);
                 this.setState({isCodeValid: true});
-                //TODO navigate to new Password screen
+                navigate("ForgotPassword", {
+                    email: this.state.emailInput,
+                });
             })
             .catch(err => {
                 // code incorrect
+                console.log(err);
                 this.setState({isCodeValid: false});
-                console.log("incorrect code");
-                console.log(err.message);
+                Alert.alert("Incorrect code", "Please try again.", [
+                    {text: "OK", onPress: () => null},
+                ]);
             });
     }
 
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;
         //check with register route
+        const authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/verify/email`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     email: this.state.emailInput,
@@ -226,20 +262,21 @@ class WelcomeScreen extends Component {
                     navigate("UserSignUp", {
                         email: this.state.emailInput,
                     });
-                } else {
-                    // code incorrect
-                    this.setState({isCodeValid: false});
-                    console.log("incorrect code");
                 }
             })
             .catch(err => {
-                console.log(err.message);
+                // code incorrect
+                console.log(err);
+                this.setState({isCodeValid: false});
+                Alert.alert("Incorrect code", "Please try again.", [
+                    {text: "OK", onPress: () => null},
+                ]);
             });
     }
 
     render() {
         return (
-            <View style={WelcomeScreenStyles.container}>
+            <SafeAreaView style={WelcomeScreenStyles.container}>
                 <View style={{flex: 2, justifyContent: "center"}}>
                     <Image
                         style={{
@@ -250,68 +287,65 @@ class WelcomeScreen extends Component {
                         }}
                         source={require("../assets/images/general-logos/KARMA-logo.png")}
                     />
-                    <RegularText
-                        style={[
-                            WelcomeScreenStyles.text,
-                            {fontSize: 40},
-                        ]} /* // should be an image so that its moved as smoothly as the image PROBLEM */
-                    >
-                        lorem ipsum
-                    </RegularText>
                 </View>
 
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
-                    <View
-                        style={{
-                            flex: 1,
-                            alignItems: "flex-start",
-                            marginBottom: 40,
-                        }}>
-                        {/* Email Field*/}
-                        {this.state.isSignUpPressed && (
-                            <EmailInput
-                                onChange={this.onInputChange}
-                                style={[
-                                    WelcomeScreenStyles.text,
-                                    Styles.formWidth,
-                                ]}
-                                onSubmitEditing={this.onSubmitEmail}
-                                showEmailError={this.state.showEmailError}
-                            />
-                        )}
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="always">
+                        <View
+                            style={{
+                                flex: 1,
+                                alignItems: "flex-start",
+                            }}>
+                            {/* Email Field*/}
+                            {this.state.isSignUpPressed && (
+                                <EmailInput
+                                    onChange={this.onInputChange}
+                                    style={[
+                                        WelcomeScreenStyles.text,
+                                        Styles.formWidth,
+                                    ]}
+                                    onSubmitEditing={this.onSubmitEmail}
+                                    showEmailError={this.state.showEmailError}
+                                />
+                            )}
 
-                        {/* Passowrd Field*/}
-                        {this.state.showPassField && (
-                            <PasswordInput
-                                style={[
-                                    WelcomeScreenStyles.text,
-                                    Styles.formWidth,
-                                ]}
-                                onChange={this.onInputChange}
-                                onSubmitEditing={this.checkPass}
-                                onForgotPassPressed={this.onForgotPassPressed}
-                                showPassError={this.state.showPassError}
-                            />
-                        )}
+                            {/* Passowrd Field*/}
+                            {this.state.showPassField && (
+                                <PasswordInput
+                                    style={[
+                                        WelcomeScreenStyles.text,
+                                        Styles.formWidth,
+                                    ]}
+                                    onChange={this.onInputChange}
+                                    onSubmitEditing={this.checkPass}
+                                    onForgotPassPressed={
+                                        this.onForgotPassPressed
+                                    }
+                                    showPassError={this.state.showPassError}
+                                />
+                            )}
 
-                        {/* 6-Digit Code Field*/}
-                        {this.state.showCode && (
-                            <SignInCodeInput
-                                onFulfill={
-                                    this.state.isForgotPassPressed
-                                        ? this.confirmForgotPasswordCode
-                                        : this.confirmVerifyEmailCode
-                                }
-                                text={
-                                    this.state.isForgotPassPressed
-                                        ? "Please enter the 6 digit code sent to your recovery email."
-                                        : "Please enter your email verification code below."
-                                }
-                            />
-                        )}
-                    </View>
+                            {/* 6-Digit Code Field*/}
+                            {this.state.showCode && (
+                                <SignInCodeInput
+                                    onFulfill={
+                                        this.state.isForgotPassPressed
+                                            ? this.confirmForgotPasswordCode
+                                            : this.confirmVerifyEmailCode
+                                    }
+                                    text={
+                                        this.state.isForgotPassPressed
+                                            ? "Please enter the 6 digit code sent to your email."
+                                            : "Please enter your email verification code below."
+                                    }
+                                />
+                            )}
+                        </View>
+                    </ScrollView>
                 </KeyboardAvoidingView>
 
                 <View
@@ -319,7 +353,6 @@ class WelcomeScreen extends Component {
                         flex: 1,
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        marginBottom: 40,
                     }}>
                     <TouchableOpacity
                         style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
@@ -330,9 +363,7 @@ class WelcomeScreen extends Component {
                         </RegularText>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
-
-export default WelcomeScreen;

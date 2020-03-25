@@ -35,14 +35,10 @@ class ActivitiesAllScreen extends Component {
         this.onRefresh = this.onRefresh.bind(this);
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     async componentDidMount() {
-        this.setState({loading: true, filters: this.props.filters});
+        this.setState({loading: true});
         this.fetchActivities();
-    }
+}
 
     getDateString(date) {
         if (date) {
@@ -103,11 +99,6 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status === 404) {
-                    this.setState({
-                        activitiesList: [],
-                    });
-                }
             });
     }
 
@@ -198,7 +189,8 @@ class ActivitiesAllScreen extends Component {
                             ListEmptyComponent={
                                 <View style={Styles.ph24}>
                                     <RegularText>
-                                        Could not find any activities (Refresh)
+                                        Could not find any activities (Pull to
+                                        Refresh)
                                     </RegularText>
                                 </View>
                             }

@@ -14,13 +14,11 @@ class ActivitiesGoingScreen extends Component {
             activities: [],
             isRefreshing: false,
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
+    async componentDidMount() {
+        await this.fetchAllActivities();
+    }
 
     async fetchAllActivities() {
         const authToken = await getAuthToken();
@@ -35,11 +33,6 @@ class ActivitiesGoingScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status === 404) {
-                    this.setState({
-                        activities: [],
-                    });
-                }
             });
     }
 
@@ -88,7 +81,7 @@ class ActivitiesGoingScreen extends Component {
                         <View style={Styles.ph24}>
                             <RegularText>
                                 You have not selected any activities to attend
-                                (Refresh)
+                                (Pull to Refresh)
                             </RegularText>
                         </View>
                     )}

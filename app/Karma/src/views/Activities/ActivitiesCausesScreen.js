@@ -16,8 +16,10 @@ class ActivitiesCausesScreen extends Component {
             activitiesByCause: [],
             activeSlide: 0,
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
+    }
+    async componentDidMount() {
+        await this.fetchAllActivities();
     }
 
     async fetchAllActivities() {
@@ -33,17 +35,8 @@ class ActivitiesCausesScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status === 404) {
-                    this.setState({
-                        activitiesByCause: [],
-                    });
-                }
             });
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     onRefresh() {
         this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
@@ -96,7 +89,7 @@ class ActivitiesCausesScreen extends Component {
                         )
                     ) : (
                         <RegularText>
-                            Could not find any activities (Refresh)
+                            Could not find any activities (Pull to Refresh)
                         </RegularText>
                     )}
                 </View>
