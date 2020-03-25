@@ -79,7 +79,7 @@ const getGoingEvents = async (userId) => {
     }
     const findResult = await individualRepository.findGoingEvents(userId);
     const events = findResult.rows;
-    if (events.length === 0) return ({status: 404, message: "No favourite events found"});
+    if (events.length === 0) return ({status: 404, message: "No events found"});
     const user = userIdCheckResponse.user;
     eventSorter.sortByTimeAndDistance(events, user);
     return ({

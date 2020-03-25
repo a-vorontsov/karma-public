@@ -201,10 +201,12 @@ test("requests with invalid userIds rejected", async () => {
 test("getting all events works", async () => {
     const eventsArray =[{
         ...eventWithAllData,
+        favourited: [1],
         id: 1,
     },
     {
         ...eventWithAllData,
+        favourited: [1],
         id: 2,
     }];
     util.checkUser.mockResolvedValue({status: 200});
@@ -219,17 +221,21 @@ test("getting all events works", async () => {
     expect(eventRepository.findAllWithAllData).toHaveBeenCalledTimes(1);
     expect(filterer.getWhereClause).toHaveBeenCalledWith({});
     expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
-    expect(getEventsResult.data.events).toStrictEqual(eventsArray);
+    eventsArray[0].favourited = true;
+    eventsArray[1].favourited = true;
+    expect(getEventsResult.data.events).toMatchObject(eventsArray);
     expect(getEventsResult.status).toBe(200);
 });
 
 test("getting events grouped by user selected causes works", async () => {
     const eventsArray =[{
         ...animalsEvent,
+        favourited: [1],
         id: 1,
     },
     {
         ...peaceEvent,
+        favourited: [1],
         id: 2,
     }];
     util.checkUser.mockResolvedValue({status: 200});
