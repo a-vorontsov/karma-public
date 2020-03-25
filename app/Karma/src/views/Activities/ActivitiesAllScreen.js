@@ -63,11 +63,6 @@ class ActivitiesAllScreen extends Component {
             })
             .catch(er => {
                 console.log(er);
-                if (er.status === 404) {
-                    this.setState({
-                        activitiesList: [],
-                    });
-                }
             });
     }
 

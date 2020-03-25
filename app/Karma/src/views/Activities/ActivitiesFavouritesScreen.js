@@ -15,7 +15,6 @@ class ActivitiesFavouritesScreen extends Component {
             isRefreshing: false,
             activities: [],
         };
-        this.fetchAllActivities();
         this.onRefresh = this.onRefresh.bind(this);
     }
 
