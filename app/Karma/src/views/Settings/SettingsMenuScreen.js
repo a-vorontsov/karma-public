@@ -24,9 +24,7 @@ class SettingsMenuScreen extends Component {
             user: {},
         };
     }
-    static navigationOptions = {
-        headerShown: false,
-    };
+
     componentDidMount() {
         const {navigation} = this.props;
         const user = navigation.getParam("user");

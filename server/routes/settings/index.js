@@ -41,12 +41,12 @@ const authService = require("../../modules/authentication/");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Changing settings");
+        log.info("User id '%d': Changing settings", req.body.userId);
         const settings = req.body;
         const settingsResult = await settingsService.changeSettings(settings);
         return httpUtil.sendResult(settingsResult, res);
     } catch (e) {
-        log.error("Changing settings failed: " + e);
+        log.error("User id '%d': Failed changing settings: " + e, req.body.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -76,12 +76,12 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
  */
 router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting settings", req.body.userId);
         const userId = req.query.userId;
-        log.info("Getting settings for user id '%d'", userId);
         const settingsResult = await settingsService.getCurrentSettings(userId);
         return httpUtil.sendResult(settingsResult, res);
     } catch (e) {
-        log.error("Gettings settings failed: " + e);
+        log.error("User id '%d': Failed getting settings: " + e, req.body.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

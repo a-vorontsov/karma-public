@@ -102,6 +102,4 @@ module.exports = {
     generateSecureSaltInBase64,
     hashPassWithSaltInHex,
     hashPassWithSaltInBase64,
-    hashVarargInHex,
-    hashVarargInBase64,
 };

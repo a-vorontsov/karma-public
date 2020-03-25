@@ -18,6 +18,8 @@ import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
+import {getAuthToken} from "../util/credentials";
+
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -58,9 +60,10 @@ class SignUpScreen extends React.Component {
     signUserUp = async () => {
         const user = this.createUser();
 
+        let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
-            .set("authorization", "")
+            .set("authorization", authToken)
             .send({
                 data: {
                     user: {...user},
@@ -68,7 +71,7 @@ class SignUpScreen extends React.Component {
             })
             .then(async res => {
                 console.log(res.body.message);
-                const authToken = res.body.data.authToken;
+                authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
                 this.setState({firstOpen: false});
                 this.props.navigation.navigate("InitSignup");

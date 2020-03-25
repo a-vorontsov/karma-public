@@ -17,15 +17,14 @@ class Attendees extends Component {
         this.getAttendees();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.getAttendees();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.getAttendees();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();

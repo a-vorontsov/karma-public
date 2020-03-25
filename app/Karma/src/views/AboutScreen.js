@@ -43,10 +43,6 @@ class AboutScreen extends React.Component {
         };
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     onInputChange = inputState => {
         this.setState({
             addressLine1: inputState.address1,

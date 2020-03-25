@@ -10,16 +10,15 @@ const request = require("superagent");
 const logo = require("../../assets/images/settings-logos/guidelines.png");
 
 class GuidelinesScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
             guidelinesText: "Loading...",
         };
-        this.loadGuidelines();
+    }
+
+    async componentDidMount() {
+        await this.loadGuidelines();
     }
 
     loadGuidelines = () => {

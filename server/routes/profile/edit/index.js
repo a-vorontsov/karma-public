@@ -63,8 +63,8 @@ const profileRepo = require("../../../repositories/profile");
  */
 router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Updating profile", req.body.userId);
         // update user profile if specified in request
-        log.info("Updating profile");
         if (req.body.data.user !== undefined) {
             await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
@@ -100,6 +100,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             }
             if (req.body.data.individual.womenOnly !== undefined) {
                 if (individual.gender !== "f") {
+                    log.warn("User id '%d': Non-woman updating women-only filter", req.body.userId);
                     return res.status(400).send({message: "Only women can filter by women only events."});
                 } else {
                     profile.womenOnly = req.body.data.individual.womenOnly;
@@ -155,7 +156,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             message: "Operation successful. Please GET the view profile endpoint to see the updated profile record.",
         });
     } catch (e) {
-        log.error("Updating profile failed");
+        log.error("User id '%d': Failed updating profile: " + e, req.body.userId);
         res.status(500).send({
             message: e.message,
         });

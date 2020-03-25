@@ -235,6 +235,16 @@ const getSignatureFromJWT = (jwt) => {
 };
 
 /**
+ * Return signature, i.e. authentication tag of
+ * JWE as a Base64 string.
+ * @param {object} jwe
+ * @return {string} signature
+ */
+const getSignatureFromJWE = (jwe) => {
+    return jwe.split(".")[4];
+};
+
+/**
  * Add given signature to blacklist cache or
  * do nothing if already stored.
  * @param {string} sig
@@ -344,6 +354,7 @@ module.exports = {
     decryptVerifyAndGetUserId,
     getUserIdFromPayload,
     getSignatureFromJWT,
+    getSignatureFromJWE,
     blacklistJWT,
     decryptAndBlacklistJWE,
     isBlacklisted,
