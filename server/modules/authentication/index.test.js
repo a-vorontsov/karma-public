@@ -1,12 +1,12 @@
 const authService = require("./");
 const testHelpers = require("../../test/helpers");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const indivRepo = require("../../models/databaseRepositories/individualRepository");
-const addressRepo = require("../../models/databaseRepositories/addressRepository");
-const authRepo = require("../../models/databaseRepositories/authenticationRepository");
-const profileRepo = require("../../models/databaseRepositories/profileRepository");
-const causeRepo = require("../../models/databaseRepositories/causeRepository");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
+const indivRepo = require("../../repositories/individual");
+const addressRepo = require("../../repositories/address");
+const authRepo = require("../../repositories/authentication");
+const profileRepo = require("../../repositories/profile");
+const causeRepo = require("../../repositories/cause");
 const request = require("supertest");
 const app = require("../../app");
 const jose = require("../jose");
@@ -26,7 +26,7 @@ const user = testHelpers.getUserExample4();
 const profile = testHelpers.getProfile();
 const registration = testHelpers.getRegistrationExample4();
 
-jest.mock("../../models/databaseRepositories/causeRepository");
+jest.mock("../../repositories/cause");
 jest.mock("../admin/");
 
 beforeEach(() => {

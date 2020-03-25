@@ -1,5 +1,5 @@
-const userRepository = require("../../models/databaseRepositories/userRepository");
-const individualRepository = require("../../models/databaseRepositories/individualRepository");
+const userRepository = require("../../repositories/user");
+const individualRepository = require("../../repositories/individual");
 
 /**
  * This fetches all users signed up to Karma.

@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../../../app");
 const testHelpers = require("../../../test/helpers");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
+const regRepo = require("../../../repositories/registration");
+const userRepo = require("../../../repositories/user");
 
 let registrationExample4, registrationExample5, registrationExample6, user4;
 beforeEach(() => {

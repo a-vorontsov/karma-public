@@ -1,17 +1,17 @@
 const testHelpers = require("../../../test/helpers");
 const eventSignupService = require("./");
 
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
-const signupRepository = require("../../../models/databaseRepositories/signupRepository");
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
+const individualRepository = require("../../../repositories/individual");
+const signupRepository = require("../../../repositories/event/signup");
+const eventRepository = require("../../../repositories/event");
 const eventSorter = require("../../sorting");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
+const profileRepo = require("../../../repositories/profile");
 const util = require("../../../util");
 
-jest.mock("../../../models/databaseRepositories/signupRepository");
-jest.mock("../../../models/databaseRepositories/eventRepository");
-jest.mock("../../../models/databaseRepositories/individualRepository");
-jest.mock("../../../models/databaseRepositories/profileRepository");
+jest.mock("../../../repositories/event/signup");
+jest.mock("../../../repositories/event");
+jest.mock("../../../repositories/individual");
+jest.mock("../../../repositories/profile");
 jest.mock("../../../util");
 jest.mock("../../sorting");
 

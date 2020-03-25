@@ -1,4 +1,4 @@
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
+const regRepo = require("../../../repositories/registration");
 const util = require("../../../util");
 
 /**

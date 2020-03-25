@@ -1,12 +1,12 @@
 const testHelpers = require("../../test/helpers");
 const adminService = require("./");
 
-const userRepository = require("../../models/databaseRepositories/userRepository");
-const individualRepository = require("../../models/databaseRepositories/individualRepository");
+const userRepository = require("../../repositories/user");
+const individualRepository = require("../../repositories/individual");
 
 
-jest.mock("../../models/databaseRepositories/userRepository");
-jest.mock("../../models/databaseRepositories/individualRepository");
+jest.mock("../../repositories/user");
+jest.mock("../../repositories/individual");
 
 let user, individual;
 

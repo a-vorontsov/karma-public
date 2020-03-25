@@ -8,9 +8,9 @@ const {
     JWT, // JSON Web Token (JWT)
     errors, // errors utilized by jose
 } = jose;
-const authRepo = require("../../models/databaseRepositories/authenticationRepository");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
+const authRepo = require("../../repositories/authentication");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
 const testHelpers = require("../../test/helpers");
 
 const joseOnServer = require("./");

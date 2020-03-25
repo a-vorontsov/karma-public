@@ -1,17 +1,17 @@
 const digest = require("../authentication/digest");
 const log = require("../../util/log");
 const regStatus = require("../../util/registration");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const individualRepo = require("../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../models/databaseRepositories/profileRepository");
+const regRepo = require("../../repositories/registration");
+const userRepo = require("../../repositories/user");
+const individualRepo = require("../../repositories/individual");
+const orgRepo = require("../../repositories/organisation");
+const addressRepo = require("../../repositories/address");
+const profileRepo = require("../../repositories/profile");
 const date = require("date-and-time");
 const tokenSender = require("../verification/token");
 const authService = require("../authentication");
 const geocoder = require("../geocoder");
-const settingsRepo = require("../../models/databaseRepositories/settingsRepository");
+const settingsRepo = require("../../repositories/settings");
 
 /**
  * Register a new record in the registration table.

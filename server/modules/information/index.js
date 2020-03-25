@@ -1,4 +1,4 @@
-const informationRepository = require("../../models/databaseRepositories/informationRepository");
+const informationRepository = require("../../repositories/information");
 
 /**
  * Creates a new information entry to be added to the database if type does not exist

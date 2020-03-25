@@ -6,13 +6,13 @@ const validation = require("../../../modules/validation");
 const eventService = require("../../../modules/event");
 const eventFavouriteService = require("../../../modules/event/favourite");
 const eventSignUpService = require("../../../modules/event/signup");
-const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
+const selectedCauseRepository = require("../../../repositories/cause/selected");
+const individualRepository = require("../../../repositories/individual");
 
-jest.mock("../../../models/databaseRepositories/addressRepository");
-jest.mock("../../../models/databaseRepositories/selectedCauseRepository");
-jest.mock("../../../models/databaseRepositories/individualRepository");
-jest.mock("../../../models/databaseRepositories/userRepository");
+jest.mock("../../../repositories/address");
+jest.mock("../../../repositories/cause/selected");
+jest.mock("../../../repositories/individual");
+jest.mock("../../../repositories/user");
 
 jest.mock("../../../modules/event");
 jest.mock("../../../modules/event/favourite");

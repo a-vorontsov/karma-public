@@ -1,9 +1,9 @@
-const userRepository = require("../models/databaseRepositories/userRepository");
-const individualRepository = require("../models/databaseRepositories/individualRepository");
-const addressRepository = require("../models/databaseRepositories/addressRepository");
+const userRepository = require("../repositories/user");
+const individualRepository = require("../repositories/individual");
+const addressRepository = require("../repositories/address");
 const testHelpers = require("../test/helpers");
 const util = require("../util");
-const registrationRepository = require("../models/databaseRepositories/registrationRepository");
+const registrationRepository = require("../repositories/registration");
 
 let registrationExample1, userExample1, address, individual;
 

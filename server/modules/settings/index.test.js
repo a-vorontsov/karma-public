@@ -1,8 +1,8 @@
 const testHelpers = require("../../test/helpers");
 const settingsService = require("./");
-const settingsRepository = require("../../models/databaseRepositories/settingsRepository");
+const settingsRepository = require("../../repositories/settings");
 
-jest.mock("../../models/databaseRepositories/settingsRepository");
+jest.mock("../../repositories/settings");
 jest.mock("../../util");
 
 let setting;

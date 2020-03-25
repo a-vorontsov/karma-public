@@ -1,7 +1,7 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
+const selectedCauseRepository = require("../../../repositories/cause/selected");
 const authService = require("../../../modules/authentication/");
 
 /**

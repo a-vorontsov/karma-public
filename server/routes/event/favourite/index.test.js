@@ -10,7 +10,7 @@ jest.mock("../../../modules/validation");
 jest.mock("../../../util");
 validation.validateFavourite.mockReturnValue({errors: ""});
 
-const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
+const favouriteRepository = require("../../../repositories/favourite");
 
 let favourite;
 

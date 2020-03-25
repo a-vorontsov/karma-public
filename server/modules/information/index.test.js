@@ -1,8 +1,8 @@
 const testHelpers = require("../../test/helpers");
 const informationService = require("./");
-const informationRepository = require("../../models/databaseRepositories/informationRepository");
+const informationRepository = require("../../repositories/information");
 
-jest.mock("../../models/databaseRepositories/informationRepository");
+jest.mock("../../repositories/information");
 jest.mock("../../util");
 
 let information;

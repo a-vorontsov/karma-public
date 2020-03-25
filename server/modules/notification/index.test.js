@@ -1,8 +1,8 @@
 const testHelpers = require("../../test/helpers");
 const notificationService = require("./");
-const notificationRepository = require("../../models/databaseRepositories/notificationRepository");
+const notificationRepository = require("../../repositories/notification");
 
-jest.mock("../../models/databaseRepositories/notificationRepository");
+jest.mock("../../repositories/notification");
 
 let notification;
 

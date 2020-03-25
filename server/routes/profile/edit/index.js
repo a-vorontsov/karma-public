@@ -5,11 +5,11 @@ const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
 const authService = require("../../../modules/authentication/");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
+const userRepo = require("../../../repositories/user");
+const indivRepo = require("../../../repositories/individual");
+const orgRepo = require("../../../repositories/organisation");
+const addressRepo = require("../../../repositories/address");
+const profileRepo = require("../../../repositories/profile");
 
 /**
  * Endpoint called whenever a user wishes to update their profile <br/>

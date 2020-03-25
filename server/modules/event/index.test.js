@@ -1,23 +1,23 @@
 const testHelpers = require("../../test/helpers");
 const eventService = require("./");
 
-const eventRepository = require("../../models/databaseRepositories/eventRepository");
-const eventCauseRepository = require("../../models/databaseRepositories/eventCauseRepository");
-const favouriteRepository = require("../../models/databaseRepositories/favouriteRepository");
-const signUpRepository = require("../../models/databaseRepositories/signupRepository");
-const addressRepository = require("../../models/databaseRepositories/addressRepository");
-const selectedCauseRepository = require("../../models/databaseRepositories/selectedCauseRepository");
+const eventRepository = require("../../repositories/event");
+const eventCauseRepository = require("../../repositories/event/cause");
+const favouriteRepository = require("../../repositories/favourite");
+const signUpRepository = require("../../repositories/event/signup");
+const addressRepository = require("../../repositories/address");
+const selectedCauseRepository = require("../../repositories/cause/selected");
 const eventSorter = require("../sorting");
 const util = require("../../util");
 const filterer = require("../filtering");
 
 
-jest.mock("../../models/databaseRepositories/eventRepository");
-jest.mock("../../models/databaseRepositories/addressRepository");
-jest.mock("../../models/databaseRepositories/signupRepository");
-jest.mock("../../models/databaseRepositories/selectedCauseRepository");
-jest.mock("../../models/databaseRepositories/favouriteRepository");
-jest.mock("../../models/databaseRepositories/eventCauseRepository");
+jest.mock("../../repositories/event");
+jest.mock("../../repositories/address");
+jest.mock("../../repositories/event/signup");
+jest.mock("../../repositories/cause/selected");
+jest.mock("../../repositories/favourite");
+jest.mock("../../repositories/event/cause");
 jest.mock("../../util");
 jest.mock("../filtering");
 jest.mock("../sorting");

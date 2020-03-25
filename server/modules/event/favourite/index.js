@@ -1,5 +1,5 @@
-const favouriteRepository = require("../../../models/databaseRepositories/favouriteRepository");
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
+const favouriteRepository = require("../../../repositories/favourite");
+const individualRepository = require("../../../repositories/individual");
 const util = require("../../../util");
 const eventSorter = require("../../sorting");
 /**

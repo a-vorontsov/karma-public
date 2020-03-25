@@ -1,7 +1,7 @@
-const userRepository = require("../models/databaseRepositories/userRepository");
-const individualRepository = require("../models/databaseRepositories/individualRepository");
-const organisationRepository = require("../models/databaseRepositories/organisationRepository");
-const eventRepository = require("../models/databaseRepositories/eventRepository");
+const userRepository = require("../repositories/user");
+const individualRepository = require("../repositories/individual");
+const organisationRepository = require("../repositories/organisation");
+const eventRepository = require("../repositories/event");
 
 const isIndividual = async (userId) => {
     const userResult = await userRepository.findById(userId);

@@ -5,14 +5,14 @@ const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 const authService = require("../../modules/authentication/");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../models/databaseRepositories/profileRepository");
-const selectedCauseRepo = require("../../models/databaseRepositories/selectedCauseRepository");
-const signUpRepo = require("../../models/databaseRepositories/signupRepository");
-const eventRepo = require("../../models/databaseRepositories/eventRepository");
+const userRepo = require("../../repositories/user");
+const indivRepo = require("../../repositories/individual");
+const orgRepo = require("../../repositories/organisation");
+const addressRepo = require("../../repositories/address");
+const profileRepo = require("../../repositories/profile");
+const selectedCauseRepo = require("../../repositories/cause/selected");
+const signUpRepo = require("../../repositories/event/signup");
+const eventRepo = require("../../repositories/event");
 
 /**
  * Endpoint called whenever a user wishes to get their own or another user's profile.<br/>

@@ -1,5 +1,5 @@
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../models/databaseRepositories/userRepository");
+const regRepo = require("../../repositories/registration");
+const userRepo = require("../../repositories/user");
 
 /**
  * Returns true if email exists in registration table

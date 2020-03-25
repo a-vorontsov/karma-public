@@ -4,7 +4,7 @@
 const log = require("../../util/log");
 const express = require('express');
 const router = express.Router();
-const causeRepository = require("../../models/databaseRepositories/causeRepository");
+const causeRepository = require("../../repositories/cause");
 const authService = require("../../modules/authentication/");
 
 /**
