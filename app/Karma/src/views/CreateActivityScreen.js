@@ -11,6 +11,7 @@ import {
     Keyboard,
     Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Styles from "../styles/Styles";
 import {hasNotch} from "react-native-device-info";
 import PhotoUpload from "react-native-photo-upload";
@@ -21,13 +22,14 @@ import AddressInput from "../components/input/AddressInput";
 import BottomModal from "../components/BottomModal";
 import CauseContainer from "../components/causes/CauseContainer";
 import {GradientButton} from "../components/buttons";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import {TextInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import SignUpStyles from "../styles/SignUpStyles";
 import {getAuthToken} from "../util/credentials";
 import CauseItem from "../components/causes/CauseItem";
 import CauseStyles from "../styles/CauseStyles";
+import {sendNotification} from "../util/SendNotification";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -74,6 +76,7 @@ export default class CreateActivityScreen extends React.Component {
 
     async componentDidMount() {
         const activity = this.props.navigation.getParam("activity");
+        const creatorName = this.props.navigation.getParam("creatorName");
         //event id is passed when updating an event
         if (activity) {
             try {
@@ -92,6 +95,7 @@ export default class CreateActivityScreen extends React.Component {
                 const region = activity.region;
                 const city = activity.city;
                 const postcode = activity.postcode;
+                const volunteers = activity.volunteers;
                 const causeIds = activity.causes;
 
                 const causes = await this.fetchSelectedCauses(causeIds);
@@ -114,6 +118,8 @@ export default class CreateActivityScreen extends React.Component {
                     isPhysical,
                     isAddressVisible,
                     isIDReq,
+                    volunteers,
+                    creatorName,
                     causeIds,
                     causes,
                 });
@@ -146,14 +152,18 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     fetchSelectedCauses = async causeIds => {
-        const response = await request
-            .get("http://localhost:8000/causes")
-            .then(res => {
-                return res.body.data;
-            });
-
-        let causes = [];
-        Array.from(response).forEach(cause => {
+        let causes = await AsyncStorage.getItem("causes");
+        causes = JSON.parse(causes);
+        const authToken = await getAuthToken();
+        if (causes.length === 0) {
+            request
+                .get(`${REACT_APP_API_URL}/causes`)
+                .set("authorization", authToken)
+                .then(res => {
+                    causes = res.body.data;
+                });
+        }
+        Array.from(causes).forEach(cause => {
             if (causeIds.includes(cause.id)) {
                 causes.push(cause);
             }
@@ -184,7 +194,7 @@ export default class CreateActivityScreen extends React.Component {
             submitPressed: true,
         });
         await request
-            .post("http://localhost:8000/event/update/" + this.state.eventId)
+            .post(`${REACT_APP_API_URL}/event/update/${this.state.eventId}`)
             .set("authorization", authToken)
             .send({
                 ...event,
@@ -193,6 +203,12 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully updated the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
+
+                sendNotification(
+                    "EventUpdate",
+                    `${event.name}`,
+                    this.state.volunteers,
+                );
                 console.log(res.body.message);
             })
             .catch(er => {
@@ -348,11 +364,12 @@ export default class CreateActivityScreen extends React.Component {
 
         // send a request to update the db with the new event
         await request
-            .post("http://localhost:8000/event")
+            .post(`${REACT_APP_API_URL}/event`)
             .set("authorization", authToken)
             .send({
                 ...event,
             })
+
             .then(res => {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
@@ -555,7 +572,7 @@ export default class CreateActivityScreen extends React.Component {
                                             "email",
                                         )}
                                         style={{marginTop: 0}}
-                                        editable="false"
+                                        editable={false}
                                     />
                                 </View>
                                 <SemiBoldText

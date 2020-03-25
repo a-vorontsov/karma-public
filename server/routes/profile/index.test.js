@@ -1,9 +1,9 @@
 const request = require("supertest");
 const app = require("../../app");
-const testHelpers = require("../../test/testHelpers");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const authAgent = require("../../modules/authentication/auth-agent");
+const testHelpers = require("../../test/helpers");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
+const authService = require("../../modules/authentication/");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();
@@ -57,7 +57,7 @@ test("viewing my own profile works", async () => {
     expect(response.body.message).toBe("Individual registration successful.");
     expect(response.statusCode).toBe(200);
 
-    const authToken = authAgent.logInUser(userId);
+    const authToken = authService.logInUser(userId);
 
     process.env.NO_AUTH = 0;
     const profileResponse = await request(app)

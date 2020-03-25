@@ -6,7 +6,6 @@ import InitSignUpScreen from "../views/InitSignupScreen";
 import UserSignUpScreen from "../views/UserSignUpScreen";
 import OrgSignUpScreen from "../views/OrgSignUpScreen";
 import AboutScreen from "../views/AboutScreen";
-import ContactInfoScreen from "../views/ContactInfoScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
 import PrivacyScreen from "../views/Settings/PrivacyScreen";
 import TermsScreen from "../views/Settings/TermsScreen";
@@ -16,6 +15,8 @@ import VerifyScreen from "../views/VerifyScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../views/ProfileScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
+import ForgotPasswordScreen from "../views/ForgotPasswordScreen";
+import ChangePasswordScreen from "../views/Settings/ChangePasswordScreen";
 import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
 import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
@@ -26,6 +27,9 @@ const MainNavigator = createStackNavigator(
     {
         Welcome: {
             screen: WelcomeScreen,
+        },
+        ForgotPassword: {
+            screen: ForgotPasswordScreen,
         },
         InitSignup: {
             screen: InitSignUpScreen,
@@ -75,6 +79,9 @@ const MainNavigator = createStackNavigator(
         },
         CreateActivity: {
             screen: CreateActivityScreen,
+        },
+        ChangePassword: {
+            screen: ChangePasswordScreen,
         },
         Notifications: {
             screen: NotificationsScreen,

@@ -27,7 +27,7 @@ import {getAuthToken} from "../util/credentials";
 import {RadioInput} from "../components/radio";
 const request = require("superagent");
 const _ = require("lodash");
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
@@ -52,8 +52,8 @@ class ProfileEditScreen extends Component {
             user: {username: profile.username},
             isOrganisation: profile.isOrganisation,
             individual: {
-                firstName: profile.fname,
-                lastName: profile.lname,
+                firstName: profile.firstName,
+                lastName: profile.lastName,
                 gender: profile.gender,
                 bio: profile.bio,
                 address: {
@@ -86,10 +86,6 @@ class ProfileEditScreen extends Component {
         this.getGender = this.getGender.bind(this);
         this.baseState = this.state;
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     toggleModal = () => {
         this.setState({
@@ -203,7 +199,7 @@ class ProfileEditScreen extends Component {
             }
         }
         await request
-            .post("http://localhost:8000/profile/edit")
+            .post(`${REACT_APP_API_URL}/profile/edit`)
             .set("authorization", authToken)
             .send({
                 data: dataChanged,

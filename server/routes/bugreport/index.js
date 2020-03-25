@@ -4,9 +4,9 @@
 const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
-const mailSender = require("../../modules/mailSender/index");
-const httpUtil = require("../../util/httpUtil");
-const authAgent = require("../../modules/authentication/auth-agent");
+const mailSender = require("../../modules/mail/index");
+const httpUtil = require("../../util/http");
+const authService = require("../../modules/authentication/");
 
 /**
  * Attempt send a bug report to admin email account.
@@ -34,13 +34,13 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * @name Send bug report
  * @function
  */
-router.post("/", authAgent.acceptAnyAuthentication, async (req, res) => {
+router.post("/", authService.acceptAnyAuthentication, async (req, res) => {
     try {
-        log.info("Sending bug report");
+        log.info("%s (user id '%d'): Sending bug report", req.body.data.email, req.body.userId);
         const result = await mailSender.sendBugReport(req.body.data.email, req.body.data.report);
         httpUtil.sendResult(result, res);
     } catch (e) {
-        log.error("Sending bug report failed " + e);
+        log.error("%s (user id '%d'): Sending bug report failed " + e, req.body.data.email, req.body.userId);
         httpUtil.sendGenericError(e, res);
     }
 });

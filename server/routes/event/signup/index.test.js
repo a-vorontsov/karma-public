@@ -1,13 +1,13 @@
 const request = require('supertest');
 const app = require('../../../app');
-const testHelpers = require("../../../test/testHelpers");
+const testHelpers = require("../../../test/helpers");
 const validation = require("../../../modules/validation");
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
-const util = require("../../../util/util");
+const eventSignupService = require("../../../modules/event/signup");
+const util = require("../../../util");
 
-jest.mock("../../../modules/event/signup/eventSignupService");
+jest.mock("../../../modules/event/signup");
 jest.mock("../../../modules/validation");
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 
 validation.validateSignup.mockReturnValue({errors: ""});
 

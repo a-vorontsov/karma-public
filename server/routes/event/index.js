@@ -9,11 +9,11 @@ const eventSignupRoute = require("./signup/");
 const eventFavouriteRoute = require("./favourite/");
 const eventSelectRoute = require("./select/");
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const validation = require("../../modules/validation");
-const eventService = require("../../modules/event/eventService");
+const eventService = require("../../modules/event");
 const paginator = require("../../modules/pagination");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 router.use("/", eventSignupRoute);
 router.use("/", eventFavouriteRoute);
@@ -123,10 +123,10 @@ router.use("/", eventSelectRoute);
  *  @function
  *  @name Get "All" Activities tab
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'All' activities for user id '%d'", userId);
+        log.info("User id '%d': Getting 'All' tab", userId);
         const filters = {booleans: req.query.filter};
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
@@ -136,7 +136,7 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
         getEventsResult.data = await paginator.getPageData(req, getEventsResult.data.events);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        log.error("Events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'All' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -194,14 +194,14 @@ router.get("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get event by id
  *  */
-router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
+router.get("/:id", authService.requireAuthentication, async (req, res) => {
     try {
         const id = Number.parseInt(req.params.id);
-        log.info("Getting event id '%d' data", id);
+        log.info("User id '%d': Fetching event id '%d'", req.query.userId, id);
         const getEventResult = await eventService.getEventData(id);
         return httpUtil.sendResult(getEventResult, res);
     } catch (e) {
-        log.error("Event fetching failed for event id '" + req.params.id + "' : " + e);
+        log.error("User id '%d': Fetching event id '%d' failed: " + e, req.query.userId, req.params.id);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -284,9 +284,9 @@ router.get("/:id", authAgent.requireAuthentication, async (req, res) => {
  *  @name Create new event
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Creating new event");
+        log.info("User id '%d': Creating new event", req.body.userId);
         const event = req.body;
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
@@ -295,7 +295,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
         const eventCreationResult = await eventService.createNewEvent(event);
         return httpUtil.sendResult(eventCreationResult, res);
     } catch (e) {
-        log.error("Event creation failed: " + e);
+        log.error("User id '%d': Event creation failed: " + e, req.body.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -360,10 +360,10 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Update event
  */
-router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => {
+router.post("/update/:id", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Updating event id '%d'", req.body.userId, req.params.id);
         const event = {...req.body, id: Number.parseInt(req.params.id)};
-        log.info("Updating event id '%d'", event.id);
         const validationResult = validation.validateEvent(event);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -372,7 +372,7 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
         const eventUpdateResult = await eventService.updateEvent(event);
         return httpUtil.sendResult(eventUpdateResult, res);
     } catch (e) {
-        log.error("Event updating failed: " + e);
+        log.error("User id '%d': Event id '%d' updating failed: " + e, req.body.userId, req.params.id);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -409,14 +409,14 @@ router.post("/update/:id", authAgent.requireAuthentication, async (req, res) => 
  *  @function
  *  @name Delete event
  */
-router.post("/:id/delete/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/:id/delete/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Deleting event id '%d'", req.body.userId, req.params.id);
         const eventId = Number.parseInt(req.params.id);
-        log.info("Deleting event id '%d'", eventId);
         const eventDeleteResult = await eventService.deleteEvent(eventId);
         return httpUtil.sendResult(eventDeleteResult, res);
     } catch (e) {
-        log.error("Event updating failed: " + e);
+        log.error("User id '%d': Deleting event id '%d' failed: " + e, req.body.userId, req.params.id);
         return httpUtil.sendGenericError(e, res);
     }
 });

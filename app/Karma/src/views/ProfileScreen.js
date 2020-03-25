@@ -25,6 +25,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -67,10 +68,6 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     setupIndividualProfile(res) {
         const {
             causes,
@@ -84,7 +81,8 @@ class ProfileScreen extends Component {
         this.setState({
             email: user.email,
             isOrganisation: false,
-            name: individual.firstName + " " + individual.lastName,
+            firstName: individual.firstName,
+            lastName: individual.lastName,
             user: user,
             location:
                 individual.address.townCity + " " + individual.address.postCode,
@@ -131,9 +129,12 @@ class ProfileScreen extends Component {
 
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.fetchProfileInfo();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.fetchProfileInfo();
+            },
+        );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();
@@ -143,10 +144,10 @@ class ProfileScreen extends Component {
         const authToken = await getAuthToken();
 
         request
-            .get("http://localhost:8000/profile")
+            .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
+                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -286,7 +287,8 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.name}
+                                            {this.state.firstName}{" "}
+                                            {this.state.lastName}
                                         </Text>
                                     )}
                                 </View>
@@ -422,6 +424,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                creatorName: this.state.name,
                                                 email: this.state.email,
                                             })
                                         }
@@ -447,7 +450,9 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                navigate("ProfileEdit")
+                                                navigate("ProfileEdit", {
+                                                    profile: this.state,
+                                                })
                                             }>
                                             <Image
                                                 source={icons.edit_grey}
@@ -477,15 +482,13 @@ class ProfileScreen extends Component {
                                     }}>
                                     {this.state.causes.length > 0 ? (
                                         <View style={CauseStyles.container}>
-                                            {this.state.causes.map(cause => {
-                                                return (
-                                                    <CauseItem
-                                                        cause={cause}
-                                                        key={cause.id}
-                                                        isDisabled={true}
-                                                    />
-                                                );
-                                            })}
+                                            {this.state.causes.map(cause => (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            ))}
                                         </View>
                                     ) : (
                                         <View style={Styles.ph24}>
@@ -498,7 +501,9 @@ class ProfileScreen extends Component {
                                     <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                navigate("ProfileEdit")
+                                                navigate("ProfileEdit", {
+                                                    profile: this.state,
+                                                })
                                             }>
                                             <Image
                                                 source={icons.edit_grey}

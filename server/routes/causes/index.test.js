@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../../app');
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
-const causeRepository = require("../../models/databaseRepositories/causeRepository");
+const causeRepository = require("../../repositories/cause");
 
-jest.mock("../../models/databaseRepositories/causeRepository");
+jest.mock("../../repositories/cause");
 
 
 beforeEach(() => {

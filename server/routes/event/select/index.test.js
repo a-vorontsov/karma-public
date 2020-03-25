@@ -1,24 +1,24 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
-const util = require("../../../util/util");
+const testHelpers = require("../../../test/helpers");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
-const eventService = require("../../../modules/event/eventService");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const eventSignUpService = require("../../../modules/event/signup/eventSignupService");
-const selectedCauseRepository = require("../../../models/databaseRepositories/selectedCauseRepository");
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
+const eventService = require("../../../modules/event");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const eventSignUpService = require("../../../modules/event/signup");
+const selectedCauseRepository = require("../../../repositories/cause/selected");
+const individualRepository = require("../../../repositories/individual");
 
-jest.mock("../../../models/databaseRepositories/addressRepository");
-jest.mock("../../../models/databaseRepositories/selectedCauseRepository");
-jest.mock("../../../models/databaseRepositories/individualRepository");
-jest.mock("../../../models/databaseRepositories/userRepository");
+jest.mock("../../../repositories/address");
+jest.mock("../../../repositories/cause/selected");
+jest.mock("../../../repositories/individual");
+jest.mock("../../../repositories/user");
 
-jest.mock("../../../modules/event/eventService");
-jest.mock("../../../modules/event/favourite/eventFavouriteService");
-jest.mock("../../../modules/event/signup/eventSignupService");
+jest.mock("../../../modules/event");
+jest.mock("../../../modules/event/favourite");
+jest.mock("../../../modules/event/signup");
 
-jest.mock("../../../util/util");
+jest.mock("../../../util");
 jest.mock("../../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 

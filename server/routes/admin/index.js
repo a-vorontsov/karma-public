@@ -5,11 +5,11 @@ const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
-const httpUtil = require("../../util/httpUtil");
+const httpUtil = require("../../util/http");
 const deletionModule = require("../../modules/deletion");
-const adminService = require("../../modules/admin/adminService");
+const adminService = require("../../modules/admin/");
 const validation = require("../../modules/validation");
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever an admin requests to see all users.<br/>
@@ -43,13 +43,13 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get all users
  *  @function
  */
-router.get("/users", authAgent.requireAuthentication, async (req, res) => {
+router.get("/users", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Fetching all users for administrator");
+        log.info("Admin (user id %d): Fetching all users", req.query.userId);
         const usersResult = await adminService.getAllUsers();
         return httpUtil.sendResult(usersResult, res);
     } catch (e) {
-        log.error("Users fetching failed: " + e);
+        log.error("Admin (user id %d): Users fetching failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -57,9 +57,10 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
 /**
  * Endpoint called whenever an admin requests to delete all information in database for
  * specific user.<br/>
- <p><b>Route: </b>/admin/user/delete?userId=2 (POST)</p>
+ <p><b>Route: </b>/admin/user/delete?deleteUserId=2 (POST)</p>
  <p><b>Permissions: </b>require admin permissions</p>
  * @param {string} req.headers.authorization authToken
+ * @param {string} req.query.deleteUserId id of user to be deleted
  * @returns {Object}
  *  status: 200, description: The deleted user.<br/>
  *  status: 500, description: DB error
@@ -81,14 +82,14 @@ router.get("/users", authAgent.requireAuthentication, async (req, res) => {
  *  @name Post delete user info
  *  @function
  */
-router.post("/user/delete", authAgent.requireAuthentication, async (req, res) => {
+router.post("/user/delete", authService.requireAuthentication, async (req, res) => {
     try {
-        const userId = req.query.userId;
-        log.info("Deleting all user data for %d", userId);
-        const deletionResult = await deletionModule.deleteAllInformation(userId);
+        const deleteUserId = req.query.deleteUserId;
+        log.info("Admin (user id %d): Deleting all user data for user id '%d'", req.query.userId, deleteUserId);
+        const deletionResult = await deletionModule.deleteAllInformation(deleteUserId);
         return httpUtil.sendResult(deletionResult, res);
     } catch (e) {
-        log.error("User couldn't be deleted: " + e);
+        log.error("Admin (user id %d): User id '%d' couldn't be deleted: " + e, req.query.userId, req.query.deleteUserId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -139,13 +140,13 @@ router.post("/user/delete", authAgent.requireAuthentication, async (req, res) =>
  *  @function
 
  */
-router.get("/individuals", authAgent.requireAuthentication, async (req, res) => {
+router.get("/individuals", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Fetching all individuals for administrator");
+        log.info("Admin (user id %d): Fetching all individuals", req.query.userId);
         const individualsResult = await adminService.getAllIndividuals();
         return httpUtil.sendResult(individualsResult, res);
     } catch (e) {
-        log.error("Individuals fetching failed: " + e);
+        log.error("Admin (user id %d): Individuals fetching failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -181,9 +182,9 @@ router.get("/individuals", authAgent.requireAuthentication, async (req, res) => 
  *  @name Ban individual
  *  @function
  */
-router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
+router.post("/toggleBan", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Toggling ban for individual");
+        log.info("Admin (user id %d): Toggling ban for user id '%d'", req.body.userId, req.body.data.individual.userId);
         const individual = req.body.data.individual;
         const validationResult = validation.validateIndividual(individual);
         if (validationResult.errors.length > 0) {
@@ -193,7 +194,7 @@ router.post("/toggleBan", authAgent.requireAuthentication, async (req, res) => {
         const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
         return httpUtil.sendResult(bannedIndividualResult, res);
     } catch (e) {
-        log.error("Banning individual failed: " + e);
+        log.error("Admin (user id %d): Toggling ban for user id '%d' failed: " + e, req.body.userId, req.body.data.individual.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

@@ -5,7 +5,7 @@
 const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wishes to sign-out from the
@@ -25,15 +25,15 @@ const authAgent = require("../../modules/authentication/auth-agent");
  * @name Sign-out
  * @function
  */
-router.get("/", authAgent.requireAuthentication, async (req, res) => {
+router.get("/", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Logging user out");
-        authAgent.logOut(req.body.authToken);
+        log.info("User id '%d': Logging out", req.query.userId);
+        authService.logOut(req.body.authToken);
         res.status(200).send({
             message: "User successfully logged out.",
         });
     } catch (e) {
-        log.error("Logging user out failed");
+        log.error("User id '%d': Failed logging out: " + e, req.query.userId);
         res.status(500).send({
             message: e.message,
         });

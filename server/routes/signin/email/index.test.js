@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../../../app");
-const testHelpers = require("../../../test/testHelpers");
-const regRepo = require("../../../models/databaseRepositories/registrationRepository");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
+const testHelpers = require("../../../test/helpers");
+const regRepo = require("../../../repositories/registration");
+const userRepo = require("../../../repositories/user");
 
 let registrationExample4, registrationExample5, registrationExample6, user4;
 beforeEach(() => {
@@ -91,7 +91,7 @@ test("sign-in with partial registration works", async () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe(
-        "User account registered, but no indiv/org profile. Aks for password and then go to indiv/org selection screen.",
+        "User account registered, but no indiv/org profile. Ask for password and then go to indiv/org selection screen.",
     );
 });
 
