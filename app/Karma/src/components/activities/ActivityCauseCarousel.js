@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View, Dimensions} from "react-native";
 import {RegularText} from "../../components/text";
 import CarouselStyles, {
     itemWidth2,
@@ -9,7 +9,8 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "./ActivityCard";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
-
+const {width: SCREEN_WIDTH} = Dimensions.get("screen");
+const FORM_WIDTH = 0.9 * SCREEN_WIDTH;
 class ActivityCauseCarousel extends React.Component {
     navigation = this.props.navigation;
     _renderItem = ({item}) => {
@@ -26,6 +27,10 @@ class ActivityCauseCarousel extends React.Component {
         );
     };
 
+    titleCase = str => {
+        return str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
+    };
+
     render() {
         return (
             <View
@@ -38,14 +43,20 @@ class ActivityCauseCarousel extends React.Component {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
+                        width: FORM_WIDTH,
                     }}>
                     <TouchableOpacity>
                         <RegularText style={styles.causeHeader}>
-                            {this.props.cause}
+                            {this.titleCase(this.props.cause)}
                         </RegularText>
                     </TouchableOpacity>
+
                     <TouchableOpacity
-                        style={{marginLeft: 150, alignItems: "center"}}
+                        style={{
+                            alignItems: "center",
+                            position: "absolute",
+                            right: 0,
+                        }}
                         onPress={() => this.navigation.navigate("CauseAll")}>
                         <RegularText style={styles.bioHeaderAlt}>
                             See All

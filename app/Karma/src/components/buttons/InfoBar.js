@@ -7,10 +7,12 @@ export default class InfoBar extends React.Component {
         const {title, image} = this.props;
         return (
             <View style={styles.button1}>
-                <Image
-                    source={image}
-                    style={{width: 20, height: 20, resizeMode: "contain"}}
-                />
+                <View style={{alignSelf: "center"}}>
+                    <Image
+                        source={image}
+                        style={{width: 15, height: 15, resizeMode: "contain"}}
+                    />
+                </View>
                 <RegularText style={styles.titleStyle}>{title}</RegularText>
             </View>
         );

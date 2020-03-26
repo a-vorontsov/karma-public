@@ -185,7 +185,10 @@ class ActivitiesAllScreen extends Component {
                             }
                             data={this.state.activitiesList}
                             renderItem={({item}) => (
-                                <ActivityDisplayCard activity={item} />
+                                <ActivityDisplayCard
+                                    activity={item}
+                                    key={item.eventId}
+                                />
                             )}
                             ListFooterComponent={this.renderFooter.bind(this)} //Adding Load More button as footer component
                             ListEmptyComponent={

@@ -170,10 +170,12 @@ class ActivityCard extends React.Component {
                                 title={` ${formatAMPM(activity.date)}`}
                                 image={icons.clock}
                             />
+
                             <InfoBar
                                 title={`${activity.spots} Spots Left`}
                                 image={icons.people}
                             />
+
                             <View
                                 style={{
                                     flex: 1,
