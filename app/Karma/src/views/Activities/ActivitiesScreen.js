@@ -9,7 +9,7 @@ import {
     Image,
     Switch,
     Dimensions,
-    ScrollView
+    ScrollView,
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import Modal, {ModalContent} from "react-native-modals";
@@ -22,7 +22,6 @@ import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import Calendar from "../../components/Calendar";
 import {Button} from "../../components/buttons";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
-import Styles from "../../styles/Styles";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -112,204 +111,217 @@ class ActivitiesScreen extends Component {
                                 this.setState({visible: false});
                             }}>
                             <ScrollView>
-                            <ModalContent>
-                                {/* AVAILABILITY */}
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                    }}>
-                                    <RegularText style={styles.contentText}>
-                                        Availability:
-                                    </RegularText>
-                                    <View style={styles.leftItem}>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                this.setState({
-                                                    calendarVisible: !this.state
-                                                        .calendarVisible,
-                                                });
-                                            }}>
-                                            <Image
-                                                source={icons.calendar}
-                                                style={{
-                                                    width: 25,
-                                                    height: 25,
-                                                    resizeMode: "contain",
-                                                }}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                {this.state.calendarVisible && (
+                                <ModalContent>
+                                    {/* AVAILABILITY */}
                                     <View
                                         style={{
-                                            flexDirection: "column",
-                                            justifyContent: "space-between",
+                                            flexDirection: "row",
                                             alignItems: "center",
                                         }}>
-                                        <View>
-                                            <Calendar />
-                                        </View>
-                                        <View
-                                            style={{
-                                                flexDirection: "row",
-                                                justifyContent: "space-evenly",
-                                            }}>
-                                            <Button
-                                                size={15}
-                                                ph={20}
-                                                title={"Set Dates"}
+                                        <RegularText style={styles.contentText}>
+                                            Availability:
+                                        </RegularText>
+                                        <View style={styles.leftItem}>
+                                            <TouchableOpacity
                                                 onPress={() => {
                                                     this.setState({
-                                                        calendarVisible: false,
+                                                        calendarVisible: !this
+                                                            .state
+                                                            .calendarVisible,
                                                     });
-                                                }}
-                                            />
+                                                }}>
+                                                <Image
+                                                    source={icons.calendar}
+                                                    style={{
+                                                        width: 25,
+                                                        height: 25,
+                                                        resizeMode: "contain",
+                                                    }}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
-                                )}
+                                    {this.state.calendarVisible && (
+                                        <View
+                                            style={{
+                                                flexDirection: "column",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                            }}>
+                                            <View>
+                                                <Calendar />
+                                            </View>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    justifyContent:
+                                                        "space-evenly",
+                                                }}>
+                                                <Button
+                                                    size={15}
+                                                    ph={20}
+                                                    title={"Set Dates"}
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            calendarVisible: false,
+                                                        });
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>
+                                    )}
 
-                                {/* DISTANCE */}
-                                {!this.state.calendarVisible && (
-                                    <View>
+                                    {/* DISTANCE */}
+                                    {!this.state.calendarVisible && (
+                                        <View>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                }}>
+                                                <RegularText
+                                                    style={styles.contentText}>
+                                                    Distance
+                                                </RegularText>
+                                                <View style={styles.leftItem}>
+                                                    <RegularText
+                                                        style={
+                                                            styles.contentText
+                                                        }>
+                                                        {this.state.distance}{" "}
+                                                        Miles
+                                                    </RegularText>
+                                                </View>
+                                            </View>
+                                            <Slider
+                                                style={styles.slider}
+                                                value={this.state.distance}
+                                                minimumValue={0}
+                                                maximumValue={100}
+                                                step={1}
+                                                thumbTintColor={Colours.blue}
+                                                minimumTrackTintColor="#A9DCDF"
+                                                onSlidingComplete={val =>
+                                                    this.setState({
+                                                        distance: val,
+                                                    })
+                                                }
+                                            />
+                                        </View>
+                                    )}
+
+                                    {/* WOMEN ONLY */}
+                                    {!this.state.calendarVisible && (
                                         <View
                                             style={{
                                                 flexDirection: "row",
                                                 alignItems: "center",
+                                                paddingBottom: 10,
                                             }}>
                                             <RegularText
                                                 style={styles.contentText}>
-                                                Distance
+                                                Women Only Activities:
                                             </RegularText>
                                             <View style={styles.leftItem}>
-                                                <RegularText
-                                                    style={styles.contentText}>
-                                                    {this.state.distance} Miles
-                                                </RegularText>
+                                                <Switch
+                                                    style={styles.switch}
+                                                    trackColor={{
+                                                        true: "#A9DCDF",
+                                                        false: Colours.grey,
+                                                    }}
+                                                    thumbColor={Colours.grey}
+                                                    onChange={() =>
+                                                        this.setState({
+                                                            womenOnly: !this
+                                                                .state
+                                                                .womenOnly,
+                                                        })
+                                                    }
+                                                    value={this.state.womenOnly}
+                                                />
                                             </View>
                                         </View>
-                                        <Slider
-                                            style={styles.slider}
-                                            value={this.state.distance}
-                                            minimumValue={0}
-                                            maximumValue={100}
-                                            step={1}
-                                            thumbTintColor={Colours.blue}
-                                            minimumTrackTintColor="#A9DCDF"
-                                            onSlidingComplete={val =>
-                                                this.setState({distance: val})
-                                            }
+                                    )}
+                                    {/* PHYSICAL ACTIVITY */}
+                                    {!this.state.calendarVisible && (
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                                paddingBottom: 10,
+                                            }}>
+                                            <RegularText
+                                                style={styles.contentText}>
+                                                Requires Physical Activity:
+                                            </RegularText>
+                                            <View style={styles.leftItem}>
+                                                <Switch
+                                                    style={styles.switch}
+                                                    trackColor={{
+                                                        true: "#A9DCDF",
+                                                        false: Colours.grey,
+                                                    }}
+                                                    thumbColor={Colours.grey}
+                                                    onChange={() =>
+                                                        this.setState({
+                                                            physicalActivity: !this
+                                                                .state
+                                                                .physicalActivity,
+                                                        })
+                                                    }
+                                                    value={
+                                                        this.state
+                                                            .physicalActivity
+                                                    }
+                                                />
+                                            </View>
+                                        </View>
+                                    )}
+                                    {/* LOCATION VISIBLE */}
+                                    {!this.state.calendarVisible && (
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                                paddingBottom: 10,
+                                            }}>
+                                            <RegularText
+                                                style={styles.contentText}>
+                                                Full Location Visible:
+                                            </RegularText>
+                                            <View style={styles.leftItem}>
+                                                <Switch
+                                                    style={styles.switch}
+                                                    trackColor={{
+                                                        true: "#A9DCDF",
+                                                        false: Colours.grey,
+                                                    }}
+                                                    thumbColor={Colours.grey}
+                                                    onChange={() =>
+                                                        this.setState({
+                                                            locationVisible: !this
+                                                                .state
+                                                                .locationVisible,
+                                                        })
+                                                    }
+                                                    value={
+                                                        this.state
+                                                            .locationVisible
+                                                    }
+                                                />
+                                            </View>
+                                        </View>
+                                    )}
+                                    {!this.state.calendarVisible && (
+                                        <Button
+                                            size={15}
+                                            title={"Update"}
+                                            onPress={() => {
+                                                this.setState({visible: false});
+                                            }}
                                         />
-                                    </View>
-                                )}
-
-                                {/* WOMEN ONLY */}
-                                {!this.state.calendarVisible && (
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            paddingBottom: 10,
-                                        }}>
-                                        <RegularText style={styles.contentText}>
-                                            Women Only Activities:
-                                        </RegularText>
-                                        <View style={styles.leftItem}>
-                                            <Switch
-                                                style={styles.switch}
-                                                trackColor={{
-                                                    true: "#A9DCDF",
-                                                    false: Colours.grey,
-                                                }}
-                                                thumbColor={Colours.grey}
-                                                onChange={() =>
-                                                    this.setState({
-                                                        womenOnly: !this.state
-                                                            .womenOnly,
-                                                    })
-                                                }
-                                                value={this.state.womenOnly}
-                                            />
-                                        </View>
-                                    </View>
-                                )}
-                                {/* PHYSICAL ACTIVITY */}
-                                {!this.state.calendarVisible && (
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            paddingBottom: 10,
-                                        }}>
-                                        <RegularText style={styles.contentText}>
-                                            Requires Physical Activity:
-                                        </RegularText>
-                                        <View style={styles.leftItem}>
-                                            <Switch
-                                                style={styles.switch}
-                                                trackColor={{
-                                                    true: "#A9DCDF",
-                                                    false: Colours.grey,
-                                                }}
-                                                thumbColor={Colours.grey}
-                                                onChange={() =>
-                                                    this.setState({
-                                                        physicalActivity: !this
-                                                            .state
-                                                            .physicalActivity,
-                                                    })
-                                                }
-                                                value={
-                                                    this.state.physicalActivity
-                                                }
-                                            />
-                                        </View>
-                                    </View>
-                                )}
-                                {/* LOCATION VISIBLE */}
-                                {!this.state.calendarVisible && (
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            paddingBottom: 10,
-                                        }}>
-                                        <RegularText style={styles.contentText}>
-                                            Full Location Visible:
-                                        </RegularText>
-                                        <View style={styles.leftItem}>
-                                            <Switch
-                                                style={styles.switch}
-                                                trackColor={{
-                                                    true: "#A9DCDF",
-                                                    false: Colours.grey,
-                                                }}
-                                                thumbColor={Colours.grey}
-                                                onChange={() =>
-                                                    this.setState({
-                                                        locationVisible: !this
-                                                            .state
-                                                            .locationVisible,
-                                                    })
-                                                }
-                                                value={
-                                                    this.state.locationVisible
-                                                }
-                                            />
-                                        </View>
-                                    </View>
-                                )}
-                                {!this.state.calendarVisible && (
-                                    <Button
-                                        size={15}
-                                        title={"Update"}
-                                        onPress={() => {
-                                            this.setState({visible: false});
-                                        }}
-                                    />
-                                )}
-                            </ModalContent>
+                                    )}
+                                </ModalContent>
                             </ScrollView>
                         </Modal>
                     </View>
