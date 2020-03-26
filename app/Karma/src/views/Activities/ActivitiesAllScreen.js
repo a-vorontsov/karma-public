@@ -15,6 +15,7 @@ import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const queryString = require("query-string");
 const formWidth = 0.6 * SCREEN_WIDTH;
 
 const request = require("superagent");
@@ -22,6 +23,7 @@ const request = require("superagent");
 class ActivitiesAllScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isRefreshing: false,
             loading: true, // Loading state used while loading the data for the first time
@@ -34,17 +36,55 @@ class ActivitiesAllScreen extends Component {
     }
 
     async componentDidMount() {
-        await this.setState({loading: true});
-        await this.fetchActivities();
+        this.setState({loading: true});
+        this.fetchActivities();
     }
 
+    getDateString(date) {
+        if (date) {
+            const dateString = JSON.stringify(date)
+                .split("T")[0] // get rid of the timezone
+                .slice(1); //get rid of the " at the beginning of the string
+            return dateString;
+        }
+        return null;
+    }
+    getFiltersObject() {
+        const {
+            maxDistance,
+            availabilityStart,
+            availabilityEnd,
+        } = this.props.filters;
+        if (this.props.filtersEnabled) {
+            return {
+                maxDistance: maxDistance,
+                availabilityStart: this.getDateString(availabilityStart),
+                availabilityEnd: this.getDateString(availabilityEnd),
+            };
+        }
+        return {};
+    }
+    getBooleanFilters() {
+        if (this.props.filtersEnabled) {
+            return queryString.stringify(
+                {filter: this.props.filters.booleanFilters},
+                {arrayFormat: "bracket", encode: false},
+            );
+        }
+        return "";
+    }
     async fetchActivities() {
         const authToken = await getAuthToken();
         this.setState({fetchingDataFromServer: true});
+
         request
-            .get(`${REACT_APP_API_URL}/event`)
+            .get(`${REACT_APP_API_URL}/event?${this.getBooleanFilters()}`)
             .set("authorization", authToken)
-            .query({currentPage: this.page, pageSize: 5})
+            .query({
+                currentPage: this.page,
+                pageSize: 5,
+                ...this.getFiltersObject(),
+            })
             .then(async res => {
                 console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
@@ -63,6 +103,9 @@ class ActivitiesAllScreen extends Component {
     }
 
     renderFooter() {
+        if (this.state.activitiesList.length === 0) {
+            return null;
+        }
         return (
             //Footer View with Load More button
             <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
@@ -79,13 +122,17 @@ class ActivitiesAllScreen extends Component {
     }
 
     async onRefresh() {
-        this.page = 1;
-        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
         const authToken = await getAuthToken();
+        this.setState({isRefreshing: true});
+        this.page = 1;
         request
-            .get(`${REACT_APP_API_URL}/event`)
+            .get(`${REACT_APP_API_URL}/event?${this.getBooleanFilters()}`)
             .set("authorization", authToken)
-            .query({currentPage: this.page, pageSize: 5})
+            .query({
+                currentPage: this.page,
+                pageSize: 5,
+                ...this.getFiltersObject(),
+            })
             .then(async res => {
                 console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.

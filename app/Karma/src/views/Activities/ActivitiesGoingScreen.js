@@ -72,7 +72,7 @@ class ActivitiesGoingScreen extends Component {
                             return (
                                 <ActivityDisplayCard
                                     activity={activity}
-                                    key={activity.id}
+                                    key={activity.eventId}
                                     signedup={true} //TODO
                                 />
                             );

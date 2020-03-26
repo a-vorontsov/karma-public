@@ -55,10 +55,8 @@ const getFavouriteEvents = async (userId) => {
 
     const findResult = await individualRepository.findFavouriteEvents(userId);
     const events = findResult.rows;
-    if (events.length !== 0) {
-        const user = userIdCheckResponse.user;
-        eventSorter.sortByTimeAndDistance(events, user);
-    }
+    const user = userIdCheckResponse.user;
+    eventSorter.sortByTimeAndDistance(events, user);
     return ({
         status: 200,
         message: "Favourite events fetched successfully",
