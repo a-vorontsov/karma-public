@@ -18,11 +18,16 @@ const httpUtil = require("../../util/http");
  *  @name Get all causes
  *  @function
  */
-router.get('/', authService.acceptAnyAuthentication, (req, res) => {
-    log.info("User id '%d': Getting all causes", req.query.userId);
-    causeRepository.findAll()
-        .then(result => res.status(200).json({data: result.rows}))
-        .catch(err => res.status(500).send(err));
+router.get('/', authService.acceptAnyAuthentication, async (req, res) => {
+    try {
+        log.info("%s: Getting all causes", req.query.userId ? `User id '${req.query.userId}'` : "No auth");
+        const allCausesResult = await causeRepository.findAll();
+        const causes = allCausesResult.rows;
+        res.status(200).send({data: causes});
+    } catch (e) {
+        log.error("%s: Getting all causes failed", req.query.userId ? `User id '${req.query.userId}'` : "No auth");
+        httpUtil.sendGenericError(e, res);
+    }
 });
 
 /**
@@ -38,23 +43,28 @@ router.get('/', authService.acceptAnyAuthentication, (req, res) => {
  *  @name Get by ID
  *  @function
  */
-router.get('/:id', authService.acceptAnyAuthentication, (req, res) => {
-    const id = req.params.id;
-    log.info("User id '%d': Getting cause id '%d'", req.query.userId, id);
-    if (!id) return res.status(400).send("No id was specified");
-    if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
-    causeRepository.findById(id)
-        .then(result => {
-            if (result.rows.length === 0) {
-                return httpUtil.sendResult({
-                    status: 400,
-                    message: "No cause with given id",
-                    data: {},
-                }, res);
-            }
-            res.status(200).json({data: result.rows});
-        })
-        .catch(err => res.status(500).send(err));
+router.get('/:id', authService.acceptAnyAuthentication, async (req, res) => {
+    try {
+        const id = req.params.id;
+        log.info("%s: Getting cause id '%d'", req.query.userId ? `User id '${req.query.userId}'` : "No auth", id);
+
+        if (!id) return res.status(400).send("No id was specified");
+        if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
+
+        const findCauseResult = await causeRepository.findById(id);
+        const cause = findCauseResult.rows;
+        if (cause.length === 0) {
+            return httpUtil.sendResult({
+                status: 400,
+                message: "No cause with given id",
+                data: {},
+            }, res);
+        }
+        res.status(200).send({data: cause});
+    } catch (e) {
+        log.error("%s: Getting cause id '%d' failed", req.query.userId ? `User id '${req.query.userId}'` : "No auth", req.params.id);
+        httpUtil.sendGenericError(e, res);
+    }
 });
 
 

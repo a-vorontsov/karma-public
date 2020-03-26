@@ -66,7 +66,7 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
         log.info("'%s': Starting sign-in email sign-in", req.body.data.email);
         const email = req.body.data.email;
         if (!(await regStatus.emailExists(email))) {
-            log.info("'%s': Sign-in with new account, registering email");
+            log.info("'%s': Sign-in with new account, registering email", email);
             try {
                 await userAgent.registerEmail(email);
                 log.info("'%s': Registering email successful", email);
