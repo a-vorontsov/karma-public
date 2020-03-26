@@ -19,19 +19,15 @@ class AboutKarmaScreen extends Component {
 
     async componentDidMount() {
         try {
-            let about = await AsyncStorage.getItem("about");
+            let values = await AsyncStorage.multiGet(["about", "ACCESS_TOKEN"]);
+            let about = values[0][1];
+            const authToken = values[1][1];
             if (about === "") {
-                request
+                const res = await request
                     .get(`${REACT_APP_API_URL}/information`)
-                    .set("authorization")
-                    .query({type: about})
-                    .then(res => {
-                        console.log(res.body);
-                        about = "";
-                    })
-                    .catch(er => {
-                        console.log(er.message);
-                    });
+                    .set("authorization", authToken)
+                    .query({type: "about"});
+                about = res.body.data.information.content;
             }
             this.setState({
                 aboutText: about,
@@ -42,7 +38,6 @@ class AboutKarmaScreen extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <SafeAreaView style={[Styles.container, Styles.ph24]}>
                 <View style={Styles.ph24}>

@@ -27,12 +27,10 @@ export default class PickCausesScreen extends React.Component {
             causes = JSON.parse(causes);
             const authToken = await getAuthToken();
             if (causes.length === 0) {
-                request
+                const res = await request
                     .get(`${REACT_APP_API_URL}/causes`)
-                    .set("authorization", authToken)
-                    .then(res => {
-                        causes = res.body.data;
-                    });
+                    .set("authorization", authToken);
+                causes = res.body.data;
             }
             this.setState({
                 causes,
