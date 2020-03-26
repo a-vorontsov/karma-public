@@ -316,10 +316,10 @@ class ProfileEditScreen extends Component {
                             <View>
                                 <View style={{width: HALF}}>
                                     <Text
-                                        style={[
-                                            styles.nameText,
-                                            {position: "absolute", top: -35},
-                                        ]}>
+                                        numberOfLines={1}
+                                        style={[styles.nameText, {position: "absolute", top: -35}]}>
+                                            {this.state.firstName}{" "}
+                                            {this.state.lastName}
                                         {isOrganisation
                                             ? this.baseState.organisation.name
                                             : this.baseState.individual

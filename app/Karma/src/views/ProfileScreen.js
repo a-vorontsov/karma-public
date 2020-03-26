@@ -34,7 +34,6 @@ const icons = {
     cog: require("../assets/images/general-logos/cog.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
-    edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     ribbon: require("../assets/images/general-logos/ribbon.png"),
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
@@ -448,19 +447,6 @@ class ProfileScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Bio
                                     </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit", {
-                                                    profile: this.state,
-                                                })
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
                                 </View>
                                 <View
                                     style={{
@@ -487,7 +473,7 @@ class ProfileScreen extends Component {
                                         <View style={Styles.ph24}>
                                             <RegularText>
                                                 You do not have a bio. Please
-                                                edit your profile to add on.
+                                                edit your profile to add one.
                                             </RegularText>
                                         </View>
                                     )}

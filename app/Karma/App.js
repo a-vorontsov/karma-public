@@ -11,7 +11,7 @@ import {initialiseApp} from "./src/util/initialise";
 const AppNavigator = createSwitchNavigator(
     {
         Splash: {
-            getScreen: () => require("./src/views/PickCausesScreen").default,
+            getScreen: () => require("./src/views/ProfileScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,

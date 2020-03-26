@@ -9,6 +9,7 @@ import {
     Image,
     Switch,
     Dimensions,
+    ScrollView
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import Modal, {ModalContent} from "react-native-modals";
@@ -21,6 +22,7 @@ import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import Calendar from "../../components/Calendar";
 import {Button} from "../../components/buttons";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
+import Styles from "../../styles/Styles";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -109,6 +111,7 @@ class ActivitiesScreen extends Component {
                             onTouchOutside={() => {
                                 this.setState({visible: false});
                             }}>
+                            <ScrollView>
                             <ModalContent>
                                 {/* AVAILABILITY */}
                                 <View
@@ -307,6 +310,7 @@ class ActivitiesScreen extends Component {
                                     />
                                 )}
                             </ModalContent>
+                            </ScrollView>
                         </Modal>
                     </View>
 
