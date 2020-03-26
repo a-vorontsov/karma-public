@@ -52,13 +52,20 @@ export default class WelcomeScreen extends Component {
 
     async componentDidMount() {
         try {
-            const authToken = await getAuthToken();
-            const response = await request
-                .get(`${REACT_APP_API_URL}/authentication`)
-                .set("authorization", authToken);
-            if (response.status === 200) {
-                const {navigate} = this.props.navigation;
-                navigate("Activities");
+            const isFullySignedUp = await AsyncStorage.getItem(
+                "FULLY_SIGNED_UP",
+            );
+            if (isFullySignedUp) {
+                const authToken = await getAuthToken();
+                if (authToken !== "") {
+                    const response = await request
+                        .get(`${REACT_APP_API_URL}/authentication`)
+                        .set("authorization", authToken);
+                    if (response.status === 200) {
+                        const {navigate} = this.props.navigation;
+                        navigate("Activities");
+                    }
+                }
             }
         } catch (err) {
             console.log(err);
@@ -134,10 +141,11 @@ export default class WelcomeScreen extends Component {
                         email: this.state.emailInput,
                     },
                 })
-                .then(res => {
+                .then(async res => {
                     console.log(res.body);
                     if (res.body.data.isFullySignedUp) {
                         //if user isFullySignedUp, returning user
+                        await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
                         this.setState({
                             showPassField: true,
                             showCode: false,

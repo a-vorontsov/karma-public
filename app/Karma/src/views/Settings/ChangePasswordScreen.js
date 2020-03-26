@@ -8,6 +8,7 @@ import ChangePasswordInput from "../../components/input/ChangePasswordInput";
 import {GradientButton} from "../../components/buttons";
 import {SubTitleText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -34,7 +35,7 @@ export default class ChangePasswordScreen extends Component {
         this.setState({isFirstOpened: false});
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/profile/edit/password")
+            .post(`${REACT_APP_API_URL}/profile/edit/password`)
             .set("authorization", authToken)
             .send({
                 oldPassword: this.state.oldPasswordInput,
@@ -45,8 +46,8 @@ export default class ChangePasswordScreen extends Component {
                 // password is of correct format
                 Alert.alert(
                     "Successful password change",
-                    "You've successfully changed your password!",
-                    [{text: "OK", onPress: () => navigate("SettingsMenu")}],
+                    "Please log in with your new password.",
+                    [{text: "OK", onPress: () => navigate("WelcomeScreen")}],
                 );
             })
             .catch(err => {
@@ -60,7 +61,7 @@ export default class ChangePasswordScreen extends Component {
 
     onInputChange = inputState => {
         this.setState({
-            passwordInput: inputState.confPassword.confPassword,
+            passwordInput: inputState.confirmPassword.confirmPassword,
         });
     };
 

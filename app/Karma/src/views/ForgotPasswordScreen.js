@@ -8,6 +8,7 @@ import {TextInput} from "../components/input";
 import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {GradientButton} from "../components/buttons";
 import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
@@ -29,7 +30,7 @@ export default class ForgotPasswordScreen extends Component {
         this.setState({isFirstOpened: false});
         const authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/reset")
+            .post(`${REACT_APP_API_URL}/reset`)
             .set("authorization", authToken)
             .send({
                 data: {

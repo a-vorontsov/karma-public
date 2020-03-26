@@ -22,6 +22,7 @@ import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
 import {getAuthToken} from "../util/credentials";
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -134,13 +135,10 @@ class AboutScreen extends React.Component {
                 .send({
                     data: {individual: {...individual}},
                 })
-                .then(res => {
+                .then(async res => {
                     console.log(res.body);
-                    this.props.navigation.navigate("PickCauses", {
-                        photo: this.state.photo,
-                        gender: this.state.gender,
-                        date: this.state.date,
-                    });
+                    await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
+                    this.props.navigation.navigate("PickCauses");
                     return;
                 })
                 .catch(err => {

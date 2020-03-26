@@ -20,20 +20,18 @@ class TermsScreen extends Component {
 
     async componentDidMount() {
         try {
-            let terms = AsyncStorage.getItem("terms");
+            let values = await AsyncStorage.multiGet(["terms", "ACCESS_TOKEN"]);
+            let terms = values[0][1];
+            const authToken = values[1][1];
             if (terms === "") {
-                request
+                const res = await request
                     .get(`${REACT_APP_API_URL}/information`)
-                    .query({type: terms})
-                    .then(res => {
-                        terms = res.body.data.information.content;
-                    })
-                    .catch(er => {
-                        console.log(er.message);
-                    });
+                    .set("authorization", authToken)
+                    .query({type: "terms"});
+                terms = res.body.data.information.content;
             }
             this.setState({
-                termsText: terms ? terms : "",
+                termsText: terms,
             });
         } catch (err) {
             console.log(err);

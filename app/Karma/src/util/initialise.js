@@ -34,7 +34,7 @@ export const getPolicy = async () => {
             .set("authorization", authToken)
             .query({type: "privacyPolicy"});
         const {information} = response.body.data;
-        return information.content;
+        return information.content ? information.content : "";
     } catch (err) {
         console.log(err);
         return "";
@@ -44,7 +44,7 @@ export const getPolicy = async () => {
 export const storePolicy = async () => {
     try {
         const policy = await getPolicy();
-        await AsyncStorage.setItem("policy", JSON.stringify(policy));
+        await AsyncStorage.setItem("policy", policy);
     } catch (err) {
         console.log(err);
     }
@@ -67,7 +67,7 @@ export const getTerms = async () => {
 export const storeTerms = async () => {
     try {
         const terms = await getTerms();
-        await AsyncStorage.setItem("terms", JSON.stringify(terms));
+        await AsyncStorage.setItem("terms", terms);
     } catch (err) {
         console.log(err);
     }
@@ -90,7 +90,7 @@ export const getAbout = async () => {
 export const storeAbout = async () => {
     try {
         const about = await getAbout();
-        await AsyncStorage.setItem("about", JSON.stringify(about));
+        await AsyncStorage.setItem("about", about);
     } catch (err) {
         console.log(err);
     }

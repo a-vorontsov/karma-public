@@ -18,21 +18,27 @@ class PrivacyScreen extends Component {
     }
 
     async componentDidMount() {
-        let privacy = await AsyncStorage.getItem("policy");
-        if (privacy === "") {
-            request
-                .get(`${REACT_APP_API_URL}/information`)
-                .query({type: "privacyPolicy"})
-                .then(res => {
-                    privacy = res.body.data.information.content;
-                })
-                .catch(er => {
-                    console.log(er.message);
-                });
+        try {
+            let values = await AsyncStorage.multiGet([
+                "policy",
+                "ACCESS_TOKEN",
+            ]);
+            let privacy = values[0][1];
+            const authToken = values[1][1];
+            if (privacy === "") {
+                const res = await request
+                    .get(`${REACT_APP_API_URL}/information`)
+                    .set("authorization", authToken)
+                    .query({type: "privacyPolicy"});
+                console.log(res.body);
+                privacy = res.body.data.information.content;
+            }
+            this.setState({
+                privacyPolicyText: privacy,
+            });
+        } catch (err) {
+            console.log(err);
         }
-        this.setState({
-            privacyPolicyText: JSON.parse(privacy),
-        });
     }
 
     render() {

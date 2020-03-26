@@ -23,16 +23,18 @@ export default class CauseContainer extends React.Component {
     }
     async componentDidMount() {
         try {
-            let causes = await AsyncStorage.getItem("causes");
+            let values = await AsyncStorage.multiGet([
+                "causes",
+                "ACCESS_TOKEN",
+            ]);
+            let causes = values[0][1];
+            const authToken = values[1][1];
             causes = JSON.parse(causes);
-            const authToken = await getAuthToken();
             if (causes.length === 0) {
-                request
+                const res = await request
                     .get(`${REACT_APP_API_URL}/causes`)
-                    .set("authorization", authToken)
-                    .then(res => {
-                        causes = res.body.data;
-                    });
+                    .set("authorization", authToken);
+                causes = res.body.data;
             }
             this.setState({
                 causes,

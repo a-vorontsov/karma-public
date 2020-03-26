@@ -23,13 +23,17 @@ const AppNavigator = createSwitchNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default function App() {
-    initialiseApp();
-    return (
-        <MenuProvider>
-            <SafeAreaProvider>
-                <AppContainer />
-            </SafeAreaProvider>
-        </MenuProvider>
-    );
+export default class App extends React.Component {
+    componentDidMount() {
+        initialiseApp();
+    }
+    render() {
+        return (
+            <MenuProvider>
+                <SafeAreaProvider>
+                    <AppContainer />
+                </SafeAreaProvider>
+            </MenuProvider>
+        );
+    }
 }
