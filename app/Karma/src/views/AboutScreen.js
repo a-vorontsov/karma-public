@@ -7,6 +7,7 @@ import {
     KeyboardAvoidingView,
     TouchableOpacity,
     Platform,
+    Keyboard,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
@@ -232,7 +233,7 @@ class AboutScreen extends React.Component {
                                 placeholder="Last Name"
                                 name="lname"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() => this.dob.focus()}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                                 showError={
                                     this.state.firstOpen
                                         ? false

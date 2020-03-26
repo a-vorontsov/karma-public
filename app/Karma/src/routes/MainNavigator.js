@@ -93,6 +93,7 @@ const MainNavigator = createStackNavigator(
             cardStyle: {
                 backgroundColor: Colours.backgroundWhite,
             },
+            gestureEnabled: false,
         },
     },
 );

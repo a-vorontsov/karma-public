@@ -437,6 +437,9 @@ class ProfileEditScreen extends Component {
                                         </RegularText>
                                         <TextInput
                                             value={organisation.pocLastName}
+                                            inputRef={ref =>
+                                                (this.lastName = ref)
+                                            }
                                             name="pocLastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>

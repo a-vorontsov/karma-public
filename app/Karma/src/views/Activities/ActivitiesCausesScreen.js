@@ -28,7 +28,6 @@ class ActivitiesCausesScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/causes`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.message);
                 this.setState({
                     activitiesByCause: result.body.data,
                 });
