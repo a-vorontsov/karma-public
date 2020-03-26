@@ -65,10 +65,14 @@ const updateAvatar = (req, res) => {
 
                 upload(req, res, error => {
                     if (!req.file) {
+                        log.error(`Failed avatar updated for ${userType} ` +
+                            `with user ID ${req.query.userId}: no file was given`);
                         res.status(400).send({
                             message: `No file was given`,
                         });
                     } else if (!/^image\/((jpe?g)|(png))$/.test(req.file.mimetype)) {
+                        log.error(`Failed avatar updated for ${userType} ` +
+                            `with user ID ${req.query.userId}: invalid filetype give (${req.file.mimetype})`);
                         res.status(400).send({
                             message: `File type must be .png or .jpg'`,
                         });
@@ -83,7 +87,7 @@ const updateAvatar = (req, res) => {
                                 imageRepository.updateIndividualAvatar :
                                 imageRepository.updateOrganisationAvatar;
                             updateUserImg(user, picture).then((result) => {
-                                log.info(`Updated avatar for ${userType}` +
+                                log.info(`Updated avatar for ${userType} ` +
                                  `with user ID ${req.query.userId} to ${req.file.location}`);
 
                                 res.status(200).send({
@@ -159,7 +163,7 @@ const updateEventPicture = (req, res) => {
                         }).then((pictureResult) => {
                             const picture = pictureResult.rows[0];
                             imageRepository.updateEventPicture(event, picture).then(() => {
-                                log.info(`Updated picture for event` +
+                                log.info(`Updated picture for event ` +
                                     `with ID ${req.params.eventId} to ${req.file.location}`);
                                 res.status(200).send({
                                     message: `Image successfully updated for event with ID ${req.params.eventId}`,
