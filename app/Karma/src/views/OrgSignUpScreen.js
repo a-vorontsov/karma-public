@@ -109,7 +109,7 @@ export default class OrgSignUpScreen extends React.Component {
         const organisation = {
             name: this.state.orgName,
             organisationType: this.state.orgType,
-            charityNumber: this.state.charityNumber,
+            organisationNumber: this.state.charityNumber,
             lowIncome: this.state.isLowIncome,
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
@@ -303,7 +303,11 @@ export default class OrgSignUpScreen extends React.Component {
                                     }}>
                                     What is your organisation's address?
                                 </RegularText>
-                                <AddressInput onChange={this.onInputChange} />
+                                <View style={{alignSelf: "center"}}>
+                                    <AddressInput
+                                        onChange={this.onInputChange}
+                                    />
+                                </View>
                             </View>
 
                             {/** EXEMPTION REASONS */}

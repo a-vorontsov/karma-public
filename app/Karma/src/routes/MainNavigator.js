@@ -93,16 +93,15 @@ const MainNavigator = createStackNavigator(
             cardStyle: {
                 backgroundColor: Colours.backgroundWhite,
             },
+            gestureEnabled: false,
         },
     },
 );
 
 MainNavigator.navigationOptions = ({navigation}) => {
     let tabBarVisible = true;
-    let gesturesEnabled = false;
     return {
         tabBarVisible,
-        gesturesEnabled,
     };
 };
 

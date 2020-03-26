@@ -413,7 +413,7 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                     paddingTop: 15,
                                 }}>
-                                {!this.state.isOrganisation && (
+                                {this.state.isOrganisation && (
                                     <TransparentButton
                                         title="View Your Activities"
                                         size={15}
@@ -458,18 +458,24 @@ class ProfileScreen extends Component {
                                         {this.state.bio}
                                     </RegularText>
                                     {this.state.bio !== "" ? (
-                                        <View style={CauseStyles.container}>
-                                            {this.state.causes.map(cause => {
-                                                return (
-                                                    <CauseItem
-                                                        cause={cause}
-                                                        key={cause.id}
-                                                        isDisabled={true}
-                                                    />
-                                                );
-                                            })}
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You do not have a bio. Please
+                                                edit your profile to add one.
+                                            </RegularText>
                                         </View>
                                     ) : (
+                                        // <View style={CauseStyles.container}>
+                                        //     {this.state.causes.map(cause => {
+                                        //         return (
+                                        //             <CauseItem
+                                        //                 cause={cause}
+                                        //                 key={cause.id}
+                                        //                 isDisabled={true}
+                                        //             />
+                                        //         );
+                                        //     })}
+                                        // </View>
                                         <View style={Styles.ph24}>
                                             <RegularText>
                                                 You do not have a bio. Please

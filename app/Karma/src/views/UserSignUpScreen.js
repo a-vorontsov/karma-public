@@ -60,6 +60,17 @@ class SignUpScreen extends React.Component {
     signUserUp = async () => {
         const user = this.createUser();
 
+        this.setState({firstOpen: false});
+        if (
+            !this.state.termsChecked ||
+            !this.state.email ||
+            !this.state.username ||
+            !this.state.password ||
+            !this.state.confPassword
+        ) {
+            return;
+        }
+
         let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
@@ -73,7 +84,7 @@ class SignUpScreen extends React.Component {
                 console.log(res.body.message);
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-                this.setState({firstOpen: false});
+
                 this.props.navigation.navigate("InitSignup");
             })
             .catch(err => {
@@ -83,9 +94,7 @@ class SignUpScreen extends React.Component {
     };
 
     render() {
-        const {
-            navigation: {navigate},
-        } = this.props;
+        const {navigation} = this.props;
         const showPasswordError =
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
@@ -101,7 +110,7 @@ class SignUpScreen extends React.Component {
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="always">
                         <View>
-                            <PageHeader title="Sign Up" />
+                            <PageHeader title="Sign Up" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(26)}}>
                                 Create a new account
                             </SubTitleText>
@@ -252,13 +261,17 @@ class SignUpScreen extends React.Component {
                                         the legal stuff:{" "}
                                         <RegularText
                                             style={Styles.link}
-                                            onPress={() => navigate("Terms")}>
+                                            onPress={() =>
+                                                navigation.push("Terms")
+                                            }>
                                             Terms of Use
                                         </RegularText>
                                         {" & "}
                                         <RegularText
                                             style={Styles.link}
-                                            onPress={() => navigate("Privacy")}>
+                                            onPress={() =>
+                                                navigation.push("Privacy")
+                                            }>
                                             Privacy
                                         </RegularText>
                                     </RegularText>
