@@ -59,7 +59,6 @@ export default class OrgSignUpScreen extends React.Component {
     }
 
     showDatePicker = name => {
-        console.log(name);
         this.setState({
             [name]: !this.state[name],
         });
