@@ -331,7 +331,11 @@ class ActivityInfoScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "space-between",
                                     }}>
-                                    <View style={{width: HALF + HALF / 3}}>
+                                    <View
+                                        style={{
+                                            width: HALF + HALF / 4,
+                                            justifyContent: "center",
+                                        }}>
                                         <ProgressBar
                                             current={this.state.spots_taken}
                                             max={this.state.spots}

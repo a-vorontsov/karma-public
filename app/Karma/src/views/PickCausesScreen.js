@@ -67,7 +67,7 @@ export default class PickCausesScreen extends React.Component {
                     style={[Styles.ph24, {marginBottom: 82}]}>
                     <View>
                         <>
-                            <PageHeader title="Causes" />
+                            <PageHeader title="Causes" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(24)}}>
                                 What causes do you care about?
                             </SubTitleText>

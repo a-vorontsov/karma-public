@@ -115,8 +115,29 @@ class ActivityCard extends React.Component {
                 });
         }
     }
+
+    _renderTruncatedFooter = handlePress => {
+        const {activity, signedup} = this.props;
+
+        return (
+            <TouchableOpacity
+                onPress={() =>
+                    this.props.navigation.push("ActivityInfo", {
+                        activity: activity,
+                        signedup: signedup,
+                    })
+                }>
+                <RegularText
+                    style={{color: Colours.lightBlue, marginTop: 5}}
+                    onPress={handlePress}>
+                    READ MORE
+                </RegularText>
+            </TouchableOpacity>
+        );
+    };
     render() {
         const {activity, signedup} = this.props;
+
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
@@ -175,7 +196,6 @@ class ActivityCard extends React.Component {
                                 title={`${activity.spots} Spots Left`}
                                 image={icons.people}
                             />
-
                             <View
                                 style={{
                                     flex: 1,
@@ -195,24 +215,12 @@ class ActivityCard extends React.Component {
                                             width: 30,
                                             height: 30,
                                             resizeMode: "contain",
-                                            marginRight: 10,
+                                            marginRight: -5,
                                         }}
                                     />
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity
-                            style={{alignSelf: "center"}}
-                            onPress={() =>
-                                this.props.navigation.push("ActivityInfo", {
-                                    activity: activity,
-                                    signedup: signedup,
-                                })
-                            }>
-                            <RegularText style={{color: Colours.cyan}}>
-                                View Activity
-                            </RegularText>
-                        </TouchableOpacity>
                         <RegularText
                             style={{
                                 fontWeight: "500",
@@ -223,11 +231,11 @@ class ActivityCard extends React.Component {
                         </RegularText>
                     </View>
                     <View>
+                        {this._renderTruncatedFooter()}
                         <ReadMore
                             numberOfLines={2}
-                            renderTruncatedFooter={this._renderTruncatedFooter}>
-                            <RegularText>{activity.content}</RegularText>
-                        </ReadMore>
+                            renderTruncatedFooter={this._renderTruncatedFooter}
+                        />
                     </View>
                 </View>
                 <BottomModal
