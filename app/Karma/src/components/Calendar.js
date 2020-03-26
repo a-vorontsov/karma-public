@@ -10,25 +10,32 @@ export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedStartDate: null,
-            selectedEndDate: null,
+            selectedStartDate: props.startDate,
+            selectedEndDate: props.endDate,
         };
         this.onDateChange = this.onDateChange.bind(this);
     }
 
-    onDateChange(date, type) {
+    async onDateChange(date, type) {
         if (type === "END_DATE") {
-            this.setState({
+            await this.setState({
                 selectedEndDate: date,
             });
         } else {
-            this.setState({
+            await this.setState({
                 selectedStartDate: date,
                 selectedEndDate: null,
             });
         }
+        this.passUpState();
     }
-
+    passUpState() {
+        const {selectedStartDate, selectedEndDate} = this.state;
+        this.props.onChange({
+            selectedStartDate,
+            selectedEndDate,
+        });
+    }
     render() {
         const minDate = new Date(); // Today
         const maxDate = new Date(2020, 6, 3);
@@ -40,6 +47,8 @@ export default class Calendar extends Component {
                     allowRangeSelection={true}
                     minDate={minDate}
                     maxDate={maxDate}
+                    selectedStartDate={this.state.selectedStartDate}
+                    selectedEndDate={this.state.selectedEndDate}
                     todayBackgroundColor={Colours.grey}
                     selectedDayColor={Colours.blue}
                     selectedDayTextColor="#FFFFFF"

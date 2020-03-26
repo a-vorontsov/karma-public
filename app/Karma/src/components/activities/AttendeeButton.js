@@ -54,7 +54,7 @@ export default class AttendeeButton extends React.Component {
     };
 
     render() {
-        const {user} = this.props;
+        const {user, navigation} = this.props;
         return (
             <View style={[Styles.pv8]}>
                 <View
@@ -70,11 +70,18 @@ export default class AttendeeButton extends React.Component {
                     ]}
                     activeOpacity={0.9}>
                     <View style={{flex: 9}}>
-                        <RegularText style={[Styles.ph8, {fontSize: 20}]}>
-                            {user.firstName
-                                ? user.firstName + " " + user.lastName
-                                : user.name}
-                        </RegularText>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.push("Profile", {
+                                    profile: user,
+                                });
+                            }}>
+                            <RegularText style={[Styles.ph8, {fontSize: 20}]}>
+                                {user.firstName
+                                    ? user.firstName + " " + user.lastName
+                                    : user.name}
+                            </RegularText>
+                        </TouchableOpacity>
                     </View>
                     <View style={{flex: 1}}>
                         <TouchableOpacity
