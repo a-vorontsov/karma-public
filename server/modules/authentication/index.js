@@ -190,7 +190,7 @@ const logInAdmin = (userId, pub) => {
  * @param {Object} pub public key of recipient
  * @param {string} exp
  * @return {string} authToken
- * @throws {error} if aud or exp unspecified
+ * @throws {error} if aud or exp invalid
  */
 const grantTemporaryAccess = (userId, aud, pub, exp) => {
     if (!permissions.has(aud) || !(typeof(exp) === "string")) {
@@ -228,6 +228,25 @@ const logOut = async (authToken) => {
     await jose.decryptAndBlacklistJWE(authToken);
 };
 
+/**
+ * Test function: no actual functionality, must
+ * only be used for testing purposes.
+ * This function tests the grantTemporaryAccess
+ * function's param validation focused on the
+ * audience claim and expiry values.
+ * This solely mocks the error throwing of the
+ * above referenced function, there is no return
+ * value. If an error is thrown, part of the claim
+ * was invalid.
+ * @param {string} aud
+ * @param {Object} pub public key of recipient
+ * @param {string} exp
+ * @throws {error} if aud or exp invalid
+ */
+const testGrantTemporaryAccessParamValidation = (aud, pub, exp) => {
+    grantTemporaryAccess(-1, aud, pub, exp);
+};
+
 module.exports = {
     requireAuthentication,
     requireNoAuthentication,
@@ -237,4 +256,5 @@ module.exports = {
     logInAdmin,
     logOut,
     grantResetAccess,
+    testGrantTemporaryAccessParamValidation,
 };

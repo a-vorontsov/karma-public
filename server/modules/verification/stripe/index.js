@@ -47,6 +47,6 @@ function updateAccount(userId) {
 }
 
 module.exports = {
-    uploadFile: uploadFile,
-    updateAccount: updateAccount,
+    uploadFile,
+    updateAccount,
 };

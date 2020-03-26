@@ -662,3 +662,15 @@ test("visiting an any auth route without an authorisation header with auth-check
 
     process.env.NO_AUTH = 0;
 });
+
+test("granting temporary access with invalid audience claim fails as expected", async () => {
+    expect(() => {
+        authService.testGrantTemporaryAccessParamValidation("invalid", null, "10 m");
+    }).toThrow(new Error("Invalid params for temporary access."));
+});
+
+test("granting temporary access with invalid expiry claim fails as expected", async () => {
+    expect(() => {
+        authService.testGrantTemporaryAccessParamValidation("/", null, 69);
+    }).toThrow(new Error("Invalid params for temporary access."));
+});
