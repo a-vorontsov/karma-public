@@ -55,7 +55,7 @@ export default class SignUpRequest extends React.Component {
     };
 
     render() {
-        const {user} = this.props;
+        const {user, navigation} = this.props;
 
         return (
             <View style={[Styles.pv8, Styles.ph8]}>
@@ -72,7 +72,13 @@ export default class SignUpRequest extends React.Component {
                         },
                     ]}
                     activeOpacity={0.9}>
-                    <TouchableOpacity style={{width: 150}}>
+                    <TouchableOpacity
+                        style={{width: 150}}
+                        onPress={() => {
+                            navigation.push("Profile", {
+                                profile: user,
+                            });
+                        }}>
                         <RegularText style={[Styles.ph8, {fontSize: 20}]}>
                             {user.firstName
                                 ? user.firstName + " " + user.lastName

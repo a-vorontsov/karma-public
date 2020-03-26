@@ -62,7 +62,7 @@ class ActivityCard extends React.Component {
         super(props);
         this.state = {
             displaySignupModal: false,
-            favourited: null,
+            favourited: props.activity.favourited,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
@@ -76,29 +76,6 @@ class ActivityCard extends React.Component {
     handleSignupError = (errorTitle, errorMessage) => {
         Alert.alert(errorTitle, errorMessage);
     };
-
-    async componentDidMount() {
-        await this.fetchActivityInfo();
-    }
-
-    async fetchActivityInfo() {
-        const authToken = await getAuthToken();
-        request
-            .get(`${REACT_APP_API_URL}/event/favourites`)
-            .set("authorization", authToken)
-            .then(async result => {
-                const events = result.body.data.events;
-                const eventIds = await events.map(event => event.eventId);
-                this.setState({
-                    favourited: eventIds.includes(
-                        Number.parseInt(this.props.activity.eventId, 10),
-                    ),
-                });
-            })
-            .catch(er => {
-                console.log(er);
-            });
-    }
 
     async toggleFavourite() {
         const authToken = await getAuthToken();
