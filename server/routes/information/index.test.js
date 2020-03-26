@@ -25,7 +25,7 @@ test("information fetching endpoint works", async () => {
         status: 200,
         message: "Information entry fetched successfully",
         data: {
-            information: information
+            information: information,
         },
     });
 
@@ -37,7 +37,7 @@ test("information fetching endpoint works", async () => {
     expect(informationService.getInformationData).toHaveBeenCalledTimes(1);
     expect(informationService.getInformationData).toHaveBeenCalledWith(type);
     expect(response.body.data).toMatchObject({
-        information: information
+        information: information,
     });
     expect(response.statusCode).toBe(200);
 });

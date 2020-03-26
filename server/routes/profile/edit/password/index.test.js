@@ -7,7 +7,7 @@ const regRepo = require("../../../../repositories/registration");
 const userAgent = require("../../../../modules/user");
 
 jest.mock("owasp-password-strength-test");
-let user, registration;
+let user; let registration;
 const changePasswordRequest = {
     userId: 1,
     oldPassword: "password",

@@ -39,7 +39,7 @@ jest.mock("../../repositories/reset");
 jest.mock("../../repositories/settings");
 jest.mock("../../util");
 
-let user, individual, organisation;
+let user; let individual; let organisation;
 
 beforeEach(() => {
     user = testHelpers.getUserExample1();

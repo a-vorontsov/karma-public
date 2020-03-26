@@ -15,7 +15,7 @@ jest.mock("../../../repositories/profile");
 jest.mock("../../../util");
 jest.mock("../../sorting");
 
-let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2, profile;
+let signUp; let signedUpUserExample1; let signedUpUserExample2; let event1; let event2; let profile;
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
@@ -33,7 +33,7 @@ afterEach(() => {
 
 test('creating signup works', async () => {
     util.checkEventId.mockResolvedValue({status: 200});
-    util.checkUserId.mockResolvedValue({status:200})
+    util.checkUserId.mockResolvedValue({status: 200});
     signupRepository.insert.mockResolvedValue({
         rows: [{
             signUp,
@@ -87,7 +87,7 @@ test('requesting event history works and only returns events from the past', asy
 
     eventRepository.findById.mockReturnValueOnce({
         rows: [
-            {id: 4, date: yesterday}
+            {id: 4, date: yesterday},
         ],
     }).mockReturnValueOnce({
         rows: [
@@ -119,7 +119,7 @@ test('getting events user is going to works and in the future', async () => {
 
     util.checkUser.mockResolvedValue({status: 200});
     individualRepository.findGoingEvents.mockResolvedValue({rows: eventsArray});
-    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray);
     const getGoingEventsResult = await eventSignupService.getGoingEvents(15);
 
     expect(individualRepository.findGoingEvents).toHaveBeenCalledTimes(1);
@@ -129,7 +129,7 @@ test('getting events user is going to works and in the future', async () => {
 
 test('getting all signups to event works', async () => {
     util.checkEventId.mockResolvedValue({
-        status: 200
+        status: 200,
     });
     signupRepository.findUsersSignedUp.mockResolvedValue({
         rows: [signedUpUserExample1, signedUpUserExample2], // 2 users
@@ -140,4 +140,63 @@ test('getting all signups to event works', async () => {
     expect(util.checkEventId).toHaveBeenCalledTimes(1);
     expect(updateSignupResult.status).toBe(200);
     expect(updateSignupResult.data.users).toMatchObject([signedUpUserExample1, signedUpUserExample2]);
+});
+
+test("creating signup to an event with invalid event id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({status: 400, message: "invalid id"});
+    expect(eventSignupService.createSignup({eventId: 69000})).rejects.toEqual(new Error("invalid id"));
+});
+
+test("creating signup to an event with invalid user id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+    util.checkUserId.mockResolvedValue({status: 400, message: "invalid id"});
+    expect(eventSignupService.createSignup({userId: 69000})).rejects.toEqual(new Error("invalid id"));
+});
+
+test("getting all signups to an event with invalid id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({status: 400, message: "invalid id"});
+    expect(eventSignupService.getAllSignupsForEvent({eventId: 69000})).rejects.toEqual(new Error("invalid id"));
+});
+
+test("getting all signed up events with invalid userId fails as expected", async () => {
+    util.checkUser.mockResolvedValue({status: 400, message: "invalid id"});
+    expect(eventSignupService.getGoingEvents({userId: 69000})).rejects.toEqual(new Error("invalid id"));
+});
+
+test('updating karma points for attended event works', async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+
+    const attendedSignUp = {
+        individualId: -1,
+        eventId: 3,
+        confirmed: true,
+        attended: true,
+    };
+
+    const unattendedSignup = signUp;
+
+    signupRepository.update.mockResolvedValue({
+        rows: [
+            attendedSignUp,
+        ],
+    });
+
+    signupRepository.find.mockResolvedValue({
+        rows: [
+            unattendedSignup,
+        ],
+    });
+
+    profileRepo.updateKarmaPoints.mockResolvedValue({
+        rows: [
+            profile,
+        ],
+    });
+
+    const updateSignupResult = await eventSignupService.updateSignUp(attendedSignUp);
+
+    expect(signupRepository.update).toHaveBeenCalledTimes(1);
+    expect(profileRepo.updateKarmaPoints).toHaveBeenCalledTimes(1);
+    expect(updateSignupResult.status).toBe(200);
+    expect(updateSignupResult.data.signup).toStrictEqual(attendedSignUp);
 });

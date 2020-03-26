@@ -4,7 +4,7 @@ const testHelpers = require("../../../test/helpers");
 const regRepo = require("../../../repositories/registration");
 const userRepo = require("../../../repositories/user");
 
-let registrationExample4, registrationExample5, registrationExample6, user4;
+let registrationExample4; let registrationExample5; let registrationExample6; let user4;
 beforeEach(() => {
     registrationExample1 = testHelpers.getRegistrationExample4();
     registrationExample2 = testHelpers.getRegistrationExample5();
@@ -25,14 +25,14 @@ const signInEmailRequest = {
     authToken: null,
     data: {
         email: "test4@gmail.com",
-    }
+    },
 };
 
 const verifyEmailRequest = {
     data: {
         email: "test4@gmail.com",
         token: "tbd",
-    }
+    },
 };
 
 test("email verification works", async () => {
@@ -133,7 +133,7 @@ test("request without token is rejected", async () => {
         .send({
             data: {
                 email: "test4@gmail.com",
-            }
+            },
         });
 
     expect(verifyResponse.body.message).toBe("Invalid token");

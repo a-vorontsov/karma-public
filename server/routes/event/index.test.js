@@ -10,7 +10,7 @@ jest.mock("../../modules/validation");
 jest.mock("../../modules/pagination");
 validation.validateEvent.mockReturnValue({errors: ""});
 
-let eventWithLocation,eventWithAllData,event;
+let eventWithLocation; let eventWithAllData; let event;
 
 beforeEach(() => {
     process.env.NO_AUTH = 1;
@@ -28,7 +28,7 @@ test("event info fetching endpoint works", async () => {
         status: 200,
         message: "Event fetched successfully",
         data: {
-            event: eventWithLocation
+            event: eventWithLocation,
         },
     });
 
@@ -40,7 +40,7 @@ test("event info fetching endpoint works", async () => {
     expect(eventService.getEventData).toHaveBeenCalledTimes(1);
     expect(eventService.getEventData).toHaveBeenCalledWith(eventId);
     expect(response.body.data).toMatchObject({
-        event: eventWithLocation
+        event: eventWithLocation,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -60,7 +60,7 @@ test("event creation endpoint works", async () => {
     expect(validation.validateEvent).toHaveBeenCalledTimes(1);
     expect(eventService.createNewEvent).toHaveBeenCalledTimes(1);
     expect(response.body.data).toMatchObject({
-        eventWithLocation
+        eventWithLocation,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -71,7 +71,7 @@ test("getting all events works", async () => {
         message: "Events fetched successfully",
         data: {
             events: [
-                {...eventWithAllData, id:1},
+                {...eventWithAllData, id: 1},
             ],
         },
     });
@@ -81,23 +81,23 @@ test("getting all events works", async () => {
             currentPage: 1,
             pageCount: 1,
             pageSize: 1,
-            count: 3
+            count: 3,
         },
         events: [
-                {...eventWithAllData, id:1},
+            {...eventWithAllData, id: 1},
         ],
-    })
+    });
     const response = await request(app).get("/event?userId=1&currentPage=1&pageSize=1");
     expect(eventService.getEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.events).toEqual([
-        {...eventWithAllData, id:1},
+        {...eventWithAllData, id: 1},
     ]);
     expect(response.body.data.meta).toMatchObject({
         currentPage: 1,
         pageCount: 1,
         pageSize: 1,
-        count: 3
+        count: 3,
     });
 });
 test("getting all events with filters applied works", async () => {
@@ -106,7 +106,7 @@ test("getting all events with filters applied works", async () => {
         message: "Events fetched successfully",
         data: {
             events: [
-                {...eventWithAllData, id:1},
+                {...eventWithAllData, id: 1},
             ],
         },
     });
@@ -116,24 +116,24 @@ test("getting all events with filters applied works", async () => {
             currentPage: 1,
             pageCount: 1,
             pageSize: 1,
-            count: 3
+            count: 3,
         },
         events: [
-                {...eventWithAllData, id:1},
+            {...eventWithAllData, id: 1},
         ],
-    })
+    });
     const response = await request(app).get("/event?userId=1&currentPage=1&pageSize=1"+
     "&filter[]=!womenOnly&filter[]=physical&maxDistance=500&avalabilityStart=\"2020-03-03\"&avalabilityEnd=\"2020-05-03\"");
     expect(eventService.getEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.events).toEqual([
-        {...eventWithAllData, id:1},
+        {...eventWithAllData, id: 1},
     ]);
     expect(response.body.data.meta).toMatchObject({
         currentPage: 1,
         pageCount: 1,
         pageSize: 1,
-        count: 3
+        count: 3,
     });
 });
 
@@ -153,7 +153,7 @@ test("event updating endpoint works", async () => {
     expect(eventService.updateEvent).toHaveBeenCalledTimes(1);
     expect(eventService.updateEvent).toHaveBeenCalledWith({...eventWithLocation, id: eventId});
     expect(response.body.data).toMatchObject({
-        eventWithLocation
+        eventWithLocation,
     });
     expect(response.statusCode).toBe(200);
 });

@@ -46,7 +46,7 @@ test('creating favourite works', async () => {
     });
 
     expect(response.body.data).toMatchObject({
-        favourite
+        favourite,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -72,7 +72,7 @@ test('deleting favourites works', async () => {
     });
 
     expect(response.body.data).toMatchObject({
-        favourite
+        favourite,
     });
     expect(response.statusCode).toBe(200);
 });

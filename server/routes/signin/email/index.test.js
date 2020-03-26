@@ -4,7 +4,7 @@ const testHelpers = require("../../../test/helpers");
 const regRepo = require("../../../repositories/registration");
 const userRepo = require("../../../repositories/user");
 
-let registrationExample4, registrationExample5, registrationExample6, user4;
+let registrationExample4; let registrationExample5; let registrationExample6; let user4;
 beforeEach(() => {
     registrationExample4 = testHelpers.getRegistrationExample4();
     registrationExample5 = testHelpers.getRegistrationExample5();
@@ -23,7 +23,7 @@ afterEach(() => {
 const signInEmailRequest = {
     data: {
         email: "test4@gmail.com",
-    }
+    },
 };
 
 test("sign-in with email works", async () => {

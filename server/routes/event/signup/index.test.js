@@ -11,7 +11,7 @@ jest.mock("../../../util");
 
 validation.validateSignup.mockReturnValue({errors: ""});
 
-let signUp, event, signedUpUserExample1, signedUpUserExample2;
+let signUp; let event; let signedUpUserExample1; let signedUpUserExample2;
 beforeEach(() => {
     process.env.NO_AUTH = 1;
     signUp = testHelpers.getSignUp();
@@ -42,7 +42,7 @@ test('creating signup works', async () => {
     expect(eventSignupService.createSignup).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.signup).toMatchObject({
-        signUp
+        signUp,
     });
 });
 
@@ -59,7 +59,7 @@ test('updating works', async () => {
     expect(eventSignupService.updateSignUp).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.signup).toMatchObject({
-        signUp
+        signUp,
     });
 });
 
@@ -82,7 +82,7 @@ test('requesting signup history for user works', async () => {
     eventSignupService.getSignupHistory.mockResolvedValue({
         status: 200,
         message: "History fetched successfully",
-        data: {events: [{} , {}]}, // 2 events
+        data: {events: [{}, {}]}, // 2 events
     });
 
     const response = await request(app).get("/event/signUp/history").query({userId: 55}).send();

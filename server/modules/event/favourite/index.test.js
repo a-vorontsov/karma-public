@@ -11,7 +11,7 @@ jest.mock("../../sorting");
 jest.mock("../../../util");
 
 
-let favourite, event1, event2;
+let favourite; let event1; let event2;
 
 beforeEach(() => {
     favourite = testHelpers.getFavourite();
@@ -33,7 +33,7 @@ test('creating favourite works', async () => {
 
     expect(favouriteRepository.insert).toHaveBeenCalledTimes(1);
     expect(createFavouriteResult.data).toMatchObject({
-        favourite
+        favourite,
     });
     expect(createFavouriteResult.status).toBe(200);
 });
@@ -48,7 +48,7 @@ test('deleting favourite works', async () => {
 
     expect(favouriteRepository.remove).toHaveBeenCalledTimes(1);
     expect(deleteFavouriteResult.data).toMatchObject({
-        favourite
+        favourite,
     });
     expect(deleteFavouriteResult.status).toBe(200);
 });
@@ -65,7 +65,7 @@ test('getting events user favourited works', async () => {
 
     util.checkUser.mockResolvedValue({status: 200});
     individualRepository.findFavouriteEvents.mockResolvedValue({rows: eventsArray});
-    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray)
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray);
     const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(15);
 
     expect(individualRepository.findFavouriteEvents).toHaveBeenCalledTimes(1);
@@ -74,16 +74,16 @@ test('getting events user favourited works', async () => {
 });
 
 test("favourite-ing an event with an invalid id fails as expected", async () => {
-    util.checkEventId.mockResolvedValue({ status: 400, message: "invalid id" });
+    util.checkEventId.mockResolvedValue({status: 400, message: "invalid id"});
     expect(eventFavouriteService.createEventFavourite({eventId: 6900})).rejects.toEqual(new Error("invalid id"));
 });
 
 test("unfavourite-ing an event with an invalid id fails as expected", async () => {
-    util.checkEventId.mockResolvedValue({ status: 400, message: "invalid id" });
+    util.checkEventId.mockResolvedValue({status: 400, message: "invalid id"});
     expect(eventFavouriteService.deleteEventFavourite({eventId: 6900})).rejects.toEqual(new Error("invalid id"));
 });
 
 test("getting favourite events with an invalid userId fails as expected", async () => {
-    util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
+    util.checkUser.mockResolvedValue({status: 400, message: "invalid id"});
     expect(eventFavouriteService.getFavouriteEvents(6900)).rejects.toEqual(new Error("invalid id"));
 });

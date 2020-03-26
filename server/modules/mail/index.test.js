@@ -5,7 +5,7 @@ mailOptions = {
     email: process.env.EMAIL_ADDRESS,
     subject: "test subj",
     text: "test email body",
-}
+};
 
 test("mail-sending works", async () => {
     const sendResult = await mailSender.sendEmail(mailOptions.email, mailOptions.subject, mailOptions.text);

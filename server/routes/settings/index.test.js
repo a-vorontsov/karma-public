@@ -34,7 +34,7 @@ test("settings fetching endpoint works", async () => {
     expect(settingsService.getCurrentSettings).toHaveBeenCalledWith(setting.userId);
     delete setting.userId;
     expect(response.body.data).toMatchObject({
-        settings: setting
+        settings: setting,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -56,7 +56,7 @@ test("settings update works", async () => {
     expect(settingsService.changeSettings).toHaveBeenCalledWith(setting);
     delete setting.userId;
     expect(response.body.data).toMatchObject({
-        settings: setting
+        settings: setting,
     });
     expect(response.statusCode).toBe(200);
 });

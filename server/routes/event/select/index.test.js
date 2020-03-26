@@ -22,7 +22,7 @@ jest.mock("../../../util");
 jest.mock("../../../modules/validation");
 validation.validateEvent.mockReturnValue({errors: ""});
 
-let eventWithLocationExample1, eventWithLocationExample2, eventWithAllData, animalsEvent,peaceEvent, event1, event2;
+let eventWithLocationExample1; let eventWithLocationExample2; let eventWithAllData; let animalsEvent; let peaceEvent; let event1; let event2;
 
 beforeEach(() => {
     process.env.NO_AUTH = 1;
@@ -50,29 +50,29 @@ test("getting events grouped by causes selected by user works", async () => {
         status: 200,
         message: "Events fetched successfully",
         data: {
-            animals:[{
+            animals: [{
                 ...animalsEvent,
                 id: 1,
             }],
-            peace:[{
+            peace: [{
                 ...peaceEvent,
                 id: 2,
-            }]
+            }],
         },
-    })
+    });
 
     const response = await request(app).get("/event/causes?userId=1");
     expect(eventService.getEventsBySelectedCauses).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toMatchObject({
-        animals:[{
+        animals: [{
             ...animalsEvent,
             id: 1,
         }],
-        peace:[{
+        peace: [{
             ...peaceEvent,
             id: 2,
-        }]
+        }],
     });
 });
 
@@ -82,7 +82,7 @@ test("getting events favourited by user works", async () => {
         message: "Favourite events fetched successfully",
         data: {
             events: [
-                {...event1, eventid:1},
+                {...event1, eventid: 1},
             ],
         },
     });
@@ -90,7 +90,7 @@ test("getting events favourited by user works", async () => {
     expect(eventFavouriteService.getFavouriteEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.events).toEqual([
-        {...event1, eventid:1},
+        {...event1, eventid: 1},
     ]);
 });
 
@@ -100,7 +100,7 @@ test("getting events user is going to works", async () => {
         message: "Future going events fetched successfully",
         data: {
             events: [
-                {...event1, eventid:1},
+                {...event1, eventid: 1},
             ],
         },
     });
@@ -108,6 +108,6 @@ test("getting events user is going to works", async () => {
     expect(eventSignUpService.getGoingEvents).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.events).toEqual([
-        {...event1, eventid:1},
+        {...event1, eventid: 1},
     ]);
 });

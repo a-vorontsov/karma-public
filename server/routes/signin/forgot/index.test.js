@@ -10,7 +10,7 @@ jest.mock("../../../repositories/reset");
 jest.mock("../../../repositories/user");
 jest.mock("../../../modules/mail");
 
-let user, reset1, reset2;
+let user; let reset1; let reset2;
 
 beforeEach(() => {
     process.env.NO_AUTH = 1;
@@ -59,7 +59,7 @@ test('requesting reset password token with no email does not work', async () => 
         .send({
             data: {
 
-            }
+            },
         });
 
     expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(0);
@@ -79,15 +79,15 @@ test('confirming correct token works', async () => {
     });
     resetRepository.findLatestByUserId.mockResolvedValue({
         rows: [{
-                ...reset2,
-                id: 2,
-                expiryDate: dateTime,
-            },
-            {
-                ...reset1,
-                id: 1,
-                expiryDate: new Date(),
-            }
+            ...reset2,
+            id: 2,
+            expiryDate: dateTime,
+        },
+        {
+            ...reset1,
+            id: 1,
+            expiryDate: new Date(),
+        },
         ],
     });
     const response = await request(app)
@@ -116,15 +116,15 @@ test('confirming correct token but not latest does not work', async () => {
     });
     resetRepository.findLatestByUserId.mockResolvedValue({
         rows: [{
-                ...reset2,
-                id: 2,
-                expiryDate: dateTime,
-            },
-            {
-                ...reset1,
-                id: 1,
-                expiryDate: new Date(),
-            }
+            ...reset2,
+            id: 2,
+            expiryDate: dateTime,
+        },
+        {
+            ...reset1,
+            id: 1,
+            expiryDate: new Date(),
+        },
         ],
     });
     const response = await request(app)
@@ -133,7 +133,7 @@ test('confirming correct token but not latest does not work', async () => {
             data: {
                 email: "test@gmail.com",
                 token: "123456",
-            }
+            },
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -163,7 +163,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
             data: {
                 email: "test@gmail.com",
                 token: "incorrect token",
-            }
+            },
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -193,7 +193,7 @@ test('confirming expired token returns token expired response', async () => {
             data: {
                 email: "test@gmail.com",
                 token: "123456",
-            }
+            },
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -215,7 +215,7 @@ test('confirming with no token specified returns token not defined response', as
         .send({
             data: {
                 email: "test@gmail.com",
-            }
+            },
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(0);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
@@ -239,7 +239,7 @@ test('confirming token not sent to email returns no token sent response', async 
             data: {
                 email: "test@gmail.com",
                 token: "123456",
-            }
+            },
         });
     expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);

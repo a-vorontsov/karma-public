@@ -20,7 +20,6 @@ const bugReport = testHelpers.getBugReport();
 
 
 test('bug report sending works', async () => {
-
     mailSender.sendBugReport.mockResolvedValue(
         result = {
             status: 200,
@@ -39,7 +38,6 @@ test('bug report sending works', async () => {
 });
 
 test('bug report endpoint gives correct response if mail-sending fails', async () => {
-
     mailSender.sendBugReport.mockResolvedValue(
         result = {
             status: 500,

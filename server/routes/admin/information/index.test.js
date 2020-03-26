@@ -6,7 +6,7 @@ const informationService = require("../../../modules/information");
 
 jest.mock("../../../modules/information");
 jest.mock("../../../modules/validation");
-validation.validateInformation.mockReturnValue({ errors: "" });
+validation.validateInformation.mockReturnValue({errors: ""});
 
 let information;
 
@@ -24,15 +24,15 @@ test("information creation endpoint works", async () => {
     informationService.getInformationData.mockResolvedValue({
         status: 200,
         message: "Information entry fetched successfully",
-        data: { information: {} },
+        data: {information: {}},
     });
     informationService.changeInformation.mockResolvedValue({
         status: 200,
         message: "New information entry created",
         data: {
             information: {
-                information
-            }
+                information,
+            },
         },
     });
 
@@ -43,7 +43,7 @@ test("information creation endpoint works", async () => {
     expect(validation.validateInformation).toHaveBeenCalledTimes(1);
     expect(informationService.changeInformation).toHaveBeenCalledTimes(1);
     expect(response.body.data.information).toMatchObject({
-        information
+        information,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -54,8 +54,8 @@ test("information update works", async () => {
         message: "Information entry fetched successfully",
         data: {
             information: {
-                information
-            }
+                information,
+            },
         },
     });
     informationService.changeInformation.mockResolvedValue({
@@ -63,8 +63,8 @@ test("information update works", async () => {
         message: "Information entry updated successfully",
         data: {
             information: {
-                information
-            }
+                information,
+            },
         },
     });
 
@@ -75,7 +75,7 @@ test("information update works", async () => {
     expect(validation.validateInformation).toHaveBeenCalledTimes(1);
     expect(informationService.changeInformation).toHaveBeenCalledTimes(1);
     expect(response.body.data.information).toMatchObject({
-        information
+        information,
     });
     expect(response.statusCode).toBe(200);
 });

@@ -37,7 +37,6 @@ test("creating new information entry works works", async () => {
 });
 
 test("updating information works", async () => {
-
     informationRepository.update.mockResolvedValue({
         rows: [{
             ...information,

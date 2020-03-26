@@ -5,7 +5,7 @@ const testHelpers = require("../test/helpers");
 const util = require("../util");
 const registrationRepository = require("../repositories/registration");
 
-let registrationExample1, userExample1, address, individual;
+let registrationExample1; let userExample1; let address; let individual;
 
 beforeEach(() => {
     registrationExample1 = testHelpers.getRegistrationExample1();

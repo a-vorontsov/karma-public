@@ -38,7 +38,7 @@ const profileChangeRequest = {
             phoneNumber: "newPhoneNumber",
             bio: "Test",
             womenOnly: true,
-        }
+        },
     },
 };
 
@@ -90,8 +90,8 @@ const profileChangeRequest2 = {
             address: {
                 addressLine1: "newAddressLine1",
                 postCode: "newPostCode",
-            }
-        }
+            },
+        },
     },
 };
 

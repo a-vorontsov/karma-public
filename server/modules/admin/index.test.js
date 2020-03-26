@@ -8,7 +8,7 @@ const individualRepository = require("../../repositories/individual");
 jest.mock("../../repositories/user");
 jest.mock("../../repositories/individual");
 
-let user, individual, individual2;
+let user; let individual; let individual2;
 
 beforeEach(() => {
     user = testHelpers.getUserExample1();

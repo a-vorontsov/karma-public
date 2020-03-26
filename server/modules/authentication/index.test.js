@@ -442,7 +442,7 @@ test("visiting an admin route with a valid token works", async () => {
     adminService.getAllUsers.mockResolvedValue({
         message: "Users fetched successfully",
         status: 200,
-        data: { users: [user] },
+        data: {users: [user]},
     });
     const adminRequest = {
         // no userId specified!!!
@@ -469,7 +469,7 @@ test("visiting an admin route with a user token fails as expected", async () => 
     adminService.getAllUsers.mockResolvedValue({
         message: "Users fetched successfully",
         status: 200,
-        data: { users: [user] },
+        data: {users: [user]},
     });
     const adminRequest = {
         // no userId specified!!!

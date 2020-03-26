@@ -11,7 +11,7 @@ jest.mock("../../modules/validation");
 jest.mock("../../modules/deletion");
 validation.validateIndividual.mockReturnValue({errors: ""});
 
-let user, individual;
+let user; let individual;
 
 beforeEach(() => {
     jest.clearAllMocks();
