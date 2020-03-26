@@ -309,6 +309,53 @@ test("getting events grouped by user selected causes works", async () => {
     expect(getEventsResult.status).toBe(200);
 });
 
+test("getting events grouped by user selected causes within a given distance works", async () => {
+    const eventsArray = [{
+        ...animalsEvent,
+        favourited: [1],
+        id: 1,
+    },
+    {
+        ...peaceEvent,
+        favourited: [1],
+        id: 2,
+    }];
+    util.checkUser.mockResolvedValue({ status: 200 });
+    filterer.getWhereClause.mockResolvedValue("");
+    selectedCauseRepository.findEventsSelectedByUser.mockResolvedValue({
+        rows: eventsArray,
+    });
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray);
+    eventSorter.groupByCause.mockResolvedValue(
+        {
+            animals: [{
+                ...animalsEvent,
+                id: 1,
+            }],
+            peace: [{
+                ...peaceEvent,
+                id: 2,
+            }]
+        }
+    )
+    const getEventsResult = await eventService.getEventsBySelectedCauses({maxDistance: 69000}, 1);
+    expect(util.checkUser).toHaveBeenCalledTimes(1);
+    expect(selectedCauseRepository.findEventsSelectedByUser).toHaveBeenCalledTimes(1);
+    expect(filterer.getWhereClause).toHaveBeenCalledWith({ maxDistance: 69000});
+    expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
+    expect(getEventsResult.data).toStrictEqual({
+        animals: [{
+            ...animalsEvent,
+            id: 1,
+        }],
+        peace: [{
+            ...peaceEvent,
+            id: 2,
+        }]
+    });
+    expect(getEventsResult.status).toBe(200);
+});
+
 test("deleting events works", async () => {
 
     util.checkEventId.mockResolvedValue({status: 200});
@@ -372,4 +419,9 @@ test("deleting event with invalid id fails as expected", async () => {
 test("getting an event with invalid userId fails as expected", async () => {
     util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
     expect(eventService.getEvents({}, 6900)).rejects.toEqual(new Error("invalid id"))
+});
+
+test("getting an eventsBySelectedCauses with invalid userId fails as expected", async () => {
+    util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
+    expect(eventService.getEventsBySelectedCauses({}, 6900)).rejects.toEqual(new Error("invalid id"))
 });
