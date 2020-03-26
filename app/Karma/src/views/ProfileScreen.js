@@ -464,17 +464,6 @@ class ProfileScreen extends Component {
                                             </RegularText>
                                         </View>
                                     ) : (
-                                        // <View style={CauseStyles.container}>
-                                        //     {this.state.causes.map(cause => {
-                                        //         return (
-                                        //             <CauseItem
-                                        //                 cause={cause}
-                                        //                 key={cause.id}
-                                        //                 isDisabled={true}
-                                        //             />
-                                        //         );
-                                        //     })}
-                                        // </View>
                                         <View style={Styles.ph24}>
                                             <RegularText>
                                                 You do not have a bio. Please
