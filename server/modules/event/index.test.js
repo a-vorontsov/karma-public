@@ -413,15 +413,15 @@ test("creating event with known geocoded address works", async () => {
 
 test("deleting event with invalid id fails as expected", async () => {
     util.checkEventId.mockResolvedValue({status:400, message:"invalid id"});
-    expect(eventService.deleteEvent(6900)).rejects.toEqual(new Error("invalid id"))
+    expect(eventService.deleteEvent(6900)).rejects.toEqual(new Error("invalid id"));
 });
 
 test("getting an event with invalid userId fails as expected", async () => {
     util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
-    expect(eventService.getEvents({}, 6900)).rejects.toEqual(new Error("invalid id"))
+    expect(eventService.getEvents({}, 6900)).rejects.toEqual(new Error("invalid id"));
 });
 
 test("getting an eventsBySelectedCauses with invalid userId fails as expected", async () => {
     util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
-    expect(eventService.getEventsBySelectedCauses({}, 6900)).rejects.toEqual(new Error("invalid id"))
+    expect(eventService.getEventsBySelectedCauses({}, 6900)).rejects.toEqual(new Error("invalid id"));
 });

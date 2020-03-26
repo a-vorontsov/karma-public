@@ -72,3 +72,18 @@ test('getting events user favourited works', async () => {
     expect(getFavouriteEventsResult.status).toBe(200);
     expect(getFavouriteEventsResult.data.events).toMatchObject(eventsArray);
 });
+
+test("favourite-ing an event with an invalid id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({ status: 400, message: "invalid id" });
+    expect(eventFavouriteService.createEventFavourite({eventId: 6900})).rejects.toEqual(new Error("invalid id"));
+});
+
+test("unfavourite-ing an event with an invalid id fails as expected", async () => {
+    util.checkEventId.mockResolvedValue({ status: 400, message: "invalid id" });
+    expect(eventFavouriteService.deleteEventFavourite({eventId: 6900})).rejects.toEqual(new Error("invalid id"));
+});
+
+test("getting favourite events with an invalid userId fails as expected", async () => {
+    util.checkUser.mockResolvedValue({ status: 400, message: "invalid id" });
+    expect(eventFavouriteService.getFavouriteEvents(6900)).rejects.toEqual(new Error("invalid id"));
+});

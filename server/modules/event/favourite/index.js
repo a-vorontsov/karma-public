@@ -10,7 +10,7 @@ const eventSorter = require("../../sorting");
 const createEventFavourite = async (favouriteRequest) => {
     const eventIdCheckResponse = await util.checkEventId(favouriteRequest.eventId);
     if (eventIdCheckResponse.status !== 200) {
-        return eventIdCheckResponse;
+        throw new Error(eventIdCheckResponse.message);
     }
 
     const favouriteResult = await favouriteRepository.insert(favouriteRequest);
@@ -29,7 +29,7 @@ const createEventFavourite = async (favouriteRequest) => {
 const deleteEventFavourite = async (deleteFavouriteRequest) => {
     const eventIdCheckResponse = await util.checkEventId(deleteFavouriteRequest.eventId);
     if (eventIdCheckResponse.status !== 200) {
-        return eventIdCheckResponse;
+        throw new Error(eventIdCheckResponse.message);
     }
 
     const deleteFavouriteResult = await favouriteRepository.remove(deleteFavouriteRequest);
