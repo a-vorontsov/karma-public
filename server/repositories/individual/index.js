@@ -30,9 +30,13 @@ const findByUserID = (userId) => {
 const findFavouriteEvents = (userId) => {
     const query = "SELECT id(event) as event_id, name, women_only, spots, address_visible, " +
         "minimum_age, photo_id, physical, add_info, content, date, user_id(event) as event_creator_id, " +
-        "address_1, address_2, postcode, city, region, lat, long " +
-        "FROM event LEFT JOIN favourite ON event_id = id INNER JOIN individual on individual_id = id(individual) "+
-        "INNER JOIN address ON id(address)=address_id(event) WHERE user_id(individual)=$1";
+        "address_1, address_2, postcode, city, region, lat, long, " +
+        "event_id(favourite) is not null as favourited " +
+        "FROM event " +
+        "LEFT JOIN favourite on event_id(favourite) = id(event) " +
+        "INNER JOIN individual on individual_id(favourite) = id(individual) " +
+        "INNER JOIN address ON id(address)=address_id(event) " +
+        "WHERE user_id(individual)=$1";
     return db.query(query, [userId]);
 };
 
@@ -40,11 +44,14 @@ const findGoingEvents = (userId) => {
     const now = new Date();
     const query = "SELECT id(event) as event_id, name, women_only, spots, address_visible, " +
         "minimum_age, photo_id, physical, add_info, content, date, user_id(event) as event_creator_id, " +
-        "address_1, address_2, postcode, city, region, lat, long " +
-        "FROM event LEFT JOIN sign_up on event_id = id(event) INNER JOIN address ON id(address) = address_id(event) "+
-        "INNER JOIN individual ON individual_id = id(individual) WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";
+        "address_1, address_2, postcode, city, region, lat, long, event_id(favourite) is not null as favourited " +
+        "FROM event LEFT JOIN sign_up on event_id(sign_up) = id(event) INNER JOIN address ON id(address) = address_id(event) " +
+        "INNER JOIN individual ON individual_id(sign_up) = id(individual) " +
+        "LEFT JOIN favourite on event_id(favourite) = id(event)" +
+        "WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";
     return db.query(query, [userId, now]);
 };
+
 const getIndividualId = (userId) =>{
     const query = "SELECT id from individual where user_id = $1";
     return db.query(query, [userId]);

@@ -117,10 +117,13 @@ const getEvents = async (filters, userId) => {
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
 
+    let events = eventResult.rows;
+
     // add going and spotsRemaining properties to all event objects
-    let events = eventResult.rows.map(event => {
+    events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(userId),
+            favourited: (event.favourited).includes(userId),
             spotsRemaining: event.spots - (event.volunteers).length,
         };
     });
@@ -128,6 +131,7 @@ const getEvents = async (filters, userId) => {
     eventSorter.sortByTimeAndDistance(events, user);
 
     if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
+
     return ({
         status: 200,
         message: "Events fetched successfully",
@@ -150,12 +154,13 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
-    if (eventResult.rows.length === 0) return ({status: 404, message: "No events with causes selected by user and corresponding filters."});
+    let events = eventResult.rows;
 
     // add going and spotsRemaining properties to all event objects
-    let events = eventResult.rows.map(event => {
+    events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(userId),
+            favourited: (event.favourited).includes(userId),
             spotsRemaining: event.spots - (event.volunteers).length,
         };
     });
