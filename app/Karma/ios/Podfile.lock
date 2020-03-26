@@ -331,7 +331,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
@@ -449,9 +449,9 @@ SPEC CHECKSUMS:
   react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
   react-native-google-maps: 773b7bcef4f92005847cbf455ca1fa76a21e74c7
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
-  react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
+  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
-  react-native-slider: b2f361499888302147205f17f6fffa921a7bda70
+  react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -476,8 +476,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
 
-<<<<<<< HEAD
-COCOAPODS: 1.8.4
-=======
 COCOAPODS: 1.9.0
->>>>>>> dev

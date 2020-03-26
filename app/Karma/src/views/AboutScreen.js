@@ -40,6 +40,7 @@ class AboutScreen extends React.Component {
             townCity: "",
             countryState: "",
             postCode: "",
+            firstOpen: true,
         };
     }
 
@@ -118,6 +119,11 @@ class AboutScreen extends React.Component {
 
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
+        if (fname === "" || lname === "") {
+            this.setState({
+                firstOpen: false,
+            });
+        }
         if (gender && fname !== "" && lname !== "" && dateSelected) {
             const authToken = await getAuthToken();
             const individual = this.createIndividual();
@@ -296,7 +302,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         fontWeight: "400",
-        color: "gray",
+        color: Colours.lightGrey,
     },
 });
 

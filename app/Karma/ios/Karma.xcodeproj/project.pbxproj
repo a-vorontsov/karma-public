@@ -26,13 +26,14 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		15901E83543948DFB7454850 /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F6ADE6800603448EA6FA9CD0 /* back-arrow.png */; };
+		1636264D317365F221646F4E /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AD87D402DF03BC2A212C78 /* libPods-Karma.a */; };
 		1A2D3453813349D2BE3BA0BD /* KARMA-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 33D6EF79EC764F34B2C38266 /* KARMA-logo.png */; };
-		1E7F09F2A678C80F6A88C233 /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1069588E86A3E5332547F852 /* libPods-Karma.a */; };
 		1F3FBD2CBE0B4E1A9896F0C5 /* logout.png in Resources */ = {isa = PBXBuildFile; fileRef = EE2BCB45701D446CAB0EA500 /* logout.png */; };
 		2084799F25C143F28AEF59B1 /* education.png in Resources */ = {isa = PBXBuildFile; fileRef = 93641783BE514916933424F5 /* education.png */; };
 		22BC6FCA52A94232AAE88B70 /* crisis-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EE705E116E54DD9866CC753 /* crisis-white.png */; };
 		29063DBF763B43B49CE3F3B7 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D8F22B1D3BC4F63BFC332E1 /* OpenSans-Italic.ttf */; };
 		29E2D07344FE427496AB4D03 /* conservation-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 330D5FB5D75C4A4BBA72FBAB /* conservation-white.png */; };
+		2A278AA731DBAA7CEFF9CBE6 /* libPods-Karma-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A594404E9D847CA5AEB19A98 /* libPods-Karma-tvOS.a */; };
 		2AD29419FB4F4F1D899CE354 /* twitter-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B337A8DE3074B43A57D9D8F /* twitter-logo.png */; };
 		2ADE5E784AD04FB7882615DF /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 61B310D2618647418AFA196B /* cross.png */; };
 		2BC3A97381E14CD582E311F1 /* religious.png in Resources */ = {isa = PBXBuildFile; fileRef = D66FF12FA23647229021A1B1 /* religious.png */; };
@@ -178,6 +179,7 @@
 		50487623CCD247CA9993D0A7 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../src/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		5175CF6D76544695AA6F69F5 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-BoldItalic.ttf"; path = "../src/assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		520076A4241B4310ACD470F7 /* new_cause.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = new_cause.png; path = "../src/assets/images/general-logos/new_cause.png"; sourceTree = "<group>"; };
+		52664EC2A4DA374D7FE41859 /* Pods-Karma.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma.debug.xcconfig"; path = "Target Support Files/Pods-Karma/Pods-Karma.debug.xcconfig"; sourceTree = "<group>"; };
 		55AB23C9722744BE83B6F4DA /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		55AF47E4FC49458F87008C23 /* causes-on.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "causes-on.png"; path = "../src/assets/images/nav-bar/causes-on.png"; sourceTree = "<group>"; };
 		573A9FCD44DA4F20A43F5EC7 /* K-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "K-logo.png"; path = "../src/assets/images/settings-logos/K-logo.png"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 		7D0974B2C743439F887A4ACD /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../src/assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		7DCEA3993E3647C699D51455 /* location-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "location-logo.png"; path = "../src/assets/images/general-logos/location-logo.png"; sourceTree = "<group>"; };
 		7E1712E41BB4455FB5366A06 /* religious-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "religious-white.png"; path = "../src/assets/images/causes-logos/white/religious-white.png"; sourceTree = "<group>"; };
+		85AD87D402DF03BC2A212C78 /* libPods-Karma.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Karma.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88EEEAA1FE3BC82D8F1D79FD /* Pods-Karma-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Karma-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Karma-tvOS/Pods-Karma-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8AC72A3A51C441969831F8F9 /* privacy.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = privacy.png; path = "../src/assets/images/settings-logos/privacy.png"; sourceTree = "<group>"; };
 		8CB840BDB31D46F6B6292F3C /* share-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "share-logo.png"; path = "../src/assets/images/general-logos/share-logo.png"; sourceTree = "<group>"; };
@@ -302,7 +305,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4425506DBBF2B9079BCE342D /* libPods-Karma-tvOS.a in Frameworks */,
+				2A278AA731DBAA7CEFF9CBE6 /* libPods-Karma-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,10 +357,10 @@
 				B8CAFB3B242BFE5A00BBFDD7 /* libGoogle-Maps-iOS-Utils.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				1069588E86A3E5332547F852 /* libPods-Karma.a */,
 				A594404E9D847CA5AEB19A98 /* libPods-Karma-tvOS.a */,
 				D478DC5E43DE64B30BE39B4F /* libPods-Karma-tvOSTests.a */,
 				626DCEA1EEE4E3E11219498B /* libPods-KarmaTests.a */,
+				85AD87D402DF03BC2A212C78 /* libPods-Karma.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -521,7 +524,6 @@
 		93BB05B43AC79CEAB49930CE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				11A5CC021B76C68FB31C354D /* Pods-Karma.debug.xcconfig */,
 				DCCBC3B1B263CE42949B854D /* Pods-Karma.release.xcconfig */,
 				88EEEAA1FE3BC82D8F1D79FD /* Pods-Karma-tvOS.debug.xcconfig */,
 				E61DE2A2AE5A6CBAB940A69A /* Pods-Karma-tvOS.release.xcconfig */,
@@ -529,6 +531,7 @@
 				B41FD350C47ECC9907F3FC9F /* Pods-Karma-tvOSTests.release.xcconfig */,
 				6BA4C9A0F046304615C69874 /* Pods-KarmaTests.debug.xcconfig */,
 				30E71B587D14155B84557C57 /* Pods-KarmaTests.release.xcconfig */,
+				52664EC2A4DA374D7FE41859 /* Pods-Karma.debug.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -540,7 +543,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KarmaTests" */;
 			buildPhases = (
-				B1D4DCCBF6CA24BA4EAC230B /* [CP] Check Pods Manifest.lock */,
+				9A792B77470B5D7466F07382 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -580,7 +583,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Karma-tvOS" */;
 			buildPhases = (
-				26B25AC8DDDAEB053731EA90 /* [CP] Check Pods Manifest.lock */,
+				BA0DA4F78270B647C90C50A9 /* [CP] Check Pods Manifest.lock */,
 				3DB9D56C6F893D1EBFA0FDA9 /* Bundle React Native Code And Images */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
@@ -850,6 +853,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		7AC870CC61F15F9556F31CF7 /* [CP] Copy Pods Resources */ = {
 		62DA9362C37C9D2891CD584B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -858,6 +862,24 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Karma/Pods-Karma-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
@@ -865,6 +887,23 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"$(DERIVED_FILE_DIR)/Pods-Karma-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -872,7 +911,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		76632618FF98270A78AFB146 /* [CP] Check Pods Manifest.lock */ = {
+		9A792B77470B5D7466F07382 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -894,6 +933,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BA0DA4F78270B647C90C50A9 /* [CP] Check Pods Manifest.lock */ = {
 		7AC870CC61F15F9556F31CF7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -915,6 +955,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Karma-tvOS-checkManifestLockResult.txt",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -1104,7 +1145,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11A5CC021B76C68FB31C354D /* Pods-Karma.debug.xcconfig */;
+			baseConfigurationReference = 52664EC2A4DA374D7FE41859 /* Pods-Karma.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
