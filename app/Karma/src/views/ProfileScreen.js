@@ -10,11 +10,13 @@ import {
     TouchableOpacity,
     View,
     Alert,
+    Platform,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
 import CauseItem from "../components/causes/CauseItem";
 import PhotoUpload from "react-native-photo-upload";
+import ImagePicker from "react-native-image-picker";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
     itemWidth2,
@@ -25,6 +27,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getData} from "../util/GetCredentials";
+
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -40,6 +43,25 @@ const icons = {
 };
 
 const request = require("superagent");
+
+// const createFormData = (photo, body) => {
+//     const data = new FormData();
+//
+//     data.append("picture", {
+//         name: "testPhotoName",
+//         type: photo.type,
+//         uri:
+//             Platform.OS === "android"
+//                 ? photo.uri
+//                 : photo.uri.replace("file://", ""),
+//     });
+//
+//     Object.keys(body).forEach(key => {
+//         data.append(key, body[key]);
+//     });
+//
+//     return data;
+// };
 
 class ProfileScreen extends Component {
     constructor(props) {
@@ -63,6 +85,8 @@ class ProfileScreen extends Component {
             orgName: "",
             address: {},
             gender: null,
+
+            photo: null,
         };
         this.fetchProfileInfo();
     }
@@ -99,6 +123,8 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
+
+        this.fetchProfilePicture(res);
     }
 
     setupOrganisationProfile(res) {
@@ -128,6 +154,8 @@ class ProfileScreen extends Component {
             pocFirstName: organisation.pocFirstName,
             pocLastName: organisation.pocLastName,
         });
+
+        this.fetchProfilePicture(res);
     }
 
     componentDidMount() {
@@ -136,6 +164,7 @@ class ProfileScreen extends Component {
             this.fetchProfileInfo();
         });
     }
+
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
@@ -157,6 +186,101 @@ class ProfileScreen extends Component {
                 Alert.alert("Unable to load profile", err);
             });
     }
+
+    fetchProfilePicture = async res => {
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        request
+            .get(`http://localhost:8000/avatar/${endpointUsertype}?userId=101`)
+            .then(res => {
+                const imageLocation = res.body.picture_url;
+                request.get(imageLocation).end((error, response) => {
+                    console.log(response);
+                    if (!error && response.statusCode === 200) {
+                        const data =
+                            "data:" +
+                            response.headers["content-type"] +
+                            ";base64," +
+                            response.body.toString("base64");
+                        console.log(data);
+
+                        this.setState({photo: response.text});
+                    } else if (!error) {
+                        Alert.alert("Image Fetch Error", response.body.message);
+                    } else {
+                        Alert.alert("Error fetching from image server", error);
+                    }
+                });
+            })
+            .catch(err => {
+                Alert.alert("Unable to load picture", err);
+            });
+    };
+
+    createFormData = (photo, body) => {
+        const data = new FormData();
+        console.log(photo);
+
+        data.append(
+            "picture",
+            {
+                name: `fileupload_${new Date().getTime().toString()}`,
+                type: photo.type,
+                uri:
+                    Platform.OS === "android"
+                        ? photo.uri
+                        : photo.uri.replace("file://", ""),
+            },
+            photo.fileName,
+        );
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    };
+
+    handleChoosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.uri) {
+                this.setState({photo: response});
+                return this.handleUploadPhoto();
+            }
+        });
+    };
+
+    handleUploadPhoto = async () => {
+        console.log(this.createFormData(this.state.photo, {}));
+        await fetch(
+            "http://localhost:8000/avatar/upload/individual?userId=101",
+            {
+                method: "POST",
+                body: this.createFormData(this.state.photo, {}),
+            },
+        )
+            .then(res => {
+                const response = res.json();
+                if (res.status === 200) {
+                    Alert.alert("Success", "Profile picture updated!");
+                } else {
+                    console.log(response);
+                    Alert.alert("Upload Error", response.message);
+                    this.setState({photo: null});
+                }
+            })
+            .catch(error => {
+                Alert.alert("Upload Error", error.toString());
+                this.setState({photo: null});
+            });
+        this.fetchProfileInfo();
+    };
+
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
@@ -173,6 +297,7 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
+        const {photo} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -249,16 +374,8 @@ class ProfileScreen extends Component {
                                 flexDirection: "row",
                             }}>
                             <View>
-                                <PhotoUpload
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
+                                <TouchableOpacity
+                                    onPress={this.handleChoosePhoto}>
                                     <Image
                                         style={{
                                             paddingVertical: 5,
@@ -267,9 +384,9 @@ class ProfileScreen extends Component {
                                             borderRadius: 75,
                                         }}
                                         resizeMode="cover"
-                                        source={icons.photo_add}
+                                        source={photo ? photo : icons.photo_add}
                                     />
-                                </PhotoUpload>
+                                </TouchableOpacity>
                             </View>
                             <View
                                 style={{
