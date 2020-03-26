@@ -80,7 +80,6 @@ class SignUpScreen extends React.Component {
                 console.log(err.message);
                 Alert.alert("Server Error", err.message);
             });
-        // !termsChecked && Alert.alert("Error", "Please accept the terms and conditions.");
     };
 
     render() {
