@@ -70,6 +70,7 @@ class SignUpRequests extends Component {
                         signUpRequests.map(s => {
                             return (
                                 <SignUpRequest
+                                    navigation={this.props.navigation}
                                     user={s}
                                     key={s.userId}
                                     activity={activity}

@@ -26,7 +26,8 @@ import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
-const {width} = Dimensions.get("window");
+import PageHeader from "../components/PageHeader";
+const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
 const icons = {
@@ -84,8 +85,7 @@ class ProfileScreen extends Component {
             firstName: individual.firstName,
             lastName: individual.lastName,
             user: user,
-            location:
-                individual.address.townCity + " " + individual.address.postCode,
+            location: individual.address.townCity,
             bio: individual.bio,
             causes: causes,
             points: individual.karmaPoints,
@@ -143,9 +143,19 @@ class ProfileScreen extends Component {
     async fetchProfileInfo() {
         const authToken = await getAuthToken();
 
+        let query = {};
+        //a profile is passed through navigation when viewing another user's profile
+        const profile = this.props.navigation.getParam("profile");
+        if (profile) {
+            query = {
+                otherUserId: profile.userId,
+            };
+        }
+
         request
             .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
+            .query(query)
             .then(res => {
                 console.log(res.body);
                 res.body.data.organisation
@@ -172,6 +182,7 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
+        const otherProfile = this.props.navigation.getParam("profile");
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -180,419 +191,490 @@ class ProfileScreen extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
-                            flex: 1,
-                            backgroundColor: Colours.blue,
-                            height: 45,
-                            width: width,
-                            flexDirection: "row",
-                        }}
-                    />
-                    <SafeAreaView style={Styles.safeAreaContainer}>
+                            minHeight: otherProfile
+                                ? SCREEN_HEIGHT - 100
+                                : undefined,
+                        }}>
                         <View
                             style={{
-                                flex: 1,
+                                flex: otherProfile ? undefined : 1,
                                 backgroundColor: Colours.blue,
+                                height: otherProfile ? 0 : 45,
                                 width: width,
-                                justifyContent: "flex-start",
-                                flexDirection: "row-reverse",
-                            }}>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    navigate("ProfileEdit", {
-                                        profile: this.state,
-                                    })
-                                }>
-                                <Image
-                                    source={icons.edit_white}
-                                    style={{
-                                        height: 25,
-                                        width: 25,
-                                        marginHorizontal: formWidth * 0.05,
-                                    }}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    navigate("SettingsMenu", {
-                                        user: this.state.user,
-                                    })
-                                }>
-                                <Image
-                                    onPress={() =>
-                                        navigate("SettingsMenu", {
-                                            user: this.state.user,
-                                        })
-                                    }
-                                    source={icons.cog}
-                                    style={{
-                                        height: 25,
-                                        width: 25,
-                                        marginHorizontal: formWidth * 0.02,
-                                        marginTop: 2,
-                                        marginBottom: 5,
-                                    }}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View
-                            style={{
-                                flex: 1,
-                                backgroundColor: Colours.blue,
-                                height: HALF,
-                                width: width,
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                paddingRight: 30,
-                                paddingLeft: 30,
-                                paddingBottom: 40,
                                 flexDirection: "row",
-                            }}>
-                            <View>
-                                <PhotoUpload
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
-                                    <Image
-                                        style={{
-                                            paddingVertical: 5,
-                                            width: HALF * 0.8,
-                                            height: HALF * 0.8,
-                                            borderRadius: 75,
-                                        }}
-                                        resizeMode="cover"
-                                        source={icons.photo_add}
-                                    />
-                                </PhotoUpload>
-                            </View>
-                            <View
-                                style={{
-                                    marginLeft: 38,
-                                    flex: 1,
-                                }}>
-                                <View>
-                                    {this.state.isOrganisation && (
-                                        <Text
-                                            numberOfLines={1}
-                                            style={[styles.nameText]}>
-                                            {this.state.orgName}
-                                        </Text>
-                                    )}
-                                    {!this.state.isOrganisation && (
-                                        <Text
-                                            numberOfLines={1}
-                                            style={[styles.nameText]}>
-                                            {this.state.firstName}{" "}
-                                            {this.state.lastName}
-                                        </Text>
-                                    )}
-                                </View>
+                            }}
+                        />
+                        <SafeAreaView style={Styles.safeAreaContainer}>
+                            {otherProfile && (
                                 <View
                                     style={{
-                                        flexDirection: "row",
+                                        alignSelf: "center",
+                                        alignItems: "flex-start",
+                                        width: formWidth,
                                     }}>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={styles.usernameText}>
-                                        {this.state.user.username}
-                                    </Text>
-                                    {this.state.isOrganisation && (
-                                        <Text
-                                            numberOfLines={1}
-                                            style={styles.usernameText}>
-                                            {" | " +
-                                                this.state.organisationType}
-                                        </Text>
-                                    )}
-                                    {!this.state.isOrganisation && (
-                                        <Text
-                                            numberOfLines={1}
-                                            style={styles.locationText}>
-                                            {this.state.location}
-                                        </Text>
-                                    )}
+                                    <PageHeader title={"Viewing profile"} />
                                 </View>
+                            )}
+                            {!otherProfile && (
                                 <View
                                     style={{
-                                        flexDirection: "row",
-                                        paddingTop: 20,
-                                        justifyContent: "space-between",
+                                        flex: 1,
+                                        backgroundColor: Colours.blue,
+                                        width: width,
+                                        justifyContent: "flex-start",
+                                        flexDirection: "row-reverse",
                                     }}>
-                                    {!this.state.isOrganisation && (
-                                        <View style={styles.pointContainer}>
-                                            <Image
-                                                source={icons.badge}
-                                                style={{height: 60, width: 60}}
-                                            />
-                                            <Image
-                                                source={icons.ribbon}
-                                                style={{
-                                                    height: 60,
-                                                    width: 60,
-                                                    position: "absolute",
-                                                }}
-                                            />
-                                            <Image
-                                                source={icons.orange_circle}
-                                                style={{
-                                                    height: 25,
-                                                    width: 25,
-                                                    left: 45,
-                                                    top: -8,
-                                                    position: "absolute",
-                                                }}
-                                            />
-                                            <RegularText
-                                                source={icons.orange_circle}
-                                                style={{
-                                                    color: Colours.white,
-                                                    height: 25,
-                                                    width: 25,
-                                                    left: 53,
-                                                    top: -5,
-                                                    position: "absolute",
-                                                }}>
-                                                {this.state.points}
-                                            </RegularText>
-                                        </View>
-                                    )}
-                                    {this.state.isOrganisation && (
-                                        <View
-                                            style={{
-                                                flexDirection: "row",
-                                                paddingTop: 20,
-                                                justifyContent: "space-between",
-                                            }}>
-                                            <Text style={styles.usernameText}>
-                                                {this.state.orgPhoneNumber}
-                                            </Text>
-                                        </View>
-                                    )}
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigate("ProfileEdit", {
+                                                profile: this.state,
+                                            })
+                                        }>
                                         <Image
-                                            source={icons.share}
+                                            source={icons.edit_white}
                                             style={{
                                                 height: 25,
                                                 width: 25,
-                                                resizeMode: "contain",
+                                                marginHorizontal:
+                                                    formWidth * 0.05,
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigate("SettingsMenu", {
+                                                user: this.state.user,
+                                            })
+                                        }>
+                                        <Image
+                                            onPress={() =>
+                                                navigate("SettingsMenu", {
+                                                    user: this.state.user,
+                                                })
+                                            }
+                                            source={icons.cog}
+                                            style={{
+                                                height: 25,
+                                                width: 25,
+                                                marginHorizontal:
+                                                    formWidth * 0.02,
+                                                marginTop: 2,
+                                                marginBottom: 5,
                                             }}
                                         />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                flex: 5,
-                                backgroundColor: "white",
-                                paddingVertical: 25,
-                            }}>
-                            <View
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}>
-                                <GradientButton
-                                    onPress={() =>
-                                        navigate("CreateActivity", {
-                                            email: this.state.email,
-                                        })
-                                    }
-                                    title="Create Activity"
-                                    width={350}
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    paddingTop: 15,
-                                }}>
-                                {!this.state.isOrganisation && (
-                                    <TransparentButton
-                                        title="View Your Activities"
-                                        size={15}
-                                        ph={40}
-                                        onPress={() =>
-                                            navigate("CreatedActivities", {
-                                                activities: this.state
-                                                    .createdEvents,
-                                                pastActivities: this.state
-                                                    .createdPastEvents,
-                                                creatorName: this.state.name,
-                                                email: this.state.email,
-                                            })
-                                        }
-                                    />
-                                )}
-                            </View>
+                            )}
                             <View
                                 style={{
                                     flex: 1,
-                                    paddingHorizontal: formWidth * 0.075,
-                                    alignItems: "flex-start",
-                                    justifyContent: "space-between",
+                                    backgroundColor: Colours.blue,
+                                    height: HALF,
+                                    width: width,
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                    paddingRight: 30,
+                                    paddingLeft: 30,
+                                    paddingBottom: 40,
+                                    flexDirection: "row",
                                 }}>
+                                <View>
+                                    {!otherProfile && (
+                                        <PhotoUpload
+                                            onPhotoSelect={avatar => {
+                                                if (avatar) {
+                                                    console.log(
+                                                        "Image base64 string: ",
+                                                        avatar,
+                                                    );
+                                                    this.setPhoto(avatar);
+                                                }
+                                            }}>
+                                            <Image
+                                                style={{
+                                                    paddingVertical: 5,
+                                                    width: HALF * 0.8,
+                                                    height: HALF * 0.8,
+                                                    borderRadius: 75,
+                                                }}
+                                                resizeMode="cover"
+                                                source={icons.photo_add}
+                                            />
+                                        </PhotoUpload>
+                                    )}
+                                    {otherProfile && (
+                                        <Image
+                                            style={{
+                                                paddingVertical: 5,
+                                                width: HALF * 0.8,
+                                                height: HALF * 0.8,
+                                                borderRadius: 75,
+                                            }}
+                                            resizeMode="cover"
+                                            source={icons.photo_add}
+                                        />
+                                    )}
+                                </View>
                                 <View
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "flex-end",
-                                        justifyContent: "flex-end",
+                                        marginLeft: 38,
+                                        flex: 1,
                                     }}>
-                                    <RegularText style={styles.bioHeader}>
-                                        Bio
-                                    </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit", {
-                                                    profile: this.state,
-                                                })
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
+                                    <View>
+                                        {this.state.isOrganisation && (
+                                            <Text
+                                                numberOfLines={1}
+                                                style={[styles.nameText]}>
+                                                {this.state.orgName}
+                                            </Text>
+                                        )}
+                                        {!this.state.isOrganisation && (
+                                            <Text
+                                                numberOfLines={1}
+                                                style={[styles.nameText]}>
+                                                {`${this.state.firstName} ${
+                                                    this.state.lastName
+                                                }`}
+                                            </Text>
+                                        )}
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                        }}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={styles.usernameText}>
+                                            {this.state.user.username}
+                                        </Text>
+                                        {this.state.isOrganisation && (
+                                            <Text
+                                                numberOfLines={1}
+                                                style={styles.usernameText}>
+                                                {" | " +
+                                                    this.state.organisationType}
+                                            </Text>
+                                        )}
+                                        {!this.state.isOrganisation && (
+                                            <Text
+                                                numberOfLines={1}
+                                                style={styles.locationText}>
+                                                {this.state.location}
+                                            </Text>
+                                        )}
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            paddingTop: 20,
+                                            justifyContent: "space-between",
+                                        }}>
+                                        {!this.state.isOrganisation && (
+                                            <View style={styles.pointContainer}>
+                                                <Image
+                                                    source={icons.badge}
+                                                    style={{
+                                                        height: 60,
+                                                        width: 60,
+                                                    }}
+                                                />
+                                                <Image
+                                                    source={icons.ribbon}
+                                                    style={{
+                                                        height: 60,
+                                                        width: 60,
+                                                        position: "absolute",
+                                                    }}
+                                                />
+                                                <Image
+                                                    source={icons.orange_circle}
+                                                    style={{
+                                                        height: 25,
+                                                        width: 25,
+                                                        left: 45,
+                                                        top: -8,
+                                                        position: "absolute",
+                                                    }}
+                                                />
+                                                <RegularText
+                                                    source={icons.orange_circle}
+                                                    style={{
+                                                        color: Colours.white,
+                                                        height: 25,
+                                                        width: 25,
+                                                        left: 53,
+                                                        top: -5,
+                                                        position: "absolute",
+                                                    }}>
+                                                    {this.state.points}
+                                                </RegularText>
+                                            </View>
+                                        )}
+                                        {this.state.isOrganisation && (
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    paddingTop: 20,
+                                                    justifyContent:
+                                                        "space-between",
+                                                }}>
+                                                <Text
+                                                    style={styles.usernameText}>
+                                                    {this.state.orgPhoneNumber}
+                                                </Text>
+                                            </View>
+                                        )}
+                                        {!otherProfile && (
+                                            <TouchableOpacity>
+                                                <Image
+                                                    source={icons.share}
+                                                    style={{
+                                                        height: 25,
+                                                        width: 25,
+                                                        resizeMode: "contain",
+                                                    }}
+                                                />
+                                            </TouchableOpacity>
+                                        )}
                                     </View>
                                 </View>
+                            </View>
+                            <View
+                                style={{
+                                    flex: 5,
+                                    backgroundColor: "white",
+                                    paddingVertical: 25,
+                                }}>
+                                {!otherProfile && (
+                                    <>
+                                        <View
+                                            style={{
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}>
+                                            <GradientButton
+                                                onPress={() =>
+                                                    navigate("CreateActivity", {
+                                                        email: this.state.email,
+                                                    })
+                                                }
+                                                title="Create Activity"
+                                                width={350}
+                                            />
+                                        </View>
+                                        <View
+                                            style={{
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                paddingTop: 15,
+                                            }}>
+                                            {!this.state.isOrganisation && (
+                                                <TransparentButton
+                                                    title="View Your Activities"
+                                                    size={15}
+                                                    ph={40}
+                                                    onPress={() =>
+                                                        navigate(
+                                                            "CreatedActivities",
+                                                            {
+                                                                activities: this
+                                                                    .state
+                                                                    .createdEvents,
+                                                                pastActivities: this
+                                                                    .state
+                                                                    .createdPastEvents,
+                                                                creatorName: this
+                                                                    .state.name,
+                                                                email: this
+                                                                    .state
+                                                                    .email,
+                                                            },
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </View>
+                                    </>
+                                )}
                                 <View
                                     style={{
                                         flex: 1,
-                                        flexDirection: "row",
-                                        justifyContent: "center",
+                                        paddingHorizontal: formWidth * 0.075,
+                                        alignItems: "flex-start",
+                                        justifyContent: "space-between",
                                     }}>
-                                    <RegularText style={styles.contentText}>
-                                        {this.state.bio}
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "flex-end",
+                                            justifyContent: "flex-end",
+                                        }}>
+                                        <RegularText style={styles.bioHeader}>
+                                            Bio
+                                        </RegularText>
+                                        {!otherProfile && (
+                                            <View style={styles.editContainer}>
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        navigate("ProfileEdit")
+                                                    }>
+                                                    <Image
+                                                        source={icons.edit_grey}
+                                                        style={styles.edit}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        )}
+                                    </View>
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            flexDirection: "row",
+                                            justifyContent: "center",
+                                        }}>
+                                        <RegularText style={styles.contentText}>
+                                            {this.state.bio}
+                                        </RegularText>
+                                    </View>
+                                    <RegularText style={styles.bioHeader}>
+                                        Causes
                                     </RegularText>
-                                </View>
-                                <RegularText style={styles.bioHeader}>
-                                    Causes
-                                </RegularText>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "flex-end",
-                                        justifyContent: "flex-end",
-                                    }}>
-                                    {this.state.causes.length > 0 ? (
-                                        <View style={CauseStyles.container}>
-                                            {this.state.causes.map(cause => (
-                                                <CauseItem
-                                                    cause={cause}
-                                                    key={cause.id}
-                                                    isDisabled={true}
-                                                />
-                                            ))}
-                                        </View>
-                                    ) : (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You did not select any causes
-                                            </RegularText>
-                                        </View>
-                                    )}
-
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit", {
-                                                    profile: this.state,
-                                                })
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "flex-end",
+                                            justifyContent: "flex-end",
+                                        }}>
+                                        {this.state.causes.length > 0 ? (
+                                            <View style={CauseStyles.container}>
+                                                {this.state.causes.map(
+                                                    cause => {
+                                                        return (
+                                                            <CauseItem
+                                                                cause={cause}
+                                                                key={cause.id}
+                                                                isDisabled={
+                                                                    true
+                                                                }
+                                                            />
+                                                        );
+                                                    },
+                                                )}
+                                            </View>
+                                        ) : (
+                                            <View style={Styles.ph24}>
+                                                <RegularText>
+                                                    {otherProfile
+                                                        ? "This user has no causes selected"
+                                                        : "You did not select any causes"}
+                                                </RegularText>
+                                            </View>
+                                        )}
+                                        {!otherProfile && (
+                                            <View style={styles.editContainer}>
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        navigate("ProfileEdit")
+                                                    }>
+                                                    <Image
+                                                        source={icons.edit_grey}
+                                                        style={styles.edit}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        )}
                                     </View>
                                 </View>
                             </View>
-                        </View>
-                        <View
-                            style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                justifyContent: "flex-start",
-                            }}>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    paddingHorizontal: formWidth * 0.075,
-                                }}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.setState({
-                                            eventsToggle: !this.state
-                                                .eventsToggle,
-                                        })
-                                    }>
-                                    <RegularText
-                                        style={
-                                            this.state.eventsToggle
-                                                ? styles.bioHeader
-                                                : styles.bioHeaderAlt
-                                        }>
-                                        {this.state.upcomingEvents.length > 0
-                                            ? "Upcoming Events"
-                                            : "No Upcoming Events"}
-                                    </RegularText>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        this.setState({
-                                            eventsToggle: !this.state
-                                                .eventsToggle,
-                                        })
-                                    }
+
+                            {!otherProfile && (
+                                <View
                                     style={{
-                                        alignSelf: "flex-start",
-                                        marginLeft: 80,
+                                        flex: 1,
+                                        alignItems: "flex-start",
+                                        justifyContent: "flex-start",
                                     }}>
-                                    <RegularText
-                                        style={
-                                            this.state.eventsToggle
-                                                ? styles.bioHeaderAlt
-                                                : styles.bioHeader
-                                        }>
-                                        Past Events
-                                    </RegularText>
-                                </TouchableOpacity>
-                            </View>
-                            <View
-                                style={{
-                                    alignItems: "flex-start",
-                                    justifyContent: "flex-start",
-                                }}>
-                                <Carousel
-                                    ref={c => {
-                                        this._carousel = c;
-                                    }}
-                                    data={
-                                        this.state.eventsToggle
-                                            ? this.state.upcomingEvents
-                                            : this.state.pastEvents
-                                    }
-                                    removeClippedSubviews={false}
-                                    renderItem={this._renderItem}
-                                    sliderWidth={sliderWidth}
-                                    itemWidth={itemWidth2}
-                                    inactiveSlideOpacity={1}
-                                    inactiveSlideScale={1}
-                                    containerCustomStyle={CarouselStyles.slider}
-                                    onSnapToItem={index =>
-                                        this.setState({activeSlide: index})
-                                    }
-                                />
-                            </View>
-                        </View>
-                    </SafeAreaView>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            paddingHorizontal:
+                                                formWidth * 0.075,
+                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                this.setState({
+                                                    eventsToggle: !this.state
+                                                        .eventsToggle,
+                                                })
+                                            }>
+                                            <RegularText
+                                                style={
+                                                    this.state.eventsToggle
+                                                        ? styles.bioHeader
+                                                        : styles.bioHeaderAlt
+                                                }>
+                                                {this.state.upcomingEvents
+                                                    .length > 0
+                                                    ? "Upcoming Events"
+                                                    : "No Upcoming Events"}
+                                            </RegularText>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                this.setState({
+                                                    eventsToggle: !this.state
+                                                        .eventsToggle,
+                                                })
+                                            }
+                                            style={{
+                                                alignSelf: "flex-start",
+                                                marginLeft: 80,
+                                            }}>
+                                            <RegularText
+                                                style={
+                                                    this.state.eventsToggle
+                                                        ? styles.bioHeaderAlt
+                                                        : styles.bioHeader
+                                                }>
+                                                Past Events
+                                            </RegularText>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View
+                                        style={{
+                                            alignItems: "flex-start",
+                                            justifyContent: "flex-start",
+                                        }}>
+                                        <Carousel
+                                            ref={c => {
+                                                this._carousel = c;
+                                            }}
+                                            data={
+                                                this.state.eventsToggle
+                                                    ? this.state.upcomingEvents
+                                                    : this.state.pastEvents
+                                            }
+                                            removeClippedSubviews={false}
+                                            renderItem={this._renderItem}
+                                            sliderWidth={sliderWidth}
+                                            itemWidth={itemWidth2}
+                                            inactiveSlideOpacity={1}
+                                            inactiveSlideScale={1}
+                                            containerCustomStyle={
+                                                CarouselStyles.slider
+                                            }
+                                            onSnapToItem={index =>
+                                                this.setState({
+                                                    activeSlide: index,
+                                                })
+                                            }
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        </SafeAreaView>
+                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         );
