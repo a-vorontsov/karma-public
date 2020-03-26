@@ -6,6 +6,7 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 import MainTabNavigator from "./src/routes/MainTabNavigator";
 import MainNavigator from "./src/routes/MainNavigator";
 import {MenuProvider} from "react-native-popup-menu";
+import {initialiseApp} from "./src/util/initialise";
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -22,12 +23,17 @@ const AppNavigator = createSwitchNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default function App() {
-    return (
-        <MenuProvider>
-            <SafeAreaProvider>
-                <AppContainer />
-            </SafeAreaProvider>
-        </MenuProvider>
-    );
+export default class App extends React.Component {
+    componentDidMount() {
+        initialiseApp();
+    }
+    render() {
+        return (
+            <MenuProvider>
+                <SafeAreaProvider>
+                    <AppContainer />
+                </SafeAreaProvider>
+            </MenuProvider>
+        );
+    }
 }

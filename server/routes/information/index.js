@@ -5,15 +5,16 @@ const log = require("../../util/log");
 const express = require("express");
 const router = express.Router();
 
-const httpUtil = require("../../util/httpUtil");
-const informationService = require("../../modules/informationService/");
-const authAgent = require("../../modules/authentication/auth-agent");
+const httpUtil = require("../../util/http");
+const informationService = require("../../modules/information/");
+const authService = require("../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user requests information about an information type.<br/>
  * URL example: GET http://localhost:8000/information?type=privacyPolicy
  <p><b>Route: </b>/information (GET)</p>
  <p><b>Permissions: </b>any</p>
+ * @param {string} req.headers.authorization authToken or null
  * @param {String} req.query.type - type of information
  * @returns {Object}
  *  status: 200, description: The information of the requested type.<br/>
@@ -33,10 +34,11 @@ const authAgent = require("../../modules/authentication/auth-agent");
  *  @name Get information entry
  *  @function
  */
-router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
+router.get("/", authService.acceptAnyAuthentication, async (req, res) => {
     try {
+        log.info("%s: Getting information type '%s'", req.query.userId ? `User id '${req.query.userId}'` : "No auth",
+            req.query.type);
         const type = req.query.type;
-        log.info("Getting information type '%s'", type);
         if (type === undefined) {
             return res.status(400).send({message: "Type is not specified"});
         }
@@ -44,7 +46,8 @@ router.get("/", authAgent.acceptAnyAuthentication, async (req, res) => {
         const informationResult = await informationService.getInformationData(type);
         return httpUtil.sendResult(informationResult, res);
     } catch (e) {
-        log.error("Getting information failed: " + e);
+        log.error("%s: Failed getting information type '%s'", req.query.userId ? `User id '${req.query.userId}'` : "No auth",
+            req.query.type);
         return httpUtil.sendGenericError(e, res);
     }
 });

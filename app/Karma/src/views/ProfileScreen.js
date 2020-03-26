@@ -28,6 +28,8 @@ import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getData} from "../util/GetCredentials";
 
+import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -36,10 +38,10 @@ const icons = {
     cog: require("../assets/images/general-logos/cog.png"),
     badge: require("../assets/images/general-logos/badges-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
-    edit_grey: require("../assets/images/general-logos/edit-grey.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
     ribbon: require("../assets/images/general-logos/ribbon.png"),
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
+    new_cause: require("../assets/images/general-logos/new_cause.png"),
 };
 
 const request = require("superagent");
@@ -91,10 +93,6 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     setupIndividualProfile(res) {
         const {
             causes,
@@ -105,14 +103,13 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             email: user.email,
             isOrganisation: false,
-            name: individual.firstName + " " + individual.lastName,
+            firstName: individual.firstName,
+            lastName: individual.lastName,
             user: user,
-            location:
-                individual.address.townCity + " " + individual.address.postCode,
+            location: individual.address.townCity,
             bio: individual.bio,
             causes: causes,
             points: individual.karmaPoints,
@@ -160,9 +157,12 @@ class ProfileScreen extends Component {
 
     componentDidMount() {
         const {navigation} = this.props;
-        this.willFocusListener = navigation.addListener("willFocus", () => {
-            this.fetchProfileInfo();
-        });
+        this.willFocusListener = navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.fetchProfileInfo();
+            },
+        );
     }
 
     componentWillUnmount() {
@@ -170,14 +170,13 @@ class ProfileScreen extends Component {
     }
 
     async fetchProfileInfo() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         request
-            .get("http://localhost:8000/profile")
-            .query({userId: userId})
+            .get(`${REACT_APP_API_URL}/profile`)
+            .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
+                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -405,7 +404,8 @@ class ProfileScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.name}
+                                            {this.state.firstName}{" "}
+                                            {this.state.lastName}
                                         </Text>
                                     )}
                                 </View>
@@ -530,7 +530,7 @@ class ProfileScreen extends Component {
                                     justifyContent: "center",
                                     paddingTop: 15,
                                 }}>
-                                {!this.state.isOrganisation && (
+                                {this.state.isOrganisation && (
                                     <TransparentButton
                                         title="View Your Activities"
                                         size={15}
@@ -541,6 +541,7 @@ class ProfileScreen extends Component {
                                                     .createdEvents,
                                                 pastActivities: this.state
                                                     .createdPastEvents,
+                                                creatorName: this.state.name,
                                                 email: this.state.email,
                                             })
                                         }
@@ -563,17 +564,6 @@ class ProfileScreen extends Component {
                                     <RegularText style={styles.bioHeader}>
                                         Bio
                                     </RegularText>
-                                    <View style={styles.editContainer}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigate("ProfileEdit")
-                                            }>
-                                            <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
                                 </View>
                                 <View
                                     style={{
@@ -584,6 +574,21 @@ class ProfileScreen extends Component {
                                     <RegularText style={styles.contentText}>
                                         {this.state.bio}
                                     </RegularText>
+                                    {this.state.bio !== "" ? (
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You do not have a bio. Please
+                                                edit your profile to add one.
+                                            </RegularText>
+                                        </View>
+                                    ) : (
+                                        <View style={Styles.ph24}>
+                                            <RegularText>
+                                                You do not have a bio. Please
+                                                edit your profile to add one.
+                                            </RegularText>
+                                        </View>
+                                    )}
                                 </View>
                                 <RegularText style={styles.bioHeader}>
                                     Causes
@@ -596,35 +601,38 @@ class ProfileScreen extends Component {
                                     }}>
                                     {this.state.causes.length > 0 ? (
                                         <View style={CauseStyles.container}>
-                                            {this.state.causes.map(cause => {
-                                                return (
-                                                    <CauseItem
-                                                        cause={cause}
-                                                        key={cause.id}
-                                                        isDisabled={true}
-                                                    />
-                                                );
-                                            })}
+                                            {this.state.causes.map(cause => (
+                                                <CauseItem
+                                                    cause={cause}
+                                                    key={cause.id}
+                                                    isDisabled={true}
+                                                />
+                                            ))}
                                         </View>
                                     ) : (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You did not select any causes
-                                            </RegularText>
-                                        </View>
-                                    )}
-
-                                    <View style={styles.editContainer}>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                navigate("ProfileEdit")
+                                                navigate("ProfileEdit", {
+                                                    profile: this.state,
+                                                })
                                             }>
                                             <Image
-                                                source={icons.edit_grey}
-                                                style={styles.edit}
+                                                source={icons.new_cause}
+                                                style={{
+                                                    height: width / 3.6,
+                                                    width: width / 3.6,
+                                                    borderRadius: 10,
+                                                    marginVertical: 4,
+                                                    paddingVertical: 16,
+                                                    paddingHorizontal: 6,
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    backgroundColor:
+                                                        Colours.white,
+                                                }}
                                             />
                                         </TouchableOpacity>
-                                    </View>
+                                    )}
                                 </View>
                             </View>
                         </View>

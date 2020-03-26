@@ -7,6 +7,7 @@ import {
     KeyboardAvoidingView,
     TouchableOpacity,
     Platform,
+    Keyboard,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
@@ -15,13 +16,14 @@ import {TextInput} from "../components/input";
 import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
 import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -40,12 +42,9 @@ class AboutScreen extends React.Component {
             townCity: "",
             countryState: "",
             postCode: "",
+            firstOpen: true,
         };
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     onInputChange = inputState => {
         this.setState({
@@ -122,26 +121,25 @@ class AboutScreen extends React.Component {
 
     async goToNext() {
         const {gender, dateSelected, fname, lname} = this.state;
+        if (fname === "" || lname === "") {
+            this.setState({
+                firstOpen: false,
+            });
+        }
         if (gender && fname !== "" && lname !== "" && dateSelected) {
-            const credentials = await getData();
-            const authToken = credentials.password;
-            const userId = credentials.username;
-            console.log(userId);
+            const authToken = await getAuthToken();
             const individual = this.createIndividual();
+
             await request
-                .post("http://localhost:8000/signup/individual")
+                .post(`${REACT_APP_API_URL}/signup/individual`)
+                .set("authorization", authToken)
                 .send({
-                    authToken: authToken,
-                    userId: userId,
                     data: {individual: {...individual}},
                 })
-                .then(res => {
+                .then(async res => {
                     console.log(res.body);
-                    this.props.navigation.navigate("PickCauses", {
-                        photo: this.state.photo,
-                        gender: this.state.gender,
-                        date: this.state.date,
-                    });
+                    await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
+                    this.props.navigation.navigate("PickCauses");
                     return;
                 })
                 .catch(err => {
@@ -235,7 +233,7 @@ class AboutScreen extends React.Component {
                                 placeholder="Last Name"
                                 name="lname"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() => this.dob.focus()}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                                 showError={
                                     this.state.firstOpen
                                         ? false
@@ -303,7 +301,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         fontWeight: "400",
-        color: "gray",
+        color: Colours.lightGrey,
     },
 });
 

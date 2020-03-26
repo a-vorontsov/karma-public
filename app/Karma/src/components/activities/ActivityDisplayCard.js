@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {Image, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
 import CarouselStyles from "../../styles/CarouselStyles";
@@ -18,15 +18,6 @@ class ActivityDisplayCard extends React.Component {
         return false;
     };
 
-    _renderTruncatedFooter = handlePress => {
-        return (
-            <Text
-                style={{color: "#00A8A6", marginTop: 5}}
-                onPress={handlePress}>
-                READ MORE
-            </Text>
-        );
-    };
     render() {
         const props = this.props;
         return (
@@ -102,7 +93,7 @@ class ActivityDisplayCard extends React.Component {
                         <ActivityCard
                             activity={props.activity}
                             favorited={props.favorited}
-                            signedup={props.signedup}
+                            signedup={props.going}
                         />
                     </View>
                 </View>

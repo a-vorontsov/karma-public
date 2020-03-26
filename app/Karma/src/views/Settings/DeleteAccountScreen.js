@@ -6,10 +6,6 @@ import {RegularText, SemiBoldText} from "../../components/text";
 import {GradientButton, TransparentButton} from "../../components/buttons";
 
 class DeleteAccountScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     render() {
         const {navigate} = this.props.navigation;
         return (

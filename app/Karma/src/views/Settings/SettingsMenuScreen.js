@@ -13,19 +13,18 @@ const icons = {
     privacy: require("../../assets/images/settings-logos/privacy.png"),
     report: require("../../assets/images/settings-logos/report-problem.png"),
     terms: require("../../assets/images/settings-logos/terms.png"),
+    key: require("../../assets/images/settings-logos/key.png"),
     bin: require("../../assets/images/settings-logos/bin.png"),
 };
 
 class SettingsMenuScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
     constructor(props) {
         super(props);
         this.state = {
             user: {},
         };
     }
+
     componentDidMount() {
         const {navigation} = this.props;
         const user = navigation.getParam("user");
@@ -38,6 +37,7 @@ class SettingsMenuScreen extends Component {
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
+
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -84,6 +84,11 @@ class SettingsMenuScreen extends Component {
                                     user: this.state.user,
                                 })
                             }
+                        />
+                        <SettingsButton
+                            title="Change Password"
+                            icon={icons.key}
+                            onPress={() => navigate("ChangePassword")}
                         />
                         <SettingsButton
                             title="Log Out"

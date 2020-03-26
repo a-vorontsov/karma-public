@@ -17,8 +17,10 @@ import {RegularText, SubTitleText} from "../components/text";
 import Colours from "../styles/Colours";
 import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
-import * as Keychain from "react-native-keychain";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getAuthToken} from "../util/credentials";
 
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
@@ -57,24 +59,32 @@ class SignUpScreen extends React.Component {
     }
     signUserUp = async () => {
         const user = this.createUser();
+
+        this.setState({firstOpen: false});
+        if (
+            !this.state.termsChecked ||
+            !this.state.email ||
+            !this.state.username ||
+            !this.state.password ||
+            !this.state.confPassword
+        ) {
+            return;
+        }
+
+        let authToken = await getAuthToken();
         await request
-            .post("http://localhost:8000/signup/user")
+            .post(`${REACT_APP_API_URL}/signup/user`)
+            .set("authorization", authToken)
             .send({
-                authToken: null,
-                userId: null,
                 data: {
                     user: {...user},
                 },
             })
             .then(async res => {
-                const authToken = res.body.authToken;
-                const userId = res.body.userId;
-                await Keychain.resetGenericPassword();
-                await Keychain.setGenericPassword(userId.toString(), authToken);
-                console.log(
-                    `User id ${userId} successfully stored in keychain.`,
-                );
-                this.setState({firstOpen: false});
+                console.log(res.body.message);
+                authToken = res.body.data.authToken;
+                await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
+
                 this.props.navigation.navigate("InitSignup");
             })
             .catch(err => {
@@ -84,13 +94,12 @@ class SignUpScreen extends React.Component {
     };
 
     render() {
-        const {
-            navigation: {navigate},
-        } = this.props;
+        const {navigation} = this.props;
         const showPasswordError =
             !this.state.password ||
             this.state.password !== this.state.confPassword ||
             !this.isValidPassword();
+
         return (
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
@@ -101,7 +110,7 @@ class SignUpScreen extends React.Component {
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="always">
                         <View>
-                            <PageHeader title="Sign Up" />
+                            <PageHeader title="Sign Up" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(26)}}>
                                 Create a new account
                             </SubTitleText>
@@ -164,7 +173,7 @@ class SignUpScreen extends React.Component {
                                                 ? ""
                                                 : undefined
                                         }
-                                        inputRef={ref => (this.password = ref)}
+                                        inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                                         onSubmitEditing={() => {
                                             Keyboard.dismiss();
                                             this.confPassword.focus();
@@ -252,13 +261,17 @@ class SignUpScreen extends React.Component {
                                         the legal stuff:{" "}
                                         <RegularText
                                             style={Styles.link}
-                                            onPress={() => navigate("Terms")}>
+                                            onPress={() =>
+                                                navigation.push("Terms")
+                                            }>
                                             Terms of Use
                                         </RegularText>
                                         {" & "}
                                         <RegularText
                                             style={Styles.link}
-                                            onPress={() => navigate("Privacy")}>
+                                            onPress={() =>
+                                                navigation.push("Privacy")
+                                            }>
                                             Privacy
                                         </RegularText>
                                     </RegularText>

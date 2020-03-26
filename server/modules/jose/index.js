@@ -1,7 +1,7 @@
 const jose = require('jose');
 const config = {...require("../../config").jose};
 const date = require("date-and-time");
-const authRepo = require("../../models/databaseRepositories/authenticationRepository");
+const authRepo = require("../../repositories/authentication");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -40,20 +40,6 @@ const blacklist = new Set(); // TODO: fetch when starting app
 
 /**
  * Get the public key used for encryption-decryption
- * in JSON Web Key format.
- * @return {object} enc public key in JWK format
- */
-const getEncPubAsJWK = () => { // TODO: ENFORCE PEM
-    return keystore.get({
-        kty: config.kty,
-        crv: config.crvOrSize,
-        use: "enc",
-        key_ops: ["deriveKey"],
-    });
-};
-
-/**
- * Get the public key used for encryption-decryption
  * in Privacy-Enhanced Mail format
  * @return {object} enc public key in PEM format
  */
@@ -64,20 +50,6 @@ const getEncPubAsPEM = () => {
         use: "enc",
         key_ops: ["deriveKey"],
     }).toPEM();
-};
-
-/**
- * Get the public key used for signing-verifying
- * in JSON Web Key format.
- * @return {object} sig public key in JWK format
- */
-const getSigPubAsJWK = () => { // TODO: ENFORCE PEM
-    return keystore.get({
-        kty: config.kty,
-        crv: config.crvOrSize,
-        use: "sig",
-        key_ops: ["sign", "verify"],
-    });
 };
 
 /**
@@ -102,6 +74,9 @@ const getSigPubAsPEM = () => {
  * @return {string} JWE object as string
  */
 const encrypt = (cleartext, pub) => {
+    if (pub === undefined && process.env.SKIP_ASYNC_KEY_EXCHANGE == true) {
+        pub = getEncPubAsPEM();
+    };
     return JWE.encrypt(cleartext, JWK.asKey(pub),
         {
             enc: config.enc,
@@ -179,9 +154,6 @@ const verify = (jwt, aud) => {
  * @return {string} JWE object as string
  */
 const signAndEncrypt = (payload, pub, exp) => {
-    if (pub === undefined && process.env.SKIP_ASYNC_KEY_EXCHANGE == true) {
-        pub = getEncPubAsPEM();
-    };
     const jwt = sign(payload, exp);
     return encrypt(jwt, pub);
 };
@@ -260,6 +232,16 @@ const getUserIdFromJWT = (jwt) => {
  */
 const getSignatureFromJWT = (jwt) => {
     return jwt.split(".")[2];
+};
+
+/**
+ * Return signature, i.e. authentication tag of
+ * JWE as a Base64 string.
+ * @param {object} jwe
+ * @return {string} signature
+ */
+const getSignatureFromJWE = (jwe) => {
+    return jwe.split(".")[4];
 };
 
 /**
@@ -358,9 +340,7 @@ const getEncryptedConfig = (pub) => {
 };
 
 module.exports = {
-    getEncPubAsJWK, // TODO: ENFORCE PEM
     getEncPubAsPEM,
-    getSigPubAsJWK, // TODO: ENFORCE PEM
     getSigPubAsPEM,
     getPublicConfig,
     getEncryptedConfig,
@@ -374,6 +354,7 @@ module.exports = {
     decryptVerifyAndGetUserId,
     getUserIdFromPayload,
     getSignatureFromJWT,
+    getSignatureFromJWE,
     blacklistJWT,
     decryptAndBlacklistJWE,
     isBlacklisted,

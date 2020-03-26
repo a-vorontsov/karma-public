@@ -1,14 +1,7 @@
 import React from "react";
 
 import {InfoBar} from "../buttons";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    Alert,
-} from "react-native";
+import {Image, StyleSheet, View, TouchableOpacity, Alert} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import ReadMore from "react-native-read-more-text";
@@ -16,7 +9,9 @@ import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
-
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
     fave_active: require("../../assets/images/general-logos/heart-red.png"),
@@ -67,23 +62,12 @@ class ActivityCard extends React.Component {
         super(props);
         this.state = {
             displaySignupModal: false,
+            favourited: props.activity.favourited,
         };
         this.toggleModal = this.toggleModal.bind(this);
+        this.toggleFavourite = this.toggleFavourite.bind(this);
     }
 
-    setFav = handlePress => {
-        return false;
-    };
-
-    renderTruncatedFooter = handlePress => {
-        return (
-            <Text
-                style={{color: "#00A8A6", marginTop: 5}}
-                onPress={() => this.props.navigation.navigate("ActivityInfo")}>
-                READ MORE
-            </Text>
-        );
-    };
     toggleModal = () => {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
@@ -92,8 +76,68 @@ class ActivityCard extends React.Component {
     handleSignupError = (errorTitle, errorMessage) => {
         Alert.alert(errorTitle, errorMessage);
     };
+
+    async toggleFavourite() {
+        const authToken = await getAuthToken();
+        if (!this.state.favourited) {
+            request
+                .post(
+                    `${REACT_APP_API_URL}/event/${
+                        this.props.activity.eventId
+                    }/favourite`,
+                )
+                .set("authorization", authToken)
+                .then(result => {
+                    console.log(result.body.message);
+                    this.setState({
+                        favourited: true,
+                    });
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        } else {
+            request
+                .post(
+                    `${REACT_APP_API_URL}/event/${
+                        this.props.activity.eventId
+                    }/favourite/delete`,
+                )
+                .set("authorization", authToken)
+                .then(result => {
+                    console.log(result.body.message);
+                    this.setState({
+                        favourited: false,
+                    });
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        }
+    }
+
+    _renderTruncatedFooter = handlePress => {
+        const {activity, signedup} = this.props;
+
+        return (
+            <TouchableOpacity
+                onPress={() =>
+                    this.props.navigation.push("ActivityInfo", {
+                        activity: activity,
+                        signedup: signedup,
+                    })
+                }>
+                <RegularText
+                    style={{color: Colours.lightBlue, marginTop: 5}}
+                    onPress={handlePress}>
+                    READ MORE
+                </RegularText>
+            </TouchableOpacity>
+        );
+    };
     render() {
-        const {activity, signedup, favorited} = this.props;
+        const {activity, signedup} = this.props;
+
         return (
             <View style={[Styles.container, Styles.ph24]}>
                 <View style={[Styles.pb24, Styles.bottom]}>
@@ -147,6 +191,7 @@ class ActivityCard extends React.Component {
                                 title={` ${formatAMPM(activity.date)}`}
                                 image={icons.clock}
                             />
+
                             <InfoBar
                                 title={`${activity.spots} Spots Left`}
                                 image={icons.people}
@@ -157,36 +202,25 @@ class ActivityCard extends React.Component {
                                     alignItems: "flex-end",
                                     justifyContent: "flex-end",
                                 }}>
-                                <TouchableOpacity style={{alignSelf: "center"}}>
+                                <TouchableOpacity
+                                    style={{alignSelf: "center"}}
+                                    onPress={this.toggleFavourite}>
                                     <Image
                                         source={
-                                            favorited
-                                                ? icons.fave_inactive
-                                                : icons.fave_active
+                                            this.state.favourited
+                                                ? icons.fave_active
+                                                : icons.fave_inactive
                                         }
                                         style={{
                                             width: 30,
                                             height: 30,
                                             resizeMode: "contain",
-                                            marginRight: 10,
+                                            marginRight: -5,
                                         }}
-                                        // onPress={this.setFav(!props.favorited)}
                                     />
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity
-                            style={{alignSelf: "center"}}
-                            onPress={() =>
-                                this.props.navigation.navigate("ActivityInfo", {
-                                    activity: activity,
-                                    signedup: signedup,
-                                })
-                            }>
-                            <RegularText style={{color: Colours.cyan}}>
-                                View Activity
-                            </RegularText>
-                        </TouchableOpacity>
                         <RegularText
                             style={{
                                 fontWeight: "500",
@@ -197,11 +231,11 @@ class ActivityCard extends React.Component {
                         </RegularText>
                     </View>
                     <View>
+                        {this._renderTruncatedFooter()}
                         <ReadMore
                             numberOfLines={2}
-                            renderTruncatedFooter={this._renderTruncatedFooter}>
-                            <RegularText>{activity.content}</RegularText>
-                        </ReadMore>
+                            renderTruncatedFooter={this._renderTruncatedFooter}
+                        />
                     </View>
                 </View>
                 <BottomModal

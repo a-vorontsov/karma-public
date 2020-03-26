@@ -1,20 +1,24 @@
 import React, {Component} from "react";
-import {SafeAreaView} from "react-native";
-import PageHeader from "../../components/PageHeader";
-import Styles from "../../styles/Styles";
+import {View} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+import {useNavigation} from "react-navigation-hooks";
 
 class LogOutScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
+    constructor(props) {
+        super(props);
+    }
+
+    async componentDidMount() {
+        await AsyncStorage.multiRemove(["ACCESS_TOKEN", "FULLY_SIGNED_UP"]);
+        this.props.navigation.navigate("Welcome");
+    }
 
     render() {
-        return (
-            <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                <PageHeader title="Log Out" />
-            </SafeAreaView>
-        );
+        return <View />;
     }
 }
 
-export default LogOutScreen;
+export default props => {
+    const navigation = useNavigation();
+    return <LogOutScreen {...props} navigation={navigation} />;
+};

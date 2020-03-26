@@ -5,10 +5,10 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const userAgent = require("../../../modules/authentication/user-agent");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const userAgent = require("../../../modules/user");
+const authService = require("../../../modules/authentication/");
 const owasp = require("owasp-password-strength-test");
-const httpUtil = require("../../../util/httpUtil");
+const httpUtil = require("../../../util/http");
 
 /**
  * Attempt to reset the password for a given user.<br/>
@@ -22,6 +22,7 @@ const httpUtil = require("../../../util/httpUtil");
  * the input password is not strong enough.
  <p><b>Route: </b>/reset (POST)</p>
  <p><b>Permissions: </b>require pass-reset permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {string} req.body.data.password new password input by user
  * @param {object} req.body Here is an example of an appropriate request json:
 <pre><code>
@@ -53,10 +54,11 @@ const httpUtil = require("../../../util/httpUtil");
  * @name Reset password
  * @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
-    log.info("Resetting password");
+router.post("/", authService.requireAuthentication, async (req, res) => {
+    log.info("User id '%d': Resetting password", req.body.userId);
     const passStrengthTest = owasp.test(req.body.data.password);
     if (!passStrengthTest.strong && process.env.SKIP_PASSWORD_CHECKS != true) {
+        log.warn("User id '%d': Resetting password failed: New password too weak", req.body.userId);
         return res.status(400).send({
             message: "Weak password.",
             errors: passStrengthTest.errors,
@@ -67,12 +69,13 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             req.body.userId,
             req.body.data.password,
         );
+        log.info("User id '%d': Resetting password successful", req.body.userId);
         httpUtil.sendResult({
             status: 200,
             message: "Password successfully updated. Go to sign-in screen.",
         }, res);
     } catch (e) {
-        log.error("Resetting password failed: " + e);
+        log.error("User id '%d': Failed resetting password: " + e, req.body.userId);
         httpUtil.sendGenericError(e, res);
     }
 });

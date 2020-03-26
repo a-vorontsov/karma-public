@@ -7,18 +7,17 @@ import Colours from "../../styles/Colours";
 import {TextInput} from "../../components/input";
 import Toast from "react-native-simple-toast";
 import {GradientButton} from "../../components/buttons";
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+
 const request = require("superagent");
+
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.6 * SCREEN_WIDTH;
 
 const logo = require("../../assets/images/settings-logos/email.png");
 
 class EmailSettingsScreen extends Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -26,16 +25,16 @@ class EmailSettingsScreen extends Component {
             promotionalEmails: 0,
             notifications: 0,
         };
-        this.loadSettings();
         this.saveSettings = this.saveSettings.bind(this);
     }
+    async componentDidMount() {
+        await this.loadSettings();
+    }
     async loadSettings() {
-        const credentials = await getData();
-        //const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
-            .get("http://localhost:8000/settings")
-            .query({userId: userId})
+            .get(`${REACT_APP_API_URL}/settings`)
+            .set("authorization", authToken)
             .then(res => {
                 this.setState({
                     promotionalEmails: res.body.data.settings.email,
@@ -48,14 +47,11 @@ class EmailSettingsScreen extends Component {
     }
 
     async saveSettings() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         request
-            .post("http://localhost:8000/settings")
+            .post(`${REACT_APP_API_URL}/settings`)
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 email: this.state.promotionalEmails,
                 notifications: this.state.notifications,
             })

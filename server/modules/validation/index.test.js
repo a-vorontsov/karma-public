@@ -1,5 +1,5 @@
 const validation = require("./index.js");
-const testHelpers = require("../../test/testHelpers");
+const testHelpers = require("../../test/helpers");
 
 const event = testHelpers.getEvent();
 const address = testHelpers.getAddress();

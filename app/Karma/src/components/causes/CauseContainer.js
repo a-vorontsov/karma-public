@@ -1,5 +1,6 @@
 import React from "react";
 import {View, ScrollView, Dimensions} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Styles from "../../styles/Styles";
 import {SubTitleText} from "../text";
 import {GradientButton} from "../buttons";
@@ -7,7 +8,8 @@ import CausePicker from "./CausePicker";
 import Toast from "react-native-simple-toast";
 const request = require("superagent");
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
-import {getData} from "../../util/credentials";
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 
 export default class CauseContainer extends React.Component {
     constructor(props) {
@@ -21,23 +23,33 @@ export default class CauseContainer extends React.Component {
     }
     async componentDidMount() {
         try {
-            const response = await request.get("http://localhost:8000/causes");
+            let values = await AsyncStorage.multiGet([
+                "causes",
+                "ACCESS_TOKEN",
+            ]);
+            let causes = values[0][1];
+            const authToken = values[1][1];
+            causes = JSON.parse(causes);
+            if (causes.length === 0) {
+                const res = await request
+                    .get(`${REACT_APP_API_URL}/causes`)
+                    .set("authorization", authToken);
+                causes = res.body.data;
+            }
             this.setState({
-                causes: response.body.data,
+                causes,
             });
         } catch (error) {
             console.log(error);
         }
     }
     async selectCauses() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
-        await request
-            .post("http://localhost:8000/causes/select")
+        const authToken = await getAuthToken();
+
+        request
+            .post(`${REACT_APP_API_URL}/causes/select`)
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {

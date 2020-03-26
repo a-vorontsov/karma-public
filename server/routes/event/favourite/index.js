@@ -4,20 +4,21 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const httpUtil = require("../../../util/httpUtil");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const httpUtil = require("../../../util/http");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authService = require("../../../modules/authentication/");
 
 /**
  * Endpoint called whenever a user wishes to favourite an event.<br/>
  <p><b>Route: </b>/event/:id/favourite (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -37,10 +38,11 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @name Favourite an event
  *  @function
  */
-router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/favourite', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Favouriting event");
-        const favouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        log.info("User id '%d': Favouriting event id '%d'", req.body.userId, req.params.eventId);
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        const favouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(favouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -49,7 +51,7 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
         const favouriteResult = await eventFavouriteService.createEventFavourite(favouriteRequest);
         return httpUtil.sendResult(favouriteResult, res);
     } catch (e) {
-        log.error("Error while favouriting event: " + e.message);
+        log.error("User id '%d': Favouriting event id '%d' failed: " + e, req.body.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -58,10 +60,11 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  * Endpoint called whenever a user unfavourites an event.<br/>
  <p><b>Route: </b>/event/:id/favourite/delete (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "individualId": "3"
+    "userId": "3"
   }
  </pre>
  * @returns {Object}
@@ -81,10 +84,11 @@ router.post('/:eventId/favourite', authAgent.requireAuthentication, async (req, 
  *  @name Delete favourite status for event
  *  @function
  */
-router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/favourite/delete', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Unfavouriting event");
-        const deleteFavouriteRequest = {...req.body, eventId: Number.parseInt(req.params.eventId)};
+        const individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        log.info("User id '%d': Unfavouriting event id '%d'", req.body.userId, req.params.eventId);
+        const deleteFavouriteRequest = {individualId, eventId: Number.parseInt(req.params.eventId)};
         const validationResult = validation.validateFavourite(deleteFavouriteRequest);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -93,7 +97,7 @@ router.post('/:eventId/favourite/delete', authAgent.requireAuthentication, async
         const deleteFavouriteResult = await eventFavouriteService.deleteEventFavourite(deleteFavouriteRequest);
         return httpUtil.sendResult(deleteFavouriteResult, res);
     } catch (e) {
-        log.error("Error while unfavouriting event: " + e.message);
+        log.error("User id '%d': Unfavouriting event id '%d' failed: " + e, req.body.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });

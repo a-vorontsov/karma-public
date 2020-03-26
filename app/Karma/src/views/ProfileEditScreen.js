@@ -23,11 +23,11 @@ import Colours from "../styles/Colours";
 import CauseContainer from "../components/causes/CauseContainer";
 import {TextInput} from "../components/input";
 import AddressInput from "../components/input/AddressInput";
+import {getAuthToken} from "../util/credentials";
 import {RadioInput} from "../components/radio";
-import {getData} from "../util/GetCredentials";
 const request = require("superagent");
 const _ = require("lodash");
-
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
@@ -52,8 +52,8 @@ class ProfileEditScreen extends Component {
             user: {username: profile.username},
             isOrganisation: profile.isOrganisation,
             individual: {
-                firstName: profile.fname,
-                lastName: profile.lname,
+                firstName: profile.firstName,
+                lastName: profile.lastName,
                 gender: profile.gender,
                 bio: profile.bio,
                 address: {
@@ -86,10 +86,6 @@ class ProfileEditScreen extends Component {
         this.getGender = this.getGender.bind(this);
         this.baseState = this.state;
     }
-
-    static navigationOptions = {
-        headerShown: false,
-    };
 
     toggleModal = () => {
         this.setState({
@@ -169,9 +165,7 @@ class ProfileEditScreen extends Component {
 
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
         const dataChanged = {};
         if (!_.isEqual(this.state.user, this.baseState.user)) {
             dataChanged.user = this.state.user;
@@ -205,10 +199,9 @@ class ProfileEditScreen extends Component {
             }
         }
         await request
-            .post("http://localhost:8000/profile/edit")
+            .post(`${REACT_APP_API_URL}/profile/edit`)
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: dataChanged,
             })
             .then(async res => {
@@ -323,10 +316,13 @@ class ProfileEditScreen extends Component {
                             <View>
                                 <View style={{width: HALF}}>
                                     <Text
+                                        numberOfLines={1}
                                         style={[
                                             styles.nameText,
                                             {position: "absolute", top: -35},
                                         ]}>
+                                        {this.state.firstName}{" "}
+                                        {this.state.lastName}
                                         {isOrganisation
                                             ? this.baseState.organisation.name
                                             : this.baseState.individual
@@ -441,6 +437,9 @@ class ProfileEditScreen extends Component {
                                         </RegularText>
                                         <TextInput
                                             value={organisation.pocLastName}
+                                            inputRef={ref =>
+                                                (this.lastName = ref)
+                                            }
                                             name="pocLastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>

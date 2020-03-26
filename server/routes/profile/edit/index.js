@@ -4,12 +4,12 @@
 const log = require("../../../util/log");
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../../modules/authentication/auth-agent");
-const userRepo = require("../../../models/databaseRepositories/userRepository");
-const indivRepo = require("../../../models/databaseRepositories/individualRepository");
-const orgRepo = require("../../../models/databaseRepositories/organisationRepository");
-const addressRepo = require("../../../models/databaseRepositories/addressRepository");
-const profileRepo = require("../../../models/databaseRepositories/profileRepository");
+const authService = require("../../../modules/authentication/");
+const userRepo = require("../../../repositories/user");
+const indivRepo = require("../../../repositories/individual");
+const orgRepo = require("../../../repositories/organisation");
+const addressRepo = require("../../../repositories/address");
+const profileRepo = require("../../../repositories/profile");
 
 /**
  * Endpoint called whenever a user wishes to update their profile <br/>
@@ -17,8 +17,7 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  * left out from the POST request to avoid unnecessary computation.<br/>
  <p><b>Route: </b>/profile/edit (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {number} req.body.userId the user's id, as in every request
- * @param {string} req.body.authToken the user's valid authToken, as in every request
+ * @param {string} req.headers.authorization authToken
  * @param {object} req.body.data.user if anything for user has changed
  * @param {object} req.body.data.individual if anything for indiv prof has changed
  * @param {object} req.body.data.organisation if anything for org prof has changed
@@ -26,8 +25,6 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
 <pre><code>
     // example 1 (user wishes to change username, phoneNumber, and set/update their bio & filter to women only events)
     &#123;
-        "userId": 123,
-        "authToken": "secureToken",
         "data": &#123;
             "user": &#123;
                 "username": "newUserName",
@@ -64,10 +61,10 @@ const profileRepo = require("../../../models/databaseRepositories/profileReposit
  *  @name Edit profile
  *  @function
  */
-router.post("/", authAgent.requireAuthentication, async (req, res) => {
+router.post("/", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Updating profile", req.body.userId);
         // update user profile if specified in request
-        log.info("Updating profile");
         if (req.body.data.user !== undefined) {
             await userRepo.updateUsername(req.body.userId, req.body.data.user.username);
         }
@@ -103,6 +100,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             }
             if (req.body.data.individual.womenOnly !== undefined) {
                 if (individual.gender !== "f") {
+                    log.warn("User id '%d': Non-woman updating women-only filter", req.body.userId);
                     return res.status(400).send({message: "Only women can filter by women only events."});
                 } else {
                     profile.womenOnly = req.body.data.individual.womenOnly;
@@ -158,7 +156,7 @@ router.post("/", authAgent.requireAuthentication, async (req, res) => {
             message: "Operation successful. Please GET the view profile endpoint to see the updated profile record.",
         });
     } catch (e) {
-        log.error("Updating profile failed");
+        log.error("User id '%d': Failed updating profile: " + e, req.body.userId);
         res.status(500).send({
             message: e.message,
         });

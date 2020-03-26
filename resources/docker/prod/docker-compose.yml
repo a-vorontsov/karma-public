@@ -41,8 +41,8 @@ services:
       S3_KEY_ID: ${S3_KEY_ID}
       S3_REGION: ${S3_REGION}
       S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      SKIP_ASYNC_KEY_EXCHANGE: ${SKIP_ASYNC_KEY_EXCHANGE}
 
-      # TODO: Enable these sometime in the future
       ENABLE_OAUTH: 0
       SKIP_PASSWORD_CHECKS: 0
       SKIP_AUTH_CHECKS_FOR_TESTING: 0

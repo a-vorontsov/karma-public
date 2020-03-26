@@ -85,6 +85,7 @@ jobs:
       S3_KEY_ID: s3key1
       S3_REGION: s3region1
       S3_BUCKET_NAME: s3bucket1
+      SKIP_ASYNC_KEY_EXCHANGE: 1
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository

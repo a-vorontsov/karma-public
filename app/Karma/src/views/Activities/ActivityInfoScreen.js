@@ -17,11 +17,12 @@ import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
-import {getDate, formatAMPM} from "../../util/DateTimeInfo";
+import {getDate, formatAMPM, getMonthName} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
-
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 import request from "superagent";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
@@ -69,10 +70,6 @@ class ActivityInfoScreen extends Component {
         };
     }
 
-    static navigationOptions = {
-        headerShown: false,
-    };
-
     toggleModal = () => {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
@@ -84,9 +81,11 @@ class ActivityInfoScreen extends Component {
     };
 
     getCreatorInfo = async id => {
+        const authToken = await getAuthToken();
         const response = await request
-            .get("http://localhost:8000/profile")
-            .query({userId: id})
+            .get(`${REACT_APP_API_URL}/profile`)
+            .set("authorization", authToken)
+            .query({otherUserId: id})
             .then(res => {
                 return res.body.data;
             });
@@ -149,7 +148,7 @@ class ActivityInfoScreen extends Component {
         const activity = this.props.navigation.getParam("activity");
 
         this.getEventInfo(activity);
-        this.getCreatorInfo(
+        await this.getCreatorInfo(
             activity.eventCreatorId
                 ? activity.eventCreatorId
                 : activity.eventcreatorid,
@@ -320,13 +319,11 @@ class ActivityInfoScreen extends Component {
                             />
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 0}]}>
-                                {" "}
-                                DAY
+                                {` ${new Date(activity.date).getDate()}`}
                             </RegularText>
                             <RegularText
                                 style={[styles.dateText, {top: 25, left: 0}]}>
-                                {" "}
-                                MON
+                                {`  ${getMonthName(activity.date)}`}
                             </RegularText>
                             <View>
                                 <View
@@ -334,7 +331,11 @@ class ActivityInfoScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "space-between",
                                     }}>
-                                    <View style={{width: HALF + HALF / 3}}>
+                                    <View
+                                        style={{
+                                            width: HALF + HALF / 4,
+                                            justifyContent: "center",
+                                        }}>
                                         <ProgressBar
                                             current={this.state.spots_taken}
                                             max={this.state.spots}

@@ -4,18 +4,18 @@
 const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
-const httpUtil = require("../../../util/httpUtil");
-const eventService = require("../../../modules/event/eventService");
-const eventFavouriteService = require("../../../modules/event/favourite/eventFavouriteService");
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const httpUtil = require("../../../util/http");
+const eventService = require("../../../modules/event");
+const eventFavouriteService = require("../../../modules/event/favourite");
+const eventSignupService = require("../../../modules/event/signup");
+const authService = require("../../../modules/authentication/");
 
 /**
  * Endpoint called when "Causes" tab is pressed in Activities homepage<br/>
- * URL example: http://localhost:8000/event/causes?userId=1&filter[]=!womenOnly&filter[]=physical
+ * URL example: http://localhost:8000/event/causes?filter[]=!womenOnly&filter[]=physical
  <p><b>Route: </b>/event/causes (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user logged in
+ * @param {string} req.headers.authorization authToken
  * @param {Array} req.query.filter - OPTIONAL: all boolean filters required as an array of strings
  * @param {Object} req.query.maxDistance - OPTIONAL: maximum distance from the user filter(inclusive)
  * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
@@ -100,10 +100,10 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @function
  *  @name Get "Causes" Activites tab
  *  */
-router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
+router.get("/causes", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Causes' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Causes' tab for %d", userId);
         const filters = {booleans: req.query.filter};
         filters.availabilityStart = req.query.availabilityStart;
         filters.availabilityEnd = req.query.availabilityEnd;
@@ -111,7 +111,7 @@ router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
         const getEventsResult = await eventService.getEventsBySelectedCauses(filters, userId);
         return httpUtil.sendResult(getEventsResult, res);
     } catch (e) {
-        log.error("'Causes' tab fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Causes' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -120,7 +120,7 @@ router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
  * Endpoint called when "Favourites" tab is pressed in Activities homepage <br/>
  <p><b>Route: </b>/event/favourites (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user logged in
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: res.data: Array of all event objects favourited by the user<br/>
  <pre>
@@ -182,14 +182,14 @@ router.get("/causes", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get "Favourites" Activites tab
  *  */
-router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
+router.get("/favourites", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Favourites' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Favourites' tab for %d", userId);
         const getFavouriteEventsResult = await eventFavouriteService.getFavouriteEvents(userId);
         return httpUtil.sendResult(getFavouriteEventsResult, res);
     } catch (e) {
-        log.error("Favourite events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Favourites' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -198,7 +198,7 @@ router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
  * Endpoint called when "Going" tab is pressed in Activities homepage <br/>
  <p><b>Route: </b>/event/going (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Number} req.query.userId - ID of user logged in
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: Array of all event objects that user is going to<br/>
  <pre>
@@ -260,14 +260,14 @@ router.get("/favourites", authAgent.requireAuthentication, async (req, res) => {
  *  @function
  *  @name Get "Going" Activites tab
  *  */
-router.get("/going", authAgent.requireAuthentication, async (req, res) => {
+router.get("/going", authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting 'Going' tab", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting 'Going' tab for %d", userId);
         const getGoingEventsResult = await eventSignupService.getGoingEvents(userId);
         return httpUtil.sendResult(getGoingEventsResult, res);
     } catch (e) {
-        log.error("Going events fetching failed for user with id: '" + req.query.userId + "' : " + e);
+        log.error("User id '%d': Getting 'Going' tab failed: " + e, req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

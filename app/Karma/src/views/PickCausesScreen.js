@@ -1,12 +1,15 @@
 import React from "react";
 import {View, ScrollView, Alert} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 import PageHeader from "../components/PageHeader";
 import {SubTitleText} from "../components/text";
 import Styles, {normalise} from "../styles/Styles";
 import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+
 const request = require("superagent");
 
 export default class PickCausesScreen extends React.Component {
@@ -20,9 +23,17 @@ export default class PickCausesScreen extends React.Component {
     }
     async componentDidMount() {
         try {
-            const response = await request.get("http://localhost:8000/causes");
+            let causes = await AsyncStorage.getItem("causes");
+            causes = JSON.parse(causes);
+            const authToken = await getAuthToken();
+            if (causes.length === 0) {
+                const res = await request
+                    .get(`${REACT_APP_API_URL}/causes`)
+                    .set("authorization", authToken);
+                causes = res.body.data;
+            }
             this.setState({
-                causes: response.body.data,
+                causes,
             });
         } catch (error) {
             console.log(error);
@@ -30,14 +41,12 @@ export default class PickCausesScreen extends React.Component {
     }
 
     async selectCauses() {
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
-        await request
-            .post("http://localhost:8000/causes/select")
+        const authToken = await getAuthToken();
+
+        request
+            .post(`${REACT_APP_API_URL}/causes/select`)
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
@@ -58,7 +67,7 @@ export default class PickCausesScreen extends React.Component {
                     style={[Styles.ph24, {marginBottom: 82}]}>
                     <View>
                         <>
-                            <PageHeader title="Causes" />
+                            <PageHeader title="Causes" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(24)}}>
                                 What causes do you care about?
                             </SubTitleText>

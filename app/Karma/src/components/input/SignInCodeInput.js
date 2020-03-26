@@ -2,7 +2,6 @@ import React from "react";
 import {RegularText} from "../text";
 import {View} from "react-native";
 import CodeInput from "react-native-code-input";
-import Styles from "../../styles/Styles";
 
 export default class SignInCodeInput extends React.Component {
     constructor(props) {
@@ -15,7 +14,9 @@ export default class SignInCodeInput extends React.Component {
     render() {
         return (
             <View>
-                <RegularText style={Styles.pb24}>{this.props.text}</RegularText>
+                <RegularText style={{color: "white"}}>
+                    {this.props.text}
+                </RegularText>
                 <CodeInput
                     ref={ref => (this.codeInputRef2 = ref)}
                     keyboardType="number-pad"
@@ -24,7 +25,7 @@ export default class SignInCodeInput extends React.Component {
                     inputPosition="center"
                     size={50}
                     onFulfill={code => this.onFulfill(code)}
-                    containerStyle={{marginTop: 30}}
+                    containerStyle={{marginTop: 20}}
                     codeInputStyle={{borderWidth: 1.5}}
                 />
             </View>

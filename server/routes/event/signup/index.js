@@ -6,19 +6,19 @@ const log = require("../../../util/log");
 const express = require('express');
 const router = express.Router();
 
-const eventSignupService = require("../../../modules/event/signup/eventSignupService");
-const httpUtil = require("../../../util/httpUtil");
-const util = require("../../../util/util");
+const eventSignupService = require("../../../modules/event/signup");
+const httpUtil = require("../../../util/http");
+const util = require("../../../util");
 const validation = require("../../../modules/validation");
-const authAgent = require("../../../modules/authentication/auth-agent");
+const authService = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "userId": "3",
     "confirmed": "true"
   }
  </pre>
@@ -40,10 +40,10 @@ const authAgent = require("../../../modules/authentication/auth-agent");
  *  @name Sign up to event
  *  @function
  */
-router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/signUp', authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Signing up to event id '%d'", req.body.userId, req.params.eventId);
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        log.info("Signing up user id '%d' to event id '%d'", signup.userId, signup.eventId);
 
         signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
         const validationResult = validation.validateSignup(signup);
@@ -54,7 +54,7 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
         const signupResult = await eventSignupService.createSignup(signup);
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
-        log.error("Error while creating signup: " + e.message);
+        log.error("User id '%d': Failed signing up to event id '%d': " + e, req.body.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -63,6 +63,7 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
  * Endpoint called to get all users signed up to an event.<br/>
  <p><b>Route: </b>/event/:id/signUp (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Number} req.params.eventId - id of the event.
  * @returns {object}
  *  status: 200, description: Array of all users signed up with necessary details named users<br/>
@@ -95,24 +96,23 @@ router.post('/:eventId/signUp', authAgent.requireAuthentication, async (req, res
  *  @name See signed up users
  *  @function
  */
-router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res) => {
+router.get('/:eventId/signUp', authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting all users signed up to event id '%d'", req.query.userId, req.params.eventId);
         const eventId = Number.parseInt(req.params.eventId);
-        log.info("Getting all users signed up to event id '%d'", eventId);
         const signupsResult = await eventSignupService.getAllSignupsForEvent(eventId);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        log.error("Error while fetching signups: " + e.message);
+        log.error("User id '%d': Failed getting all users signed up to event id '%d'", req.query.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });
 
 /**
  * Endpoint called whenever a user wishes to see all events they have attended. This only shows past events<br/>
- * URL example: GET http://localhost:8000/event/signUp/history?userId=1
  <p><b>Route: </b>/event/signUp/history (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
- * @param {Object} req.query.userId - id of user requesting their signup history
+ * @param {string} req.headers.authorization authToken
  * @returns {Object}
  *  status: 200, description: Array of all events the user has signed up to<br/>
  <pre>
@@ -172,19 +172,19 @@ router.get('/:eventId/signUp', authAgent.requireAuthentication, async (req, res)
  *  @name See signup history
  *  @function
  */
-router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) => {
+router.get('/signUp/history', authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Getting event signup history", req.query.userId);
         const userId = Number.parseInt(req.query.userId);
-        log.info("Getting signup history for user id '%d'", userId);
         const individualId = await util.getIndividualIdFromUserId(userId);
         if (individualId === undefined) {
-            return res.send(400).body({message: "IndividualId not specified"});
+            return res.status(400).send({message: "IndividualId not specified"});
         }
 
         const signupsResult = await eventSignupService.getSignupHistory(individualId);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        log.error("Error while fetching signup history: " + e.message);
+        log.error("User id '%d': Failed getting event signup history", req.query.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -193,10 +193,11 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  * Endpoint called whenever a user updates their attendance confirmation in an event.<br/>
  <p><b>Route: </b>/event/:eventId/signUp/update/ (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
  * @param {Event} req.body - Information regarding the event containing the same properties as this example:
  <pre>
  {
-    "userId": "3",
+    "otherUserId": "3",
     "confirmed": false,
     "attended": true,
   }
@@ -220,11 +221,12 @@ router.get('/signUp/history', authAgent.requireAuthentication, async (req, res) 
  *  @name Update signup status for event
  *  @function
  */
-router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (req, res) => {
+router.post('/:eventId/signUp/update', authService.requireAuthentication, async (req, res) => {
     try {
+        log.info("User id '%d': Updating signup to event id '%d' for user id '%d'", req.query.userId, req.params.eventId,
+            req.body.otherUserId);
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        log.info("Updating signup for user id '%d' to event id '%d'", signup.userId, signup.eventId);
-        signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
+        signup.individualId = await util.getIndividualIdFromUserId(signup.otherUserId);
         const validationResult = validation.validateSignup(signup);
         if (validationResult.errors.length > 0) {
             return httpUtil.sendValidationErrors(validationResult, res);
@@ -232,7 +234,8 @@ router.post('/:eventId/signUp/update', authAgent.requireAuthentication, async (r
         const signupsResult = await eventSignupService.updateSignUp(signup);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
-        log.error("Updating signup failed: " + e);
+        log.error("User id '%d': Failed updating signup to event id '%d' for user id '%d': " + e, req.query.userId,
+            req.params.eventId, req.body.otherUserId);
         return httpUtil.sendGenericError(e, res);
     }
 });

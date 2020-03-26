@@ -8,7 +8,6 @@ import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
 import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScreen";
 import CreatedActivitiesScreen from "../views/Activities/CreatedActivitiesScreen";
 import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
-import ActivityEditScreen from "../views/Activities/ActivityEditScreen";
 import Attendees from "../views/Activities/Attendees";
 import SignUpRequests from "../views/Activities/SignUpRequests";
 import ViewSignUpsScreen from "../views/Activities/ViewSignUpsScreen";
@@ -16,47 +15,14 @@ import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
 import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
-import PrivacyScreen from "../views/Settings/PrivacyScreen";
-import TermsScreen from "../views/Settings/TermsScreen";
-import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
-import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
-import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
-import LogOutScreen from "../views/Settings/LogOutScreen";
-import DeleteAccountScreen from "../views/Settings/DeleteAccountScreen";
-import ReportProblemScreen from "../views/Settings/ReportProblemScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
-
-const SettingsNavigator = createStackNavigator(
-    {
-        SettingsMenu: {screen: SettingsMenuScreen},
-        ReportProblem: {screen: ReportProblemScreen},
-        AboutKarma: {screen: AboutKarmaScreen},
-        Guidelines: {screen: GuidelinesScreen},
-        Privacy: {screen: PrivacyScreen},
-        Terms: {screen: TermsScreen},
-        EmailSettings: {screen: EmailSettingsScreen},
-        LogOut: {screen: LogOutScreen},
-        DeleteAccount: {screen: DeleteAccountScreen},
-    },
-    {
-        headerMode: "none",
-        defaultNavigationOptions: {
-            cardStyle: {
-                backgroundColor: Colours.backgroundWhite,
-            },
-        },
-    },
-);
-
 const ProfileNavigator = createStackNavigator(
     {
         Profile: {screen: ProfileScreen},
         ProfileEdit: {screen: ProfileEditScreen},
         PickCauses: {screen: PickCausesScreen},
         SettingsMenu: {screen: SettingsMenuScreen},
-        Settings: SettingsNavigator,
         CreatedActivities: {screen: CreatedActivitiesScreen},
-        ActivityEdit: {screen: ActivityEditScreen},
         ViewSignUps: {screen: ViewSignUpsScreen},
         Attendees: {screen: Attendees},
         SignUpRequests: {screen: SignUpRequests},

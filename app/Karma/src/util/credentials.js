@@ -1,18 +1,14 @@
-import * as Keychain from "react-native-keychain";
+import AsyncStorage from "@react-native-community/async-storage";
 
-export const getData = async () => {
+export const getAuthToken = async () => {
     try {
-        const credentials = await Keychain.getGenericPassword();
-        if (credentials) {
-            console.log(
-                "Credentials successfully loaded for user " +
-                    credentials.username,
-            );
-            return credentials;
+        const authToken = await AsyncStorage.getItem("ACCESS_TOKEN");
+        if (authToken) {
+            return authToken;
         } else {
-            console.log("No credentials stored");
+            return "";
         }
     } catch (error) {
-        console.log("Keychain couldn't be accessed!", error);
+        console.log("Token couldn't be accessed!", error);
     }
 };

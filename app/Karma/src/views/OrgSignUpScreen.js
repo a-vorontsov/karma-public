@@ -9,6 +9,7 @@ import {
     Image,
     Alert,
     StyleSheet,
+    Keyboard,
 } from "react-native";
 import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
@@ -25,7 +26,8 @@ import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
-import {getData} from "../util/credentials";
+import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -39,7 +41,7 @@ export default class OrgSignUpScreen extends React.Component {
         this.state = {
             orgType: "NGO (Non-Government Organisation",
             orgName: "",
-            charityNumber: "",
+            charityNumber: "0",
             fname: "",
             lname: "",
             phone: "",
@@ -105,9 +107,9 @@ export default class OrgSignUpScreen extends React.Component {
 
     createOrganisation() {
         const organisation = {
-            organisationNumber: this.state.charityNumber,
             name: this.state.orgName,
             organisationType: this.state.orgType,
+            organisationNumber: this.state.charityNumber,
             lowIncome: this.state.isLowIncome,
             exempt: this.state.isExempt,
             pocFirstName: this.state.fname,
@@ -127,24 +129,18 @@ export default class OrgSignUpScreen extends React.Component {
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (
-            !this.state.orgName ||
-            !this.state.charityNumber ||
-            !this.state.phone
-        ) {
+        if (!this.state.orgName || !this.state.phone) {
             return;
         }
-        const credentials = await getData();
-        const authToken = credentials.password;
-        const userId = credentials.username;
+        const authToken = await getAuthToken();
+
         const org = this.createOrganisation();
 
         await request
-            .post("http://localhost:8000/signup/organisation")
+            .post(`${REACT_APP_API_URL}/signup/organisation`)
+            .set("authorization", authToken)
             .send({
-                authToken: authToken,
-                userId: userId,
-                data: {organisation: {userId, ...org}},
+                data: {organisation: {...org}},
             })
             .then(res => {
                 navigate("PickCauses");
@@ -212,9 +208,7 @@ export default class OrgSignUpScreen extends React.Component {
                             <TextInput
                                 placeholder="Charity or Organisation name"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() =>
-                                    this.charityNumber.focus()
-                                }
+                                onSubmitEditing={() => this.phone.focus()}
                                 name="orgName"
                                 showError={
                                     this.state.submitPressed
@@ -223,26 +217,14 @@ export default class OrgSignUpScreen extends React.Component {
                                 }
                             />
                             <TextInput
-                                inputRef={ref => (this.charityNumber = ref)}
-                                placeholder="Charity Number"
-                                onChange={this.onChangeText}
-                                name="charityNumber"
-                                onSubmitEditing={() => this.password.focus()}
-                                showError={
-                                    this.state.submitPressed
-                                        ? !this.state.charityNumber &&
-                                          !this.state.isExempt &&
-                                          !this.state.isLowIncome
-                                        : false
-                                }
-                            />
-                            <TextInput
+                                inputRef={ref => (this.phone = ref)}
                                 placeholder="Organisation Phone Number"
                                 name="phone"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.fname.focus()}
                             />
                             <TextInput
+                                inputRef={ref => (this.fname = ref)}
                                 placeholder="Point of Contact First Name"
                                 name="fname"
                                 onChange={this.onChangeText}
@@ -264,6 +246,7 @@ export default class OrgSignUpScreen extends React.Component {
                                         ? !this.state.lname
                                         : false
                                 }
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
 
                             {/** DATE INPUT */}
@@ -320,7 +303,11 @@ export default class OrgSignUpScreen extends React.Component {
                                     }}>
                                     What is your organisation's address?
                                 </RegularText>
-                                <AddressInput onChange={this.onInputChange} />
+                                <View style={{alignSelf: "center"}}>
+                                    <AddressInput
+                                        onChange={this.onInputChange}
+                                    />
+                                </View>
                             </View>
 
                             {/** EXEMPTION REASONS */}
