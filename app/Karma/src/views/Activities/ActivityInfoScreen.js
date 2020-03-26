@@ -17,7 +17,7 @@ import {GradientButton} from "../../components/buttons";
 import {hasNotch} from "react-native-device-info";
 import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
-import {getDate, formatAMPM} from "../../util/DateTimeInfo";
+import {getDate, formatAMPM, getMonthName} from "../../util/DateTimeInfo";
 import MapView from "react-native-maps";
 import BottomModal from "../../components/BottomModal";
 import SignUpActivity from "../../components/activities/SignUpActivity";
@@ -319,13 +319,11 @@ class ActivityInfoScreen extends Component {
                             />
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 0}]}>
-                                {" "}
-                                DAY
+                                {` ${new Date(activity.date).getDate()}`}
                             </RegularText>
                             <RegularText
                                 style={[styles.dateText, {top: 25, left: 0}]}>
-                                {" "}
-                                MON
+                                {`  ${getMonthName(activity.date)}`}
                             </RegularText>
                             <View>
                                 <View

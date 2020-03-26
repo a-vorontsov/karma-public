@@ -84,8 +84,7 @@ class ProfileScreen extends Component {
             firstName: individual.firstName,
             lastName: individual.lastName,
             user: user,
-            location:
-                individual.address.townCity + " " + individual.address.postCode,
+            location: individual.address.townCity,
             bio: individual.bio,
             causes: causes,
             points: individual.karmaPoints,

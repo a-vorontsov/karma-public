@@ -204,7 +204,7 @@ class ActivityCard extends React.Component {
                         <TouchableOpacity
                             style={{alignSelf: "center"}}
                             onPress={() =>
-                                this.props.navigation.navigate("ActivityInfo", {
+                                this.props.navigation.push("ActivityInfo", {
                                     activity: activity,
                                     signedup: signedup,
                                 })

@@ -57,7 +57,12 @@ class ActivityCauseCarousel extends React.Component {
                             position: "absolute",
                             right: 0,
                         }}
-                        onPress={() => this.navigation.navigate("CauseAll")}>
+                        onPress={() =>
+                            this.navigation.navigate("CauseAll", {
+                                cause: this.titleCase(this.props.cause),
+                                activities: this.props.activities,
+                            })
+                        }>
                         <RegularText style={styles.bioHeaderAlt}>
                             See All
                         </RegularText>
