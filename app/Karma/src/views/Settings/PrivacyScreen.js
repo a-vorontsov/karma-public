@@ -5,6 +5,8 @@ import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import {ScrollView} from "react-native-gesture-handler";
+
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/privacy.png");
@@ -56,9 +58,11 @@ class PrivacyScreen extends Component {
                     <Image source={logo} />
                 </View>
                 <View style={Styles.ph24}>
-                    <RegularText style={Styles.pb11}>
-                        {this.state.privacyPolicyText}
-                    </RegularText>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <RegularText style={Styles.pb11}>
+                            {this.state.privacyPolicyText}
+                        </RegularText>
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         );

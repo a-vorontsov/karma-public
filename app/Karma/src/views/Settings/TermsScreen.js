@@ -5,6 +5,7 @@ import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import {ScrollView} from "react-native-gesture-handler";
 
 const request = require("superagent");
 
@@ -53,9 +54,11 @@ class TermsScreen extends Component {
                     <Image source={logo} />
                 </View>
                 <View style={Styles.ph24}>
-                    <RegularText style={Styles.pb8}>
-                        {this.state.termsText}
-                    </RegularText>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <RegularText style={Styles.pb8}>
+                            {this.state.termsText}
+                        </RegularText>
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         );
