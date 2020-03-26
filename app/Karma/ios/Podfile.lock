@@ -215,6 +215,10 @@ PODS:
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 3.5.0)
     - React
+  - react-native-image-picker (2.3.1):
+    - React
+  - react-native-image-resizer (1.2.0):
+    - React
   - react-native-maps (0.27.0):
     - React
   - react-native-safe-area-context (0.7.3):
@@ -304,6 +308,8 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
@@ -376,6 +382,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
+  react-native-image-resizer:
+    :path: "../node_modules/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
@@ -444,13 +454,15 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-calendar-events: 2fe35a9294af05de0ed819d3a1b5dac048d2c010
+  react-native-calendar-events: eaa63134881d97488feb21ea114158f712894018
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
   react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
   react-native-google-maps: 773b7bcef4f92005847cbf455ca1fa76a21e74c7
+  react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
+  react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
-  react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
+  react-native-simple-toast: 6c376bd79b1e255a4bee90a72ead6447f96ea10d
   react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -476,4 +488,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0
