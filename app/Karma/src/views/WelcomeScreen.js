@@ -142,7 +142,9 @@ export default class WelcomeScreen extends Component {
                     },
                 })
                 .then(async res => {
-                    console.log(res.body);
+                    const isFullySignedUp = await AsyncStorage.getItem(
+                        "FULLY_SIGNED_UP",
+                    );
                     if (res.body.data.isFullySignedUp) {
                         //if user isFullySignedUp, returning user
                         await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
@@ -166,8 +168,12 @@ export default class WelcomeScreen extends Component {
                         });
                         return;
                     }
-                    if (res.body.data.alreadyAuthenticated) {
+                    if (res.body.data.alreadyAuthenticated && isFullySignedUp) {
                         navigate("Activities");
+                        return;
+                    }
+                    if (!isFullySignedUp && authToken) {
+                        navigate("InitSignup");
                         return;
                     }
                     //if email is not verified, show code field
