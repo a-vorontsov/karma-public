@@ -99,8 +99,10 @@ const MainNavigator = createStackNavigator(
 
 MainNavigator.navigationOptions = ({navigation}) => {
     let tabBarVisible = true;
+    let gesturesEnabled = false;
     return {
         tabBarVisible,
+        gesturesEnabled,
     };
 };
 

@@ -9,6 +9,7 @@ import {
     Image,
     Alert,
     StyleSheet,
+    Keyboard,
 } from "react-native";
 import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
@@ -207,7 +208,7 @@ export default class OrgSignUpScreen extends React.Component {
                             <TextInput
                                 placeholder="Charity or Organisation name"
                                 onChange={this.onChangeText}
-                                onSubmitEditing={() => this.password.focus()}
+                                onSubmitEditing={() => this.phone.focus()}
                                 name="orgName"
                                 showError={
                                     this.state.submitPressed
@@ -216,12 +217,14 @@ export default class OrgSignUpScreen extends React.Component {
                                 }
                             />
                             <TextInput
+                                inputRef={ref => (this.phone = ref)}
                                 placeholder="Organisation Phone Number"
                                 name="phone"
                                 onChange={this.onChangeText}
                                 onSubmitEditing={() => this.fname.focus()}
                             />
                             <TextInput
+                                inputRef={ref => (this.fname = ref)}
                                 placeholder="Point of Contact First Name"
                                 name="fname"
                                 onChange={this.onChangeText}
@@ -243,6 +246,7 @@ export default class OrgSignUpScreen extends React.Component {
                                         ? !this.state.lname
                                         : false
                                 }
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
 
                             {/** DATE INPUT */}
