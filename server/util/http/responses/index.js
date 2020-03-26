@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const genericSuccess = {
     status: 200,
     message: "Success.",
@@ -22,8 +23,6 @@ const iAmATeapot = {
     status: 418,
     message: "I am a teapot.",
 };
-
-// Bad requests
 
 const alreadyAuth = {
     status: 200,
