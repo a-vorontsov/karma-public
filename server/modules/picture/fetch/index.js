@@ -66,15 +66,13 @@ const getAvatar = (req, res) => {
                                 if (!error) {
                                     res.status(200).send({
                                         message: "Fetched image for user!",
-                                        picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                                            req.headers.host + `/avatar/default/${userType}`,
+                                        picture_url: process.env.REACT_APP_API_URL + `/avatar/default/${userType}`,
                                     });
                                 } else {
                                     // no profile picture is associated with given user
                                     res.status(200).send({
                                         message: "Fetched image for user!",
-                                        picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                                            req.headers.host + "/picture/default/404",
+                                        picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
                                     });
                                 }
                             });
@@ -122,8 +120,7 @@ const getEventPicture = (req, res) => {
                         // no picture is associated with given event
                         res.status(200).send({
                             message: "No image associated with this event",
-                            picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                                req.headers.host + "/picture/default/404",
+                            picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
                         });
                     } else {
                         // return s3 image url
@@ -159,8 +156,7 @@ const getPicture = (req, res) => {
             if (!pictureResult.rows.length) {
                 res.status(400).send({
                     message: `Could not find picture with ID of ${req.params.pictureId}`,
-                    picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                        req.headers.host + "/picture/default/404",
+                    picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
                 });
             } else {
                 const picture = pictureResult.rows[0];
@@ -168,8 +164,7 @@ const getPicture = (req, res) => {
                     // check existence of default profile picture icons - send correct placeholder
                     res.status(400).send({
                         message: "No picture location was given",
-                        picture_url: (req.connection.encrypted ? "https://" : "http://") +
-                            req.headers.host + "/picture/default/404",
+                        picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
                     });
                 } else {
                     // return s3 image url
