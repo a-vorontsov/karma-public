@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Dimensions,
     View,
     Image,
     Alert,
@@ -13,10 +14,11 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
 import DatePicker from "react-native-date-picker";
 import {TextInput} from "../components/input";
-import PhotoUpload from "react-native-photo-upload";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
+import Modal, {ModalContent} from "react-native-modals";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+const {width} = Dimensions.get("window");
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
@@ -24,6 +26,7 @@ import Colours from "../styles/Colours";
 import AddressInput from "../components/input/AddressInput";
 import {getAuthToken} from "../util/credentials";
 import AsyncStorage from "@react-native-community/async-storage";
+import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
 
 class AboutScreen extends React.Component {
@@ -43,6 +46,7 @@ class AboutScreen extends React.Component {
             countryState: "",
             postCode: "",
             firstOpen: true,
+            submitting: false,
         };
     }
 
@@ -74,17 +78,64 @@ class AboutScreen extends React.Component {
         });
     }
 
-    setPhoto(selectedPhoto) {
-        this.setState({
-            photo: selectedPhoto,
+    choosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.uri) {
+                this.setState({photo: response});
+            }
         });
-    }
+    };
 
-    uploadPhoto(selectedPhoto) {
+    createFormData = (photo, body) => {
+        const data = new FormData();
+
+        data.append(
+            "picture",
+            {
+                name: `fileupload_${new Date().getTime().toString()}`,
+                type: photo.type,
+                uri:
+                    Platform.OS === "android"
+                        ? photo.uri
+                        : photo.uri.replace("file://", ""),
+            },
+            photo.fileName,
+        );
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    };
+
+    async uploadPhoto(selectedPhoto) {
+        const authToken = await getAuthToken();
+        const endpointUsertype = "individual";
+
+        console.log(selectedPhoto);
+        console.log("Uploading Photo");
         if (selectedPhoto != null) {
-            Alert.alert("Success!", "Your new photo has been uploaded.");
-        } else {
-            Alert.alert("Error", "Please upload a photo.");
+            await fetch(
+                `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,
+                {
+                    method: "POST",
+                    headers: {
+                        authorization: authToken,
+                    },
+                    body: this.createFormData(selectedPhoto, {}),
+                },
+            )
+                .then(res => {
+                    const response = res.json();
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 
@@ -120,7 +171,8 @@ class AboutScreen extends React.Component {
     }
 
     async goToNext() {
-        const {gender, dateSelected, fname, lname} = this.state;
+        const {gender, dateSelected, fname, lname, photo} = this.state;
+
         if (fname === "" || lname === "") {
             this.setState({
                 firstOpen: false,
@@ -138,6 +190,7 @@ class AboutScreen extends React.Component {
                 })
                 .then(async res => {
                     console.log(res.body);
+                    await this.uploadPhoto(photo);
                     await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
                     this.props.navigation.navigate("PickCauses", {
                         isSignup: true,
@@ -146,6 +199,7 @@ class AboutScreen extends React.Component {
                 })
                 .catch(err => {
                     Alert.alert("Server Error", err.message);
+                    this.setState({submitting: false});
                     return;
                 });
         }
@@ -157,6 +211,7 @@ class AboutScreen extends React.Component {
                 "Error",
                 "Please select a valid birthday. You must be 18 years or older to use Karma.",
             );
+        this.setState({submitting: false});
     }
 
     render() {
@@ -182,41 +237,34 @@ class AboutScreen extends React.Component {
                                 </RegularText>
                             </View>
 
-                            <View style={[styles.header, {paddingRight: 20}]}>
-                                {/*<PhotoUpload*/}
-                                {/*    onPhotoSelect={avatar => {*/}
-                                {/*        if (avatar) {*/}
-                                {/*            console.log(*/}
-                                {/*                "Image base64 string: ",*/}
-                                {/*                avatar,*/}
-                                {/*            );*/}
-                                {/*            this.setPhoto(avatar);*/}
-                                {/*        }*/}
-                                {/*    }}>*/}
-                                {/*    <Image*/}
-                                {/*        style={{*/}
-                                {/*            paddingVertical: 8,*/}
-                                {/*            width: 50,*/}
-                                {/*            height: 50,*/}
-                                {/*            borderRadius: 75,*/}
-                                {/*        }}*/}
-                                {/*        resizeMode="cover"*/}
-                                {/*        source={require("../assets/images/general-logos/photo-logo.png")}*/}
-                                {/*    />*/}
-                                {/*</PhotoUpload>*/}
-                                {/*<TouchableOpacity*/}
-                                {/*    style={styles.uploadButton}*/}
-                                {/*    onPress={() =>*/}
-                                {/*        this.uploadPhoto(this.state.photo)*/}
-                                {/*    }>*/}
-                                {/*    <RegularText*/}
-                                {/*        style={*/}
-                                {/*            (styles.buttonText,*/}
-                                {/*            {fontSize: 20, color: "gray"})*/}
-                                {/*        }>*/}
-                                {/*        Upload Photo*/}
-                                {/*    </RegularText>*/}
-                                {/*</TouchableOpacity>*/}
+                            <View style={styles.header}>
+                                <TouchableOpacity onPress={this.choosePhoto}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 8,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={
+                                            this.state.photo
+                                                ? this.state.photo
+                                                : require("../assets/images/general-logos/photo-logo.png")
+                                        }
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.uploadButton}
+                                    onPress={this.choosePhoto}>
+                                    <RegularText
+                                        style={
+                                            (styles.buttonText,
+                                            {fontSize: 20, color: "gray"})
+                                        }>
+                                        Choose Photo
+                                    </RegularText>
+                                </TouchableOpacity>
                             </View>
                             <SubTitleText>What is your name?</SubTitleText>
                             <TextInput
@@ -272,11 +320,15 @@ class AboutScreen extends React.Component {
                                 will not be shared with charities.
                             </RegularText>
                             <AddressInput onChange={this.onInputChange} />
-
-                            <GradientButton
-                                onPress={() => this.goToNext()}
-                                title="Next"
-                            />
+                            {!this.state.submitting && (
+                                <GradientButton
+                                    onPress={() => {
+                                        this.setState({submitting: true});
+                                        this.goToNext();
+                                    }}
+                                    title="Next"
+                                />
+                            )}
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
@@ -289,6 +341,9 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         alignItems: "center",
+        width: width * 0.8,
+        paddingLeft: 20,
+        marginLeft: 5,
     },
     uploadButton: {
         height: 50,
@@ -300,6 +355,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        marginLeft: "auto",
     },
     buttonText: {
         fontSize: 15,
