@@ -143,7 +143,9 @@ class ActivityCard extends React.Component {
                 <View style={[Styles.pb24, Styles.bottom]}>
                     <Image
                         source={{
-                            uri: `https://picsum.photos/seed/${Math.random()}/800/200`,
+                            uri: `https://picsum.photos/seed/${
+                                this.props.activity.eventId
+                            }/800/200`,
                         }}
                         style={{
                             flex: 1,
