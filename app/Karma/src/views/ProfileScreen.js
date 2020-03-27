@@ -27,6 +27,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
+import { NavigationEvents } from 'react-navigation';
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -100,7 +101,7 @@ class ProfileScreen extends Component {
             gender: individual.gender,
         });
 
-        this.fetchProfilePicture(res);
+        this.fetchProfilePicture();
     }
 
     setupOrganisationProfile(res) {
@@ -131,11 +132,16 @@ class ProfileScreen extends Component {
             pocLastName: organisation.pocLastName,
         });
 
-        this.fetchProfilePicture(res);
+        this.fetchProfilePicture();
     }
 
     componentDidMount() {
         const {navigation} = this.props;
+
+        // this._unsubscribe = navigation.addListener("focus", () => {
+        //     this.fetchProfileInfo();
+        // });
+
         this.willFocusListener = navigation.addListener(
             "willFocus",
             async () => {
@@ -165,7 +171,7 @@ class ProfileScreen extends Component {
             });
     }
 
-    fetchProfilePicture = async res => {
+    fetchProfilePicture = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
             ? "organisation"
@@ -180,7 +186,7 @@ class ProfileScreen extends Component {
                 this.setState({photo: {uri: imageLocation}});
             })
             .catch(err => {
-                Alert.alert("Unable to load picture", err);
+                console.log(err);
             });
     };
 
@@ -243,7 +249,7 @@ class ProfileScreen extends Component {
                 }
             })
             .catch(error => {
-                Alert.alert("Upload Error", error.toString());
+                Alert.alert("Upload Error", error.message);
                 this.setState({photo: null});
             });
         this.fetchProfileInfo();
@@ -271,6 +277,11 @@ class ProfileScreen extends Component {
                 style={styles.container}
                 behavior="padding"
                 enabled>
+                <NavigationEvents
+                    onWillFocus={() => {
+                        this.setState({photo: null});
+                    }}
+                />
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
