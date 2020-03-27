@@ -46,10 +46,12 @@ router.get('/', authService.acceptAnyAuthentication, async (req, res) => {
 router.get('/:id', authService.acceptAnyAuthentication, async (req, res) => {
     try {
         const id = req.params.id;
-        log.info("%s: Getting cause id '%d'", req.query.userId ? `User id '${req.query.userId}'` : "No auth", id);
 
+        /* istanbul ignore if */
         if (!id) return res.status(400).send("No id was specified");
         if (isNaN(id)) return res.status(400).send("ID specified is in wrong format");
+
+        log.info("%s: Getting cause id '%d'", req.query.userId ? `User id '${req.query.userId}'` : "No auth", id);
 
         const findCauseResult = await causeRepository.findById(id);
         const cause = findCauseResult.rows;

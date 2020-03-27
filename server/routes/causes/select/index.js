@@ -23,10 +23,10 @@ const authService = require("../../../modules/authentication/");
 router.post('/', authService.requireAuthentication, (req, res) => {
     const causes = req.body.data.causes; // this should contain the id of the causes selected by the user
     const userId = req.body.userId;
-    log.info("User id '%d': Selecting causes '%s'", userId, causes.map(cause => cause.title).join(", "));
     if (!causes) {
         return res.status(400).send("No causes were specified in the body");
     }
+    log.info("User id '%d': Selecting causes '%s'", userId, causes.map(cause => cause.title).join(", "));
     // get all ids of causes selected
     const ids = [...causes.map(cause => cause.id)];
     // update db
@@ -36,7 +36,7 @@ router.post('/', authService.requireAuthentication, (req, res) => {
         })
         .then(insertResult =>{
             res.status(200).send({
-                message: "Successfully selected causes for user " + userId,
+                message: "Successfully selected causes for user",
                 data: insertResult.rows,
             });
         })
