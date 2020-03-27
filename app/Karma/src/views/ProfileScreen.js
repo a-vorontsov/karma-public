@@ -181,7 +181,7 @@ class ProfileScreen extends Component {
             .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
+                console.log(res.body);
                 const imageLocation = res.body.picture_url;
                 this.setState({photo: {uri: imageLocation}});
             })

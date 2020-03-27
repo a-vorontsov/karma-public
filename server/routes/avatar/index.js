@@ -81,6 +81,18 @@ router.post("/delete/:userType", authService.requireAuthentication, (req, res) =
 // == Profile Photo Fetching == //
 
 /**
+ * Endpoint called to fetch default profile picture for current user type.<br/>
+ * URL example: GET http://localhost:8000/avatar/default/organisation"
+ * @param {userType} must be one of individual, organisation
+ * @returns {Object}
+ * status: 200, description: Success<br/>
+ * status: 400, description: Invalid userType was given, or request was malformed.<br/>
+ *  @name Fetch Current Profile Photo for Individuals and Organisations
+ *  @function
+ */
+router.get("/default/:userType", imgFetch.getDefaultAvatar);
+
+/**
  * Endpoint called to fetch profile pictures for an individual or organisation.<br/>
  * URL example: GET http://localhost:8000/avatar/individual/42
  *  <p><b>Route: </b>/avatar/:userType/:userId (GET)</p>
@@ -122,17 +134,5 @@ router.get("/:userType/:userId", imgFetch.getAvatar);
  *  @function
  */
 router.get("/:userType", authService.requireAuthentication, imgFetch.getAvatar); // == File Hosting (i.e. Default Images) ==
-
-/**
- * Endpoint called to fetch default profile picture for current user type.<br/>
- * URL example: GET http://localhost:8000/avatar/default/organisation"
- * @param {userType} must be one of individual, organisation
- * @returns {Object}
- * status: 200, description: Success<br/>
- * status: 400, description: Invalid userType was given, or request was malformed.<br/>
- *  @name Fetch Current Profile Photo for Individuals and Organisations
- *  @function
- */
-router.get("/default/:userType", imgFetch.getDefaultAvatar);
 
 module.exports = router;

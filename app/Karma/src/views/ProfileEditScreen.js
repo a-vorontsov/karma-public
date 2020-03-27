@@ -85,6 +85,15 @@ class ProfileEditScreen extends Component {
             displaySignupModal: false,
             photo: profile.photo,
         };
+        // maintain 'plus' icon when profile pic is default
+        try {
+            if (this.state.photo.uri.contains(`${REACT_APP_API_URL}`)) {
+                this.state.photo = null;
+            }
+        } catch (e) {
+            this.state.photo = null;
+        }
+
         this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
         this.getGender = this.getGender.bind(this);
@@ -325,8 +334,15 @@ class ProfileEditScreen extends Component {
             .then(res => {
                 console.log(res.body.message);
                 const imageLocation = res.body.picture_url;
-                this.setState({photo: {uri: imageLocation}});
-            })
+
+                // preserve 'plus' icon on edit screen if profile is default
+                if (imageLocation.includes(`${REACT_APP_API_URL}`)) {
+                    this.setState({photo: null});
+                } else {
+                    this.setState({photo: {uri: imageLocation}});
+                }
+
+        })
             .catch(err => {
                 console.log(err);
             });
