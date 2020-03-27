@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 const genericSuccess = {
     status: 200,
     message: "Success.",

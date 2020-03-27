@@ -120,7 +120,7 @@ const requireRedirectionAuthentication = (req, res, next) => {
     if (authToken === undefined || !(redirectCache.has(authToken))) {
         log.error("An unsuccessful authentication attempt (redir-auth) for '%s', " +
             "ref:'%s'", req.originalUrl, jose.getSignatureFromJWE(authToken));
-        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getForbidden(), res, redirToken());
+        return httpUtil.sendBuiltInErrorWithRedirect(httpRes.getUnauthorised(), res, redirToken());
     }
     redirectCache.delete(authToken);
     next();

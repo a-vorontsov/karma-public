@@ -604,8 +604,8 @@ test("visiting a redir auth route without an authorisation token fails as expect
         .send(errorRequest)
         .redirects(5);
 
-    expect(response.body.message).toBe("Invalid permissions.");
-    expect(response.statusCode).toBe(403);
+    expect(response.body.message).toBe("Request is not authorised.");
+    expect(response.statusCode).toBe(401);
 });
 
 test("visiting a redir auth route with a forged token fails as expected", async () => {
@@ -619,8 +619,8 @@ test("visiting a redir auth route with a forged token fails as expected", async 
         .send(errorRequest)
         .redirects(5);
 
-    expect(response.body.message).toBe("Invalid permissions.");
-    expect(response.statusCode).toBe(403);
+    expect(response.body.message).toBe("Request is not authorised.");
+    expect(response.statusCode).toBe(401);
 });
 
 test("visiting an redir auth route with auth-checks disabled works", async () => {
