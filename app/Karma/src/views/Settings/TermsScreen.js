@@ -41,7 +41,7 @@ class TermsScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={[Styles.container, Styles.ph24]}>
+            <SafeAreaView style={[Styles.container]}>
                 <View style={Styles.ph24}>
                     <PageHeader title="Terms of Use" />
                 </View>

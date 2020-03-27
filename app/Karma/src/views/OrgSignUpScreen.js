@@ -143,7 +143,7 @@ export default class OrgSignUpScreen extends React.Component {
                 data: {organisation: {...org}},
             })
             .then(res => {
-                navigate("PickCauses");
+                navigate("Activities");
             })
             .catch(err => {
                 Alert.alert("Server Error", err.message);
@@ -177,7 +177,9 @@ export default class OrgSignUpScreen extends React.Component {
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handle">
                         <SubTitleText
                             style={[
                                 Styles.ph24,

@@ -139,7 +139,7 @@ class AboutScreen extends React.Component {
                 .then(async res => {
                     console.log(res.body);
                     await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
-                    this.props.navigation.navigate("PickCauses");
+                    this.props.navigation.navigate("PickCauses", {isSignup: false});
                     return;
                 })
                 .catch(err => {
@@ -167,6 +167,7 @@ class AboutScreen extends React.Component {
                     <PageHeader title="About" />
                     <ScrollView
                         style={{marginBottom: 100}}
+                        keyboardShouldPersistTaps="handle"
                         showsVerticalScrollIndicator={false}>
                         <View>
                             <View>
