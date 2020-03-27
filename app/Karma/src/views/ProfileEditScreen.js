@@ -465,7 +465,8 @@ class ProfileEditScreen extends Component {
                                             numberOfLines={1}
                                             style={styles.usernameText}>
                                             {" | " +
-                                                this.state.organisation.organisationType}
+                                                this.state.organisation
+                                                    .organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
