@@ -195,23 +195,10 @@ class ProfileScreen extends Component {
             .get(`http://localhost:8000/avatar/${endpointUsertype}?userId=101`)
             .then(res => {
                 const imageLocation = res.body.picture_url;
-                request.get(imageLocation).end((error, response) => {
-                    console.log(response);
-                    if (!error && response.statusCode === 200) {
-                        const data =
-                            "data:" +
-                            response.headers["content-type"] +
-                            ";base64," +
-                            response.body.toString("base64");
-                        console.log(data);
+                console.log("I am logging");
+                console.log(imageLocation);
 
-                        this.setState({photo: response.text});
-                    } else if (!error) {
-                        Alert.alert("Image Fetch Error", response.body.message);
-                    } else {
-                        Alert.alert("Error fetching from image server", error);
-                    }
-                });
+                this.setState({photo: {uri: imageLocation}});
             })
             .catch(err => {
                 Alert.alert("Unable to load picture", err);
@@ -268,7 +255,6 @@ class ProfileScreen extends Component {
                 if (res.status === 200) {
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
-                    console.log(response);
                     Alert.alert("Upload Error", response.message);
                     this.setState({photo: null});
                 }
@@ -295,6 +281,7 @@ class ProfileScreen extends Component {
     };
 
     render() {
+        console.log(this.state.photo);
         const {navigate} = this.props.navigation;
         const {photo} = this.state;
         return (
