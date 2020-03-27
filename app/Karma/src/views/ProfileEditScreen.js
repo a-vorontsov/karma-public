@@ -391,7 +391,9 @@ class ProfileEditScreen extends Component {
                 style={styles.container}
                 behavior="padding"
                 enabled>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handle">
                     <View
                         style={{
                             flex: 1,
@@ -478,7 +480,7 @@ class ProfileEditScreen extends Component {
                                         <Text
                                             numberOfLines={1}
                                             style={[styles.nameText]}>
-                                            {this.state.organisation.orgName}
+                                            {this.state.organisation.name}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
@@ -504,7 +506,8 @@ class ProfileEditScreen extends Component {
                                             numberOfLines={1}
                                             style={styles.usernameText}>
                                             {" | " +
-                                                this.state.organisationType}
+                                                this.state.organisation
+                                                    .organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (

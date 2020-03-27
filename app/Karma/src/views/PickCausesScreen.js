@@ -90,7 +90,11 @@ export default class PickCausesScreen extends React.Component {
                         Styles.bgWhite,
                     ]}>
                     <GradientButton
-                        title="Next"
+                        title={
+                            this.props.navigation.getParam("isSignup")
+                                ? "Next"
+                                : "Update"
+                        }
                         onPress={() => this.selectCauses()}
                     />
                 </View>

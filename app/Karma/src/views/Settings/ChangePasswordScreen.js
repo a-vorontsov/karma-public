@@ -67,7 +67,7 @@ export default class ChangePasswordScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={[Styles.container, Styles.ph24]}>
+            <SafeAreaView style={[Styles.container]}>
                 <View style={Styles.ph24}>
                     <PageHeader title="Change Password" />
                 </View>
@@ -75,7 +75,7 @@ export default class ChangePasswordScreen extends Component {
                 <View style={{alignItems: "center", flex: 1, top: 20}}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="always">
+                        keyboardShouldPersistTaps="handle">
                         <View style={{flex: 1}}>
                             <SubTitleText
                                 style={{

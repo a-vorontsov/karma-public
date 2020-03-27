@@ -19,6 +19,8 @@ services:
       retries: 5
   server:
     image: teamteamkarma/server
+    volumes:
+      - ./server-logs:/log
     # Uncomment if you want to build the images locally
     #build:
     #  context: ../../../server
@@ -48,6 +50,9 @@ services:
       SKIP_AUTH_CHECKS_FOR_TESTING: 0
       SKIP_MAIL_SENDING_FOR_TESTING: 0
       SKIP_S3: 0
+      NODE_ENV: production
+
+      REACT_APP_API_URL: https://karma.laane.xyz/api
     depends_on:
       - db
     command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]

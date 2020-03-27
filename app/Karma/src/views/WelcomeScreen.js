@@ -308,7 +308,7 @@ export default class WelcomeScreen extends Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="always">
+                        keyboardShouldPersistTaps="handle">
                         <View
                             style={{
                                 flex: 1,

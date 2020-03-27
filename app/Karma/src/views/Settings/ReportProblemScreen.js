@@ -1,12 +1,5 @@
 import React, {Component} from "react";
-import {
-    Dimensions,
-    Image,
-    Keyboard,
-    SafeAreaView,
-    TouchableWithoutFeedback,
-    View,
-} from "react-native";
+import {Dimensions, Image, SafeAreaView, View} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
@@ -81,79 +74,69 @@ class ReportProblemScreen extends Component {
     }
     render() {
         return (
-            <TouchableWithoutFeedback
-                onPress={Keyboard.dismiss}
-                accessible={false}>
-                <SafeAreaView style={[Styles.container, Styles.ph24]}>
-                    <View style={Styles.ph24}>
-                        <PageHeader title="Report a Problem" />
+            <SafeAreaView style={[Styles.container]}>
+                <View style={Styles.ph24}>
+                    <PageHeader title="Report a Problem" />
+                </View>
+                <View style={Styles.ph24}>
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            margin: 30,
+                        }}>
+                        <Image source={logo} />
                     </View>
-                    <View style={Styles.ph24}>
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                margin: 30,
-                            }}>
-                            <Image source={logo} />
-                        </View>
-                        <Dropdown
-                            label="Problem Category"
-                            containerStyle={{width: FORM_WIDTH}}
-                            baseColor={Colours.blue}
-                            textColor={Colours.black}
-                            itemTextStyle={{fontFamily: "OpenSans-Regular"}}
-                            value={this.state.category}
-                            data={problemTypes}
-                            animationDuration={200}
-                            onChangeText={value =>
-                                this.setState({category: value})
-                            }
+                    <Dropdown
+                        label="Problem Category"
+                        containerStyle={{width: FORM_WIDTH}}
+                        baseColor={Colours.blue}
+                        textColor={Colours.black}
+                        itemTextStyle={{fontFamily: "OpenSans-Regular"}}
+                        value={this.state.category}
+                        data={problemTypes}
+                        animationDuration={200}
+                        onChangeText={value => this.setState({category: value})}
+                    />
+                    <RegularText style={[Styles.pb24, {paddingTop: 20}]}>
+                        Describe your problem:
+                    </RegularText>
+                    <TextInput
+                        inputRef={ref => (this.problemDescriptionInput = ref)}
+                        placeholder="I encountered X on screen Y..."
+                        returnKeyType="next"
+                        onChange={this.onChangeText}
+                        onKeyPress={this.onKeyPress}
+                        multiline={true}
+                        style={{
+                            margin: 0,
+                            fontSize: 18,
+                            borderWidth: 1,
+                            borderColor: Colours.blue,
+                            padding: 10,
+                            height: 200,
+                            width: FORM_WIDTH,
+                            borderRadius: 10,
+                        }}
+                        name="problem"
+                    />
+                    <RegularText style={[Styles.pb24, {color: Colours.grey}]}>
+                        When you submit a report, we may contact you at:
+                    </RegularText>
+                    <TextInput
+                        value={this.state.user.email}
+                        name="email"
+                        editable={false}
+                    />
+                    <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
+                        <TransparentButton
+                            onPress={this.submitBugReport}
+                            styles={[Styles.white, {color: Colours.blue}]}
+                            title="Submit Bug Report"
                         />
-                        <RegularText style={[Styles.pb24, {paddingTop: 20}]}>
-                            Describe your problem:
-                        </RegularText>
-                        <TextInput
-                            inputRef={ref =>
-                                (this.problemDescriptionInput = ref)
-                            }
-                            placeholder="I encountered X on screen Y..."
-                            returnKeyType="next"
-                            onChange={this.onChangeText}
-                            onKeyPress={this.onKeyPress}
-                            onSubmitEditing={Keyboard.dismiss()}
-                            multiline={true}
-                            style={{
-                                margin: 0,
-                                fontSize: 18,
-                                borderWidth: 1,
-                                borderColor: Colours.blue,
-                                padding: 10,
-                                height: 200,
-                                width: FORM_WIDTH,
-                                borderRadius: 10,
-                            }}
-                            name="problem"
-                        />
-                        <RegularText
-                            style={[Styles.pb24, {color: Colours.grey}]}>
-                            When you submit a report, we may contact you at:
-                        </RegularText>
-                        <TextInput
-                            value={this.state.user.email}
-                            name="email"
-                            editable={false}
-                        />
-                        <View style={[Styles.ph24, Styles.pb24, Styles.pt8]}>
-                            <TransparentButton
-                                onPress={this.submitBugReport}
-                                styles={[Styles.white, {color: Colours.blue}]}
-                                title="Submit Bug Report"
-                            />
-                        </View>
                     </View>
-                </SafeAreaView>
-            </TouchableWithoutFeedback>
+                </View>
+            </SafeAreaView>
         );
     }
 }
