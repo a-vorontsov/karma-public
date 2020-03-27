@@ -550,24 +550,14 @@ class ProfileScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "center",
                                     }}>
-                                    <RegularText style={styles.contentText}>
-                                        {this.state.bio}
-                                    </RegularText>
-                                    {this.state.bio !== "" ? (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You do not have a bio. Please
-                                                edit your profile to add one.
-                                            </RegularText>
-                                        </View>
-                                    ) : (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You do not have a bio. Please
-                                                edit your profile to add one.
-                                            </RegularText>
-                                        </View>
-                                    )}
+                                    <View style={Styles.ph24}>
+                                        <RegularText>
+                                            {this.state.bio !== ""
+                                                ? this.state.bio
+                                                : "You do not have a bio. Please " +
+                                                  "edit your profile to add one."}
+                                        </RegularText>
+                                    </View>
                                 </View>
                                 <RegularText style={styles.bioHeader}>
                                     Causes
