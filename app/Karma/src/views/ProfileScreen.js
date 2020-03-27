@@ -15,7 +15,6 @@ import {
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
 import CauseItem from "../components/causes/CauseItem";
-import PhotoUpload from "react-native-photo-upload";
 import ImagePicker from "react-native-image-picker";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
@@ -27,7 +26,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
-import { NavigationEvents } from 'react-navigation';
+import {NavigationEvents} from "react-navigation";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;

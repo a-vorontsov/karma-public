@@ -9,11 +9,11 @@ import {
     ScrollView,
     TouchableOpacity,
     Alert,
-    Text, Platform,
+    Text,
+    Platform,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
-import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
 import BottomModal from "../components/BottomModal";
@@ -256,7 +256,6 @@ class ProfileEditScreen extends Component {
         });
     };
 
-
     createFormData = (photo, body) => {
         const data = new FormData();
 
@@ -322,7 +321,7 @@ class ProfileEditScreen extends Component {
         this.fetchProfilePicture();
     };
 
-    fetchProfilePicture = async res => {
+    fetchProfilePicture = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
             ? "organisation"
@@ -341,8 +340,7 @@ class ProfileEditScreen extends Component {
                 } else {
                     this.setState({photo: {uri: imageLocation}});
                 }
-
-        })
+            })
             .catch(err => {
                 console.log(err);
             });
@@ -465,7 +463,7 @@ class ProfileEditScreen extends Component {
                                             numberOfLines={1}
                                             style={styles.usernameText}>
                                             {" | " +
-                                            this.state.organisationType}
+                                                this.state.organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
