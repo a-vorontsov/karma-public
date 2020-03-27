@@ -20,7 +20,6 @@ jest.mock("../../../modules/event/signup");
 
 jest.mock("../../../util");
 jest.mock("../../../modules/validation");
-validation.validateEvent.mockReturnValue({errors: ""});
 
 let eventWithLocationExample1; let eventWithLocationExample2; let eventWithAllData; let animalsEvent; let peaceEvent; let event1; let event2;
 
@@ -46,6 +45,7 @@ afterEach(() => {
 
 
 test("getting events grouped by causes selected by user works", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
     eventService.getEventsBySelectedCauses.mockResolvedValue({
         status: 200,
         message: "Events fetched successfully",
@@ -76,7 +76,20 @@ test("getting events grouped by causes selected by user works", async () => {
     });
 });
 
+test("getting events grouped by causes endpoint in case of a system error returns error message as expected", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
+    eventService.getEventsBySelectedCauses.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+
+    const response = await request(app).get("/event/causes?userId=1");
+    expect(eventService.getEventsBySelectedCauses).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.status).toBe(500);
+});
+
 test("getting events favourited by user works", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
     eventFavouriteService.getFavouriteEvents.mockResolvedValue({
         status: 200,
         message: "Favourite events fetched successfully",
@@ -94,7 +107,19 @@ test("getting events favourited by user works", async () => {
     ]);
 });
 
+test("getting events favourited endpoint in case of a system error returns error message as expected", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
+    eventFavouriteService.getFavouriteEvents.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+    const response = await request(app).get("/event/favourites?userId=1");
+    expect(eventFavouriteService.getFavouriteEvents).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.status).toBe(500);
+});
+
 test("getting events user is going to works", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
     eventSignUpService.getGoingEvents.mockResolvedValue({
         status: 200,
         message: "Future going events fetched successfully",
@@ -111,3 +136,15 @@ test("getting events user is going to works", async () => {
         {...event1, eventid: 1},
     ]);
 });
+
+test("getting events user is going to endpoint in case of a system error returns error message as expected", async () => {
+    validation.validateEvent.mockReturnValue({errors: ""});
+    eventSignUpService.getGoingEvents.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+    const response = await request(app).get("/event/going?userId=1");
+    expect(eventSignUpService.getGoingEvents).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.status).toBe(500);
+});
+
