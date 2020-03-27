@@ -11,11 +11,13 @@ import {
     Alert,
     Text,
     Platform,
+    Easing,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
+import AnimatedProgressWheel from "react-native-progress-wheel";
 import BottomModal from "../components/BottomModal";
 import CauseStyles from "../styles/CauseStyles";
 import CauseItem from "../components/causes/CauseItem";
@@ -84,13 +86,16 @@ class ProfileEditScreen extends Component {
             causes: profile.causes,
             displaySignupModal: false,
             photo: profile.photo,
+            photoLoading: false,
         };
         // maintain 'plus' icon when profile pic is default
         try {
-            if (this.state.photo.uri.contains(`${REACT_APP_API_URL}`)) {
+            if (this.state.photo.uri.includes(`${REACT_APP_API_URL}`)) {
                 this.state.photo = null;
             }
         } catch (e) {
+            console.log("caught me");
+            console.log(e);
             this.state.photo = null;
         }
 
@@ -280,13 +285,19 @@ class ProfileEditScreen extends Component {
     };
 
     handleChoosePhoto = () => {
+        this.setState({photoLoading: true});
+
         const options = {
             noData: true,
         };
         ImagePicker.launchImageLibrary(options, response => {
             if (response.uri) {
+                this.imageLoader.animateTo(95, 1200, Easing.quad);
                 this.setState({photo: response});
                 return this.handleUploadPhoto();
+            } else {
+                this.imageLoader.animateTo(0, 100, Easing.quad);
+                this.setState({photoLoading: false});
             }
         });
     };
@@ -305,6 +316,7 @@ class ProfileEditScreen extends Component {
             body: this.createFormData(this.state.photo, {}),
         })
             .then(res => {
+                this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
                     console.log(response.message);
@@ -318,21 +330,26 @@ class ProfileEditScreen extends Component {
                 Alert.alert("Upload Error", error.message);
                 this.setState({photo: null});
             });
+        this.setState({photoLoading: false});
         this.fetchProfilePicture();
     };
 
     fetchProfilePicture = async () => {
+        this.imageLoader.animateTo(0, 0);
+
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
             ? "organisation"
             : "individual";
+        this.setState({photo: null, photoLoading: true});
 
-        request
+        await request
             .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
-                const imageLocation = res.body.picture_url;
+                console.log(res.body);
+                const imageLocation =
+                    res.body.picture_url + "?t=" + new Date().getTime(); // cache buster
 
                 // preserve 'plus' icon on edit screen if profile is default
                 if (imageLocation.includes(`${REACT_APP_API_URL}`)) {
@@ -344,6 +361,7 @@ class ProfileEditScreen extends Component {
             .catch(err => {
                 console.log(err);
             });
+        this.setState({photoLoading: false});
     };
 
     _renderItem = ({item}) => {
@@ -361,7 +379,13 @@ class ProfileEditScreen extends Component {
     };
 
     render() {
-        const {isOrganisation, individual, organisation, photo} = this.state;
+        const {
+            isOrganisation,
+            individual,
+            organisation,
+            photo,
+            photoLoading,
+        } = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -421,10 +445,27 @@ class ProfileEditScreen extends Component {
                                             width: HALF * 0.8,
                                             height: HALF * 0.8,
                                             borderRadius: 75,
+                                            opacity: photoLoading ? 0.5 : 1,
                                         }}
                                         resizeMode="cover"
                                         source={photo ? photo : icons.photo_add}
                                     />
+                                    <View
+                                        style={{
+                                            marginTop: -1 * HALF * 0.8,
+                                            marginLeft: -2,
+                                            opacity: photoLoading ? 1 : 0,
+                                        }}>
+                                        <AnimatedProgressWheel
+                                            ref={ref =>
+                                                (this.imageLoader = ref)
+                                            }
+                                            size={HALF * 0.8 + 3}
+                                            width={20}
+                                            color={Colours.white}
+                                            backgroundColor={Colours.blue}
+                                        />
+                                    </View>
                                 </TouchableOpacity>
                             </View>
                             <View
