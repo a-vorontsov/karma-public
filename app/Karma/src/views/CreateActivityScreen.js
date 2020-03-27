@@ -409,7 +409,9 @@ export default class CreateActivityScreen extends React.Component {
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handle">
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,

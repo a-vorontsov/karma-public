@@ -58,13 +58,13 @@ export default class ForgotPasswordScreen extends Component {
 
     onInputChange = inputState => {
         this.setState({
-            passwordInput: inputState.confPassword.confPassword,
+            passwordInput: inputState.confirmPassword.confirmPassword,
         });
     };
 
     render() {
         return (
-            <SafeAreaView style={[Styles.container, Styles.ph24]}>
+            <SafeAreaView style={[Styles.container]}>
                 <View style={Styles.ph24}>
                     <PageHeader title="Forgot Password" />
                 </View>

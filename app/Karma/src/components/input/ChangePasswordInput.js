@@ -101,6 +101,7 @@ export default class ChangePasswordInput extends Component {
                         errorText={this.whichErrorText()}
                         inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
+                            this.passUpState();
                             this.confirmPassword.focus();
                         }}
                         returnKeyType="next"
@@ -128,6 +129,7 @@ export default class ChangePasswordInput extends Component {
                         autoCapitalize="none"
                         inputRef={ref => (this.confirmPassword = ref)}
                         onSubmitEditing={() => {
+                            this.passUpState();
                             Keyboard.dismiss();
                         }}
                         secureTextEntry={this.state.hidePassword}

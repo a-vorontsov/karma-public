@@ -64,7 +64,7 @@ class VerifyScreen extends Component {
     render() {
         return (
             <SafeAreaView>
-                <ScrollView>
+                <ScrollView keyboardShouldPersistTaps="handle">
                     <View style={[Styles.ph24]}>
                         <PageHeader
                             title="Sign Up"
