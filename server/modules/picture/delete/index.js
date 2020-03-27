@@ -57,24 +57,35 @@ const deleteAvatar = (req, res) => {
                         const picture = pictureResult.rows[0];
                         const pictureLocation = picture.pictureLocation;
                         const key = pictureLocation.replace(AWS_REGEX, "");
-                        s3.deleteObject({
-                            Bucket: process.env.S3_BUCKET_NAME,
-                            Key: key,
-                        }, (err, data) => {
-                            if (err) {
-                                log.error(`Failed to delete picture for ${userType} with user ID ${req.query.userId}.` +
-                                    ` Error code ${err.code}: ${err.message}`);
-                                res.status(500).send({
-                                    message: err.message,
-                                });
-                            } else {
-                                log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
-                                res.status(200).send({
-                                    message: `Successfully deleted image!`,
-                                    oldLocation: pictureLocation,
-                                });
-                            }
-                        });
+
+                        if (process.env.SKIP_S3) {
+                            // MOCK RESPONSE
+                            log.info("Skipping S3 update and sending mock response for testing");
+                            log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
+                            res.status(200).send({
+                                message: `Successfully deleted image!`,
+                                oldLocation: pictureLocation,
+                            });
+                        } else {
+                            s3.deleteObject({
+                                Bucket: process.env.S3_BUCKET_NAME,
+                                Key: key,
+                            }, (err, data) => {
+                                if (err) {
+                                    log.error(`Failed to delete picture for ${userType} with user ID ${req.query.userId}.` +
+                                        ` Error code ${err.code}: ${err.message}`);
+                                    res.status(500).send({
+                                        message: err.message,
+                                    });
+                                } else {
+                                    log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
+                                    res.status(200).send({
+                                        message: `Successfully deleted image!`,
+                                        oldLocation: pictureLocation,
+                                    });
+                                }
+                            });
+                        }
                     }
                 }).catch((error) => {
                     res.status(500);

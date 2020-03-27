@@ -47,6 +47,7 @@ services:
       SKIP_PASSWORD_CHECKS: 0
       SKIP_AUTH_CHECKS_FOR_TESTING: 0
       SKIP_MAIL_SENDING_FOR_TESTING: 0
+      SKIP_S3: 0
     depends_on:
       - db
     command: ["./wait-for-it.sh", "${DB_HOST}:5432", "--", "sh", "-c", "npm run db-migrate up && node server.js"]
