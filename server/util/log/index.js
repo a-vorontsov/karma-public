@@ -11,7 +11,7 @@ log4js.configure({
         },
         logFile: {
             type: 'file',
-            filename: 'karma.log',
+            filename: 'log/karma.log',
         },
     },
     categories: {
