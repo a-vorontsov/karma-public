@@ -9,9 +9,13 @@ log4js.configure({
                 type: 'pattern', pattern: '%[ %d %f{2}:%l%]: %m',
             },
         },
+        logFile: {
+            type: 'file',
+            filename: 'karma.log',
+        },
     },
     categories: {
-        default: {appenders: ['out'], level: 'info', enableCallStack: true},
+        default: {appenders: ['out', 'logFile'], level: 'info', enableCallStack: true},
     },
 });
 
