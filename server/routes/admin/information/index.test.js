@@ -6,7 +6,6 @@ const informationService = require("../../../modules/information");
 
 jest.mock("../../../modules/information");
 jest.mock("../../../modules/validation");
-validation.validateInformation.mockReturnValue({errors: ""});
 
 let information;
 
@@ -21,6 +20,7 @@ afterEach(() => {
 });
 
 test("information creation endpoint works", async () => {
+    validation.validateInformation.mockReturnValue({errors: ""});
     informationService.getInformationData.mockResolvedValue({
         status: 200,
         message: "Information entry fetched successfully",
@@ -48,7 +48,35 @@ test("information creation endpoint works", async () => {
     expect(response.statusCode).toBe(200);
 });
 
+test("information creation with invalid information is rejected as expected", async () => {
+    validation.validateInformation.mockReturnValue({errors: "invalid"});
+    informationService.getInformationData.mockResolvedValue({
+        status: 200,
+        message: "Information entry fetched successfully",
+        data: {information: {}},
+    });
+    informationService.changeInformation.mockResolvedValue({
+        status: 200,
+        message: "New information entry created",
+        data: {
+            information: {
+                information,
+            },
+        },
+    });
+
+    const response = await request(app)
+        .post("/admin/information")
+        .send(information);
+
+    expect(validation.validateInformation).toHaveBeenCalledTimes(1);
+    expect(informationService.changeInformation).toHaveBeenCalledTimes(0);
+    expect(response.body.message).toBe("Input validation failed");
+    expect(response.statusCode).toBe(400);
+});
+
 test("information update works", async () => {
+    validation.validateInformation.mockReturnValue({errors: ""});
     informationService.getInformationData.mockResolvedValue({
         status: 200,
         message: "Information entry fetched successfully",
@@ -78,4 +106,29 @@ test("information update works", async () => {
         information,
     });
     expect(response.statusCode).toBe(200);
+});
+
+test("information updating in case of a system error returns error message as expected", async () => {
+    validation.validateInformation.mockReturnValue({errors: ""});
+    informationService.getInformationData.mockResolvedValue({
+        status: 200,
+        message: "Information entry fetched successfully",
+        data: {
+            information: {
+                information,
+            },
+        },
+    });
+    informationService.changeInformation.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+
+    const response = await request(app)
+        .post("/admin/information")
+        .send(information);
+
+    expect(validation.validateInformation).toHaveBeenCalledTimes(1);
+    expect(informationService.changeInformation).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.statusCode).toBe(500);
 });
