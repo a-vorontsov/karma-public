@@ -277,7 +277,7 @@ class ActivityInfoScreen extends Component {
                             <Image
                                 source={{
                                     uri: `https://picsum.photos/seed/${
-                                        activity.id
+                                        activity.eventId
                                     }/800/200`,
                                 }}
                                 style={{

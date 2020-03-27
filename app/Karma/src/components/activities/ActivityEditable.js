@@ -187,7 +187,7 @@ const ActivityEditable = props => {
                             <Image
                                 source={{
                                     uri: `https://picsum.photos/seed/${
-                                        props.activity.id
+                                        props.activity.eventId
                                     }/800/200`,
                                 }}
                                 style={{
