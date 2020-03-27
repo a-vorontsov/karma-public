@@ -275,7 +275,11 @@ class ActivityInfoScreen extends Component {
                     <View style={[Styles.container, Styles.ph24]}>
                         <View style={[Styles.pb24, Styles.bottom]}>
                             <Image
-                                source={require("../../assets/images/general-logos/hands-heart.png")}
+                                source={{
+                                    uri: `https://picsum.photos/seed/${
+                                        activity.id
+                                    }/800/200`,
+                                }}
                                 style={{
                                     flex: 1,
                                     width: null,

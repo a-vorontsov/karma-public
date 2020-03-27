@@ -144,7 +144,7 @@ class ActivityCard extends React.Component {
                     <Image
                         source={{
                             uri: `https://picsum.photos/seed/${
-                                this.props.activity.eventId
+                                this.props.activity.id
                             }/800/200`,
                         }}
                         style={{
