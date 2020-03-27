@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication");
 
 const imgFetch = require("../../modules/picture/fetch");
 const imgUpload = require("../../modules/picture/upload");
@@ -47,7 +47,7 @@ const imgDelete = require("../../modules/picture/delete");
  *  @name Upload Profile Photo for Individuals and Organisations
  *  @function
  */
-router.post("/upload/:userType", authAgent.requireAuthentication, (req, res) => {
+router.post("/upload/:userType", authService.requireAuthentication, (req, res) => {
     imgUpload.updateAvatar(req, res);
 });
 
@@ -74,7 +74,7 @@ router.post("/upload/:userType", authAgent.requireAuthentication, (req, res) => 
  *  @name Delete Profile Photo for Individuals and Organisations
  *  @function
  */
-router.post("/delete/:userType", authAgent.requireAuthentication, (req, res) => {
+router.post("/delete/:userType", authService.requireAuthentication, (req, res) => {
     imgDelete.deleteAvatar(req, res);
 });
 
@@ -83,7 +83,7 @@ router.post("/delete/:userType", authAgent.requireAuthentication, (req, res) => 
 /**
  * Endpoint called to fetch profile pictures for an individual or organisation.<br/>
  * URL example: GET http://localhost:8000/avatar/individual/42
- *  <p><b>Route: </b>/avatar/:userType/:userId (POST)</p>
+ *  <p><b>Route: </b>/avatar/:userType/:userId (GET)</p>
  * @param {userType} must be one of individual, organisation
  * @param {userId} user ID for the user
  * @returns {Object}
@@ -121,9 +121,7 @@ router.get("/:userType/:userId", imgFetch.getAvatar);
  *  @name Fetch Current Profile Photo for Individuals and Organisations
  *  @function
  */
-router.get("/:userType", authAgent.requireAuthentication, imgFetch.getAvatar);
-
-// == File Hosting (i.e. Default Images) == //
+router.get("/:userType", authService.requireAuthentication, imgFetch.getAvatar); // == File Hosting (i.e. Default Images) ==
 
 /**
  * Endpoint called to fetch default profile picture for current user type.<br/>

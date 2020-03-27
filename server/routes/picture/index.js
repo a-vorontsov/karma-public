@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-const authAgent = require("../../modules/authentication/auth-agent");
+const authService = require("../../modules/authentication/");
 
 const imgFetch = require("../../modules/picture/fetch");
 const imgUpload = require("../../modules/picture/upload");
@@ -25,7 +25,7 @@ const imgDelete = require("../../modules/picture/delete");
  *  @name Upload and update event picture by event ID.
  *  @function
  */
-router.post("/upload/event/:eventId", authAgent.requireAuthentication, (req, res) => {
+router.post("/upload/event/:eventId", authService.requireAuthentication, (req, res) => {
     imgUpload.updateEventPicture(req, res);
 });
 
@@ -44,7 +44,7 @@ router.post("/upload/event/:eventId", authAgent.requireAuthentication, (req, res
  *  @name Delete event picture by event ID.
  *  @function
  */
-router.post("/delete/event/:eventId", authAgent.requireAuthentication, (req, res) => {
+router.post("/delete/event/:eventId", authService.requireAuthentication, (req, res) => {
     imgDelete.deleteEventPicture(req, res);
 });
 

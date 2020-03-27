@@ -3,10 +3,10 @@ const aws = require('aws-sdk');
 const fs = require("fs");
 const path = require("path");
 
-const individualRepository = require("../../../models/databaseRepositories/individualRepository");
-const organisationRepository = require("../../../models/databaseRepositories/organisationRepository");
-const imageRepository = require("../../../models/databaseRepositories/pictureRepository");
-const eventRepository = require("../../../models/databaseRepositories/eventRepository");
+const individualRepository = require("../../../repositories/individual");
+const organisationRepository = require("../../../repositories/organisation");
+const imageRepository = require("../../../repositories/picture");
+const eventRepository = require("../../../repositories/event");
 
 // directories where picture are found
 const AVATAR_DIR = "./avatar/";
