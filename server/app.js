@@ -50,7 +50,6 @@ app.use("/causes", require("./routes/causes"));
 app.use("/causes/select", require("./routes/causes/select"));
 
 app.use("/event", require("./routes/event"));
-// TODO: discuss structure
 
 app.use("/profile/edit", require("./routes/profile/edit"));
 app.use("/profile/edit/password", require("./routes/profile/edit/password"));
@@ -67,6 +66,7 @@ if (process.env.NODE_ENV !== 'test') {
     log.info("OAUTH enabled: %s, AUTH enabled: %s", process.env.ENABLE_OAUTH === "1", process.env.NO_AUTH === "0");
 }
 
+/* istanbul ignore if */
 if (process.env.ENABLE_OAUTH === 1) {
     const passport = require("passport");
     require("./modules/authentication/passport/");

@@ -306,3 +306,83 @@ test("invalid editing of organisation profile returns error as expected", async 
     expect(response.statusCode).toBe(500);
 
 });
+
+test("attempting to only change username with no individual or organisation object sent works", async () => {
+    const profileChangeRequest3 = {
+    userId: 123,
+    authToken: "abc",
+    data: {
+        user: {
+            username: "newUserName",
+        },
+        // empty
+    }
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+
+    const addressId = await userAgent.registerAddress(address);
+
+    individual.userId = userId;
+    individual.addressId = addressId;
+    individual.gender = "f";
+    const indivResult = await indivRepo.insert(individual);
+
+    profile.individualId = indivResult.rows[0].id;
+    await profileRepo.insert(profile);
+    profileChangeRequest3.userId = userId;
+
+    const response = await request(app)
+        .post("/profile/edit")
+        .send(profileChangeRequest3);
+
+    expect(response.body.message).toBe("Operation successful. Please GET the view profile endpoint to see the updated profile record.");
+    expect(response.statusCode).toBe(200);
+
+});
+
+test("editing an individual profile's address works", async () => {
+    const profileChangeRequest3 = {
+    userId: 123,
+    authToken: "abc",
+    data: {
+        user: {
+            username: "newUserName",
+        },
+        individual: {
+            phoneNumber: "newPhoneNumber",
+            bio: "Test",
+            womenOnly: true,
+            firstName: "Paul",
+            lastName: "change",
+            gender: "f",
+            address: {
+                addressLine1: "newLine1"
+            }
+        },
+    },
+    };
+    await regRepo.insert(registration);
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+
+    const addressId = await userAgent.registerAddress(address);
+
+    individual.userId = userId;
+    individual.addressId = addressId;
+    individual.gender = "f";
+    const indivResult = await indivRepo.insert(individual);
+
+    profile.individualId = indivResult.rows[0].id;
+    await profileRepo.insert(profile);
+    profileChangeRequest3.userId = userId;
+
+    const response = await request(app)
+        .post("/profile/edit")
+        .send(profileChangeRequest3);
+
+    expect(response.body.message).toBe("Operation successful. Please GET the view profile endpoint to see the updated profile record.");
+    expect(response.statusCode).toBe(200);
+
+});

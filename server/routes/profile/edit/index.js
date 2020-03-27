@@ -171,10 +171,6 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
  * @param {Object} storedAddress in db
  */
 async function createNewAddress(address, storedAddress) {
-    if (address === undefined) {
-        return;
-    }
-
     const addressObj = {...storedAddress};
 
     if (address.addressLine1 !== undefined ) {
