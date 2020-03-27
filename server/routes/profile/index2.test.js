@@ -27,11 +27,10 @@ afterEach(() => {
 });
 
 test('viewing the profile of another user returns error message in case of a server error as expected', async () => {
-
     process.env.NO_AUTH=1;
 
     userRepo.findById.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .get("/profile?otherUserId=1")
@@ -46,13 +45,12 @@ test('viewing the profile of another user returns error message in case of a ser
 });
 
 test('viewing the profile of another event attending user works', async () => {
-
     process.env.NO_AUTH=1;
 
     userRepo.findById.mockResolvedValue({
         rows: [{
             id: 1,
-        }]
+        }],
     });
 
     eventRepo.findAllByUserIdWithLocation.mockResolvedValue({
@@ -60,53 +58,53 @@ test('viewing the profile of another event attending user works', async () => {
             {
                 date: Date.parse("01/01/2030"),
                 title: "date0",
-                id: 0
+                id: 0,
             },
             {
                 date: Date.parse("02/01/2030"),
                 title: "date1",
-                id: 1
+                id: 1,
             },
             {
                 date: Date.parse("01/01/1930"),
                 title: "date2",
-                id: 2
-            }
-        ]
+                id: 2,
+            },
+        ],
     });
 
     selectedCauseRepo.findByUserId.mockResolvedValue({
         rows: [
             {name: "cause1"},
             {name: "cause2"},
-        ]
+        ],
     });
 
     indivRepo.findByUserID.mockResolvedValue({
         rows: [
             {
                 id: 1,
-            }
-        ]
+            },
+        ],
     });
 
     addressRepo.findById.mockResolvedValue({
         rows: [
-            {}
-        ]
+            {},
+        ],
     });
 
     profileRepo.findByIndividualId.mockResolvedValue({
         rows: [
-            {}
-        ]
+            {},
+        ],
     });
 
     eventSignupRepo.findAllByIndividualIdConfirmed.mockResolvedValue({
         rows: [
             {eventId: 0},
-            {eventId: 2}
-        ]
+            {eventId: 2},
+        ],
     });
 
     eventRepo.findById.mockImplementation((eventId) => {
@@ -116,8 +114,8 @@ test('viewing the profile of another event attending user works', async () => {
                     rows: [{
                         date: Date.parse("01/01/2030"),
                         title: "date0",
-                        id: 0
-                    }]
+                        id: 0,
+                    }],
                 };
                 break;
 
@@ -126,8 +124,8 @@ test('viewing the profile of another event attending user works', async () => {
                     rows: [{
                         date: Date.parse("02/01/2030"),
                         title: "date1",
-                        id: 1
-                    }]
+                        id: 1,
+                    }],
                 };
                 break;
 
@@ -136,13 +134,13 @@ test('viewing the profile of another event attending user works', async () => {
                     rows: [{
                         date: Date.parse("01/01/1930"),
                         title: "date2",
-                        id: 2
-                    }]
+                        id: 2,
+                    }],
                 };
                 break;
 
             default:
-                return {rows:[]}
+                return {rows: []};
         }
     });
 

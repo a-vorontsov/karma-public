@@ -24,7 +24,7 @@ test("a server error during email verification returns false as expected", async
         },
     };
     userAgent.updatePassword.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .post("/reset/")

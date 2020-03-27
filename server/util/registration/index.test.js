@@ -19,7 +19,7 @@ test("checking full registration status of a non-existent user email fails as ex
     regRepo.findByEmail.mockResolvedValue({
         rows: [
             undefined,
-        ]
+        ],
     });
     expect(regStatus.isFullyRegisteredByEmail("email@email.com")).rejects.toEqual(new Error("Registration record with given email does not exist"));
 });

@@ -51,7 +51,7 @@ test("generic errors sent correctly", async () => {
 
 test("sending built in 418 response works", async () => {
     const send = jest.fn();
-    const res = { status: jest.fn(() => ({ send: send })) };
+    const res = {status: jest.fn(() => ({send: send}))};
     httpUtil.sendBuiltInError(httpResponses.getIAmATeapot(), res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
@@ -64,7 +64,7 @@ test("sending built in 418 response works", async () => {
 
 test("sending built in 200 response works", async () => {
     const send = jest.fn();
-    const res = { status: jest.fn(() => ({ send: send })) };
+    const res = {status: jest.fn(() => ({send: send}))};
     httpUtil.sendBuiltInError(httpResponses.getGenericSuccess(), res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
@@ -77,7 +77,7 @@ test("sending built in 200 response works", async () => {
 
 test("sending built in 403 response works", async () => {
     const send = jest.fn();
-    const res = { status: jest.fn(() => ({ send: send })) };
+    const res = {status: jest.fn(() => ({send: send}))};
     httpUtil.sendBuiltInError(httpResponses.getForbidden(), res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ test("sending built in 403 response works", async () => {
 
 test("sending built in 404 response works", async () => {
     const send = jest.fn();
-    const res = { status: jest.fn(() => ({ send: send })) };
+    const res = {status: jest.fn(() => ({send: send}))};
     httpUtil.sendBuiltInError(httpResponses.getNotFound(), res);
 
     expect(res.status).toHaveBeenCalledTimes(1);

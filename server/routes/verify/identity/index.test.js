@@ -25,7 +25,7 @@ test("creating an ID verification record works", async () => {
 test("creating an ID verification record with an invalid id fails as expected", async () => {
     process.env.NO_AUTH=1;
     verifyModule.uploadFile.mockImplementation(() => {
-      throw new Error("Creation failed");
+        throw new Error("Creation failed");
     });
     const response = await request(app)
         .post("/verify/identity/create")
@@ -53,7 +53,7 @@ test("updating an ID verification record works", async () => {
 test("updating an ID verification record with an invalid id fails as expected", async () => {
     process.env.NO_AUTH=1;
     verifyModule.updateAccount.mockImplementation(() => {
-      throw new Error("Update failed");
+        throw new Error("Update failed");
     });
     const response = await request(app)
         .get("/verify/identity/check")

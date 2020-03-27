@@ -12,7 +12,7 @@ afterEach(() => {
 
 test("sign-out with valid token works", async () => {
     authService.requireAuthentication.mockImplementation((req, res, next) => {
-      next();
+        next();
     });
     authService.logOut.mockReturnValue(true);
     const response = await request(app)
@@ -29,10 +29,10 @@ test("sign-out with valid token works", async () => {
 
 test("signing-out in case of a server error returns false as expected", async () => {
     authService.requireAuthentication.mockImplementation((req, res, next) => {
-      next();
+        next();
     });
     authService.logOut.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .post("/signout?userId=1")

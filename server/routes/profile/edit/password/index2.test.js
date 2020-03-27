@@ -33,10 +33,9 @@ afterEach(() => {
 
 
 test('changing password in case of a server error returns error message as expected', async () => {
-
     owasp.test.mockReturnValue({strong: true});
     userAgent.isCorrectPasswordById.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .post("/profile/edit/password")
@@ -45,6 +44,5 @@ test('changing password in case of a server error returns error message as expec
 
     expect(response.statusCode).toBe(500);
     expect(response.body.message).toBe("Server error");
-
 });
 

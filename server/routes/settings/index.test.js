@@ -63,7 +63,7 @@ test("settings update works", async () => {
 
 test("settings fetching endpoint in case of a server error returns error message as expected", async () => {
     settingsService.getCurrentSettings.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
 
     const response = await request(app)
@@ -79,7 +79,7 @@ test("settings fetching endpoint in case of a server error returns error message
 
 test("settings updating endpoint in case of a server error returns error message as expected", async () => {
     settingsService.changeSettings.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
 
     const response = await request(app)

@@ -25,6 +25,6 @@ test("resolving math corner case of dist > 1 works", async () => {
     const mockMath = Object.create(global.Math);
     mockMath.sin = () => 6;
     global.Math = mockMath;
-    const dist = distance.getDistance({ lat: 1, long: -1 }, { lat: -1, long: 1 }, "K");
+    const dist = distance.getDistance({lat: 1, long: -1}, {lat: -1, long: 1}, "K");
     expect(dist).toBe(0);
 });

@@ -5,7 +5,7 @@ const jose = require("../../../modules/jose");
 const userRepository = require("../../../repositories/user");
 const resetRepository = require("../../../repositories/reset");
 const mailSender = require("../../../modules/mail");
-const authService = require("../../../modules/authentication")
+const authService = require("../../../modules/authentication");
 
 jest.mock("../../../repositories/reset");
 jest.mock("../../../repositories/user");
@@ -262,7 +262,7 @@ test('requesting reset password token when a server error occurs returns error m
         }],
     });
     mailSender.sendEmail.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .post("/signin/forgot")
@@ -281,7 +281,7 @@ test('confirming correct token with invalid email fails as expected', async () =
     const dateTime = new Date();
     dateTime.setTime(dateTime.getTime() + (1 * 60 * 60 * 1000));
     userRepository.findByEmail.mockResolvedValue({
-            rows: [],
+        rows: [],
     });
     resetRepository.findLatestByUserId.mockResolvedValue({
         rows: [{

@@ -18,7 +18,7 @@ test("attempting to verify an invalid phone number is rejected as expected", () 
     }).toThrow(new Error("Invalid phone number: 'abc'"));
 });
 
-test("attempting to verify a valid phone number is executed as expected",  () => {
+test("attempting to verify a valid phone number is executed as expected", () => {
     expect(() => {
         twilio.startPhoneVerification("+447577777777");
     }).not.toThrow(new Error("Invalid phone number: 'abc'"));

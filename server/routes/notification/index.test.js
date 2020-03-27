@@ -75,7 +75,7 @@ test('creating notification for multiple recipients in case of a server error re
     validation.validateNotification.mockReturnValue({errors: ""});
     notification.timestampSent = notification.timestampSent.toDateString();
     notificationService.createNotifications.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     notification.receiverIds = [1, 2, 3, 4];
     const response = await request(app).post("/notification").send(notification);
@@ -89,7 +89,7 @@ test('creating notification for a single recipient in case of a server error ret
     validation.validateNotification.mockReturnValue({errors: ""});
     notification.timestampSent = notification.timestampSent.toDateString();
     notificationService.createNotifications.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     notification.receiverId = 1;
     const response = await request(app).post("/notification").send(notification);
@@ -142,7 +142,7 @@ test('finding notifications in case of a server error returns error message as e
     validation.validateNotification.mockReturnValue({errors: ""});
     notification.timestampSent = notification.timestampSent.toDateString();
     notificationService.getNotification.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app).get("/notification").query({userId: 1}).send(notification);
 

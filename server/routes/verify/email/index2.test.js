@@ -12,7 +12,7 @@ afterEach(() => {
 test("a server error during email verification returns false as expected", async () => {
     process.env.NO_AUTH=1;
     verifyModule.verifyEmail.mockImplementation(() => {
-      throw new Error("Server error");
+        throw new Error("Server error");
     });
     const response = await request(app)
         .post("/verify/email/")

@@ -77,7 +77,7 @@ test("signing in works", async () => {
                 id: 69,
                 passwordHash: "bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32",
                 salt: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-            }
+            },
         ],
     });
     authService.logInUser.mockReturnValue("token");
@@ -93,7 +93,7 @@ test("signing in with incorrect password fails as expected", async () => {
                 id: 69,
                 passwordHash: "bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32",
                 salt: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-            }
+            },
         ],
     });
     authService.logInUser.mockReturnValue("token");
