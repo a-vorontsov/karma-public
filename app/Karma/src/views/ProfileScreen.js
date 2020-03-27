@@ -11,7 +11,6 @@ import {
     View,
     Alert,
     Platform,
-    RefreshControl,
     Easing,
 } from "react-native";
 import {RegularText} from "../components/text";
