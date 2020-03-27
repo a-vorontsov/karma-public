@@ -70,6 +70,13 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "config",
+      "node_modules",
+      "jsdoc",
+      "migrations",
+      "out"
+    ],
     "coverageReporters": [
       "json",
       "html"
