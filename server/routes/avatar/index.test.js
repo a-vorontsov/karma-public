@@ -1,32 +1,38 @@
-// const request = require("supertest");
-// const reqExt = require("superagent");
-// const app = require("../../app");
-// const fs = require("fs");
-// const path = require("path");
-//
-// const testHelpers = require("../../test/helpers");
-// const userRepo = require("../../repositories/user");
-// const regRepo = require("../../repositories/registration");
-// const addressRepo = require("../../repositories/address");
-// const individualRepo = require("../../repositories/individual");
-// const organisationRepo = require("../../repositories/organisation");
-//
-// const user = testHelpers.getUserExample4();
-// const registration = testHelpers.getRegistrationExample5();
-// const address= testHelpers.getAddress();
-// const individual = testHelpers.getIndividual();
-// const organisation = testHelpers.getOrganisation();
-//
-// beforeEach(() => {
-//     process.env.SKIP_PASSWORD_CHECKS = 0;
-//     process.env.NO_AUTH = 1;
-//     return testHelpers.clearDatabase();
-// });
-//
-// afterEach(() => {
-//     jest.clearAllMocks();
-//     return testHelpers.clearDatabase();
-// });
+const request = require("supertest");
+const reqExt = require("superagent");
+const app = require("../../app");
+const fs = require("fs");
+const path = require("path");
+
+const testHelpers = require("../../test/helpers");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
+const addressRepo = require("../../repositories/address");
+const individualRepo = require("../../repositories/individual");
+const organisationRepo = require("../../repositories/organisation");
+
+const user = testHelpers.getUserExample4();
+const registration = testHelpers.getRegistrationExample5();
+const address= testHelpers.getAddress();
+const individual = testHelpers.getIndividual();
+const organisation = testHelpers.getOrganisation();
+
+beforeEach(() => {
+    process.env.SKIP_PASSWORD_CHECKS = 0;
+    process.env.NO_AUTH = 1;
+    return testHelpers.clearDatabase();
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
+    return testHelpers.clearDatabase();
+});
+
+// TODO - remove me
+test("fetching default individual avatar works", async () => {
+///
+});
+
 //
 // // == Test working default images == //
 //
