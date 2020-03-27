@@ -536,10 +536,16 @@ const resetExample1 = {
 const getResetExample1 = () => ({...resetExample1});
 
 const pictureExample1 = {
-    pictureLocation: "/User/Downloads",
+    pictureLocation: "/User/Downloads/myImage.png",
+};
+
+const pictureExample2 = {
+    pictureLocation: "/User/Downloads/myFolder/newImage.png",
 };
 
 const getPictureExample1 = () => ({...pictureExample1});
+
+const getPictureExample2 = () => ({...pictureExample2});
 
 const resetExample2 = {
     userId: 1,
@@ -592,6 +598,7 @@ const clearDatabase = async () => {
     await db.query("DELETE FROM organisation");
     await db.query("DELETE FROM individual");
     await db.query("DELETE FROM event");
+    await db.query("DELETE FROM picture");
     await db.query("DELETE FROM authentication");
     await db.query("DELETE FROM selected_cause");
     await db.query("DELETE FROM reset");
@@ -637,6 +644,7 @@ module.exports = {
     getBugReport,
     getInformation,
     getPictureExample1,
+    getPictureExample2,
     getEventCauseExample1,
     getComplaint,
     getSetting,

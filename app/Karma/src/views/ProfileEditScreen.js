@@ -10,10 +10,10 @@ import {
     TouchableOpacity,
     Alert,
     Text,
+    Platform,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
-import PhotoUpload from "react-native-photo-upload";
 import Styles from "../styles/Styles";
 import EditableText from "../components/EditableText";
 import BottomModal from "../components/BottomModal";
@@ -28,6 +28,9 @@ import {RadioInput} from "../components/radio";
 const request = require("superagent");
 const _ = require("lodash");
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import ImagePicker from "react-native-image-picker";
+import CarouselStyles from "../styles/CarouselStyles";
+import ActivityCard from "../components/activities/ActivityCard";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
@@ -80,7 +83,17 @@ class ProfileEditScreen extends Component {
             },
             causes: profile.causes,
             displaySignupModal: false,
+            photo: profile.photo,
         };
+        // maintain 'plus' icon when profile pic is default
+        try {
+            if (this.state.photo.uri.contains(`${REACT_APP_API_URL}`)) {
+                this.state.photo = null;
+            }
+        } catch (e) {
+            this.state.photo = null;
+        }
+
         this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
         this.getGender = this.getGender.bind(this);
@@ -242,8 +255,113 @@ class ProfileEditScreen extends Component {
             };
         });
     };
+
+    createFormData = (photo, body) => {
+        const data = new FormData();
+
+        data.append(
+            "picture",
+            {
+                name: `fileupload_${new Date().getTime().toString()}`,
+                type: photo.type,
+                uri:
+                    Platform.OS === "android"
+                        ? photo.uri
+                        : photo.uri.replace("file://", ""),
+            },
+            photo.fileName,
+        );
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    };
+
+    handleChoosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.uri) {
+                this.setState({photo: response});
+                return this.handleUploadPhoto();
+            }
+        });
+    };
+
+    handleUploadPhoto = async () => {
+        const authToken = await getAuthToken();
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        await fetch(`${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`, {
+            method: "POST",
+            headers: {
+                authorization: authToken,
+            },
+            body: this.createFormData(this.state.photo, {}),
+        })
+            .then(res => {
+                const response = res.json();
+                if (res.status === 200) {
+                    console.log(response.message);
+                    Alert.alert("Success", "Profile picture updated!");
+                } else {
+                    Alert.alert("Upload Error", response.message);
+                    this.setState({photo: null});
+                }
+            })
+            .catch(error => {
+                Alert.alert("Upload Error", error.message);
+                this.setState({photo: null});
+            });
+        this.fetchProfilePicture();
+    };
+
+    fetchProfilePicture = async () => {
+        const authToken = await getAuthToken();
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        request
+            .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
+            .set("authorization", authToken)
+            .then(res => {
+                console.log(res.body.message);
+                const imageLocation = res.body.picture_url;
+
+                // preserve 'plus' icon on edit screen if profile is default
+                if (imageLocation.includes(`${REACT_APP_API_URL}`)) {
+                    this.setState({photo: null});
+                } else {
+                    this.setState({photo: {uri: imageLocation}});
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    _renderItem = ({item}) => {
+        return (
+            <View style={CarouselStyles.itemContainer2}>
+                <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
+                    <ActivityCard
+                        activity={item}
+                        signedup={false}
+                        key={item.id}
+                    />
+                </View>
+            </View>
+        );
+    };
+
     render() {
-        const {isOrganisation, individual, organisation} = this.state;
+        const {isOrganisation, individual, organisation, photo} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -276,6 +394,7 @@ class ProfileEditScreen extends Component {
                                         width: 25,
                                         marginHorizontal: formWidth * 0.05,
                                         marginTop: 2,
+                                        opacity: 0,
                                     }}
                                 />
                             </TouchableOpacity>
@@ -284,67 +403,67 @@ class ProfileEditScreen extends Component {
                             style={{
                                 flex: 1,
                                 backgroundColor: Colours.blue,
-                                height: 160,
+                                height: HALF,
                                 width: SCREEN_WIDTH,
                                 alignItems: "center",
-                                justifyContent: "space-between",
+                                justifyContent: "flex-start",
                                 paddingRight: 30,
+                                paddingLeft: 30,
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
-                            <PhotoUpload
-                                onPhotoSelect={avatar => {
-                                    if (avatar) {
-                                        console.log(
-                                            "Image base64 string: ",
-                                            avatar,
-                                        );
-                                        this.setPhoto(avatar);
-                                    }
-                                }}>
-                                <Image
-                                    style={{
-                                        paddingVertical: 5,
-                                        width: 140,
-                                        height: 140,
-                                        borderRadius: 75,
-                                    }}
-                                    resizeMode="cover"
-                                    source={icons.photo_add}
-                                />
-                            </PhotoUpload>
                             <View>
-                                <View style={{width: HALF}}>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={[
-                                            styles.nameText,
-                                            {position: "absolute", top: -35},
-                                        ]}>
-                                        {this.state.firstName}{" "}
-                                        {this.state.lastName}
-                                        {isOrganisation
-                                            ? this.baseState.organisation.name
-                                            : this.baseState.individual
-                                                  .firstName +
-                                              " " +
-                                              this.baseState.individual
-                                                  .lastName}
-                                    </Text>
+                                <TouchableOpacity
+                                    onPress={this.handleChoosePhoto}>
+                                    <Image
+                                        style={{
+                                            paddingVertical: 5,
+                                            width: HALF * 0.8,
+                                            height: HALF * 0.8,
+                                            borderRadius: 75,
+                                        }}
+                                        resizeMode="cover"
+                                        source={photo ? photo : icons.photo_add}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            <View
+                                style={{
+                                    marginLeft: 38,
+                                    flex: 1,
+                                }}>
+                                <View>
+                                    {this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.organisation.orgName}
+                                        </Text>
+                                    )}
+                                    {!this.state.isOrganisation && (
+                                        <Text
+                                            numberOfLines={1}
+                                            style={[styles.nameText]}>
+                                            {this.state.individual.firstName}{" "}
+                                            {this.state.individual.lastName}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View
                                     style={{
                                         flexDirection: "row",
                                     }}>
-                                    <Text style={styles.usernameText}>
-                                        {this.baseState.user.username}
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.usernameText}>
+                                        {this.state.user.username}
                                     </Text>
                                     {this.state.isOrganisation && (
                                         <Text
-                                            numberOfLines={2}
+                                            numberOfLines={1}
                                             style={styles.usernameText}>
                                             {" | " +
-                                                organisation.organisationType}
+                                                this.state.organisationType}
                                         </Text>
                                     )}
                                     {!this.state.isOrganisation && (
@@ -361,38 +480,56 @@ class ProfileEditScreen extends Component {
                                         paddingTop: 20,
                                         justifyContent: "space-between",
                                     }}>
-                                    <View style={[styles.pointContainer]}>
-                                        <Image
-                                            source={icons.ribbon}
+                                    {!this.state.isOrganisation && (
+                                        <View style={styles.pointContainer}>
+                                            <Image
+                                                source={icons.badge}
+                                                style={{height: 60, width: 60}}
+                                            />
+                                            <Image
+                                                source={icons.ribbon}
+                                                style={{
+                                                    height: 60,
+                                                    width: 60,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <Image
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 45,
+                                                    top: -8,
+                                                    position: "absolute",
+                                                }}
+                                            />
+                                            <RegularText
+                                                source={icons.orange_circle}
+                                                style={{
+                                                    color: Colours.white,
+                                                    height: 25,
+                                                    width: 25,
+                                                    left: 53,
+                                                    top: -5,
+                                                    position: "absolute",
+                                                }}>
+                                                {this.state.points}
+                                            </RegularText>
+                                        </View>
+                                    )}
+                                    {this.state.isOrganisation && (
+                                        <View
                                             style={{
-                                                height: 60,
-                                                width: 60,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <Image
-                                            source={icons.orange_circle}
-                                            style={{
-                                                height: 25,
-                                                width: 25,
-                                                left: 45,
-                                                top: -8,
-                                                position: "absolute",
-                                            }}
-                                        />
-                                        <RegularText
-                                            source={icons.orange_circle}
-                                            style={{
-                                                color: Colours.white,
-                                                height: 25,
-                                                width: 25,
-                                                left: 53,
-                                                top: -5,
-                                                position: "absolute",
+                                                flexDirection: "row",
+                                                paddingTop: 20,
+                                                justifyContent: "space-between",
                                             }}>
-                                            {this.state.points}
-                                        </RegularText>
-                                    </View>
+                                            <Text style={styles.usernameText}>
+                                                {this.state.orgPhoneNumber}
+                                            </Text>
+                                        </View>
+                                    )}
                                     <TouchableOpacity>
                                         <Image
                                             source={icons.share}

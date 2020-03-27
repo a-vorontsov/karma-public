@@ -180,40 +180,40 @@ class AboutScreen extends React.Component {
                             </View>
 
                             <View style={[styles.header, {paddingRight: 20}]}>
-                                <PhotoUpload
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
-                                    <Image
-                                        style={{
-                                            paddingVertical: 8,
-                                            width: 50,
-                                            height: 50,
-                                            borderRadius: 75,
-                                        }}
-                                        resizeMode="cover"
-                                        source={require("../assets/images/general-logos/photo-logo.png")}
-                                    />
-                                </PhotoUpload>
-                                <TouchableOpacity
-                                    style={styles.uploadButton}
-                                    onPress={() =>
-                                        this.uploadPhoto(this.state.photo)
-                                    }>
-                                    <RegularText
-                                        style={
-                                            (styles.buttonText,
-                                            {fontSize: 20, color: "gray"})
-                                        }>
-                                        Upload Photo
-                                    </RegularText>
-                                </TouchableOpacity>
+                                {/*<PhotoUpload*/}
+                                {/*    onPhotoSelect={avatar => {*/}
+                                {/*        if (avatar) {*/}
+                                {/*            console.log(*/}
+                                {/*                "Image base64 string: ",*/}
+                                {/*                avatar,*/}
+                                {/*            );*/}
+                                {/*            this.setPhoto(avatar);*/}
+                                {/*        }*/}
+                                {/*    }}>*/}
+                                {/*    <Image*/}
+                                {/*        style={{*/}
+                                {/*            paddingVertical: 8,*/}
+                                {/*            width: 50,*/}
+                                {/*            height: 50,*/}
+                                {/*            borderRadius: 75,*/}
+                                {/*        }}*/}
+                                {/*        resizeMode="cover"*/}
+                                {/*        source={require("../assets/images/general-logos/photo-logo.png")}*/}
+                                {/*    />*/}
+                                {/*</PhotoUpload>*/}
+                                {/*<TouchableOpacity*/}
+                                {/*    style={styles.uploadButton}*/}
+                                {/*    onPress={() =>*/}
+                                {/*        this.uploadPhoto(this.state.photo)*/}
+                                {/*    }>*/}
+                                {/*    <RegularText*/}
+                                {/*        style={*/}
+                                {/*            (styles.buttonText,*/}
+                                {/*            {fontSize: 20, color: "gray"})*/}
+                                {/*        }>*/}
+                                {/*        Upload Photo*/}
+                                {/*    </RegularText>*/}
+                                {/*</TouchableOpacity>*/}
                             </View>
                             <SubTitleText>What is your name?</SubTitleText>
                             <TextInput

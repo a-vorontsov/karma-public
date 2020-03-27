@@ -58,11 +58,11 @@ const removeById = (id) => {
 const update = (event) => {
     const query = "UPDATE event SET name = $1, address_id = $2, women_only = $3, spots = $4, address_visible = $5, " +
         "minimum_age = $6, photo_id = $7, physical = $8, add_info = $9, content = $10, " +
-        "date = $11, user_id = $12, creation_date = $13 WHERE id = $14" +
+        "date = $11, user_id = $12, creation_date = $13, picture_id = $14 WHERE id = $15" +
         "RETURNING *"; // returns passed event with it's id set to corresponding id in database
     const params = [event.name, event.addressId, event.womenOnly, event.spots, event.addressVisible,
         event.minimumAge, event.photoId, event.physical, event.addInfo, event.content, event.date, event.userId,
-        event.creationDate, event.id,
+        event.creationDate, event.pictureId, event.id,
     ];
     return db.query(query, params);
 };

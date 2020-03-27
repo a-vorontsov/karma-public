@@ -10,11 +10,12 @@ import {
     TouchableOpacity,
     View,
     Alert,
+    Platform,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
 import CauseItem from "../components/causes/CauseItem";
-import PhotoUpload from "react-native-photo-upload";
+import ImagePicker from "react-native-image-picker";
 import Styles from "../styles/Styles";
 import CarouselStyles, {
     itemWidth2,
@@ -25,6 +26,7 @@ import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
 import {getAuthToken} from "../util/credentials";
+import {NavigationEvents} from "react-navigation";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
 const formWidth = 0.8 * width;
@@ -64,6 +66,8 @@ class ProfileScreen extends Component {
             orgName: "",
             address: {},
             gender: null,
+
+            photo: null,
         };
         this.fetchProfileInfo();
     }
@@ -95,6 +99,8 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
+
+        this.fetchProfilePicture();
     }
 
     setupOrganisationProfile(res) {
@@ -124,10 +130,17 @@ class ProfileScreen extends Component {
             pocFirstName: organisation.pocFirstName,
             pocLastName: organisation.pocLastName,
         });
+
+        this.fetchProfilePicture();
     }
 
     componentDidMount() {
         const {navigation} = this.props;
+
+        // this._unsubscribe = navigation.addListener("focus", () => {
+        //     this.fetchProfileInfo();
+        // });
+
         this.willFocusListener = navigation.addListener(
             "willFocus",
             async () => {
@@ -135,6 +148,7 @@ class ProfileScreen extends Component {
             },
         );
     }
+
     componentWillUnmount() {
         this.willFocusListener.remove();
     }
@@ -155,6 +169,91 @@ class ProfileScreen extends Component {
                 Alert.alert("Unable to load profile", err);
             });
     }
+
+    fetchProfilePicture = async () => {
+        const authToken = await getAuthToken();
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        request
+            .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
+            .set("authorization", authToken)
+            .then(res => {
+                console.log(res.body);
+                const imageLocation = res.body.picture_url;
+                this.setState({photo: {uri: imageLocation}});
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    createFormData = (photo, body) => {
+        const data = new FormData();
+
+        data.append(
+            "picture",
+            {
+                name: `fileupload_${new Date().getTime().toString()}`,
+                type: photo.type,
+                uri:
+                    Platform.OS === "android"
+                        ? photo.uri
+                        : photo.uri.replace("file://", ""),
+            },
+            photo.fileName,
+        );
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    };
+
+    handleChoosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.uri) {
+                this.setState({photo: response});
+                return this.handleUploadPhoto();
+            }
+        });
+    };
+
+    handleUploadPhoto = async () => {
+        const authToken = await getAuthToken();
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        await fetch(`${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`, {
+            method: "POST",
+            headers: {
+                authorization: authToken,
+            },
+            body: this.createFormData(this.state.photo, {}),
+        })
+            .then(res => {
+                const response = res.json();
+                if (res.status === 200) {
+                    console.log(response.message);
+                    Alert.alert("Success", "Profile picture updated!");
+                } else {
+                    Alert.alert("Upload Error", response.message);
+                    this.setState({photo: null});
+                }
+            })
+            .catch(error => {
+                Alert.alert("Upload Error", error.message);
+                this.setState({photo: null});
+            });
+        this.fetchProfileInfo();
+    };
+
     _renderItem = ({item}) => {
         return (
             <View style={CarouselStyles.itemContainer2}>
@@ -171,11 +270,17 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
+        const {photo} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior="padding"
                 enabled>
+                <NavigationEvents
+                    onWillFocus={() => {
+                        this.setState({photo: null});
+                    }}
+                />
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
@@ -247,16 +352,8 @@ class ProfileScreen extends Component {
                                 flexDirection: "row",
                             }}>
                             <View>
-                                <PhotoUpload
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
+                                <TouchableOpacity
+                                    onPress={this.handleChoosePhoto}>
                                     <Image
                                         style={{
                                             paddingVertical: 5,
@@ -265,9 +362,9 @@ class ProfileScreen extends Component {
                                             borderRadius: 75,
                                         }}
                                         resizeMode="cover"
-                                        source={icons.photo_add}
+                                        source={photo ? photo : icons.photo_add}
                                     />
-                                </PhotoUpload>
+                                </TouchableOpacity>
                             </View>
                             <View
                                 style={{
