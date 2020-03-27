@@ -71,7 +71,7 @@ const deleteAvatar = (req, res) => {
                                 log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
                                 res.status(200).send({
                                     message: `Successfully deleted image!`,
-                                    old_location: pictureLocation,
+                                    oldLocation: pictureLocation,
                                 });
                             }
                         });
@@ -139,7 +139,7 @@ const deleteEventPicture = (req, res) => {
                                     log.info(`Deleted picture for event with ID ${req.params.eventId}`);
                                     res.status(200).send({
                                         message: `Successfully deleted image!`,
-                                        old_location: pictureLocation,
+                                        oldLocation: pictureLocation,
                                     });
                                 }
                             });

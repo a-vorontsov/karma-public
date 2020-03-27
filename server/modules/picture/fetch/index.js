@@ -66,13 +66,13 @@ const getAvatar = (req, res) => {
                                 if (!error) {
                                     res.status(200).send({
                                         message: "Fetched image for user!",
-                                        picture_url: process.env.REACT_APP_API_URL + `/avatar/default/${userType}`,
+                                        pictureUrl: process.env.REACT_APP_API_URL + `/avatar/default/${userType}`,
                                     });
                                 } else {
                                     // no profile picture is associated with given user
                                     res.status(200).send({
                                         message: "Fetched image for user!",
-                                        picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
+                                        pictureUrl: process.env.REACT_APP_API_URL + "/picture/default/404",
                                     });
                                 }
                             });
@@ -82,7 +82,7 @@ const getAvatar = (req, res) => {
                                 `${req.params.userId}, at ${picture.pictureLocation}`);
                             res.status(200).send({
                                 message: "Fetched image for user!",
-                                picture_url: picture.pictureLocation,
+                                pictureUrl: picture.pictureLocation,
                             });
                         }
                     }).catch((e) => {
@@ -120,7 +120,7 @@ const getEventPicture = (req, res) => {
                         // no picture is associated with given event
                         res.status(200).send({
                             message: "No image associated with this event",
-                            picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
+                            pictureUrl: process.env.REACT_APP_API_URL + "/picture/default/404",
                         });
                     } else {
                         // return s3 image url
@@ -128,7 +128,7 @@ const getEventPicture = (req, res) => {
                             `${req.params.eventId}, at ${picture.pictureLocation}`);
                         res.status(200).send({
                             message: "Fetched image for event!",
-                            picture_url: picture.pictureLocation,
+                            pictureUrl: picture.pictureLocation,
                         });
                     }
                 }).catch((e) => {
@@ -156,7 +156,7 @@ const getPicture = (req, res) => {
             if (!pictureResult.rows.length) {
                 res.status(400).send({
                     message: `Could not find picture with ID of ${req.params.pictureId}`,
-                    picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
+                    pictureUrl: process.env.REACT_APP_API_URL + "/picture/default/404",
                 });
             } else {
                 const picture = pictureResult.rows[0];
@@ -164,7 +164,7 @@ const getPicture = (req, res) => {
                     // check existence of default profile picture icons - send correct placeholder
                     res.status(400).send({
                         message: "No picture location was given",
-                        picture_url: process.env.REACT_APP_API_URL + "/picture/default/404",
+                        pictureUrl: process.env.REACT_APP_API_URL + "/picture/default/404",
                     });
                 } else {
                     // return s3 image url
@@ -172,7 +172,7 @@ const getPicture = (req, res) => {
                         `${req.params.pictureId}, at ${picture.pictureLocation}`);
                     res.status(200).send({
                         message: `Fetched image with ${req.params.pictureId}`,
-                        picture_url: picture.pictureLocation,
+                        pictureUrl: picture.pictureLocation,
                     });
                 }
             }

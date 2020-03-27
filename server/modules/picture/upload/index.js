@@ -92,7 +92,7 @@ const updateAvatar = (req, res) => {
 
                                 res.status(200).send({
                                     message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
-                                    picture_url: `${req.file.Location}`,
+                                    pictureUrl: `${req.file.Location}`,
                                 });
                             }).catch((error) => {
                                 res.status(500).send({message: error});
@@ -167,7 +167,7 @@ const updateEventPicture = (req, res) => {
                                     `with ID ${req.params.eventId} to ${req.file.location}`);
                                 res.status(200).send({
                                     message: `Image successfully updated for event with ID ${req.params.eventId}`,
-                                    picture_url: `${req.file.Location}`,
+                                    pictureUrl: `${req.file.Location}`,
                                 });
                             }).catch((error) => {
                                 res.status(500).send({message: error});

@@ -184,7 +184,7 @@ class ProfileScreen extends Component {
             .then(res => {
                 console.log(res.body);
                 const imageLocation =
-                    res.body.picture_url + "?t=" + new Date().getTime(); // cache buster
+                    res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
                 this.setState({photo: {uri: imageLocation}});
             })
             .catch(err => {

@@ -349,7 +349,7 @@ class ProfileEditScreen extends Component {
             .then(res => {
                 console.log(res.body);
                 const imageLocation =
-                    res.body.picture_url + "?t=" + new Date().getTime(); // cache buster
+                    res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
 
                 // preserve 'plus' icon on edit screen if profile is default
                 if (imageLocation.includes(`${REACT_APP_API_URL}`)) {

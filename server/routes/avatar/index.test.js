@@ -56,7 +56,7 @@ test("fetching default individual avatar works", async () => {
 //     expect(avatarResponse.body.message).toBe(
 //         "Fetched image for user!",
 //     );
-//     expect(avatarResponse.body.picture_url).toContain(
+//     expect(avatarResponse.body.pictureUrl).toContain(
 //         "/default/individual",
 //     );
 // });
@@ -81,7 +81,7 @@ test("fetching default individual avatar works", async () => {
 //     expect(avatarResponse.body.message).toBe(
 //         "Fetched image for user!",
 //     );
-//     expect(avatarResponse.body.picture_url).toContain(
+//     expect(avatarResponse.body.pictureUrl).toContain(
 //         "/default/organisation",
 //     );
 // });
@@ -100,7 +100,7 @@ test("fetching default individual avatar works", async () => {
 //         `There is no individual with user ID ${fakeId}`,
 //     );
 //
-//     expect(avatarResponse.body.picture_url).toBe(undefined);
+//     expect(avatarResponse.body.pictureUrl).toBe(undefined);
 // });
 //
 // test("fetching non-existent organisation avatar results in error", async () => {
@@ -115,7 +115,7 @@ test("fetching default individual avatar works", async () => {
 //         `There is no organisation with user ID ${fakeId}`,
 //     );
 //
-//     expect(avatarResponse.body.picture_url).toBe(undefined);
+//     expect(avatarResponse.body.pictureUrl).toBe(undefined);
 // });
 //
 // // == Test updating a profile picture == //
@@ -146,11 +146,11 @@ test("fetching default individual avatar works", async () => {
 // //             `Avatar successfully updated for individual with ID ${userId}`,
 // //         );
 // //
-// //         expect(avatarResponse.body.picture_url).toContain(
+// //         expect(avatarResponse.body.pictureUrl).toContain(
 // //             "amazonaws.com/avatar-individual",
 // //         );
 // //
-// //         const pictureUrl = avatarResponse.body.picture_url;
+// //         const pictureUrl = avatarResponse.body.pictureUrl;
 // //         const pictureResponse = await reqExt.get(pictureUrl);
 // //
 // //         expect(pictureResponse.statusCode).toBe(200);
@@ -186,11 +186,11 @@ test("fetching default individual avatar works", async () => {
 // //             `Avatar successfully updated for organisation with ID ${userId}`,
 // //         );
 // //
-// //         expect(avatarResponse.body.picture_url).toContain(
+// //         expect(avatarResponse.body.pictureUrl).toContain(
 // //             "amazonaws.com/avatar-organisation",
 // //         );
 // //
-// //         const pictureUrl = avatarResponse.body.picture_url;
+// //         const pictureUrl = avatarResponse.body.pictureUrl;
 // //         const pictureResponse = await reqExt.get(pictureUrl);
 // //
 // //         expect(pictureResponse.statusCode).toBe(200);
@@ -251,11 +251,11 @@ test("fetching default individual avatar works", async () => {
 // //             `Avatar successfully updated for individual with ID ${userId}`,
 // //         );
 // //
-// //         expect(avatarResponse.body.picture_url).toContain(
+// //         expect(avatarResponse.body.pictureUrl).toContain(
 // //             "amazonaws.com/avatar-individual",
 // //         );
 // //
-// //         const pictureUrl = avatarResponse.body.picture_url;
+// //         const pictureUrl = avatarResponse.body.pictureUrl;
 // //         const pictureResponse = await reqExt.get(pictureUrl);
 // //
 // //         expect(pictureResponse.statusCode).toBe(200);
@@ -270,6 +270,6 @@ test("fetching default individual avatar works", async () => {
 // //
 // //         expect(deletionResponse.statusCode).toBe(200);
 // //         expect(deletionResponse.body.message).toBe(`Successfully deleted image!`);
-// //         expect(deletionResponse.body.old_location).toBe(`${pictureUrl}`);
+// //         expect(deletionResponse.body.oldLocation).toBe(`${pictureUrl}`);
 // //     }
 // // });
