@@ -87,6 +87,7 @@ jobs:
       S3_BUCKET_NAME: s3bucket1
       SKIP_S3: 1
       SKIP_ASYNC_KEY_EXCHANGE: 1
+      REACT_APP_API_URL: http://localhost:8000
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository
