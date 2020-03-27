@@ -26,8 +26,6 @@ import Carousel from "react-native-snap-carousel";
 import ActivityCard from "../components/activities/ActivityCard";
 import Colours from "../styles/Colours";
 import CauseStyles from "../styles/CauseStyles";
-import {getData} from "../util/GetCredentials";
-
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const {width} = Dimensions.get("window");
@@ -45,25 +43,6 @@ const icons = {
 };
 
 const request = require("superagent");
-
-// const createFormData = (photo, body) => {
-//     const data = new FormData();
-//
-//     data.append("picture", {
-//         name: "testPhotoName",
-//         type: photo.type,
-//         uri:
-//             Platform.OS === "android"
-//                 ? photo.uri
-//                 : photo.uri.replace("file://", ""),
-//     });
-//
-//     Object.keys(body).forEach(key => {
-//         data.append(key, body[key]);
-//     });
-//
-//     return data;
-// };
 
 class ProfileScreen extends Component {
     constructor(props) {
@@ -187,17 +166,17 @@ class ProfileScreen extends Component {
     }
 
     fetchProfilePicture = async res => {
+        const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
             ? "organisation"
             : "individual";
 
         request
-            .get(`http://localhost:8000/avatar/${endpointUsertype}?userId=101`)
+            .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
+            .set("authorization", authToken)
             .then(res => {
+                console.log(res.body.message);
                 const imageLocation = res.body.picture_url;
-                console.log("I am logging");
-                console.log(imageLocation);
-
                 this.setState({photo: {uri: imageLocation}});
             })
             .catch(err => {
@@ -207,7 +186,6 @@ class ProfileScreen extends Component {
 
     createFormData = (photo, body) => {
         const data = new FormData();
-        console.log(photo);
 
         data.append(
             "picture",
@@ -242,17 +220,22 @@ class ProfileScreen extends Component {
     };
 
     handleUploadPhoto = async () => {
-        console.log(this.createFormData(this.state.photo, {}));
-        await fetch(
-            "http://localhost:8000/avatar/upload/individual?userId=101",
-            {
-                method: "POST",
-                body: this.createFormData(this.state.photo, {}),
+        const authToken = await getAuthToken();
+        const endpointUsertype = this.state.isOrganisation
+            ? "organisation"
+            : "individual";
+
+        await fetch(`${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`, {
+            method: "POST",
+            headers: {
+                authorization: authToken,
             },
-        )
+            body: this.createFormData(this.state.photo, {}),
+        })
             .then(res => {
                 const response = res.json();
                 if (res.status === 200) {
+                    console.log(response.message);
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
                     Alert.alert("Upload Error", response.message);
@@ -281,7 +264,6 @@ class ProfileScreen extends Component {
     };
 
     render() {
-        console.log(this.state.photo);
         const {navigate} = this.props.navigation;
         const {photo} = this.state;
         return (
