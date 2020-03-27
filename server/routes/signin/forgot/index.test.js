@@ -5,6 +5,7 @@ const jose = require("../../../modules/jose");
 const userRepository = require("../../../repositories/user");
 const resetRepository = require("../../../repositories/reset");
 const mailSender = require("../../../modules/mail");
+const authService = require("../../../modules/authentication")
 
 jest.mock("../../../repositories/reset");
 jest.mock("../../../repositories/user");
@@ -245,4 +246,91 @@ test('confirming token not sent to email returns no token sent response', async 
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(404);
     expect(response.text).toMatch("No token sent to test@gmail.com");
+});
+
+test('requesting reset password token when a server error occurs returns error message as expected', async () => {
+    resetRepository.insertResetToken.mockResolvedValue({
+        rows: [{
+            ...reset1,
+            id: 1,
+        }],
+    });
+    userRepository.findByEmail.mockResolvedValue({
+        rows: [{
+            ...user,
+            id: 1,
+        }],
+    });
+    mailSender.sendEmail.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+    const response = await request(app)
+        .post("/signin/forgot")
+        .send({
+            data: {
+                email: "test@gmail.com",
+            },
+        });
+
+    expect(resetRepository.insertResetToken).toHaveBeenCalledTimes(1);
+    expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(500);
+});
+
+test('confirming correct token with invalid email fails as expected', async () => {
+    const dateTime = new Date();
+    dateTime.setTime(dateTime.getTime() + (1 * 60 * 60 * 1000));
+    userRepository.findByEmail.mockResolvedValue({
+            rows: [],
+    });
+    resetRepository.findLatestByUserId.mockResolvedValue({
+        rows: [{
+            ...reset2,
+            id: 2,
+            expiryDate: dateTime,
+        },
+        {
+            ...reset1,
+            id: 1,
+            expiryDate: new Date(),
+        },
+        ],
+    });
+    const response = await request(app)
+        .post("/signin/forgot/confirm")
+        .send({
+            data: {
+                email: "invalidEmail",
+                token: "234567",
+            },
+            pub: jose.getEncPubAsPEM(),
+        });
+    expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
+    expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(0);
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toMatch("No user with specified email");
+});
+
+test('confirming correct token with a system error returns error message as expected', async () => {
+    const dateTime = new Date();
+    dateTime.setTime(dateTime.getTime() + (1 * 60 * 60 * 1000));
+    userRepository.findByEmail.mockResolvedValue({
+        rows: [{
+            ...user,
+            id: 1,
+        }],
+    });
+    resetRepository.findLatestByUserId.mockResolvedValue({});
+    const response = await request(app)
+        .post("/signin/forgot/confirm")
+        .send({
+            data: {
+                email: "test@gmail.com",
+                token: "234567",
+            },
+            pub: jose.getEncPubAsPEM(),
+        });
+    expect(resetRepository.findLatestByUserId).toHaveBeenCalledTimes(1);
+    expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(500);
 });
