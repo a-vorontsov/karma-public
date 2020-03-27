@@ -16,9 +16,7 @@ import DatePicker from "react-native-date-picker";
 import {TextInput} from "../components/input";
 import {RegularText, SubTitleText} from "../components/text";
 import {RadioInput} from "../components/radio";
-import Modal, {ModalContent} from "react-native-modals";
 import {REACT_APP_API_URL} from "react-native-dotenv";
-const {width} = Dimensions.get("window");
 import PageHeader from "../components/PageHeader";
 import {GradientButton} from "../components/buttons";
 import Styles, {normalise} from "../styles/Styles";
@@ -28,6 +26,7 @@ import {getAuthToken} from "../util/credentials";
 import AsyncStorage from "@react-native-community/async-storage";
 import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
+const {width} = Dimensions.get("window");
 
 class AboutScreen extends React.Component {
     constructor(props) {
