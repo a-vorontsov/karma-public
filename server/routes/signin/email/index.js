@@ -133,7 +133,7 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
         } else {
             log.error("'%s': Sign-in failed", email);
             res.status(500).send({
-                message: "Logical or internal system error. Please debug the registration and user objects:",
+                message: "Logical or internal system error. Please debug the registration and user objects.",
             });
         }
     } catch (e) {
