@@ -1,11 +1,11 @@
 const pictureRepository = require("./");
 const testHelpers = require("../../test/helpers");
 
-const userRepository = require("./userRepository");
-const individualRepository = require("./individualRepository");
-const organisationRepository = require("./organisationRepository");
-const registrationRepository = require("./registrationRepository");
-const addressRepository = require("./addressRepository");
+const userRepository = require("../user");
+const individualRepository = require("../individual");
+const organisationRepository = require("../organisation");
+const registrationRepository = require("../registration");
+const addressRepository = require("../address");
 
 let pictureExample1;
 let pictureExample2;

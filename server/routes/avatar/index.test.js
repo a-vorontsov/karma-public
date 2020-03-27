@@ -4,12 +4,12 @@ const app = require("../../app");
 const fs = require("fs");
 const path = require("path");
 
-const testHelpers = require("../../test/testHelpers");
-const userRepo = require("../../models/databaseRepositories/userRepository");
-const regRepo = require("../../models/databaseRepositories/registrationRepository");
-const addressRepo =  require("../../models/databaseRepositories/addressRepository");
-const individualRepo =  require("../../models/databaseRepositories/individualRepository");
-const organisationRepo =  require("../../models/databaseRepositories/organisationRepository");
+const testHelpers = require("../../test/helpers");
+const userRepo = require("../../repositories/user");
+const regRepo = require("../../repositories/registration");
+const addressRepo = require("../../repositories/address");
+const individualRepo = require("../../repositories/individual");
+const organisationRepo = require("../../repositories/organisation");
 
 const user = testHelpers.getUserExample4();
 const registration = testHelpers.getRegistrationExample5();
