@@ -10,7 +10,7 @@ import ActivityCauseCarousel from "../../components/activities/ActivityCauseCaro
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {getAuthToken} from "../../util/credentials";
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
@@ -80,15 +80,14 @@ class ActivitiesCausesScreen extends Component {
                         flex: 1,
                         marginTop: 10,
                         marginBottom: 100,
-                        width: SCREEN_WIDTH,
-                        height: SCREEN_HEIGHT,
+                        minHeight: SCREEN_HEIGHT,
                     }}>
                     {Object.keys(this.state.activitiesByCause).length > 0 ? (
                         Object.entries(this.state.activitiesByCause).map(
                             ([cause, activities]) => {
                                 return (
                                     <ActivityCauseCarousel
-                                        key={activities.eventId}
+                                        key={cause}
                                         cause={cause}
                                         activities={activities}
                                     />
