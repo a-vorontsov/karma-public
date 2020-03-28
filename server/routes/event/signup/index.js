@@ -273,12 +273,11 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
  */
 router.get('/:eventId/signUp/status', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.userId);
-
-        const signup = {eventId: Number.parseInt(req.params.eventId)};
-        signup.individualId = await util.getIndividualIdFromUserId(req.query.userId);
-
-        const signupResult = await eventSignupService.getSignupStatus(signup);
+        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.eventId);
+        const signupResult = await eventSignupService.getSignupStatus({
+            eventId: Number.parseInt(req.params.eventId),
+            userId: req.query.usage,
+        });
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
         log.info("User id '%d': Failed fetching signup status for event id '%d': " + e,

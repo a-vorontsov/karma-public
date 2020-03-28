@@ -74,7 +74,9 @@ const getSignupHistory = async (individualId) => {
  * Fails if individualId or eventId is invalid, or database call fails.
  */
 const getSignupStatus = async (signup) => {
+    signup.individualId = await util.getIndividualIdFromUserId(signup.userId);
     const signupResult = await signupRepository.find(signup.individualId, signup.eventId);
+
     if (signupResult.rows.length < 1) {
         return ({
             status: 404,
@@ -92,7 +94,7 @@ const getSignupStatus = async (signup) => {
 /**
  * Get all future signups from the database for a specific user.
  * @param {object} userId A valid userId.
-* @return {object} result in httpUtil's sendResult format
+ * @return {object} result in httpUtil's sendResult format
  * Fails if userId is invalid, or database call fails.
  */
 const getGoingEvents = async (userId) => {
