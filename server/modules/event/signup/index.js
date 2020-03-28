@@ -66,6 +66,30 @@ const getSignupHistory = async (individualId) => {
         data: {events: signedUpEvents},
     });
 };
+
+/**
+ * Get the sign-up status from the database for a specific individual,
+ * regarding a specific event.
+ * @param {object} individualId A valid individualId.
+ * @param {object} eventId A valid eventId.
+ * Fails if individualId or eventId is invalid, or database call fails.
+ */
+const getSignupStatus = async (signup) => {
+    const signupResult = await signupRepository.find(signup.individualId, signup.eventId);
+    if (signupResult.rows.length < 1) {
+        return ({
+            status: 404,
+            message: "You have not signed up for this event",
+        });
+    } else {
+        return ({
+            status: 200,
+            message: "Signup status fetched successfully",
+            data: {signup: signupResult.rows[0]},
+        });
+    }
+};
+
 /**
  * Get all future signups from the database for a specific user.
  * @param {object} userId A valid userId.
@@ -110,6 +134,7 @@ module.exports = {
     createSignup,
     getAllSignupsForEvent,
     getSignupHistory,
+    getSignupStatus,
     updateSignUp,
     getGoingEvents,
 };

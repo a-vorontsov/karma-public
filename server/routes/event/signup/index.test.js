@@ -198,3 +198,20 @@ test('requesting signup history endpoint in case of a system error returns error
     expect(response.body.message).toBe("Server error");
     expect(response.status).toBe(500);
 });
+
+test('requesting signup status for user works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
+    eventSignupService.getSignupStatus.mockResolvedValue({
+        status: 200,
+        message: "History fetched successfully",
+        data: {signup: {signUp}},
+    });
+
+    const response = await request(app).post("/event/3/signUp/status").send(signUp);
+
+    expect(eventSignupService.getSignupStatus).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject({
+        signUp
+    });
+});
