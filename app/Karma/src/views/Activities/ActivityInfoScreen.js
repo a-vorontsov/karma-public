@@ -81,6 +81,28 @@ class ActivityInfoScreen extends Component {
         Alert.alert(errorTitle, errorMessage);
     };
 
+    getSignUpStatus = async () => {
+        console.log("signup stat");
+        const authToken = await getAuthToken();
+        const activity = this.props.navigation.getParam("activity");
+        const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
+        const response = await 
+        request
+            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp`)
+            .set("authorization", authToken)
+            .send({
+                
+            })
+            .then(res => {
+                console.log(res.status);
+
+               console.log(res.body);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     getCreatorInfo = async id => {
         const authToken = await getAuthToken();
         const response = await request
@@ -152,6 +174,8 @@ class ActivityInfoScreen extends Component {
         const activity = this.props.navigation.getParam("activity");
 
         this.getEventInfo(activity);
+        console.log("BIG WORM");
+        await this.getSignUpStatus();
         await this.getCreatorInfo(
             activity.eventCreatorId
                 ? activity.eventCreatorId

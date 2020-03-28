@@ -1,7 +1,7 @@
 import React from "react";
 import {SubTitleText, RegularText, BoldText, FadedText} from "../text";
 import {TransparentButton, Button} from "../buttons";
-import {View, Image} from "react-native";
+import {View, Image,} from "react-native";
 import Toast from "react-native-simple-toast";
 import RNCalendarEvents from "react-native-calendar-events";
 import Styles from "../../styles/Styles";
@@ -57,12 +57,16 @@ export default class SignUpActivity extends React.Component {
             })
             .catch(err => {
                 console.log(err);
+                
                 onError(
                     "There has been an error with signing up to this activity.",
-                    "Please try again later or contact us if this issue persists.",
+                        "Please try again later or contact us if this issue persists.",
+                    
                 );
+                
             });
     }
+
     async cancelSignUp() {
         const {activity, onConfirm, onError} = this.props;
         const authToken = await getAuthToken();
