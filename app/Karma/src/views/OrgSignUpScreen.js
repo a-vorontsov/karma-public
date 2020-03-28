@@ -459,10 +459,11 @@ export default class OrgSignUpScreen extends React.Component {
                                     style={styles.uploadButton}
                                     onPress={this.choosePhoto}>
                                     <RegularText
-                                        style={[
-                                            styles.buttonText,
-                                            {fontSize: 20, color: "gray"},
-                                        ]}>
+                                        style={{
+                                            ...styles.buttonText,
+                                            fontSize: 20,
+                                            color: "gray",
+                                        }}>
                                         Choose Photo
                                     </RegularText>
                                 </TouchableOpacity>
