@@ -166,8 +166,8 @@ async function registerAddress(address) {
         postcode: address.postCode,
         city: address.townCity,
         region: address.countryState,
-        lat: geoCode == true ? geoCode[0].latitude : 0,
-        long: geoCode == true ? geoCode[0].longitude : 0,
+        lat: geoCode !== null ? geoCode.latitude : 0,
+        long: geoCode !== null ? geoCode.longitude : 0,
     })).rows[0].id;
 }
 

@@ -8,11 +8,12 @@ const individualRepository = require("../../repositories/individual");
 jest.mock("../../repositories/user");
 jest.mock("../../repositories/individual");
 
-let user, individual;
+let user; let individual; let individual2;
 
 beforeEach(() => {
     user = testHelpers.getUserExample1();
     individual = testHelpers.getIndividual();
+    individual2 = testHelpers.getIndividual2();
 });
 
 afterEach(() => {
@@ -32,14 +33,16 @@ test("getting all users works", async () => {
 });
 
 test("getting all individuals users works", async () => {
+    individual.id = 1;
+    individual2.id = 2;
     individualRepository.findAll.mockResolvedValue({
-        rows: [individual],
+        rows: [individual, individual2],
     });
 
     const getAllIndividualsResult = await adminService.getAllIndividuals();
 
     expect(individualRepository.findAll).toHaveBeenCalledTimes(1);
-    expect(getAllIndividualsResult.data.individuals).toMatchObject([individual]);
+    expect(getAllIndividualsResult.data.individuals).toMatchObject([individual, individual2]);
     expect(getAllIndividualsResult.status).toBe(200);
 });
 

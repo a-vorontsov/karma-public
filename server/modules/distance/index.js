@@ -28,5 +28,5 @@ const getDistance = (loc1, loc2, unit) => {
     return dist;
 };
 module.exports = {
-    getDistance: getDistance,
+    getDistance,
 };

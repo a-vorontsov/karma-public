@@ -34,7 +34,7 @@ test("settings fetching endpoint works", async () => {
     expect(settingsService.getCurrentSettings).toHaveBeenCalledWith(setting.userId);
     delete setting.userId;
     expect(response.body.data).toMatchObject({
-        settings: setting
+        settings: setting,
     });
     expect(response.statusCode).toBe(200);
 });
@@ -56,7 +56,39 @@ test("settings update works", async () => {
     expect(settingsService.changeSettings).toHaveBeenCalledWith(setting);
     delete setting.userId;
     expect(response.body.data).toMatchObject({
-        settings: setting
+        settings: setting,
     });
     expect(response.statusCode).toBe(200);
+});
+
+test("settings fetching endpoint in case of a server error returns error message as expected", async () => {
+    settingsService.getCurrentSettings.mockImplementation(() => {
+        throw new Error("Server error");
+    });
+
+    const response = await request(app)
+        .get(`/settings?userId=${setting.userId}`);
+
+    setting.userId = setting.userId.toString();
+    expect(settingsService.getCurrentSettings).toHaveBeenCalledTimes(1);
+    expect(settingsService.getCurrentSettings).toHaveBeenCalledWith(setting.userId);
+    delete setting.userId;
+    expect(response.body.message).toBe("Server error");
+    expect(response.statusCode).toBe(500);
+});
+
+test("settings updating endpoint in case of a server error returns error message as expected", async () => {
+    settingsService.changeSettings.mockImplementation(() => {
+        throw new Error("Server error");
+    });
+
+    const response = await request(app)
+        .post(`/settings`)
+        .send(setting);
+
+    expect(settingsService.changeSettings).toHaveBeenCalledTimes(1);
+    expect(settingsService.changeSettings).toHaveBeenCalledWith(setting);
+    delete setting.userId;
+    expect(response.body.message).toBe("Server error");
+    expect(response.statusCode).toBe(500);
 });

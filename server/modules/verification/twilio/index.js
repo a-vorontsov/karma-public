@@ -29,5 +29,5 @@ module.exports = {
             .create({to: number, code: code});
     },
 
-    isPhoneNumberValid: isPhoneNumberValid,
+    isPhoneNumberValid,
 };

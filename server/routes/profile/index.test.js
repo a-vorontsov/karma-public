@@ -35,9 +35,9 @@ const registerIndividualRequest = {
                 townCity: "London",
                 countryState: "UK",
                 postCode: "NW1 6XE",
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 const profileViewRequest = {
@@ -76,7 +76,7 @@ test("viewing my own profile works", async () => {
         registerIndividualRequest.data.individual.lastName,
     );
     expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
-        Date(registerIndividualRequest.data.individual.dateOfBirth)
+        Date(registerIndividualRequest.data.individual.dateOfBirth),
     );
     expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.data.individual.gender);
     expect(profileResponse.body.data.individual.phoneNumber).toBe(
@@ -118,7 +118,7 @@ test("viewing some else's profile works", async () => {
         registerIndividualRequest.data.individual.lastName,
     );
     expect(Date(profileResponse.body.data.individual.dateOfBirth)).toBe(
-        Date(registerIndividualRequest.data.individual.dateOfBirth)
+        Date(registerIndividualRequest.data.individual.dateOfBirth),
     );
     expect(profileResponse.body.data.individual.gender).toBe(registerIndividualRequest.data.individual.gender);
     expect(profileResponse.body.data.individual.phoneNumber).toBe(
@@ -151,8 +151,8 @@ const organisationRegistrationRequest = {
                 postCode: "WC 23",
             },
             phoneNumber: "+44343525",
-        }
-    }
+        },
+    },
 };
 
 test("viewing org profile works", async () => {

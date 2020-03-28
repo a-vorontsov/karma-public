@@ -26,7 +26,7 @@ test("creating new notification works", async () => {
         }],
     });
 
-    notification.receiverIds = [1,2,3];
+    notification.receiverIds = [1, 2, 3];
     const notificationResult = await notificationService.createNotifications(notification);
     expect(notificationRepository.insert).toHaveBeenCalledTimes(3);
     expect(notificationResult.status).toBe(200);
@@ -46,8 +46,8 @@ test('finding notifications works', async () => {
     expect(getNotifications).toMatchObject({
         message: "Notifications fetched successfully.",
         data: {
-            notifications: [notification]
-        }
+            notifications: [notification],
+        },
     });
     expect(notificationRepository.findByUserId).toHaveBeenCalledTimes(1);
     expect(getNotifications.status).toBe(200);

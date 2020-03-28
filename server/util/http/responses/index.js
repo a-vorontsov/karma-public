@@ -23,8 +23,6 @@ const iAmATeapot = {
     message: "I am a teapot.",
 };
 
-// Bad requests
-
 const alreadyAuth = {
     status: 200,
     message: "Request is already authenticated.",

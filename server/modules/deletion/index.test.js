@@ -39,7 +39,7 @@ jest.mock("../../repositories/reset");
 jest.mock("../../repositories/settings");
 jest.mock("../../util");
 
-let user, individual, organisation;
+let user; let individual; let organisation;
 
 beforeEach(() => {
     user = testHelpers.getUserExample1();
@@ -147,4 +147,12 @@ test("deleting user who is org works", async () => {
         id: 1,
     });
     expect(deleteAllInformation.status).toBe(200);
+});
+
+test("deleting with invalid userId fails as expected", async () => {
+    util.checkUserId.mockResolvedValue({status: 400});
+
+    const deleteAllInformation = await deletionService.deleteAllInformation(69000);
+
+    expect(deleteAllInformation.status).toBe(400);
 });

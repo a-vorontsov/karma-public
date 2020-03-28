@@ -29,7 +29,7 @@ const registerUserRequest = {
             confirmPassword: "new_plaintext",
             email: "test4@gmail.com",
             username: "userNamesArePointless",
-        }
+        },
     },
     pub: jose.getEncPubAsPEM(),
 };

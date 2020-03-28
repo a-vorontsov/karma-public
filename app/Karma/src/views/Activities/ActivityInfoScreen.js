@@ -130,23 +130,13 @@ class ActivityInfoScreen extends Component {
             ? eventCreator.firstName
             : eventCreator.name;
         const address = eventCreator.address;
-        const address1 = address.addressLine1 + ", ";
-        const address2 = address.addressLine2
-            ? address.addressLine2 + ", "
-            : "";
-        const city = address.townCity + " ";
-        const postcode = address.postCode;
-        const full_location = address1 + address2 + city + postcode;
+        const city = address.townCity;
 
-        const long = Number(address.long); //TODO - MapView doesn't update lat/long
-        const lat = Number(address.lat);
         this.setState({
             city: city,
             org_name: org_name,
-            location: address.townCity,
-            full_location: full_location,
-            lat: lat,
-            long: long,
+            location: city,
+
             email: email,
             fullName: fullName,
             phoneNumber: phoneNumber,
@@ -155,7 +145,21 @@ class ActivityInfoScreen extends Component {
     };
 
     getEventInfo = activity => {
+        const eventCity = activity.city;
+        const postcode = activity.postcode;
+
+        const address1 = activity.address1 + ", ";
+        const address2 = activity.address2 ? activity.address2 + ", " : "";
+        const lat = Number(activity.lat);
+        const long = Number(activity.long);
+
+        const full_location = address1 + address2 + eventCity + " " + postcode;
+
         this.setState({
+            full_location,
+            lat,
+            long,
+            eventCity,
             spots_taken: activity.spots - activity.spotsRemaining,
             spots: activity.spots,
             full_date: getDate(activity.date),
@@ -425,7 +429,7 @@ class ActivityInfoScreen extends Component {
                                     }}>
                                     {addressVisible
                                         ? this.state.full_location
-                                        : this.state.city}
+                                        : this.state.eventCity}
                                 </RegularText>
                             </View>
                         </View>
