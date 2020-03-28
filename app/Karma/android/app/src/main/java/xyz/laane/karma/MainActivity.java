@@ -1,4 +1,4 @@
-package com.karma;
+package xyz.laane.karma;
 
 import com.facebook.react.ReactActivity;
 
