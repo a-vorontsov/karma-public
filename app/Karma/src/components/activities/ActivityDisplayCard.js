@@ -65,7 +65,9 @@ class ActivityDisplayCard extends React.Component {
                                     color: Colours.lightGrey,
                                     fontWeight: "500",
                                 }}>
-                                {props.activity.city}, {props.activity.postcode}
+                                {props.activity.city}
+                                {props.activity.addressVisible &&
+                                    `, ${props.activity.postcode}`}
                             </RegularText>
                         </View>
                     </View>
@@ -74,6 +76,7 @@ class ActivityDisplayCard extends React.Component {
                             flex: 1,
                             alignItem: "flex-end",
                             justifyContent: "flex-end",
+                            display: "none",
                         }}>
                         <TouchableOpacity style={{alignSelf: "flex-end"}}>
                             <Image
