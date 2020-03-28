@@ -28,6 +28,7 @@ const userTypes = ['individual', 'organisation'];
 const updateAvatar = (req, res) => {
     const userType = req.params.userType;
     if (!userType || !userTypes.includes(userType)) {
+        log.info("User type not specified for avatar upload");
         res.status(404).send({
             message: `User type not specified, specify one of: ${userTypes.join(', ')}`,
         });
@@ -35,6 +36,7 @@ const updateAvatar = (req, res) => {
         const userRepo = userType === 'individual' ? individualRepository : organisationRepository;
         userRepo.findByUserID(req.query.userId).then((result) => {
             if (result.rowCount < 1) {
+                log.info(`Failed to find ${userType} with user ID ${req.query.userId}`);
                 res.status(404).send({
                     message: `There is no ${userType} with user ID ${req.query.userId}`,
                 });

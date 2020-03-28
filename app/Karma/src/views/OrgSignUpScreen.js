@@ -11,7 +11,6 @@ import {
     StyleSheet,
     Keyboard,
 } from "react-native";
-import PhotoUpload from "react-native-photo-upload";
 import {hasNotch} from "react-native-device-info";
 import Styles, {normalise} from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
@@ -20,7 +19,6 @@ import PageHeader from "../components/PageHeader";
 import DatePicker from "react-native-date-picker";
 import AddressInput from "../components/input/AddressInput";
 import Colours from "../styles/Colours";
-
 import {RegularText, SubTitleText, BoldText} from "../components/text";
 import CheckBox from "../components/CheckBox";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
@@ -28,6 +26,7 @@ import {TextInput} from "../components/input";
 import {GradientButton} from "../components/buttons";
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -91,17 +90,64 @@ export default class OrgSignUpScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-    setPhoto(selectedPhoto) {
-        this.setState({
-            photo: selectedPhoto,
+    choosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.uri) {
+                this.setState({photo: response});
+            }
         });
-    }
+    };
 
-    uploadPhoto(selectedPhoto) {
+    createFormData = (photo, body) => {
+        const data = new FormData();
+
+        data.append(
+            "picture",
+            {
+                name: `fileupload_${new Date().getTime().toString()}`,
+                type: photo.type,
+                uri:
+                    Platform.OS === "android"
+                        ? photo.uri
+                        : photo.uri.replace("file://", ""),
+            },
+            photo.fileName,
+        );
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    };
+
+    async uploadPhoto(selectedPhoto) {
+        const authToken = await getAuthToken();
+        const endpointUsertype = "organisation";
+
+        console.log(selectedPhoto);
+        console.log("Uploading Photo");
         if (selectedPhoto != null) {
-            Alert.alert("Success!", "Your new photo has been uploaded.");
-        } else {
-            Alert.alert("Error", "Please upload a photo.");
+            await fetch(
+                `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,
+                {
+                    method: "POST",
+                    headers: {
+                        authorization: authToken,
+                    },
+                    body: this.createFormData(selectedPhoto, {}),
+                },
+            )
+                .then(res => {
+                    const response = res.json();
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 
@@ -130,6 +176,7 @@ export default class OrgSignUpScreen extends React.Component {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
         if (!this.state.orgName || !this.state.phone) {
+            this.setState({submitPressed: false});
             return;
         }
         const authToken = await getAuthToken();
@@ -142,12 +189,14 @@ export default class OrgSignUpScreen extends React.Component {
             .send({
                 data: {organisation: {...org}},
             })
-            .then(res => {
+            .then(async res => {
+                await this.uploadPhoto(this.state.photo);
                 navigate("Activities");
             })
             .catch(err => {
                 Alert.alert("Server Error", err.message);
             });
+        this.setState({submitPressed: false});
     };
 
     render() {
@@ -388,48 +437,32 @@ export default class OrgSignUpScreen extends React.Component {
                                     Organisation Logo
                                 </RegularText>
                             </View>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    width: FORM_WIDTH,
-                                }}>
-                                <PhotoUpload
-                                    containerStyle={{
-                                        alignItems: "center",
-                                        paddingRight: 30,
-                                    }}
-                                    onPhotoSelect={avatar => {
-                                        if (avatar) {
-                                            console.log(
-                                                "Image base64 string: ",
-                                                avatar,
-                                            );
-                                            this.setPhoto(avatar);
-                                        }
-                                    }}>
+                            <View style={styles.header}>
+                                <TouchableOpacity onPress={this.choosePhoto}>
                                     <Image
                                         style={{
-                                            paddingVertical: 10,
+                                            paddingVertical: 8,
                                             width: 50,
                                             height: 50,
                                             borderRadius: 75,
                                         }}
                                         resizeMode="cover"
-                                        source={require("../assets/images/general-logos/photo-logo.png")}
+                                        source={
+                                            this.state.photo
+                                                ? this.state.photo
+                                                : require("../assets/images/general-logos/photo-logo.png")
+                                        }
                                     />
-                                </PhotoUpload>
-
+                                </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.uploadButton}
-                                    onPress={() =>
-                                        this.uploadPhoto(this.state.photo)
-                                    }>
+                                    onPress={this.choosePhoto}>
                                     <RegularText
-                                        style={
-                                            (styles.buttonText,
-                                            {fontSize: 20, color: "gray"})
-                                        }>
-                                        Upload Photo
+                                        style={[
+                                            styles.buttonText,
+                                            {fontSize: 20, color: "gray"},
+                                        ]}>
+                                        Choose Photo
                                     </RegularText>
                                 </TouchableOpacity>
                             </View>
@@ -445,10 +478,15 @@ export default class OrgSignUpScreen extends React.Component {
                         marginBottom: 30,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        <GradientButton
-                            title="Next"
-                            onPress={() => this.submit()}
-                        />
+                        {!this.state.submitPressed && (
+                            <GradientButton
+                                title="Next"
+                                onPress={() => {
+                                    this.setState({submitPressed: true});
+                                    this.submit();
+                                }}
+                            />
+                        )}
                     </View>
                 </View>
             </View>
@@ -460,22 +498,26 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         alignItems: "center",
+        width: FORM_WIDTH,
+        paddingLeft: 10,
+        marginLeft: 5,
     },
     uploadButton: {
         height: 50,
         width: 200,
         backgroundColor: "transparent",
         borderWidth: 2,
-        borderColor: "#D3D3D3",
+        borderColor: Colours.lightGrey,
         borderRadius: 30,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        marginLeft: FORM_WIDTH / 6,
     },
     buttonText: {
         fontSize: 15,
         fontWeight: "400",
-        color: "gray",
+        color: Colours.lightGrey,
     },
     headerText: {
         fontSize: 25,
