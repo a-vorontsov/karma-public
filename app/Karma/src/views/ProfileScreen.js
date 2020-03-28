@@ -11,9 +11,11 @@ import {
     View,
     Alert,
     Platform,
+    Easing,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton, TransparentButton} from "../components/buttons";
+import AnimatedProgressWheel from "react-native-progress-wheel";
 import CauseItem from "../components/causes/CauseItem";
 import ImagePicker from "react-native-image-picker";
 import Styles from "../styles/Styles";
@@ -66,7 +68,7 @@ class ProfileScreen extends Component {
             orgName: "",
             address: {},
             gender: null,
-
+            photoLoading: false,
             photo: null,
         };
         this.fetchProfileInfo();
@@ -137,10 +139,6 @@ class ProfileScreen extends Component {
     componentDidMount() {
         const {navigation} = this.props;
 
-        // this._unsubscribe = navigation.addListener("focus", () => {
-        //     this.fetchProfileInfo();
-        // });
-
         this.willFocusListener = navigation.addListener(
             "willFocus",
             async () => {
@@ -155,6 +153,7 @@ class ProfileScreen extends Component {
 
     async fetchProfileInfo() {
         const authToken = await getAuthToken();
+        this.imageLoader.animateTo(0, 0);
 
         request
             .get(`${REACT_APP_API_URL}/profile`)
@@ -176,17 +175,21 @@ class ProfileScreen extends Component {
             ? "organisation"
             : "individual";
 
-        request
+        this.setState({photo: null, photoLoading: true});
+
+        await request
             .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
             .set("authorization", authToken)
             .then(res => {
                 console.log(res.body);
-                const imageLocation = res.body.picture_url;
+                const imageLocation =
+                    res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
                 this.setState({photo: {uri: imageLocation}});
             })
             .catch(err => {
                 console.log(err);
             });
+        this.setState({photoLoading: false});
     };
 
     createFormData = (photo, body) => {
@@ -213,13 +216,19 @@ class ProfileScreen extends Component {
     };
 
     handleChoosePhoto = () => {
+        this.setState({photoLoading: true});
+
         const options = {
             noData: true,
         };
         ImagePicker.launchImageLibrary(options, response => {
             if (response.uri) {
+                this.imageLoader.animateTo(95, 1200, Easing.quad);
                 this.setState({photo: response});
                 return this.handleUploadPhoto();
+            } else {
+                this.imageLoader.animateTo(0, 100, Easing.quad);
+                this.setState({photoLoading: false});
             }
         });
     };
@@ -238,6 +247,7 @@ class ProfileScreen extends Component {
             body: this.createFormData(this.state.photo, {}),
         })
             .then(res => {
+                this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
                     console.log(response.message);
@@ -251,6 +261,7 @@ class ProfileScreen extends Component {
                 Alert.alert("Upload Error", error.message);
                 this.setState({photo: null});
             });
+        this.setState({photoLoading: false});
         this.fetchProfileInfo();
     };
 
@@ -270,7 +281,7 @@ class ProfileScreen extends Component {
 
     render() {
         const {navigate} = this.props.navigation;
-        const {photo} = this.state;
+        const {photo, photoLoading} = this.state;
         return (
             <KeyboardAvoidingView
                 style={styles.container}
@@ -278,7 +289,7 @@ class ProfileScreen extends Component {
                 enabled>
                 <NavigationEvents
                     onWillFocus={() => {
-                        this.setState({photo: null});
+                        this.setState({photoLoading: true});
                     }}
                 />
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -360,10 +371,27 @@ class ProfileScreen extends Component {
                                             width: HALF * 0.8,
                                             height: HALF * 0.8,
                                             borderRadius: 75,
+                                            opacity: photoLoading ? 0.5 : 1,
                                         }}
                                         resizeMode="cover"
                                         source={photo ? photo : icons.photo_add}
                                     />
+                                    <View
+                                        style={{
+                                            marginTop: -1 * HALF * 0.8,
+                                            marginLeft: -2,
+                                            opacity: photoLoading ? 1 : 0,
+                                        }}>
+                                        <AnimatedProgressWheel
+                                            ref={ref =>
+                                                (this.imageLoader = ref)
+                                            }
+                                            size={HALF * 0.8 + 3}
+                                            width={20}
+                                            color={Colours.white}
+                                            backgroundColor={Colours.blue}
+                                        />
+                                    </View>
                                 </TouchableOpacity>
                             </View>
                             <View
@@ -550,24 +578,14 @@ class ProfileScreen extends Component {
                                         flexDirection: "row",
                                         justifyContent: "center",
                                     }}>
-                                    <RegularText style={styles.contentText}>
-                                        {this.state.bio}
-                                    </RegularText>
-                                    {this.state.bio !== "" ? (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You do not have a bio. Please
-                                                edit your profile to add one.
-                                            </RegularText>
-                                        </View>
-                                    ) : (
-                                        <View style={Styles.ph24}>
-                                            <RegularText>
-                                                You do not have a bio. Please
-                                                edit your profile to add one.
-                                            </RegularText>
-                                        </View>
-                                    )}
+                                    <View style={Styles.ph24}>
+                                        <RegularText>
+                                            {this.state.bio !== ""
+                                                ? this.state.bio
+                                                : "You do not have a bio. Please " +
+                                                  "edit your profile to add one."}
+                                        </RegularText>
+                                    </View>
                                 </View>
                                 <RegularText style={styles.bioHeader}>
                                     Causes

@@ -14,7 +14,7 @@ import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
-const {width: SCREEN_WIDTH} = Dimensions.get("window");
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const queryString = require("query-string");
 const formWidth = 0.6 * SCREEN_WIDTH;
 
@@ -174,7 +174,14 @@ class ActivitiesAllScreen extends Component {
                         onRefresh={this.onRefresh}
                     />
                 }>
-                <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
+                <View
+                    style={{
+                        flex: 1,
+                        marginTop: 10,
+                        marginBottom: 100,
+                        width: SCREEN_WIDTH,
+                        height: SCREEN_HEIGHT,
+                    }}>
                     {this.state.loading ? (
                         <ActivityIndicator size="large" />
                     ) : (

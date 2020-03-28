@@ -1,9 +1,16 @@
 import React, {Component} from "react";
-import {Alert, RefreshControl, ScrollView, View} from "react-native";
+import {
+    Alert,
+    RefreshControl,
+    ScrollView,
+    View,
+    Dimensions,
+} from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
@@ -66,7 +73,14 @@ class ActivitiesGoingScreen extends Component {
                         onRefresh={this.onRefresh}
                     />
                 }>
-                <View style={{flex: 1, marginTop: 10, marginBottom: 100}}>
+                <View
+                    style={{
+                        flex: 1,
+                        marginTop: 10,
+                        marginBottom: 100,
+                        width: SCREEN_WIDTH,
+                        height: SCREEN_HEIGHT,
+                    }}>
                     {this.state.activities.length > 0 ? (
                         this.state.activities.map(activity => {
                             return (

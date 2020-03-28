@@ -66,7 +66,8 @@ class SignUpScreen extends React.Component {
             !this.state.email ||
             !this.state.username ||
             !this.state.password ||
-            !this.state.confPassword
+            !this.state.confPassword ||
+            this.state.password !== this.state.confPassword
         ) {
             return;
         }

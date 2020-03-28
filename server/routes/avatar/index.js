@@ -41,7 +41,7 @@ const imgDelete = require("../../modules/picture/delete");
  * <pre>
  {
     "message": "Image uploaded successfully!",
-    "picture_url": "https://karma-kcl-staging.s3.eu-west-2.amazonaws.com/avatar-individual/hashedImageName.png"
+    "pictureUrl": "https://karma-kcl-staging.s3.eu-west-2.amazonaws.com/avatar-individual/hashedImageName.png"
  }
  </pre>
  *  @name Upload Profile Photo for Individuals and Organisations
@@ -68,7 +68,7 @@ router.post("/upload/:userType", authService.requireAuthentication, (req, res) =
  * <pre>
  {
     "message": "Successfully deleted image!",
-    "old_location": "https://karma-kcl-staging.s3.eu-west-2.amazonaws.com/avatar-individual/hashedImageName.png"
+    "oldLocation": "https://karma-kcl-staging.s3.eu-west-2.amazonaws.com/avatar-individual/hashedImageName.png"
  }
  </pre>
  *  @name Delete Profile Photo for Individuals and Organisations
@@ -105,7 +105,7 @@ router.get("/default/:userType", imgFetch.getDefaultAvatar);
  * <pre>
  {
     "message": "Fetched image for user!",
-    "picture_url": "http://localhost:8000/avatar/default/individual"
+    "pictureUrl": "http://localhost:8000/avatar/default/individual"
  }
  </pre>
  *  @name Fetch Profile Photo for Individuals and Organisations
@@ -127,7 +127,7 @@ router.get("/:userType/:userId", imgFetch.getAvatar);
  * <pre>
  {
     "message": "Fetched image for user!",
-    "picture_url": "http://localhost:8000/avatar/default/organisation"
+    "pictureUrl": "http://localhost:8000/avatar/default/organisation"
  }
  </pre>
  *  @name Fetch Current Profile Photo for Individuals and Organisations

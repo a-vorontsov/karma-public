@@ -28,6 +28,7 @@ const userTypes = ['individual', 'organisation'];
 const updateAvatar = (req, res) => {
     const userType = req.params.userType;
     if (!userType || !userTypes.includes(userType)) {
+        log.info("User type not specified for avatar upload");
         res.status(404).send({
             message: `User type not specified, specify one of: ${userTypes.join(', ')}`,
         });
@@ -35,6 +36,7 @@ const updateAvatar = (req, res) => {
         const userRepo = userType === 'individual' ? individualRepository : organisationRepository;
         userRepo.findByUserID(req.query.userId).then((result) => {
             if (result.rowCount < 1) {
+                log.info(`Failed to find ${userType} with user ID ${req.query.userId}`);
                 res.status(404).send({
                     message: `There is no ${userType} with user ID ${req.query.userId}`,
                 });
@@ -42,66 +44,95 @@ const updateAvatar = (req, res) => {
                 const avatarDir = `avatar-${userType}/`;
                 const user = result.rows[0];
 
-                const upload = multer({
-                    storage: s3Storage({
-                        s3: s3,
-                        Bucket: process.env.S3_BUCKET_NAME,
-                        Key: (req, file, cb) => {
-                            const hash = crypto.createHash('md5')
-                                .update(`karma_${userType}_${req.query.userId}`)
-                                .digest('hex');
-                            const filename = (avatarDir + hash + '.png');
-                            cb(null, filename);
-                        },
-                        resize: {
-                            width: 500,
-                            height: 500,
-                        },
-                        toFormat: {
-                            type: 'png',
-                        },
-                    }),
-                }).single('picture');
+                if (process.env.SKIP_S3) {
+                    // MOCK RESPONSE
+                    log.info("Skipping S3 update and sending mock response for testing");
 
-                upload(req, res, error => {
-                    if (!req.file) {
-                        log.error(`Failed avatar updated for ${userType} ` +
-                            `with user ID ${req.query.userId}: no file was given`);
-                        res.status(400).send({
-                            message: `No file was given`,
-                        });
-                    } else if (!/^image\/((jpe?g)|(png))$/.test(req.file.mimetype)) {
-                        log.error(`Failed avatar updated for ${userType} ` +
-                            `with user ID ${req.query.userId}: invalid filetype give (${req.file.mimetype})`);
-                        res.status(400).send({
-                            message: `File type must be .png or .jpg'`,
-                        });
-                    } else if (error) {
-                        res.status(500).send({error: error});
-                    } else {
-                        imageRepository.insert({
-                            pictureLocation: req.file.Location,
-                        }).then((pictureResult) => {
-                            const picture = pictureResult.rows[0];
-                            const updateUserImg = userType === 'individual' ?
-                                imageRepository.updateIndividualAvatar :
-                                imageRepository.updateOrganisationAvatar;
-                            updateUserImg(user, picture).then((result) => {
-                                log.info(`Updated avatar for ${userType} ` +
-                                 `with user ID ${req.query.userId} to ${req.file.location}`);
+                    const dummyLocation = `https://fakebucket-amazonaws.com/avatar-${userType}/dummyImage.png`;
+                    imageRepository.insert({
+                        pictureLocation: dummyLocation,
+                    }).then((pictureResult) => {
+                        const picture = pictureResult.rows[0];
+                        const updateUserImg = userType === 'individual' ?
+                            imageRepository.updateIndividualAvatar :
+                            imageRepository.updateOrganisationAvatar;
+                        updateUserImg(user, picture).then((result) => {
+                            log.info(`Updated avatar for ${userType} ` +
+                                `with user ID ${req.query.userId} to ${dummyLocation}`);
 
-                                res.status(200).send({
-                                    message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
-                                    picture_url: `${req.file.Location}`,
+                            res.status(200).send({
+                                message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
+                                pictureUrl: `${dummyLocation}`,
+                            });
+                        }).catch((error) => {
+                            log.error(error);
+                            res.status(500).send({message: error});
+                        });
+                    }).catch((error) => {
+                        res.status(500).send({message: error});
+                    });
+                } else {
+                    const upload = multer({
+                        storage: s3Storage({
+                            s3: s3,
+                            Bucket: process.env.S3_BUCKET_NAME,
+                            Key: (req, file, cb) => {
+                                const hash = crypto.createHash('md5')
+                                    .update(`karma_${userType}_${req.query.userId}`)
+                                    .digest('hex');
+                                const filename = (avatarDir + hash + '.png');
+                                cb(null, filename);
+                            },
+                            resize: {
+                                width: 500,
+                                height: 500,
+                            },
+                            toFormat: {
+                                type: 'png',
+                            },
+                        }),
+                    }).single('picture');
+
+                    upload(req, res, error => {
+                        if (!req.file) {
+                            log.error(`Failed avatar update for ${userType} ` +
+                                `with user ID ${req.query.userId}: no file was given`);
+                            res.status(400).send({
+                                message: `No file was given`,
+                            });
+                        } else if (!/^image\/((jpe?g)|(png))$/.test(req.file.mimetype)) {
+                            log.error(`Failed avatar update for ${userType} ` +
+                                `with user ID ${req.query.userId}: invalid filetype give (${req.file.mimetype})`);
+                            res.status(400).send({
+                                message: `File type must be .png or .jpg'`,
+                            });
+                        } else if (error) {
+                            res.status(500).send({error: error});
+                        } else {
+                            imageRepository.insert({
+                                pictureLocation: req.file.Location,
+                            }).then((pictureResult) => {
+                                const picture = pictureResult.rows[0];
+                                const updateUserImg = userType === 'individual' ?
+                                    imageRepository.updateIndividualAvatar :
+                                    imageRepository.updateOrganisationAvatar;
+                                updateUserImg(user, picture).then((result) => {
+                                    log.info(`Updated avatar for ${userType} ` +
+                                        `with user ID ${req.query.userId} to ${req.file.location}`);
+
+                                    res.status(200).send({
+                                        message: `Avatar successfully updated for ${userType} with ID ${req.query.userId}`,
+                                        pictureUrl: `${req.file.Location}`,
+                                    });
+                                }).catch((error) => {
+                                    res.status(500).send({message: error});
                                 });
                             }).catch((error) => {
                                 res.status(500).send({message: error});
                             });
-                        }).catch((error) => {
-                            res.status(500).send({message: error});
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
     }
@@ -167,7 +198,7 @@ const updateEventPicture = (req, res) => {
                                     `with ID ${req.params.eventId} to ${req.file.location}`);
                                 res.status(200).send({
                                     message: `Image successfully updated for event with ID ${req.params.eventId}`,
-                                    picture_url: `${req.file.Location}`,
+                                    pictureUrl: `${req.file.Location}`,
                                 });
                             }).catch((error) => {
                                 res.status(500).send({message: error});
