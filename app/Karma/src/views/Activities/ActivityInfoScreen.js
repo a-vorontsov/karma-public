@@ -57,6 +57,7 @@ class ActivityInfoScreen extends Component {
             full_date: "Full Date",
             full_time: "Full Time",
             full_location: "Full Location",
+            addressVisible: true,
             lat: 37.78825,
             long: -122.4324,
             description:
@@ -118,6 +119,7 @@ class ActivityInfoScreen extends Component {
         const long = Number(address.long); //TODO - MapView doesn't update lat/long
         const lat = Number(address.lat);
         this.setState({
+            city: city,
             org_name: org_name,
             location: address.townCity,
             full_location: full_location,
@@ -126,6 +128,7 @@ class ActivityInfoScreen extends Component {
             email: email,
             fullName: fullName,
             phoneNumber: phoneNumber,
+            loaded: true,
         });
     };
 
@@ -141,6 +144,7 @@ class ActivityInfoScreen extends Component {
             photoId: activity.photoId,
             womenOnly: activity.womenOnly,
             physical: activity.physical,
+            addressVisible: activity.addressVisible,
         });
     };
 
@@ -158,7 +162,9 @@ class ActivityInfoScreen extends Component {
     render() {
         const signedup = this.props.navigation.getParam("signedup");
         const activity = this.props.navigation.getParam("activity");
-
+        const {lat, long, addressVisible} = this.state;
+        const newLat = !isNaN(lat) ? lat : 51.511764;
+        const newLong = !isNaN(long) ? long : -0.11623;
         return (
             <View style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
@@ -178,21 +184,7 @@ class ActivityInfoScreen extends Component {
                         },
                     ]}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader />
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            flex: 1,
-                            flexWrap: "wrap",
-                        }}>
-                        <RegularText
-                            style={[
-                                Styles.pv16,
-                                {fontSize: 20, fontWeight: "500"},
-                            ]}>
-                            {this.state.activity_name}
-                        </RegularText>
+                        <PageHeader title={activity.name} fontSize={18} />
                     </View>
                 </View>
 
@@ -256,6 +248,7 @@ class ActivityInfoScreen extends Component {
                                 flex: 1,
                                 alignItem: "flex-end",
                                 justifyContent: "flex-end",
+                                display: "none",
                             }}>
                             <TouchableOpacity style={{alignSelf: "flex-end"}}>
                                 <Image
@@ -406,7 +399,9 @@ class ActivityInfoScreen extends Component {
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
-                                    {this.state.full_location}
+                                    {addressVisible
+                                        ? this.state.full_location
+                                        : this.state.city}
                                 </RegularText>
                             </View>
                         </View>
@@ -478,25 +473,37 @@ class ActivityInfoScreen extends Component {
                         <RegularText style={styles.headerText}>
                             Where
                         </RegularText>
-                        <View style={{height: 200}}>
-                            <MapView
-                                style={styles.map}
-                                initialRegion={{
-                                    latitude: 37.78825,
-                                    longitude: -122.4324,
-                                    latitudeDelta: 0.0922,
-                                    longitudeDelta: 0.0421,
-                                }}
-                                scrollEnabled={false}>
-                                <MapView.Marker
-                                    coordinate={{
-                                        latitude: 37.78825,
-                                        longitude: -122.4324,
-                                    }}
-                                    pinColor={"green"}
-                                />
-                            </MapView>
-                        </View>
+                        {addressVisible ? (
+                            <View style={{height: 200}}>
+                                {this.state.loaded && (
+                                    <MapView
+                                        style={styles.map}
+                                        initialRegion={{
+                                            latitude: newLat,
+                                            longitude: newLong,
+                                            latitudeDelta: 0.0922,
+                                            longitudeDelta: 0.0421,
+                                        }}
+                                        scrollEnabled={false}>
+                                        {
+                                            <MapView.Marker
+                                                coordinate={{
+                                                    latitude: newLat,
+                                                    longitude: newLong,
+                                                }}
+                                                pinColor={"green"}
+                                            />
+                                        }
+                                    </MapView>
+                                )}
+                            </View>
+                        ) : (
+                            <RegularText>
+                                The address for this event is not public, and
+                                will be sent to you when you are approved to
+                                attend the event.
+                            </RegularText>
+                        )}
                         <RegularText style={styles.headerText}>
                             Important
                         </RegularText>
