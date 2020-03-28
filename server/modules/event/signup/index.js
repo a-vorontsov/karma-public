@@ -70,8 +70,7 @@ const getSignupHistory = async (individualId) => {
 /**
  * Get the sign-up status from the database for a specific individual,
  * regarding a specific event.
- * @param {object} individualId A valid individualId.
- * @param {object} eventId A valid eventId.
+ * @param {object} signup An object containing a valid individualId and a valid eventId
  * Fails if individualId or eventId is invalid, or database call fails.
  */
 const getSignupStatus = async (signup) => {
