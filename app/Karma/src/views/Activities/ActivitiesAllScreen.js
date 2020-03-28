@@ -179,8 +179,7 @@ class ActivitiesAllScreen extends Component {
                         flex: 1,
                         marginTop: 10,
                         marginBottom: 100,
-                        width: SCREEN_WIDTH,
-                        height: SCREEN_HEIGHT,
+                        minHeight: SCREEN_HEIGHT,
                     }}>
                     {this.state.loading ? (
                         <ActivityIndicator size="large" />
