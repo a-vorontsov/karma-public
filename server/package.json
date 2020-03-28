@@ -6,6 +6,7 @@
   "scripts": {
     "test": "env CI=true jest -i",
     "test-nologs": "jest -i",
+    "test-infologs": "env LOG_INFO=1 jest -i",
     "start": "node server.js",
     "dev": "env NODE_ENV=development nodemon server.js",
     "db-migrate": "db-migrate",
@@ -25,6 +26,7 @@
     "date-and-time": "^0.12.0",
     "db-migrate": "^0.11.6",
     "db-migrate-pg": "^1.0.0",
+    "deep-equal": "^2.0.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
@@ -68,6 +70,13 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "config",
+      "node_modules",
+      "jsdoc",
+      "migrations",
+      "out"
+    ],
     "coverageReporters": [
       "json",
       "html"

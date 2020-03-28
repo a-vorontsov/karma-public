@@ -67,7 +67,7 @@ router.post('/confirm', authService.requireNoAuthentication, async (req, res) =>
     const checkEmailResult = await util.checkEmail(email);
     if (checkEmailResult.status !== 200) {
         log.error("'%s': Confirming password reset token failed - email error: " + checkEmailResult.message, req.body.data.email);
-        return res.status(checkEmailResult.status).send(checkEmailResult.message);
+        return res.status(checkEmailResult.status).send({message: checkEmailResult.message});
     }
     if (!tokenReceived) {
         log.error("'%s': Confirming password reset token failed - no token specified", req.body.data.email);
@@ -101,7 +101,7 @@ router.post('/confirm', authService.requireNoAuthentication, async (req, res) =>
                 res.status(400).send("Token expired");
             }
         })
-        .catch(err => res.status(500).send(err));
+        .catch(err => res.status(500).send({message: err.message}));
 });
 
 module.exports = router;

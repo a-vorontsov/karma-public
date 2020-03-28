@@ -32,8 +32,8 @@ const createNewEvent = async (event) => {
     if (!event.addressId) { // address doesn't exist in database yet
         const address = event.address;
         const geoCode = await geocoder.geocode(address);
-        address.lat = geoCode == true ? geoCode[0].latitude : 0;
-        address.long = geoCode == true ? geoCode[0].longitude : 0;
+        address.lat = geoCode !== null ? geoCode.latitude : 0;
+        address.long = geoCode !== null ? geoCode.longitude : 0;
         const addressResult = await addressRepository.insert(address);
         event.addressId = addressResult.rows[0].id;
     }

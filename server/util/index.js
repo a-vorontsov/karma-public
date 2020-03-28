@@ -70,6 +70,7 @@ const checkUserId = async (userId) => {
     }
     result.status = 200;
     result.user = user;
+    result.message = "Found user with given id";
     return result;
 };
 
@@ -103,7 +104,7 @@ const checkUser = async (userId) => {
             return result;
         }
         result.status = 400;
-        result.message = "No individual nor organisation is associated with specified user id";
+        result.message = "No individual or organisation is associated with specified user id";
         return result;
     } else {
         return checkUserIdResult;
@@ -131,6 +132,7 @@ const checkEventId = async (eventId) => {
     }
     result.status = 200;
     result.event = event;
+    result.message = "Found event with given id";
     return result;
 };
 

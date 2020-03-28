@@ -14,11 +14,11 @@ const eventSorter = require("../../sorting");
 const createSignup = async (signup) => {
     const eventIdCheckResponse = await util.checkEventId(signup.eventId);
     if (eventIdCheckResponse.status !== 200) {
-        return eventIdCheckResponse;
+        throw new Error(eventIdCheckResponse.message);
     }
     const userIdCheckResponse = await util.checkUserId(signup.userId);
     if (userIdCheckResponse.status !== 200) {
-        return userIdCheckResponse;
+        throw new Error(userIdCheckResponse.message);
     }
 
     const signupResult = await signupRepository.insert(signup);
@@ -37,7 +37,7 @@ const createSignup = async (signup) => {
 const getAllSignupsForEvent = async (eventId) => {
     const eventIdCheckResponse = await util.checkEventId(eventId);
     if (eventIdCheckResponse.status !== 200) {
-        return eventIdCheckResponse;
+        throw new Error(eventIdCheckResponse.message);
     }
 
     const signedUpUsersResult = await signupRepository.findUsersSignedUp(eventId);

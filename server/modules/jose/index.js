@@ -2,6 +2,7 @@ const jose = require('jose');
 const config = {...require("../../config").jose};
 const date = require("date-and-time");
 const authRepo = require("../../repositories/authentication");
+const log = require("../../util/log");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -236,12 +237,17 @@ const getSignatureFromJWT = (jwt) => {
 
 /**
  * Return signature, i.e. authentication tag of
- * JWE as a Base64 string.
+ * JWE as a Base64 string or null if operation failed.
  * @param {object} jwe
- * @return {string} signature
+ * @return {string} signature or null
  */
 const getSignatureFromJWE = (jwe) => {
-    return jwe.split(".")[4];
+    try {
+        return jwe.split(".")[4];
+    } catch (e) {
+        log.error("Failed to fetch JWE signature from ('%s'), error: '%s'", jwe, e.message);
+        return null;
+    }
 };
 
 /**

@@ -20,7 +20,6 @@ const bugReport = testHelpers.getBugReport();
 
 
 test('bug report sending works', async () => {
-
     mailSender.sendBugReport.mockResolvedValue(
         result = {
             status: 200,
@@ -39,7 +38,6 @@ test('bug report sending works', async () => {
 });
 
 test('bug report endpoint gives correct response if mail-sending fails', async () => {
-
     mailSender.sendBugReport.mockResolvedValue(
         result = {
             status: 500,
@@ -56,3 +54,18 @@ test('bug report endpoint gives correct response if mail-sending fails', async (
     expect(response.body.message).toBe("Email sending failed to " + bugReport.data.email);
     expect(response.status).toBe(500);
 });
+
+test('bug report endpoint gives correct response if mail-sending throws a system error', async () => {
+    mailSender.sendBugReport.mockImplementation(() => {
+      throw new Error("Server error");
+    });
+    const response = await request(app)
+        .post("/bugreport")
+        .set("authorization", null)
+        .send(bugReport);
+
+    expect(mailSender.sendBugReport).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.status).toBe(500);
+});
+

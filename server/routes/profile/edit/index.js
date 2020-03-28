@@ -10,6 +10,7 @@ const indivRepo = require("../../../repositories/individual");
 const orgRepo = require("../../../repositories/organisation");
 const addressRepo = require("../../../repositories/address");
 const profileRepo = require("../../../repositories/profile");
+const equal = require('deep-equal');
 
 /**
  * Endpoint called whenever a user wishes to update their profile <br/>
@@ -107,10 +108,10 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
                 }
             }
 
-            if (individual !== indivCopy) {
+            if (!equal(individual, indivCopy)) {
                 await indivRepo.update(individual);
             }
-            if (profile !== profileCopy) {
+            if (!equal(profile, profileCopy)) {
                 await profileRepo.update(profile);
             }
         } else if (req.body.data.organisation !== undefined) {
@@ -148,7 +149,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
                 organisation.exempt = req.body.data.organisation.exempt;
             }
 
-            if (JSON.stringify(organisation) !== JSON.stringify(orgCopy)) {
+            if (!equal(organisation, orgCopy)) {
                 await orgRepo.update(organisation);
             }
         }
@@ -170,10 +171,6 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
  * @param {Object} storedAddress in db
  */
 async function createNewAddress(address, storedAddress) {
-    if (address === undefined) {
-        return;
-    }
-
     const addressObj = {...storedAddress};
 
     if (address.addressLine1 !== undefined ) {
@@ -192,7 +189,7 @@ async function createNewAddress(address, storedAddress) {
         addressObj.region = address.countryState;
     }
 
-    if (JSON.stringify(addressObj) !== JSON.stringify(storedAddress)) {
+    if (!equal(addressObj, storedAddress)) {
         return await addressRepo.insert(addressObj);
     }
 }

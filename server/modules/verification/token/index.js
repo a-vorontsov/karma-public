@@ -59,6 +59,6 @@ const storeAndSendVerificationToken = async (validMinutes, dbUpdateFunction, dbI
 };
 
 module.exports = {
-    storeAndSendPasswordResetToken: storeAndSendPasswordResetToken,
-    storeAndSendEmailVerificationToken: storeAndSendEmailVerificationToken,
+    storeAndSendPasswordResetToken,
+    storeAndSendEmailVerificationToken,
 };

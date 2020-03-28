@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 require("dotenv").config();
 const log4js = require('log4js');
 
@@ -34,6 +35,10 @@ switch (process.env.NODE_ENV) {
 
 if (process.env.CI) {
     log.level = "off";
+}
+
+if (process.env.LOG_INFO == true) {
+    log.level = "info";
 }
 
 log.info("Logging at level: %s", log.level);

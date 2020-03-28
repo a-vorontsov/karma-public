@@ -128,7 +128,6 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
             username: user.username,
             email: user.email,
         };
-
         const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
@@ -138,10 +137,8 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
         // send appropriate profile
         if (indivResult.rows.length === 1) {
             const individual = indivResult.rows[0];
-
             const addressResult = await addressRepo.findById(individual.addressId);
             const address = addressResult.rows[0];
-
             const profileResult = await profileRepo.findByIndividualId(individual.id);
             const profile = profileResult.rows[0];
             const signUpResult = await signUpRepo.findAllByIndividualIdConfirmed(individual.id);

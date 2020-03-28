@@ -4,7 +4,7 @@ const testHelpers = require("../../../test/helpers");
 const userRepo = require("../../../repositories/user");
 const regRepo = require("../../../repositories/registration");
 
-let user, registration;
+let user; let registration;
 
 beforeEach(() => {
     user = testHelpers.getUserExample4();
@@ -38,8 +38,8 @@ const ogranisationRegistrationRequest = {
                 postCode: "WC 23",
             },
             phoneNumber: "+44343525",
-        }
-    }
+        },
+    },
 };
 
 test("ogranisation registration works", async () => {

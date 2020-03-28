@@ -256,6 +256,30 @@ const getEventWithAllData = () => ({...eventWithData});
 const getPeaceEvent = () => ({...peaceEvent});
 const getAnimalsEvent = () => ({...animalsEvent});
 
+const eventWithBHAddress = {
+    name: "event",
+    womenOnly: true,
+    spots: 3,
+    addressVisible: true,
+    minimumAge: 16,
+    photoId: true,
+    physical: true,
+    addInfo: true,
+    content: "fun event yay",
+    date: "2004-10-19 10:23:54",
+    userId: -1,
+    creationDate: "2019-10-19 10:23:54",
+    address: {
+        address1: "44-46 Aldwych",
+        address2: "Holborn",
+        postcode: "WC2B 4LL",
+        city: "London",
+        region: "United Kingdom",
+    },
+};
+
+const getEventWithBHAddress = () => ({...eventWithBHAddress});
+
 const userExample1 = {
     email: "test@gmail.com",
     username: "test1",
@@ -331,6 +355,21 @@ const individual = {
 };
 
 const getIndividual = () => ({...individual});
+
+const individual2 = {
+
+    firstname: "Paül",
+    lastname: "Müller",
+    phone: "+435958935",
+    banned: true,
+    userId: -1,
+    pictureId: null,
+    addressId: -1,
+    birthday: "1998-10-10",
+    gender: 'M',
+};
+
+const getIndividual2 = () => ({...individual2});
 
 const profile = {
     individualId: -1,
@@ -628,6 +667,7 @@ module.exports = {
     getUserExample3,
     getUserExample4,
     getIndividual,
+    getIndividual2,
     getProfile,
     getOrganisation,
     getSignedUpUserExample1,
@@ -653,4 +693,5 @@ module.exports = {
     getPeaceEvent,
     getAnimalsEvent,
     getNotificationExample2,
+    getEventWithBHAddress,
 };
