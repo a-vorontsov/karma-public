@@ -74,6 +74,21 @@ test('updating works', async () => {
     expect(updateSignupResult.data.signup).toMatchObject({signUp});
 });
 
+test('status works', async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+    signupRepository.find.mockResolvedValue({
+        rows: [{
+            signUp,
+        }],
+    });
+
+    const signupResult = await eventSignupService.getSignupStatus(signUp);
+
+    expect(signupRepository.find).toHaveBeenCalledTimes(1);
+    expect(signupResult.status).toBe(200);
+    expect(signupResult.data.signup).toMatchObject({signUp});
+});
+
 test('requesting event history works and only returns events from the past', async () => {
     const now = new Date();
     const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
