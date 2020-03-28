@@ -1,4 +1,4 @@
-package com.karma;
+package xyz.laane.karma;
 
 import android.app.Application;
 import android.content.Context;
