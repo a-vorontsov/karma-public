@@ -49,6 +49,7 @@ export default class OrgSignUpScreen extends React.Component {
             isExempt: false,
             photo: null,
             submitPressed: false,
+            submitted: false,
             isRegDateVisible: false,
             addressLine1: "",
             addressLine2: "",
@@ -176,7 +177,7 @@ export default class OrgSignUpScreen extends React.Component {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
         if (!this.state.orgName || !this.state.phone) {
-            this.setState({submitPressed: false});
+            this.setState({submitted: false});
             return;
         }
         const authToken = await getAuthToken();
@@ -196,7 +197,7 @@ export default class OrgSignUpScreen extends React.Component {
             .catch(err => {
                 Alert.alert("Server Error", err.message);
             });
-        this.setState({submitPressed: false});
+        this.setState({submitted: false});
     };
 
     render() {
@@ -478,11 +479,11 @@ export default class OrgSignUpScreen extends React.Component {
                         marginBottom: 30,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        {!this.state.submitPressed && (
+                        {!this.state.submitted && (
                             <GradientButton
                                 title="Next"
                                 onPress={() => {
-                                    this.setState({submitPressed: true});
+                                    this.setState({submitted: true});
                                     this.submit();
                                 }}
                             />
