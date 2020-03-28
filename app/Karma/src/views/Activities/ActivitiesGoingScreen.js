@@ -10,7 +10,7 @@ import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard
 import {RegularText} from "../../components/text";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
+const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
