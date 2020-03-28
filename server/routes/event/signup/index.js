@@ -242,10 +242,10 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
 
 /**
  * Endpoint called whenever a user wishes to see their signup status for a specific event.<br/>
- <p><b>Route: </b>/event/:eventId/signUp/status/ (POST)</p>
+ <p><b>Route: </b>/event/:eventId/signUp/status/ (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
- * @param {Event} req.body - Information regarding the event containing the same properties as this example:
+ * @param {Number} req.params.eventId - id of the event.
  * @returns {Object}
  *  status: 200, description: Signup object with corresponding fields for event<br/>
  <pre>
@@ -271,17 +271,19 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
  *  @name See signup status
  *  @function
  */
-router.post('/:eventId/signUp/status', authService.requireAuthentication, async (req, res) => {
+router.get('/:eventId/signUp/status', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("User id '%d': Getting event status id '%d' for user id '%d'", req.query.userId, req.params.eventId);
-        const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
-        signup.individualId = await util.getIndividualIdFromUserId(signup.otherUserId);
+        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.userId);
+
+        const signup = {eventId: Number.parseInt(req.params.eventId)};
+        signup.individualId = await util.getIndividualIdFromUserId(req.query.userId);
 
         const signupResult = await eventSignupService.getSignupStatus(signup);
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
-        log.error("User id '%d': Failed fetching signup status for event id '%d' for user id '%d': " + e, req.query.userId,
-            req.params.eventId, req.body.otherUserId);
+        log.info("User id '%d': Failed fetching signup status for event id '%d': " + e,
+            req.query.userId,
+            req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });
