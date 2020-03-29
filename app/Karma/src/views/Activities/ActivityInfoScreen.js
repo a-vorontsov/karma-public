@@ -78,6 +78,7 @@ class ActivityInfoScreen extends Component {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
         });
+        this.getSignUpStatus();
     };
 
     handleSignupError = (errorTitle, errorMessage) => {
@@ -93,15 +94,20 @@ class ActivityInfoScreen extends Component {
         request
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
-            .send({
-                
-            })
+            
             .then(res => {
                 console.log(res.status);
+                if(res.body.data.signup.confirmed === false){
+                    this.setState({signedUp:false});
+                }
+                else{
                 this.setState({signedUp:true});
+                }
                console.log(res.body);
             })
             .catch(err => {
+                this.setState({signedUp:false});
+
                 console.log(err);
             });
     }
@@ -574,7 +580,6 @@ class ActivityInfoScreen extends Component {
                     <View style={{width: FORM_WIDTH}}>
                         
                     {this.state.signedUp ? (
-                        //NEED TO SET FLAG TO TRUE
                         //yes
                             <GradientButton
                                 title="Cancel Attendance"
