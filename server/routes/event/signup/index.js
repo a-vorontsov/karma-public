@@ -240,5 +240,51 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
     }
 });
 
+/**
+ * Endpoint called whenever a user wishes to see their signup status for a specific event.<br/>
+ <p><b>Route: </b>/event/:eventId/signUp/status/ (GET)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
+ * @param {Number} req.params.eventId - id of the event.
+ * @returns {Object}
+ *  status: 200, description: Signup object with corresponding fields for event<br/>
+ <pre>
+ {
+    "message": "Signup status fetched successfully",
+    "data": {
+        "signup": {
+            "individualId": 7,
+            "eventId": 11,
+            "confirmed": true
+            "attended": true
+        }
+    }
+ }
+ </pre>
+ *  status: 400, description: User has not signed up for event - signup object could not be found.<br/>
+ <pre>
+ {
+    "message": "You have not signed up for this event"
+ }
+ </pre>
+ *  status: 500, description: DB error
+ *  @name See signup status
+ *  @function
+ */
+router.get('/:eventId/signUp/status', authService.requireAuthentication, async (req, res) => {
+    try {
+        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.eventId);
+        const signupResult = await eventSignupService.getSignupStatus({
+            eventId: Number.parseInt(req.params.eventId),
+            userId: req.query.usage,
+        });
+        return httpUtil.sendResult(signupResult, res);
+    } catch (e) {
+        log.info("User id '%d': Failed fetching signup status for event id '%d': " + e,
+            req.query.userId,
+            req.params.eventId);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
 
 module.exports = router;

@@ -198,3 +198,47 @@ test('requesting signup history endpoint in case of a system error returns error
     expect(response.body.message).toBe("Server error");
     expect(response.status).toBe(500);
 });
+
+test('requesting signup status for user works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
+    eventSignupService.getSignupStatus.mockResolvedValue({
+        status: 200,
+        message: "Signup status fetched successfully",
+        data: {signup: {signUp}},
+    });
+
+    const response = await request(app).get("/event/3/signUp/status").query({userId: 55}).send();
+
+    expect(eventSignupService.getSignupStatus).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject({
+        signUp
+    });
+});
+
+test('requesting signup status for non-attending user fails', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(26);
+    eventSignupService.getSignupStatus.mockResolvedValue({
+        status: 404,
+        message: "You have not signed up for this event",
+    });
+
+    const response = await request(app).get("/event/3/signUp/status").query({userId: 56}).send();
+
+    expect(eventSignupService.getSignupStatus).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toBe("You have not signed up for this event");
+});
+
+test('requesting signup status in case of server error return error message', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(26);
+    eventSignupService.getSignupStatus.mockImplementation(() => {
+        throw new Error("Server error");
+    });
+
+    const response = await request(app).get("/event/3/signUp/status").query({userId: 55}).send();
+
+    expect(eventSignupService.getSignupStatus).toHaveBeenCalledTimes(1);
+    expect(response.body.message).toBe("Server error");
+    expect(response.status).toBe(500);
+});
