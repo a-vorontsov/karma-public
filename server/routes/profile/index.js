@@ -150,6 +150,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
                         going: (event.volunteers).includes(userId),
+                        favourited: (event.favourited).includes(userId),
                     };
                 })
                 .filter(event => event.date < now);
@@ -161,6 +162,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
                         going: (event.volunteers).includes(userId),
+                        favourited: (event.favourited).includes(userId),
                     };
                 })
                 .filter(event => event.date > now);
