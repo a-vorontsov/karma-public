@@ -103,8 +103,14 @@ const getGoingEvents = async (userId) => {
         throw new Error(userIdCheckResponse.message);
     }
     const findResult = await individualRepository.findGoingEvents(userId);
-    const events = findResult.rows;
+    let events = findResult.rows;
     const user = userIdCheckResponse.user;
+    // add spotsRemaining property to all event objects
+    events = events.map(event => {
+        return {...event,
+            spotsRemaining: event.spots - (event.volunteers).length,
+        };
+    });
     eventSorter.sortByTimeAndDistance(events, user);
     return ({
         status: 200,
