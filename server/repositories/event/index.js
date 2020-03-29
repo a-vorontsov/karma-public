@@ -14,6 +14,8 @@ const insert = (event) => {
 
 const findById = (id) => {
     const query = "SELECT *, " +
+        "ARRAY(SELECT user_id from sign_up " +
+        "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers, " +
         "ARRAY(SELECT cause_id from event_cause where event_id = id(event)) as causes " +
         "FROM event WHERE id=$1";
     return db.query(query, [id]);

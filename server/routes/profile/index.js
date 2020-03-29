@@ -145,10 +145,24 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
+                .map(event => {
+                    return {
+                        ...event,
+                        spotsRemaining: event.spots - (event.volunteers).length,
+                        going: (event.volunteers).includes(userId),
+                    };
+                })
                 .filter(event => event.date < now);
             const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
+                .map(event => {
+                    return {
+                        ...event,
+                        spotsRemaining: event.spots - (event.volunteers).length,
+                        going: (event.volunteers).includes(userId),
+                    };
+                })
                 .filter(event => event.date > now);
 
             const indivToSend = {
