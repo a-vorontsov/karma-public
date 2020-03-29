@@ -186,7 +186,7 @@ class ActivityInfoScreen extends Component {
         const activity = this.props.navigation.getParam("activity");
 
         this.getEventInfo(activity);
-        console.log("BIG WORM");
+
         await this.getSignUpStatus();
         await this.getCreatorInfo(
             activity.eventCreatorId
