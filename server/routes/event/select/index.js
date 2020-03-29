@@ -58,7 +58,8 @@ const authService = require("../../../modules/authentication/");
                 ],
                 "going": true,
                 "spotsRemaining": 28,
-                "distance": 7.399274608089304
+                "distance": 7.399274608089304,
+                "favourited": false
             }
         ],
         "animals": [
@@ -89,7 +90,8 @@ const authService = require("../../../modules/authentication/");
                 "volunteers": [],
                 "going": false,
                 "spotsRemaining": 4,
-                "distance": 9361.620275789797
+                "distance": 9361.620275789797,
+                "favourited": true
             }
         ]
     }
@@ -240,7 +242,8 @@ router.get("/favourites", authService.requireAuthentication, async (req, res) =>
                     100
                 ],
                 "spotsRemaining": 28,
-                "distance": 6.827146300288505
+                "distance": 6.827146300288505,
+                "going": true,
             },
             {
                 "eventId": 3,
@@ -268,7 +271,8 @@ router.get("/favourites", authService.requireAuthentication, async (req, res) =>
                     100
                 ],
                 "spotsRemaining": 28,
-                "distance": 6.827146300288505
+                "distance": 6.827146300288505,
+                "going": true
             }
         ]
     }
