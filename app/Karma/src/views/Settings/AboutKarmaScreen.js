@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import {Image, SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View, Dimensions, ScrollView} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 const request = require("superagent");
 
 const logo = require("../../assets/images/settings-logos/K-logo.png");
@@ -52,9 +53,13 @@ class AboutKarmaScreen extends Component {
                         }}>
                         <Image source={logo} />
                     </View>
-                    <RegularText style={Styles.pb11}>
+                    <ScrollView style={[{flex: 1,
+                        marginBottom: 150,
+                        minHeight: SCREEN_HEIGHT}]}>
+                        <RegularText style={Styles.pb11}>
                         {this.state.aboutText}
-                    </RegularText>
+                        </RegularText> 
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         );
