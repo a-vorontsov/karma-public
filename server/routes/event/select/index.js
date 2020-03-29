@@ -125,56 +125,64 @@ router.get("/causes", authService.requireAuthentication, async (req, res) => {
  *  status: 200, description: res.data: Array of all event objects favourited by the user<br/>
  <pre>
  {
-  message:"All activities successfully fetched",
-  "data": {
-       "events": [
-           {
-               "eventId": 1,
-               "name": "Community help centre",
-               "womenOnly": false,
-               "spots": 3,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "help people at the community help centre because help is good",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "nearby road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.4161220,
-               "long": -0.1866410,
-                "distance": 0.18548890708299523
-           },
-           {
-               "eventId": 2,
-               "name": "Picking up trash",
-               "womenOnly": false,
-               "spots": 5,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "small class to teach other people how to pick themselves up",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "uni road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.5114070,
-               "long": -0.1159050,
-               "distance": 7.399274608089304
-           }
-       ]
-   }
- }
+    "message": "Favourite events fetched successfully",
+    "data": {
+        "events": [
+            {
+                "eventId": 26,
+                "name": "Vestibulum ante ipsum primis in",
+                "womenOnly": false,
+                "spots": 23,
+                "addressVisible": false,
+                "minimumAge": 18,
+                "photoId": true,
+                "physical": true,
+                "addInfo": false,
+                "content": "commodo tincidunt nibh. Phasellus nulla. Integer vulputate, risus a ultricies","
+                "date": "2019-05-16T23:00:00.000Z",
+                "eventCreatorId": 12,
+                "address1": "Hudson Court",
+                "address2": "Pincott Road",
+                "postcode": "SW19 2LF",
+                "city": "London",
+                "region": " Greater London",
+                "lat": 51.414916,
+                "long": -0.190487,
+                "favourited": true,
+                "volunteers": [],
+                "spotsRemaining": 23,
+                "going": false,
+                "distance": 0
+            },
+            {
+                "eventId": 79,
+                "name": "orci sem",
+                "womenOnly": false,
+                "spots": 38,
+                "addressVisible": true,
+                "minimumAge": 21,
+                "photoId": true,
+                "physical": true,
+                "addInfo": false,
+                "content": "malesuada augue ut lacus. Nulla tincidunt, neque vitae semper egestas","
+                "date": "2019-09-20T23:00:00.000Z",
+                "eventCreatorId": 11,
+                "address1": "Hudson Court",
+                "address2": "Pincott Road",
+                "postcode": "SW19 2LF",
+                "city": "London",
+                "region": " Greater London",
+                "lat": 51.414916,
+                "long": -0.190487,
+                "favourited": true,
+                "volunteers": [],
+                "spotsRemaining": 38,
+                "going": false,
+                "distance": 0
+            }
+        ]
+    }
+}
  </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: if userID doesnt belong to any user <br/>
@@ -203,56 +211,68 @@ router.get("/favourites", authService.requireAuthentication, async (req, res) =>
  *  status: 200, description: Array of all event objects that user is going to<br/>
  <pre>
  {
-  message:"All activities successfully fetched",
-  "data": {
-       "events": [
-           {
-               "eventId": 1,
-               "name": "Community help centre",
-               "womenOnly": false,
-               "spots": 3,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "help people at the community help centre because help is good",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "nearby road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.4161220,
-               "long": -0.1866410,
-                "distance": 0.18548890708299523
-           },
-           {
-               "eventId": 2,
-               "name": "Picking up trash",
-               "womenOnly": false,
-               "spots": 5,
-               "addressVisible": true,
-               "minimumAge": 18,
-               "photoId": false,
-               "physical": false,
-               "addInfo": true,
-               "content": "small class to teach other people how to pick themselves up",
-               "date": "2020-03-25T19:10:00.000Z",
-               "eventCreatorId": 1,
-               "address1": "uni road",
-               "address2": null,
-               "postcode": "whatever",
-               "city": "London",
-               "region": null,
-               "lat": 51.5114070,
-               "long": -0.1159050,
-               "distance": 7.399274608089304
-           }
-       ]
-   }
- }
+    "message": "Future going events fetched successfully",
+    "data": {
+        "events": [
+            {
+                "eventId": 3,
+                "name": "EXPRESS AUTISM CONFERENCE",
+                "womenOnly": false,
+                "spots": 30,
+                "addressVisible": true,
+                "minimumAge": 20,
+                "photoId": false,
+                "physical": true,
+                "addInfo": true,
+                "content": "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+                "date": "2020-04-08T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "Metro Central Heights",
+                "address2": "119 Newington Causeway",
+                "postcode": " SE1 6BN",
+                "city": "London",
+                "region": "Greater London",
+                "lat": 51.495917,
+                "long": -0.099658,
+                "favourited": false,
+                "volunteers": [
+                    83,
+                    100
+                ],
+                "spotsRemaining": 28,
+                "distance": 6.827146300288505
+            },
+            {
+                "eventId": 3,
+                "name": "EXPRESS AUTISM CONFERENCE",
+                "womenOnly": false,
+                "spots": 30,
+                "addressVisible": true,
+                "minimumAge": 20,
+                "photoId": false,
+                "physical": true,
+                "addInfo": true,
+                "content": "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
+                "date": "2020-04-08T23:00:00.000Z",
+                "eventCreatorId": 1,
+                "address1": "Metro Central Heights",
+                "address2": "119 Newington Causeway",
+                "postcode": " SE1 6BN",
+                "city": "London",
+                "region": "Greater London",
+                "lat": 51.495917,
+                "long": -0.099658,
+                "favourited": false,
+                "volunteers": [
+                    83,
+                    100
+                ],
+                "spotsRemaining": 28,
+                "distance": 6.827146300288505
+            }
+        ]
+    }
+}
  </pre>
  *  status: 400, description: if userID param is not specified or in wrong format/NaN <br/>
  *  status: 404, description: if userID doesnt belong to any user <br/>

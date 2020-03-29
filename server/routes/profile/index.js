@@ -64,41 +64,34 @@ const eventRepo = require("../../repositories/event");
                     }
                  ],
                  "pastEvents": [
-                 {
-                    "id": 7,
-                    "name": "nec tempus mauris erat",
-                    "addressId": 9,
+                    {
+                    "id": 31,
+                    "name": "ante,",
+                    "addressId": 4,
                     "womenOnly": false,
                     "spots": 49,
-                    "addressVisible": true,
-                    "minimumAge": 19,
-                    "photoId": true,
-                    "physical": false,
-                    "addInfo": true,
-                    "content": "frat. Cras dipis nec mauris blandit mattis. Cras eget nisi dictum augue",
-                    "date": "2019-07-15T23:00:00.000Z",
-                    "userId": 45,
-                    "creationDate": "2019-07-06T23:00:00.000Z",
-                    "causes": [1,2,4]
-                 }
-                 {
-                    "id": 45,
-                    "name": "turpis nec mauris blandit mattis.",
-                    "addressId": 68,
-                    "womenOnly": true,
-                    "spots": 44,
                     "addressVisible": false,
                     "minimumAge": 20,
                     "photoId": true,
-                    "physical": true,
+                    "physical": false,
                     "addInfo": false,
-                    "content": "am vitae Sed nec metus facilisis lorem",
-                    "date": "2019-08-19T23:00:00.000Z",
-                    "userId": 53,
-                    "creationDate": "2020-07-26T23:00:00.000Z",
-                    "causes": [1,2,4]
-                            }
-                 ],
+                    "content": "amet, consectetuer adipiscing elit. Etiam laoreet, libero et tristique pellentesque.",
+                    "date": "2019-08-02T23:00:00.000Z",
+                    "userId": 75,
+                    "pictureId": null,
+                    "creationDate": "2020-01-13T00:00:00.000Z",
+                    "favourited": false,
+                    "volunteers": [
+                        52,
+                        100
+                    ],
+                    "causes": [
+                        7
+                    ],
+                    "spotsRemaining": 47,
+                    "going": false
+                     },
+                ],
                  "causes": {
                             "userId": 57,
                             "causeId": 12
@@ -142,6 +135,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
             const profileResult = await profileRepo.findByIndividualId(individual.id);
             const profile = profileResult.rows[0];
             const signUpResult = await signUpRepo.findAllByIndividualIdConfirmed(individual.id);
+
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
@@ -149,7 +143,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     return {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
-                        going: (event.volunteers).includes(userId),
+                        going: (event.volunteers).includes(Number.parseInt(userId)),
                         favourited: (event.favourited).includes(userId),
                     };
                 })
@@ -161,7 +155,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     return {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
-                        going: (event.volunteers).includes(userId),
+                        going: (event.volunteers).includes(Number.parseInt(userId)),
                         favourited: (event.favourited).includes(userId),
                     };
                 })
