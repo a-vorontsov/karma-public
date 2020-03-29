@@ -110,6 +110,7 @@ const getGoingEvents = async (userId) => {
         return {...event,
             spotsRemaining: event.spots - (event.volunteers).length,
             favourited: (event.favourited).includes(Number.parseInt(userId)),
+            going: true,
         };
     });
     eventSorter.sortByTimeAndDistance(events, user);

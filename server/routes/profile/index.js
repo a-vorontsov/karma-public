@@ -46,21 +46,44 @@ const eventRepo = require("../../repositories/event");
                 }
                  "upcomingEvents": [
                     {
-                    "id": 89,
-                    "name": "nonummy",
-                    "addressId": 35,
-                    "womenOnly": true,
-                    "spots": 18,
+                    "id": 2,
+                    "name": "Pathways to Collective and Individual Healing",
+                    "addressId": 2,
+                    "womenOnly": false,
+                    "spots": 20,
                     "addressVisible": true,
                     "minimumAge": 21,
-                    "photoId": true,
-                    "physical": true,
+                    "photoId": false,
+                    "physical": false,
                     "addInfo": false,
-                    "content": "id, libero. Donectristique neque vs. Etiam bibendum fermentum metus. Aenean",
-                    "date": "2020-10-20T23:00:00.000Z",
-                    "userId": 80,
-                    "creationDate": "2019-11-06T00:00:00.000Z",
-                    "causes": [1,2,4]
+                    "content": "This symposium aims to share research and studies with professionals and
+                    researchers working within the CSA/ sexual abuse space (therapists, heath care professionals,
+                    charity sector) to unpack context of working within the South Asian community, with an objective
+                    of informing practice and sharing cultural sensitive/adaptive approaches.",
+                    "date": "2020-07-04T23:00:00.000Z",
+                    "userId": 1,
+                    "pictureId": null,
+                    "creationDate": "2019-09-17T23:00:00.000Z",
+                    "favourited": true,
+                    "volunteers": [
+                        51,
+                        61,
+                        62,
+                        70,
+                        73,
+                        78,
+                        85,
+                        86,
+                        88,
+                        95,
+                        98,
+                        100
+                    ],
+                    "causes": [
+                        4
+                    ],
+                    "spotsRemaining": 8,
+                    "going": true
                     }
                  ],
                  "pastEvents": [
@@ -89,7 +112,7 @@ const eventRepo = require("../../repositories/event");
                         7
                     ],
                     "spotsRemaining": 47,
-                    "going": false
+                    "going": true
                      },
                 ],
                  "causes": {
@@ -144,7 +167,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
                         going: (event.volunteers).includes(Number.parseInt(userId)),
-                        favourited: (event.favourited).includes(userId),
+                        favourited: (event.favourited).includes(Number.parseInt(userId)),
                     };
                 })
                 .filter(event => event.date < now);
