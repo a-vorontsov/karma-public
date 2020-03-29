@@ -166,7 +166,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     return {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
-                        going: (event.volunteers).includes(Number.parseInt(userId)),
+                        going: true,
                         favourited: (event.favourited).includes(Number.parseInt(userId)),
                     };
                 })
@@ -178,7 +178,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     return {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
-                        going: (event.volunteers).includes(Number.parseInt(userId)),
+                        going: true,
                         favourited: (event.favourited).includes(Number.parseInt(userId)),
                     };
                 })
