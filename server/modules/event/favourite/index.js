@@ -54,8 +54,14 @@ const getFavouriteEvents = async (userId) => {
     }
 
     const findResult = await individualRepository.findFavouriteEvents(userId);
-    const events = findResult.rows;
+    let events = findResult.rows;
     const user = userIdCheckResponse.user;
+    events = events.map(event => {
+        return {...event,
+            spotsRemaining: event.spots - (event.volunteers).length,
+            going: (event.volunteers).includes(userId),
+        };
+    });
     eventSorter.sortByTimeAndDistance(events, user);
     return ({
         status: 200,
