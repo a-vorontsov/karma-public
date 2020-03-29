@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import {Image, SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View, Dimensions} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import {ScrollView} from "react-native-gesture-handler";
+const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 
 const request = require("superagent");
 
@@ -54,11 +55,20 @@ class TermsScreen extends Component {
                     <Image source={logo} />
                 </View>
                 <View style={Styles.ph24}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <RegularText style={Styles.pb8}>
-                            {this.state.termsText}
-                        </RegularText>
-                    </ScrollView>
+                    <View
+                        style={[
+                            {
+                                flex: 1,
+                                marginBottom: 150,
+                                minHeight: SCREEN_HEIGHT,
+                            },
+                        ]}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <RegularText style={Styles.pb8}>
+                                {this.state.termsText}
+                            </RegularText>
+                        </ScrollView>
+                    </View>
                 </View>
             </SafeAreaView>
         );
