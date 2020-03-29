@@ -45,8 +45,10 @@ const storeAndSendVerificationToken = async (validMinutes, dbUpdateFunction, dbI
     // generate 6 digit code
     log.info("Generating verification token");
     const token = randomize('0', 6);
+    const curDate = new Date();
+    curDate.setTime( curDate.getTime() - curDate.getTimezoneOffset() * 60 * 1000 );
     const expiryDate = date.format(
-        date.addMinutes(new Date(), validMinutes),
+        date.addMinutes(curDate, validMinutes),
         "YYYY-MM-DD HH:mm:ss", true,
     );
     // update the db

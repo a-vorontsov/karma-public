@@ -223,14 +223,17 @@ router.get('/signUp/history', authService.requireAuthentication, async (req, res
  */
 router.post('/:eventId/signUp/update', authService.requireAuthentication, async (req, res) => {
     try {
+        if (!req.body.otherUserId) {
+            req.body.otherUserId = req.query.userId;
+        }
         log.info("User id '%d': Updating signup to event id '%d' for user id '%d'", req.query.userId, req.params.eventId,
             req.body.otherUserId);
         const signup = {...req.body, eventId: Number.parseInt(req.params.eventId)};
         signup.individualId = await util.getIndividualIdFromUserId(signup.otherUserId);
-        const validationResult = validation.validateSignup(signup);
-        if (validationResult.errors.length > 0) {
-            return httpUtil.sendValidationErrors(validationResult, res);
-        }
+        // const validationResult = validation.validateSignup(signup);
+        // if (validationResult.errors.length > 0) {
+        //     return httpUtil.sendValidationErrors(validationResult, res);
+        // }
         const signupsResult = await eventSignupService.updateSignUp(signup);
         return httpUtil.sendResult(signupsResult, res);
     } catch (e) {
@@ -276,7 +279,7 @@ router.get('/:eventId/signUp/status', authService.requireAuthentication, async (
         log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.eventId);
         const signupResult = await eventSignupService.getSignupStatus({
             eventId: Number.parseInt(req.params.eventId),
-            userId: req.query.usage,
+            userId: req.query.userId,
         });
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {

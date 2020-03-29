@@ -93,8 +93,9 @@ class ActivitiesGoingScreen extends Component {
                     ) : (
                         <View style={Styles.ph24}>
                             <RegularText>
-                                You have not selected any activities to attend
-                                (Pull to Refresh)
+                                No organizations have confirmed your attendance
+                                to an event yet. Please try again later. (Pull
+                                to Refresh)
                             </RegularText>
                         </View>
                     )}

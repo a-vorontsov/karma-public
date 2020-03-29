@@ -20,7 +20,7 @@ CREATE TABLE authentication
 (
     id serial NOT NULL,
     token varchar(256) NOT NULL,
-    creation_date timestamp NOT NULL,
+    creation_date timestamptz NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT authentication_ak_1 UNIQUE (token)
     NOT DEFERRABLE  INITIALLY IMMEDIATE,
@@ -62,10 +62,10 @@ CREATE TABLE authentication
         physical boolean NOT NULL,
         add_info boolean NOT NULL,
         content text NOT NULL,
-        date timestamp NOT NULL,
+        date timestamptz NOT NULL,
         user_id int NOT NULL,
         picture_id int,
-        creation_date timestamp NOT NULL,
+        creation_date timestamptz NOT NULL,
         CONSTRAINT event_pk PRIMARY KEY (id)
     );
 
@@ -115,7 +115,7 @@ CREATE TABLE authentication
         id serial NOT NULL,
         type varchar(64) NOT NULL,
         message varchar(512) NOT NULL,
-        timestamp_sent timestamp NOT NULL,
+        timestamp_sent timestamptz NOT NULL,
         sender_id int NOT NULL,
         receiver_id int NOT NULL,
         CONSTRAINT notification_pk PRIMARY KEY (id)
@@ -176,7 +176,7 @@ CREATE TABLE authentication
             phone_flag int NOT NULL,
             sign_up_flag int NOT NULL,
             verification_token varchar(64) NOT NULL,
-            expiry_date timestamp NOT NULL,
+            expiry_date timestamptz NOT NULL,
             CONSTRAINT registration_pk PRIMARY KEY (email)
         );
 
@@ -197,7 +197,7 @@ CREATE TABLE authentication
             id serial NOT NULL,
             user_id int NOT NULL,
             password_token varchar(64) NOT NULL,
-            expiry_date timestamp NOT NULL,
+            expiry_date timestamptz NOT NULL,
             CONSTRAINT reset_pk PRIMARY KEY (id)
         );
 
@@ -237,7 +237,7 @@ CREATE TABLE authentication
             password_hash varchar(64) NOT NULL,
             verified boolean NOT NULL,
             salt varchar(64) NOT NULL,
-            date_registered timestamp NOT NULL,
+            date_registered timestamptz NOT NULL,
                         CONSTRAINT user_ak_2 UNIQUE
             (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
                         CONSTRAINT user_pk PRIMARY KEY
