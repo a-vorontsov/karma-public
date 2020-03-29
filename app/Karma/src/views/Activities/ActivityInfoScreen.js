@@ -161,9 +161,10 @@ class ActivityInfoScreen extends Component {
         const long = Number(activity.long);
 
         const full_location = address1 + address2 + eventCity + " " + postcode;
-
+        
         this.setState({
             full_location,
+            
             lat,
             long,
             eventCity,
@@ -337,17 +338,19 @@ class ActivityInfoScreen extends Component {
                                     resizeMode: "contain",
                                 }}
                             />
+                           
                             <Image
-                                source={icons.fave_active}
+                                source={icons.fave_inactive}
                                 style={{
                                     position: "absolute",
-                                    top: 16,
-                                    right: 15,
+                                top: 16,
+                                right: 15,
                                     height: 30,
-                                    width: 30,
-                                    resizeMode: "contain",
+                                width: 30,
+                                resizeMode: "contain",
                                 }}
                             />
+                           
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 0}]}>
                                 {` ${new Date(activity.date).getDate()}`}
