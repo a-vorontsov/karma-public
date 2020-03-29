@@ -103,10 +103,9 @@ const getGoingEvents = async (userId) => {
         throw new Error(userIdCheckResponse.message);
     }
     const findResult = await individualRepository.findGoingEvents(userId);
-    let events = findResult.rows;
     const user = userIdCheckResponse.user;
     // add spotsRemaining property to all event objects
-    events = events.map(event => {
+    const events = findResult.rows.map(event => {
         return {...event,
             spotsRemaining: event.spots - (event.volunteers).length,
             favourited: (event.favourited).includes(Number.parseInt(userId)),

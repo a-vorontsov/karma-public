@@ -116,11 +116,8 @@ const getEvents = async (filters, userId) => {
     }
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await eventRepository.findAllWithAllData(whereClause);
-
-    let events = eventResult.rows;
-
     // add going and spotsRemaining properties to all event objects
-    events = eventResult.rows.map(event => {
+    let events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(Number.parseInt(userId)),
             favourited: (event.favourited).includes(Number.parseInt(userId)),
@@ -154,10 +151,8 @@ const getEventsBySelectedCauses = async (filters, userId) => {
 
     const whereClause = filterer.getWhereClause(filters); // get corresponding where clause from the filters given
     const eventResult = await selectedCauseRepository.findEventsSelectedByUser(userId, whereClause);
-    let events = eventResult.rows;
-
     // add going and spotsRemaining properties to all event objects
-    events = eventResult.rows.map(event => {
+    let events = eventResult.rows.map(event => {
         return {...event,
             going: (event.volunteers).includes(Number.parseInt(userId)),
             favourited: (event.favourited).includes(Number.parseInt(userId)),
