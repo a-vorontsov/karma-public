@@ -1,7 +1,7 @@
 import React from "react";
 import {SubTitleText, RegularText, BoldText, FadedText} from "../text";
 import {TransparentButton, Button} from "../buttons";
-import {View, Image,} from "react-native";
+import {View, Image} from "react-native";
 import Toast from "react-native-simple-toast";
 import RNCalendarEvents from "react-native-calendar-events";
 import Styles from "../../styles/Styles";
@@ -57,13 +57,11 @@ export default class SignUpActivity extends React.Component {
             })
             .catch(err => {
                 console.log(err);
-                
+
                 onError(
                     "There has been an error with signing up to this activity.",
-                        "Please try again later or contact us if this issue persists.",
-                    
+                    "Please try again later or contact us if this issue persists.",
                 );
-                
             });
     }
 
@@ -93,12 +91,20 @@ export default class SignUpActivity extends React.Component {
                 );
             });
     }
+
+    addDaysToDate(dateString, days) {
+        let d = new Date(dateString);
+        d.setDate(d.getDate() + days);
+        return d.toISOString();
+    }
+
     async existsInCalendar() {
         const {activity} = this.props;
         const events = await RNCalendarEvents.fetchAllEvents(
-            activity.date,
-            activity.date,
+            this.addDaysToDate(activity.date, -1),
+            this.addDaysToDate(activity.date, +1),
         );
+
         const existEvent = events.some(event => {
             return event.title === activity.name;
         });
@@ -142,8 +148,8 @@ export default class SignUpActivity extends React.Component {
         if (perms === "authorized") {
             const {activity, onError} = this.props;
             const events = await RNCalendarEvents.fetchAllEvents(
-                activity.date,
-                activity.date,
+                this.addDaysToDate(activity.date, -1),
+                this.addDaysToDate(activity.date, +1),
             );
             const existEvent = events.find(event => {
                 return event.title === activity.name;

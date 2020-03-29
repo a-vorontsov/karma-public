@@ -13,7 +13,6 @@ import {getAuthToken} from "../../util/credentials";
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
-import Colours from "../../styles/Colours";
 
 class ActivitiesGoingScreen extends Component {
     constructor(props) {
@@ -66,7 +65,7 @@ class ActivitiesGoingScreen extends Component {
 
     render() {
         return (
-            <ScrollView 
+            <ScrollView
                 showsVerticalScrollIndicator={false}
                 refreshControl={
                     <RefreshControl
@@ -76,11 +75,10 @@ class ActivitiesGoingScreen extends Component {
                 }>
                 <View
                     style={{
-                        flex:1,
+                        flex: 1,
                         marginTop: 10,
                         marginBottom: 100,
                         minHeight: SCREEN_HEIGHT,
-                      
                     }}>
                     {this.state.activities.length > 0 ? (
                         this.state.activities.map(activity => {
@@ -95,15 +93,14 @@ class ActivitiesGoingScreen extends Component {
                     ) : (
                         <View style={Styles.ph24}>
                             <RegularText>
-                                No organizations have confirmed your attendance to an event yet. Please try again later.
-                                (Pull to Refresh)
+                                No organizations have confirmed your attendance
+                                to an event yet. Please try again later. (Pull
+                                to Refresh)
                             </RegularText>
-                                
                         </View>
-                       
                     )}
                 </View>
-  </ScrollView>
+            </ScrollView>
         );
     }
 }

@@ -45,7 +45,7 @@ class ActivityInfoScreen extends Component {
         super(props);
         this.state = {
             displaySignupModal: false,
-            signedUp:false,
+            signedUp: false,
             showCancel: false,
             addInfo: false,
             photoId: false,
@@ -90,27 +90,25 @@ class ActivityInfoScreen extends Component {
         const authToken = await getAuthToken();
         const activity = this.props.navigation.getParam("activity");
         const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
-        const response = await 
-        request
+        await request
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
-            
+
             .then(res => {
                 console.log(res.status);
-                if(res.body.data.signup.confirmed === false){
-                    this.setState({signedUp:false});
+                if (res.body.data.signup.confirmed === false) {
+                    this.setState({signedUp: false});
+                } else {
+                    this.setState({signedUp: true});
                 }
-                else{
-                this.setState({signedUp:true});
-                }
-               console.log(res.body);
+                console.log(res.body);
             })
             .catch(err => {
-                this.setState({signedUp:false});
+                this.setState({signedUp: false});
 
                 console.log(err);
             });
-    }
+    };
 
     getCreatorInfo = async id => {
         const authToken = await getAuthToken();
@@ -578,9 +576,8 @@ class ActivityInfoScreen extends Component {
                         backgroundColor: Colours.white,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
-                        
-                    {this.state.signedUp ? (
-                        //yes
+                        {this.state.signedUp ? (
+                            //yes
                             <GradientButton
                                 title="Cancel Attendance"
                                 onPress={() => this.toggleModal()}
@@ -589,7 +586,9 @@ class ActivityInfoScreen extends Component {
                             //no
                             <GradientButton
                                 title="Attend"
-                                onPress={() => {this.toggleModal()}}
+                                onPress={() => {
+                                    this.toggleModal();
+                                }}
                             />
                         )}
                     </View>
