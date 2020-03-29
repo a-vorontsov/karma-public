@@ -156,7 +156,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                         ...event,
                         spotsRemaining: event.spots - (event.volunteers).length,
                         going: (event.volunteers).includes(Number.parseInt(userId)),
-                        favourited: (event.favourited).includes(userId),
+                        favourited: (event.favourited).includes(Number.parseInt(userId)),
                     };
                 })
                 .filter(event => event.date > now);
