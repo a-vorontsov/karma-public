@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {Image, SafeAreaView, View} from "react-native";
+import {Image, SafeAreaView, View, Dimensions, ScrollView} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 
 const request = require("superagent");
 
@@ -49,11 +50,22 @@ class GuidelinesScreen extends Component {
                     }}>
                     <Image source={logo} />
                 </View>
-                <View style={Styles.ph24}>
-                    <RegularText style={Styles.pb11}>
-                        {this.state.guidelinesText}
-                    </RegularText>
-                </View>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={Styles.ph24}>
+                    <View
+                        style={[
+                            {
+                                flex: 1,
+                                marginBottom: 150,
+                                minHeight: SCREEN_HEIGHT,
+                            },
+                        ]}>
+                        <RegularText style={Styles.pb11}>
+                            {this.state.guidelinesText}
+                        </RegularText>
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }

@@ -53,12 +53,18 @@ class AboutKarmaScreen extends Component {
                         }}>
                         <Image source={logo} />
                     </View>
-                    <ScrollView style={[{flex: 1,
-                        marginBottom: 150,
-                        minHeight: SCREEN_HEIGHT}]}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={[
+                            {
+                                flex: 1,
+                                marginBottom: 150,
+                                minHeight: SCREEN_HEIGHT,
+                            },
+                        ]}>
                         <RegularText style={Styles.pb11}>
-                        {this.state.aboutText}
-                        </RegularText> 
+                            {this.state.aboutText}
+                        </RegularText>
                     </ScrollView>
                 </View>
             </SafeAreaView>

@@ -60,12 +60,17 @@ class PrivacyScreen extends Component {
                 </View>
                 <View style={[Styles.ph24]}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={[{flex: 1,
-                        marginBottom: 150,
-                        minHeight: SCREEN_HEIGHT}]}>
+                        <View
+                            style={[
+                                {
+                                    flex: 1,
+                                    marginBottom: 150,
+                                    minHeight: SCREEN_HEIGHT,
+                                },
+                            ]}>
                             <RegularText style={Styles.pb11}>
-                            {this.state.privacyPolicyText}
-                        </RegularText>
+                                {this.state.privacyPolicyText}
+                            </RegularText>
                         </View>
                     </ScrollView>
                 </View>
