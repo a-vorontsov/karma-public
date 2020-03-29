@@ -164,6 +164,7 @@ class ActivityInfoScreen extends Component {
 
         this.setState({
             full_location,
+
             lat,
             long,
             eventCity,
@@ -185,7 +186,7 @@ class ActivityInfoScreen extends Component {
         const activity = this.props.navigation.getParam("activity");
 
         this.getEventInfo(activity);
-        console.log("BIG WORM");
+
         await this.getSignUpStatus();
         await this.getCreatorInfo(
             activity.eventCreatorId
@@ -337,8 +338,13 @@ class ActivityInfoScreen extends Component {
                                     resizeMode: "contain",
                                 }}
                             />
+
                             <Image
-                                source={icons.fave_active}
+                                source={
+                                    activity.favourited
+                                        ? icons.fave_active
+                                        : icons.fave_inactive
+                                }
                                 style={{
                                     position: "absolute",
                                     top: 16,
@@ -348,6 +354,7 @@ class ActivityInfoScreen extends Component {
                                     resizeMode: "contain",
                                 }}
                             />
+
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 0}]}>
                                 {` ${new Date(activity.date).getDate()}`}

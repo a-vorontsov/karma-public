@@ -178,12 +178,6 @@ const eventWithData = {
     region: "region",
     lat: 51.511407,
     long: -0.115905,
-    volunteers: [
-        1,
-        34,
-    ],
-    going: true,
-    spotsRemaining: 28,
     distance: 7.399274608089304,
 };
 const peaceEvent = {

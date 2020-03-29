@@ -209,11 +209,13 @@ test("getting all events works", async () => {
         ...eventWithAllData,
         favourited: [1],
         id: 1,
+        volunteers:[31,23],
     },
     {
         ...eventWithAllData,
         favourited: [1],
         id: 2,
+        volunteers:[31,23],
     }];
     util.checkUser.mockResolvedValue({status: 200});
     filterer.getWhereClause.mockResolvedValue("");
@@ -238,11 +240,13 @@ test("getting all events within a distance works", async () => {
         ...eventWithAllData,
         favourited: [1],
         id: 1,
+        volunteers:[31,23],
     },
     {
         ...eventWithAllData,
         favourited: [1],
         id: 2,
+        volunteers:[31,23],
     }];
     util.checkUser.mockResolvedValue({status: 200});
     filterer.getWhereClause.mockResolvedValue("");

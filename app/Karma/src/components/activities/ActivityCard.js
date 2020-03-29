@@ -62,7 +62,9 @@ class ActivityCard extends React.Component {
         super(props);
         this.state = {
             displaySignupModal: false,
-            favourited: props.activity.favourited,
+            favourited: props.favourited
+                ? props.favourited
+                : props.activity.favourited,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
@@ -79,6 +81,7 @@ class ActivityCard extends React.Component {
 
     async toggleFavourite() {
         const authToken = await getAuthToken();
+
         if (!this.state.favourited) {
             request
                 .post(
@@ -118,7 +121,6 @@ class ActivityCard extends React.Component {
 
     _renderTruncatedFooter = handlePress => {
         const {activity, signedup} = this.props;
-
         return (
             <TouchableOpacity
                 onPress={() =>

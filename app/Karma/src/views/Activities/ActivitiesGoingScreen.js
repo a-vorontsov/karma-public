@@ -33,7 +33,7 @@ class ActivitiesGoingScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/going`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.message);
+                console.log(result.body.data.message);
                 this.setState({
                     activities: result.body.data.events,
                 });

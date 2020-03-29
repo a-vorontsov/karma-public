@@ -15,11 +15,12 @@ jest.mock("../../../repositories/profile");
 jest.mock("../../../util");
 jest.mock("../../sorting");
 
-let signUp; let signedUpUserExample1; let signedUpUserExample2; let event1; let event2; let profile;
+let signUp, signedUpUserExample1, signedUpUserExample2, event1, event2, profile, eventWithAllData;
 beforeEach(() => {
     signUp = testHelpers.getSignUp();
     signedUpUserExample1 = testHelpers.getSignedUpUserExample1();
     signedUpUserExample2 = testHelpers.getSignedUpUserExample2();
+    eventWithAllData = testHelpers.getEventWithAllData();
     event1 = testHelpers.getEventWithLocationExample1();
     event2 = testHelpers.getEventWithLocationExample2();
     profile = testHelpers.getProfile();
@@ -124,12 +125,16 @@ test('getting events user is going to works and in the future', async () => {
     event1.date = tomorrow;
     event2.date = tomorrow;
     const eventsArray =[{
-        ...event1,
+        ...eventWithAllData,
         eventid: 1,
+        favourited: [ 1,4],
+        volunteers:[15,69],
     },
     {
-        ...event2,
+        ...eventWithAllData,
         eventid: 2,
+        favourited: [15, 4],
+        volunteers:[15,69],
     }];
 
     util.checkUser.mockResolvedValue({status: 200});
@@ -139,7 +144,20 @@ test('getting events user is going to works and in the future', async () => {
 
     expect(individualRepository.findGoingEvents).toHaveBeenCalledTimes(1);
     expect(getGoingEventsResult.status).toBe(200);
-    expect(getGoingEventsResult.data.events).toMatchObject(eventsArray);
+    expect(getGoingEventsResult.data.events).toMatchObject([
+        {
+            ...eventWithAllData,
+            eventid: 1,
+            favourited: false,
+            going: true,
+        },
+        {
+            ...eventWithAllData,
+            eventid: 2,
+            favourited: true,
+            going: true,
+        }
+    ]);
 });
 
 test('getting all signups to event works', async () => {

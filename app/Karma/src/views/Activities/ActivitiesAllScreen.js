@@ -64,6 +64,7 @@ class ActivitiesAllScreen extends Component {
         }
         return {};
     }
+
     getBooleanFilters() {
         if (this.props.filtersEnabled) {
             return queryString.stringify(
@@ -86,8 +87,8 @@ class ActivitiesAllScreen extends Component {
                 ...this.getFiltersObject(),
             })
             .then(async res => {
-                console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
+
                 this.setState({
                     loading: false,
                     fetchingDataFromServer: false,

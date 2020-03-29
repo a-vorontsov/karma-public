@@ -103,8 +103,15 @@ const getGoingEvents = async (userId) => {
         throw new Error(userIdCheckResponse.message);
     }
     const findResult = await individualRepository.findGoingEvents(userId);
-    const events = findResult.rows;
     const user = userIdCheckResponse.user;
+    // add spotsRemaining property to all event objects
+    const events = findResult.rows.map(event => {
+        return {...event,
+            spotsRemaining: event.spots - (event.volunteers).length,
+            favourited: (event.favourited).includes(Number.parseInt(userId)),
+            going: true,
+        };
+    });
     eventSorter.sortByTimeAndDistance(events, user);
     return ({
         status: 200,

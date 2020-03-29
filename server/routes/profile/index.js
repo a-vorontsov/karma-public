@@ -46,59 +46,75 @@ const eventRepo = require("../../repositories/event");
                 }
                  "upcomingEvents": [
                     {
-                    "id": 89,
-                    "name": "nonummy",
-                    "addressId": 35,
-                    "womenOnly": true,
-                    "spots": 18,
+                    "id": 2,
+                    "name": "Pathways to Collective and Individual Healing",
+                    "addressId": 2,
+                    "womenOnly": false,
+                    "spots": 20,
                     "addressVisible": true,
                     "minimumAge": 21,
-                    "photoId": true,
-                    "physical": true,
+                    "photoId": false,
+                    "physical": false,
                     "addInfo": false,
-                    "content": "id, libero. Donectristique neque vs. Etiam bibendum fermentum metus. Aenean",
-                    "date": "2020-10-20T23:00:00.000Z",
-                    "userId": 80,
-                    "creationDate": "2019-11-06T00:00:00.000Z",
-                    "causes": [1,2,4]
+                    "content": "This symposium aims to share research and studies with professionals and
+                    researchers working within the CSA/ sexual abuse space (therapists, heath care professionals,
+                    charity sector) to unpack context of working within the South Asian community, with an objective
+                    of informing practice and sharing cultural sensitive/adaptive approaches.",
+                    "date": "2020-07-04T23:00:00.000Z",
+                    "userId": 1,
+                    "pictureId": null,
+                    "creationDate": "2019-09-17T23:00:00.000Z",
+                    "favourited": true,
+                    "volunteers": [
+                        51,
+                        61,
+                        62,
+                        70,
+                        73,
+                        78,
+                        85,
+                        86,
+                        88,
+                        95,
+                        98,
+                        100
+                    ],
+                    "causes": [
+                        4
+                    ],
+                    "spotsRemaining": 8,
+                    "going": true
                     }
                  ],
                  "pastEvents": [
-                 {
-                    "id": 7,
-                    "name": "nec tempus mauris erat",
-                    "addressId": 9,
+                    {
+                    "id": 31,
+                    "name": "ante,",
+                    "addressId": 4,
                     "womenOnly": false,
                     "spots": 49,
-                    "addressVisible": true,
-                    "minimumAge": 19,
-                    "photoId": true,
-                    "physical": false,
-                    "addInfo": true,
-                    "content": "frat. Cras dipis nec mauris blandit mattis. Cras eget nisi dictum augue",
-                    "date": "2019-07-15T23:00:00.000Z",
-                    "userId": 45,
-                    "creationDate": "2019-07-06T23:00:00.000Z",
-                    "causes": [1,2,4]
-                 }
-                 {
-                    "id": 45,
-                    "name": "turpis nec mauris blandit mattis.",
-                    "addressId": 68,
-                    "womenOnly": true,
-                    "spots": 44,
                     "addressVisible": false,
                     "minimumAge": 20,
                     "photoId": true,
-                    "physical": true,
+                    "physical": false,
                     "addInfo": false,
-                    "content": "am vitae Sed nec metus facilisis lorem",
-                    "date": "2019-08-19T23:00:00.000Z",
-                    "userId": 53,
-                    "creationDate": "2020-07-26T23:00:00.000Z",
-                    "causes": [1,2,4]
-                            }
-                 ],
+                    "content": "amet, consectetuer adipiscing elit. Etiam laoreet, libero et tristique pellentesque.",
+                    "date": "2019-08-02T23:00:00.000Z",
+                    "userId": 75,
+                    "pictureId": null,
+                    "creationDate": "2020-01-13T00:00:00.000Z",
+                    "favourited": false,
+                    "volunteers": [
+                        52,
+                        100
+                    ],
+                    "causes": [
+                        7
+                    ],
+                    "spotsRemaining": 47,
+                    "going": true
+                     },
+                ],
                  "causes": {
                             "userId": 57,
                             "causeId": 12
@@ -142,13 +158,30 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
             const profileResult = await profileRepo.findByIndividualId(individual.id);
             const profile = profileResult.rows[0];
             const signUpResult = await signUpRepo.findAllByIndividualIdConfirmed(individual.id);
+
             const pastEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
+                .map(event => {
+                    return {
+                        ...event,
+                        spotsRemaining: event.spots - (event.volunteers).length,
+                        going: true,
+                        favourited: (event.favourited).includes(Number.parseInt(userId)),
+                    };
+                })
                 .filter(event => event.date < now);
             const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
+                .map(event => {
+                    return {
+                        ...event,
+                        spotsRemaining: event.spots - (event.volunteers).length,
+                        going: true,
+                        favourited: (event.favourited).includes(Number.parseInt(userId)),
+                    };
+                })
                 .filter(event => event.date > now);
 
             const indivToSend = {
