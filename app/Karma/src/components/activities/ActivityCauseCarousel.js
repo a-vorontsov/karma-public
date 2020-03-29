@@ -20,7 +20,8 @@ class ActivityCauseCarousel extends React.Component {
                     <ActivityCard
                         activity={item}
                         key={item.id}
-                        signedup={false} //TODO should take from props;
+                        signedup={item.going}
+                        favourited={item.favourited}
                     />
                 </View>
             </View>

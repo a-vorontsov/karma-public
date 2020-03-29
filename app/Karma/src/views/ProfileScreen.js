@@ -85,6 +85,7 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
+
         this.setState({
             email: user.email,
             isOrganisation: false,
@@ -189,7 +190,11 @@ class ProfileScreen extends Component {
             : "individual";
 
         this.setState({photo: null, photoLoading: true});
-        const url = profile ? `${REACT_APP_API_URL}/avatar/${endpointUsertype}/${profile.userId}` : `${REACT_APP_API_URL}/avatar/${endpointUsertype}`
+        const url = profile
+            ? `${REACT_APP_API_URL}/avatar/${endpointUsertype}/${
+                  profile.userId
+              }`
+            : `${REACT_APP_API_URL}/avatar/${endpointUsertype}`;
         await request
             .get(url)
             .set("authorization", authToken)
@@ -284,7 +289,7 @@ class ProfileScreen extends Component {
                 <View style={[CarouselStyles.item2, CarouselStyles.shadow]}>
                     <ActivityCard
                         activity={item}
-                        signedup={false}
+                        signedup={true}
                         key={item.id}
                     />
                 </View>
@@ -296,7 +301,7 @@ class ProfileScreen extends Component {
         const {navigate} = this.props.navigation;
         const {photo, photoLoading} = this.state;
         const otherProfile = this.props.navigation.getParam("profile");
-       
+
         return (
             <KeyboardAvoidingView
                 style={styles.container}

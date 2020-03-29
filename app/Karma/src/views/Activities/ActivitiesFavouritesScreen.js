@@ -35,7 +35,7 @@ class ActivitiesFavouritesScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/favourites`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.message);
+                console.log(result.body.data.events);
                 this.setState({
                     activities: result.body.data.events,
                 });
@@ -86,6 +86,7 @@ class ActivitiesFavouritesScreen extends Component {
                         this.state.activities.map(activity => {
                             return (
                                 <ActivityDisplayCard
+                                    favourited={true}
                                     activity={activity}
                                     key={activity.eventId}
                                 />
