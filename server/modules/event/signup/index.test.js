@@ -127,18 +127,14 @@ test('getting events user is going to works and in the future', async () => {
     const eventsArray =[{
         ...eventWithAllData,
         eventid: 1,
-        favourited: [
-            1,
-            4,
-        ],
+        favourited: [ 1,4],
+        volunteers:[15,69],
     },
     {
         ...eventWithAllData,
         eventid: 2,
-        favourited: [
-            15,
-            4,
-        ],
+        favourited: [15, 4],
+        volunteers:[15,69],
     }];
 
     util.checkUser.mockResolvedValue({status: 200});
@@ -153,13 +149,15 @@ test('getting events user is going to works and in the future', async () => {
             ...eventWithAllData,
             eventid: 1,
             favourited: false,
+            going: true,
         },
         {
             ...eventWithAllData,
             eventid: 2,
             favourited: true,
+            going: true,
         }
-    ])
+    ]);
 });
 
 test('getting all signups to event works', async () => {

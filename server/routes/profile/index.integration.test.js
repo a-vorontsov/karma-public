@@ -59,16 +59,22 @@ test('viewing the profile of another event attending user works', async () => {
                 date: Date.parse("01/01/2030"),
                 title: "date0",
                 id: 0,
+                volunteers:[31,23],
+                favourited:[21,21],
             },
             {
                 date: Date.parse("02/01/2030"),
                 title: "date1",
                 id: 1,
+                volunteers:[31,23],
+                favourited:[21,21],
             },
             {
                 date: Date.parse("01/01/1930"),
                 title: "date2",
                 id: 2,
+                volunteers:[31,23],
+                favourited:[21,21],
             },
         ],
     });
@@ -115,6 +121,8 @@ test('viewing the profile of another event attending user works', async () => {
                         date: Date.parse("01/01/2030"),
                         title: "date0",
                         id: 0,
+                        volunteers:[31,23],
+                        favourited:[21,21],
                     }],
                 };
                 break;
@@ -125,6 +133,8 @@ test('viewing the profile of another event attending user works', async () => {
                         date: Date.parse("02/01/2030"),
                         title: "date1",
                         id: 1,
+                        volunteers:[31,23],
+                        favourited:[21,21],
                     }],
                 };
                 break;
@@ -135,6 +145,8 @@ test('viewing the profile of another event attending user works', async () => {
                         date: Date.parse("01/01/1930"),
                         title: "date2",
                         id: 2,
+                        volunteers:[31,23],
+                        favourited:[21,21],
                     }],
                 };
                 break;

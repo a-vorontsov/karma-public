@@ -11,12 +11,13 @@ jest.mock("../../sorting");
 jest.mock("../../../util");
 
 
-let favourite; let event1; let event2;
+let favourite, event1, event2, eventWithAllData;
 
 beforeEach(() => {
     favourite = testHelpers.getFavourite();
     event1 = testHelpers.getEventWithLocationExample1();
     event2 = testHelpers.getEventWithLocationExample2();
+    eventWithAllData = testHelpers.getEventWithAllData();
 });
 
 afterEach(() => {
@@ -55,12 +56,16 @@ test('deleting favourite works', async () => {
 
 test('getting events user favourited works', async () => {
     const eventsArray =[{
-        ...event1,
+        ...eventWithAllData,
         eventid: 1,
+        favourited:[15,23,100,69],
+        volunteers:[15,3,2],
     },
     {
-        ...event2,
+        ...eventWithAllData,
         eventid: 2,
+        favourited:[15,18,2,9],
+        volunteers:[31,23],
     }];
 
     util.checkUser.mockResolvedValue({status: 200});
@@ -70,7 +75,20 @@ test('getting events user favourited works', async () => {
 
     expect(individualRepository.findFavouriteEvents).toHaveBeenCalledTimes(1);
     expect(getFavouriteEventsResult.status).toBe(200);
-    expect(getFavouriteEventsResult.data.events).toMatchObject(eventsArray);
+    expect(getFavouriteEventsResult.data.events).toMatchObject([
+        {
+            ...eventWithAllData,
+            eventid: 1,
+            favourited: true,
+            going:true,
+        },
+        {
+            ...eventWithAllData,
+            eventid: 2,
+            favourited: true,
+            going: false,
+        }
+    ]);
 });
 
 test("favourite-ing an event with an invalid id fails as expected", async () => {
