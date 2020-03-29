@@ -276,7 +276,7 @@ router.get('/:eventId/signUp/status', authService.requireAuthentication, async (
         log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.eventId);
         const signupResult = await eventSignupService.getSignupStatus({
             eventId: Number.parseInt(req.params.eventId),
-            userId: req.query.usage,
+            userId: req.query.userId,
         });
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
