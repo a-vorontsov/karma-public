@@ -803,7 +803,7 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 25,
+        fontSize: 20,
         color: Colours.white,
         fontWeight: "bold",
     },
