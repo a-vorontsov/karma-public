@@ -11,7 +11,7 @@ import {initialiseApp} from "./src/util/initialise";
 const AppNavigator = createSwitchNavigator(
     {
         Splash: {
-            getScreen: () => require("./src/views/Settings/ReportProblemScreen").default,
+            getScreen: () => require("./src/views/Activities/ActivitiesScreen").default,
         },
         Auth: MainNavigator,
         Main: MainTabNavigator,

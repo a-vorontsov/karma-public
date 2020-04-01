@@ -157,7 +157,7 @@ class ActivitiesScreen extends Component {
                                         {/* AVAILABILITY */}
                                         <View
                                             style={{
-                                                flexDirection: "row",
+                                                fleExDirection: "row",
                                                 alignItems: "center",
                                             }}>
                                             <RegularText
