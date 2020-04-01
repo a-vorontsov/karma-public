@@ -216,7 +216,7 @@ class AboutScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={Styles.container}>
-                <KeyboardAvoidingView
+                <View
                     style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
@@ -330,7 +330,7 @@ class AboutScreen extends React.Component {
                             )}
                         </View>
                     </ScrollView>
-                </KeyboardAvoidingView>
+                </View>
             </SafeAreaView>
         );
     }
