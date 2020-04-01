@@ -8,6 +8,7 @@ config.jose = { // TODO: host on domain
     iss: "http://karma.laane.xyz/",
     exp: "30 d",
     aud: "/user",
+    sigAlg: "ES256",
 };
 
 config.josePermissions = {

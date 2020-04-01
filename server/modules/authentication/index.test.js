@@ -169,7 +169,7 @@ test("visiting an internal route with a modified algo in the protected token hea
         .send(checkAuthStatusRequest)
         .redirects(1);
 
-    expect(response.body.message).toBe("decryption operation failed");
+    expect(response.body.message).toBe("the key does not support ECDH-ES key management (decryption) algorithm");
     expect(response.statusCode).toBe(401);
 });
 

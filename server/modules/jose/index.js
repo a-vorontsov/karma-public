@@ -3,6 +3,7 @@ const config = {...require("../../config").jose};
 const date = require("date-and-time");
 const authRepo = require("../../repositories/authentication");
 const log = require("../../util/log");
+const fs = require("fs");
 const {
     JWE, // JSON Web Encryption (JWE)
     JWK, // JSON Web Key (JWK)
@@ -12,22 +13,52 @@ const {
 } = jose;
 
 /**
- * Synchronously generate an encryption key with
- * config-defined type and curve/size.
+ * Import encryption key if user sessions are configured to be
+ * preserved on reboot or synchronously generate an encryption
+ * key with config-defined type and curve/size.
  */
-const encKey = JWK.generateSync(config.kty, config.crvOrSize, {
-    use: "enc",
-    key_ops: ["deriveKey"],
-});
+const encKey = (
+    process.env.PRESERVE_SESSIONS_ON_REBOOT == true ?
+        /* istanbul ignore next */
+        JWK.asKey({
+            key: fs.readFileSync("./keys/enc.key"),
+            format: "pem",
+            passphrase: process.env.PRIVATE_KEY_PASSPHRASE,
+        },
+        {
+            alg: config.alg,
+            use: "enc",
+        }) :
+        JWK.generateSync(config.kty, config.crvOrSize, {
+            alg: config.alg,
+            use: "enc",
+            key_ops: ["deriveKey"],
+        })
+);
 
 /**
- * Synchronously generate a signing key with
- * config-defined type and curve/size.
+ * Import signing key if user sessions are configured to be
+ * preserved on reboot or synchronously generate a signing
+ * key with config-defined type and curve/size.
  */
-const sigKey = JWK.generateSync(config.kty, config.crvOrSize, {
-    use: "sig",
-    key_ops: ["sign", "verify"],
-});
+const sigKey = (
+    process.env.PRESERVE_SESSIONS_ON_REBOOT == true ?
+        /* istanbul ignore next */
+        JWK.asKey({
+            key: fs.readFileSync("./keys/sig.key"),
+            format: "pem",
+            passphrase: process.env.PRIVATE_KEY_PASSPHRASE,
+        },
+        {
+            use: "sig",
+            alg: config.sigAlg,
+        }) :
+        JWK.generateSync(config.kty, config.crvOrSize, {
+            alg: config.sigAlg,
+            use: "sig",
+            key_ops: ["sign", "verify"],
+        })
+);
 
 /**
  * Initialise JSON Web Key Store
@@ -37,7 +68,7 @@ const keystore = new JWKS.KeyStore(encKey, sigKey);
 /**
  * Initialise signature blacklist cache
  */
-const blacklist = new Set(); // TODO: fetch when starting app
+const blacklist = new Set();
 
 /**
  * Get the public key used for encryption-decryption
