@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Dimensions, Image, SafeAreaView, View} from "react-native";
+import {Dimensions, Image, SafeAreaView, View, Keyboard} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText} from "../../components/text";
@@ -107,6 +107,7 @@ class ReportProblemScreen extends Component {
                         returnKeyType="next"
                         onChange={this.onChangeText}
                         onKeyPress={this.onKeyPress}
+                        onSubmitEditing={() => Keyboard.dismiss()}
                         multiline={true}
                         style={{
                             margin: 0,
