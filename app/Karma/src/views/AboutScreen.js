@@ -223,7 +223,7 @@ class AboutScreen extends React.Component {
                 <KeyboardAvoidingView
                     style={Styles.ph24}
                     keyboardVerticalOffset={-90}
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
                     <ScrollView
@@ -324,7 +324,6 @@ class AboutScreen extends React.Component {
                                 will not be shared with charities.
                             </RegularText>
                             <AddressInput onChange={this.onInputChange} />
-
                             {!this.state.submitting && (
                                 <GradientButton
                                     onPress={() => {
