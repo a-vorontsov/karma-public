@@ -52,6 +52,7 @@ app.use("/causes/select", require("./routes/causes/select"));
 app.use("/event", require("./routes/event"));
 
 app.use("/profile/edit", require("./routes/profile/edit"));
+app.use("/profile/delete", require("./routes/profile/delete"));
 app.use("/profile/edit/password", require("./routes/profile/edit/password"));
 app.use("/profile", require("./routes/profile"));
 
