@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     Platform,
     Keyboard,
+    KeyboardAvoidingScrollView,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
@@ -63,6 +64,10 @@ class AboutScreen extends React.Component {
         const {name, text} = event;
         this.setState({[name]: text});
     };
+
+    clearFocus() {
+        Keyboard.dismiss()
+    }
 
     setGender(selectedGender) {
         const genderCharacter =
@@ -216,9 +221,10 @@ class AboutScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={Styles.container}>
-                <View
+                <KeyboardAvoidingView
                     style={Styles.ph24}
-                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                    keyboardVerticalOffset={-90} 
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
                     enabled>
                     <PageHeader title="About" />
                     <ScrollView
@@ -319,6 +325,7 @@ class AboutScreen extends React.Component {
                                 will not be shared with charities.
                             </RegularText>
                             <AddressInput onChange={this.onInputChange} />
+
                             {!this.state.submitting && (
                                 <GradientButton
                                     onPress={() => {
@@ -330,7 +337,7 @@ class AboutScreen extends React.Component {
                             )}
                         </View>
                     </ScrollView>
-                </View>
+                </KeyboardAvoidingView>
             </SafeAreaView>
         );
     }
