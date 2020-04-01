@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextInput, View} from "react-native";
+import {TextInput, View, Keyboard, TouchableWithoutFeedback} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import SignUpStyles from "../../styles/SignUpStyles";
@@ -17,6 +17,7 @@ export default class TInput extends Component {
             ? [SignUpStyles.textInput, SignUpStyles.errorMessage]
             : SignUpStyles.textInput;
         return (
+            <TouchableWithoutFeedback onPressOut={Keyboard.dismiss()}>
             <View>
                 <TextInput
                     pointerEvents={this.props.pointerEvents}
@@ -51,6 +52,7 @@ export default class TInput extends Component {
                     </RegularText>
                 ) : null}
             </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
