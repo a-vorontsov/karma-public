@@ -53,7 +53,7 @@ const findGoingEvents = (userId) => {
         "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers " +
         "FROM event INNER JOIN sign_up on event_id(sign_up) = id(event) INNER JOIN address ON id(address) = address_id(event) " +
         "INNER JOIN individual ON individual_id(sign_up) = id(individual) " +
-        "WHERE user_id(individual) = $1 and confirmed = true AND date >= $2";
+        "WHERE user_id(individual) = $1 AND date >= $2";
     return db.query(query, [userId, now]);
 };
 
