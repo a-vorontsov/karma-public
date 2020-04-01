@@ -11,7 +11,7 @@ const RadioButtonStyles = StyleSheet.create({
     },
     button: {
         height: 40,
-        width: 150,
+        width: "40%",
         backgroundColor: "transparent",
         borderWidth: 2,
         borderColor: Colours.lightGrey,
