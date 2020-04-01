@@ -726,7 +726,7 @@ class ProfileEditScreen extends Component {
                                         flexDirection: "column",
                                         alignItems: "flex-start",
                                         justifyContent: "flex-end",
-                                        flexWrap: "wrap"
+                                        flexWrap: "wrap",
                                     }}>
                                     <RegularText style={styles.bioHeader}>
                                         Causes

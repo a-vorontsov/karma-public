@@ -666,7 +666,7 @@ class ProfileScreen extends Component {
                                             flexDirection: "row",
                                             alignItems: "flex-end",
                                             justifyContent: "flex-end",
-                                            flexWrap: "wrap"
+                                            flexWrap: "wrap",
                                         }}>
                                         {this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.container}>

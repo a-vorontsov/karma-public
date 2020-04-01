@@ -50,12 +50,21 @@ export default class CauseItem extends React.Component {
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
                 colors={[Colours.blue, Colours.lightBlue]}
-                style={display ? ([CauseStyles.buttonDisplay, CauseStyles.shadow]) : ([CauseStyles.button, CauseStyles.shadow])}>
+                style={
+                    display
+                        ? [CauseStyles.buttonDisplay, CauseStyles.shadow]
+                        : [CauseStyles.button, CauseStyles.shadow]
+                }>
                 <RegularText style={CauseStyles.checkbox}>✓</RegularText>
                 {ItemContent}
             </LinearGradient>
         ) : (
-            <View style={display ? ([CauseStyles.buttonDisplay, CauseStyles.shadow]) : ([CauseStyles.button, CauseStyles.shadow])}>
+            <View
+                style={
+                    display
+                        ? [CauseStyles.buttonDisplay, CauseStyles.shadow]
+                        : [CauseStyles.button, CauseStyles.shadow]
+                }>
                 {ItemContent}
             </View>
         );
