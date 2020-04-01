@@ -25,6 +25,18 @@ const CauseStyles = StyleSheet.create({
         backgroundColor: Colours.white,
         overflow: "visible",
     },
+    buttonDisplay: {
+        height: SCREEN_WIDTH / 5,
+        width: SCREEN_WIDTH / 5,
+        borderRadius: 10,
+        marginVertical: 4,
+        paddingVertical: 16,
+        marginHorizontal: 3,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: Colours.white,
+        overflow: "visible",
+    },
     buttonText: {
         fontSize: normalise(12),
         fontWeight: "400",

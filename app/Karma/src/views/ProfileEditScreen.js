@@ -726,6 +726,7 @@ class ProfileEditScreen extends Component {
                                         flexDirection: "column",
                                         alignItems: "flex-start",
                                         justifyContent: "flex-end",
+                                        flexWrap: "wrap"
                                     }}>
                                     <RegularText style={styles.bioHeader}>
                                         Causes
@@ -736,6 +737,7 @@ class ProfileEditScreen extends Component {
                                                 <CauseItem
                                                     cause={cause}
                                                     key={cause.id}
+                                                    display={true}
                                                     isDisabled={true}
                                                 />
                                             );
@@ -745,8 +747,8 @@ class ProfileEditScreen extends Component {
                                             <Image
                                                 source={icons.new_cause}
                                                 style={{
-                                                    height: SCREEN_WIDTH / 3.6,
-                                                    width: SCREEN_WIDTH / 3.6,
+                                                    height: SCREEN_WIDTH / 5,
+                                                    width: SCREEN_WIDTH / 5,
                                                     borderRadius: 10,
                                                     marginVertical: 4,
                                                     paddingVertical: 16,
@@ -834,7 +836,7 @@ const styles = StyleSheet.create({
         transform: [{scaleX: 0.8}, {scaleY: 0.8}],
     },
     nameText: {
-        fontSize: 30,
+        fontSize: 20,
         color: Colours.white,
         fontWeight: "bold",
     },

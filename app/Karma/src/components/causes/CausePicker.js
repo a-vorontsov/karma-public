@@ -38,6 +38,7 @@ export default class CausePicker extends React.Component {
                             key={c.id}
                             cause={c}
                             selected={selected}
+                            display={false}
                             onPress={this.onPress}
                         />
                     );

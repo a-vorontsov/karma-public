@@ -666,6 +666,7 @@ class ProfileScreen extends Component {
                                             flexDirection: "row",
                                             alignItems: "flex-end",
                                             justifyContent: "flex-end",
+                                            flexWrap: "wrap"
                                         }}>
                                         {this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.container}>
@@ -674,6 +675,7 @@ class ProfileScreen extends Component {
                                                         <CauseItem
                                                             cause={cause}
                                                             key={cause.id}
+                                                            display={true}
                                                             isDisabled={true}
                                                         />
                                                     ),
@@ -689,8 +691,8 @@ class ProfileScreen extends Component {
                                                 <Image
                                                     source={icons.new_cause}
                                                     style={{
-                                                        height: width / 3.6,
-                                                        width: width / 3.6,
+                                                        height: width / 5,
+                                                        width: width / 5,
                                                         borderRadius: 10,
                                                         marginVertical: 4,
                                                         paddingVertical: 16,
