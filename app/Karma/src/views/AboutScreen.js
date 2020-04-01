@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     Platform,
     Keyboard,
-    KeyboardAvoidingScrollView,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView} from "react-native-gesture-handler";
@@ -66,7 +65,7 @@ class AboutScreen extends React.Component {
     };
 
     clearFocus() {
-        Keyboard.dismiss()
+        Keyboard.dismiss();
     }
 
     setGender(selectedGender) {
@@ -223,7 +222,7 @@ class AboutScreen extends React.Component {
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
                     style={Styles.ph24}
-                    keyboardVerticalOffset={-90} 
+                    keyboardVerticalOffset={-90}
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     enabled>
                     <PageHeader title="About" />
