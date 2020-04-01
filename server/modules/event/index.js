@@ -127,6 +127,8 @@ const getEvents = async (filters, userId) => {
     const user = userIdCheckResponse.user;
     eventSorter.sortByTimeAndDistance(events, user);
 
+    const now = new Date();
+    events = events.filter(event => Date.parse(event.date) >= now);
     if (filters.maxDistance) events = events.filter(event => event.distance <= filters.maxDistance);
 
     return ({
