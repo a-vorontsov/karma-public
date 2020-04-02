@@ -20,7 +20,8 @@ services:
   server:
     image: teamteamkarma/server
     volumes:
-      - ./server-logs:/log
+      - ./server-logs:/server/log
+      - ./keys:/server/keys
     # Uncomment if you want to build the images locally
     #build:
     #  context: ../../../server
@@ -84,3 +85,5 @@ services:
 volumes:
   db-data: {}
   web-data: {}
+  server-logs: {}
+  keys: {}
