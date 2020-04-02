@@ -29,17 +29,18 @@ export default class ChangePasswordInput extends Component {
     onChangeText(event) {
         const {name, text} = event;
         this.setState({[name]: text});
-        //TODO: call passupstate here
-    }
+        this.passUpState();
+        }
 
     passUpState() {
-        const confirmPassword = this.state;
-        if (confirmPassword) {
+        const {confirmPassword, password} = this.state;
+        
             this.props.onChange({
                 confirmPassword,
+                password,
                 valid: true,
             });
-        }
+        
     }
 
     isValidPassword() {
@@ -82,6 +83,10 @@ export default class ChangePasswordInput extends Component {
 
     render() {
         const showError = this.showError();
+        const{sendPassUpState} = this.props;
+        if(sendPassUpState){
+            this.passUpState();
+        }
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View
@@ -95,13 +100,11 @@ export default class ChangePasswordInput extends Component {
                         autoCapitalize="none"
                         name="password"
                         secureTextEntry={this.state.hidePassword}
-                        //blurOnSubmit={false}
                         onChange={this.onChangeText}
                         showError={showError}
                         errorText={this.whichErrorText()}
                         inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
-                            this.passUpState();
                             this.confirmPassword.focus();
                         }}
                         returnKeyType="next"
@@ -129,13 +132,12 @@ export default class ChangePasswordInput extends Component {
                         autoCapitalize="none"
                         inputRef={ref => (this.confirmPassword = ref)}
                         onSubmitEditing={() => {
-                            this.passUpState();
                             Keyboard.dismiss();
                         }}
                         secureTextEntry={this.state.hidePassword}
                         returnKeyType="default"
                         onChange={this.onChangeText}
-                        onBlur={this.passUpState}
+                       
                         showError={showError}
                         errorText={this.whichErrorText()}
                     />

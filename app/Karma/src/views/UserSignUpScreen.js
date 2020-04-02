@@ -19,10 +19,10 @@ import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAuthToken} from "../util/credentials";
+import ChangePasswordInput from "../components/input/ChangePasswordInput";
 
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 class SignUpScreen extends React.Component {
     constructor(props) {
@@ -32,10 +32,11 @@ class SignUpScreen extends React.Component {
             username: "",
             password: "",
             confPassword: "",
-            hidePassword: true,
+            // hidePassword: true,
             termsChecked: false,
             toolTipVisible: true,
             firstOpen: true,
+            sendPassUpState: false,
         };
         this.onChangeText = this.onChangeText.bind(this);
     }
@@ -45,22 +46,31 @@ class SignUpScreen extends React.Component {
         this.setState({[name]: text});
     };
 
-    isValidPassword = () => {
-        return PASSWORD_REGEX.test(this.state.password);
+    onInputChange = inputState => {
+        console.log("problme "+inputState.password);
+        console.log(inputState.confirmPassword);
+        this.setState({
+            password: inputState.password,
+            confPassword: inputState.confirmPassword,
+            sendPassUpState:false,
+        });
+        
     };
 
     createUser() {
         return {
             email: this.state.email,
             username: this.state.username,
-            password: this.state.password,
-            confirmPassword: this.state.confPassword,
+            password: this.state.confPassword,
         };
     }
     signUserUp = async () => {
         const user = this.createUser();
+ 
+        this.setState({firstOpen: false, sendPassUpState:true});
+        console.log("pass "+this.state.password);
+        console.log("confpass "+this.state.confPassword);
 
-        this.setState({firstOpen: false});
         if (
             !this.state.termsChecked ||
             !this.state.email ||
@@ -72,7 +82,10 @@ class SignUpScreen extends React.Component {
             return;
         }
 
+     
         let authToken = await getAuthToken();
+ 
+
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
             .set("authorization", authToken)
@@ -90,17 +103,12 @@ class SignUpScreen extends React.Component {
             })
             .catch(err => {
                 console.log(err.message);
-                Alert.alert("Server Error", err.message);
             });
     };
 
     render() {
         const {navigation} = this.props;
-        const showPasswordError =
-            !this.state.password ||
-            this.state.password !== this.state.confPassword ||
-            !this.isValidPassword();
-
+  
         return (
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
@@ -149,98 +157,18 @@ class SignUpScreen extends React.Component {
                                     }
                                 />
                                 {/**
-                                 *  -- Password fields --
-                                 */}
+                                 *  -- Password fields -- */}
+                                
                                 <View>
-                                    <TextInput
-                                        placeholder="Password"
-                                        autoCapitalize="none"
-                                        name="password"
-                                        secureTextEntry={
-                                            this.state.hidePassword
-                                        }
-                                        blurOnSubmit={false}
-                                        onChange={this.onChangeText}
-                                        showError={
-                                            this.state.firstOpen
-                                                ? false
-                                                : !this.state.password ||
-                                                  this.state.password !==
-                                                      this.state.confPassword
-                                        }
-                                        errorText={
-                                            this.state.password !==
-                                            this.state.confPassword
-                                                ? ""
-                                                : undefined
-                                        }
-                                        inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
-                                        onSubmitEditing={() => {
-                                            Keyboard.dismiss();
-                                            this.confPassword.focus();
-                                        }}
-                                        returnKeyType="next"
+                                   <ChangePasswordInput
+                                        onChange={this.onInputChange}
+                                        firstOpen={this.state.firstOpen}
+                                        sendPassUpState={this.state.sendPassUpState}
                                     />
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.setState({
-                                                hidePassword: !this.state
-                                                    .hidePassword,
-                                            })
-                                        }
-                                        style={Styles.textInputMiscText}>
-                                        <RegularText style={Styles.cyan}>
-                                            Show
-                                        </RegularText>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View>
-                                    <TextInput
-                                        style={styles.textInput}
-                                        placeholder="Confirm Password"
-                                        name="confPassword"
-                                        autoCapitalize="none"
-                                        blurOnSubmit={false}
-                                        inputRef={ref =>
-                                            (this.confPassword = ref)
-                                        }
-                                        onSubmitEditing={() =>
-                                            Keyboard.dismiss()
-                                        }
-                                        secureTextEntry={
-                                            this.state.hidePassword
-                                        }
-                                        returnKeyType="default"
-                                        onChange={this.onChangeText}
-                                        showError={
-                                            this.state.firstOpen
-                                                ? false
-                                                : showPasswordError
-                                        }
-                                        errorText={
-                                            showPasswordError
-                                                ? "Passwords must match"
-                                                : null
-                                        }
-                                    />
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.setState({
-                                                hidePassword: !this.state
-                                                    .hidePassword,
-                                            })
-                                        }
-                                        style={Styles.textInputMiscText}>
-                                        <RegularText style={Styles.cyan}>
-                                            Show
-                                        </RegularText>
-                                    </TouchableOpacity>
                                 </View>
                             </View>
                             {/**
-                             * -- Footer --
-                             * **/}
+                             * -- Footer -- * **/}
                             <View style={[Styles.pv24, Styles.bottom]}>
                                 <View
                                     style={{

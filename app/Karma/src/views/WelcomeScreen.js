@@ -23,6 +23,7 @@ const request = require("superagent");
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,
@@ -48,6 +49,7 @@ export default class WelcomeScreen extends Component {
         );
         this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
+        AsyncStorage.multiRemove(["ACCESS_TOKEN", "FULLY_SIGNED_UP"]);
     }
 
     async componentDidMount() {
