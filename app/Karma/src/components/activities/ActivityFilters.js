@@ -343,17 +343,17 @@ const styles = StyleSheet.create({
         borderLeftColor: Colours.cyan,
         paddingLeft: 20,
         paddingVertical: 10,
-        marginBottom: 15,
+        marginBottom: 10,
     },
     categoryBtn: {
         backgroundColor: Colours.lightestGrey,
         borderRadius: 7,
-        paddingVertical: 5,
+        paddingVertical: 10,
         paddingHorizontal: 5,
         marginBottom: 10,
     },
     categoryText: {
-        fontSize: 15,
+        fontSize: 16,
         color: Colours.grey,
     },
     categoryTextSelected: {
