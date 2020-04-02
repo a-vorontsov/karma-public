@@ -55,7 +55,7 @@ class ActivitiesAllScreen extends Component {
             availabilityStart,
             availabilityEnd,
         } = this.props.filters;
-        if (this.props.filtersEnabled) {
+        if (this.props.filters) {
             return {
                 maxDistance: maxDistance,
                 availabilityStart: this.getDateString(availabilityStart),
@@ -66,7 +66,7 @@ class ActivitiesAllScreen extends Component {
     }
 
     getBooleanFilters() {
-        if (this.props.filtersEnabled) {
+        if (this.props.filters) {
             return queryString.stringify(
                 {filter: this.props.filters.booleanFilters},
                 {arrayFormat: "bracket", encode: false},

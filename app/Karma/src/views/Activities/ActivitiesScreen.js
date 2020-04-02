@@ -44,7 +44,6 @@ class ActivitiesScreen extends Component {
         console.log("Recieving state from child");
         this.setState({
             filters: inputState.filters,
-            filtersEnabled: inputState.filtersEnabled,
         });
         this.toggleModal();
     };
@@ -68,12 +67,7 @@ class ActivitiesScreen extends Component {
         });
     }
 
-    onInputChange = inputState => {
-        this.setState({
-            availabilityStart: inputState.selectedStartDate,
-            availabilityEnd: inputState.selectedEndDate,
-        });
-    };
+
 
     render() {
         return (
@@ -228,7 +222,6 @@ class ActivitiesScreen extends Component {
                         </View>
                     </View>
                     <this.state.display
-                        filtersEnabled={this.state.filtersEnabled}
                         filters={this.state.filters}
                     />
                 </KeyboardAvoidingView>

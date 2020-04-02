@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import {
     TouchableOpacity,
     View,
@@ -7,15 +7,17 @@ import {
     Dimensions,
     ScrollView,
     StyleSheet,
+    LayoutAnimation,
+    Platform,
+    UIManager,
 } from "react-native";
 import CheckBox from "react-native-check-box";
 import Slider from "@react-native-community/slider";
-import Modal, {ModalContent} from "react-native-modals";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import Calendar from "../../components/Calendar";
 import {Button} from "../../components/buttons";
-import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
+import BoldText from "../text/BoldText";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -28,19 +30,34 @@ export default class ActivityFilters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            womenOnly: true,
+            womenOnly: false,
             locationVisible: false,
             physicalActivity: false,
             distance: 90,
             calendarVisible: false,
             availabilityStart: null,
             availabilityEnd: null,
-            filtersEnabled: false,
             filters: {},
+            expanded: false,
         };
         this.passUpState = this.passUpState.bind(this);
+        if (Platform.OS === "android") {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
     }
 
+    onInputChange = inputState => {
+        this.setState({
+            availabilityStart: inputState.selectedStartDate,
+            availabilityEnd: inputState.selectedEndDate,
+        });
+    };
+
+    _onCategorySelected(name) {
+        this.setState({
+            [name]: !this.state[name],
+        });
+    }
     updateFilters() {
         this.setState({
             filters: {
@@ -62,40 +79,21 @@ export default class ActivityFilters extends React.Component {
         });
     }
     async passUpState() {
-        console.log("Passing up state now.")
+        console.log("Passing up state now.");
         await this.updateFilters();
-        const {filters, filtersEnabled} = this.state;
+        const {filters} = this.state;
         this.props.onUpdateFilters({
             filters,
-            filtersEnabled,
         });
     }
+    changeLayout = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({expanded: !this.state.expanded});
+    };
 
     render() {
         return (
             <View>
-                {!this.state.calendarVisible && (
-                    <View>
-                        <CheckBox
-                            style={{
-                                flex: 1,
-                                padding: 13,
-                            }}
-                            onClick={() => {
-                                this.setState({
-                                    filtersEnabled: !this.state.filtersEnabled,
-                                });
-                            }}
-                            isChecked={this.state.filtersEnabled}
-                            rightText={"Enable filtering?"}
-                            rightTextStyle={{
-                                fontSize: 18,
-                                color: Colours.grey,
-                                paddingVertical: 30,
-                            }}
-                        />
-                    </View>
-                )}
                 {/* AVAILABILITY */}
                 <View
                     style={{
@@ -189,33 +187,41 @@ export default class ActivityFilters extends React.Component {
                         />
                     </View>
                 )}
-
-                {/* WOMEN ONLY */}
                 {!this.state.calendarVisible && (
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            paddingBottom: 10,
-                        }}>
-                        <RegularText style={styles.contentText}>
-                            Women Only Activities:
-                        </RegularText>
-                        <View style={styles.leftItem}>
-                            <Switch
-                                style={styles.switch}
-                                trackColor={{
-                                    true: "#A9DCDF",
-                                    false: Colours.grey,
-                                }}
-                                thumbColor={Colours.grey}
-                                onChange={() =>
-                                    this.setState({
-                                        womenOnly: !this.state.womenOnly,
-                                    })
+                    <View style={styles.btnTextHolder}>
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={this.changeLayout}
+                            style={styles.Btn}>
+                            <RegularText style={styles.btnText}>
+                                Category
+                            </RegularText>
+                        </TouchableOpacity>
+                        <View
+                            style={{
+                                height: this.state.expanded ? null : 0,
+                                overflow: "hidden",
+                                paddingHorizontal: 15,
+                            }}>
+                            {/* WOMEN ONLY */}
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this._onCategorySelected("womenOnly")
                                 }
-                                value={this.state.womenOnly}
-                            />
+                                style={
+                                    this.state.womenOnly
+                                        ? styles.categoryBtnSelected
+                                        : styles.categoryBtn
+                                }>
+                                <RegularText
+                                    style={
+                                        this.state.womenOnly
+                                            ? styles.categoryTextSelected
+                                            : styles.categoryText
+                                    }>
+                                    Women Only
+                                </RegularText>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 )}
@@ -292,14 +298,62 @@ export default class ActivityFilters extends React.Component {
 }
 const styles = StyleSheet.create({
     contentText: {
-        fontSize: 18,
+        fontSize: 15,
         color: Colours.grey,
-        paddingVertical: 20,
+        paddingVertical: 15,
     },
     leftItem: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "flex-end",
         alignItems: "flex-end",
+    },
+    text: {
+        fontSize: 17,
+        color: "black",
+        padding: 10,
+    },
+
+    btnText: {
+        color: Colours.darkGrey,
+        fontSize: 19,
+        fontWeight: "bold",
+    },
+
+    btnTextHolder: {
+        borderRadius: 7,
+        borderColor: "rgba(0,0,0,0.5)",
+        backgroundColor: Colours.lightestGrey,
+    },
+
+    Btn: {
+        borderRadius: 7,
+        padding: 10,
+        backgroundColor: Colours.lightestGrey,
+    },
+    categoryBtnSelected: {
+        backgroundColor: Colours.white,
+        borderRadius: 7,
+        borderLeftWidth: 4,
+        borderLeftColor: Colours.cyan,
+        paddingLeft: 20,
+        paddingVertical: 10,
+        marginBottom: 10,
+    },
+    categoryBtn: {
+        backgroundColor: Colours.lightestGrey,
+        borderRadius: 7,
+        paddingVertical: 10,
+        paddingHorizontal: 5,
+        marginBottom: 10,
+    },
+    categoryText: {
+        fontSize: 15,
+        color: Colours.grey,
+    },
+    categoryTextSelected: {
+        fontSize: 16,
+        color: Colours.grey,
+        fontWeight: "bold",
     },
 });
