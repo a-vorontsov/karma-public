@@ -36,7 +36,7 @@ export default class ActivityFilters extends React.Component {
             availabilityStart: null,
             availabilityEnd: null,
             filtersEnabled: false,
-            filters: [],
+            filters: {},
         };
         this.passUpState = this.passUpState.bind(this);
     }
@@ -61,12 +61,13 @@ export default class ActivityFilters extends React.Component {
             },
         });
     }
-    passUpState() {
+    async passUpState() {
         console.log("Passing up state now.")
-        this.updateFilters();
-        const {filters} = this.state;
+        await this.updateFilters();
+        const {filters, filtersEnabled} = this.state;
         this.props.onUpdateFilters({
             filters,
+            filtersEnabled,
         });
     }
 

@@ -34,16 +34,17 @@ class ActivitiesScreen extends Component {
         this.state = {
             display: ActivitiesAllScreen,
             modalVisible: false,
-            calendarVisible: false,
             filters: {},
         };
         this.toggleModal = this.toggleModal.bind(this);
+        this.onUpdateFilters = this.onUpdateFilters.bind(this);
     }
 
     onUpdateFilters = inputState => {
         console.log("Recieving state from child");
         this.setState({
             filters: inputState.filters,
+            filtersEnabled: inputState.filtersEnabled,
         });
         this.toggleModal();
     };
@@ -112,7 +113,7 @@ class ActivitiesScreen extends Component {
                         </TouchableOpacity>
                     </View>
 
-                    {/* FILTER MODAL */}
+                    {/* FILTERS MODAL */}
                     <View>
                         <Modal
                             visible={this.state.modalVisible}
@@ -127,7 +128,9 @@ class ActivitiesScreen extends Component {
                                 <ScrollView
                                     showsVerticalScrollIndicator={false}>
                                     <ModalContent>
-                                        <ActivityFilters />
+                                        <ActivityFilters
+                                            onUpdateFilters={this.onUpdateFilters}
+                                        />
                                     </ModalContent>
                                 </ScrollView>
                             </View>
