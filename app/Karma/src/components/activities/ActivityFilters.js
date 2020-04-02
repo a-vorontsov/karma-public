@@ -46,6 +46,22 @@ export default class ActivityFilters extends React.Component {
         }
     }
 
+    componentDidMount() {
+        const {filters} = this.props;
+        if(filters.booleanFilters){
+            this.setState({
+                womenOnly: filters.booleanFilters.includes("women_only"),
+                locationVisible: filters.booleanFilters.includes("address_visible"),
+                physicalActivity: filters.booleanFilters.includes("physical"),
+            });
+        }
+        this.setState({
+            distance: filters.maxDistance,
+            availabilityStart: filters.availabilityStart,
+            availabilityEnd: filters.availabilityEnd,
+        });
+    }
+
     onInputChange = inputState => {
         this.setState({
             availabilityStart: inputState.selectedStartDate,
@@ -222,36 +238,25 @@ export default class ActivityFilters extends React.Component {
                                     Women Only
                                 </RegularText>
                             </TouchableOpacity>
-                        </View>
-                    </View>
-                )}
-                {/* PHYSICAL ACTIVITY */}
-                {!this.state.calendarVisible && (
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            paddingBottom: 10,
-                        }}>
-                        <RegularText style={styles.contentText}>
-                            Requires Physical Activity:
-                        </RegularText>
-                        <View style={styles.leftItem}>
-                            <Switch
-                                style={styles.switch}
-                                trackColor={{
-                                    true: "#A9DCDF",
-                                    false: Colours.grey,
-                                }}
-                                thumbColor={Colours.grey}
-                                onChange={() =>
-                                    this.setState({
-                                        physicalActivity: !this.state
-                                            .physicalActivity,
-                                    })
+                            {/* PHYSICAL ACTIVITY */}
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this._onCategorySelected("physicalActivity")
                                 }
-                                value={this.state.physicalActivity}
-                            />
+                                style={
+                                    this.state.physicalActivity
+                                        ? styles.categoryBtnSelected
+                                        : styles.categoryBtn
+                                }>
+                                <RegularText
+                                    style={
+                                        this.state.physicalActivity
+                                            ? styles.categoryTextSelected
+                                            : styles.categoryText
+                                    }>
+                                    Physical
+                                </RegularText>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 )}
@@ -338,12 +343,12 @@ const styles = StyleSheet.create({
         borderLeftColor: Colours.cyan,
         paddingLeft: 20,
         paddingVertical: 10,
-        marginBottom: 10,
+        marginBottom: 15,
     },
     categoryBtn: {
         backgroundColor: Colours.lightestGrey,
         borderRadius: 7,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 5,
         marginBottom: 10,
     },

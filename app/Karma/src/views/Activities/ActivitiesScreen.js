@@ -124,6 +124,7 @@ class ActivitiesScreen extends Component {
                                     <ModalContent>
                                         <ActivityFilters
                                             onUpdateFilters={this.onUpdateFilters}
+                                            filters={this.state.filters}
                                         />
                                     </ModalContent>
                                 </ScrollView>
