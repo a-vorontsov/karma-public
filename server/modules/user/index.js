@@ -101,7 +101,6 @@ async function registerIndividual(userId, individual) {
         addressId: addressId,
         birthday: individual.dateOfBirth,
         gender: individual.gender,
-        // TODO: title
     });
 
     await createEmptyProfile(individualResult.rows[0].id);
