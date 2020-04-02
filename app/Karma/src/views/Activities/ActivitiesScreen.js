@@ -235,10 +235,6 @@ class ActivitiesScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
     navButtonActive: {
         height: 30,
         width: "auto",
@@ -272,29 +268,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "700",
         color: Colours.white,
-    },
-    contentText: {
-        fontSize: 18,
-        color: Colours.grey,
-        paddingVertical: 20,
-    },
-    editContainer: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        borderColor: "transparent",
-        borderBottomColor: Colours.lightGrey,
-        borderWidth: 1.5,
-    },
-    pointContainer: {
-        flex: 1,
-    },
-    leftItem: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
     },
 });
 
