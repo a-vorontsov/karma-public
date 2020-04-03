@@ -12,6 +12,7 @@ import {
     Text,
     Platform,
     Easing,
+    Keyboard,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
@@ -33,6 +34,7 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 import ImagePicker from "react-native-image-picker";
 import CarouselStyles from "../styles/CarouselStyles";
 import ActivityCard from "../components/activities/ActivityCard";
+import PageHeader from "../components/PageHeader";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
@@ -391,18 +393,12 @@ class ProfileEditScreen extends Component {
                 style={styles.container}
                 behavior="padding"
                 enabled>
+                <View style={[Styles.ph24, Styles.pv16]}>
+                    <PageHeader title="Edit Profile" />
+                </View>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handle">
-                    <View
-                        style={{
-                            flex: 1,
-                            backgroundColor: Colours.blue,
-                            height: 45,
-                            width: SCREEN_WIDTH,
-                            flexDirection: "row",
-                        }}
-                    />
                     <SafeAreaView style={Styles.safeAreaContainer}>
                         <View
                             style={{
@@ -610,7 +606,7 @@ class ProfileEditScreen extends Component {
                                             name="pocFirstName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.lastName.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                         <RegularText style={styles.bioHeader}>
@@ -624,7 +620,7 @@ class ProfileEditScreen extends Component {
                                             name="pocLastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.username.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                     </View>
@@ -638,7 +634,7 @@ class ProfileEditScreen extends Component {
                                             name="firstName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.lastName.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                         <RegularText style={styles.bioHeader}>
@@ -649,7 +645,7 @@ class ProfileEditScreen extends Component {
                                             name="lastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.username.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                     </View>
@@ -662,6 +658,7 @@ class ProfileEditScreen extends Component {
                                     value={this.state.user.username}
                                     autoCapitalize="none"
                                     onChange={this.onChangeText}
+                                    onSubmitEditing={() => Keyboard.dismiss()}
                                     name="username"
                                 />
                                 {isOrganisation && (
@@ -800,7 +797,7 @@ class ProfileEditScreen extends Component {
                                 height: 0.08 * SCREEN_HEIGHT,
                                 justifyContent: "flex-end",
                                 alignItems: "center",
-                                marginBottom: 30,
+                                marginBottom: 100,
                                 backgroundColor: Colours.white,
                             }}>
                             <View style={{width: formWidth}}>

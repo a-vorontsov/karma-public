@@ -53,11 +53,12 @@ class ProfileScreen extends Component {
         this.state = {
             activeSlide: 0,
             name: "",
+            username: "",
             user: {},
             location: "",
             bio: "",
             causes: [],
-            points: 1,
+            points: 0,
             createdEvents: [],
             createdPastEvents: [],
             upcomingEvents: [],
@@ -91,6 +92,7 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             firstName: individual.firstName,
             lastName: individual.lastName,
+            username: individual.username,
             user: user,
             location: individual.address.townCity,
             bio: individual.bio,
@@ -334,8 +336,9 @@ class ProfileScreen extends Component {
                             {otherProfile && (
                                 <View
                                     style={{
-                                        alignSelf: "center",
+                                        alignSelf: "flex-start",
                                         alignItems: "flex-start",
+                                        justifyContent: "flex-start",
                                         width: formWidth,
                                         paddingBottom: 16,
                                     }}>
@@ -715,6 +718,7 @@ class ProfileScreen extends Component {
                                         flex: 1,
                                         alignItems: "flex-start",
                                         justifyContent: "flex-start",
+                                        marginBottom: 50,
                                     }}>
                                     <View
                                         style={{
@@ -749,10 +753,7 @@ class ProfileScreen extends Component {
                                                         .eventsToggle,
                                                 })
                                             }
-                                            style={{
-                                                alignSelf: "flex-start",
-                                                marginLeft: 80,
-                                            }}>
+                                            style={[styles.editContainer]}>
                                             <RegularText
                                                 style={
                                                     this.state.eventsToggle
