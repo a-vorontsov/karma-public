@@ -25,7 +25,7 @@ async function uploadFile(userId) {
             },
         );
     } catch (e) {
-        // TODO: return upload error as response
+        // return upload error as response
     }
     accounts.push({
         id: userId,

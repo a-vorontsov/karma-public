@@ -1,6 +1,5 @@
 const log = require("../../../util/log");
 const mailSender = require('../../mail');
-const date = require("date-and-time");
 const resetRepo = require("../../../repositories/reset");
 const regRepo = require("../../../repositories/registration");
 const digest = require("../../digest");
@@ -49,15 +48,15 @@ const storePasswordResetToken = async (userId, token, expiryDate) => {
  * @param {string} email
  */
 const storeAndSendEmailVerificationToken = async (email) => {
-    log.info("Email '%s': Generating email verification token", email);
+    log.info("'%s': Generating email verification token", email);
     const verifyConfig = config.emailVerification;
     const token = generateSecureToken(verifyConfig.tokenLength);
     const expiryDate = util.getDateStringInUTC(verifyConfig.validMinutes);
     await storeEmailVerificationToken(email, token, expiryDate);
     await mailSender.sendEmail(
         email,
-        resetConfig.mailSubject.replace("{token}", token),
-        resetConfig.mailBody.replace("{token}", token),
+        verifyConfig.mailSubject.replace("{token}", token),
+        verifyConfig.mailBody.replace("{token}", token),
     );
 };
 
