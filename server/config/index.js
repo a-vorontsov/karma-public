@@ -5,7 +5,7 @@ config.jose = {
     crvOrSize: "P-256",
     alg: "ECDH-ES+A128KW",
     enc: "A128GCM",
-    iss: "http://karma.laane.xyz/",
+    iss: "https://karma.laane.xyz/",
     exp: "30 d",
     aud: "/user",
     sigAlg: "ES256",
@@ -18,17 +18,13 @@ config.josePermissions = {
 };
 
 config.emailVerification = {
-    validMinutes: 15,
+    validMinutes: 30,
     tokenLength: 6,
-    mailSubject: "{token} Email Verification Code",
-    mailBody: "{token} is your Karma verification code.",
 };
 
 config.passwordReset = {
     validMinutes: 15,
     tokenLength: 6,
-    mailSubject: "{token} Password Reset Token",
-    mailBody: "{token} is your Karma password reset code.",
 };
 
 module.exports = config;

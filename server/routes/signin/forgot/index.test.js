@@ -6,6 +6,7 @@ const userRepository = require("../../../repositories/user");
 const resetRepository = require("../../../repositories/reset");
 const mailSender = require("../../../modules/mail");
 const authService = require("../../../modules/authentication");
+const util = require("../../../util");
 
 jest.mock("../../../repositories/reset");
 jest.mock("../../../repositories/user");
@@ -173,8 +174,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
 });
 
 test('confirming expired token returns token expired response', async () => {
-    const dateTime = new Date();
-    dateTime.setTime(dateTime.getTime() - (1 * 60 * 60 * 1000));
+    const dateTime = util.getNowInUTCAsString(-30);
     userRepository.findByEmail.mockResolvedValue({
         rows: [{
             ...user,

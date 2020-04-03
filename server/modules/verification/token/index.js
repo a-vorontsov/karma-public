@@ -17,12 +17,13 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
     log.info("User id '%d': Generating password reset token", userId);
     const resetConfig = config.passwordReset;
     const token = generateSecureToken(resetConfig.tokenLength);
-    const expiryDate = util.getNowInUTCAsString(resetConfig.validMinutes);
+    const validMinutes = resetConfig.validMinutes;
+    const expiryDate = util.getNowInUTCAsString(validMinutes);
     await storePasswordResetToken(userId, token, expiryDate);
     await mailSender.sendEmail(
         email,
-        resetConfig.mailSubject.replace("{token}", token),
-        resetConfig.mailBody.replace("{token}", token),
+        `${token} Password Reset Token`,
+        `${token} is your Karma password reset code.\nThis token is valid for ${validMinutes} minutes.`,
     );
 };
 
@@ -53,12 +54,13 @@ const storeAndSendEmailVerificationToken = async (email) => {
     log.info("'%s': Generating email verification token", email);
     const verifyConfig = config.emailVerification;
     const token = generateSecureToken(verifyConfig.tokenLength);
-    const expiryDate = util.getNowInUTCAsString(verifyConfig.validMinutes);
+    const validMinutes = verifyConfig.validMinutes;
+    const expiryDate = util.getNowInUTCAsString(validMinutes);
     await storeEmailVerificationToken(email, token, expiryDate);
     await mailSender.sendEmail(
         email,
-        verifyConfig.mailSubject.replace("{token}", token),
-        verifyConfig.mailBody.replace("{token}", token),
+        `${token} Email Verification Code`,
+        `${token} is your Karma email verification code.\nThis token is valid for ${validMinutes} minutes.`,
     );
 };
 
