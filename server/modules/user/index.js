@@ -97,7 +97,7 @@ async function registerIndividual(userId, individual) {
         phone: individual.phoneNumber,
         banned: false,
         userId: userId,
-        pictureId: null, // TODO:
+        pictureId: (typeof individual.pictureId === "number") ? individual.pictureId : null,
         addressId: addressId,
         birthday: individual.dateOfBirth,
         gender: individual.gender,
@@ -144,7 +144,7 @@ async function registerOrg(userId, organisation) {
         orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
         lowIncome: organisation.lowIncome,
         exempt: organisation.exempt,
-        pictureId: null, // TODO:
+        pictureId: (typeof organisation.pictureId === "number") ? organisation.pictureId : null,
         userId: userId,
         addressId: addressId,
     });

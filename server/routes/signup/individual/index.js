@@ -54,6 +54,8 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             lastName: req.body.data.individual.lastName,
             dateOfBirth: req.body.data.individual.dateOfBirth,
             gender: req.body.data.individual.gender,
+            phoneNumber: req.body.data.individual.phoneNumber,
+            pictureId: req.body.data.individual.pictureId,
             address: {
                 addressLine1: req.body.data.individual.address.addressLine1,
                 addressLine2: req.body.data.individual.address.addressLine2,
@@ -61,7 +63,6 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
                 countryState: req.body.data.individual.address.countryState,
                 postCode: req.body.data.individual.address.postCode,
             },
-            phoneNumber: req.body.data.individual.phoneNumber,
         };
         await userAgent.registerIndividual(
             req.body.userId,
