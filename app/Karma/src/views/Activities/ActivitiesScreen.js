@@ -18,7 +18,7 @@ import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import ActivityFilters from "../../components/activities/ActivityFilters";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
-import Modal, {ModalContent, SlideAnimation, ScaleAnimation} from "react-native-modals";
+import Modal, {ModalContent, SlideAnimation} from "react-native-modals";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;

@@ -40,20 +40,7 @@ export default class ActivityFilters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            noPreferences: true,
-            womenOnly: false,
-            allGenders: false,
-            locationVisible: false,
-            locationNotVisible: false,
-            anyLocation: true,
-            type: "All",
-            gender: "None",
-            location: "Any",
-            allTypes: true,
-            physical: false,
-            nonPhysical: false,
             distance: 90,
-            calendarVisible: false,
             availabilityStart: null,
             availabilityEnd: null,
             filters: {},
@@ -62,6 +49,21 @@ export default class ActivityFilters extends React.Component {
             locationExpanded: false,
             distanceExpanded: false,
             availabilityExpanded: false,
+            //Gender
+            gender: "None",
+            noPreferences: true,
+            womenOnly: false,
+            allGenders: false,
+            //Location
+            location: "Any",
+            locationVisible: false,
+            locationNotVisible: false,
+            anyLocation: true,
+            //Types
+            type: "All",
+            allTypes: true,
+            physical: false,
+            nonPhysical: false,
         };
         this.passUpState = this.passUpState.bind(this);
         if (Platform.OS === "android") {
@@ -69,15 +71,22 @@ export default class ActivityFilters extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const {filters} = this.props;
+        const {booleanFilters} = filters;
         if (filters.booleanFilters) {
+            await this.setState({
+                womenOnly: booleanFilters.includes("women_only"),
+                allGenders: booleanFilters.includes("!women_only"),
+                locationVisible: booleanFilters.includes("address_visible"),
+                locationNotVisible: booleanFilters.includes("!address_visible"),
+                physical: booleanFilters.includes("physical"),
+                nonPhysical: booleanFilters.includes("!physical"),
+            });
             this.setState({
-                womenOnly: filters.booleanFilters.includes("women_only"),
-                locationVisible: filters.booleanFilters.includes(
-                    "address_visible",
-                ),
-                physicalActivity: filters.booleanFilters.includes("physical"),
+                noPreferences: !this.state.womenOnly && !this.state.allGenders,
+                allTypes: !this.state.physical && !this.state.nonPhysical,
+                anyLocation: !this.state.locationVisible && !this.state.locationNotVisible,
             });
         }
         this.setState({
@@ -145,19 +154,22 @@ export default class ActivityFilters extends React.Component {
         });
     }
     updateFilters() {
+        const booleanFilters = [];
+        if (!this.state.noPreferences) {
+            this.state.womenOnly && booleanFilters.push("women_only");
+            this.state.allGenders && booleanFilters.push("!women_only");
+        }
+        if (!this.state.anyLocation) {
+            this.state.locationVisible && booleanFilters.push("address_visible");
+            this.state.locationNotVisible && booleanFilters.push("!address_visible");
+        }
+        if (!this.state.allTypes) {
+            this.state.physical && booleanFilters.push("physical");
+            this.state.nonPhysical && booleanFilters.push("!physical");
+        }
         this.setState({
             filters: {
-                booleanFilters: [
-                    ...(this.state.womenOnly
-                        ? ["women_only"]
-                        : ["!women_only"]),
-                    ...(this.state.physicalActivity
-                        ? ["physical"]
-                        : ["!physical"]),
-                    ...(this.state.locationVisible
-                        ? ["address_visible"]
-                        : ["!address_visible"]),
-                ],
+                booleanFilters: booleanFilters,
                 maxDistance: this.state.distance,
                 availabilityStart: this.state.availabilityStart,
                 availabilityEnd: this.state.availabilityEnd,
