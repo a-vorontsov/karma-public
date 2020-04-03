@@ -74,7 +74,7 @@ export default class ActivityFilters extends React.Component {
     async componentDidMount() {
         const {filters} = this.props;
         const {booleanFilters} = filters;
-        if (filters.booleanFilters) {
+        if (booleanFilters) {
             await this.setState({
                 womenOnly: booleanFilters.includes("women_only"),
                 allGenders: booleanFilters.includes("!women_only"),
@@ -86,13 +86,16 @@ export default class ActivityFilters extends React.Component {
             this.setState({
                 noPreferences: !this.state.womenOnly && !this.state.allGenders,
                 allTypes: !this.state.physical && !this.state.nonPhysical,
-                anyLocation: !this.state.locationVisible && !this.state.locationNotVisible,
+                anyLocation:!this.state.locationVisible && !this.state.locationNotVisible,
             });
         }
         this.setState({
             distance: filters.maxDistance,
             availabilityStart: filters.availabilityStart,
             availabilityEnd: filters.availabilityEnd,
+            gender: filters.gender || "None",
+            location: filters.location || "Any",
+            type: filters.type || "All",
         });
     }
 
@@ -173,6 +176,9 @@ export default class ActivityFilters extends React.Component {
                 maxDistance: this.state.distance,
                 availabilityStart: this.state.availabilityStart,
                 availabilityEnd: this.state.availabilityEnd,
+                gender: this.state.gender,
+                type: this.state.type,
+                location: this.state.location,
             },
         });
     }
