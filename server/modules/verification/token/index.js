@@ -7,7 +7,7 @@ const config = require("../../../config");
 const util = require("../../../util");
 
 /**
- * Generate a password reset token with custom expiry,
+ * Generate a password reset token with config defined expiry,
  * store the token and expiry date in the reset table
  * in the database and send the token to the email address.
  * @param {number} userId
@@ -27,10 +27,12 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
 };
 
 /**
- * Previous tokens get cleared so only latest token is valid.
- * @param {*} userId
- * @param {*} token
- * @param {*} expiryDate
+ * Store password reset token in the reset table.
+ * Previous tokens get cleared so only latest token
+ * will be valid.
+ * @param {Number} userId
+ * @param {String} token
+ * @param {String} expiryDate
  */
 const storePasswordResetToken = async (userId, token, expiryDate) => {
     await resetRepo.removeByUserId(userId);
@@ -61,10 +63,12 @@ const storeAndSendEmailVerificationToken = async (email) => {
 };
 
 /**
- * Previous tokens get cleared so only latest token is valid.
- * @param {*} email
- * @param {*} token
- * @param {*} expiryDate
+ * Store email verification token in the registration table.
+ * Previous tokens get cleared so only latest token
+ * will be valid.d.
+ * @param {String} email
+ * @param {String} token
+ * @param {String} expiryDate
  */
 const storeEmailVerificationToken = async (email, token, expiryDate) => {
     await regRepo.removeByEmail(email);
