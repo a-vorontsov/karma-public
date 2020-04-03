@@ -17,7 +17,7 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
     log.info("User id '%d': Generating password reset token", userId);
     const resetConfig = config.passwordReset;
     const token = generateSecureToken(resetConfig.tokenLength);
-    const expiryDate = util.getDateStringInUTC(resetConfig.validMinutes);
+    const expiryDate = util.getNowInUTCAsString(resetConfig.validMinutes);
     await storePasswordResetToken(userId, token, expiryDate);
     await mailSender.sendEmail(
         email,
@@ -51,7 +51,7 @@ const storeAndSendEmailVerificationToken = async (email) => {
     log.info("'%s': Generating email verification token", email);
     const verifyConfig = config.emailVerification;
     const token = generateSecureToken(verifyConfig.tokenLength);
-    const expiryDate = util.getDateStringInUTC(verifyConfig.validMinutes);
+    const expiryDate = util.getNowInUTCAsString(verifyConfig.validMinutes);
     await storeEmailVerificationToken(email, token, expiryDate);
     await mailSender.sendEmail(
         email,
