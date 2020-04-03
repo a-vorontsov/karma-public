@@ -15,9 +15,6 @@ import Colours from "../../styles/Colours";
 import Calendar from "../../components/Calendar";
 import Styles from "../../styles/Styles";
 
-const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
-const formWidth = 0.8 * SCREEN_WIDTH;
-
 const icons = {
     filter: require("../../assets/images/general-logos/filter.png"),
     calendar: require("../../assets/images/general-logos/calendar-dark.png"),
@@ -164,7 +161,9 @@ export default class ActivityFilters extends React.Component {
                             <View style={{paddingVertical: 10}}>
                                 <Calendar
                                     onChange={this.onInputChange}
-                                    startDate={this.props.filters.availabilityStart}
+                                    startDate={
+                                        this.props.filters.availabilityStart
+                                    }
                                     endDate={this.props.filters.availabilityEnd}
                                 />
                             </View>
@@ -400,7 +399,11 @@ export default class ActivityFilters extends React.Component {
                             </RegularText>
                             <View style={styles.rightItem}>
                                 <RegularText style={styles.contentText}>
-                                    {filtersDisplay[this.state.genderPreferences]}
+                                    {
+                                        filtersDisplay[
+                                            this.state.genderPreferences
+                                        ]
+                                    }
                                 </RegularText>
                             </View>
                         </View>
