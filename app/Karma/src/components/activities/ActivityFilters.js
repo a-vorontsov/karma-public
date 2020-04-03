@@ -26,19 +26,42 @@ const icons = {
     filter: require("../../assets/images/general-logos/filter.png"),
     calendar: require("../../assets/images/general-logos/calendar-dark.png"),
 };
+const filtersDisplay = {
+    noPreferences: "None",
+    womenOnly: "Women Only",
+    allGenders: "All Allowed",
+    locationVisible: "Visible",
+    locationNotVisible: "Not Visible",
+    anyLocation: "Any",
+    allTypes: "All",
+    physical: "Physical",
+    nonPhysical: "Non-Physical",
+}
 export default class ActivityFilters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            noPreferences: true,
             womenOnly: false,
+            allGenders: false,
             locationVisible: false,
-            physicalActivity: false,
+            locationNotVisible: false,
+            anyLocation: true,
+            type: "All",
+            gender: "None",
+            location: "Any",
+            allTypes: true,
+            physical: false,
+            nonPhysical: false,
             distance: 90,
             calendarVisible: false,
             availabilityStart: null,
             availabilityEnd: null,
             filters: {},
-            expanded: false,
+            typesExpanded: false,
+            gendersExpanded: false,
+            locationExpanded: false,
+            distanceExpanded: false,
         };
         this.passUpState = this.passUpState.bind(this);
         if (Platform.OS === "android") {
@@ -48,10 +71,12 @@ export default class ActivityFilters extends React.Component {
 
     componentDidMount() {
         const {filters} = this.props;
-        if(filters.booleanFilters){
+        if (filters.booleanFilters) {
             this.setState({
                 womenOnly: filters.booleanFilters.includes("women_only"),
-                locationVisible: filters.booleanFilters.includes("address_visible"),
+                locationVisible: filters.booleanFilters.includes(
+                    "address_visible",
+                ),
                 physicalActivity: filters.booleanFilters.includes("physical"),
             });
         }
@@ -69,9 +94,54 @@ export default class ActivityFilters extends React.Component {
         });
     };
 
-    _onCategorySelected(name) {
+    setListStatesToFalse(listName) {
+        switch (listName) {
+            case "preferences":
+                this.setState({
+                    noPreferences: false,
+                    womenOnly: false,
+                    allGenders: false,
+                });
+                break;
+            case "types": {
+                this.setState({
+                    allTypes: false,
+                    physical: false,
+                    nonPhysical: false,
+                });
+                break;
+            }
+            case "location": {
+                this.setState({
+                    anyLocation: false,
+                    locationVisible: false,
+                    locationNotVisible: false,
+                });
+                break;
+            }
+        }
+    }
+
+    _onTypeSelected(name) {
+        this.setListStatesToFalse("types");
         this.setState({
             [name]: !this.state[name],
+            type: filtersDisplay[name],
+        });
+    }
+    _onGenderSelected(name) {
+        this.setListStatesToFalse("preferences");
+        this.setState({
+            [name]: !this.state[name],
+            gender: filtersDisplay[name],
+        });
+    }
+
+    _onLocationSelected(name) {
+        this.setListStatesToFalse("location");
+        this.setState({
+            [name]: !this.state[name],
+            location: filtersDisplay[name],
         });
     }
     updateFilters() {
@@ -102,12 +172,27 @@ export default class ActivityFilters extends React.Component {
             filters,
         });
     }
-    changeLayout = () => {
+    changeLayout = name => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded: !this.state.expanded});
+        this.setState({[name]: !this.state[name]});
     };
 
     render() {
+        const {
+            gendersExpanded,
+            typesExpanded,
+            locationExpanded,
+            noPreferences,
+            womenOnly,
+            allGenders,
+            allTypes,
+            physical,
+            nonPhysical,
+            distanceExpanded,
+            locationVisible,
+            locationNotVisible,
+            anyLocation,
+        } = this.state;
         return (
             <View>
                 {/* AVAILABILITY */}
@@ -170,16 +255,177 @@ export default class ActivityFilters extends React.Component {
                         </View>
                     </View>
                 )}
-                {/* DISTANCE */}
-                {!this.state.calendarVisible && (
-                    <View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}>
-                            <RegularText style={styles.contentText}>
-                                Distance
+                {/* ACTIVITY TYPES */}
+                <View style={styles.btnTextHolder}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this.changeLayout("typesExpanded")}
+                        style={styles.Btn}>
+                        <View style={styles.header}>
+                            <RegularText style={styles.btnText}>
+                                Activity Type
+                            </RegularText>
+                            <View style={styles.leftItem}>
+                                <RegularText style={styles.contentText}>
+                                    {this.state.type}
+                                </RegularText>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            ...styles.contentBox,
+                            height: typesExpanded ? null : 0,
+                        }}>
+                        {/* All */}
+                        <TouchableOpacity
+                            disabled={allTypes}
+                            onPress={() => this._onTypeSelected("allTypes")}
+                            style={
+                                allTypes
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    this.state.allTypes
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                All
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* PHYSICAL ACTIVITIES */}
+                        <TouchableOpacity
+                            disabled={physical}
+                            onPress={() => this._onTypeSelected("physical")}
+                            style={
+                                physical
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    physical
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Physical
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* NON PHYSICAL ACTIVITIES */}
+                        <TouchableOpacity
+                            disabled={nonPhysical}
+                            onPress={() => this._onTypeSelected("nonPhysical")}
+                            style={
+                                nonPhysical
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    nonPhysical
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Non-Physical
+                            </RegularText>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {/* LOCATION */}
+                <View style={styles.btnTextHolder}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this.changeLayout("locationExpanded")}
+                        style={styles.Btn}>
+                        <View style={styles.header}>
+                            <RegularText style={styles.btnText}>
+                                Location
+                            </RegularText>
+                            <View style={styles.leftItem}>
+                                <RegularText style={styles.contentText}>
+                                    {this.state.location}
+                                </RegularText>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            ...styles.contentBox,
+                            height: locationExpanded ? null : 0,
+                        }}>
+                        {/* ANY */}
+                        <TouchableOpacity
+                            disabled={anyLocation}
+                            onPress={() =>
+                                this._onLocationSelected("anyLocation")
+                            }
+                            style={
+                                anyLocation
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    anyLocation
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Any
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* VISIBLE */}
+                        <TouchableOpacity
+                            disabled={locationVisible}
+                            onPress={() =>
+                                this._onLocationSelected("locationVisible")
+                            }
+                            style={
+                                locationVisible
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    locationVisible
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Visible
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* NOT VISIBLE */}
+                        <TouchableOpacity
+                            disabled={locationNotVisible}
+                            onPress={() =>
+                                this._onLocationSelected("locationNotVisible")
+                            }
+                            style={
+                                locationNotVisible
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    locationNotVisible
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Not Visible
+                            </RegularText>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {/* MAX DISTANCE */}
+                <View style={styles.btnTextHolder}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this.changeLayout("distanceExpanded")}
+                        style={styles.Btn}>
+                        <View style={styles.header}>
+                            <RegularText style={styles.btnText}>
+                                Max Distance
                             </RegularText>
                             <View style={styles.leftItem}>
                                 <RegularText style={styles.contentText}>
@@ -187,116 +433,111 @@ export default class ActivityFilters extends React.Component {
                                 </RegularText>
                             </View>
                         </View>
-                        <Slider
-                            style={styles.slider}
-                            value={this.state.distance}
-                            minimumValue={0}
-                            maximumValue={100}
-                            step={1}
-                            thumbTintColor={Colours.blue}
-                            minimumTrackTintColor="#A9DCDF"
-                            onSlidingComplete={val =>
-                                this.setState({
-                                    distance: val,
-                                })
-                            }
-                        />
-                    </View>
-                )}
-                {!this.state.calendarVisible && (
-                    <View style={styles.btnTextHolder}>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={this.changeLayout}
-                            style={styles.Btn}>
-                            <RegularText style={styles.btnText}>
-                                Category
-                            </RegularText>
-                        </TouchableOpacity>
-                        <View
-                            style={{
-                                height: this.state.expanded ? null : 0,
-                                overflow: "hidden",
-                                paddingHorizontal: 15,
-                            }}>
-                            {/* WOMEN ONLY */}
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this._onCategorySelected("womenOnly")
-                                }
-                                style={
-                                    this.state.womenOnly
-                                        ? styles.categoryBtnSelected
-                                        : styles.categoryBtn
-                                }>
-                                <RegularText
-                                    style={
-                                        this.state.womenOnly
-                                            ? styles.categoryTextSelected
-                                            : styles.categoryText
-                                    }>
-                                    Women Only
-                                </RegularText>
-                            </TouchableOpacity>
-                            {/* PHYSICAL ACTIVITY */}
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this._onCategorySelected("physicalActivity")
-                                }
-                                style={
-                                    this.state.physicalActivity
-                                        ? styles.categoryBtnSelected
-                                        : styles.categoryBtn
-                                }>
-                                <RegularText
-                                    style={
-                                        this.state.physicalActivity
-                                            ? styles.categoryTextSelected
-                                            : styles.categoryText
-                                    }>
-                                    Physical
-                                </RegularText>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                )}
-                {/* LOCATION VISIBLE */}
-                {!this.state.calendarVisible && (
+                    </TouchableOpacity>
                     <View
                         style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            paddingBottom: 10,
+                            ...styles.contentBox,
+                            height: distanceExpanded ? null : 0,
                         }}>
-                        <RegularText style={styles.contentText}>
-                            Full Location Visible:
-                        </RegularText>
-                        <View style={styles.leftItem}>
-                            <Switch
-                                style={styles.switch}
-                                trackColor={{
-                                    true: "#A9DCDF",
-                                    false: Colours.grey,
-                                }}
-                                thumbColor={Colours.grey}
-                                onChange={() =>
+                        <View>
+                            <Slider
+                                style={styles.slider}
+                                value={this.state.distance}
+                                minimumValue={0}
+                                maximumValue={100}
+                                step={1}
+                                thumbTintColor={Colours.blue}
+                                minimumTrackTintColor="#A9DCDF"
+                                onValueChange={val =>
                                     this.setState({
-                                        locationVisible: !this.state
-                                            .locationVisible,
+                                        distance: val,
                                     })
                                 }
-                                value={this.state.locationVisible}
                             />
                         </View>
                     </View>
-                )}
-                {!this.state.calendarVisible && (
-                    <Button
-                        size={15}
-                        title={"Update"}
-                        onPress={this.passUpState}
-                    />
-                )}
+                </View>
+                {/* GENDER PREFERENCES */}
+                <View style={styles.btnTextHolder}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this.changeLayout("gendersExpanded")}
+                        style={styles.Btn}>
+                        <View style={styles.header}>
+                            <RegularText style={styles.btnText}>
+                                Gender Preferences
+                            </RegularText>
+                            <View style={styles.leftItem}>
+                                <RegularText style={styles.contentText}>
+                                    {this.state.gender}
+                                </RegularText>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            ...styles.contentBox,
+                            height: gendersExpanded ? null : 0,
+                        }}>
+                        {/* No Preferences */}
+                        <TouchableOpacity
+                            disabled={noPreferences}
+                            onPress={() =>
+                                this._onGenderSelected("noPreferences")
+                            }
+                            style={
+                                noPreferences
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    noPreferences
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                None
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* WOMEN ONLY */}
+                        <TouchableOpacity
+                            disabled={womenOnly}
+                            onPress={() => this._onGenderSelected("womenOnly")}
+                            style={
+                                womenOnly
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    womenOnly
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                Women-Only
+                            </RegularText>
+                        </TouchableOpacity>
+                        {/* All Genders Allowed */}
+                        <TouchableOpacity
+                            disabled={allGenders}
+                            onPress={() => this._onGenderSelected("allGenders")}
+                            style={
+                                allGenders
+                                    ? styles.categoryBtnSelected
+                                    : styles.categoryBtn
+                            }>
+                            <RegularText
+                                style={
+                                    allGenders
+                                        ? styles.categoryTextSelected
+                                        : styles.categoryText
+                                }>
+                                All Genders Allowed
+                            </RegularText>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <Button size={15} title={"Update"} onPress={this.passUpState} />
             </View>
         );
     }
@@ -305,7 +546,6 @@ const styles = StyleSheet.create({
     contentText: {
         fontSize: 15,
         color: Colours.grey,
-        paddingVertical: 15,
     },
     leftItem: {
         flex: 1,
@@ -318,10 +558,13 @@ const styles = StyleSheet.create({
         color: "black",
         padding: 10,
     },
-
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
     btnText: {
         color: Colours.darkGrey,
-        fontSize: 19,
+        fontSize: 16,
         fontWeight: "bold",
     },
 
@@ -329,12 +572,16 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         borderColor: "rgba(0,0,0,0.5)",
         backgroundColor: Colours.lightestGrey,
+        marginTop: 10,
     },
-
     Btn: {
         borderRadius: 7,
         padding: 10,
         backgroundColor: Colours.lightestGrey,
+    },
+    contentBox: {
+        overflow: "hidden",
+        paddingHorizontal: 15,
     },
     categoryBtnSelected: {
         backgroundColor: Colours.white,
@@ -353,11 +600,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     categoryText: {
-        fontSize: 16,
+        fontSize: 13,
         color: Colours.grey,
     },
     categoryTextSelected: {
-        fontSize: 16,
+        fontSize: 13,
         color: Colours.grey,
         fontWeight: "bold",
     },
