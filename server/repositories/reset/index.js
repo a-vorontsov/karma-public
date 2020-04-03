@@ -1,9 +1,8 @@
 const db = require("../../database/connection");
 
-// TODO: pass object
-const insertResetToken = (userId, token, expiryDate) => {
+const insertResetToken = (resetRecord) => {
     const query = "INSERT INTO reset(user_id,password_token,expiry_date) VALUES($1,$2,$3) RETURNING *";
-    const params = [userId, token, expiryDate];
+    const params = [resetRecord.userId, resetRecord.token, resetRecord.expiryDate];
     return db.query(query, params);
 };
 
