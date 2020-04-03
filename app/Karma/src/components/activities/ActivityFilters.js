@@ -50,7 +50,7 @@ export default class ActivityFilters extends React.Component {
             distanceExpanded: false,
             availabilityExpanded: false,
             //Gender
-            gender: "None",
+            genderPreferences: "None",
             noPreferences: true,
             womenOnly: false,
             allGenders: false,
@@ -93,7 +93,7 @@ export default class ActivityFilters extends React.Component {
             distance: filters.maxDistance,
             availabilityStart: filters.availabilityStart,
             availabilityEnd: filters.availabilityEnd,
-            gender: filters.gender || "None",
+            genderPreferences: filters.genderPreferences || "None",
             location: filters.location || "Any",
             type: filters.type || "All",
         });
@@ -145,7 +145,7 @@ export default class ActivityFilters extends React.Component {
         this.setListStatesToFalse("preferences");
         this.setState({
             [name]: !this.state[name],
-            gender: filtersDisplay[name],
+            genderPreferences: filtersDisplay[name],
         });
     }
 
@@ -176,7 +176,7 @@ export default class ActivityFilters extends React.Component {
                 maxDistance: this.state.distance,
                 availabilityStart: this.state.availabilityStart,
                 availabilityEnd: this.state.availabilityEnd,
-                gender: this.state.gender,
+                genderPreferences: this.state.genderPreferences,
                 type: this.state.type,
                 location: this.state.location,
             },
@@ -481,7 +481,7 @@ export default class ActivityFilters extends React.Component {
                             </RegularText>
                             <View style={styles.leftItem}>
                                 <RegularText style={styles.contentText}>
-                                    {this.state.gender}
+                                    {this.state.genderPreferences}
                                 </RegularText>
                             </View>
                         </View>
