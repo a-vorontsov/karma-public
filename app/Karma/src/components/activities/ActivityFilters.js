@@ -57,9 +57,7 @@ export default class ActivityFilters extends React.Component {
     }
 
     async componentDidMount() {
-        console.log("Recieving props from parent");
         const {filters} = this.props;
-        console.log(filters);
         await this.setState({
             distance: filters.maxDistance,
             availabilityStart: filters.availabilityStart,
@@ -68,8 +66,6 @@ export default class ActivityFilters extends React.Component {
             location: filters.location || "anyLocation",
             type: filters.type || "allTypes",
         });
-        console.log("availability start in filters is:");
-        console.log(this.state.availabilityStart);
     }
 
     onInputChange = inputState => {
@@ -98,7 +94,6 @@ export default class ActivityFilters extends React.Component {
         });
     }
     async passUpState() {
-        console.log("Passing up state now.");
         await this.updateFilters();
         const {filters} = this.state;
         this.props.onUpdateFilters({
@@ -143,7 +138,7 @@ export default class ActivityFilters extends React.Component {
                             <RegularText style={styles.btnText}>
                                 Availability
                             </RegularText>
-                            <View style={styles.leftItem}>
+                            <View style={styles.rightItem}>
                                 <Image
                                     source={icons.calendar}
                                     style={{
@@ -186,7 +181,7 @@ export default class ActivityFilters extends React.Component {
                             <RegularText style={styles.btnText}>
                                 Activity Type
                             </RegularText>
-                            <View style={styles.leftItem}>
+                            <View style={styles.rightItem}>
                                 <RegularText style={styles.contentText}>
                                     {filtersDisplay[this.state.type]}
                                 </RegularText>
@@ -270,7 +265,7 @@ export default class ActivityFilters extends React.Component {
                             <RegularText style={styles.btnText}>
                                 Location
                             </RegularText>
-                            <View style={styles.leftItem}>
+                            <View style={styles.rightItem}>
                                 <RegularText style={styles.contentText}>
                                     {filtersDisplay[this.state.location]}
                                 </RegularText>
@@ -363,7 +358,7 @@ export default class ActivityFilters extends React.Component {
                             <RegularText style={styles.btnText}>
                                 Max Distance
                             </RegularText>
-                            <View style={styles.leftItem}>
+                            <View style={styles.rightItem}>
                                 <RegularText style={styles.contentText}>
                                     {this.state.distance} Miles
                                 </RegularText>
@@ -403,7 +398,7 @@ export default class ActivityFilters extends React.Component {
                             <RegularText style={styles.btnText}>
                                 Gender Preferences
                             </RegularText>
-                            <View style={styles.leftItem}>
+                            <View style={styles.rightItem}>
                                 <RegularText style={styles.contentText}>
                                     {filtersDisplay[this.state.genderPreferences]}
                                 </RegularText>
@@ -512,7 +507,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: Colours.grey,
     },
-    leftItem: {
+    rightItem: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "flex-end",

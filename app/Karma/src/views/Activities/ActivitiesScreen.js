@@ -40,12 +40,11 @@ class ActivitiesScreen extends Component {
         this.onUpdateFilters = this.onUpdateFilters.bind(this);
     }
 
-    onUpdateFilters = inputState => {
-        console.log("Recieving state from child");
-        this.setState({
+    onUpdateFilters = async inputState => {
+        this.toggleModal();
+        await this.setState({
             filters: inputState.filters,
         });
-        this.toggleModal();
     };
 
     toggleModal = () => {
@@ -107,11 +106,11 @@ class ActivitiesScreen extends Component {
                     {/* FILTERS MODAL */}
                     <Modal
                         visible={this.state.modalVisible}
-                        height={SCREEN_HEIGHT * 0.45}
+                        height={SCREEN_HEIGHT * 0.5}
                         width={formWidth}
                         onTouchOutside={this.toggleModal}
                         swipeDirection={["up", "down"]}
-                        swipeThreshold={200} // default 100
+                        swipeThreshold={100} // default 100
                         modalAnimation={
                             new SlideAnimation({
                                 slideFrom: "top",

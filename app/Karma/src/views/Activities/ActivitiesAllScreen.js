@@ -37,7 +37,7 @@ class ActivitiesAllScreen extends Component {
 
     async componentDidMount() {
         this.setState({loading: true});
-        this.fetchActivities();
+        await this.fetchActivities();
     }
 
     getDateString(date) {
@@ -62,7 +62,9 @@ class ActivitiesAllScreen extends Component {
                 filters.maxDistance = maxDistance;
             }
             if (availabilityStart) {
-                filters.availabilityStart = this.getDateString(availabilityStart);
+                filters.availabilityStart = this.getDateString(
+                    availabilityStart,
+                );
             }
             if (availabilityEnd) {
                 filters.availabilityEnd = this.getDateString(availabilityEnd);
