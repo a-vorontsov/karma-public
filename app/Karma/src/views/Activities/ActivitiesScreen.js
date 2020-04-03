@@ -18,7 +18,7 @@ import ActivitiesGoingScreen from "./ActivitiesGoingScreen";
 import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import ActivityFilters from "../../components/activities/ActivityFilters";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
-import Modal, {ModalContent} from "react-native-modals";
+import Modal, {ModalContent, SlideAnimation, ScaleAnimation} from "react-native-modals";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -67,8 +67,6 @@ class ActivitiesScreen extends Component {
         });
     }
 
-
-
     render() {
         return (
             <SafeAreaView style={{backgroundColor: Colours.white, flex: 1}}>
@@ -106,32 +104,33 @@ class ActivitiesScreen extends Component {
                             />
                         </TouchableOpacity>
                     </View>
-
                     {/* FILTERS MODAL */}
-                    <View>
-                        <Modal
-                            visible={this.state.modalVisible}
-                            height={
-                                this.state.calendarVisible
-                                    ? SCREEN_HEIGHT * 0.5
-                                    : SCREEN_HEIGHT * 0.55
-                            }
-                            width={formWidth}
-                            onTouchOutside={this.toggleModal}>
-                            <View>
-                                <ScrollView
-                                    showsVerticalScrollIndicator={false}>
-                                    <ModalContent>
-                                        <ActivityFilters
-                                            onUpdateFilters={this.onUpdateFilters}
-                                            filters={this.state.filters}
-                                        />
-                                    </ModalContent>
-                                </ScrollView>
-                            </View>
-                        </Modal>
-                    </View>
-
+                    <Modal
+                        visible={this.state.modalVisible}
+                        height={SCREEN_HEIGHT * 0.45}
+                        width={formWidth}
+                        onTouchOutside={this.toggleModal}
+                        swipeDirection={["up", "down"]}
+                        swipeThreshold={200} // default 100
+                        modalAnimation={
+                            new SlideAnimation({
+                                slideFrom: "top",
+                                initialValue: 0, // optional
+                                useNativeDriver: true, // optional
+                            })
+                        }
+                        onSwipeOut={event => {
+                            this.setState({modalVisible: false});
+                        }}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <ModalContent>
+                                <ActivityFilters
+                                    onUpdateFilters={this.onUpdateFilters}
+                                    filters={this.state.filters}
+                                />
+                            </ModalContent>
+                        </ScrollView>
+                    </Modal>
                     {/* NAVIGATION TAB */}
                     <View style={{paddingBottom: 30, paddingHorizontal: 24}}>
                         <View
@@ -222,9 +221,7 @@ class ActivitiesScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <this.state.display
-                        filters={this.state.filters}
-                    />
+                    <this.state.display filters={this.state.filters} />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );

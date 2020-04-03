@@ -4,7 +4,7 @@ import CalendarPicker from "react-native-calendar-picker";
 import Colours from "../styles/Colours";
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
-const formWidth = 0.8 * SCREEN_WIDTH;
+const formWidth = 0.7 * SCREEN_WIDTH;
 
 export default class Calendar extends Component {
     constructor(props) {
@@ -63,6 +63,7 @@ export default class Calendar extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFFFFF",
+        borderRadius: 5,
     },
 });
 

@@ -11,13 +11,12 @@ import {
     Platform,
     UIManager,
 } from "react-native";
-import CheckBox from "react-native-check-box";
 import Slider from "@react-native-community/slider";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import Calendar from "../../components/Calendar";
 import {Button} from "../../components/buttons";
-import BoldText from "../text/BoldText";
+import Styles from "../../styles/Styles";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -36,7 +35,7 @@ const filtersDisplay = {
     allTypes: "All",
     physical: "Physical",
     nonPhysical: "Non-Physical",
-}
+};
 export default class ActivityFilters extends React.Component {
     constructor(props) {
         super(props);
@@ -62,6 +61,7 @@ export default class ActivityFilters extends React.Component {
             gendersExpanded: false,
             locationExpanded: false,
             distanceExpanded: false,
+            availabilityExpanded: false,
         };
         this.passUpState = this.passUpState.bind(this);
         if (Platform.OS === "android") {
@@ -182,6 +182,7 @@ export default class ActivityFilters extends React.Component {
             gendersExpanded,
             typesExpanded,
             locationExpanded,
+            availabilityExpanded,
             noPreferences,
             womenOnly,
             allGenders,
@@ -195,66 +196,59 @@ export default class ActivityFilters extends React.Component {
         } = this.state;
         return (
             <View>
-                {/* AVAILABILITY */}
-                <View
+                <RegularText
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        fontWeight: "bold",
+                        fontSize: 19,
+                        color: Colours.darkGrey,
                     }}>
-                    <RegularText style={styles.contentText}>
-                        Availability:
-                    </RegularText>
-                    <View style={styles.leftItem}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.setState({
-                                    calendarVisible: !this.state
-                                        .calendarVisible,
-                                });
-                            }}>
-                            <Image
-                                source={icons.calendar}
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    resizeMode: "contain",
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {this.state.calendarVisible && (
+                    Filters:
+                </RegularText>
+                {/* AVAILABILITY */}
+                <View style={styles.btnTextHolder}>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() =>
+                            this.changeLayout("availabilityExpanded")
+                        }
+                        style={styles.Btn}>
+                        <View style={styles.header}>
+                            <RegularText style={styles.btnText}>
+                                Availability
+                            </RegularText>
+                            <View style={styles.leftItem}>
+                                <Image
+                                    source={icons.calendar}
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        resizeMode: "contain",
+                                    }}
+                                />
+                            </View>
+                        </View>
+                    </TouchableOpacity>
                     <View
                         style={{
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            alignItems: "center",
+                            ...styles.contentBox,
+                            height: availabilityExpanded ? null : 0,
                         }}>
-                        <View>
-                            <Calendar
-                                onChange={this.onInputChange}
-                                startDate={this.state.availabilityStart}
-                                endDate={this.state.availabilityEnd}
-                            />
-                        </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                                justifyContent: "space-evenly",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                             }}>
-                            <Button
-                                size={15}
-                                ph={20}
-                                title={"Set Dates"}
-                                onPress={() => {
-                                    this.setState({
-                                        calendarVisible: false,
-                                    });
-                                }}
-                            />
+                            <View style={{paddingVertical: 10}}>
+                                <Calendar
+                                    onChange={this.onInputChange}
+                                    startDate={this.state.availabilityStart}
+                                    endDate={this.state.availabilityEnd}
+                                />
+                            </View>
                         </View>
                     </View>
-                )}
+                </View>
                 {/* ACTIVITY TYPES */}
                 <View style={styles.btnTextHolder}>
                     <TouchableOpacity
@@ -537,7 +531,23 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Button size={15} title={"Update"} onPress={this.passUpState} />
+                <TouchableOpacity
+                    style={{
+                        ...Styles.roundButton,
+                        width: "100%",
+                        bottom: 0,
+                        marginTop: 15,
+                    }}
+                    onPress={this.passUpState}
+                    activeOpacity={0.9}>
+                    <RegularText
+                        style={{
+                            ...Styles.buttonText,
+                            ...Styles.white,
+                        }}>
+                        {"Update"}
+                    </RegularText>
+                </TouchableOpacity>
             </View>
         );
     }
