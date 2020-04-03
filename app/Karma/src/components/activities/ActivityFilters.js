@@ -1,11 +1,9 @@
-import React, {Component} from "react";
+import React from "react";
 import {
     TouchableOpacity,
     View,
     Image,
-    Switch,
     Dimensions,
-    ScrollView,
     StyleSheet,
     LayoutAnimation,
     Platform,
@@ -15,7 +13,6 @@ import Slider from "@react-native-community/slider";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
 import Calendar from "../../components/Calendar";
-import {Button} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -49,21 +46,9 @@ export default class ActivityFilters extends React.Component {
             locationExpanded: false,
             distanceExpanded: false,
             availabilityExpanded: false,
-            //Gender
-            genderPreferences: "None",
-            noPreferences: true,
-            womenOnly: false,
-            allGenders: false,
-            //Location
-            location: "Any",
-            locationVisible: false,
-            locationNotVisible: false,
-            anyLocation: true,
-            //Types
-            type: "All",
-            allTypes: true,
-            physical: false,
-            nonPhysical: false,
+            genderPreferences: "noPreferences",
+            location: "anyLocation",
+            type: "allTypes",
         };
         this.passUpState = this.passUpState.bind(this);
         if (Platform.OS === "android") {
@@ -72,31 +57,19 @@ export default class ActivityFilters extends React.Component {
     }
 
     async componentDidMount() {
+        console.log("Recieving props from parent");
         const {filters} = this.props;
-        const {booleanFilters} = filters;
-        if (booleanFilters) {
-            await this.setState({
-                womenOnly: booleanFilters.includes("women_only"),
-                allGenders: booleanFilters.includes("!women_only"),
-                locationVisible: booleanFilters.includes("address_visible"),
-                locationNotVisible: booleanFilters.includes("!address_visible"),
-                physical: booleanFilters.includes("physical"),
-                nonPhysical: booleanFilters.includes("!physical"),
-            });
-            this.setState({
-                noPreferences: !this.state.womenOnly && !this.state.allGenders,
-                allTypes: !this.state.physical && !this.state.nonPhysical,
-                anyLocation:!this.state.locationVisible && !this.state.locationNotVisible,
-            });
-        }
-        this.setState({
+        console.log(filters);
+        await this.setState({
             distance: filters.maxDistance,
             availabilityStart: filters.availabilityStart,
             availabilityEnd: filters.availabilityEnd,
-            genderPreferences: filters.genderPreferences || "None",
-            location: filters.location || "Any",
-            type: filters.type || "All",
+            genderPreferences: filters.genderPreferences || "noPreferences",
+            location: filters.location || "anyLocation",
+            type: filters.type || "allTypes",
         });
+        console.log("availability start in filters is:");
+        console.log(this.state.availabilityStart);
     }
 
     onInputChange = inputState => {
@@ -106,73 +79,15 @@ export default class ActivityFilters extends React.Component {
         });
     };
 
-    setListStatesToFalse(listName) {
-        switch (listName) {
-            case "preferences":
-                this.setState({
-                    noPreferences: false,
-                    womenOnly: false,
-                    allGenders: false,
-                });
-                break;
-            case "types": {
-                this.setState({
-                    allTypes: false,
-                    physical: false,
-                    nonPhysical: false,
-                });
-                break;
-            }
-            case "location": {
-                this.setState({
-                    anyLocation: false,
-                    locationVisible: false,
-                    locationNotVisible: false,
-                });
-                break;
-            }
-        }
-    }
-
-    _onTypeSelected(name) {
-        this.setListStatesToFalse("types");
+    _onFilterSelected(name, value) {
         this.setState({
-            [name]: !this.state[name],
-            type: filtersDisplay[name],
-        });
-    }
-    _onGenderSelected(name) {
-        this.setListStatesToFalse("preferences");
-        this.setState({
-            [name]: !this.state[name],
-            genderPreferences: filtersDisplay[name],
+            [name]: value,
         });
     }
 
-    _onLocationSelected(name) {
-        this.setListStatesToFalse("location");
-        this.setState({
-            [name]: !this.state[name],
-            location: filtersDisplay[name],
-        });
-    }
     updateFilters() {
-        const booleanFilters = [];
-        if (!this.state.noPreferences) {
-            this.state.womenOnly && booleanFilters.push("women_only");
-            this.state.allGenders && booleanFilters.push("!women_only");
-        }
-        if (!this.state.anyLocation) {
-            this.state.locationVisible && booleanFilters.push("address_visible");
-            this.state.locationNotVisible && booleanFilters.push("!address_visible");
-        }
-        if (!this.state.allTypes) {
-            this.state.physical && booleanFilters.push("physical");
-            this.state.nonPhysical && booleanFilters.push("!physical");
-        }
         this.setState({
             filters: {
-                booleanFilters: booleanFilters,
                 maxDistance: this.state.distance,
                 availabilityStart: this.state.availabilityStart,
                 availabilityEnd: this.state.availabilityEnd,
@@ -201,16 +116,10 @@ export default class ActivityFilters extends React.Component {
             typesExpanded,
             locationExpanded,
             availabilityExpanded,
-            noPreferences,
-            womenOnly,
-            allGenders,
-            allTypes,
-            physical,
-            nonPhysical,
             distanceExpanded,
-            locationVisible,
-            locationNotVisible,
-            anyLocation,
+            type,
+            genderPreferences,
+            location,
         } = this.state;
         return (
             <View>
@@ -260,8 +169,8 @@ export default class ActivityFilters extends React.Component {
                             <View style={{paddingVertical: 10}}>
                                 <Calendar
                                     onChange={this.onInputChange}
-                                    startDate={this.state.availabilityStart}
-                                    endDate={this.state.availabilityEnd}
+                                    startDate={this.props.filters.availabilityStart}
+                                    endDate={this.props.filters.availabilityEnd}
                                 />
                             </View>
                         </View>
@@ -279,7 +188,7 @@ export default class ActivityFilters extends React.Component {
                             </RegularText>
                             <View style={styles.leftItem}>
                                 <RegularText style={styles.contentText}>
-                                    {this.state.type}
+                                    {filtersDisplay[this.state.type]}
                                 </RegularText>
                             </View>
                         </View>
@@ -291,16 +200,18 @@ export default class ActivityFilters extends React.Component {
                         }}>
                         {/* All */}
                         <TouchableOpacity
-                            disabled={allTypes}
-                            onPress={() => this._onTypeSelected("allTypes")}
+                            disabled={type === "allTypes"}
+                            onPress={() =>
+                                this._onFilterSelected("type", "allTypes")
+                            }
                             style={
-                                allTypes
+                                type === "allTypes"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    this.state.allTypes
+                                    type === "allTypes"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -309,16 +220,18 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* PHYSICAL ACTIVITIES */}
                         <TouchableOpacity
-                            disabled={physical}
-                            onPress={() => this._onTypeSelected("physical")}
+                            disabled={type === "physical"}
+                            onPress={() =>
+                                this._onFilterSelected("type", "physical")
+                            }
                             style={
-                                physical
+                                type === "physical"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    physical
+                                    type === "physical"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -327,16 +240,18 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* NON PHYSICAL ACTIVITIES */}
                         <TouchableOpacity
-                            disabled={nonPhysical}
-                            onPress={() => this._onTypeSelected("nonPhysical")}
+                            disabled={type === "nonPhysical"}
+                            onPress={() =>
+                                this._onFilterSelected("type", "nonPhysical")
+                            }
                             style={
-                                nonPhysical
+                                type === "nonPhysical"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    nonPhysical
+                                    type === "nonPhysical"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -357,7 +272,7 @@ export default class ActivityFilters extends React.Component {
                             </RegularText>
                             <View style={styles.leftItem}>
                                 <RegularText style={styles.contentText}>
-                                    {this.state.location}
+                                    {filtersDisplay[this.state.location]}
                                 </RegularText>
                             </View>
                         </View>
@@ -369,18 +284,21 @@ export default class ActivityFilters extends React.Component {
                         }}>
                         {/* ANY */}
                         <TouchableOpacity
-                            disabled={anyLocation}
+                            disabled={location === "anyLocation"}
                             onPress={() =>
-                                this._onLocationSelected("anyLocation")
+                                this._onFilterSelected(
+                                    "location",
+                                    "anyLocation",
+                                )
                             }
                             style={
-                                anyLocation
+                                location === "anyLocation"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    anyLocation
+                                    location === "anyLocation"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -389,18 +307,21 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* VISIBLE */}
                         <TouchableOpacity
-                            disabled={locationVisible}
+                            disabled={location === "locationVisible"}
                             onPress={() =>
-                                this._onLocationSelected("locationVisible")
+                                this._onFilterSelected(
+                                    "location",
+                                    "locationVisible",
+                                )
                             }
                             style={
-                                locationVisible
+                                location === "locationVisible"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    locationVisible
+                                    location === "locationVisible"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -409,18 +330,21 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* NOT VISIBLE */}
                         <TouchableOpacity
-                            disabled={locationNotVisible}
+                            disabled={location === "locationNotVisible"}
                             onPress={() =>
-                                this._onLocationSelected("locationNotVisible")
+                                this._onFilterSelected(
+                                    "location",
+                                    "locationNotVisible",
+                                )
                             }
                             style={
-                                locationNotVisible
+                                location === "locationNotVisible"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    locationNotVisible
+                                    location === "locationNotVisible"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -481,7 +405,7 @@ export default class ActivityFilters extends React.Component {
                             </RegularText>
                             <View style={styles.leftItem}>
                                 <RegularText style={styles.contentText}>
-                                    {this.state.genderPreferences}
+                                    {filtersDisplay[this.state.genderPreferences]}
                                 </RegularText>
                             </View>
                         </View>
@@ -493,18 +417,21 @@ export default class ActivityFilters extends React.Component {
                         }}>
                         {/* No Preferences */}
                         <TouchableOpacity
-                            disabled={noPreferences}
+                            disabled={genderPreferences === "noPreferences"}
                             onPress={() =>
-                                this._onGenderSelected("noPreferences")
+                                this._onFilterSelected(
+                                    "genderPreferences",
+                                    "noPreferences",
+                                )
                             }
                             style={
-                                noPreferences
+                                genderPreferences === "noPreferences"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    noPreferences
+                                    genderPreferences === "noPreferences"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -513,16 +440,21 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* WOMEN ONLY */}
                         <TouchableOpacity
-                            disabled={womenOnly}
-                            onPress={() => this._onGenderSelected("womenOnly")}
+                            disabled={genderPreferences === "womenOnly"}
+                            onPress={() =>
+                                this._onFilterSelected(
+                                    "genderPreferences",
+                                    "womenOnly",
+                                )
+                            }
                             style={
-                                womenOnly
+                                genderPreferences === "womenOnly"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    womenOnly
+                                    genderPreferences === "womenOnly"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -531,16 +463,21 @@ export default class ActivityFilters extends React.Component {
                         </TouchableOpacity>
                         {/* All Genders Allowed */}
                         <TouchableOpacity
-                            disabled={allGenders}
-                            onPress={() => this._onGenderSelected("allGenders")}
+                            disabled={genderPreferences === "allGenders"}
+                            onPress={() =>
+                                this._onFilterSelected(
+                                    "genderPreferences",
+                                    "allGenders",
+                                )
+                            }
                             style={
-                                allGenders
+                                genderPreferences === "allGenders"
                                     ? styles.categoryBtnSelected
                                     : styles.categoryBtn
                             }>
                             <RegularText
                                 style={
-                                    allGenders
+                                    genderPreferences === "allGenders"
                                         ? styles.categoryTextSelected
                                         : styles.categoryText
                                 }>
@@ -563,7 +500,7 @@ export default class ActivityFilters extends React.Component {
                             ...Styles.buttonText,
                             ...Styles.white,
                         }}>
-                        {"Update"}
+                        {"Apply"}
                     </RegularText>
                 </TouchableOpacity>
             </View>

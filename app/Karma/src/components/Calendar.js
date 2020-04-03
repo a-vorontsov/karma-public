@@ -10,10 +10,17 @@ export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedStartDate: props.startDate,
-            selectedEndDate: props.endDate,
+            selectedStartDate: null,
+            selectedEndDate: null,
         };
         this.onDateChange = this.onDateChange.bind(this);
+    }
+
+    async componentDidMount() {
+        await this.setState({
+            selectedStartDate: this.props.startDate,
+            selectedEndDate: this.props.endDate,
+        });
     }
 
     async onDateChange(date, type) {
