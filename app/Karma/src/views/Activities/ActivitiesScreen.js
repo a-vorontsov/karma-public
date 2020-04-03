@@ -109,8 +109,6 @@ class ActivitiesScreen extends Component {
                         height={SCREEN_HEIGHT * 0.5}
                         width={formWidth}
                         onTouchOutside={this.toggleModal}
-                        swipeDirection={["up", "down"]}
-                        swipeThreshold={100} // default 100
                         modalAnimation={
                             new SlideAnimation({
                                 slideFrom: "top",

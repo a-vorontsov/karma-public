@@ -379,7 +379,7 @@ export default class ActivityFilters extends React.Component {
                                 step={1}
                                 thumbTintColor={Colours.blue}
                                 minimumTrackTintColor="#A9DCDF"
-                                onValueChange={val =>
+                                onSlidingComplete={val =>
                                     this.setState({
                                         distance: val,
                                     })
