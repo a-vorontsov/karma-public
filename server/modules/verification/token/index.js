@@ -19,29 +19,16 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
     const token = generateSecureToken(resetConfig.tokenLength);
     const validMinutes = resetConfig.validMinutes;
     const expiryDate = util.getNowInUTCAsString(validMinutes);
-    await storePasswordResetToken(userId, token, expiryDate);
-    await mailSender.sendEmail(
-        email,
-        `${token} Password Reset Token`,
-        `${token} is your Karma password reset code.\nThis token is valid for ${validMinutes} minutes.`,
-    );
-};
-
-/**
- * Store password reset token in the reset table.
- * Previous tokens get cleared so only latest token
- * will be valid.
- * @param {Number} userId
- * @param {String} token
- * @param {String} expiryDate
- */
-const storePasswordResetToken = async (userId, token, expiryDate) => {
-    await resetRepo.removeByUserId(userId);
     await resetRepo.insertResetToken({
         userId: userId,
         token: token,
         expiryDate: expiryDate,
     });
+    await mailSender.sendEmail(
+        email,
+        `${token} Password Reset Token`,
+        `${token} is your Karma password reset code.\nThis token is valid for ${validMinutes} minutes.`,
+    );
 };
 
 /**
@@ -56,24 +43,6 @@ const storeAndSendEmailVerificationToken = async (email) => {
     const token = generateSecureToken(verifyConfig.tokenLength);
     const validMinutes = verifyConfig.validMinutes;
     const expiryDate = util.getNowInUTCAsString(validMinutes);
-    await storeEmailVerificationToken(email, token, expiryDate);
-    await mailSender.sendEmail(
-        email,
-        `${token} Email Verification Code`,
-        `${token} is your Karma email verification code.\nThis token is valid for ${validMinutes} minutes.`,
-    );
-};
-
-/**
- * Store email verification token in the registration table.
- * Previous tokens get cleared so only latest token
- * will be valid.d.
- * @param {String} email
- * @param {String} token
- * @param {String} expiryDate
- */
-const storeEmailVerificationToken = async (email, token, expiryDate) => {
-    await regRepo.removeByEmail(email);
     await regRepo.insert({
         email: email,
         emailFlag: 0,
@@ -83,6 +52,11 @@ const storeEmailVerificationToken = async (email, token, expiryDate) => {
         verificationToken: token,
         expiryDate: expiryDate,
     });
+    await mailSender.sendEmail(
+        email,
+        `${token} Email Verification Code`,
+        `${token} is your Karma email verification code.\nThis token is valid for ${validMinutes} minutes.`,
+    );
 };
 
 /**
