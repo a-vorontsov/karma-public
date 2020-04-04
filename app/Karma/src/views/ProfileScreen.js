@@ -31,6 +31,8 @@ import {getAuthToken} from "../util/credentials";
 import {NavigationEvents} from "react-navigation";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
+import ShareKarma from "../components/sharing/ShareKarma";
+import BottomModal from "../components/BottomModal";
 const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -51,6 +53,7 @@ class ProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            displayShareModal: false,
             activeSlide: 0,
             name: "",
             user: {},
@@ -73,6 +76,7 @@ class ProfileScreen extends Component {
             photo: null,
         };
         this.fetchProfileInfo();
+        this.toggleShareModal = this.toggleShareModal.bind(this);
     }
 
     setupIndividualProfile(res) {
@@ -136,6 +140,12 @@ class ProfileScreen extends Component {
         });
 
         this.fetchProfilePicture();
+    }
+
+    toggleShareModal() {
+        this.setState({
+            displayShareModal: !this.state.displayShareModal,
+        });
     }
 
     componentDidMount() {
@@ -556,7 +566,8 @@ class ProfileScreen extends Component {
                                             </View>
                                         )}
                                         {!otherProfile && (
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={this.toggleShareModal}>
                                                 <Image
                                                     source={icons.share}
                                                     style={{
@@ -796,6 +807,11 @@ class ProfileScreen extends Component {
                         </SafeAreaView>
                     </View>
                 </ScrollView>
+                <BottomModal
+                    visible={this.state.displayShareModal}
+                    toggleModal={this.toggleShareModal}>
+                    <ShareKarma profile={this.state} />
+                </BottomModal>
             </KeyboardAvoidingView>
         );
     }

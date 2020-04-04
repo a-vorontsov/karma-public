@@ -73,7 +73,6 @@ class ActivityDisplayCard extends React.Component {
                                     }}>
                                     {props.activity.name}
                                 </RegularText>
-                                <Image />
                             </View>
                             <RegularText
                                 style={{
@@ -92,7 +91,6 @@ class ActivityDisplayCard extends React.Component {
                             flex: 1,
                             alignItem: "flex-end",
                             justifyContent: "flex-end",
-                            display: "none",
                         }}>
                         <TouchableOpacity
                             style={{alignSelf: "flex-end"}}
@@ -125,7 +123,7 @@ class ActivityDisplayCard extends React.Component {
                 <BottomModal
                     visible={this.state.displayShareModal}
                     toggleModal={this.toggleShareModal}>
-                    <ShareActivity />
+                    <ShareActivity activity={props.activity} />
                 </BottomModal>
             </View>
         );

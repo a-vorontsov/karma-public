@@ -3,7 +3,6 @@ import {
     Dimensions,
     Image,
     ScrollView,
-    StatusBar,
     StyleSheet,
     TouchableOpacity,
     View,
@@ -14,7 +13,6 @@ import Styles from "../../styles/Styles";
 import Colours from "../../styles/Colours";
 import PageHeader from "../../components/PageHeader";
 import {GradientButton} from "../../components/buttons";
-import {hasNotch} from "react-native-device-info";
 import ProgressBar from "../../components/ProgressBar";
 import Communications from "react-native-communications";
 import {getDate, formatAMPM, getMonthName} from "../../util/DateTimeInfo";
@@ -24,6 +22,8 @@ import SignUpActivity from "../../components/activities/SignUpActivity";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import request from "superagent";
+import {SafeAreaView} from "react-native-safe-area-context";
+import ShareActivity from "../../components/sharing/ShareActivity";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -44,6 +44,7 @@ class ActivityInfoScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            sharing: false,
             displaySignupModal: false,
             signedUp: false,
             showCancel: false,
@@ -94,7 +95,7 @@ class ActivityInfoScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
 
-            .then(res => {
+            .then((res) => {
                 console.log(res.status);
                 if (res.body.data.signup.confirmed === false) {
                     this.setState({signedUp: false});
@@ -103,20 +104,20 @@ class ActivityInfoScreen extends Component {
                 }
                 console.log(res.body);
             })
-            .catch(err => {
+            .catch((err) => {
                 this.setState({signedUp: false});
 
                 console.log(err);
             });
     };
 
-    getCreatorInfo = async id => {
+    getCreatorInfo = async (id) => {
         const authToken = await getAuthToken();
         const response = await request
             .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
             .query({otherUserId: id})
-            .then(res => {
+            .then((res) => {
                 return res.body.data;
             });
 
@@ -151,7 +152,7 @@ class ActivityInfoScreen extends Component {
         });
     };
 
-    getEventInfo = activity => {
+    getEventInfo = (activity) => {
         const eventCity = activity.city;
         const postcode = activity.postcode;
 
@@ -201,19 +202,14 @@ class ActivityInfoScreen extends Component {
         const newLat = !isNaN(lat) ? lat : 51.511764;
         const newLong = !isNaN(long) ? long : -0.11623;
         return (
-            <View style={[Styles.container, {backgroundColor: Colours.white}]}>
+            <SafeAreaView style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
                 <View
                     style={[
                         Styles.ph24,
                         {
                             alignItems: "flex-start",
-                            height: 0.08 * SCREEN_HEIGHT,
-                            maxHeight: 0.15 * SCREEN_HEIGHT,
                             justifyContent: "flex-start",
-                            marginTop: hasNotch()
-                                ? 40
-                                : StatusBar.currentHeight,
                             backgroundColor: Colours.white,
                             marginBottom: 20,
                         },
@@ -247,12 +243,11 @@ class ActivityInfoScreen extends Component {
                             <View
                                 style={{
                                     alignItems: "flex-start",
-                                    marginLeft: 15,
+                                    paddingLeft: 15,
                                 }}>
                                 <View
                                     style={{
                                         flexDirection: "row",
-                                        alignItems: "center",
                                         justifyItems: "flex-start",
                                     }}>
                                     <RegularText
@@ -263,9 +258,8 @@ class ActivityInfoScreen extends Component {
                                         }}>
                                         {this.state.org_name}
                                     </RegularText>
-                                    <Image />
                                 </View>
-                                <View style={{width: FORM_WIDTH}}>
+                                <View>
                                     <RegularText
                                         style={{
                                             fontSize: 15,
@@ -283,9 +277,15 @@ class ActivityInfoScreen extends Component {
                                 flex: 1,
                                 alignItem: "flex-end",
                                 justifyContent: "flex-end",
-                                display: "none",
                             }}>
-                            <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                            <TouchableOpacity
+                                style={{alignSelf: "flex-end"}}
+                                onPress={() => {
+                                    this.setState({
+                                        sharing: true
+                                    });
+                                    this.toggleModal();
+                                }}>
                                 <Image
                                     source={icons.share}
                                     style={{
@@ -300,13 +300,11 @@ class ActivityInfoScreen extends Component {
                     </View>
 
                     {/* CARD */}
-                    <View style={[Styles.container, Styles.ph24]}>
+                    <View style={[Styles.container, Styles.ph24, Styles.pt8]}>
                         <View style={[Styles.pb24, Styles.bottom]}>
                             <Image
                                 source={{
-                                    uri: `https://picsum.photos/seed/${
-                                        activity.eventId
-                                    }/800/200`,
+                                    uri: `https://picsum.photos/seed/${activity.eventId}/800/200`,
                                 }}
                                 style={{
                                     flex: 1,
@@ -579,7 +577,6 @@ class ActivityInfoScreen extends Component {
                         height: 0.08 * SCREEN_HEIGHT,
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        marginBottom: 30,
                         backgroundColor: Colours.white,
                     }}>
                     <View style={{width: FORM_WIDTH}}>
@@ -587,13 +584,21 @@ class ActivityInfoScreen extends Component {
                             //yes
                             <GradientButton
                                 title="Cancel Attendance"
-                                onPress={() => this.toggleModal()}
+                                onPress={() => {
+                                    this.setState({
+                                        sharing: false,
+                                    });
+                                    this.toggleModal();
+                                }}
                             />
                         ) : (
                             //no
                             <GradientButton
                                 title="Attend"
                                 onPress={() => {
+                                    this.setState({
+                                        sharing: false,
+                                    });
                                     this.toggleModal();
                                 }}
                             />
@@ -603,14 +608,18 @@ class ActivityInfoScreen extends Component {
                 <BottomModal
                     visible={this.state.displaySignupModal}
                     toggleModal={this.toggleModal}>
-                    <SignUpActivity
-                        activity={activity}
-                        onConfirm={this.toggleModal}
-                        onError={this.handleSignupError}
-                        signedUp={signedUp}
-                    />
+                    {this.state.sharing ? (
+                        <ShareActivity activity={activity} />
+                    ) : (
+                        <SignUpActivity
+                            activity={activity}
+                            onConfirm={this.toggleModal}
+                            onError={this.handleSignupError}
+                            signedUp={signedUp}
+                        />
+                    )}
                 </BottomModal>
-            </View>
+            </SafeAreaView>
         );
     }
 }
