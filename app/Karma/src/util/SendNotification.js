@@ -19,7 +19,6 @@ export const sendNotification = async (type, eventName, receiverIds) => {
             Alert.alert("Server Error", err.message);
         });
 };
-("has sent you a message - check your inbox!");
 
 const constructNotificationMessage = (type, eventName) => {
     let notificationMessage = "";
@@ -38,6 +37,9 @@ const constructNotificationMessage = (type, eventName) => {
             break;
         case "AttendanceConfirmation":
             notificationMessage = `Your attendance has been confirmed for the event named ${eventName}.`;
+            break;
+        case "EventSignup":
+            notificationMessage = `Someone has requested to sign up to your event (${eventName}). View your created events to accept them!`;
             break;
     }
     return notificationMessage;
