@@ -95,7 +95,7 @@ class ActivityInfoScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
 
-            .then((res) => {
+            .then(res => {
                 console.log(res.status);
                 if (res.body.data.signup.confirmed === false) {
                     this.setState({signedUp: false});
@@ -104,20 +104,20 @@ class ActivityInfoScreen extends Component {
                 }
                 console.log(res.body);
             })
-            .catch((err) => {
+            .catch(err => {
                 this.setState({signedUp: false});
 
                 console.log(err);
             });
     };
 
-    getCreatorInfo = async (id) => {
+    getCreatorInfo = async id => {
         const authToken = await getAuthToken();
         const response = await request
             .get(`${REACT_APP_API_URL}/profile`)
             .set("authorization", authToken)
             .query({otherUserId: id})
-            .then((res) => {
+            .then(res => {
                 return res.body.data;
             });
 
@@ -152,7 +152,7 @@ class ActivityInfoScreen extends Component {
         });
     };
 
-    getEventInfo = (activity) => {
+    getEventInfo = activity => {
         const eventCity = activity.city;
         const postcode = activity.postcode;
 
@@ -202,7 +202,8 @@ class ActivityInfoScreen extends Component {
         const newLat = !isNaN(lat) ? lat : 51.511764;
         const newLong = !isNaN(long) ? long : -0.11623;
         return (
-            <SafeAreaView style={[Styles.container, {backgroundColor: Colours.white}]}>
+            <SafeAreaView
+                style={[Styles.container, {backgroundColor: Colours.white}]}>
                 {/* HEADER */}
                 <View
                     style={[
@@ -282,7 +283,7 @@ class ActivityInfoScreen extends Component {
                                 style={{alignSelf: "flex-end"}}
                                 onPress={() => {
                                     this.setState({
-                                        sharing: true
+                                        sharing: true,
                                     });
                                     this.toggleModal();
                                 }}>
@@ -304,7 +305,9 @@ class ActivityInfoScreen extends Component {
                         <View style={[Styles.pb24, Styles.bottom]}>
                             <Image
                                 source={{
-                                    uri: `https://picsum.photos/seed/${activity.eventId}/800/200`,
+                                    uri: `https://picsum.photos/seed/${
+                                        activity.eventId
+                                    }/800/200`,
                                 }}
                                 style={{
                                     flex: 1,
