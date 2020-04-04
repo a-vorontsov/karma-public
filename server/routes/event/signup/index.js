@@ -276,7 +276,7 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
  */
 router.get('/:eventId/signUp/status', authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.query.eventId);
+        log.info("User id '%d': Getting event status id '%d''", req.query.userId, req.params.eventId);
         const signupResult = await eventSignupService.getSignupStatus({
             eventId: Number.parseInt(req.params.eventId),
             userId: req.query.userId,

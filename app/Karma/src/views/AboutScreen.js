@@ -64,6 +64,10 @@ class AboutScreen extends React.Component {
         this.setState({[name]: text});
     };
 
+    clearFocus() {
+        Keyboard.dismiss();
+    }
+
     setGender(selectedGender) {
         const genderCharacter =
             selectedGender === "male"
@@ -218,6 +222,7 @@ class AboutScreen extends React.Component {
             <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
                     style={Styles.ph24}
+                    keyboardVerticalOffset={-90}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <PageHeader title="About" />
