@@ -1,6 +1,6 @@
 const config = {};
 
-config.jose = { // TODO: host on domain
+config.jose = {
     kty: "EC",
     crvOrSize: "P-256",
     alg: "ECDH-ES+A128KW",
@@ -8,6 +8,7 @@ config.jose = { // TODO: host on domain
     iss: "http://karma.laane.xyz/",
     exp: "30 d",
     aud: "/user",
+    sigAlg: "ES256",
 };
 
 config.josePermissions = {
