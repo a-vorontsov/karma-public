@@ -174,7 +174,7 @@ test('confirming incorrect token returns incorrect token response', async () => 
 });
 
 test('confirming expired token returns token expired response', async () => {
-    const dateTime = util.getNowInUTCAsString(-30);
+    const dateTime = util.getCurrentTimeInUtcAsString(-30);
     userRepository.findByEmail.mockResolvedValue({
         rows: [{
             ...user,

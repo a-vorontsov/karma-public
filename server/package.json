@@ -13,7 +13,7 @@
     "docs": "jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes",
     "dev-start": "nodemon ./server",
     "prod-start": "env NODE_ENV=production nodemon ./server",
-    "check-all": "db-migrate reset; db-migrate up; npm i; jest -i; jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes; eslint ./ --fix"
+    "check-all": "db-migrate reset; db-migrate up; npm ci; jest -i; jsdoc -r -c ./jsdoc/.jsdocrc.json ./routes; eslint ./ --fix"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +31,7 @@
     "jose": "^1.25.0",
     "js-base64": "^2.5.2",
     "jsonschema": "^1.2.5",
+    "left-pad": "^1.3.0",
     "log4js": "^6.1.2",
     "multer": "^1.4.2",
     "multer-sharp-s3": "^0.2.0",

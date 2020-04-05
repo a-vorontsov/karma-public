@@ -5,6 +5,7 @@ const regRepo = require("../../../repositories/registration");
 const digest = require("../../digest");
 const config = require("../../../config");
 const util = require("../../../util");
+const leftPad = require("left-pad");
 
 /**
  * Generate a password reset token with config defined expiry,
@@ -18,7 +19,7 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
     const resetConfig = config.passwordReset;
     const token = generateSecureToken(resetConfig.tokenLength);
     const validMinutes = resetConfig.validMinutes;
-    const expiryDate = util.getNowInUTCAsString(validMinutes);
+    const expiryDate = util.getCurrentTimeInUtcAsString(validMinutes);
     await resetRepo.insertResetToken({
         userId: userId,
         token: token,
@@ -42,7 +43,7 @@ const storeAndSendEmailVerificationToken = async (email) => {
     const verifyConfig = config.emailVerification;
     const token = generateSecureToken(verifyConfig.tokenLength);
     const validMinutes = verifyConfig.validMinutes;
-    const expiryDate = util.getNowInUTCAsString(validMinutes);
+    const expiryDate = util.getCurrentTimeInUtcAsString(validMinutes);
     await regRepo.insert({
         email: email,
         emailFlag: 0,
@@ -72,11 +73,7 @@ const generateSecureToken = (length) => {
     if (genStringLength >= length) {
         return secureIntString.substring(genStringLength - length);
     } else {
-        let zeros = "";
-        for (let i = 0; i < (length - genStringLength); i++) {
-            zeros += "0";
-        }
-        return zeros + secureIntString;
+        return leftPad(secureIntString, length, "0");
     }
 };
 

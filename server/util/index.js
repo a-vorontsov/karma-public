@@ -163,7 +163,7 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
             isValidToken: false,
             error: "Invalid token",
         });
-    } else if (tokenRecord.expiryDate <= Date.parse(getNowInUTCAsString(0))) {
+    } else if (tokenRecord.expiryDate <= Date.parse(getCurrentTimeInUtcAsString(0))) {
         return ({
             isValidToken: false,
             error: "Expired token",
@@ -182,9 +182,12 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
  * @param {Number} offsetMinutes offset in minutes
  * @return {String} date in UTC as string
  */
-const getNowInUTCAsString = (offsetMinutes) => {
+const getCurrentTimeInUtcAsString = (offsetMinutes) => {
     return date.format(
-        date.addMinutes(new Date(), offsetMinutes),
+        date.addMinutes(
+            new Date(),
+            offsetMinutes ? offsetMinutes : 0,
+        ),
         "YYYY-MM-DD HH:mm:ss", true,
     );
 };
@@ -225,7 +228,7 @@ module.exports = {
     checkEmail,
     isValidToken,
     sleep,
-    getNowInUTCAsString,
+    getCurrentTimeInUtcAsString,
     getIndividualIdFromUserId,
     base64ToHex,
 };

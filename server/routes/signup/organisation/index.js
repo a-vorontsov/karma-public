@@ -59,6 +59,7 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             pocLastName: req.body.data.organisation.pocLastName,
             phoneNumber: req.body.data.organisation.phoneNumber,
             pictureId: req.body.data.organisation.pictureId,
+            orgRegisterDate: req.body.data.organisation.orgRegisterDate,
             address: {
                 addressLine1: req.body.data.organisation.address.addressLine1,
                 addressLine2: req.body.data.organisation.address.addressLine2,

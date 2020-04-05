@@ -7,7 +7,7 @@ const individualRepo = require("../../repositories/individual");
 const orgRepo = require("../../repositories/organisation");
 const addressRepo = require("../../repositories/address");
 const profileRepo = require("../../repositories/profile");
-const date = require("date-and-time");
+const util = require("../../util");
 const tokenSender = require("../verification/token");
 const authService = require("../authentication");
 const geocoder = require("../geocoder");
@@ -62,7 +62,7 @@ async function registerUser(email, username, password, pub) {
         passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        dateRegistered: util.getCurrentTimeInUtcAsString(0),
     });
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
@@ -97,7 +97,7 @@ async function registerIndividual(userId, individual) {
         phone: individual.phoneNumber,
         banned: false,
         userId: userId,
-        pictureId: (typeof individual.pictureId === "number") ? individual.pictureId : null,
+        pictureId: individual.pictureId ? individual.pictureId : null,
         addressId: addressId,
         birthday: individual.dateOfBirth,
         gender: individual.gender,
@@ -141,10 +141,10 @@ async function registerOrg(userId, organisation) {
         pocLastname: organisation.pocLastName,
         phone: organisation.phoneNumber,
         banned: false,
-        orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        orgRegisterDate: organisation.orgRegisterDate ? organisation.orgRegisterDate : util.getCurrentTimeInUtcAsString(0),
         lowIncome: organisation.lowIncome,
         exempt: organisation.exempt,
-        pictureId: (typeof organisation.pictureId === "number") ? organisation.pictureId : null,
+        pictureId: organisation.pictureId ? organisation.pictureId : null,
         userId: userId,
         addressId: addressId,
     });
