@@ -163,7 +163,7 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
             isValidToken: false,
             error: "Invalid token",
         });
-    } else if (tokenRecord.expiryDate <= Date.parse(getCurrentTimeInUtcAsString(0))) {
+    } else if (tokenRecord.expiryDate <= Date.parse(getCurrentTimeInUtcAsString())) {
         return ({
             isValidToken: false,
             error: "Expired token",
@@ -178,8 +178,8 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
 
 /**
  * Get date in UTC with optional offset in minutes.
- * Set offset to 0 to get Now() in UTC.
- * @param {Number} offsetMinutes offset in minutes
+ * Set offset to 0 to get 'Now()' in UTC.
+ * @param {Number} [offsetMinutes=0] offset in minutes 0 by default
  * @return {String} date in UTC as string
  */
 const getCurrentTimeInUtcAsString = (offsetMinutes) => {

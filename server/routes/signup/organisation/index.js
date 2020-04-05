@@ -30,6 +30,8 @@ const authService = require("../../../modules/authentication/");
                 "name": "WWF",
                 "organisationNumber": "123",
                 "phoneNumber": "0723423423",
+                "orgRegisterDate": "2008-04-05 12:00:00" (optional)
+                "pictureId": "42", (optional)
                 [...]
                 address: {
                     "addressLine1": "7 Queen Lane",

@@ -97,7 +97,7 @@ async function registerIndividual(userId, individual) {
         phone: individual.phoneNumber,
         banned: false,
         userId: userId,
-        pictureId: individual.pictureId ? individual.pictureId : null,
+        pictureId: individual.pictureId ? parseInt(individual.pictureId) : null,
         addressId: addressId,
         birthday: individual.dateOfBirth,
         gender: individual.gender,
@@ -125,6 +125,8 @@ async function setSignUpFlagTrue(userId) {
  * Register a new organisation
  * @param {number} userId
  * @param {object} organisation
+ * @throws {error} if already registered
+ * @throws {error} if invalid query
  */
 async function registerOrg(userId, organisation) {
     if (await regStatus.isFullyRegisteredById(userId)) {
@@ -144,7 +146,7 @@ async function registerOrg(userId, organisation) {
         orgRegisterDate: organisation.orgRegisterDate ? organisation.orgRegisterDate : util.getCurrentTimeInUtcAsString(0),
         lowIncome: organisation.lowIncome,
         exempt: organisation.exempt,
-        pictureId: organisation.pictureId ? organisation.pictureId : null,
+        pictureId: organisation.pictureId ? parseInt(organisation.pictureId) : null,
         userId: userId,
         addressId: addressId,
     });

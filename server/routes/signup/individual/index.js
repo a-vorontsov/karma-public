@@ -29,6 +29,7 @@ const authService = require("../../../modules/authentication/");
                 "title": "Mr.",
                 "firstName": "Paul",
                 "lastName": "Test",
+                "pictureId": "42", (optional)
                 [...]
                 address: {
                     "addressLine1": "7 Queen Lane",
