@@ -574,16 +574,6 @@ class ProfileEditScreen extends Component {
                                             </Text>
                                         </View>
                                     )}
-                                    <TouchableOpacity>
-                                        <Image
-                                            source={icons.share}
-                                            style={{
-                                                height: 25,
-                                                width: 25,
-                                                resizeMode: "contain",
-                                            }}
-                                        />
-                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
