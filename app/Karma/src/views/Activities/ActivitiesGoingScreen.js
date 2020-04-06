@@ -39,9 +39,15 @@ class ActivitiesGoingScreen extends Component {
             .set("authorization", authToken)
             .then(result => {
                 console.log(result.body.message);
+                const activities = result.body.data.events || [];
+                const confirmed = [];
+                const pending = [];
+                activities.forEach(a =>
+                    a.confirmed ? confirmed.push(a) : pending.push(a),
+                );
                 this.setState({
-                    confirmed: result.body.data.confirmed || [],
-                    pending: result.body.data.pending || [],
+                    confirmed: confirmed,
+                    pending: pending,
                 });
             })
             .catch(er => {
