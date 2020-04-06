@@ -24,6 +24,8 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 import request from "superagent";
 import {SafeAreaView} from "react-native-safe-area-context";
 import ShareActivity from "../../components/sharing/ShareActivity";
+import CauseStyles from "../../styles/CauseStyles";
+import CauseItem from "../../components/causes/CauseItem";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -53,6 +55,7 @@ class ActivityInfoScreen extends Component {
             physical: false,
             womenOnly: false,
             spots_taken: 3,
+            causes: [],
             spots: 4,
             activity_name: "Activity Name",
             org_name: "Name",
@@ -73,6 +76,19 @@ class ActivityInfoScreen extends Component {
                 "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
         };
         this.state.signedUp = this.props.navigation.getParam("signedup");
+    }
+
+    async componentDidMount() {
+        const activity = this.props.navigation.getParam("activity");
+
+        this.getEventInfo(activity);
+
+        await this.getSignUpStatus();
+        await this.getCreatorInfo(
+            activity.eventCreatorId
+                ? activity.eventCreatorId
+                : activity.eventcreatorid,
+        );
     }
 
     toggleModal = () => {
@@ -152,7 +168,7 @@ class ActivityInfoScreen extends Component {
         });
     };
 
-    getEventInfo = activity => {
+    getEventInfo = async activity => {
         const eventCity = activity.city;
         const postcode = activity.postcode;
 
@@ -161,11 +177,15 @@ class ActivityInfoScreen extends Component {
         const lat = Number(activity.lat);
         const long = Number(activity.long);
 
+        const causeIds = activity.causes;
+
+        const causes = await this.fetchSelectedCauses(causeIds);
+
         const full_location = address1 + address2 + eventCity + " " + postcode;
 
         this.setState({
             full_location,
-
+            causes: causes,
             lat,
             long,
             eventCity,
@@ -183,22 +203,34 @@ class ActivityInfoScreen extends Component {
         });
     };
 
-    async componentDidMount() {
-        const activity = this.props.navigation.getParam("activity");
+    /**
+     * Fetches the selected causes related to an event
+     * Endpoint returns only cause ids, so causes need to be fetched
+     */
+    fetchSelectedCauses = async causeIds => {
+        console.log("Fetching causes related to this activity");
+        const authToken = await getAuthToken();
+        const causes = [];
 
-        this.getEventInfo(activity);
+        const response = await request
+            .get(`${REACT_APP_API_URL}/causes`)
+            .set("authorization", authToken)
+            .then(res => {
+                return res.body.data;
+            });
 
-        await this.getSignUpStatus();
-        await this.getCreatorInfo(
-            activity.eventCreatorId
-                ? activity.eventCreatorId
-                : activity.eventcreatorid,
-        );
-    }
+        Array.from(response).forEach(cause => {
+            if (causeIds.includes(cause.id)) {
+                causes.push(cause);
+            }
+        });
+        return causes;
+    };
 
     render() {
         const activity = this.props.navigation.getParam("activity");
         const {lat, long, addressVisible, signedUp} = this.state;
+        console.log(this.state.causes);
         const newLat = !isNaN(lat) ? lat : 51.511764;
         const newLong = !isNaN(long) ? long : -0.11623;
         return (
@@ -511,6 +543,29 @@ class ActivityInfoScreen extends Component {
                                     EMAIL
                                 </RegularText>
                             </TouchableOpacity>
+                        </View>
+                        <RegularText style={styles.headerText}>
+                            Related Causes
+                        </RegularText>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "flex-end",
+                                justifyContent: "flex-start",
+                            }}>
+                            {this.state.causes.length > 0 && (
+                                <View style={CauseStyles.container}>
+                                    {this.state.causes.map(cause => {
+                                        return (
+                                            <CauseItem
+                                                cause={cause}
+                                                key={cause.id}
+                                                isDisabled={true}
+                                            />
+                                        );
+                                    })}
+                                </View>
+                            )}
                         </View>
                         <RegularText style={styles.headerText}>
                             Where
