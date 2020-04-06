@@ -120,7 +120,7 @@ class ActivitiesScreen extends Component {
                             this.setState({modalVisible: false});
                         }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{flex:1}}>
+                            <View style={{flex: 1}}>
                                 <ModalContent>
                                     <ActivityFilters
                                         onUpdateFilters={this.onUpdateFilters}
