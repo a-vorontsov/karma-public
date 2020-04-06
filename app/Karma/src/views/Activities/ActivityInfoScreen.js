@@ -177,10 +177,11 @@ class ActivityInfoScreen extends Component {
         const lat = Number(activity.lat);
         const long = Number(activity.long);
 
-        const causeIds = activity.causes;
+        //when filtering by cause, the activity object contains the proeprty causeId instead of causes
+        const causeIds = activity.causes ? activity.causes : [activity.causeId];
 
         const causes = await this.fetchSelectedCauses(causeIds);
-
+        console.log(activity);
         const full_location = address1 + address2 + eventCity + " " + postcode;
 
         this.setState({
@@ -208,7 +209,6 @@ class ActivityInfoScreen extends Component {
      * Endpoint returns only cause ids, so causes need to be fetched
      */
     fetchSelectedCauses = async causeIds => {
-        console.log("Fetching causes related to this activity");
         const authToken = await getAuthToken();
         const causes = [];
 
@@ -220,7 +220,7 @@ class ActivityInfoScreen extends Component {
             });
 
         Array.from(response).forEach(cause => {
-            if (causeIds.includes(cause.id)) {
+            if (causeIds && causeIds.includes(cause.id)) {
                 causes.push(cause);
             }
         });
@@ -252,7 +252,7 @@ class ActivityInfoScreen extends Component {
                     </View>
                 </View>
 
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {/* CARD HEADER */}
                     <View
                         style={{
