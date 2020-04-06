@@ -63,6 +63,7 @@ class ActivityInfoScreen extends Component {
             full_date: "Full Date",
             full_time: "Full Time",
             full_location: "Full Location",
+            favourited: false,
             addressVisible: true,
             lat: 37.78825,
             long: -122.4324,
@@ -181,12 +182,13 @@ class ActivityInfoScreen extends Component {
         const causeIds = activity.causes ? activity.causes : [activity.causeId];
 
         const causes = await this.fetchSelectedCauses(causeIds);
-        console.log(activity);
         const full_location = address1 + address2 + eventCity + " " + postcode;
+        const favourited = activity.favourited;
 
         this.setState({
             full_location,
             causes: causes,
+            favourited,
             lat,
             long,
             eventCity,
@@ -201,6 +203,7 @@ class ActivityInfoScreen extends Component {
             womenOnly: activity.womenOnly,
             physical: activity.physical,
             addressVisible: activity.addressVisible,
+            eventId: activity.eventId,
         });
     };
 
@@ -226,6 +229,46 @@ class ActivityInfoScreen extends Component {
         });
         return causes;
     };
+
+    async toggleFavourite() {
+        const authToken = await getAuthToken();
+
+        if (!this.state.favourited) {
+            request
+                .post(
+                    `${REACT_APP_API_URL}/event/${
+                        this.state.eventId
+                    }/favourite`,
+                )
+                .set("authorization", authToken)
+                .then(result => {
+                    console.log(result.body.message);
+                    this.setState({
+                        favourited: true,
+                    });
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        } else {
+            request
+                .post(
+                    `${REACT_APP_API_URL}/event/${
+                        this.state.eventId
+                    }/favourite/delete`,
+                )
+                .set("authorization", authToken)
+                .then(result => {
+                    console.log(result.body.message);
+                    this.setState({
+                        favourited: false,
+                    });
+                })
+                .catch(er => {
+                    console.log(er);
+                });
+        }
+    }
 
     render() {
         const activity = this.props.navigation.getParam("activity");
@@ -371,22 +414,26 @@ class ActivityInfoScreen extends Component {
                                     resizeMode: "contain",
                                 }}
                             />
-
-                            <Image
-                                source={
-                                    activity.favourited
-                                        ? icons.fave_active
-                                        : icons.fave_inactive
-                                }
+                            <TouchableOpacity
                                 style={{
                                     position: "absolute",
                                     top: 16,
                                     right: 15,
-                                    height: 30,
-                                    width: 30,
-                                    resizeMode: "contain",
                                 }}
-                            />
+                                onPress={() => this.toggleFavourite()}>
+                                <Image
+                                    source={
+                                        this.state.favourited
+                                            ? icons.fave_active
+                                            : icons.fave_inactive
+                                    }
+                                    style={{
+                                        height: 30,
+                                        width: 30,
+                                        resizeMode: "contain",
+                                    }}
+                                />
+                            </TouchableOpacity>
 
                             <RegularText
                                 style={[styles.dateText, {top: 5, left: 0}]}>
@@ -528,10 +575,10 @@ class ActivityInfoScreen extends Component {
                                 activeOpacity={0.9}
                                 onPress={() =>
                                     Communications.email(
-                                        ["emailAddress1"],
+                                        [this.state.email],
                                         null,
                                         null,
-                                        "About Your Karma Activity",
+                                        `Karma - ${this.state.activity_name}`,
                                         null,
                                     )
                                 }>
@@ -578,8 +625,8 @@ class ActivityInfoScreen extends Component {
                                         initialRegion={{
                                             latitude: newLat,
                                             longitude: newLong,
-                                            latitudeDelta: 0.0922,
-                                            longitudeDelta: 0.0421,
+                                            latitudeDelta: 0.01,
+                                            longitudeDelta: 0.01,
                                         }}
                                         scrollEnabled={false}>
                                         {
