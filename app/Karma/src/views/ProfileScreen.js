@@ -89,7 +89,6 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             email: user.email,
             isOrganisation: false,
@@ -181,7 +180,6 @@ class ProfileScreen extends Component {
             .set("authorization", authToken)
             .query(query)
             .then(res => {
-                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -209,7 +207,6 @@ class ProfileScreen extends Component {
             .get(url)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body);
                 const imageLocation =
                     res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
                 this.setState({photo: {uri: imageLocation}});
@@ -278,7 +275,6 @@ class ProfileScreen extends Component {
                 this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
-                    console.log(response.message);
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
                     Alert.alert("Upload Error", response.message);
