@@ -19,6 +19,7 @@ import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAuthToken} from "../util/credentials";
+import Mixpanel from "react-native-mixpanel";
 
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
@@ -38,6 +39,7 @@ class SignUpScreen extends React.Component {
             firstOpen: true,
         };
         this.onChangeText = this.onChangeText.bind(this);
+        Mixpanel.sharedInstanceWithToken(MIXPANEL_TOKEN);
     }
 
     onChangeText = event => {
@@ -85,6 +87,10 @@ class SignUpScreen extends React.Component {
                 console.log(res.body.message);
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
+                Mixpanel.people.set({
+                    "$email": this.state.email,    // only reserved properties need the $
+                    "username": this.state.username
+                  });
 
                 this.props.navigation.navigate("InitSignup");
             })

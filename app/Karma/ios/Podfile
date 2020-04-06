@@ -47,6 +47,8 @@ pod 'Google-Maps-iOS-Utils'
 
 
 
+  pod 'react-native-mixpanel', :path => '../node_modules/react-native-mixpanel'
+
   target 'KarmaTests' do
     inherit! :search_paths
     # Pods for testing
