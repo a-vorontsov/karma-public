@@ -66,6 +66,7 @@ class ActivityDisplayCard extends React.Component {
                                     justifyItems: "flex-start",
                                 }}>
                                 <RegularText
+                                    numberOfLines={1}
                                     style={{
                                         fontSize: 20,
                                         color: Colours.black,
