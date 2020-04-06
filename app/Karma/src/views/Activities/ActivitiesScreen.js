@@ -120,12 +120,14 @@ class ActivitiesScreen extends Component {
                             this.setState({modalVisible: false});
                         }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <ModalContent>
-                                <ActivityFilters
-                                    onUpdateFilters={this.onUpdateFilters}
-                                    filters={this.state.filters}
-                                />
-                            </ModalContent>
+                            <View style={{flex:1}}>
+                                <ModalContent>
+                                    <ActivityFilters
+                                        onUpdateFilters={this.onUpdateFilters}
+                                        filters={this.state.filters}
+                                    />
+                                </ModalContent>
+                            </View>
                         </ScrollView>
                     </Modal>
                     {/* NAVIGATION TAB */}
