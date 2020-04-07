@@ -33,7 +33,8 @@ const findFavouriteEvents = (userId) => {
         "address_1, address_2, postcode, city, region, lat, long, " +
         "event_id(favourite) is not null as favourited, " +
         "ARRAY(SELECT user_id from sign_up " +
-        "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers " +
+        "left join individual on id(individual) = individual_id where event_id = id(event)) as volunteers, " +
+        "ARRAY(SELECT cause_id from event_cause where event_id = id(event)) as causes " +
         "FROM event " +
         "LEFT JOIN favourite on event_id(favourite) = id(event) " +
         "INNER JOIN individual on individual_id(favourite) = id(individual) " +
