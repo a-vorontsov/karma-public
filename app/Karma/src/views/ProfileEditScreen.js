@@ -40,7 +40,6 @@ const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
 
 const icons = {
-    share: require("../assets/images/general-logos/share-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     calendar: require("../assets/images/general-logos/calendar-dark.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
@@ -570,16 +569,6 @@ class ProfileEditScreen extends Component {
                                             </Text>
                                         </View>
                                     )}
-                                    <TouchableOpacity>
-                                        <Image
-                                            source={icons.share}
-                                            style={{
-                                                height: 25,
-                                                width: 25,
-                                                resizeMode: "contain",
-                                            }}
-                                        />
-                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
