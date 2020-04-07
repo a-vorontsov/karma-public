@@ -1,57 +1,13 @@
 import React from "react";
 import {Image} from "react-native";
 import {createBottomTabNavigator} from "react-navigation-tabs";
-import {createStackNavigator} from "react-navigation-stack";
 import Colours from "../styles/Colours";
 
-import ActivitiesScreen from "../views/Activities/ActivitiesScreen";
-import CauseAllActivitiesScreen from "../views/Activities/CauseAllActivitiesScreen";
-import CreatedActivitiesScreen from "../views/Activities/CreatedActivitiesScreen";
-import ActivityInfoScreen from "../views/Activities/ActivityInfoScreen";
-import Attendees from "../views/Activities/Attendees";
-import SignUpRequests from "../views/Activities/SignUpRequests";
-import ViewSignUpsScreen from "../views/Activities/ViewSignUpsScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
-import ProfileScreen from "../views/ProfileScreen";
-import ProfileEditScreen from "../views/ProfileEditScreen";
-import SettingsMenuScreen from "../views/Settings/SettingsMenuScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
-const ProfileNavigator = createStackNavigator(
-    {
-        Profile: {screen: ProfileScreen},
-        ProfileEdit: {screen: ProfileEditScreen},
-        PickCauses: {screen: PickCausesScreen},
-        SettingsMenu: {screen: SettingsMenuScreen},
-        CreatedActivities: {screen: CreatedActivitiesScreen},
-        ViewSignUps: {screen: ViewSignUpsScreen},
-        Attendees: {screen: Attendees},
-        SignUpRequests: {screen: SignUpRequests},
-    },
-    {
-        headerMode: "none",
-        defaultNavigationOptions: {
-            cardStyle: {
-                backgroundColor: Colours.backgroundWhite,
-            },
-        },
-    },
-);
 
-const ActivitiesNavigator = createStackNavigator(
-    {
-        Activities: {screen: ActivitiesScreen},
-        ActivityInfo: {screen: ActivityInfoScreen},
-        CauseAll: {screen: CauseAllActivitiesScreen},
-    },
-    {
-        headerMode: "none",
-        defaultNavigationOptions: {
-            cardStyle: {
-                backgroundColor: Colours.backgroundWhite,
-            },
-        },
-    },
-);
+import ActivitiesNavigator from "./ActivitiesNavigator";
+import ProfileNavigator from "./ProfileNavigator";
 
 const MainTabNavigator = createBottomTabNavigator(
     {
@@ -129,6 +85,8 @@ const MainTabNavigator = createBottomTabNavigator(
         },
     },
     {
+        initialRouteName: "Activities",
+        resetOnBlur: true,
         tabBarOptions: {
             showLabel: true,
             allowFontScaling: false,

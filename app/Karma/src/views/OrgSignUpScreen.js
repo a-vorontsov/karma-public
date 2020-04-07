@@ -192,6 +192,7 @@ export default class OrgSignUpScreen extends React.Component {
             })
             .then(async res => {
                 await this.uploadPhoto(this.state.photo);
+                await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
                 navigate("Activities");
             })
             .catch(err => {
@@ -221,7 +222,7 @@ export default class OrgSignUpScreen extends React.Component {
                         marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
                     }}>
                     <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader title="Sign Up" />
+                        <PageHeader title="Sign Up" disableBack={true} />
                     </View>
                 </View>
                 <KeyboardAvoidingView
