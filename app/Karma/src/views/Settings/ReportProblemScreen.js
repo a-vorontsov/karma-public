@@ -125,7 +125,7 @@ class ReportProblemScreen extends Component {
                         When you submit a report, we may contact you at:
                     </RegularText>
                     <TextInput
-                        // value={this.state.user.email}
+                        value={this.state.user.email}
                         name="email"
                         editable={false}
                     />
