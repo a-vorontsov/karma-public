@@ -47,22 +47,18 @@ const deleteAllInformation = async (userId) => {
         await favouriteRepository.removeByIndividualId(individualId);
         await signUpRepository.removeByIndividualId(individualId);
         await individualRepository.removeByUserId(userId);
-        await pictureRepository.removeById(findIndividual.pictureId);
+        await pictureRepository.removeById(findIndividual.rows[0].pictureId);
     }
 
     const isOrganisation = await util.isOrganisation(userId);
     if (isOrganisation) {
         const deleteOrg = await orgRepository.removeByUserId(userId);
-        await pictureRepository.removeById(deleteOrg.pictureId);
+        await pictureRepository.removeById(deleteOrg.rows[0].pictureId);
     }
-
-
     const findUser = await userRepository.removeUserById(userId);
-    const addressId = findUser.addressId;
-    const emailUser = findUser.email;
+    const emailUser = findUser.rows[0].email;
 
     await registrationRepository.removeByEmail(emailUser);
-    await addressRepository.removeById(addressId);
 
     return ({
         status: 200,
