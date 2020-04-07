@@ -9,6 +9,7 @@ const authService = require("../../../modules/authentication/");
 const regStatus = require("../../../util/registration");
 const userAgent = require("../../../modules/user");
 const tokenSender = require("../../../modules/verification/token");
+const emailVerificationService = require("../../../modules/verification/email");
 
 /**
  * This is the first step of the signup flow.
@@ -76,6 +77,7 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
                         isEmailVerified: false,
                         isSignedUp: false,
                         isFullySignedUp: false,
+                        tokenAlreadyRequested: false,
                     },
                 });
             } catch (e) {
@@ -90,16 +92,34 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
                 });
             }
         } else if (!(await regStatus.isEmailVerified(email))) {
-            log.info("'%s': Sign-in with existing unverified email. Starting email verification", email);
-            await tokenSender.storeAndSendEmailVerificationToken(email);
-            res.status(200).send({
-                message: "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
-                data: {
-                    isEmailVerified: false,
-                    isSignedUp: false,
-                    isFullySignedUp: false,
-                },
-            });
+            const waitSeconds = await emailVerificationService.calculateWaitRequiredForNewToken(email);
+            if ((process.env.SKIP_NEW_TOKEN_TIMEOUT == true) || waitSeconds <= 0) {
+                log.info("'%s': Sign-in with existing unverified email. Starting email verification", email);
+                await tokenSender.storeAndSendEmailVerificationToken(email);
+                res.status(200).send({
+                    message: "Email exists but unverified. " +
+                        "The user has been sent a new verification token. Go to email verification screen.",
+                    data: {
+                        isEmailVerified: false,
+                        isSignedUp: false,
+                        isFullySignedUp: false,
+                        tokenAlreadyRequested: false,
+                    },
+                });
+            } else {
+                log.info("'%s': Sign-in with existing unverified email. Token already requested, waiting %s seconds.", email, waitSeconds);
+                res.status(200).send({
+                    message: "Email exists but unverified. " +
+                        "The user has already been sent a new verification token. Wait time specified in data.",
+                    data: {
+                        isEmailVerified: false,
+                        isSignedUp: false,
+                        isFullySignedUp: false,
+                        tokenAlreadyRequested: true,
+                        waitSeconds: waitSeconds,
+                    },
+                });
+            }
         } else if (!(await regStatus.userAccountExists(email))) {
             log.info("'%s': Sign-in with verified email. Starting user sign-up", email);
             res.status(200).send({

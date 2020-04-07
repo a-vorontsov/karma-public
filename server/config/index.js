@@ -20,6 +20,7 @@ config.josePermissions = {
 config.emailVerification = {
     validMinutes: 30,
     tokenLength: 6,
+    waitSeconds: 60,
 };
 
 config.passwordReset = {
