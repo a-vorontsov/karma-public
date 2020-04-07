@@ -621,12 +621,15 @@ class ActivityInfoScreen extends Component {
                             <View style={{height: 200}}>
                                 {this.state.loaded && (
                                     <MapView
+                                        zoomControlEnabled={false}
+                                        zoomEnabled={false}
+                                        rotateEnabled={false}
                                         style={styles.map}
                                         initialRegion={{
                                             latitude: newLat,
                                             longitude: newLong,
-                                            latitudeDelta: 0.01,
-                                            longitudeDelta: 0.01,
+                                            latitudeDelta: 0.005,
+                                            longitudeDelta: 0.005,
                                         }}
                                         scrollEnabled={false}>
                                         {
