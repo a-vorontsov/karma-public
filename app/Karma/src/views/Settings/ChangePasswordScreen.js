@@ -75,7 +75,7 @@ export default class ChangePasswordScreen extends Component {
                 <View style={{alignItems: "center", flex: 1, top: 20}}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View style={{flex: 1}}>
                             <SubTitleText
                                 style={{

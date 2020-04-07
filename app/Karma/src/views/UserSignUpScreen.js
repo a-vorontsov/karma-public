@@ -109,7 +109,7 @@ class SignUpScreen extends React.Component {
                     enabled>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View>
                             <PageHeader title="Sign Up" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(26)}}>
