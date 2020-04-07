@@ -393,7 +393,7 @@ class ProfileEditScreen extends Component {
                 enabled>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handle">
+                    keyboardShouldPersistTaps="never">
                     <View
                         style={{
                             flex: 1,
