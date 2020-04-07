@@ -50,10 +50,11 @@ export default class CauseItem extends React.Component {
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
                 colors={[Colours.blue, Colours.lightBlue]}
-                style={
+                style={[
                     display
                         ? [CauseStyles.buttonDisplay, CauseStyles.shadow]
                         : [CauseStyles.button, CauseStyles.shadow]
+                , {borderRadius:10}]
                 }>
                 <RegularText style={CauseStyles.checkbox}>✓</RegularText>
                 {ItemContent}
