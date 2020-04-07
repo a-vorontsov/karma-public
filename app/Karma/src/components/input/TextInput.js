@@ -2,8 +2,6 @@ import React, {Component} from "react";
 import {
     TextInput,
     View,
-    Keyboard,
-    TouchableWithoutFeedback,
 } from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";

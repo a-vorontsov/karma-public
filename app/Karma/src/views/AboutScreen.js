@@ -229,8 +229,7 @@ class AboutScreen extends React.Component {
                     <ScrollView
                         style={{marginBottom: 100}}
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="never"
-                        >
+                        keyboardShouldPersistTaps="never">
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
