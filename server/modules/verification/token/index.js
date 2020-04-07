@@ -16,19 +16,13 @@ const leftPad = require("left-pad");
  */
 const storeAndSendPasswordResetToken = async (userId, email) => {
     log.info("User id '%d': Generating password reset token", userId);
-    const resetConfig = config.passwordReset;
-    const token = generateSecureToken(resetConfig.tokenLength);
-    const validMinutes = resetConfig.validMinutes;
-    const expiryDate = util.getCurrentTimeInUtcAsString(validMinutes);
-    await resetRepo.insertResetToken({
-        userId: userId,
-        token: token,
-        expiryDate: expiryDate,
-    });
-    await mailSender.sendEmail(
+    await storeAndSendVerificationToken(
+        config.emailVerification,
         email,
-        `${token} Password Reset Token`,
-        `${token} is your Karma password reset code.\nThis token is valid for ${validMinutes} minutes.`,
+        {
+            userId: userId,
+        },
+        resetRepo.insertResetToken,
     );
 };
 
@@ -40,23 +34,43 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
  */
 const storeAndSendEmailVerificationToken = async (email) => {
     log.info("'%s': Generating email verification token", email);
-    const verifyConfig = config.emailVerification;
-    const token = generateSecureToken(verifyConfig.tokenLength);
-    const validMinutes = verifyConfig.validMinutes;
+    await storeAndSendVerificationToken(
+        config.emailVerification,
+        email,
+        {
+            email: email,
+            emailFlag: 0,
+            idFlag: 0,
+            phoneFlag: 0,
+            signUpFlag: 0,
+        },
+        regRepo.insert,
+    );
+};
+
+/**
+ * Generate a custom verification token with a configuration
+ * object specifying it's length and expiry, store it in
+ * the database with given object and function, and send to
+ * the specified email address.
+ * @param {Object} configuration
+ * @param {String} email
+ * @param {Object} dbRecord
+ * @param {Function} dbFunction
+ */
+const storeAndSendVerificationToken = async (configuration, email, dbRecord, dbFunction) => {
+    const verificationConfig = configuration;
+    const token = generateSecureToken(verificationConfig.tokenLength);
+    const validMinutes = verificationConfig.validMinutes;
     const expiryDate = util.getCurrentTimeInUtcAsString(validMinutes);
-    await regRepo.insert({
-        email: email,
-        emailFlag: 0,
-        idFlag: 0,
-        phoneFlag: 0,
-        signUpFlag: 0,
-        verificationToken: token,
-        expiryDate: expiryDate,
-    });
+    dbRecord[verificationConfig.dbTokenParam] = token;
+    dbRecord.expiryDate = expiryDate;
+    await dbFunction(dbRecord);
     await mailSender.sendEmail(
         email,
-        `${token} Email Verification Code`,
-        `${token} is your Karma email verification code.\nThis token is valid for ${validMinutes} minutes.`,
+        `${token} ${verificationConfig.mailSubject}`,
+        `${token} ${verificationConfig.mailBody}\n` +
+        `This token is valid for ${validMinutes} minutes.`,
     );
 };
 
