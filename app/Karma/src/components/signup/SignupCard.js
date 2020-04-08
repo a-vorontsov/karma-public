@@ -36,7 +36,7 @@ const SignupCard = props => {
                 <GradientButton
                     title="Sign Up"
                     onPress={() =>
-                        navigation.replace(
+                        navigation.navigate(
                             props.individual ? "About" : "OrgSignUp",
                         )
                     }
