@@ -242,3 +242,20 @@ test('requesting signup status in case of server error return error message', as
     expect(response.body.message).toBe("Server error");
     expect(response.status).toBe(500);
 });
+
+test('deleting signup works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
+    eventSignupService.deleteSignup.mockResolvedValue({
+        status: 200,
+        message: "Signup deleted successfully",
+        data: {signup: signUp},
+    });
+
+    const response = await request(app).post("/event/3/signUp/delete").send({userId: 10});
+
+    expect(eventSignupService.deleteSignup).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject(
+        signUp,
+    );
+});

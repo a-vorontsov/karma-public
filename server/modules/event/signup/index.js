@@ -141,6 +141,25 @@ const updateSignUp = async (signup) => {
     });
 };
 
+/**
+ * Deletes a signup already in the database.
+ * @param {object} signup A signup object with a valid individualId and eventId.
+ * Fails if database call fails.
+ */
+const deleteSignup = async (signup) => {
+    const eventIdCheckResponse = await util.checkEventId(signup.eventId);
+    if (eventIdCheckResponse.status !== 200) {
+        throw new Error(eventIdCheckResponse.message);
+    }
+
+    const signupResult = await signupRepository.remove(signup);
+    return ({
+        status: 200,
+        message: "Signup deleted successfully",
+        data: {signup: signupResult.rows[0]},
+    });
+};
+
 module.exports = {
     saveSignup,
     getAllSignupsForEvent,
@@ -148,4 +167,5 @@ module.exports = {
     getSignupStatus,
     updateSignUp,
     getGoingEvents,
+    deleteSignup,
 };

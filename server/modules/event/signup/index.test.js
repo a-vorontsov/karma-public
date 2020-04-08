@@ -256,3 +256,18 @@ test('updating karma points for attended event works', async () => {
     expect(updateSignupResult.status).toBe(200);
     expect(updateSignupResult.data.signup).toStrictEqual(attendedSignUp);
 });
+
+test('deleting signup works', async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+    signupRepository.remove.mockResolvedValue({
+        rows: [{
+            signUp,
+        }],
+    });
+
+    const saveSignupResult = await eventSignupService.deleteSignup(signUp);
+
+    expect(signupRepository.remove).toHaveBeenCalledTimes(1);
+    expect(saveSignupResult.status).toBe(200);
+    expect(saveSignupResult.data.signup).toMatchObject({signUp});
+});

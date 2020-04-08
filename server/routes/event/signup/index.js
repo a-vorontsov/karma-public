@@ -245,6 +245,43 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
 });
 
 /**
+ * Endpoint called whenever a user wishes to completely delete a signup.<br/>
+ <p><b>Route: </b>/event/:eventId/signUp/delete (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
+ * @returns {Object}
+ *  status: 200, description: The signup object deleted<br/>
+ <pre>
+ {
+    "message": "Signup deleted successfully",
+    "data": {
+        "signup": {
+            "individualId": 7,
+            "eventId": 11,
+            "confirmed": true
+            "attended": true
+        }
+    }
+ }
+ </pre>
+ *  status: 500, description: DB error
+ *  @name Delete event signup
+ *  @function
+ */
+router.post('/:eventId/signUp/delete', authService.requireAuthentication, async (req, res) => {
+    try {
+        log.info("User id '%d': Deleting signup to event id '%d'", req.body.userId, req.params.eventId);
+        const signup = {eventId: Number.parseInt(req.params.eventId)};
+        signup.individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        const deleteSignupResult = await eventSignupService.deleteSignup(signup);
+        return httpUtil.sendResult(deleteSignupResult, res);
+    } catch (e) {
+        log.error("User id '%d': Failed deleting signup to event id '%d': " + e, req.query.userId, req.params.eventId);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
  * Endpoint called whenever a user wishes to see their signup status for a specific event.<br/>
  <p><b>Route: </b>/event/:eventId/signUp/status/ (GET)</p>
  <p><b>Permissions: </b>require user permissions</p>
