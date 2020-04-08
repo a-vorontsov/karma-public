@@ -136,6 +136,9 @@ class ActivityInfoScreen extends Component {
             .query({otherUserId: id})
             .then(res => {
                 return res.body.data;
+            })
+            .catch(err => {
+                console.log(err);
             });
 
         const email = response.user.email;
@@ -215,20 +218,20 @@ class ActivityInfoScreen extends Component {
         const authToken = await getAuthToken();
         const causes = [];
 
-        const response = await request
+        await request
             .get(`${REACT_APP_API_URL}/causes`)
             .set("authorization", authToken)
             .then(res => {
-                return res.body.data;
+                Array.from(res.body.data).forEach(cause => {
+                    if (causeIds && causeIds.includes(cause.id)) {
+                        causes.push(cause);
+                    }
+                });
             })
             .catch(err => {
                 console.log(err);
             });
-        Array.from(response).forEach(cause => {
-            if (causeIds && causeIds.includes(cause.id)) {
-                causes.push(cause);
-            }
-        });
+
         return causes;
     };
 
