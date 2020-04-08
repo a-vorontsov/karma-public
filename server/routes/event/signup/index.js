@@ -13,6 +13,7 @@ const validation = require("../../../modules/validation");
 const authService = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
+ * If a signup already exists for the user, it is updated instead
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
@@ -51,7 +52,7 @@ router.post('/:eventId/signUp', authService.requireAuthentication, async (req, r
             return httpUtil.sendValidationErrors(validationResult, res);
         }
 
-        const signupResult = await eventSignupService.createSignup(signup);
+        const signupResult = await eventSignupService.saveSignup(signup);
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
         log.error("User id '%d': Failed signing up to event id '%d': " + e, req.body.userId, req.params.eventId);
