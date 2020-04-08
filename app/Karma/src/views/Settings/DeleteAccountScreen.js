@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {SafeAreaView, View, Alert} from "react-native";
+import {SafeAreaView, View, Alert, TouchableOpacity} from "react-native";
 import PageHeader from "../../components/PageHeader";
 import Styles from "../../styles/Styles";
 import {RegularText, SemiBoldText} from "../../components/text";
-import {GradientButton, TransparentButton} from "../../components/buttons";
+import {TransparentButton} from "../../components/buttons";
 import {getAuthToken} from "../../util/credentials";
 const request = require("superagent");
 import {REACT_APP_API_URL} from "react-native-dotenv";
@@ -23,9 +23,9 @@ class DeleteAccountScreen extends Component {
             .set("authorization", authToken)
             .send({})
             .then(res => {
-                AsyncStorage.getAllKeys()
-                    .then(keys => AsyncStorage.multiRemove(keys))
-                    .then(() => console.log("owo !!!"));
+                AsyncStorage.getAllKeys().then(keys =>
+                    AsyncStorage.multiRemove(keys),
+                );
                 Alert.alert(
                     "Successful account deletion",
                     "We've successfully deleted your account.",
@@ -36,7 +36,7 @@ class DeleteAccountScreen extends Component {
             .catch(err => {
                 Alert.alert(
                     "Unsuccessful account deletion",
-                    "We didn't manage to detele your account, please try again.",
+                    "We didn't manage to delete your account, please try again.",
 
                     [{text: "OK", onPress: () => navigate("Settings")}],
                 );
@@ -85,10 +85,23 @@ class DeleteAccountScreen extends Component {
                             },
                         ]}>
                         <View style={{marginRight: 20}}>
-                            <GradientButton
-                                title="Confirm"
+                            <TouchableOpacity
                                 onPress={() => this.deleteAccount()}
-                            />
+                                activeOpacity={0.9}
+                                style={{
+                                    ...Styles.roundButton,
+                                    backgroundColor: "#D40000",
+                                }}>
+                                <RegularText
+                                    style={{
+                                        fontSize: 20,
+                                        justifyContent: "center",
+                                        textAlign: "center",
+                                        color: "white",
+                                    }}>
+                                    Confirm
+                                </RegularText>
+                            </TouchableOpacity>
                         </View>
                         <View style={{marginLeft: 20}}>
                             <TransparentButton
