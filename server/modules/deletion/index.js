@@ -1,4 +1,3 @@
-const addressRepository = require("../../repositories/address");
 const favouriteRepository = require("../../repositories/favourite");
 const userRepository = require("../../repositories/user");
 const selectedCauseRepository = require("../../repositories/cause/selected");
