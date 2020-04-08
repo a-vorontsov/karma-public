@@ -220,8 +220,10 @@ class ActivityInfoScreen extends Component {
             .set("authorization", authToken)
             .then(res => {
                 return res.body.data;
+            })
+            .catch(err => {
+                console.log(err);
             });
-
         Array.from(response).forEach(cause => {
             if (causeIds && causeIds.includes(cause.id)) {
                 causes.push(cause);
@@ -273,7 +275,6 @@ class ActivityInfoScreen extends Component {
     render() {
         const activity = this.props.navigation.getParam("activity");
         const {lat, long, addressVisible, signedUp} = this.state;
-        console.log(this.state.causes);
         const newLat = !isNaN(lat) ? lat : 51.511764;
         const newLong = !isNaN(long) ? long : -0.11623;
         return (
