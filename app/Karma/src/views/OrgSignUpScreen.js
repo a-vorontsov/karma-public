@@ -26,6 +26,7 @@ import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import ImagePicker from "react-native-image-picker";
 import {SafeAreaView} from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -218,17 +219,21 @@ export default class OrgSignUpScreen extends React.Component {
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="handle">
-                {/** HEADER */}
-                <View
-                    style={{
-                        alignItems: "center",
-                        height: 0.08 * SCREEN_HEIGHT,
-                        justifyContent: "flex-start",
-                    }}>
-                    <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader title="Sign Up" />
-                    </View>
-                </View>
+                        {/** HEADER */}
+                        <View
+                            style={{
+                                alignItems: "center",
+                                height: 0.08 * SCREEN_HEIGHT,
+                                justifyContent: "flex-start",
+                            }}>
+                            <View
+                                style={{
+                                    alignItems: "flex-start",
+                                    width: FORM_WIDTH,
+                                }}>
+                                <PageHeader title="Sign Up" />
+                            </View>
+                        </View>
                         <SubTitleText
                             style={[
                                 Styles.ph24,
