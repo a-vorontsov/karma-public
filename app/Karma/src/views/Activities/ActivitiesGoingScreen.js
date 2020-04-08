@@ -5,6 +5,8 @@ import {
     ScrollView,
     View,
     Dimensions,
+    TouchableOpacity,
+    StyleSheet,
 } from "react-native";
 import ActivityDisplayCard from "../../components/activities/ActivityDisplayCard";
 import {RegularText} from "../../components/text";
@@ -12,14 +14,17 @@ import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
 const {height: SCREEN_HEIGHT} = Dimensions.get("window");
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import Colours from "../../styles/Colours";
 const request = require("superagent");
 
 class ActivitiesGoingScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activities: [],
+            confirmed: [],
+            pending: [],
             isRefreshing: false,
+            eventsToggle: true,
         };
         this.onRefresh = this.onRefresh.bind(this);
     }
@@ -33,9 +38,16 @@ class ActivitiesGoingScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/going`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.data.message);
+                console.log(result.body.message);
+                const activities = result.body.data.events || [];
+                const confirmed = [];
+                const pending = [];
+                activities.forEach(a =>
+                    a.confirmed ? confirmed.push(a) : pending.push(a),
+                );
                 this.setState({
-                    activities: result.body.data.events,
+                    confirmed: confirmed,
+                    pending: pending,
                 });
             })
             .catch(er => {
@@ -65,44 +77,144 @@ class ActivitiesGoingScreen extends Component {
 
     render() {
         return (
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this.onRefresh}
-                    />
-                }>
+            <View>
                 <View
                     style={{
-                        flex: 1,
-                        marginTop: 10,
-                        marginBottom: 100,
-                        minHeight: SCREEN_HEIGHT,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "flex-start",
                     }}>
-                    {this.state.activities.length > 0 ? (
-                        this.state.activities.map(activity => {
-                            return (
-                                <ActivityDisplayCard
-                                    activity={activity}
-                                    key={activity.eventId}
-                                    signedup={true} //TODO
-                                />
-                            );
-                        })
-                    ) : (
-                        <View style={Styles.ph24}>
-                            <RegularText>
-                                No organizations have confirmed your attendance
-                                to an event yet. Please try again later. (Pull
-                                to Refresh)
-                            </RegularText>
-                        </View>
-                    )}
+                    <TouchableOpacity
+                        disabled={this.state.eventsToggle}
+                        onPress={() =>
+                            this.setState({
+                                eventsToggle: !this.state.eventsToggle,
+                            })
+                        }
+                        style={
+                            this.state.eventsToggle
+                                ? styles.tabSelected
+                                : styles.tab
+                        }>
+                        <RegularText
+                            style={
+                                this.state.eventsToggle
+                                    ? styles.subHeaderSelected
+                                    : styles.subHeader
+                            }>
+                            Confirmed
+                        </RegularText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        disabled={!this.state.eventsToggle}
+                        onPress={() =>
+                            this.setState({
+                                eventsToggle: !this.state.eventsToggle,
+                            })
+                        }
+                        style={
+                            !this.state.eventsToggle
+                                ? styles.tabSelected
+                                : styles.tab
+                        }>
+                        <RegularText
+                            style={
+                                !this.state.eventsToggle
+                                    ? styles.subHeaderSelected
+                                    : styles.subHeader
+                            }>
+                            Pending
+                        </RegularText>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.onRefresh}
+                        />
+                    }>
+                    <View
+                        style={{
+                            flex: 1,
+                            marginTop: 10,
+                            marginBottom: 220,
+                            minHeight: SCREEN_HEIGHT,
+                        }}>
+                        {this.state.confirmed.length > 0 &&
+                            this.state.eventsToggle &&
+                            this.state.confirmed.map(activity => {
+                                return (
+                                    <ActivityDisplayCard
+                                        activity={activity}
+                                        key={activity.eventId}
+                                        signedup={true}
+                                    />
+                                );
+                            })}
+                        {this.state.confirmed.length <= 0 &&
+                            this.state.eventsToggle && (
+                                <View style={{...Styles.ph24, marginTop: 10}}>
+                                    <RegularText>
+                                        No organizations have confirmed your
+                                        attendance to an event yet. Please try
+                                        again later. (Pull to Refresh)
+                                    </RegularText>
+                                </View>
+                            )}
+                        {this.state.pending.length > 0 &&
+                            !this.state.eventsToggle &&
+                            this.state.pending.map(activity => {
+                                return (
+                                    <ActivityDisplayCard
+                                        activity={activity}
+                                        key={activity.eventId}
+                                        signedup={true}
+                                    />
+                                );
+                            })}
+                        {this.state.pending.length <= 0 &&
+                            !this.state.eventsToggle && (
+                                <View style={{...Styles.ph24, marginTop: 10}}>
+                                    <RegularText>
+                                        You have no pending sign up requests
+                                        (Pull to Refresh)
+                                    </RegularText>
+                                </View>
+                            )}
+                    </View>
+                </ScrollView>
+            </View>
         );
     }
 }
-
+const styles = StyleSheet.create({
+    tabSelected: {
+        alignSelf: "center",
+        justifyContent: "center",
+        width: "50%",
+        borderBottomWidth: 3,
+        borderBottomColor: Colours.blue,
+        paddingVertical: 5,
+    },
+    tab: {
+        alignSelf: "center",
+        justifyContent: "center",
+        width: "50%",
+        paddingVertical: 5,
+    },
+    subHeader: {
+        fontSize: 14,
+        color: Colours.lightGrey,
+        fontWeight: "500",
+        alignSelf: "center",
+    },
+    subHeaderSelected: {
+        fontSize: 14,
+        color: Colours.grey,
+        fontWeight: "500",
+        alignSelf: "center",
+    },
+});
 export default ActivitiesGoingScreen;

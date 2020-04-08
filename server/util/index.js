@@ -2,6 +2,7 @@ const userRepository = require("../repositories/user");
 const individualRepository = require("../repositories/individual");
 const organisationRepository = require("../repositories/organisation");
 const eventRepository = require("../repositories/event");
+const date = require("date-and-time");
 
 const isIndividual = async (userId) => {
     const userResult = await userRepository.findById(userId);
@@ -162,7 +163,7 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
             isValidToken: false,
             error: "Invalid token",
         });
-    } else if (tokenRecord.expiryDate <= Date.now()) {
+    } else if (tokenRecord.expiryDate <= Date.parse(getCurrentTimeInUtcAsString())) {
         return ({
             isValidToken: false,
             error: "Expired token",
@@ -173,6 +174,22 @@ const isValidToken = async (tokenResult, inputToken, tokenVarName) => {
             error: null,
         });
     }
+};
+
+/**
+ * Get date in UTC with optional offset in minutes.
+ * Set offset to 0 to get 'Now()' in UTC.
+ * @param {Number} [offsetMinutes=0] offset in minutes 0 by default
+ * @return {String} date in UTC as string
+ */
+const getCurrentTimeInUtcAsString = (offsetMinutes) => {
+    return date.format(
+        date.addMinutes(
+            new Date(),
+            offsetMinutes ? offsetMinutes : 0,
+        ),
+        "YYYY-MM-DD HH:mm:ss", true,
+    );
 };
 
 /**
@@ -211,6 +228,7 @@ module.exports = {
     checkEmail,
     isValidToken,
     sleep,
+    getCurrentTimeInUtcAsString,
     getIndividualIdFromUserId,
     base64ToHex,
 };

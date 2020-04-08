@@ -2,20 +2,19 @@ import React, {Component} from "react";
 import {
     RefreshControl,
     View,
-    StatusBar,
     Dimensions,
     Alert,
     TouchableOpacity,
 } from "react-native";
 import Styles from "../styles/Styles";
 import PageHeader from "../components/PageHeader";
-import {hasNotch} from "react-native-device-info";
 import {SemiBoldText, RegularText} from "../components/text";
 import NotificationItem from "../components/NotificationItem";
 import Colours from "../styles/Colours";
 import {ScrollView} from "react-native-gesture-handler";
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import {SafeAreaView} from "react-navigation";
 const request = require("superagent");
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
@@ -164,13 +163,10 @@ class NotificationsScreen extends Component {
         const {hasNotifications, refreshing} = this.state;
 
         return (
-            <View style={Styles.container}>
+            <SafeAreaView style={Styles.container}>
                 <View style={{alignItems: "center"}}>
                     <View
                         style={{
-                            marginTop: hasNotch()
-                                ? 40
-                                : StatusBar.currentHeight,
                             width: FORM_WIDTH,
                         }}>
                         <PageHeader title="Notifications" disableBack={true} />
@@ -237,13 +233,13 @@ class NotificationsScreen extends Component {
                                             }
                                         />
                                     }>
-                                    <View
-                                        style={{flex: 1, alignSelf: "center"}}>
+                                    <View style={{flex: 1}}>
                                         <RegularText
                                             style={{
-                                                fontSize: 20,
+                                                fontSize: 18,
                                             }}>
-                                            No notifications found
+                                            You currently have no notifications.
+                                            (Pull to refresh)
                                         </RegularText>
                                     </View>
                                 </ScrollView>
@@ -251,7 +247,7 @@ class NotificationsScreen extends Component {
                         </View>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }

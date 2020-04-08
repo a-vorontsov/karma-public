@@ -4,16 +4,23 @@ import CalendarPicker from "react-native-calendar-picker";
 import Colours from "../styles/Colours";
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
-const formWidth = 0.8 * SCREEN_WIDTH;
+const formWidth = 0.7 * SCREEN_WIDTH;
 
 export default class Calendar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedStartDate: props.startDate,
-            selectedEndDate: props.endDate,
+            selectedStartDate: null,
+            selectedEndDate: null,
         };
         this.onDateChange = this.onDateChange.bind(this);
+    }
+
+    async componentDidMount() {
+        await this.setState({
+            selectedStartDate: this.props.startDate,
+            selectedEndDate: this.props.endDate,
+        });
     }
 
     async onDateChange(date, type) {
@@ -63,6 +70,7 @@ export default class Calendar extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFFFFF",
+        borderRadius: 5,
     },
 });
 

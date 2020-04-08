@@ -8,6 +8,7 @@ import Styles from "../../styles/Styles";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import {sendNotification} from "../../util/SendNotification";
 const moment = require("moment");
 const request = require("superagent");
 const icons = {
@@ -53,6 +54,9 @@ export default class SignUpActivity extends React.Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
+                sendNotification("EventSignup", activity.name, [
+                    activity.eventCreatorId,
+                ]);
                 onConfirm();
             })
             .catch(err => {

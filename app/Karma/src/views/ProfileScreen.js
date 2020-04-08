@@ -31,6 +31,8 @@ import {getAuthToken} from "../util/credentials";
 import {NavigationEvents} from "react-navigation";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
+import ShareKarma from "../components/sharing/ShareKarma";
+import BottomModal from "../components/BottomModal";
 const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -51,6 +53,7 @@ class ProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            displayShareModal: false,
             activeSlide: 0,
             name: "",
             user: {},
@@ -73,6 +76,7 @@ class ProfileScreen extends Component {
             photo: null,
         };
         this.fetchProfileInfo();
+        this.toggleShareModal = this.toggleShareModal.bind(this);
     }
 
     setupIndividualProfile(res) {
@@ -85,7 +89,6 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             email: user.email,
             isOrganisation: false,
@@ -138,6 +141,12 @@ class ProfileScreen extends Component {
         this.fetchProfilePicture();
     }
 
+    toggleShareModal() {
+        this.setState({
+            displayShareModal: !this.state.displayShareModal,
+        });
+    }
+
     componentDidMount() {
         const {navigation} = this.props;
 
@@ -171,7 +180,6 @@ class ProfileScreen extends Component {
             .set("authorization", authToken)
             .query(query)
             .then(res => {
-                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -199,7 +207,6 @@ class ProfileScreen extends Component {
             .get(url)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body);
                 const imageLocation =
                     res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
                 this.setState({photo: {uri: imageLocation}});
@@ -268,7 +275,6 @@ class ProfileScreen extends Component {
                 this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
-                    console.log(response.message);
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
                     Alert.alert("Upload Error", response.message);
@@ -556,7 +562,8 @@ class ProfileScreen extends Component {
                                             </View>
                                         )}
                                         {!otherProfile && (
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={this.toggleShareModal}>
                                                 <Image
                                                     source={icons.share}
                                                     style={{
@@ -796,6 +803,11 @@ class ProfileScreen extends Component {
                         </SafeAreaView>
                     </View>
                 </ScrollView>
+                <BottomModal
+                    visible={this.state.displayShareModal}
+                    toggleModal={this.toggleShareModal}>
+                    <ShareKarma profile={this.state} />
+                </BottomModal>
             </KeyboardAvoidingView>
         );
     }
