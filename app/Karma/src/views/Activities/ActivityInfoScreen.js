@@ -26,7 +26,6 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import ShareActivity from "../../components/sharing/ShareActivity";
 import CauseStyles from "../../styles/CauseStyles";
 import CauseItem from "../../components/causes/CauseItem";
-import LinearGradient from "react-native-linear-gradient";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;

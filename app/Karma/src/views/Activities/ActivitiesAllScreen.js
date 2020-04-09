@@ -150,7 +150,12 @@ class ActivitiesAllScreen extends Component {
                 )}
                 {this.state.allEventsFetched && (
                     <View style={{alignItems: "center"}}>
-                        <RegularText style={{fontSize: 18, color: Colours.lightBlue, alignItems:"center"}}>
+                        <RegularText
+                            style={{
+                                fontSize: 18,
+                                color: Colours.lightBlue,
+                                alignItems: "center",
+                            }}>
                             There aren't any more activities!
                         </RegularText>
                     </View>
