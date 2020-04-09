@@ -40,6 +40,7 @@ class ActivitiesGoingScreen extends Component {
             .then(result => {
                 console.log(result.body.message);
                 const activities = result.body.data.events || [];
+                console.log(activities.length);
                 const confirmed = [];
                 const pending = [];
                 activities.forEach(a =>

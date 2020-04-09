@@ -50,6 +50,7 @@ const find = (userId, causeId) => {
 };
 
 const findEventsSelectedByUser = (userId, whereClause) => {
+    const now = new Date();
     whereClause = whereClause || ""; // if whereClause is not defined, default value is empty string
     if (whereClause === "") whereClause = "where ";
     else whereClause += " and ";
@@ -64,8 +65,8 @@ const findEventsSelectedByUser = (userId, whereClause) => {
         "inner join selected_cause on cause_id(event_cause)=cause_id(selected_cause) " +
         "inner join cause on cause_id(event_cause) = id(cause) " +
         "inner join address on id(address) = address_id " +
-        whereClause + "user_id(selected_cause) = $1";
-    return db.query(query, [userId]);
+        whereClause + "user_id(selected_cause) = $1 and date > $2";
+    return db.query(query, [userId, now]);
 };
 
 const removeByUserId = (userId) => {
