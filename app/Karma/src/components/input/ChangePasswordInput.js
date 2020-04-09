@@ -30,17 +30,16 @@ export default class ChangePasswordInput extends Component {
         const {name, text} = event;
         this.setState({[name]: text});
         this.passUpState();
-        }
+    }
 
     passUpState() {
         const {confirmPassword, password} = this.state;
-        console.log(confirmPassword , password , this.isValidPassword());
-            this.props.onChange({
-                confirmPassword,
-                password,
-                valid: confirmPassword===password && this.isValidPassword(),
-            });
-        
+        console.log(confirmPassword, password, this.isValidPassword());
+        this.props.onChange({
+            confirmPassword,
+            password,
+            valid: confirmPassword === password && this.isValidPassword(),
+        });
     }
 
     isValidPassword() {
@@ -83,14 +82,15 @@ export default class ChangePasswordInput extends Component {
 
     render() {
         const showError = this.showError();
-        const{sendPassUpState} = this.props;
-        if(sendPassUpState){
+        const {sendPassUpState} = this.props;
+        if (sendPassUpState) {
             this.passUpState();
         }
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View
                     style={{
+                        width: FORM_WIDTH,
                         flexDirection: "row",
                         alignItems: "center",
                         flex: 0.4,
@@ -125,7 +125,12 @@ export default class ChangePasswordInput extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <View>
+                <View
+                    style={{
+                        width: FORM_WIDTH,
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}>
                     <TextInput
                         placeholder="Confirm Password"
                         name="confirmPassword"
@@ -137,7 +142,6 @@ export default class ChangePasswordInput extends Component {
                         secureTextEntry={this.state.hidePassword}
                         returnKeyType="default"
                         onChange={this.onChangeText}
-                       
                         showError={showError}
                         errorText={this.whichErrorText()}
                     />

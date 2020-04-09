@@ -29,9 +29,7 @@ export default class ForgotPasswordScreen extends Component {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
         console.log(this.state.valid);
-        if (
-            !this.state.valid
-        ) {
+        if (!this.state.valid) {
             return;
         }
 

@@ -34,9 +34,7 @@ export default class ChangePasswordScreen extends Component {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
         console.log(this.state.valid);
-        if (
-            !this.state.valid
-        ) {
+        if (!this.state.valid) {
             return;
         }
 
@@ -70,7 +68,6 @@ export default class ChangePasswordScreen extends Component {
         this.setState({
             passwordInput: inputState.confirmPassword.confirmPassword,
             valid: inputState.valid,
-
         });
     };
 

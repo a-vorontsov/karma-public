@@ -1,13 +1,5 @@
 import React from "react";
-import {
-    View,
-    StyleSheet,
-    Keyboard,
-    Alert,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    Platform,
-} from "react-native";
+import {View, StyleSheet, KeyboardAvoidingView, Platform} from "react-native";
 import CheckBox from "../components/CheckBox";
 import {ScrollView} from "react-native-gesture-handler";
 import {TextInput} from "../components/input";
@@ -51,9 +43,9 @@ class SignUpScreen extends React.Component {
             password: inputState.password,
             confPassword: inputState.confirmPassword,
             valid: inputState.valid,
-            sendPassUpState:false,
+            sendPassUpState: false,
+            showError: inputState.showError,
         });
-        
     };
 
     createUser() {
@@ -65,9 +57,8 @@ class SignUpScreen extends React.Component {
     }
     signUserUp = async () => {
         const user = this.createUser();
- 
-        this.setState({firstOpen: false, sendPassUpState:true});
-        
+
+        this.setState({firstOpen: false, sendPassUpState: true});
 
         if (
             !this.state.termsChecked ||
@@ -76,14 +67,13 @@ class SignUpScreen extends React.Component {
             !this.state.password ||
             !this.state.confPassword ||
             this.state.password !== this.state.confPassword ||
-            !this.state.valid
+            !this.state.valid ||
+            this.state.showError
         ) {
             return;
         }
 
-     
         let authToken = await getAuthToken();
- 
 
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
@@ -107,16 +97,22 @@ class SignUpScreen extends React.Component {
 
     render() {
         const {navigation} = this.props;
-  
+
         return (
-            <SafeAreaView style={Styles.container}>
+            <SafeAreaView
+                style={{
+                    ...Styles.con,
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                }}>
                 <KeyboardAvoidingView
                     style={Styles.ph24}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     enabled>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View>
                             <PageHeader title="Sign Up" disableBack={true} />
                             <SubTitleText style={{fontSize: normalise(26)}}>
@@ -157,12 +153,14 @@ class SignUpScreen extends React.Component {
                                 />
                                 {/**
                                  *  -- Password fields -- */}
-                                
+
                                 <View>
-                                   <ChangePasswordInput
+                                    <ChangePasswordInput
                                         onChange={this.onInputChange}
                                         firstOpen={this.state.firstOpen}
-                                        sendPassUpState={this.state.sendPassUpState}
+                                        sendPassUpState={
+                                            this.state.sendPassUpState
+                                        }
                                     />
                                 </View>
                             </View>
@@ -183,6 +181,7 @@ class SignUpScreen extends React.Component {
                                             })
                                         }
                                     />
+                                    {/* RegularText block causes problems with horizontal display - it it not centered */}
                                     <RegularText
                                         style={[Styles.grey, {flexShrink: 1}]}>
                                         By creating an account, you agree to all

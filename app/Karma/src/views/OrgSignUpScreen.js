@@ -164,7 +164,9 @@ export default class OrgSignUpScreen extends React.Component {
             address: {
                 addressLine1: this.state.addressLine1,
                 //use empty string for address line 2 if user does not use it
-                addressLine2: this.state.addressLine2 ? this.state.addressLine2 : "", 
+                addressLine2: this.state.addressLine2
+                    ? this.state.addressLine2
+                    : "",
                 townCity: this.state.townCity,
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,
@@ -178,13 +180,13 @@ export default class OrgSignUpScreen extends React.Component {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
         if (
-            !this.state.orgName || 
+            !this.state.orgName ||
             !this.state.phone ||
             !this.state.addressLine1 ||
             !this.state.postCode ||
             !this.state.townCity ||
             !this.state.countryState
-            ) {
+        ) {
             this.setState({submitted: false});
             return;
         }

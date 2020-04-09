@@ -161,7 +161,9 @@ class AboutScreen extends React.Component {
             address: {
                 addressLine1: this.state.addressLine1,
                 //use empty string for address line 2 if user does not use it
-                addressLine2: this.state.addressLine2 ? this.state.addressLine2 : "",
+                addressLine2: this.state.addressLine2
+                    ? this.state.addressLine2
+                    : "",
                 townCity: this.state.townCity,
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,
@@ -175,14 +177,33 @@ class AboutScreen extends React.Component {
     }
 
     async goToNext() {
-        const {gender, dateSelected, fname, lname, photo, addressLine1, townCity, countryState, postCode} = this.state;
+        const {
+            gender,
+            dateSelected,
+            fname,
+            lname,
+            photo,
+            addressLine1,
+            townCity,
+            countryState,
+            postCode,
+        } = this.state;
 
         if (fname === "" || lname === "") {
             this.setState({
                 firstOpen: false,
             });
         }
-        if (gender && fname !== "" && lname !== "" && dateSelected && addressLine1 && townCity && countryState && postCode) {
+        if (
+            gender &&
+            fname !== "" &&
+            lname !== "" &&
+            dateSelected &&
+            addressLine1 &&
+            townCity &&
+            countryState &&
+            postCode
+        ) {
             const authToken = await getAuthToken();
             const individual = this.createIndividual();
 
