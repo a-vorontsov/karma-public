@@ -77,21 +77,22 @@ class ActivitiesAllScreen extends Component {
         if (this.props.filters) {
             const {genderPreferences, location, type} = this.props.filters;
             const filters = [];
-            if (genderPreferences !== "noPreferences") {
+            if (genderPreferences && genderPreferences !== "noPreferences") {
                 genderPreferences === "womenOnly"
                     ? filters.push("women_only")
                     : filters.push("!women_only");
             }
-            if (location !== "anyLocation") {
+            if (location && location !== "anyLocation") {
                 location === "locationVisible"
                     ? filters.push("address_visible")
                     : filters.push("!address_visible");
             }
-            if (type !== "allTypes") {
+            if (type && type !== "allTypes") {
                 type === "physical"
                     ? filters.push("physical")
                     : filters.push("!physical");
             }
+            console.log(filters);
             return queryString.stringify(
                 {filter: filters},
                 {arrayFormat: "bracket", encode: false},
