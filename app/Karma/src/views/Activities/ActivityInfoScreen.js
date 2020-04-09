@@ -26,6 +26,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import ShareActivity from "../../components/sharing/ShareActivity";
 import CauseStyles from "../../styles/CauseStyles";
 import CauseItem from "../../components/causes/CauseItem";
+import LinearGradient from "react-native-linear-gradient";
 
 const {height: SCREEN_HEIGHT, width} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * width;
@@ -694,15 +695,29 @@ class ActivityInfoScreen extends Component {
                     <View style={{width: FORM_WIDTH}}>
                         {this.state.signedUp ? (
                             //yes
-                            <GradientButton
-                                title="Cancel Attendance"
+                            <TouchableOpacity
+                                style={{
+                                    ...Styles.roundButton,
+
+                                    backgroundColor: "#D40000",
+                                }}
                                 onPress={() => {
                                     this.setState({
                                         sharing: false,
                                     });
                                     this.toggleModal();
                                 }}
-                            />
+                                activeOpacity={0.9}>
+                                <RegularText
+                                    style={{
+                                        fontSize: 20,
+                                        justifyContent: "center",
+                                        textAlign: "center",
+                                        color: "white",
+                                    }}>
+                                    {"Cancel Attendance"}
+                                </RegularText>
+                            </TouchableOpacity>
                         ) : (
                             //no
                             <GradientButton
