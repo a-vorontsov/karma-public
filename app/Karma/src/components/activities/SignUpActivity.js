@@ -74,12 +74,8 @@ export default class SignUpActivity extends React.Component {
         const authToken = await getAuthToken();
         const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
         request
-            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp/update`)
+            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp/delete`)
             .set("authorization", authToken)
-            .send({
-                confirmed: false,
-                attended: false,
-            })
             .then(res => {
                 Toast.showWithGravity(
                     "You have successfully signed out of the activity.",

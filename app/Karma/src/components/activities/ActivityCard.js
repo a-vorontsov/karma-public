@@ -197,7 +197,7 @@ class ActivityCard extends React.Component {
                             />
 
                             <InfoBar
-                                title={`${activity.spots} Spots Left`}
+                                title={`${activity.spots - activity.volunteers.length} Spots Left`}
                                 image={icons.people}
                             />
                             <View
