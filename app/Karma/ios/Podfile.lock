@@ -454,16 +454,16 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-calendar-events: eaa63134881d97488feb21ea114158f712894018
+  react-native-calendar-events: 2fe35a9294af05de0ed819d3a1b5dac048d2c010
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
   react-native-date-picker: 808a9657e6032657a7c718ed21a99dfa89ea4b46
   react-native-google-maps: 773b7bcef4f92005847cbf455ca1fa76a21e74c7
-  react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
-  react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
+  react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
+  react-native-image-resizer: b718335229b7be37c809bf9ed81d7a066fbfd2dd
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
-  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
-  react-native-simple-toast: 6c376bd79b1e255a4bee90a72ead6447f96ea10d
-  react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
+  react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
+  react-native-simple-toast: 9c2f5979dfe555d0aa7b084348a06fd6ef7a6f55
+  react-native-slider: b2f361499888302147205f17f6fffa921a7bda70
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -474,9 +474,9 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
-  RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
-  RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
+  RNCAsyncStorage: 00bdf63f7f1e0f11d3323533dba4f222e58bf092
+  RNCMaskedView: 90dd32f5b786bd562e876e1421ea77c700cbf71e
+  RNDeviceInfo: 67607dfe9cfbed105838144c40187a8392aa404d
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNKeychain: a5623de13ec5378bfb8035422e3dee4fa538660d
@@ -488,4 +488,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.1

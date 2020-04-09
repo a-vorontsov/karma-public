@@ -53,9 +53,9 @@ export default class CauseItem extends React.Component {
                 style={[
                     display
                         ? [CauseStyles.buttonDisplay, CauseStyles.shadow]
-                        : [CauseStyles.button, CauseStyles.shadow]
-                , {borderRadius:10}]
-                }>
+                        : [CauseStyles.button, CauseStyles.shadow],
+                    {borderRadius: 10},
+                ]}>
                 <RegularText style={CauseStyles.checkbox}>✓</RegularText>
                 {ItemContent}
             </LinearGradient>

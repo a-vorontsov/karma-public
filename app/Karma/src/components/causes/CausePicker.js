@@ -2,6 +2,7 @@ import React from "react";
 import CauseItem from "./CauseItem";
 import CauseStyles from "../../styles/CauseStyles";
 import {View} from "react-native";
+import {ScrollView} from "react-native-gesture-handler";
 
 export default class CausePicker extends React.Component {
     constructor(props) {
