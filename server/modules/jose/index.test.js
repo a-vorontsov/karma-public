@@ -506,7 +506,7 @@ test("JWT blacklist fetching works", async () => {
 
     await authRepo.insert({
         token: jwtSig,
-        creationDate: "2021-06-22T18:10:25.000Z", // TODO:
+        creationDate: "2021-06-22T18:10:25.000Z",
         userId: userId,
     });
 

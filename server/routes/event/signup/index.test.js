@@ -29,7 +29,7 @@ afterEach(() => {
 test('creating signup works', async () => {
     validation.validateSignup.mockReturnValue({errors: ""});
     util.getIndividualIdFromUserId.mockResolvedValue(23);
-    eventSignupService.createSignup.mockResolvedValue({
+    eventSignupService.saveSignup.mockResolvedValue({
         status: 200,
         message: "Signup created successfully",
         data: {signup: {signUp}},
@@ -38,7 +38,7 @@ test('creating signup works', async () => {
     const response = await request(app).post("/event/3/signUp").send(signUp);
 
     expect(validation.validateSignup).toHaveBeenCalledTimes(1);
-    expect(eventSignupService.createSignup).toHaveBeenCalledTimes(1);
+    expect(eventSignupService.saveSignup).toHaveBeenCalledTimes(1);
     expect(response.statusCode).toBe(200);
     expect(response.body.data.signup).toMatchObject({
         signUp,
@@ -48,7 +48,7 @@ test('creating signup works', async () => {
 test('creating signup with invalid data is rejected as expected', async () => {
     validation.validateSignup.mockReturnValue({errors: "err"});
     util.getIndividualIdFromUserId.mockResolvedValue(23);
-    eventSignupService.createSignup.mockResolvedValue({
+    eventSignupService.saveSignup.mockResolvedValue({
         status: 200,
         message: "Signup created successfully",
         data: {signup: {signUp}},
@@ -57,7 +57,7 @@ test('creating signup with invalid data is rejected as expected', async () => {
     const response = await request(app).post("/event/3/signUp").send(signUp);
 
     expect(validation.validateSignup).toHaveBeenCalledTimes(1);
-    expect(eventSignupService.createSignup).toHaveBeenCalledTimes(0);
+    expect(eventSignupService.saveSignup).toHaveBeenCalledTimes(0);
     expect(response.body.message).toBe("Input validation failed");
     expect(response.status).toBe(400);
 });
@@ -65,14 +65,14 @@ test('creating signup with invalid data is rejected as expected', async () => {
 test('creating signup endpoint in case of a system error returns error message as expected', async () => {
     validation.validateSignup.mockReturnValue({errors: ""});
     util.getIndividualIdFromUserId.mockResolvedValue(23);
-    eventSignupService.createSignup.mockImplementation(() => {
+    eventSignupService.saveSignup.mockImplementation(() => {
       throw new Error("Server error");
     });
 
     const response = await request(app).post("/event/3/signUp").send(signUp);
 
     expect(validation.validateSignup).toHaveBeenCalledTimes(1);
-    expect(eventSignupService.createSignup).toHaveBeenCalledTimes(1);
+    expect(eventSignupService.saveSignup).toHaveBeenCalledTimes(1);
     expect(response.body.message).toBe("Server error");
     expect(response.status).toBe(500);
 });
@@ -241,4 +241,21 @@ test('requesting signup status in case of server error return error message', as
     expect(eventSignupService.getSignupStatus).toHaveBeenCalledTimes(1);
     expect(response.body.message).toBe("Server error");
     expect(response.status).toBe(500);
+});
+
+test('deleting signup works', async () => {
+    util.getIndividualIdFromUserId.mockResolvedValue(23);
+    eventSignupService.deleteSignup.mockResolvedValue({
+        status: 200,
+        message: "Signup deleted successfully",
+        data: {signup: signUp},
+    });
+
+    const response = await request(app).post("/event/3/signUp/delete").send({userId: 10});
+
+    expect(eventSignupService.deleteSignup).toHaveBeenCalledTimes(1);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.signup).toMatchObject(
+        signUp,
+    );
 });

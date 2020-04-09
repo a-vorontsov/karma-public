@@ -2,38 +2,13 @@ const db = require("../../database/connection");
 
 const insert = (registration) => {
     const query = "INSERT INTO registration(email, email_flag, id_flag, phone_flag, sign_up_flag, verification_token, expiry_date) " +
-        "VALUES ($1, $2, $3, $4, $5, $6, $7)" +
+        "VALUES ($1, $2, $3, $4, $5, $6, $7) " +
+        "ON CONFLICT ON CONSTRAINT registration_pk " +
+        "DO UPDATE SET verification_token = $6, expiry_date = $7 " +
         "RETURNING *"; // returns passed registration table with it's id set to corresponding id in database
     const params = [registration.email, registration.emailFlag,
         registration.idFlag, registration.phoneFlag, registration.signUpFlag, registration.verificationToken, registration.expiryDate];
     return db.query(query, params);
-};
-
-/**
- * Insert an email verification token and expiry date pair into
- * a registration record. If a user re-requests the token, i.e.
- * if a reg-record already exists for them, their existing
- * record is updated with the new token-expiry pair.
- * This resets the registration flags to their default state
- * and therefore should never be called if a user is already
- * fully registered.
- * @param {string} email
- * @param {string} verificationToken
- * @param {date} expiryDate
- * // TODO: pass object
- */
-const storeEmailTokenPair = async (email, verificationToken, expiryDate) => {
-    const emailTokenPair = {
-        email: email,
-        emailFlag: 0,
-        idFlag: 0,
-        phoneFlag: 0,
-        signUpFlag: 0,
-        verificationToken: verificationToken,
-        expiryDate: expiryDate,
-    };
-    const regResult = await findByEmail(email);
-    return ((regResult.rows.length === 0) ? insert(emailTokenPair) : update(emailTokenPair));
 };
 
 const update = (registration) => {
@@ -70,7 +45,6 @@ const removeByEmail = (email) => {
 
 module.exports = {
     insert,
-    storeEmailTokenPair,
     update,
     findAll,
     findByEmail,

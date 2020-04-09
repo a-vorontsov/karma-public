@@ -90,7 +90,6 @@ test("deleting user who is individual works", async () => {
     expect(individualRepository.removeByUserId).toHaveBeenCalledTimes(1);
     expect(userRepository.removeUserById).toHaveBeenCalledTimes(1);
     expect(registrationRepository.removeByEmail).toHaveBeenCalledTimes(1);
-    expect(addressRepository.removeById).toHaveBeenCalledTimes(1);
     expect(individualRepository.findByUserID).toHaveBeenCalledTimes(1);
     expect(userRepository.findById).toHaveBeenCalledTimes(0);
     expect(orgRepository.removeByUserId).toHaveBeenCalledTimes(0);
@@ -136,7 +135,6 @@ test("deleting user who is org works", async () => {
     expect(pictureRepository.removeById).toHaveBeenCalledTimes(1);
     expect(userRepository.removeUserById).toHaveBeenCalledTimes(1);
     expect(registrationRepository.removeByEmail).toHaveBeenCalledTimes(1);
-    expect(addressRepository.removeById).toHaveBeenCalledTimes(1);
     expect(individualRepository.findByUserID).toHaveBeenCalledTimes(0);
     expect(orgRepository.findByUserID).toHaveBeenCalledTimes(0);
     expect(userRepository.findById).toHaveBeenCalledTimes(0);

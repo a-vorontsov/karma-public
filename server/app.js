@@ -4,23 +4,19 @@ const express = require("express");
 const app = express();
 const jose = require("./modules/jose");
 jose.fetchBlacklist();
-const authService = require("./modules/authentication/");
-const methodOverride = require("method-override");
+const authService = require("./modules/authentication");
 const helmet = require("helmet");
 
-
+// -- MIDDLEWARE -- //
+app.use(helmet());
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use('/favicon.ico', express.static('favicon.ico'));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
-// -- MIDDLEWARE -- //
-app.use(helmet());
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(methodOverride("_method"));
 
 // -- ROUTES -- //
 app.use("/authentication", require("./routes/authentication"));
@@ -77,7 +73,7 @@ if (process.env.ENABLE_OAUTH === 1) {
     app.use("signin/oauth/linkedin", require("./routes/signin/OAuth/linkedin"));
 }
 
-// TODO: regex that excludes only requireNotAuth routes
+// wildcard-protect any unspecified route
 app.all("*", authService.requireAuthentication);
 
 module.exports = app;

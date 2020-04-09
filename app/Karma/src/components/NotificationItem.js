@@ -16,6 +16,7 @@ const request = require("superagent");
  * -- "EventCancellation" --
  * -- "AttendanceCancellation" --
  * -- "AttendanceConfirmation" --
+ * -- "EventSignup" --
  */
 export default class NotificationItem extends Component {
     constructor(props) {
@@ -69,6 +70,7 @@ export default class NotificationItem extends Component {
     render() {
         const {notification} = this.props;
         const isMessage = notification.type === "Message";
+        const isEventSignup = notification.type === "EventSignup";
         const daysAgo =
             notification.daysAgo === 0 ? "Today" : notification.daysAgo + "d";
         const colon = isMessage ? " " : ": ";
@@ -94,10 +96,12 @@ export default class NotificationItem extends Component {
                             {alignSelf: "center", flexShrink: 1},
                         ]}>
                         <Text>
-                            <BoldText>
-                                {this.state.senderName}
-                                {colon}
-                            </BoldText>
+                            {!isEventSignup && (
+                                <BoldText>
+                                    {this.state.senderName}
+                                    {colon}
+                                </BoldText>
+                            )}
                             <RegularText>{notification.message}</RegularText>
                             <RegularText style={{color: Colours.grey}}>
                                 {" "}
