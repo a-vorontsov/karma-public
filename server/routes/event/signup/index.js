@@ -13,6 +13,7 @@ const validation = require("../../../modules/validation");
 const authService = require("../../../modules/authentication/");
 /**
  * Endpoint called whenever a user wishes to sign up to an event.<br/>
+ * If a signup already exists for the user, it is updated instead
  <p><b>Route: </b>/event/:id/signUp (POST)</p>
  <p><b>Permissions: </b>require user permissions</p>
  * @param {string} req.headers.authorization authToken
@@ -51,7 +52,7 @@ router.post('/:eventId/signUp', authService.requireAuthentication, async (req, r
             return httpUtil.sendValidationErrors(validationResult, res);
         }
 
-        const signupResult = await eventSignupService.createSignup(signup);
+        const signupResult = await eventSignupService.saveSignup(signup);
         return httpUtil.sendResult(signupResult, res);
     } catch (e) {
         log.error("User id '%d': Failed signing up to event id '%d': " + e, req.body.userId, req.params.eventId);
@@ -239,6 +240,43 @@ router.post('/:eventId/signUp/update', authService.requireAuthentication, async 
     } catch (e) {
         log.error("User id '%d': Failed updating signup to event id '%d' for user id '%d': " + e, req.query.userId,
             req.params.eventId, req.body.otherUserId);
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
+ * Endpoint called whenever a user wishes to completely delete a signup.<br/>
+ <p><b>Route: </b>/event/:eventId/signUp/delete (POST)</p>
+ <p><b>Permissions: </b>require user permissions</p>
+ * @param {string} req.headers.authorization authToken
+ * @returns {Object}
+ *  status: 200, description: The signup object deleted<br/>
+ <pre>
+ {
+    "message": "Signup deleted successfully",
+    "data": {
+        "signup": {
+            "individualId": 7,
+            "eventId": 11,
+            "confirmed": true
+            "attended": true
+        }
+    }
+ }
+ </pre>
+ *  status: 500, description: DB error
+ *  @name Delete event signup
+ *  @function
+ */
+router.post('/:eventId/signUp/delete', authService.requireAuthentication, async (req, res) => {
+    try {
+        log.info("User id '%d': Deleting signup to event id '%d'", req.body.userId, req.params.eventId);
+        const signup = {eventId: Number.parseInt(req.params.eventId)};
+        signup.individualId = await util.getIndividualIdFromUserId(req.body.userId);
+        const deleteSignupResult = await eventSignupService.deleteSignup(signup);
+        return httpUtil.sendResult(deleteSignupResult, res);
+    } catch (e) {
+        log.error("User id '%d': Failed deleting signup to event id '%d': " + e, req.query.userId, req.params.eventId);
         return httpUtil.sendGenericError(e, res);
     }
 });

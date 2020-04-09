@@ -161,6 +161,7 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
+                    console.log(res.body.data);
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
                         navigate("UserSignUp", {
@@ -176,13 +177,16 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
+
                     //if email is not verified, show code field
+
                     this.setState({
                         showPassField: false,
                         showCode: true,
                         showEmailError: false,
                         buttonText: "Sign Up",
                     });
+                    //add flag to check
                 })
                 .catch(err => {
                     console.log(err);

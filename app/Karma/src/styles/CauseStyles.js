@@ -23,7 +23,6 @@ const CauseStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: Colours.white,
-        overflow: "visible",
     },
     buttonDisplay: {
         height: SCREEN_WIDTH / 5,

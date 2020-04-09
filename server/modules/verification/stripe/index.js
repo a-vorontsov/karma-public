@@ -1,5 +1,6 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const fs = require("fs");
+const log = require("../../../util/log");
 
 // @temporary array
 const accounts = [];
@@ -25,7 +26,8 @@ async function uploadFile(userId) {
             },
         );
     } catch (e) {
-        // TODO: return upload error as response
+        log.error("Stripe upload error: " + e.message);
+        // return upload error as response
     }
     accounts.push({
         id: userId,
