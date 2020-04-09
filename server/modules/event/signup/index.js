@@ -11,7 +11,7 @@ const eventSorter = require("../../sorting");
  * whether the individual is going to the event or not.
  * Fails if individualId is invalid, or database call fails.
  */
-const createSignup = async (signup) => {
+const saveSignup = async (signup) => {
     const eventIdCheckResponse = await util.checkEventId(signup.eventId);
     if (eventIdCheckResponse.status !== 200) {
         throw new Error(eventIdCheckResponse.message);
@@ -21,10 +21,12 @@ const createSignup = async (signup) => {
         throw new Error(userIdCheckResponse.message);
     }
 
-    const signupResult = await signupRepository.insert(signup);
+    const findSignupResult = await signupRepository.find(signup.individualId, signup.eventId);
+    const signupResult = findSignupResult.rows.length > 0 ? await signupRepository.update(signup) : await signupRepository.insert(signup);
+
     return ({
         status: 200,
-        message: "Signup created successfully",
+        message: "Signup " + (findSignupResult.length > 0 ? "updated" : "created") + " successfully",
         data: {signup: signupResult.rows[0]},
     });
 };
@@ -129,7 +131,8 @@ const updateSignUp = async (signup) => {
     const oldSignup = await signupRepository.find(signup.individualId, signup.eventId);
     if (oldSignup.rows[0].attended === false && signup.attended === true) {
         await profileRepository.updateKarmaPoints(signup.individualId);
-    };
+    }
+
     const signupResult = await signupRepository.update(signup);
     return ({
         status: 200,
@@ -138,11 +141,31 @@ const updateSignUp = async (signup) => {
     });
 };
 
+/**
+ * Deletes a signup already in the database.
+ * @param {object} signup A signup object with a valid individualId and eventId.
+ * Fails if database call fails.
+ */
+const deleteSignup = async (signup) => {
+    const eventIdCheckResponse = await util.checkEventId(signup.eventId);
+    if (eventIdCheckResponse.status !== 200) {
+        throw new Error(eventIdCheckResponse.message);
+    }
+
+    const signupResult = await signupRepository.remove(signup);
+    return ({
+        status: 200,
+        message: "Signup deleted successfully",
+        data: {signup: signupResult.rows[0]},
+    });
+};
+
 module.exports = {
-    createSignup,
+    saveSignup,
     getAllSignupsForEvent,
     getSignupHistory,
     getSignupStatus,
     updateSignUp,
     getGoingEvents,
+    deleteSignup,
 };
