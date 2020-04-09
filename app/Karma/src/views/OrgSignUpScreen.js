@@ -163,7 +163,8 @@ export default class OrgSignUpScreen extends React.Component {
             pocLastName: this.state.lname,
             address: {
                 addressLine1: this.state.addressLine1,
-                addressLine2: this.state.addressLine2,
+                //use empty string for address line 2 if user does not use it
+                addressLine2: this.state.addressLine2 ? this.state.addressLine2 : "", 
                 townCity: this.state.townCity,
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,
@@ -176,7 +177,14 @@ export default class OrgSignUpScreen extends React.Component {
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
-        if (!this.state.orgName || !this.state.phone) {
+        if (
+            !this.state.orgName || 
+            !this.state.phone ||
+            !this.state.addressLine1 ||
+            !this.state.postCode ||
+            !this.state.townCity ||
+            !this.state.countryState
+            ) {
             this.setState({submitted: false});
             return;
         }

@@ -351,7 +351,11 @@ export default class CreateActivityScreen extends React.Component {
             !this.state.title ||
             !this.state.startDate ||
             !this.state.eventDesc ||
-            !this.state.numSpots
+            !this.state.numSpots ||
+            !this.state.address1 ||
+            !this.state.postcode ||
+            !this.state.city ||
+            !this.state.region
         ) {
             return;
         }
