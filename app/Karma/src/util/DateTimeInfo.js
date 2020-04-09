@@ -37,5 +37,7 @@ export const getMonthName = (d, long = false) => {
 // returns date string in the format day/month/year
 export const getDate = d => {
     const date = new Date(d);
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+    return (
+        date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+    );
 };
