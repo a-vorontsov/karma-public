@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Image, TouchableOpacity, View} from "react-native";
+import {Image, TouchableOpacity, View, Text} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
 import BottomModal from "../BottomModal";
@@ -65,7 +65,7 @@ class ActivityDisplayCard extends React.Component {
                                     alignItems: "center",
                                     justifyItems: "flex-start",
                                 }}>
-                                <RegularText
+                                <Text
                                     numberOfLines={1}
                                     style={{
                                         fontSize: 20,
@@ -73,7 +73,7 @@ class ActivityDisplayCard extends React.Component {
                                         fontWeight: "500",
                                     }}>
                                     {props.activity.name}
-                                </RegularText>
+                                </Text>
                             </View>
                             <RegularText
                                 style={{
