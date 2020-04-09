@@ -7,7 +7,7 @@ import {SafeAreaView} from "react-navigation";
 import LinearGradient from "react-native-linear-gradient";
 import Colours from "../../styles/Colours";
 
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -71,11 +71,11 @@ export default class ChangePasswordInput extends Component {
     }
 
     whichErrorText() {
-        if (!this.state.passwordMatch) {
-            return "Passwords must match";
-        }
         if (!this.isValidPassword()) {
             return "Password is too weak";
+        }
+        if (!this.state.passwordMatch) {
+            return "Passwords must match";
         }
     }
 
