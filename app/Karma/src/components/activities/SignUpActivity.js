@@ -178,7 +178,13 @@ export default class SignUpActivity extends React.Component {
         const {inCalendar} = this.state;
         return (
             <View style={Styles.ph8}>
-                <SubTitleText>Almost signed up!</SubTitleText>
+                {!signedUp ? (
+                    <SubTitleText>Almost signed up!</SubTitleText>
+                ) : (
+                    <SubTitleText>
+                        Are you sure you want to cancel?
+                    </SubTitleText>
+                )}
                 <RegularText style={Styles.pb16}>
                     {activity.content}
                 </RegularText>
