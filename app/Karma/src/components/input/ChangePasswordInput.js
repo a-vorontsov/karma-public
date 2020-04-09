@@ -34,11 +34,11 @@ export default class ChangePasswordInput extends Component {
 
     passUpState() {
         const {confirmPassword, password} = this.state;
-        
+        console.log(confirmPassword , password , this.isValidPassword());
             this.props.onChange({
                 confirmPassword,
                 password,
-                valid: true,
+                valid: confirmPassword===password && this.isValidPassword(),
             });
         
     }

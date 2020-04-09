@@ -47,11 +47,10 @@ class SignUpScreen extends React.Component {
     };
 
     onInputChange = inputState => {
-        console.log("problme "+inputState.password);
-        console.log(inputState.confirmPassword);
         this.setState({
             password: inputState.password,
             confPassword: inputState.confirmPassword,
+            valid: inputState.valid,
             sendPassUpState:false,
         });
         
@@ -68,8 +67,7 @@ class SignUpScreen extends React.Component {
         const user = this.createUser();
  
         this.setState({firstOpen: false, sendPassUpState:true});
-        console.log("pass "+this.state.password);
-        console.log("confpass "+this.state.confPassword);
+        
 
         if (
             !this.state.termsChecked ||
@@ -77,7 +75,8 @@ class SignUpScreen extends React.Component {
             !this.state.username ||
             !this.state.password ||
             !this.state.confPassword ||
-            this.state.password !== this.state.confPassword
+            this.state.password !== this.state.confPassword ||
+            !this.state.valid
         ) {
             return;
         }
