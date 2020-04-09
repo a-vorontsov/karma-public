@@ -93,7 +93,7 @@ router.post("/", authService.requireNoAuthentication, async (req, res) => {
             }
         } else if (!(await regStatus.isEmailVerified(email))) {
             const waitSeconds = await emailVerificationService.calculateWaitRequiredForNewToken(email);
-            if ((process.env.SKIP_NEW_TOKEN_TIMEOUT == true) || waitSeconds <= 0) {
+            if (process.env.SKIP_NEW_TOKEN_TIMEOUT == true || waitSeconds <= 0) {
                 log.info("'%s': Sign-in with existing unverified email. Starting email verification", email);
                 await tokenSender.storeAndSendEmailVerificationToken(email);
                 res.status(200).send({

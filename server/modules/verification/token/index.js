@@ -20,7 +20,7 @@ const storeAndSendPasswordResetToken = async (userId, email) => {
         config.emailVerification,
         email,
         {
-            userId: userId,
+            userId,
         },
         resetRepo.insertResetToken,
     );
@@ -59,18 +59,17 @@ const storeAndSendEmailVerificationToken = async (email) => {
  * @param {Function} dbFunction
  */
 const storeAndSendVerificationToken = async (configuration, email, dbRecord, dbFunction) => {
-    const verificationConfig = configuration;
-    const token = generateSecureToken(verificationConfig.tokenLength);
-    const validMinutes = verificationConfig.validMinutes;
+    const token = generateSecureToken(configuration.tokenLength);
+    const validMinutes = configuration.validMinutes;
     const expiryDate = util.getCurrentTimeInUtcAsString(validMinutes);
-    dbRecord[verificationConfig.dbTokenParam] = token;
+    dbRecord[configuration.dbTokenParam] = token;
     dbRecord.expiryDate = expiryDate;
     await dbFunction(dbRecord);
     await mailSender.sendEmail(
         email,
-        `${token} ${verificationConfig.mailSubject}`,
-        `${token} ${verificationConfig.mailBody}\n` +
-        `This token is valid for ${validMinutes} minutes.`,
+        `${token} ${configuration.mailSubject}`,
+        `${token} ${configuration.mailBody}\n
+        This token is valid for ${validMinutes} minutes.`,
     );
 };
 
