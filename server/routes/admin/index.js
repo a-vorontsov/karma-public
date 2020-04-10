@@ -45,11 +45,11 @@ const authService = require("../../modules/authentication/");
  */
 router.get("/users", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin (user id %d): Fetching all users", req.query.userId);
+        log.info("Admin%s: Fetching all users", (req.query.userId ? ` (user id ${req.query.userId})` : ``));
         const usersResult = await adminService.getAllUsers();
         return httpUtil.sendResult(usersResult, res);
     } catch (e) {
-        log.error("Admin (user id %d): Users fetching failed: " + e, req.query.userId);
+        log.error("Admin%s: Users fetching failed: " + e, (req.query.userId ? ` (user id ${req.query.userId})` : ``));
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -85,11 +85,13 @@ router.get("/users", authService.requireAuthentication, async (req, res) => {
 router.post("/user/delete", authService.requireAuthentication, async (req, res) => {
     try {
         const deleteUserId = req.query.deleteUserId;
-        log.info("Admin (user id %d): Deleting all user data for user id '%d'", req.query.userId, deleteUserId);
+        log.info("Admin%s: Deleting all user data for user id '%d'",
+            (req.query.userId ? ` (user id ${req.query.userId})` : ``), deleteUserId);
         const deletionResult = await deletionModule.deleteAllInformation(deleteUserId);
         return httpUtil.sendResult(deletionResult, res);
     } catch (e) {
-        log.error("Admin (user id %d): User id '%d' couldn't be deleted: " + e, req.query.userId, req.query.deleteUserId);
+        log.error("Admin%s: User id '%d' couldn't be deleted: " + e,
+            (req.query.userId ? ` (user id ${req.query.userId})` : ``), req.query.deleteUserId);
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -142,11 +144,11 @@ router.post("/user/delete", authService.requireAuthentication, async (req, res) 
  */
 router.get("/individuals", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin (user id %d): Fetching all individuals", req.query.userId);
+        log.info("Admin%s: Fetching all individuals", (req.query.userId ? ` (user id ${req.query.userId})` : ``));
         const individualsResult = await adminService.getAllIndividuals();
         return httpUtil.sendResult(individualsResult, res);
     } catch (e) {
-        log.error("Admin (user id %d): Individuals fetching failed: " + e, req.query.userId);
+        log.error("Admin%s: Individuals fetching failed: " + e, (req.query.userId ? ` (user id ${req.query.userId})` : ``));
         return httpUtil.sendGenericError(e, res);
     }
 });
@@ -159,9 +161,9 @@ router.get("/individuals", authService.requireAuthentication, async (req, res) =
  * @returns {Object}
  *  status: 200, description: An object containing the data of the new status of the individual banned/unbanned.<br/>
  *  status: 500, description: DB error
- *<pre>
+ <pre>
  {
-    "message": "Individuals fetched successfully.",
+    "message": "Individual ban toggled successfully",
     "data": {
         "individual":
         {
@@ -169,7 +171,7 @@ router.get("/individuals", authService.requireAuthentication, async (req, res) =
             "firstname": "Juliet",
             "lastname": "Lowe",
             "phone": "07009 140829",
-            "banned": false,
+            "banned": true,
             "userId": 50,
             "pictureId": null,
             "addressId": 18,
@@ -184,7 +186,8 @@ router.get("/individuals", authService.requireAuthentication, async (req, res) =
  */
 router.post("/toggleBan", authService.requireAuthentication, async (req, res) => {
     try {
-        log.info("Admin (user id %d): Toggling ban for user id '%d'", req.body.userId, req.body.data.individual.userId);
+        log.info("Admin%s: Toggling ban for user id '%d'",
+            (req.query.userId ? ` (user id ${req.query.userId})` : ``), req.body.data.individual.userId);
         const individual = req.body.data.individual;
         const validationResult = validation.validateIndividual(individual);
         if (validationResult.errors.length > 0) {
@@ -194,7 +197,8 @@ router.post("/toggleBan", authService.requireAuthentication, async (req, res) =>
         const bannedIndividualResult = await adminService.toggleIndividualBan(individual);
         return httpUtil.sendResult(bannedIndividualResult, res);
     } catch (e) {
-        log.error("Admin (user id %d): Toggling ban for user id '%d' failed: " + e, req.body.userId, req.body.data.individual.userId);
+        log.error("Admin%s: Toggling ban for user id '%d' failed: " + e,
+            (req.query.userId ? ` (user id ${req.query.userId})` : ``), req.body.data.individual.userId);
         return httpUtil.sendGenericError(e, res);
     }
 });

@@ -3,6 +3,9 @@ import {TextInput, View} from "react-native";
 import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import SignUpStyles from "../../styles/SignUpStyles";
+import Colours from "../../styles/Colours";
+import {initialMode} from "react-native-dark-mode";
+const isDarkMode = initialMode === "dark";
 
 /*
     The TextInput component class describes the type of
@@ -34,6 +37,7 @@ export default class TInput extends Component {
                             ? this.props.returnKeyType
                             : "next"
                     }
+                    placeholderTextColor={isDarkMode ? Colours.grey : undefined}
                     keyboardType={this.props.keyboardType}
                     onFocus={this.props.onFocus}
                     multiline={this.props.multiline}
