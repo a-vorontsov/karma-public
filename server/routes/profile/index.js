@@ -13,6 +13,7 @@ const profileRepo = require("../../repositories/profile");
 const selectedCauseRepo = require("../../repositories/cause/selected");
 const signUpRepo = require("../../repositories/event/signup");
 const eventRepo = require("../../repositories/event");
+const eventSorter = require("../../modules/sorting");
 
 /**
  * Endpoint called whenever a user wishes to get their own or another user's profile.<br/>
@@ -146,7 +147,9 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
         };
         const createdEventsResult = await eventRepo.findAllByUserIdWithLocation(userId);
         const createdEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date > now));
+        eventSorter.sortByTime(createdEvents);
         const createdPastEvents = await Promise.all(createdEventsResult.rows.filter(event => event.date < now));
+        eventSorter.sortByTime(createdPastEvents);
         const causeResult = await selectedCauseRepo.findByUserId(userId);
         const causes = causeResult.rows;
         const indivResult = await indivRepo.findByUserID(userId);
@@ -171,6 +174,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     };
                 })
                 .filter(event => event.date < now);
+            eventSorter.sortByTime(pastEvents);
             const upcomingEvents = (await Promise.all(signUpResult.rows.map(signup => signup.eventId)
                 .map(eventId => eventRepo.findById(eventId))))
                 .map(eventResult => eventResult.rows[0])
@@ -183,6 +187,7 @@ router.get("/", authService.requireAuthentication, async (req, res) => {
                     };
                 })
                 .filter(event => event.date > now);
+            eventSorter.sortByTime(upcomingEvents);
 
             const indivToSend = {
                 registrationDate: user.dateRegistered,

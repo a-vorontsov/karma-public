@@ -101,6 +101,9 @@ class ActivitiesCausesScreen extends Component {
                                         key={cause}
                                         cause={cause}
                                         activities={activities}
+                                        isOrganisation={
+                                            this.props.isOrganisation
+                                        }
                                     />
                                 );
                             },

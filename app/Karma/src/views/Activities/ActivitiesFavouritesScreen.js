@@ -99,6 +99,7 @@ class ActivitiesFavouritesScreen extends Component {
                                     favourited={true}
                                     activity={activity}
                                     key={activity.eventId}
+                                    isOrganisation={this.props.isOrganisation}
                                 />
                             );
                         })

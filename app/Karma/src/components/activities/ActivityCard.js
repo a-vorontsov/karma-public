@@ -57,6 +57,7 @@ function getMonthName(d, long = false) {
     return name;
 }
 
+
 class ActivityCard extends React.Component {
     constructor(props) {
         super(props);
@@ -72,7 +73,6 @@ class ActivityCard extends React.Component {
     }
 
     toggleSignup = () => {
-        console.log("Signup toggled");
         this.setState({
             signedup: !this.state.signedup,
             displaySignupModal: !this.state.displaySignupModal,
@@ -129,8 +129,9 @@ class ActivityCard extends React.Component {
     }
 
     _renderTruncatedFooter = handlePress => {
-        const {activity} = this.props;
+        
         const {signedup} = this.state;
+        const {activity, isOrganisation} = this.props;
         return (
             <TouchableOpacity
                 onPress={() =>
@@ -138,6 +139,7 @@ class ActivityCard extends React.Component {
                         activity: activity,
                         signedup: signedup,
                         favourited: this.state.favourited,
+                        isOrganisation: isOrganisation,
                     })
                 }>
                 <RegularText
@@ -149,8 +151,8 @@ class ActivityCard extends React.Component {
         );
     };
     render() {
-        const {activity} = this.props;
         const {signedup} = this.state;
+        const {activity, isOrganisation} = this.props;
 
         return (
             <View style={[Styles.container, Styles.ph24]}>
@@ -170,24 +172,26 @@ class ActivityCard extends React.Component {
                         resizeMode="cover"
                     />
 
-                    <TouchableOpacity
-                        opacity={0.9}
-                        onPress={() => this.toggleModal()}
-                        style={{
-                            position: "absolute",
-                            right: 0,
-                            top: 0,
-                            padding: 5,
-                        }}>
-                        <Image
-                            source={signedup ? icons.tick : icons.signup}
+                    {!isOrganisation && (
+                        <TouchableOpacity
+                            opacity={0.9}
+                            onPress={() => this.toggleModal()}
                             style={{
-                                height: 50,
-                                width: 50,
-                                resizeMode: "contain",
-                            }}
-                        />
-                    </TouchableOpacity>
+                                position: "absolute",
+                                right: 0,
+                                top: 0,
+                                padding: 5,
+                            }}>
+                            <Image
+                                source={signedup ? icons.tick : icons.signup}
+                                style={{
+                                    height: 50,
+                                    width: 50,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                        </TouchableOpacity>
+                    )}
                     <Image
                         source={icons.date}
                         style={[styles.icon, {left: 5}]}
@@ -209,7 +213,8 @@ class ActivityCard extends React.Component {
                             />
 
                             <InfoBar
-                                title={`${activity.spots} Spots Left`}
+                                title={`${activity.spots -
+                                    activity.volunteers.length} Spots Left`}
                                 image={icons.people}
                             />
                             <View

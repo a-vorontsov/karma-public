@@ -117,6 +117,7 @@ class ActivityDisplayCard extends React.Component {
                                     ? props.signedup
                                     : props.activity.going
                             }
+                            isOrganisation={props.isOrganisation}
                         />
                     </View>
                 </View>

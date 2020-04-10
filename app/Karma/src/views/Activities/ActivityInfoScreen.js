@@ -49,6 +49,7 @@ class ActivityInfoScreen extends Component {
             sharing: false,
             displaySignupModal: false,
             signedUp: false,
+            isOrganisation: false,
             showCancel: false,
             addInfo: false,
             photoId: false,
@@ -57,26 +58,25 @@ class ActivityInfoScreen extends Component {
             spots_taken: 3,
             causes: [],
             spots: 4,
-            activity_name: "Activity Name",
-            org_name: "Name",
-            location: "Location",
-            full_date: "Full Date",
-            full_time: "Full Time",
-            full_location: "Full Location",
+            activity_name: "",
+            org_name: "",
+            location: "",
+            full_date: "",
+            full_time: "",
+            full_location: "",
             favourited: false,
             addressVisible: true,
             lat: 37.78825,
             long: -122.4324,
-            description:
-                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            contact:
-                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            where:
-                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
-            important:
-                "sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua sed do eiusm ut labore et dolore magna aliqua",
+            description: "",
+            contact: "",
+            where: "",
+            important: "",
         };
         this.state.signedUp = this.props.navigation.getParam("signedup");
+        this.state.isOrganisation = this.props.navigation.getParam(
+            "isOrganisation",
+        );
     }
 
     async componentDidMount() {
@@ -84,7 +84,7 @@ class ActivityInfoScreen extends Component {
 
         this.getEventInfo(activity);
 
-        await this.getSignUpStatus();
+        !this.state.isOrganisation && (await this.getSignUpStatus());
         await this.getCreatorInfo(
             activity.eventCreatorId
                 ? activity.eventCreatorId
@@ -96,7 +96,7 @@ class ActivityInfoScreen extends Component {
         this.setState({
             displaySignupModal: !this.state.displaySignupModal,
         });
-        this.getSignUpStatus();
+        !this.state.isOrganisation && this.getSignUpStatus();
     };
 
     handleSignupError = (errorTitle, errorMessage) => {
@@ -104,14 +104,12 @@ class ActivityInfoScreen extends Component {
     };
 
     getSignUpStatus = async () => {
-        console.log("signup stat");
         const authToken = await getAuthToken();
         const activity = this.props.navigation.getParam("activity");
         const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
         await request
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
-
             .then(res => {
                 console.log(res.status);
                 if (res.body.data.signup.confirmed === false) {
@@ -119,7 +117,6 @@ class ActivityInfoScreen extends Component {
                 } else {
                     this.setState({signedUp: true});
                 }
-                console.log(res.body);
             })
             .catch(err => {
                 this.setState({signedUp: false});
@@ -695,19 +692,37 @@ class ActivityInfoScreen extends Component {
                     <View style={{width: FORM_WIDTH}}>
                         {this.state.signedUp ? (
                             //yes
-                            <GradientButton
-                                title="Cancel Attendance"
+                            <TouchableOpacity
+                                style={{
+                                    ...Styles.roundButton,
+
+                                    backgroundColor: "#D40000",
+                                }}
                                 onPress={() => {
                                     this.setState({
                                         sharing: false,
                                     });
                                     this.toggleModal();
                                 }}
-                            />
+                                activeOpacity={0.9}>
+                                <RegularText
+                                    style={{
+                                        fontSize: 20,
+                                        justifyContent: "center",
+                                        textAlign: "center",
+                                        color: "white",
+                                    }}>
+                                    {"Cancel Attendance"}
+                                </RegularText>
+                            </TouchableOpacity>
                         ) : (
                             //no
                             <GradientButton
-                                title="Attend"
+                                title={
+                                    !this.state.isOrganisation
+                                        ? "Attend"
+                                        : "Add to Calendar"
+                                }
                                 onPress={() => {
                                     this.setState({
                                         sharing: false,
@@ -729,6 +744,7 @@ class ActivityInfoScreen extends Component {
                             onConfirm={this.toggleModal}
                             onError={this.handleSignupError}
                             signedUp={signedUp}
+                            isOrganisation={this.state.isOrganisation}
                         />
                     )}
                 </BottomModal>
