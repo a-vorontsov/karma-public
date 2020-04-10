@@ -187,7 +187,15 @@ export default class WelcomeScreen extends Component {
                         showEmailError: false,
                         buttonText: "Sign Up",
                     });
-                    //add flag to check
+
+                    // if user requests code token several times
+                    if (res.body.data.tokenAlreadyRequested) {
+                        Alert.alert(
+                            "Please wait " +
+                                res.body.data.waitSeconds +
+                                " seconds until requesting a new code.",
+                        );
+                    }
                 })
                 .catch(err => {
                     console.log(err);

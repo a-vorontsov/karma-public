@@ -53,6 +53,7 @@ services:
       SKIP_MAIL_SENDING_FOR_TESTING: 0
       SKIP_S3: 0
       PRESERVE_SESSIONS_ON_REBOOT: 1
+      SKIP_NEW_TOKEN_TIMEOUT: 0
       NODE_ENV: production
 
       REACT_APP_API_URL: https://karma.laane.xyz/api
