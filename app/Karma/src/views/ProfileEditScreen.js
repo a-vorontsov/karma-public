@@ -48,6 +48,8 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
+// The view for the Profile Edit Screen, where the user can change their profile
+// information
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
@@ -426,13 +428,16 @@ class ProfileEditScreen extends Component {
                                 backgroundColor: Colours.blue,
                                 height: HALF,
                                 width: SCREEN_WIDTH,
+                                alignSelf:"center",
                                 alignItems: "center",
-                                justifyContent: "flex-start",
+                                justifyContent: "center",
                                 paddingRight: 30,
                                 paddingLeft: 30,
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
+
+                            {/* Profile Picture */}
                             <View>
                                 <TouchableOpacity
                                     onPress={this.handleChoosePhoto}>
@@ -445,7 +450,7 @@ class ProfileEditScreen extends Component {
                                             opacity: photoLoading ? 0.5 : 1,
                                         }}
                                         resizeMode="cover"
-                                        source={photo ? photo : icons.photo_add}
+                                        source={icons.photo_add}
                                     />
                                     <View
                                         style={{
@@ -693,7 +698,8 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <View style={{flexWrap: "wrap"}}>
                                     <EditableText
-                                        text={this.state.individual.bio}
+
+                                        text={this.state.individual.bio === "" ? "Write bio here." : this.state.individual.bio}
                                         style={styles.contentText}
                                         onChange={val =>
                                             this.setState(prevState => {
