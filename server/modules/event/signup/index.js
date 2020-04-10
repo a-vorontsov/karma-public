@@ -105,7 +105,6 @@ const getGoingEvents = async (userId) => {
         throw new Error(userIdCheckResponse.message);
     }
     const findResult = await individualRepository.findGoingEvents(userId);
-    const user = userIdCheckResponse.user;
     // add spotsRemaining property to all event objects
     const events = findResult.rows.map(event => {
         return {...event,
@@ -114,7 +113,7 @@ const getGoingEvents = async (userId) => {
             going: true,
         };
     });
-    eventSorter.sortByTimeAndDistance(events, user);
+    eventSorter.sortByTime(events);
     return ({
         status: 200,
         message: "Future going events fetched successfully",
