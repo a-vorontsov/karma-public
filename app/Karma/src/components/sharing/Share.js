@@ -1,9 +1,9 @@
 import React from "react";
 import Sharing from "react-native-share";
-import {View, Platform} from "react-native";
-import {ShareButton} from "../buttons";
+import { View, Platform } from "react-native";
+import { ShareButton } from "../buttons";
 import Styles from "../../styles/Styles";
-import {AppInstalledChecker} from "react-native-check-app-install";
+import { AppInstalledChecker } from "react-native-check-app-install";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-simple-toast";
 
@@ -15,7 +15,7 @@ export default class Share extends React.Component {
         };
     }
     async openSharing(linkType) {
-        const {title, message} = this.props;
+        const { title, message } = this.props;
         const shareOptions = {
             title,
             message,
@@ -84,7 +84,7 @@ export default class Share extends React.Component {
         return installed;
     }
     render() {
-        const {installedApps} = this.state;
+        const { installedApps } = this.state;
         return (
             <View style={Styles.pt16}>
                 {installedApps.map(app => {

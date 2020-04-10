@@ -1,8 +1,12 @@
 import React from "react";
 import TextInput from "./TextInput";
-import {RegularText} from "../text";
-import {TouchableOpacity} from "react-native";
+import { RegularText } from "../text";
+import { TouchableOpacity } from "react-native";
 import WelcomeScreenStyles from "../../styles/WelcomeScreenStyles";
+{/*
+    The PasswordInput class is a component used when the user
+    needs to input a single password on a screen.
+*/}
 export default class PasswordInput extends React.Component {
     constructor(props) {
         super(props);
@@ -12,8 +16,8 @@ export default class PasswordInput extends React.Component {
     }
 
     onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
+        const { name, text } = event;
+        this.setState({ [name]: text });
         this.props.onChange(name, text);
     };
 
@@ -36,11 +40,11 @@ export default class PasswordInput extends React.Component {
                 {/* forgot password button*/}
                 <TouchableOpacity
                     style={[
-                        {textAlign: "right", flex: 1, alignSelf: "flex-end"},
+                        { textAlign: "right", flex: 1, alignSelf: "flex-end" },
                     ]}
                     onPress={this.props.onForgotPassPressed}>
                     <RegularText
-                        style={[WelcomeScreenStyles.text, {fontSize: 15}]}>
+                        style={[WelcomeScreenStyles.text, { fontSize: 15 }]}>
                         Forgot Password?
                     </RegularText>
                 </TouchableOpacity>
