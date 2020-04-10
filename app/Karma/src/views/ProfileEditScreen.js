@@ -640,11 +640,11 @@ class ProfileEditScreen extends Component {
                                     </View>
                                 )}
                                 <RegularText style={styles.bioHeader}>
-                                    User Name
+                                    Username
                                 </RegularText>
                                 <TextInput
+                                    value={individual.username}
                                     inputRef={ref => (this.username = ref)}
-                                    value={this.state.user.username}
                                     autoCapitalize="none"
                                     onChange={this.onChangeText}
                                     onSubmitEditing={() => Keyboard.dismiss()}

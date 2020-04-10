@@ -31,20 +31,29 @@ export default class CausePicker extends React.Component {
         const {items} = this.state;
 
         return (
-            <View style={CauseStyles.container}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    overflow: "visible",
+                }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {causes.map(c => {
-                        const selected = items.some(item => item.id === c.id);
-                        return (
-                            <CauseItem
-                                key={c.id}
-                                cause={c}
-                                selected={selected}
-                                display={false}
-                                onPress={this.onPress}
-                            />
-                        );
-                    })}
+                    <View style={CauseStyles.container}>
+                        {causes.map(c => {
+                            const selected = items.some(
+                                item => item.id === c.id,
+                            );
+                            return (
+                                <CauseItem
+                                    key={c.id}
+                                    cause={c}
+                                    selected={selected}
+                                    display={false}
+                                    onPress={this.onPress}
+                                />
+                            );
+                        })}
+                    </View>
                 </ScrollView>
             </View>
         );
