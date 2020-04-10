@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { TextInput, View } from "react-native";
-import { RegularText } from "../text";
+import React, {Component} from "react";
+import {TextInput, View} from "react-native";
+import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import SignUpStyles from "../../styles/SignUpStyles";
 
-{/*
+/*
     The TextInput component class describes the type of
     input field used throughout the application.
-*/}
+*/
+
 export default class TInput extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +16,7 @@ export default class TInput extends Component {
 
     getInnerRef = () => this.ref;
     render() {
-        const { name, onChange } = this.props;
+        const {name, onChange} = this.props;
         const defaultError = "This field is required";
         const inputStyle = this.props.showError
             ? [SignUpStyles.textInput, SignUpStyles.errorMessage]
@@ -36,7 +37,7 @@ export default class TInput extends Component {
                     keyboardType={this.props.keyboardType}
                     onFocus={this.props.onFocus}
                     multiline={this.props.multiline}
-                    onChangeText={text => onChange({ name, text })}
+                    onChangeText={text => onChange({name, text})}
                     ref={this.props.inputRef}
                     onSubmitEditing={this.props.onSubmitEditing}
                     blurOnSubmit={false}

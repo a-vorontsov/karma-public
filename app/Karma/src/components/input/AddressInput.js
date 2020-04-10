@@ -1,13 +1,15 @@
 import React from "react";
 import Styles from "../../styles/Styles";
 import TextInput from "./TextInput";
-import { Keyboard, View } from "react-native";
+import {Keyboard, View} from "react-native";
 
 const POSTCODE_REGEX = /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})$/;
-{/*
-   The AddressInput class is a component which is used whenever 
+
+/*
+   The AddressInput class is a component which is used whenever
    the user is required to provide an address.
-*/}
+*/
+
 export default class AddressInput extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +32,7 @@ export default class AddressInput extends React.Component {
         });
     }
 
-    // Passes the states of certain flags up to the parent 
+    // Passes the states of certain flags up to the parent
     // container this component is used in.
     passUpState() {
         const {
@@ -53,13 +55,13 @@ export default class AddressInput extends React.Component {
         }
     }
     onChangeText(event) {
-        const { name, text } = event;
+        const {name, text} = event;
         this.setState({
             [name]: text,
         });
     }
     render() {
-        const { correctPostCode } = this.state;
+        const {correctPostCode} = this.state;
         return (
             <View>
                 <TextInput

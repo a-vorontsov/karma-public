@@ -1,22 +1,24 @@
-import React, { Component } from "react";
-import { View, Keyboard, Dimensions, TouchableOpacity } from "react-native";
-import { TextInput } from "../input";
-import { RegularText } from "../text";
+import React, {Component} from "react";
+import {View, Keyboard, Dimensions, TouchableOpacity} from "react-native";
+import {TextInput} from "../input";
+import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
-import { SafeAreaView } from "react-navigation";
+import {SafeAreaView} from "react-navigation";
 import LinearGradient from "react-native-linear-gradient";
 import Colours from "../../styles/Colours";
 
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
-{/*
+
+/*
     The ChangePasswordInput class is a component used when the user
     needs to input a password and confirm it via an additional text field.
     The component contains the two text inputs with their respective 'show'
     buttons, as well as a description of the password requirements.
-*/}
+*/
+
 export default class ChangePasswordInput extends Component {
     constructor(props) {
         super(props);
@@ -33,11 +35,11 @@ export default class ChangePasswordInput extends Component {
     }
 
     onChangeText(event) {
-        const { name, text } = event;
-        this.setState({ [name]: text });
+        const {name, text} = event;
+        this.setState({[name]: text});
     }
 
-    // Passes the states of certain flags up to the parent 
+    // Passes the states of certain flags up to the parent
     // container this component is used in.
     passUpState() {
         const confirmPassword = this.state;
@@ -59,7 +61,7 @@ export default class ChangePasswordInput extends Component {
 
     // Logic for whether an error message should be displayed.
     showError() {
-        const { firstOpen } = this.props;
+        const {firstOpen} = this.props;
         // it's the first time you open the page
         if (firstOpen) {
             return false;
@@ -71,7 +73,7 @@ export default class ChangePasswordInput extends Component {
         // passwords don't match
         if (this.state.password !== this.state.confirmPassword) {
             if (!this.state.isSubmitted) {
-                this.setState({ passwordMatch: false, isSubmitted: true });
+                this.setState({passwordMatch: false, isSubmitted: true});
             }
             return true;
         }
@@ -91,7 +93,7 @@ export default class ChangePasswordInput extends Component {
     render() {
         const showError = this.showError();
         return (
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{flex: 1}}>
                 <View
                     style={{
                         flexDirection: "row",
@@ -164,17 +166,17 @@ export default class ChangePasswordInput extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ width: FORM_WIDTH, flex: 2 }}>
+                <View style={{width: FORM_WIDTH, flex: 2}}>
                     <LinearGradient
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
+                        start={{x: 0, y: 0}}
+                        end={{x: 1, y: 0}}
                         colors={[Colours.blue, Colours.lightBlue]}
                         style={Styles.roundButton}
                         opacity={0.8}>
                         <RegularText
                             style={
-                                ({ flexWrap: "wrap" },
-                                    [Styles.white, Styles.small, Styles.textCenter])
+                                ({flexWrap: "wrap"},
+                                [Styles.white, Styles.small, Styles.textCenter])
                             }>
                             Passwords need at least: {"\n"}
                             Ten characters {"\n"}

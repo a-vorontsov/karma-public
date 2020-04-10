@@ -28,6 +28,12 @@ import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
 const {width} = Dimensions.get("window");
 
+/*
+    The AboutScreen class represents the second screen in the sign up process.
+    This is the user equivalent of the OrgSignUpScreen class.
+    This is where the user chooses a picture, name, and address for themselves.
+*/
+
 class AboutScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -59,6 +65,7 @@ class AboutScreen extends React.Component {
         });
     };
 
+    // overwrite what the default onChangeText does
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -119,8 +126,6 @@ class AboutScreen extends React.Component {
         const authToken = await getAuthToken();
         const endpointUsertype = "individual";
 
-        console.log(selectedPhoto);
-        console.log("Uploading Photo");
         if (selectedPhoto != null) {
             await fetch(
                 `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,

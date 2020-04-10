@@ -19,10 +19,15 @@ import Styles, {normalise} from "../styles/Styles";
 import {SafeAreaView} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAuthToken} from "../util/credentials";
-
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+/*
+    The UserSignUpScreen class represents the first screen in the sign up process.
+    This is where the user chooses a username and password for themselves, and also
+    have the chance to view the Privacy Policy of the application.
+*/
 
 class SignUpScreen extends React.Component {
     constructor(props) {
@@ -40,6 +45,7 @@ class SignUpScreen extends React.Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
 
+    // overwrite what the default onChangeText does
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -49,6 +55,7 @@ class SignUpScreen extends React.Component {
         return PASSWORD_REGEX.test(this.state.password);
     };
 
+    // get all the attributes needed for creating a user
     createUser() {
         return {
             email: this.state.email,
@@ -57,10 +64,13 @@ class SignUpScreen extends React.Component {
             confirmPassword: this.state.confPassword,
         };
     }
+
+    // send POST request to the server in order to authorize sign up
     signUserUp = async () => {
         const user = this.createUser();
 
         this.setState({firstOpen: false});
+        // don't send the request to the server if any of these occur
         if (
             !this.state.termsChecked ||
             !this.state.email ||

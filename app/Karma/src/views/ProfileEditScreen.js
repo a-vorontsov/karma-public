@@ -47,6 +47,11 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
+/*
+    The ProfileEditScreen class represents the screen displayed to the
+    user when they select the 'edit profile' button.
+*/
+
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
@@ -181,6 +186,8 @@ class ProfileEditScreen extends Component {
               });
     };
 
+    // reload the page when user presses 'update' button
+    // send the changes made to the server via POST request
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
         const authToken = await getAuthToken();
@@ -232,6 +239,7 @@ class ProfileEditScreen extends Component {
             });
     };
 
+    // load in the current gender
     getGender = character => {
         if (character === "m") {
             return "male";
@@ -244,6 +252,7 @@ class ProfileEditScreen extends Component {
         }
     };
 
+    // update the gender if the user changes it
     setGender = selectedGender => {
         const genderCharacter =
             selectedGender === "male"
@@ -302,6 +311,8 @@ class ProfileEditScreen extends Component {
         });
     };
 
+    // uploads the photo the user picks to the server via a POST request
+    // displays an error to the user if the process fails
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
@@ -334,6 +345,8 @@ class ProfileEditScreen extends Component {
         this.fetchProfilePicture();
     };
 
+    // display the profile picture to a user
+    // uses a GET request to the server
     fetchProfilePicture = async () => {
         this.imageLoader.animateTo(0, 0);
 

@@ -1,16 +1,16 @@
 import React from "react";
 
-import { InfoBar } from "../buttons";
-import { Image, StyleSheet, View, TouchableOpacity, Alert } from "react-native";
-import { RegularText } from "../text";
+import {InfoBar} from "../buttons";
+import {Image, StyleSheet, View, TouchableOpacity, Alert} from "react-native";
+import {RegularText} from "../text";
 import Styles from "../../styles/Styles";
 import ReadMore from "react-native-read-more-text";
-import { useNavigation } from "react-navigation-hooks";
+import {useNavigation} from "react-navigation-hooks";
 import BottomModal from "../BottomModal";
 import SignUpActivity from "./SignUpActivity";
 import Colours from "../../styles/Colours";
-import { getAuthToken } from "../../util/credentials";
-import { REACT_APP_API_URL } from "react-native-dotenv";
+import {getAuthToken} from "../../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 const icons = {
     fave_inactive: require("../../assets/images/general-logos/fav-outline-profile.png"),
@@ -57,13 +57,14 @@ function getMonthName(d, long = false) {
     return name;
 }
 
-{/*
-    The ActivityCard class provides information about an activity 
-    and displays it to the user. It fetches information from the 
-    server based on how a user has previously interacted with the 
+/*
+    The ActivityCard class provides information about an activity
+    and displays it to the user. It fetches information from the
+    server based on how a user has previously interacted with the
     activity, and implements those changes based on the server response.
-    
-*/}
+
+*/
+
 class ActivityCard extends React.Component {
     constructor(props) {
         super(props);
@@ -96,7 +97,7 @@ class ActivityCard extends React.Component {
             request
                 .post(
                     `${REACT_APP_API_URL}/event/${
-                    this.props.activity.eventId
+                        this.props.activity.eventId
                     }/favourite`,
                 )
                 .set("authorization", authToken)
@@ -113,7 +114,7 @@ class ActivityCard extends React.Component {
             request
                 .post(
                     `${REACT_APP_API_URL}/event/${
-                    this.props.activity.eventId
+                        this.props.activity.eventId
                     }/favourite/delete`,
                 )
                 .set("authorization", authToken)
@@ -131,7 +132,7 @@ class ActivityCard extends React.Component {
 
     // Handles the length of the description of an activity via a 'Read More' button
     _renderTruncatedFooter = handlePress => {
-        const { activity, signedup } = this.props;
+        const {activity, signedup} = this.props;
         return (
             <TouchableOpacity
                 onPress={() =>
@@ -141,7 +142,7 @@ class ActivityCard extends React.Component {
                     })
                 }>
                 <RegularText
-                    style={{ color: Colours.lightBlue, marginTop: 5 }}
+                    style={{color: Colours.lightBlue, marginTop: 5}}
                     onPress={handlePress}>
                     READ MORE
                 </RegularText>
@@ -149,7 +150,7 @@ class ActivityCard extends React.Component {
         );
     };
     render() {
-        const { activity, signedup } = this.props;
+        const {activity, signedup} = this.props;
 
         return (
             <View style={[Styles.container, Styles.ph24]}>
@@ -158,7 +159,7 @@ class ActivityCard extends React.Component {
                         source={{
                             uri: `https://picsum.photos/seed/${
                                 this.props.activity.eventId
-                                }/800/200`,
+                            }/800/200`,
                         }}
                         style={{
                             flex: 1,
@@ -189,9 +190,9 @@ class ActivityCard extends React.Component {
                     </TouchableOpacity>
                     <Image
                         source={icons.date}
-                        style={[styles.icon, { left: 5 }]}
+                        style={[styles.icon, {left: 5}]}
                     />
-                    <RegularText style={[styles.dateText, { top: 5, left: 1 }]}>
+                    <RegularText style={[styles.dateText, {top: 5, left: 1}]}>
                         {` ${new Date(activity.date).getDate()}`}
                     </RegularText>
                     <RegularText style={styles.dateText}>
@@ -218,7 +219,7 @@ class ActivityCard extends React.Component {
                                     justifyContent: "flex-end",
                                 }}>
                                 <TouchableOpacity
-                                    style={{ alignSelf: "center" }}
+                                    style={{alignSelf: "center"}}
                                     onPress={this.toggleFavourite}>
                                     <Image
                                         source={
