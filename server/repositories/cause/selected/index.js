@@ -51,9 +51,7 @@ const find = (userId, causeId) => {
 
 const findEventsSelectedByUser = (userId, whereClause) => {
     const now = new Date();
-    whereClause = whereClause || ""; // if whereClause is not defined, default value is empty string
-    if (whereClause === "") whereClause = "where ";
-    else whereClause += " and ";
+    whereClause = whereClause ? whereClause + " and " : "where ";
     const query = "select id(event) as event_id,name(event),address_id,women_only,spots , address_visible,minimum_age,photo_id," +
         "physical, add_info,content,date,cause_id(event_cause),name(cause) as cause_name,description as cause_description," +
         "user_id(event) as event_creator_id,address_1,address_2,postcode,city,region,lat,long, " +

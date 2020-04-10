@@ -122,7 +122,6 @@ class ActivitiesAllScreen extends Component {
                     });
                 } else {
                     this.page = this.page + 1; //Increasing the offset for the next API call.
-                    console.log(res.body.data.meta);
                     this.setState({
                         loading: false,
                         fetchingDataFromServer: false,
