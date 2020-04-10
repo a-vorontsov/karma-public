@@ -28,6 +28,8 @@ import {TextInput} from "../components/input";
 import AddressInput from "../components/input/AddressInput";
 import {getAuthToken} from "../util/credentials";
 import {RadioInput} from "../components/radio";
+import {initialMode} from "react-native-dark-mode";
+const isDarkMode = initialMode === "dark";
 const request = require("superagent");
 const _ = require("lodash");
 import {REACT_APP_API_URL} from "react-native-dotenv";
@@ -57,7 +59,7 @@ class ProfileEditScreen extends Component {
         this.state = {
             points: profile.points,
             location: profile.location,
-            user: {username: profile.username},
+            user: {username: profile.user.username},
             isOrganisation: profile.isOrganisation,
             individual: {
                 firstName: profile.firstName,
@@ -101,6 +103,7 @@ class ProfileEditScreen extends Component {
             console.log(e);
             this.state.photo = null;
         }
+        console.log(this.state.user);
 
         this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -840,7 +843,7 @@ const styles = StyleSheet.create({
     },
     locationText: {
         fontSize: 20,
-        color: "#75C4C3",
+        color: isDarkMode ? Colours.grey : "#75C4C3",
         paddingLeft: 10,
     },
     bioHeader: {

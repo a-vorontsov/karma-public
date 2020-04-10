@@ -33,6 +33,8 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
 import ShareKarma from "../components/sharing/ShareKarma";
 import BottomModal from "../components/BottomModal";
+import {initialMode} from "react-native-dark-mode";
+const isDarkMode = initialMode === "dark";
 const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -108,7 +110,6 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
-
         this.fetchProfilePicture();
     }
 
@@ -828,7 +829,7 @@ const styles = StyleSheet.create({
     },
     locationText: {
         fontSize: 20,
-        color: "#75C4C3",
+        color: isDarkMode ? Colours.grey : "#75C4C3",
         paddingLeft: 10,
     },
     bioHeader: {
