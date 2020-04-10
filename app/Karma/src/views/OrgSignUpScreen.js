@@ -164,9 +164,7 @@ export default class OrgSignUpScreen extends React.Component {
             address: {
                 addressLine1: this.state.addressLine1,
                 //use empty string for address line 2 if user does not use it
-                addressLine2: this.state.addressLine2
-                    ? this.state.addressLine2
-                    : "",
+                addressLine2: this.state.addressLine2 || "",
                 townCity: this.state.townCity,
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,

@@ -24,7 +24,6 @@ class SignUpScreen extends React.Component {
             username: "",
             password: "",
             confPassword: "",
-            // hidePassword: true,
             termsChecked: false,
             toolTipVisible: true,
             firstOpen: true,
