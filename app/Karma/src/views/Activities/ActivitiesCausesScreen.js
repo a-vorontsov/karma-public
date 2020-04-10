@@ -27,6 +27,17 @@ class ActivitiesCausesScreen extends Component {
     }
     async componentDidMount() {
         await this.fetchAllActivities();
+
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     async fetchAllActivities() {
@@ -45,7 +56,7 @@ class ActivitiesCausesScreen extends Component {
     }
 
     onRefresh() {
-        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
+        this.setState({isRefreshing: true, activitiesByCause: []}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
             .then(() => {
                 this.setState({

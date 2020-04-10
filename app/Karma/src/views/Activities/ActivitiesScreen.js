@@ -218,7 +218,10 @@ class ActivitiesScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <this.state.display filters={this.state.filters} />
+                    <this.state.display
+                        filters={this.state.filters}
+                        navigation={this.props.navigation}
+                    />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );
