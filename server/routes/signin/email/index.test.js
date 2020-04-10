@@ -3,6 +3,7 @@ const app = require("../../../app");
 const testHelpers = require("../../../test/helpers");
 const regRepo = require("../../../repositories/registration");
 const userRepo = require("../../../repositories/user");
+const util = require("../../../util");
 
 let registrationExample4; let registrationExample5; let registrationExample6; let user4;
 beforeEach(() => {
@@ -39,6 +40,7 @@ test("sign-in with email works", async () => {
 });
 
 test("sign-in with unverified email works", async () => {
+    registrationExample4.expiryDate = util.getCurrentTimeInUtcAsString(-666);
     await regRepo.insert(registrationExample4);
 
     const response = await request(app)
@@ -49,6 +51,22 @@ test("sign-in with unverified email works", async () => {
     expect(response.body.message).toBe(
         "Email exists but unverified. The user has been sent a new verification token. Go to email verification screen.",
     );
+    expect(response.statusCode).toBe(200);
+});
+
+test("multiple consecutive sign-ins with unverified email requires the user to wait as expected", async () => {
+    await regRepo.insert(registrationExample4);
+
+    const response = await request(app)
+        .post("/signin/email")
+        .set("authorization", null)
+        .send(signInEmailRequest);
+
+    expect(response.body.message).toBe(
+        "Email exists but unverified. The user has already been sent a new verification token. Wait time specified in data.",
+    );
+    expect(response.body.data.tokenAlreadyRequested).toBe(true);
+    expect(response.body.data.waitSeconds).toBeGreaterThan(0);
     expect(response.statusCode).toBe(200);
 });
 
