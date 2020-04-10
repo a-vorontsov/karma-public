@@ -3,7 +3,11 @@ const regStatus = require("../../util/registration");
 const geocoder = require("../geocoder");
 const testHelpers = require("../../test/helpers");
 const addressRepo = require("../../repositories/address");
+const regRepo = require("../../repositories/registration");
 const userRepo = require("../../repositories/user");
+const indivRepo = require("../../repositories/individual");
+const orgRepo = require("../../repositories/organisation");
+const profileRepo = require("../../repositories/profile");
 const authService = require("../authentication");
 
 jest.mock("../../util/registration");
@@ -11,6 +15,10 @@ jest.mock("../geocoder");
 jest.mock("../authentication");
 jest.mock("../../repositories/address");
 jest.mock("../../repositories/user");
+jest.mock("../../repositories/organisation");
+jest.mock("../../repositories/individual");
+jest.mock("../../repositories/profile");
+jest.mock("../../repositories/registration");
 
 let address;
 
@@ -100,4 +108,87 @@ test("signing in with incorrect password fails as expected", async () => {
     const result = await user.signIn("email@email.com", "incorrectPass", null);
     expect(result.status).toBe(400);
     expect(result.message).toBe("Invalid password.");
+});
+
+test("registering individual with an already existing picture works", async () => {
+    const individual = {
+        pictureId: 1,
+        address: {}
+    };
+
+    regStatus.isFullyRegisteredById.mockResolvedValue(false);
+    geocoder.geocode.mockResolvedValue(null);
+    addressRepo.insert.mockResolvedValue({rows:[{id:1}]});
+    indivRepo.insert.mockResolvedValue({
+        rows: [{id: 1}],
+    });
+    profileRepo.insert.mockResolvedValue({rows:[]});
+    userRepo.findById.mockResolvedValue({rows:[{email: "email@email.com"}]});
+    regRepo.updateSignUpFlag.mockResolvedValue({rows:[]});
+
+
+    await user.registerIndividual(1, individual);
+
+
+    expect(regStatus.isFullyRegisteredById).toHaveBeenCalledTimes(1);
+    expect(geocoder.geocode).toHaveBeenCalledTimes(1);
+    expect(addressRepo.insert).toHaveBeenCalledTimes(1);
+    expect(indivRepo.insert).toHaveBeenCalledTimes(1);
+    expect(indivRepo.insert).toHaveBeenCalledWith({
+        firstname: undefined,
+        lastname: undefined,
+        phone: undefined,
+        banned: false,
+        userId: 1,
+        pictureId: 1,
+        addressId: 1,
+        birthday: undefined,
+        gender: undefined,
+    });
+    expect(profileRepo.insert).toHaveBeenCalledTimes(1);
+    expect(userRepo.findById).toHaveBeenCalledTimes(1);
+    expect(regRepo.updateSignUpFlag).toHaveBeenCalledTimes(1);
+});
+
+test("registering organisation with an already existing picture works", async () => {
+    const organisation = {
+        pictureId: 1,
+        orgRegisterDate: "2008-04-05 12:00:00",
+        address: {}
+    };
+
+    regStatus.isFullyRegisteredById.mockResolvedValue(false);
+    geocoder.geocode.mockResolvedValue(null);
+    addressRepo.insert.mockResolvedValue({rows:[{id:1}]});
+    orgRepo.insert.mockResolvedValue({
+        rows: [{id: 1}],
+    });
+    userRepo.findById.mockResolvedValue({rows:[{email: "email@email.com"}]});
+    regRepo.updateSignUpFlag.mockResolvedValue({rows:[]});
+
+
+    await user.registerOrg(1, organisation);
+
+
+    expect(regStatus.isFullyRegisteredById).toHaveBeenCalledTimes(1);
+    expect(geocoder.geocode).toHaveBeenCalledTimes(1);
+    expect(addressRepo.insert).toHaveBeenCalledTimes(1);
+    expect(orgRepo.insert).toHaveBeenCalledTimes(1);
+    expect(orgRepo.insert).toHaveBeenCalledWith({
+        orgName: undefined,
+        orgNumber: undefined,
+        orgType: undefined,
+        pocFirstname: undefined,
+        pocLastname: undefined,
+        phone: undefined,
+        banned: false,
+        orgRegisterDate: "2008-04-05 12:00:00",
+        lowIncome: undefined,
+        exempt: undefined,
+        pictureId: 1,
+        userId: 1,
+        addressId: 1,
+    });
+    expect(userRepo.findById).toHaveBeenCalledTimes(1);
+    expect(regRepo.updateSignUpFlag).toHaveBeenCalledTimes(1);
 });

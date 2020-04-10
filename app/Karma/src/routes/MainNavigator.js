@@ -22,6 +22,7 @@ import AboutKarmaScreen from "../views/Settings/AboutKarmaScreen";
 import GuidelinesScreen from "../views/Settings/GuidelinesScreen";
 import EmailSettingsScreen from "../views/Settings/EmailSettingsScreen";
 import LogOutScreen from "../views/Settings/LogOutScreen";
+import DeleteAccountScreen from "../views/Settings/DeleteAccountScreen";
 
 const MainNavigator = createStackNavigator(
     {
@@ -30,6 +31,9 @@ const MainNavigator = createStackNavigator(
         },
         ForgotPassword: {
             screen: ForgotPasswordScreen,
+        },
+        DeleteAccount: {
+            screen: DeleteAccountScreen,
         },
         InitSignup: {
             screen: InitSignUpScreen,
