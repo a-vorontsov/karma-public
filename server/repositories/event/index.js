@@ -72,7 +72,7 @@ const update = (event) => {
 };
 
 const findAllWithAllData = (whereClause) => {
-    const now = new Date();
+    const now = new Date().toUTCString();
     whereClause = whereClause ? whereClause + " and " : "where ";
     const query = "SELECT id(event) as event_id,name,women_only,spots,address_visible,minimum_age,photo_id," +
         "physical,add_info,content,date,user_id as event_creator_id," +
