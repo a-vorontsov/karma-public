@@ -1,6 +1,6 @@
 import React from "react";
 import Sharing from "react-native-share";
-import {View} from "react-native";
+import {View, Platform} from "react-native";
 import {ShareButton} from "../buttons";
 import Styles from "../../styles/Styles";
 import {AppInstalledChecker} from "react-native-check-app-install";
@@ -51,12 +51,26 @@ export default class Share extends React.Component {
     async componentDidMount() {
         let installedApps = [];
         const apps = [
-            {name: "facebook", title: "Facebook"},
-            {name: "linkedin", title: "LinkedIn"},
-            {name: "twitter", title: "Twitter"},
+            {
+                name: "facebook",
+                title: "Facebook",
+                package: "com.facebook.katana",
+            },
+            {
+                name: "linkedin",
+                title: "LinkedIn",
+                package: "com.linkedin.android",
+            },
+            {
+                name: "twitter",
+                title: "Twitter",
+                package: "com.twitter.android",
+            },
         ];
         for (const app of apps) {
-            const installed = await this.isInstalled(app.name);
+            const installed = await this.isInstalled(
+                Platform.OS === "ios" ? app.name : app.package,
+            );
             if (installed) {
                 installedApps.push(app);
             }
