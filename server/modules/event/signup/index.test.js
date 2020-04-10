@@ -40,13 +40,36 @@ test('creating signup works', async () => {
             signUp,
         }],
     });
+    signupRepository.find.mockResolvedValue({
+        rows: [],
+    });
 
-    const createSignupResult = await eventSignupService.createSignup(signUp);
+    const saveSignupResult = await eventSignupService.saveSignup(signUp);
 
     expect(signupRepository.insert).toHaveBeenCalledTimes(1);
-    expect(createSignupResult.status).toBe(200);
-    expect(createSignupResult.data.signup).toMatchObject({signUp});
+    expect(saveSignupResult.status).toBe(200);
+    expect(saveSignupResult.data.signup).toMatchObject({signUp});
 });
+
+test('signup is updated if it already exists', async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+    util.checkUserId.mockResolvedValue({status: 200});
+    signupRepository.update.mockResolvedValue({
+        rows: [{
+            signUp,
+        }],
+    });
+    signupRepository.find.mockResolvedValue({
+        rows: [signUp],
+    });
+
+    const saveSignupResult = await eventSignupService.saveSignup(signUp);
+
+    expect(signupRepository.find).toHaveBeenCalledTimes(1);
+    expect(signupRepository.update).toHaveBeenCalledTimes(1);
+    expect(saveSignupResult.status).toBe(200);
+    expect(saveSignupResult.data.signup).toMatchObject({signUp});
+})
 
 test('updating works', async () => {
     util.checkEventId.mockResolvedValue({status: 200});
@@ -177,13 +200,13 @@ test('getting all signups to event works', async () => {
 
 test("creating signup to an event with invalid event id fails as expected", async () => {
     util.checkEventId.mockResolvedValue({status: 400, message: "invalid id"});
-    expect(eventSignupService.createSignup({eventId: 69000})).rejects.toEqual(new Error("invalid id"));
+    expect(eventSignupService.saveSignup({eventId: 69000})).rejects.toEqual(new Error("invalid id"));
 });
 
 test("creating signup to an event with invalid user id fails as expected", async () => {
     util.checkEventId.mockResolvedValue({status: 200});
     util.checkUserId.mockResolvedValue({status: 400, message: "invalid id"});
-    expect(eventSignupService.createSignup({userId: 69000})).rejects.toEqual(new Error("invalid id"));
+    expect(eventSignupService.saveSignup({userId: 69000})).rejects.toEqual(new Error("invalid id"));
 });
 
 test("getting all signups to an event with invalid id fails as expected", async () => {
@@ -232,4 +255,19 @@ test('updating karma points for attended event works', async () => {
     expect(profileRepo.updateKarmaPoints).toHaveBeenCalledTimes(1);
     expect(updateSignupResult.status).toBe(200);
     expect(updateSignupResult.data.signup).toStrictEqual(attendedSignUp);
+});
+
+test('deleting signup works', async () => {
+    util.checkEventId.mockResolvedValue({status: 200});
+    signupRepository.remove.mockResolvedValue({
+        rows: [{
+            signUp,
+        }],
+    });
+
+    const saveSignupResult = await eventSignupService.deleteSignup(signUp);
+
+    expect(signupRepository.remove).toHaveBeenCalledTimes(1);
+    expect(saveSignupResult.status).toBe(200);
+    expect(saveSignupResult.data.signup).toMatchObject({signUp});
 });

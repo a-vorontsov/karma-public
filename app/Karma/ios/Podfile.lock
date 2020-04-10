@@ -283,6 +283,8 @@ PODS:
     - React
   - RNShare (3.1.2):
     - React
+  - RNShare (3.1.2):
+    - React
   - RNVectorIcons (6.6.0):
     - React
   - Toast (4.0.0)
