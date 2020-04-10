@@ -27,6 +27,7 @@ export default class SignUpActivity extends React.Component {
         this.existsInCalendar = this.existsInCalendar.bind(this);
         this.saveToCalendar = this.saveToCalendar.bind(this);
         this.removeFromCalendar = this.removeFromCalendar.bind(this);
+        this.getSubtitleText = this.getSubtitleText.bind(this);
     }
     async componentDidMount() {
         const perms = await getCalendarPerms();
@@ -173,18 +174,25 @@ export default class SignUpActivity extends React.Component {
             }
         }
     }
+    getSubtitleText() {
+        let text = "";
+        if (this.props.isOrganisation) {
+            text = this.state.inCalendar
+                ? "Are you sure you want to remove?"
+                : "Almost added!";
+        } else {
+            text = this.props.signedUp
+                ? "Are you sure you want to cancel?"
+                : "Almost signed up!";
+        }
+        return text;
+    }
     render() {
         const {activity, signedUp} = this.props;
         const {inCalendar} = this.state;
         return (
             <View style={Styles.ph8}>
-                {!signedUp ? (
-                    <SubTitleText>Almost signed up!</SubTitleText>
-                ) : (
-                    <SubTitleText>
-                        Are you sure you want to cancel?
-                    </SubTitleText>
-                )}
+                <SubTitleText> {this.getSubtitleText()}</SubTitleText>
                 <RegularText style={Styles.pb16}>
                     {activity.content}
                 </RegularText>
@@ -236,17 +244,22 @@ export default class SignUpActivity extends React.Component {
                         />
                     )}
                 </View>
-                <View style={Styles.pv8}>
-                    {signedUp ? (
-                        <TransparentButton
-                            title="Cancel"
-                            red
-                            onPress={this.cancelSignUp}
-                        />
-                    ) : (
-                        <Button title="Confirm" onPress={this.confirmSignUp} />
-                    )}
-                </View>
+                {!this.props.isOrganisation && (
+                    <View style={Styles.pv8}>
+                        {signedUp ? (
+                            <TransparentButton
+                                title="Cancel"
+                                red
+                                onPress={this.cancelSignUp}
+                            />
+                        ) : (
+                            <Button
+                                title="Confirm"
+                                onPress={this.confirmSignUp}
+                            />
+                        )}
+                    </View>
+                )}
             </View>
         );
     }

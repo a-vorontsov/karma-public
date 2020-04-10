@@ -245,6 +245,7 @@ class ActivitiesAllScreen extends Component {
                                 <ActivityDisplayCard
                                     activity={item}
                                     key={item.eventId}
+                                    isOrganisation={this.props.isOrganisation}
                                 />
                             )}
                             ListFooterComponent={this.renderFooter.bind(this)} //Adding Load More button as footer component
