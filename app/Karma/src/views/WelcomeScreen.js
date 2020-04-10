@@ -16,8 +16,11 @@ import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
-import { getAuthToken } from "../util/credentials";
-import { REACT_APP_API_URL } from "react-native-dotenv";
+
+import {getAuthToken} from "../util/credentials";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+
+
 const request = require("superagent");
 
 export default class WelcomeScreen extends Component {
