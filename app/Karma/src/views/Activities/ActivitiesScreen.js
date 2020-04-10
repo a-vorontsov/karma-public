@@ -38,6 +38,7 @@ class ActivitiesScreen extends Component {
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.onUpdateFilters = this.onUpdateFilters.bind(this);
+        this.child = React.createRef();
     }
 
     onUpdateFilters = async inputState => {
@@ -45,6 +46,7 @@ class ActivitiesScreen extends Component {
         await this.setState({
             filters: inputState.filters,
         });
+        this.child.current.onRefresh();
     };
 
     toggleModal = () => {
@@ -221,6 +223,7 @@ class ActivitiesScreen extends Component {
                     <this.state.display
                         filters={this.state.filters}
                         navigation={this.props.navigation}
+                        ref={this.child}
                     />
                 </KeyboardAvoidingView>
             </SafeAreaView>

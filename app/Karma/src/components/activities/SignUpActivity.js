@@ -57,7 +57,7 @@ export default class SignUpActivity extends React.Component {
                 sendNotification("EventSignup", activity.name, [
                     activity.eventCreatorId,
                 ]);
-                onConfirm(true);
+                onConfirm();
             })
             .catch(err => {
                 console.log(err);
@@ -86,7 +86,7 @@ export default class SignUpActivity extends React.Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
-                onConfirm(false);
+                onConfirm();
             })
             .catch(() => {
                 onError(
