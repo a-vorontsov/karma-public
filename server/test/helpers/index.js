@@ -403,6 +403,22 @@ const cause = {
 
 const getCause = () => ({...cause});
 
+const causeExample1 = {
+    name: "sdfsafewe",
+    description: "description of cause1",
+    title: "teasdfdast",
+};
+
+const getCauseExample1 = () => ({...causeExample1});
+
+const causeExample2 = {
+    name: "adsfdsfa",
+    description: "description of cause1",
+    title: "tesewrfast",
+};
+
+const getCauseExample2 = () => ({...causeExample2});
+
 const signUp = {
     individualId: -1,
     eventId: 3,
@@ -688,4 +704,6 @@ module.exports = {
     getAnimalsEvent,
     getNotificationExample2,
     getEventWithBHAddress,
+    getCauseExample1,
+    getCauseExample2,
 };
