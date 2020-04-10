@@ -428,7 +428,7 @@ class ProfileEditScreen extends Component {
                                 backgroundColor: Colours.blue,
                                 height: HALF,
                                 width: SCREEN_WIDTH,
-                                alignSelf:"center",
+                                alignSelf: "center",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 paddingRight: 30,
@@ -436,7 +436,6 @@ class ProfileEditScreen extends Component {
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
-
                             {/* Profile Picture */}
                             <View>
                                 <TouchableOpacity
@@ -698,8 +697,11 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <View style={{flexWrap: "wrap"}}>
                                     <EditableText
-
-                                        text={this.state.individual.bio === "" ? "Write bio here." : this.state.individual.bio}
+                                        text={
+                                            this.state.individual.bio === ""
+                                                ? "Write bio here."
+                                                : this.state.individual.bio
+                                        }
                                         style={styles.contentText}
                                         onChange={val =>
                                             this.setState(prevState => {
