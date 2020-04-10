@@ -14,6 +14,7 @@ import {ScrollView} from "react-native-gesture-handler";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import AsyncStorage from "@react-native-community/async-storage";
+
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 
@@ -22,6 +23,7 @@ const request = require("superagent");
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,

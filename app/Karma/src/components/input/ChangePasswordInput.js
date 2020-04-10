@@ -7,7 +7,7 @@ import {SafeAreaView} from "react-navigation";
 import LinearGradient from "react-native-linear-gradient";
 import Colours from "../../styles/Colours";
 
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -29,17 +29,17 @@ export default class ChangePasswordInput extends Component {
     onChangeText(event) {
         const {name, text} = event;
         this.setState({[name]: text});
-        //TODO: call passupstate here
+        this.passUpState();
     }
 
     passUpState() {
-        const confirmPassword = this.state;
-        if (confirmPassword) {
-            this.props.onChange({
-                confirmPassword,
-                valid: true,
-            });
-        }
+        const {confirmPassword, password} = this.state;
+        console.log(confirmPassword, password, this.isValidPassword());
+        this.props.onChange({
+            confirmPassword,
+            password,
+            valid: confirmPassword === password && this.isValidPassword(),
+        });
     }
 
     isValidPassword() {
@@ -70,11 +70,11 @@ export default class ChangePasswordInput extends Component {
     }
 
     whichErrorText() {
-        if (!this.state.passwordMatch) {
-            return "Passwords must match";
-        }
         if (!this.isValidPassword()) {
             return "Password is too weak";
+        }
+        if (!this.state.passwordMatch) {
+            return "Passwords must match";
         }
     }
 
@@ -82,10 +82,15 @@ export default class ChangePasswordInput extends Component {
 
     render() {
         const showError = this.showError();
+        const {sendPassUpState} = this.props;
+        if (sendPassUpState) {
+            this.passUpState();
+        }
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View
                     style={{
+                        width: FORM_WIDTH,
                         flexDirection: "row",
                         alignItems: "center",
                         flex: 0.4,
@@ -95,13 +100,11 @@ export default class ChangePasswordInput extends Component {
                         autoCapitalize="none"
                         name="password"
                         secureTextEntry={this.state.hidePassword}
-                        //blurOnSubmit={false}
                         onChange={this.onChangeText}
                         showError={showError}
                         errorText={this.whichErrorText()}
                         inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
-                            this.passUpState();
                             this.confirmPassword.focus();
                         }}
                         returnKeyType="next"
@@ -122,20 +125,23 @@ export default class ChangePasswordInput extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <View>
+                <View
+                    style={{
+                        width: FORM_WIDTH,
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}>
                     <TextInput
                         placeholder="Confirm Password"
                         name="confirmPassword"
                         autoCapitalize="none"
                         inputRef={ref => (this.confirmPassword = ref)}
                         onSubmitEditing={() => {
-                            this.passUpState();
                             Keyboard.dismiss();
                         }}
                         secureTextEntry={this.state.hidePassword}
                         returnKeyType="default"
                         onChange={this.onChangeText}
-                        onBlur={this.passUpState}
                         showError={showError}
                         errorText={this.whichErrorText()}
                     />
