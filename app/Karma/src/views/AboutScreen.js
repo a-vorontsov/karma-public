@@ -217,7 +217,7 @@ class AboutScreen extends React.Component {
                     console.log(res.body);
                     await this.uploadPhoto(photo);
                     await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
-                    this.props.navigation.navigate("PickCauses", {
+                    this.props.navigation.replace("PickCauses", {
                         isSignup: true,
                     });
                     return;

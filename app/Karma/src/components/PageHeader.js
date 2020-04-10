@@ -6,7 +6,7 @@ import Colours from "../styles/Colours";
 
 const PageHeader = props => {
     const navigation = useNavigation();
-    const {title, fontSize} = props;
+    const {title, fontSize, nav} = props;
     return (
         <View>
             <View style={{paddingTop: 24}} />
@@ -16,7 +16,10 @@ const PageHeader = props => {
                     alignItems: "center",
                 }}>
                 {props.disableBack ? null : (
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            nav ? navigation.navigate(nav) : navigation.goBack()
+                        }>
                         <Image
                             style={{
                                 flex: 1,
