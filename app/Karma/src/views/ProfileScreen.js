@@ -342,7 +342,7 @@ class ProfileScreen extends Component {
                             {otherProfile && (
                                 <View
                                     style={{
-                                        alignSelf: "flex-start",
+                                        alignSelf: "center",
                                         alignItems: "flex-start",
                                         justifyContent: "flex-start",
                                         width: formWidth,
