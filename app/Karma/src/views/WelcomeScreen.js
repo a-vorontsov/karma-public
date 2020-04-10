@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     View,
     TouchableOpacity,
@@ -9,15 +9,15 @@ import {
     SafeAreaView,
     Alert,
 } from "react-native";
-import {RegularText} from "../components/text";
-import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
-import {ScrollView} from "react-native-gesture-handler";
+import { RegularText } from "../components/text";
+import { EmailInput, PasswordInput, SignInCodeInput } from "../components/input";
+import { ScrollView } from "react-native-gesture-handler";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
 import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getAuthToken} from "../util/credentials";
-import {REACT_APP_API_URL} from "react-native-dotenv";
+import { getAuthToken } from "../util/credentials";
+import { REACT_APP_API_URL } from "react-native-dotenv";
 const request = require("superagent");
 
 export default class WelcomeScreen extends Component {
@@ -49,7 +49,6 @@ export default class WelcomeScreen extends Component {
         );
         this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
-        AsyncStorage.multiRemove(["ACCESS_TOKEN", "FULLY_SIGNED_UP"]);
     }
 
     async componentDidMount() {
@@ -64,7 +63,7 @@ export default class WelcomeScreen extends Component {
                         .get(`${REACT_APP_API_URL}/authentication`)
                         .set("authorization", authToken);
                     if (response.status === 200) {
-                        const {navigate} = this.props.navigation;
+                        const { navigate } = this.props.navigation;
                         navigate("Activities");
                     }
                 }
@@ -84,14 +83,14 @@ export default class WelcomeScreen extends Component {
     };
 
     onChangeText = event => {
-        const {name, text} = event;
-        this.setState({[name]: text});
+        const { name, text } = event;
+        this.setState({ [name]: text });
     };
 
     async onForgotPassPressed() {
-        this.setState({isForgotPassPressed: true});
+        this.setState({ isForgotPassPressed: true });
         // remove the password field
-        this.setState({showPassField: false});
+        this.setState({ showPassField: false });
         //send 6 digit code to email through forgot password route
         const authToken = await getAuthToken();
         await request
@@ -105,7 +104,7 @@ export default class WelcomeScreen extends Component {
             .then(res => {
                 //show code
                 console.log(res.body.message);
-                this.setState({showCode: true});
+                this.setState({ showCode: true });
             })
             .catch(err => {
                 console.log(err);
@@ -114,7 +113,7 @@ export default class WelcomeScreen extends Component {
 
     onSignUpPressed() {
         if (this.state.emailInput === "") {
-            this.setState({isSignUpPressed: true});
+            this.setState({ isSignUpPressed: true });
             return;
         }
         if (this.isForgotPassPressed && this.state.showCode) {
@@ -131,7 +130,7 @@ export default class WelcomeScreen extends Component {
     }
 
     async onSubmitEmail(isValid) {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         // email is of a valid format
         if (isValid) {
             const authToken = await getAuthToken();
@@ -205,7 +204,7 @@ export default class WelcomeScreen extends Component {
 
     // verify password is correct
     async checkPass() {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         let authToken = await getAuthToken();
         await request
             .post(`${REACT_APP_API_URL}/signin/password`)
@@ -218,20 +217,20 @@ export default class WelcomeScreen extends Component {
             })
             .then(async res => {
                 // if password correct
-                this.setState({isValidPass: true});
+                this.setState({ isValidPass: true });
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
                 navigate("Activities");
             })
             .catch(err => {
-                this.setState({isValidPass: false, showPassError: true});
+                this.setState({ isValidPass: false, showPassError: true });
                 console.log(err);
             });
     }
 
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         await request
             .post(`${REACT_APP_API_URL}/signin/forgot/confirm`)
             .set("authorization", authToken)
@@ -245,7 +244,7 @@ export default class WelcomeScreen extends Component {
                 const authenticationToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authenticationToken);
                 console.log(res.body.message);
-                this.setState({isCodeValid: true});
+                this.setState({ isCodeValid: true });
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,
                 });
@@ -253,15 +252,15 @@ export default class WelcomeScreen extends Component {
             .catch(err => {
                 // code incorrect
                 console.log(err);
-                this.setState({isCodeValid: false});
+                this.setState({ isCodeValid: false });
                 Alert.alert("Incorrect code", "Please try again.", [
-                    {text: "OK", onPress: () => null},
+                    { text: "OK", onPress: () => null },
                 ]);
             });
     }
 
     async confirmVerifyEmailCode(code) {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         //check with register route
         const authToken = await getAuthToken();
         await request
@@ -278,7 +277,7 @@ export default class WelcomeScreen extends Component {
                 console.log(res.body);
                 if (res.status === 200) {
                     console.log("correct code");
-                    this.setState({isCodeValid: true});
+                    this.setState({ isCodeValid: true });
                     navigate("UserSignUp", {
                         email: this.state.emailInput,
                     });
@@ -287,9 +286,9 @@ export default class WelcomeScreen extends Component {
             .catch(err => {
                 // code incorrect
                 console.log(err);
-                this.setState({isCodeValid: false});
+                this.setState({ isCodeValid: false });
                 Alert.alert("Incorrect code", "Please try again.", [
-                    {text: "OK", onPress: () => null},
+                    { text: "OK", onPress: () => null },
                 ]);
             });
     }
@@ -297,7 +296,7 @@ export default class WelcomeScreen extends Component {
     render() {
         return (
             <SafeAreaView style={WelcomeScreenStyles.container}>
-                <View style={{flex: 2, justifyContent: "center"}}>
+                <View style={{ flex: 2, justifyContent: "center" }}>
                     <Image
                         style={{
                             width: 273,
@@ -310,7 +309,7 @@ export default class WelcomeScreen extends Component {
                 </View>
 
                 <KeyboardAvoidingView
-                    style={{flex: 1}}
+                    style={{ flex: 1 }}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
@@ -375,10 +374,10 @@ export default class WelcomeScreen extends Component {
                         alignItems: "center",
                     }}>
                     <TouchableOpacity
-                        style={[WelcomeScreenStyles.button, {marginBottom: 20}]}
+                        style={[WelcomeScreenStyles.button, { marginBottom: 20 }]}
                         onPress={this.onSignUpPressed}>
                         <RegularText
-                            style={[WelcomeScreenStyles.text, {fontSize: 20}]}>
+                            style={[WelcomeScreenStyles.text, { fontSize: 20 }]}>
                             {this.state.buttonText}
                         </RegularText>
                     </TouchableOpacity>
