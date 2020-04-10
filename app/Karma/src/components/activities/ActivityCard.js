@@ -65,10 +65,19 @@ class ActivityCard extends React.Component {
             favourited: props.favourited
                 ? props.favourited
                 : props.activity.favourited,
+            signedup: props.signedup,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
     }
+
+    toggleSignup = () => {
+        console.log("Signup toggled");
+        this.setState({
+            signedup: !this.state.signedup,
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
 
     toggleModal = () => {
         this.setState({
@@ -120,13 +129,15 @@ class ActivityCard extends React.Component {
     }
 
     _renderTruncatedFooter = handlePress => {
-        const {activity, signedup} = this.props;
+        const {activity} = this.props;
+        const {signedup} = this.state;
         return (
             <TouchableOpacity
                 onPress={() =>
                     this.props.navigation.push("ActivityInfo", {
                         activity: activity,
                         signedup: signedup,
+                        favourited: this.state.favourited,
                     })
                 }>
                 <RegularText
@@ -138,7 +149,8 @@ class ActivityCard extends React.Component {
         );
     };
     render() {
-        const {activity, signedup} = this.props;
+        const {activity} = this.props;
+        const {signedup} = this.state;
 
         return (
             <View style={[Styles.container, Styles.ph24]}>
@@ -247,7 +259,7 @@ class ActivityCard extends React.Component {
                     toggleModal={this.toggleModal}>
                     <SignUpActivity
                         activity={activity}
-                        onConfirm={this.toggleModal}
+                        onConfirm={this.toggleSignup}
                         onError={this.handleSignupError}
                         signedUp={signedup}
                     />
