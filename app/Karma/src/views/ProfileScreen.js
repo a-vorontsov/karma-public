@@ -33,6 +33,8 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 import PageHeader from "../components/PageHeader";
 import ShareKarma from "../components/sharing/ShareKarma";
 import BottomModal from "../components/BottomModal";
+import {initialMode} from "react-native-dark-mode";
+const isDarkMode = initialMode === "dark";
 const {width, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const formWidth = 0.8 * width;
 const HALF = formWidth / 2;
@@ -89,7 +91,6 @@ class ProfileScreen extends Component {
             upcomingEvents,
             user,
         } = res.body.data;
-
         this.setState({
             email: user.email,
             isOrganisation: false,
@@ -107,7 +108,6 @@ class ProfileScreen extends Component {
             address: individual.address,
             gender: individual.gender,
         });
-
         this.fetchProfilePicture();
     }
 
@@ -181,7 +181,6 @@ class ProfileScreen extends Component {
             .set("authorization", authToken)
             .query(query)
             .then(res => {
-                console.log(res.body);
                 res.body.data.organisation
                     ? this.setupOrganisationProfile(res)
                     : this.setupIndividualProfile(res);
@@ -209,7 +208,6 @@ class ProfileScreen extends Component {
             .get(url)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body);
                 const imageLocation =
                     res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
                 this.setState({photo: {uri: imageLocation}});
@@ -278,7 +276,6 @@ class ProfileScreen extends Component {
                 this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
-                    console.log(response.message);
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
                     Alert.alert("Upload Error", response.message);
@@ -383,13 +380,13 @@ class ProfileScreen extends Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
-                                            navigate("SettingsMenu", {
+                                            navigate("Settings", {
                                                 user: this.state.user,
                                             })
                                         }>
                                         <Image
                                             onPress={() =>
-                                                navigate("SettingsMenu", {
+                                                navigate("Settings", {
                                                     user: this.state.user,
                                                 })
                                             }
@@ -829,7 +826,7 @@ const styles = StyleSheet.create({
     },
     locationText: {
         fontSize: 20,
-        color: "#75C4C3",
+        color: isDarkMode ? Colours.grey : "#75C4C3",
         paddingLeft: 10,
     },
     bioHeader: {

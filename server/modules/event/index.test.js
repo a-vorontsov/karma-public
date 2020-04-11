@@ -59,6 +59,7 @@ test("creating event with known address works", async () => {
 
     const createEventResult = await eventService.createNewEvent(event);
     createEventResult.data.event.creationDate = event.creationDate;
+    event.date = createEventResult.data.event.date;
     expect(eventCauseRepository.insert).toHaveBeenCalledTimes(3);
     expect(eventRepository.insert).toHaveBeenCalledTimes(1);
     expect(addressRepository.insert).toHaveBeenCalledTimes(0);

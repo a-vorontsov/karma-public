@@ -43,7 +43,7 @@ class SettingsMenuScreen extends Component {
         return (
             <SafeAreaView style={[Styles.container]}>
                 <View style={Styles.ph24}>
-                    <PageHeader title="Settings" />
+                    <PageHeader title="Settings" nav="Profile" />
                 </View>
                 <ScrollView
                     showsVerticalScrollIndicator={false}

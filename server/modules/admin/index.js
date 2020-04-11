@@ -35,7 +35,7 @@ const toggleIndividualBan = async (individual) => {
     individual.banned = !individual.banned;
     const individualResult = await individualRepository.update(individual);
     return ({
-        message: "Individual banned successfully",
+        message: "Individual ban toggled successfully",
         status: 200,
         data: {individual: individualResult.rows[0]},
     });

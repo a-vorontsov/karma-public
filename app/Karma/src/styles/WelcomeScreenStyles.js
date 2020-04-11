@@ -1,11 +1,12 @@
 import {StyleSheet} from "react-native";
+import Colours from "./Colours";
 
 const WelcomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#03A8AE",
+        backgroundColor: Colours.blue,
     },
     text: {
         justifyContent: "center",
