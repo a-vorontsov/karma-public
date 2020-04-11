@@ -90,6 +90,7 @@
 		B4491171494E4FC593901C13 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		B49C9E60907B41E2BC7739BF /* peace-white.png in Resources */ = {isa = PBXBuildFile; fileRef = D83B20281B894E0188D53868 /* peace-white.png */; };
 		B4EDCED7023444EAA518E514 /* photo-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F7484B5207147C19DE7C778 /* photo-plus.png */; };
+		B8BAD3BA243FDBBC003F2FD3 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8BAD3B9243FDBBC003F2FD3 /* BootSplash.storyboard */; };
 		B8CAFB3C242BFE5A00BBFDD7 /* libGoogle-Maps-iOS-Utils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CAFB3B242BFE5A00BBFDD7 /* libGoogle-Maps-iOS-Utils.a */; };
 		BA0E389598DE435B828B69D1 /* refugees.png in Resources */ = {isa = PBXBuildFile; fileRef = 629F029EA8FA4206B6B66B03 /* refugees.png */; };
 		BC92903881884D67B5ABDD8D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 0396FACF8E774F55B7036240 /* key.png */; };
@@ -239,6 +240,7 @@
 		B4EFA20B68864C70BA345C81 /* people-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "people-logo.png"; path = "../src/assets/images/general-logos/people-logo.png"; sourceTree = "<group>"; };
 		B6C74C1CC8EF4161B2AED400 /* notifications-on.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "notifications-on.png"; path = "../src/assets/images/nav-bar/notifications-on.png"; sourceTree = "<group>"; };
 		B81A2BD2A7F741D0AB2C6079 /* clock-logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "clock-logo.png"; path = "../src/assets/images/general-logos/clock-logo.png"; sourceTree = "<group>"; };
+		B8BAD3B9243FDBBC003F2FD3 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Karma/BootSplash.storyboard; sourceTree = "<group>"; };
 		B8CA4EF0242399D200AECFC8 /* password-tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "password-tick.png"; path = "../src/assets/images/general-logos/password-tick.png"; sourceTree = "<group>"; };
 		B8CAFB3B242BFE5A00BBFDD7 /* libGoogle-Maps-iOS-Utils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libGoogle-Maps-iOS-Utils.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAC83CB3876A4205B217FD55 /* community-white.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "community-white.png"; path = "../src/assets/images/causes-logos/white/community-white.png"; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				B8BAD3B9243FDBBC003F2FD3 /* BootSplash.storyboard */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -685,6 +688,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				694A1FD98BE14209866C1035 /* OpenSans-Bold.ttf in Resources */,
+				B8BAD3BA243FDBBC003F2FD3 /* BootSplash.storyboard in Resources */,
 				F2A1DFC82C9742548B3D848B /* OpenSans-BoldItalic.ttf in Resources */,
 				124A12A04DFB419EA6F100B4 /* OpenSans-ExtraBold.ttf in Resources */,
 				5111262618EF4016866F3FEA /* OpenSans-ExtraBoldItalic.ttf in Resources */,
@@ -1162,7 +1166,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4C959D9E67C29FE45EB5EB07 /* Pods-Karma-tvOS.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1191,7 +1194,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CFA9711DA46E978BE6412E43 /* Pods-Karma-tvOS.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;

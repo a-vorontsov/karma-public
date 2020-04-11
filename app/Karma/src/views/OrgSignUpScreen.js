@@ -5,13 +5,11 @@ import {
     KeyboardAvoidingView,
     Platform,
     Dimensions,
-    StatusBar,
     Image,
     Alert,
     StyleSheet,
     Keyboard,
 } from "react-native";
-import {hasNotch} from "react-native-device-info";
 import Styles, {normalise} from "../styles/Styles";
 import SignUpStyles from "../styles/SignUpStyles";
 import {Dropdown} from "react-native-material-dropdown";
@@ -27,6 +25,8 @@ import {GradientButton} from "../components/buttons";
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 import ImagePicker from "react-native-image-picker";
+import {SafeAreaView} from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 const request = require("superagent");
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
@@ -219,6 +219,7 @@ export default class OrgSignUpScreen extends React.Component {
             })
             .then(async res => {
                 await this.uploadPhoto(this.state.photo);
+                await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
                 navigate("Activities");
             })
             .catch(err => {
@@ -238,25 +239,28 @@ export default class OrgSignUpScreen extends React.Component {
         ];
 
         return (
-            <View style={Styles.container}>
-                {/** HEADER */}
-                <View
-                    style={{
-                        alignItems: "center",
-                        height: 0.08 * SCREEN_HEIGHT,
-                        justifyContent: "flex-start",
-                        marginTop: hasNotch() ? 40 : StatusBar.currentHeight,
-                    }}>
-                    <View style={{alignItems: "flex-start", width: FORM_WIDTH}}>
-                        <PageHeader title="Sign Up" />
-                    </View>
-                </View>
+            <SafeAreaView style={Styles.container}>
                 <KeyboardAvoidingView
                     style={{flex: 1}}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="handle">
+                        {/** HEADER */}
+                        <View
+                            style={{
+                                alignItems: "center",
+                                height: 0.08 * SCREEN_HEIGHT,
+                                justifyContent: "flex-start",
+                            }}>
+                            <View
+                                style={{
+                                    alignItems: "flex-start",
+                                    width: FORM_WIDTH,
+                                }}>
+                                <PageHeader title="Sign Up" />
+                            </View>
+                        </View>
                         <SubTitleText
                             style={[
                                 Styles.ph24,
@@ -518,7 +522,7 @@ export default class OrgSignUpScreen extends React.Component {
                         )}
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }

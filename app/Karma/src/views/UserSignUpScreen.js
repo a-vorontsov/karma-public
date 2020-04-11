@@ -89,7 +89,10 @@ class SignUpScreen extends React.Component {
         }
 
         let authToken = await getAuthToken();
-
+        if (authToken !== "") {
+            this.props.navigation.navigate("InitSignup");
+            return;
+        }
         await request
             .post(`${REACT_APP_API_URL}/signup/user`)
             .set("authorization", authToken)
@@ -103,7 +106,7 @@ class SignUpScreen extends React.Component {
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
 
-                this.props.navigation.navigate("InitSignup");
+                this.props.navigation.replace("InitSignup");
             })
             .catch(err => {
                 console.log(err.message);
