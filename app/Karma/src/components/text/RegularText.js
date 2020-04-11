@@ -19,7 +19,7 @@ export default class RegularText extends React.Component {
     }
 
     static defaultProps = {
-        num: 0
+        num: 0,
     };
 }
 
