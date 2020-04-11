@@ -50,7 +50,6 @@ export default class CreateActivityScreen extends React.Component {
             isPhysical: false,
             isAdditionalInfo: false,
             startDate: "",
-            endDate: "",
             title: "",
             address: "",
             isStartDateVisible: false,
@@ -238,7 +237,7 @@ export default class CreateActivityScreen extends React.Component {
                 region: this.state.region,
                 lat: 0.3,
                 long: 100.5,
-            }, //TODO
+            },
             name: this.state.title,
             womenOnly: this.state.isWomenOnly,
             spots: Number(this.state.numSpots),
@@ -249,7 +248,7 @@ export default class CreateActivityScreen extends React.Component {
             addInfo: this.state.isAdditionalInfo,
             content: this.state.eventDesc,
             date: this.state.startDate,
-            creationDate: new Date(), //returns current date
+            creationDate: this.getFormattedDate(new Date()), //returns current date
             causes: this.state.causeIds,
         };
         return event;
@@ -278,10 +277,10 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     getFormattedDate = date => {
-        let newDate = new Date(date);
-        //removes day and local timezone from date
-        let formattedString = newDate.toUTCString().substring(5);
-        formattedString = formattedString.slice(0, -7);
+        const d = new Date(date);
+        d.setSeconds(0);
+        let formattedString = d.toString();
+        formattedString = formattedString.slice(0, 31);
         return formattedString;
     };
 
@@ -303,9 +302,7 @@ export default class CreateActivityScreen extends React.Component {
     removeSlot = i => {
         this.setState(prevState => {
             let slots = prevState.slots.slice();
-
             slots.splice(i, 1);
-
             return {slots};
         });
     };
@@ -351,7 +348,11 @@ export default class CreateActivityScreen extends React.Component {
             !this.state.title ||
             !this.state.startDate ||
             !this.state.eventDesc ||
-            !this.state.numSpots
+            !this.state.numSpots ||
+            !this.state.address1 ||
+            !this.state.postcode ||
+            !this.state.city ||
+            !this.state.region
         ) {
             return;
         }

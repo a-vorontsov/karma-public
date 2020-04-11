@@ -118,6 +118,7 @@ test('inserting and finding users signed up to an event works', async () => {
     expect(findResult.rows[0]).toMatchObject(signUp);
 });
 
+
 test('inserting and finding users signed up to an event works', async () => {
     const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationRepository.rows[0].email;

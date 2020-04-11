@@ -7,7 +7,7 @@ const individualRepo = require("../../repositories/individual");
 const orgRepo = require("../../repositories/organisation");
 const addressRepo = require("../../repositories/address");
 const profileRepo = require("../../repositories/profile");
-const date = require("date-and-time");
+const util = require("../../util");
 const tokenSender = require("../verification/token");
 const authService = require("../authentication");
 const geocoder = require("../geocoder");
@@ -62,7 +62,7 @@ async function registerUser(email, username, password, pub) {
         passwordHash: hashedPassword,
         verified: false,
         salt: secureSalt,
-        dateRegistered: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        dateRegistered: util.getCurrentTimeInUtcAsString(0),
     });
     const userResult = await userRepo.findByEmail(email);
     const userId = userResult.rows[0].id;
@@ -97,11 +97,10 @@ async function registerIndividual(userId, individual) {
         phone: individual.phoneNumber,
         banned: false,
         userId: userId,
-        pictureId: null, // TODO:
+        pictureId: individual.pictureId ? parseInt(individual.pictureId) : null,
         addressId: addressId,
         birthday: individual.dateOfBirth,
         gender: individual.gender,
-        // TODO: title
     });
 
     await createEmptyProfile(individualResult.rows[0].id);
@@ -126,6 +125,8 @@ async function setSignUpFlagTrue(userId) {
  * Register a new organisation
  * @param {number} userId
  * @param {object} organisation
+ * @throws {error} if already registered
+ * @throws {error} if invalid query
  */
 async function registerOrg(userId, organisation) {
     if (await regStatus.isFullyRegisteredById(userId)) {
@@ -142,10 +143,10 @@ async function registerOrg(userId, organisation) {
         pocLastname: organisation.pocLastName,
         phone: organisation.phoneNumber,
         banned: false,
-        orgRegisterDate: date.format(new Date(), "YYYY-MM-DD HH:mm:ss", true),
+        orgRegisterDate: organisation.orgRegisterDate ? organisation.orgRegisterDate : util.getCurrentTimeInUtcAsString(0),
         lowIncome: organisation.lowIncome,
         exempt: organisation.exempt,
-        pictureId: null, // TODO:
+        pictureId: organisation.pictureId ? parseInt(organisation.pictureId) : null,
         userId: userId,
         addressId: addressId,
     });

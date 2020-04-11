@@ -14,6 +14,7 @@ import {GradientButton} from "../../components/buttons";
 import Styles from "../../styles/Styles";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import Colours from "../../styles/Colours";
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const queryString = require("query-string");
 const formWidth = 0.6 * SCREEN_WIDTH;
@@ -29,6 +30,7 @@ class ActivitiesAllScreen extends Component {
             loading: true, // Loading state used while loading the data for the first time
             activitiesList: [], // Data Source for the FlatList
             fetchingDataFromServer: false, // Loading state used while loading more data
+            allEventsFetched: false,
         };
         this.page = 1;
         this.fetchActivities = this.fetchActivities.bind(this);
@@ -37,7 +39,7 @@ class ActivitiesAllScreen extends Component {
 
     async componentDidMount() {
         this.setState({loading: true});
-        this.fetchActivities();
+        await this.fetchActivities();
     }
 
     getDateString(date) {
@@ -50,25 +52,50 @@ class ActivitiesAllScreen extends Component {
         return null;
     }
     getFiltersObject() {
-        const {
-            maxDistance,
-            availabilityStart,
-            availabilityEnd,
-        } = this.props.filters;
-        if (this.props.filtersEnabled) {
-            return {
-                maxDistance: maxDistance,
-                availabilityStart: this.getDateString(availabilityStart),
-                availabilityEnd: this.getDateString(availabilityEnd),
-            };
+        const filters = {};
+        if (this.props.filters) {
+            const {
+                maxDistance,
+                availabilityStart,
+                availabilityEnd,
+            } = this.props.filters;
+            // !==null is necessary since a maxDistance of 0 would be considered as false
+            if (maxDistance !== null) {
+                filters.maxDistance = maxDistance;
+            }
+            if (availabilityStart) {
+                filters.availabilityStart = this.getDateString(
+                    availabilityStart,
+                );
+            }
+            if (availabilityEnd) {
+                filters.availabilityEnd = this.getDateString(availabilityEnd);
+            }
         }
-        return {};
+        return filters;
     }
 
     getBooleanFilters() {
-        if (this.props.filtersEnabled) {
+        if (this.props.filters) {
+            const {genderPreferences, location, type} = this.props.filters;
+            const filters = [];
+            if (genderPreferences && genderPreferences !== "noPreferences") {
+                genderPreferences === "womenOnly"
+                    ? filters.push("women_only")
+                    : filters.push("!women_only");
+            }
+            if (location && location !== "anyLocation") {
+                location === "locationVisible"
+                    ? filters.push("address_visible")
+                    : filters.push("!address_visible");
+            }
+            if (type && type !== "allTypes") {
+                type === "physical"
+                    ? filters.push("physical")
+                    : filters.push("!physical");
+            }
             return queryString.stringify(
-                {filter: this.props.filters.booleanFilters},
+                {filter: filters},
                 {arrayFormat: "bracket", encode: false},
             );
         }
@@ -87,16 +114,23 @@ class ActivitiesAllScreen extends Component {
                 ...this.getFiltersObject(),
             })
             .then(async res => {
-                this.page = this.page + 1; //Increasing the offset for the next API call.
-
-                this.setState({
-                    loading: false,
-                    fetchingDataFromServer: false,
-                    activitiesList: [
-                        ...this.state.activitiesList,
-                        ...res.body.data.events,
-                    ], //adding the new data with old one available in Data Source of the List
-                });
+                if (res.body.data.meta.pageSize === 0) {
+                    this.setState({
+                        allEventsFetched: true,
+                        loading: false,
+                        fetchingDataFromServer: false,
+                    });
+                } else {
+                    this.page = this.page + 1; //Increasing the offset for the next API call.
+                    this.setState({
+                        loading: false,
+                        fetchingDataFromServer: false,
+                        activitiesList: [
+                            ...this.state.activitiesList,
+                            ...res.body.data.events,
+                        ], //adding the new data with old one available in Data Source of the List
+                    });
+                }
             })
             .catch(er => {
                 console.log(er);
@@ -110,14 +144,28 @@ class ActivitiesAllScreen extends Component {
         return (
             //Footer View with Load More button
             <View style={{width: formWidth, marginLeft: formWidth * 0.3}}>
-                {this.state.fetchingDataFromServer ? (
+                {this.state.fetchingDataFromServer && (
                     <ActivityIndicator color="grey" style={{marginLeft: 8}} />
-                ) : (
-                    <GradientButton
-                        onPress={this.fetchActivities}
-                        title="Load More"
-                    />
                 )}
+                {this.state.allEventsFetched && (
+                    <View style={{alignItems: "center"}}>
+                        <RegularText
+                            style={{
+                                fontSize: 18,
+                                color: Colours.lightBlue,
+                                alignItems: "center",
+                            }}>
+                            There aren't any more activities!
+                        </RegularText>
+                    </View>
+                )}
+                {!this.state.fetchingDataFromServer &&
+                    !this.state.allEventsFetched && (
+                        <GradientButton
+                            onPress={this.fetchActivities}
+                            title="Load More"
+                        />
+                    )}
             </View>
         );
     }
@@ -140,6 +188,7 @@ class ActivitiesAllScreen extends Component {
                 this.setState({
                     isRefreshing: false,
                     activitiesList: res.body.data.events,
+                    allEventsFetched: false,
                 });
             })
             .catch(er => {
@@ -195,6 +244,7 @@ class ActivitiesAllScreen extends Component {
                                 <ActivityDisplayCard
                                     activity={item}
                                     key={item.eventId}
+                                    isOrganisation={this.props.isOrganisation}
                                 />
                             )}
                             ListFooterComponent={this.renderFooter.bind(this)} //Adding Load More button as footer component

@@ -3,9 +3,11 @@ import React from "react";
 import {Image, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
+import BottomModal from "../BottomModal";
 import CarouselStyles from "../../styles/CarouselStyles";
 import Colours from "../../styles/Colours";
 import {useNavigation} from "react-navigation-hooks";
+import ShareActivity from "../sharing/ShareActivity";
 
 const icons = {
     share: require("../../assets/images/general-logos/export-logo.png"),
@@ -13,9 +15,22 @@ const icons = {
 };
 
 class ActivityDisplayCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayShareModal: false,
+        };
+        this.toggleShareModal = this.toggleShareModal.bind(this);
+    }
     navigation = this.props.navigation;
     setFav = handlePress => {
         return false;
+    };
+
+    toggleShareModal = event => {
+        this.setState({
+            displayShareModal: !this.state.displayShareModal,
+        });
     };
 
     render() {
@@ -58,7 +73,6 @@ class ActivityDisplayCard extends React.Component {
                                     }}>
                                     {props.activity.name}
                                 </RegularText>
-                                <Image />
                             </View>
                             <RegularText
                                 style={{
@@ -77,9 +91,10 @@ class ActivityDisplayCard extends React.Component {
                             flex: 1,
                             alignItem: "flex-end",
                             justifyContent: "flex-end",
-                            display: "none",
                         }}>
-                        <TouchableOpacity style={{alignSelf: "flex-end"}}>
+                        <TouchableOpacity
+                            style={{alignSelf: "flex-end"}}
+                            onPress={this.toggleShareModal}>
                             <Image
                                 source={icons.share}
                                 style={{
@@ -102,9 +117,15 @@ class ActivityDisplayCard extends React.Component {
                                     ? props.signedup
                                     : props.activity.going
                             }
+                            isOrganisation={props.isOrganisation}
                         />
                     </View>
                 </View>
+                <BottomModal
+                    visible={this.state.displayShareModal}
+                    toggleModal={this.toggleShareModal}>
+                    <ShareActivity activity={props.activity} />
+                </BottomModal>
             </View>
         );
     }

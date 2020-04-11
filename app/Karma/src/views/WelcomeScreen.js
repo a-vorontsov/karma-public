@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {
     View,
     TouchableOpacity,
-    StatusBar,
     Platform,
     Image,
     KeyboardAvoidingView,
@@ -14,15 +13,17 @@ import {EmailInput, PasswordInput, SignInCodeInput} from "../components/input";
 import {ScrollView} from "react-native-gesture-handler";
 import Styles from "../styles/Styles";
 import WelcomeScreenStyles from "../styles/WelcomeScreenStyles";
-import Colours from "../styles/Colours";
 import AsyncStorage from "@react-native-community/async-storage";
+
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+
 const request = require("superagent");
 
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isSignUpPressed: false,
             isForgotPassPressed: false,
@@ -35,10 +36,6 @@ export default class WelcomeScreen extends Component {
             isCodeValid: false,
             buttonText: "Sign Up/Log In",
         };
-        StatusBar.setBarStyle("dark-content");
-        if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor(Colours.backgroundWhite);
-        }
         this.checkPass = this.checkPass.bind(this);
         this.onSubmitEmail = this.onSubmitEmail.bind(this);
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
@@ -48,28 +45,6 @@ export default class WelcomeScreen extends Component {
         );
         this.confirmVerifyEmailCode = this.confirmVerifyEmailCode.bind(this);
         this.baseState = this.state;
-    }
-
-    async componentDidMount() {
-        try {
-            const isFullySignedUp = await AsyncStorage.getItem(
-                "FULLY_SIGNED_UP",
-            );
-            if (isFullySignedUp) {
-                const authToken = await getAuthToken();
-                if (authToken !== "") {
-                    const response = await request
-                        .get(`${REACT_APP_API_URL}/authentication`)
-                        .set("authorization", authToken);
-                    if (response.status === 200) {
-                        const {navigate} = this.props.navigation;
-                        navigate("Activities");
-                    }
-                }
-            }
-        } catch (err) {
-            console.log(err);
-        }
     }
 
     onInputChange = (name, value) => {
@@ -161,6 +136,7 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
+                    console.log(res.body.data);
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
                         navigate("UserSignUp", {
@@ -169,20 +145,31 @@ export default class WelcomeScreen extends Component {
                         return;
                     }
                     if (res.body.data.alreadyAuthenticated && isFullySignedUp) {
-                        navigate("Activities");
+                        navigate("Main");
                         return;
                     }
                     if (!isFullySignedUp && authToken) {
                         navigate("InitSignup");
                         return;
                     }
+
                     //if email is not verified, show code field
+
                     this.setState({
                         showPassField: false,
                         showCode: true,
                         showEmailError: false,
                         buttonText: "Sign Up",
                     });
+
+                    // if user requests code token several times
+                    if (res.body.data.tokenAlreadyRequested) {
+                        Alert.alert(
+                            "Please wait " +
+                                res.body.data.waitSeconds +
+                                " seconds until requesting a new code.",
+                        );
+                    }
                 })
                 .catch(err => {
                     console.log(err);

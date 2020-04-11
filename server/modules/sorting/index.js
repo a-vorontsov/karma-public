@@ -35,4 +35,5 @@ const groupByCause = groupBy('causeName');
 module.exports = {
     groupByCause,
     sortByTimeAndDistance,
+    sortByTime,
 };

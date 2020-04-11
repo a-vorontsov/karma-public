@@ -88,6 +88,8 @@ jobs:
       SKIP_S3: 1
       SKIP_ASYNC_KEY_EXCHANGE: 1
       REACT_APP_API_URL: http://localhost:8000
+      PRESERVE_SESSIONS_ON_REBOOT: 0
+      SKIP_NEW_TOKEN_TIMEOUT: 0
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository

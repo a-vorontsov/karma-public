@@ -30,6 +30,8 @@ const authService = require("../../../modules/authentication/");
                 "name": "WWF",
                 "organisationNumber": "123",
                 "phoneNumber": "0723423423",
+                "orgRegisterDate": "2008-04-05 12:00:00" (optional)
+                "pictureId": "42", (optional)
                 [...]
                 address: {
                     "addressLine1": "7 Queen Lane",
@@ -57,6 +59,9 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
             exempt: req.body.data.organisation.exempt,
             pocFirstName: req.body.data.organisation.pocFirstName,
             pocLastName: req.body.data.organisation.pocLastName,
+            phoneNumber: req.body.data.organisation.phoneNumber,
+            pictureId: req.body.data.organisation.pictureId,
+            orgRegisterDate: req.body.data.organisation.orgRegisterDate,
             address: {
                 addressLine1: req.body.data.organisation.address.addressLine1,
                 addressLine2: req.body.data.organisation.address.addressLine2,
@@ -64,7 +69,6 @@ router.post("/", authService.requireAuthentication, async (req, res) => {
                 countryState: req.body.data.organisation.address.countryState,
                 postCode: req.body.data.organisation.address.postCode,
             },
-            phoneNumber: req.body.data.organisation.phoneNumber,
         };
         await userAgent.registerOrg(
             req.body.userId,

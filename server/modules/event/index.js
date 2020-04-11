@@ -38,7 +38,8 @@ const createNewEvent = async (event) => {
         event.addressId = addressResult.rows[0].id;
     }
 
-    event.creationDate = new Date();
+    event.creationDate = new Date().toUTCString();
+    event.date = new Date(event.date).toUTCString();
     const eventResult = await eventRepository.insert(event);
     const eventId = eventResult.rows[0].id;
     const causesResult = event.causes;

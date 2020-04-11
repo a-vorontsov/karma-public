@@ -8,6 +8,7 @@ import Styles from "../../styles/Styles";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import {sendNotification} from "../../util/SendNotification";
 const moment = require("moment");
 const request = require("superagent");
 const icons = {
@@ -26,6 +27,7 @@ export default class SignUpActivity extends React.Component {
         this.existsInCalendar = this.existsInCalendar.bind(this);
         this.saveToCalendar = this.saveToCalendar.bind(this);
         this.removeFromCalendar = this.removeFromCalendar.bind(this);
+        this.getSubtitleText = this.getSubtitleText.bind(this);
     }
     async componentDidMount() {
         const perms = await getCalendarPerms();
@@ -53,6 +55,9 @@ export default class SignUpActivity extends React.Component {
                     Toast.SHORT,
                     Toast.BOTTOM,
                 );
+                sendNotification("EventSignup", activity.name, [
+                    activity.eventCreatorId,
+                ]);
                 onConfirm();
             })
             .catch(err => {
@@ -70,12 +75,8 @@ export default class SignUpActivity extends React.Component {
         const authToken = await getAuthToken();
         const eventId = activity.eventid ? activity.eventid : activity.eventId; //TODO fix lack of camelcase
         request
-            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp/update`)
+            .post(`${REACT_APP_API_URL}/event/${eventId}/signUp/delete`)
             .set("authorization", authToken)
-            .send({
-                confirmed: false,
-                attended: false,
-            })
             .then(res => {
                 Toast.showWithGravity(
                     "You have successfully signed out of the activity.",
@@ -173,12 +174,25 @@ export default class SignUpActivity extends React.Component {
             }
         }
     }
+    getSubtitleText() {
+        let text = "";
+        if (this.props.isOrganisation) {
+            text = this.state.inCalendar
+                ? "Are you sure you want to remove?"
+                : "Almost added!";
+        } else {
+            text = this.props.signedUp
+                ? "Are you sure you want to cancel?"
+                : "Almost signed up!";
+        }
+        return text;
+    }
     render() {
         const {activity, signedUp} = this.props;
         const {inCalendar} = this.state;
         return (
             <View style={Styles.ph8}>
-                <SubTitleText>Almost signed up!</SubTitleText>
+                <SubTitleText> {this.getSubtitleText()}</SubTitleText>
                 <RegularText style={Styles.pb16}>
                     {activity.content}
                 </RegularText>
@@ -230,17 +244,22 @@ export default class SignUpActivity extends React.Component {
                         />
                     )}
                 </View>
-                <View style={Styles.pv8}>
-                    {signedUp ? (
-                        <TransparentButton
-                            title="Cancel"
-                            red
-                            onPress={this.cancelSignUp}
-                        />
-                    ) : (
-                        <Button title="Confirm" onPress={this.confirmSignUp} />
-                    )}
-                </View>
+                {!this.props.isOrganisation && (
+                    <View style={Styles.pv8}>
+                        {signedUp ? (
+                            <TransparentButton
+                                title="Cancel"
+                                red
+                                onPress={this.cancelSignUp}
+                            />
+                        ) : (
+                            <Button
+                                title="Confirm"
+                                onPress={this.confirmSignUp}
+                            />
+                        )}
+                    </View>
+                )}
             </View>
         );
     }

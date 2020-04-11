@@ -1,5 +1,6 @@
 const db = require("../../database/connection");
 const date = require("date-and-time");
+const config = require("../../config");
 
 const registrationExample1 = {
     email: "test@gmail.com",
@@ -81,7 +82,7 @@ const registrationExample4 = {
     signUpFlag: 0,
     verificationToken: "123456",
     expiryDate: date.format(
-        date.addMinutes(new Date(), 5),
+        date.addMinutes(new Date(), config.emailVerification.validMinutes),
         "YYYY-MM-DD HH:mm:ss", true,
     ),
 };
