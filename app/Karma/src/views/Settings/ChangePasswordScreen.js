@@ -94,6 +94,7 @@ export default class ChangePasswordScreen extends Component {
                                 name="oldPasswordInput"
                                 placeholder="Verify Old Password"
                                 onChange={this.onChange}
+                                onSubmitEditing={() => this.password.focus()}
                                 secureTextEntry={true}
                             />
                             <SubTitleText
@@ -102,6 +103,7 @@ export default class ChangePasswordScreen extends Component {
                             </SubTitleText>
 
                             <ChangePasswordInput
+                                inputRef={ref => (this.password = ref)}
                                 onChange={this.onInputChange}
                                 firstOpen={this.state.isFirstOpened}
                             />
