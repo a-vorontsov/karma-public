@@ -312,7 +312,7 @@ class ProfileScreen extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior="padding"
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
                 <NavigationEvents
                     onWillFocus={() => {
