@@ -57,7 +57,6 @@ function getMonthName(d, long = false) {
     return name;
 }
 
-
 class ActivityCard extends React.Component {
     constructor(props) {
         super(props);
@@ -129,7 +128,6 @@ class ActivityCard extends React.Component {
     }
 
     _renderTruncatedFooter = handlePress => {
-        
         const {signedup} = this.state;
         const {activity, isOrganisation} = this.props;
         return (

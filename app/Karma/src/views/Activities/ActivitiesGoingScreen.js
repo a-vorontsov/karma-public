@@ -30,6 +30,16 @@ class ActivitiesGoingScreen extends Component {
     }
     async componentDidMount() {
         await this.fetchAllActivities();
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     async fetchAllActivities() {
