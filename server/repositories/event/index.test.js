@@ -63,6 +63,38 @@ test('findAllByUserId works', async () => {
     expect(findAllByUserIdResult.rows).toMatchObject([insertedEvent1, insertedEvent2]);
 });
 
+test('findAllByUserId works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+
+    const insertEventResult1 = await eventRepository.insert(event);
+    const insertedEvent1 = insertEventResult1.rows[0];
+    const insertEventResult2 = await eventRepository.insert(event);
+    const insertedEvent2 = insertEventResult2.rows[0];
+
+    const findAllByUserIdResult = await eventRepository.findAllByUserIdWithLocation(insertUserResult.rows[0].id);
+    expect(findAllByUserIdResult.rows).toMatchObject([insertedEvent1, insertedEvent2]);
+});
+
+test('findAllByUserId works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+
+    await eventRepository.insert(event);
+    await eventRepository.insert(event);
+
+    const findAllByUserIdResult = await eventRepository.findAllWithAllData();
+    expect(findAllByUserIdResult.rowCount).toBe(2);
+});
+
 test('findAllByUserIdLastMonth works', async () => {
     const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationResult.rows[0].email;
@@ -85,4 +117,34 @@ test('findAllByUserIdLastMonth works', async () => {
     const findAllByUserIdLastMonthResult = await eventRepository.findAllByUserIdLastMonth(insertUserResult.rows[0].id);
     expect(findAllByUserIdLastMonthResult.rows[0]).toMatchObject(insertedEvent1);
     expect(findAllByUserIdLastMonthResult.rowCount).toBe(1);
+});
+
+test('insert and removeByUserId work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+    const findEventResult = await eventRepository.findById(insertEventResult.rows[0].id);
+    const deleteResult = await eventRepository.removeByUserId(event.userId);
+    const findAfterDeletion = await eventRepository.findById(insertEventResult.rows[0].id);
+    expect(findAfterDeletion.rowCount).toBe(0);
+    expect(findEventResult.rows[0]).toMatchObject(deleteResult.rows[0]);
+});
+
+test('insert and removeById work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+    const findEventResult = await eventRepository.findById(insertEventResult.rows[0].id);
+    const deleteResult = await eventRepository.removeById(insertEventResult.rows[0].id);
+    const findAfterDeletion = await eventRepository.findById(insertEventResult.rows[0].id);
+    expect(findAfterDeletion.rowCount).toBe(0);
+    expect(findEventResult.rows[0]).toMatchObject(deleteResult.rows[0]);
 });
