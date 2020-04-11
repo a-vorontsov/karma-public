@@ -38,7 +38,10 @@ test('insert token and removeByUserId work', async () => {
     const userId = insertUserResult.rows[0].id;
     const expiry = new Date();
     expiry.setTime(expiry.getTime() + (1 * 60 * 60 * 1000));
-    await resetRepository.insertResetToken(userId, "333333", expiry);
+    const insertTokenResult = await resetRepository.insertResetToken({
+        userId: userId,
+        token: "333333",
+        expiryDate: expiry});
     const findTokenResult = await resetRepository.findLatestByUserId(userId);
     const deleteResult = await resetRepository.removeByUserId(userId);
     const findTokenResultAfterDeletion = await resetRepository.findLatestByUserId(userId);
