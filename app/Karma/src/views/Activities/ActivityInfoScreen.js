@@ -183,7 +183,8 @@ class ActivityInfoScreen extends Component {
 
         const causes = await this.fetchSelectedCauses(causeIds);
         const full_location = address1 + address2 + eventCity + " " + postcode;
-        const favourited = activity.favourited;
+
+        const favourited = this.props.navigation.getParam("favourited");
 
         this.setState({
             full_location,

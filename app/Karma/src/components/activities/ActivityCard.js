@@ -65,10 +65,18 @@ class ActivityCard extends React.Component {
             favourited: props.favourited
                 ? props.favourited
                 : props.activity.favourited,
+            signedup: props.signedup,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleFavourite = this.toggleFavourite.bind(this);
     }
+
+    toggleSignup = () => {
+        this.setState({
+            signedup: !this.state.signedup,
+            displaySignupModal: !this.state.displaySignupModal,
+        });
+    };
 
     toggleModal = () => {
         this.setState({
@@ -120,13 +128,15 @@ class ActivityCard extends React.Component {
     }
 
     _renderTruncatedFooter = handlePress => {
-        const {activity, signedup, isOrganisation} = this.props;
+        const {signedup} = this.state;
+        const {activity, isOrganisation} = this.props;
         return (
             <TouchableOpacity
                 onPress={() =>
                     this.props.navigation.push("ActivityInfo", {
                         activity: activity,
                         signedup: signedup,
+                        favourited: this.state.favourited,
                         isOrganisation: isOrganisation,
                     })
                 }>
@@ -139,7 +149,8 @@ class ActivityCard extends React.Component {
         );
     };
     render() {
-        const {activity, signedup, isOrganisation} = this.props;
+        const {signedup} = this.state;
+        const {activity, isOrganisation} = this.props;
 
         return (
             <View style={[Styles.container, Styles.ph24]}>
@@ -251,7 +262,7 @@ class ActivityCard extends React.Component {
                     toggleModal={this.toggleModal}>
                     <SignUpActivity
                         activity={activity}
-                        onConfirm={this.toggleModal}
+                        onConfirm={this.toggleSignup}
                         onError={this.handleSignupError}
                         signedUp={signedup}
                     />
