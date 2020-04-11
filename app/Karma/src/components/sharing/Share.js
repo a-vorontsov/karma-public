@@ -21,7 +21,9 @@ export default class Share extends React.Component {
         };
     }
 
-    // logic for which platform to launch depending on the user input
+    /** 
+     * Logic for which platform to launch depending on the user input
+     */
     async openSharing(linkType) {
         const {title, message} = this.props;
         const shareOptions = {
@@ -56,7 +58,9 @@ export default class Share extends React.Component {
         }
         Sharing.shareSingle(shareOptions);
     }
-    // handle the sharing on Android and iOS
+    /** 
+     * Handle the sharing on Android and iOS
+     */
     async componentDidMount() {
         let installedApps = [];
         const apps = [
@@ -89,7 +93,9 @@ export default class Share extends React.Component {
         });
     }
 
-    // check whether the user has the app installed before opening it
+    /** 
+     * Check whether the user has the app installed before opening it
+     */
     async isInstalled(app) {
         const installed = await AppInstalledChecker.isAppInstalled(app);
         return installed;

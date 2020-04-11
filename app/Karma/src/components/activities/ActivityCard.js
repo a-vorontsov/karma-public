@@ -88,8 +88,10 @@ class ActivityCard extends React.Component {
         Alert.alert(errorTitle, errorMessage);
     };
 
-    // ToggleFavourite method sends a POST request to the backend server,
-    // and changes the favourite indicator on the display accordingly.
+    /**ToggleFavourite method sends a POST request to the backend server,
+     * and changes the favourite indicator on the display accordingly. 
+     * */
+    
     async toggleFavourite() {
         const authToken = await getAuthToken();
 
@@ -130,7 +132,9 @@ class ActivityCard extends React.Component {
         }
     }
 
-    // Handles the length of the description of an activity via a 'Read More' button
+    /**
+     * Handles the length of the description of an activity via a 'Read More' button
+     */
     _renderTruncatedFooter = handlePress => {
         const {activity, signedup, isOrganisation} = this.props;
         return (

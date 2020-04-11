@@ -49,10 +49,11 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
-/*
-    The ProfileEditScreen class represents the screen displayed to the
-    user when they select the 'edit profile' button.
+/**   
+ * The ProfileEditScreen class represents the screen displayed to the user 
+ * when they select the 'edit profile' button.
 */
+
 
 class ProfileEditScreen extends Component {
     constructor(props) {
@@ -156,6 +157,7 @@ class ProfileEditScreen extends Component {
                 this.setState({[name]: text});
         }
     };
+
     onInputChange = inputState => {
         this.state.isOrganisation
             ? this.setState(prevState => {
@@ -188,8 +190,10 @@ class ProfileEditScreen extends Component {
               });
     };
 
-    // reload the page when user presses 'update' button
-    // send the changes made to the server via POST request
+    /**
+     * Reload the page when user presses 'update' button
+     * send the changes made to the server via POST request
+     */
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
         const authToken = await getAuthToken();
@@ -241,7 +245,9 @@ class ProfileEditScreen extends Component {
             });
     };
 
-    // load in the current gender
+    /**
+     * Load in the current gender
+     */
     getGender = character => {
         if (character === "m") {
             return "male";
@@ -254,7 +260,9 @@ class ProfileEditScreen extends Component {
         }
     };
 
-    // update the gender if the user changes it
+    /**
+     * Update the gender if the user changes it
+     */
     setGender = selectedGender => {
         const genderCharacter =
             selectedGender === "male"
