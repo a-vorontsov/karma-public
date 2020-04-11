@@ -19,6 +19,7 @@ const request = require("superagent");
 class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.password = React.createRef();
         this.state = {
             email: this.props.navigation.getParam("email"),
             username: "",
@@ -158,6 +159,7 @@ class SignUpScreen extends React.Component {
 
                                 <View>
                                     <ChangePasswordInput
+                                        inputRef={ref => (this.password = ref)}
                                         onChange={this.onInputChange}
                                         firstOpen={this.state.firstOpen}
                                         sendPassUpState={
