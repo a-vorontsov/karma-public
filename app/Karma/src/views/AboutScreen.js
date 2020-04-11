@@ -55,6 +55,9 @@ class AboutScreen extends React.Component {
         };
     }
 
+    /*
+    Pass up the states of the component object it is called on
+    */
     onInputChange = inputState => {
         this.setState({
             addressLine1: inputState.address1,
@@ -65,7 +68,9 @@ class AboutScreen extends React.Component {
         });
     };
 
-    // overwrite what the default onChangeText does
+    /*
+    Overwrite what the default onChangeText does
+    */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -88,6 +93,9 @@ class AboutScreen extends React.Component {
         });
     }
 
+    /*
+    Open the photo library of the user
+    */
     choosePhoto = () => {
         const options = {
             noData: true,
@@ -98,7 +106,9 @@ class AboutScreen extends React.Component {
             }
         });
     };
-
+    /*
+    Load the information for the text fields and photo
+    */
     createFormData = (photo, body) => {
         const data = new FormData();
 
@@ -122,6 +132,9 @@ class AboutScreen extends React.Component {
         return data;
     };
 
+    /*
+    Send the selected photo to the server
+    */
     async uploadPhoto(selectedPhoto) {
         const authToken = await getAuthToken();
         const endpointUsertype = "individual";
@@ -155,7 +168,9 @@ class AboutScreen extends React.Component {
             this.setState({dateSelected: false});
         }
     }
-
+    /**
+     * Get all the attributes needed for creating a user
+     */
     createIndividual() {
         const individual = {
             firstName: this.state.fname,
@@ -181,6 +196,11 @@ class AboutScreen extends React.Component {
         this.props.navigation.goBack();
     }
 
+    /**
+     * Called when 'next' button is pressed
+     * Send a POST request to the server sending the information the user filled in
+     * Alert the user if any required fields were not completed
+     */
     async goToNext() {
         const {
             gender,
@@ -396,7 +416,3 @@ const styles = StyleSheet.create({
 });
 
 export default AboutScreen;
-
-// RESOURCES:
-// https://facebook.github.io/react-native/docs/cameraroll.html
-// https://www.npmjs.com/package/react-native-photo-upload

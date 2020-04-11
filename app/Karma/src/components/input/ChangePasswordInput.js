@@ -40,8 +40,10 @@ export default class ChangePasswordInput extends Component {
         this.passUpState();
     }
 
-    // Passes the states of certain flags up to the parent
-    // container this component is used in.
+    /*
+     Passes the states of certain flags up to the parent
+     container this component is used in.
+    */
     passUpState() {
         const {confirmPassword, password} = this.state;
         console.log(confirmPassword, password, this.isValidPassword());
@@ -60,7 +62,9 @@ export default class ChangePasswordInput extends Component {
         }
     }
 
-    // Logic for whether an error message should be displayed.
+    /*
+    Logic for whether an error message should be displayed.
+    */
     showError() {
         const {firstOpen} = this.props;
         // it's the first time you open the page

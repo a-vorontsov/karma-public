@@ -101,7 +101,6 @@ class ProfileEditScreen extends Component {
                 this.state.photo = null;
             }
         } catch (e) {
-            console.log("caught me");
             console.log(e);
             this.state.photo = null;
         }
@@ -314,8 +313,10 @@ class ProfileEditScreen extends Component {
         });
     };
 
-    // uploads the photo the user picks to the server via a POST request
-    // displays an error to the user if the process fails
+    /*
+     * Uploads the photo the user picks to the server via a POST request
+     * Displays an error to the user if the process fails
+     */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
@@ -348,8 +349,10 @@ class ProfileEditScreen extends Component {
         this.fetchProfilePicture();
     };
 
-    // display the profile picture to a user
-    // uses a GET request to the server
+    /*
+     * Display the profile picture to a user
+     * Uses a GET request to the server
+     */
     fetchProfilePicture = async () => {
         this.imageLoader.animateTo(0, 0);
 

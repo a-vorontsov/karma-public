@@ -31,9 +31,10 @@ export default class AddressInput extends React.Component {
             correctPostCode,
         });
     }
-
-    // Passes the states of certain flags up to the parent
-    // container this component is used in.
+    /*
+     * Passes the states of certain flags up to the parent
+     * Container this component is used in.
+     */
     passUpState() {
         const {
             address1,

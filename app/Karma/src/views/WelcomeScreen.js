@@ -60,7 +60,9 @@ export default class WelcomeScreen extends Component {
         this.baseState = this.state;
     }
 
-    // flag to check whether the user is already fully signed up
+    /*
+     * Flag to check whether the user is already fully signed up
+     */
     async componentDidMount() {
         try {
             const isFullySignedUp = await AsyncStorage.getItem(
@@ -97,9 +99,11 @@ export default class WelcomeScreen extends Component {
         this.setState({[name]: text});
     };
 
-    // logic for a user pressing the Forgot Password button
-    // includes POST request to the server in order to
-    // send the user a validation code via email
+    /*
+     * Logic for a user pressing the Forgot Password button
+     * Includes POST request to the server in order to
+     * Send the user a validation code via email
+     */
     async onForgotPassPressed() {
         this.setState({isForgotPassPressed: true});
         // remove the password field
@@ -124,7 +128,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    // logic for a user pressing the LogIn/Signup button
+    /*
+     * Logic for a user pressing the LogIn/Signup button
+     */
     onSignUpPressed() {
         if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
@@ -143,7 +149,10 @@ export default class WelcomeScreen extends Component {
         }
     }
 
-    // logic for what happens when a user submits an email
+    /*
+     * Logic for what happens when a user submits an email
+     */
+
     async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
         // email is of a valid format
@@ -223,7 +232,9 @@ export default class WelcomeScreen extends Component {
         }
     }
 
-    // verify password is correct
+    /*
+     * Verify password is correct
+     */
     async checkPass() {
         const {navigate} = this.props.navigation;
         let authToken = await getAuthToken();
@@ -249,7 +260,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    // validate that the forgot password code inputted matches the one sent to the user's email
+    /*
+     * Validate that the forgot password code inputted matches the one sent to the user's email
+     */
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
         const {navigate} = this.props.navigation;
@@ -281,7 +294,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    // validate that the sign up code inputted matches the one sent to the user's email
+    /*
+     * Validate that the sign up code inputted matches the one sent to the user's email
+     */
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;
         //check with register route

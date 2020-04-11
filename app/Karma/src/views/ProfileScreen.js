@@ -85,7 +85,9 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
         this.toggleShareModal = this.toggleShareModal.bind(this);
     }
-    // load the profile page if the user is an individual
+    /*
+     * Load the profile page if the user is an individual
+     */
     setupIndividualProfile(res) {
         const {
             causes,
@@ -116,7 +118,9 @@ class ProfileScreen extends Component {
         this.fetchProfilePicture();
     }
 
-    // load the profile page if the user is an organisation
+    /*
+     * Load the profile page if the user is an organisation
+     */
     setupOrganisationProfile(res) {
         const {
             causes,
@@ -169,7 +173,9 @@ class ProfileScreen extends Component {
         this.willFocusListener.remove();
     }
 
-    // get the information about the user's profile from the server using a GET request
+    /*
+     * Get the information about the user's profile from the server using a GET request
+     */
     async fetchProfileInfo() {
         const authToken = await getAuthToken();
         this.imageLoader.animateTo(0, 0);
@@ -197,7 +203,9 @@ class ProfileScreen extends Component {
             });
     }
 
-    // get the user's profile picture from the server using a GET request
+    /*
+     * Get the user's profile picture from the server using a GET request
+     */
     fetchProfilePicture = async () => {
         const profile = this.props.navigation.getParam("profile");
 
@@ -267,8 +275,10 @@ class ProfileScreen extends Component {
         });
     };
 
-    // uploads the photo the user picks to the server via a POST request
-    // displays an error to the user if the process fails
+    /*
+    Uploads the photo the user picks to the server via a POST request
+    * Displays an error to the user if the process fails
+    */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation

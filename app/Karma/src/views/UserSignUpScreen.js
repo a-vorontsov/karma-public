@@ -38,7 +38,9 @@ class SignUpScreen extends React.Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
 
-    // overwrite what the default onChangeText does
+    /*
+     * Overwrite what the default onChangeText does
+     */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -54,7 +56,9 @@ class SignUpScreen extends React.Component {
         });
     };
 
-    // get all the attributes needed for creating a user
+    /*
+     * Get all the attributes needed for creating a user
+     */
     createUser() {
         return {
             email: this.state.email,
@@ -63,12 +67,14 @@ class SignUpScreen extends React.Component {
         };
     }
 
-    // send POST request to the server in order to authorize sign up
+    /*
+     * Send POST request to the server in order to authorize sign up
+     */
     signUserUp = async () => {
         const user = this.createUser();
 
         this.setState({firstOpen: false, sendPassUpState: true});
-// don't send the request to the server if any of these occur
+        // don't send the request to the server if any of these occur
         if (
             !this.state.termsChecked ||
             !this.state.email ||
