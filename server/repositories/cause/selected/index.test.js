@@ -5,8 +5,9 @@ const userRepository = require("../../user");
 const registrationRepository = require("../../registration");
 const eventRepository = require("../../event");
 const addressRepository = require("../../address");
+const eventCauseRepository = require("../../event/cause");
 
-let registrationExample3, cause, userExample3, cause1, cause2, event, address;
+let registrationExample3, cause, userExample3, cause1, cause2, event, address, eventCause;
 
 beforeEach(() => {
     registrationExample3 = testHelpers.getRegistrationExample3();
@@ -16,6 +17,7 @@ beforeEach(() => {
     userExample3 = testHelpers.getUserExample3();
     event = testHelpers.getEvent();
     address = testHelpers.getAddress();
+    eventCause = testHelpers.getEventCauseExample1();
     return testHelpers.clearDatabase();
 });
 
@@ -136,6 +138,51 @@ test('find works', async () => {
     expect(findResult.rows[0]).toMatchObject(insertResult.rows[0]);
     expect(findByCauseIdResult.rows[0]).toMatchObject(insertResult.rows[0]);
     expect(findByUserIdResult.rows[0]).toMatchObject(insertResult.rows[0]);
+});
+
+test('find EventsSelectedByUser works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample3);
+    userExample3.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample3);
+    const insertCauseResult = await causeRepository.insert(cause);
+    const userId = insertUserResult.rows[0].id;
+    const causeId = insertCauseResult.rows[0].id;
+    const insertAddress = await addressRepository.insert(address);
+    event.date = '2030-10-19 10:23:54';
+    event.addressId = insertAddress.rows[0].id;
+    event.userId = userId;
+    const insertEvent = await eventRepository.insert(event);
+    eventCause.eventId = insertEvent.rows[0].id;
+    eventCause.causeId = causeId;
+    await eventCauseRepository.insert(eventCause);
+    await selectedCauseRepository.insert(userId, causeId);
+    const findResult = await selectedCauseRepository.findEventsSelectedByUser(userId, "");
+    expect(findResult.rowCount).toBe(1);
+    expect(findResult.rows[0].eventId).toBe(insertEvent.rows[0].id);
+    expect(findResult.rows[0].postcode).toBe(address.postcode);
+});
+
+test('find EventsSelectedByUser works with where clause', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample3);
+    userExample3.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample3);
+    const insertCauseResult = await causeRepository.insert(cause);
+    const userId = insertUserResult.rows[0].id;
+    const causeId = insertCauseResult.rows[0].id;
+    const insertAddress = await addressRepository.insert(address);
+    event.date = '2030-10-19 10:23:54';
+    event.addressId = insertAddress.rows[0].id;
+    event.userId = userId;
+    event.womenOnly = true;
+    const insertEvent = await eventRepository.insert(event);
+    eventCause.eventId = insertEvent.rows[0].id;
+    eventCause.causeId = causeId;
+    await eventCauseRepository.insert(eventCause);
+    await selectedCauseRepository.insert(userId, causeId);
+    const findResult = await selectedCauseRepository.findEventsSelectedByUser(userId, " where women_only = true");
+    expect(findResult.rowCount).toBe(1);
+    expect(findResult.rows[0].eventId).toBe(insertEvent.rows[0].id);
+    expect(findResult.rows[0].postcode).toBe(address.postcode);
 });
 
 test('remove by UserId works', async () => {

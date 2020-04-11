@@ -67,7 +67,7 @@ router.get('/', authService.requireAuthentication, async (req, res) => {
         };
         httpUtil.sendResult(causes, res);
     } catch (e) {
-        log.error("%s: Getting all causes for current user", req.query.userId ? `User id '${req.query.userId}'` : req.query.userId);
+        log.error("%s: Getting all causes for current user: " + e, req.query.userId ? `User id '${req.query.userId}'` : req.query.userId);
         httpUtil.sendGenericError(e, res);
     }
 });

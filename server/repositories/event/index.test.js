@@ -104,6 +104,24 @@ test('findAllByUserIdLastMonth works', async () => {
     expect(findAllByUserIdLastMonthResult.rowCount).toBe(1);
 });
 
+test('find All with All Data works', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertUserResult = await userRepository.insert(userExample1);
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    event.date = "2030-10-19 10:23:54";
+    const eventResult1 = await eventRepository.insert(event);
+    const eventResult2 = await eventRepository.insert(event);
+
+    const findAllByUserIdResult = await eventRepository.findAllWithAllData("");
+    expect(findAllByUserIdResult.rowCount).toBe(2);
+    expect(findAllByUserIdResult.rows[0].postcode).toBe(address.postcode);
+    expect(findAllByUserIdResult.rows[0].eventId).toBe(eventResult1.rows[0].id);
+    expect(findAllByUserIdResult.rows[1].eventId).toBe(eventResult2.rows[0].id);
+});
+
 test('insert and removeByUserId work', async () => {
     const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationResult.rows[0].email;
