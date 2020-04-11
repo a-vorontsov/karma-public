@@ -163,7 +163,7 @@ router.get("/individuals", authService.requireAuthentication, async (req, res) =
  *  status: 500, description: DB error
  <pre>
  {
-    "message": "Individual ban toggled successfully",
+    "message": "Banned status updated successfully",
     "data": {
         "individual":
         {
