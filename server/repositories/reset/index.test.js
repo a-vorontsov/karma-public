@@ -27,3 +27,18 @@ test('insert token and find token work', async () => {
     const findTokenResult = await resetRepository.findLatestByUserId(userId);
     expect(insertTokenResult.rows[0]).toMatchObject(findTokenResult.rows[0]);
 });
+
+test('insert token and removeByUserId work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const userId = insertUserResult.rows[0].id;
+    const expiry = new Date();
+    expiry.setTime(expiry.getTime() + (1 * 60 * 60 * 1000));
+    await resetRepository.insertResetToken(userId, "333333", expiry);
+    const findTokenResult = await resetRepository.findLatestByUserId(userId);
+    const deleteResult = await resetRepository.removeByUserId(userId);
+    const findTokenResultAfterDeletion = await resetRepository.findLatestByUserId(userId);
+    expect(findTokenResult.rows[0]).toMatchObject(deleteResult.rows[0]);
+    expect(findTokenResultAfterDeletion.rowCount).toBe(0);
+});
