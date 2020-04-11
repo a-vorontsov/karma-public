@@ -58,44 +58,40 @@ class ActivityDisplayCard extends React.Component {
                     />
                     <View style={{alignItems: "center"}}>
                         <View
-                            style={{alignItems: "flex-start", marginLeft: 30, paddingRight: 30}}>
+                            style={{alignItems: "flex-start", marginLeft: 30}}>
                             <View
                                 style={{
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyItems: "flex-start",
-                                    flexWrap:"wrap",
-                                    backgroundColor:"blue",
                                 }}>
                                 <Text
                                     numberOfLines={1}
                                     style={{
-                                        fontSize: 30,
+                                        fontSize: 20,
                                         color: Colours.black,
                                         fontWeight: "500",
                                     }}>
                                     {props.activity.name}
                                 </Text>
                             </View>
-                            <View>
-                                <RegularText
-                                    style={{
-                                        fontSize: 15,
-                                        color: Colours.lightGrey,
-                                        fontWeight: "500",
-                                    }}>
-                                    {props.activity.city}
-                                    {props.activity.addressVisible &&
-                                        `, ${props.activity.postcode}`}
-                                </RegularText>
-                            </View>
+                            <RegularText
+                                style={{
+                                    fontSize: 15,
+                                    color: Colours.lightGrey,
+                                    fontWeight: "500",
+                                }}>
+                                {props.activity.city}
+                                {props.activity.addressVisible &&
+                                    `, ${props.activity.postcode}`}
+                            </RegularText>
                         </View>
                     </View>
                     <View
                         style={{
                             flex: 1,
-                            alignItem: "flex-start",
-                            justifyContent: "flex-start",
+                            alignItem: "flex-end",
+                            justifyContent: "flex-end",
                         }}>
                         <TouchableOpacity
                             style={{alignSelf: "flex-end"}}
