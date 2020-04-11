@@ -47,6 +47,31 @@ test('inserting and finding works', async () => {
     expect(findAllByEventIdResult.rows).toMatchObject([signUp]);
 });
 
+test('inserting and finding works for confirmed events', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const insertAddressResult = await addressRepository.insert(address);
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
+    const insertIndividualResult = await individualRepository.insert(individual);
+
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
+    await signupRepository.insert(signUp);
+
+    const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
+    const findAllByIndividualIdResult = await signupRepository.findAllByIndividualId(insertIndividualResult.rows[0].id);
+    const findAllByEventIdResult = await signupRepository.findAllByEventIdConfirmed(insertEventResult.rows[0].id);
+    expect(findResult.rows[0]).toMatchObject(signUp);
+    expect(findAllByIndividualIdResult.rows).toMatchObject([signUp]);
+    expect(findAllByEventIdResult.rows).toMatchObject([signUp]);
+});
+
 test('inserting and findingByIndividualIdConfirmed works', async () => {
     const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationRepository.rows[0].email;
@@ -138,6 +163,30 @@ test('inserting and finding users signed up to an event works', async () => {
 
     const findResult = await signupRepository.findUsersSignedUpConfirmed(insertEventResult.rows[0].id);
     expect(findResult.rows[0]).toMatchObject(signUp);
+});
+
+test('inserting and removing works', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const insertAddressResult = await addressRepository.insert(address);
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
+    const insertIndividualResult = await individualRepository.insert(individual);
+
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
+    await signupRepository.insert(signUp);
+
+    const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
+    const deleteResult = await signupRepository.remove(signUp);
+    const findResultAfterDeletion = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
+    expect(findResult.rows[0]).toMatchObject(deleteResult.rows[0]);
+    expect(findResultAfterDeletion.rowCount).toBe(0);
 });
 
 test('inserting and removingByIndividualId works', async () => {
