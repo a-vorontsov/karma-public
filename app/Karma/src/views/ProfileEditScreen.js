@@ -12,6 +12,7 @@ import {
     Text,
     Platform,
     Easing,
+    Keyboard,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
@@ -656,6 +657,9 @@ class ProfileEditScreen extends Component {
                                     autoCapitalize="none"
                                     onChange={this.onChangeText}
                                     name="username"
+                                    onSubmitEditing={() =>
+                                        Keyboard.dismiss()
+                                    }
                                 />
                                 {isOrganisation && (
                                     <View>
@@ -711,6 +715,9 @@ class ProfileEditScreen extends Component {
                                                     },
                                                 };
                                             })
+                                        }
+                                        onSubmitEditing={() =>
+                                            Keyboard.dismiss()
                                         }
                                     />
                                 </View>

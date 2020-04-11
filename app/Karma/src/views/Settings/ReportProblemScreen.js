@@ -75,6 +75,7 @@ class ReportProblemScreen extends Component {
     render() {
         return (
             <SafeAreaView style={[Styles.container]}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={Styles.ph24}>
                     <PageHeader title="Report a Problem" />
                 </View>
@@ -137,6 +138,7 @@ class ReportProblemScreen extends Component {
                         />
                     </View>
                 </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }
