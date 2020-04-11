@@ -389,7 +389,7 @@ class ProfileEditScreen extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior="padding"
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
