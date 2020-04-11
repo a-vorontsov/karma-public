@@ -27,6 +27,16 @@ class ActivitiesFavouritesScreen extends Component {
 
     async componentDidMount() {
         await this.fetchAllActivities();
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     async fetchAllActivities() {
@@ -46,7 +56,7 @@ class ActivitiesFavouritesScreen extends Component {
     }
 
     onRefresh() {
-        this.setState({isRefreshing: true}); // true isRefreshing flag for enable pull to refresh indicator
+        this.setState({isRefreshing: true, activities: []}); // true isRefreshing flag for enable pull to refresh indicator
         this.fetchAllActivities()
             .then(() => {
                 this.setState({
