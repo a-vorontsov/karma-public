@@ -35,7 +35,7 @@ const find = (individualId, eventId) => {
 
 const findAll = () => {
     const query = "SELECT * FROM sign_up";
-    return db.query(query, []);
+    return db.query(query);
 };
 
 const update = (signup) => {

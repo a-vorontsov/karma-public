@@ -11,7 +11,7 @@ on:
   pull_request:
     branches: # == run tests only on pull request opens/updates to: ==
       - master
-      - dev # dev
+      - dev
     paths:
       - "server/**"
 
@@ -41,12 +41,12 @@ jobs:
         run: npx eslint ./
 
       - name: Generate API documentation
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         run: npm run docs
         working-directory: ./server
 
       - name: Create API documentation artifact
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: docs
@@ -113,14 +113,14 @@ jobs:
         run: npm test
         working-directory: ./server
       - name: Create test coverage artifact
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: coverage
           path: server/coverage
 
   publish:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/master'
     needs: [build, test]
     runs-on: ubuntu-latest
     steps:

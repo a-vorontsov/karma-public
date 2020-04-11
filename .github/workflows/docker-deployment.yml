@@ -1,9 +1,9 @@
 name: Docker Deployment
 # Trigger on push or pull request
 on:
-  push: # run whenever something is merged into dev
+  push: # run whenever something is merged into master
     branches:
-      - dev
+      - master
     paths:
       - "server/**"
       - "web/**"
