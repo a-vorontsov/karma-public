@@ -175,6 +175,7 @@ VALUES
     ('feugiat.nec@lectusrutrumurna.net', 1, 1, 0, 1, 'token', '2020-12-10 00:00:00-00'),
     ('sit.amet@nequeetnunc.com', 1, 0, 1, 1, 'token', '2020-12-10 00:00:00-00'),
     ('sed.libero@auctor.com', 1, 1, 1, 1, 'token', '2020-12-10 00:00:00-00'),
+    ('omarusman830@gmail.com', 1, 1, 1, 1, 'token', '2020-12-10 00:00:00-00'),
     ('ridiculus@utmiDuis.org', 0, 0, 0, 1, 'token', '2020-12-10 00:00:00-00');
 
 
@@ -289,7 +290,8 @@ VALUES
     ('sit.amet@nequeetnunc.com', 'tincidunt,', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-07-27 00:00:00-00'),
     ('sed.libero@auctor.com', 'senectus', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'true', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-04-26 00:00:00-00'),
     ('ridiculus@utmiDuis.org', 'nec,', 'bd25f93e765c380a414d1cb7887a9cfcf5394fbc36443810256df3ce39f7ab32', 'false', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', '2019-06-04 00:00:00-00'),
-    ('houssammahlous123@gmail.com', 'houssam966', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00');
+    ('houssammahlous123@gmail.com', 'houssam966', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00'),
+    ('omarusman830@gmail.com', 'usman', '94f1d12f23835082ea654a89878e8a37bf534c0e978189cb1fdc6598757c2353', 'true', 'dc50869bda915cd6a76888308e908ec9f16ef3a438f837d1e6d7303af8e501cd', '2019-12-10 00:00:00-00');
 
 
 ALTER SEQUENCE organisation_id_seq RESTART WITH 1;
@@ -425,7 +427,8 @@ VALUES
     ('Kris. P.', 'Bacon', '(027) 4128 7612', 'false', 96, 1, 'f', '1996-01-05'),
     ('Brenna', 'Mills', '055 0205 5906', 'true', 97, 4, 'f', '1974-08-27'),
     ('Tatiana', 'Sullivan', '070 0019 7883', 'true', 98, 7, 'f', '1937-09-16'),
-    ('Julie', 'Ewing', '(019370) 59767', 'false', 99, 4, 'f', '1941-12-08');
+    ('Julie', 'Ewing', '(019370) 59767', 'false', 99, 4, 'f', '1941-12-08'),
+    ('Usman', 'Omar', '05555555', 'false', 101, 1, 'm', '2000-04-17');
 
 
 ALTER SEQUENCE event_id_seq RESTART WITH 1;
@@ -607,7 +610,8 @@ VALUES
     (47, 94, 'false', 'malesuada malesuada. Integer id magna et ipsum cursus vestibulum. Mauris magna. Duis dignissim'),
     (48, 36, 'true', 'sed libero. Proin sed turpis nec mauris blandit mattis. Cras eget nisi dictum augue malesuada malesuada. Integer id magna et ipsum cursus vestibulum. Mauris magna. Duis dignissim tempor arcu. Vestibulum ut eros non enim commodo'),
     (49, 58, 'true', 'nisi. Cum sociis natoque penatibus et magnis dis parturient montes,'),
-    (50, 87, 'false', 'eleifend. Cras sed leo. Cras vehicula aliquet libero. Integer in magna. Phasellus dolor elit, pellentesque a, facilisis non, bibendum sed, est. Nunc laoreet lectus quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in consequat enim diam vel arcu. Curabitur ut odio vel est tempor bibendum. Donec felis orci, adipiscing non, luctus sit amet, faucibus ut, nulla. Cras eu tellus eu augue porttitor interdum. Sed auctor odio a purus. Duis elementum, dui quis accumsan convallis, ante lectus convallis est, vitae sodales nisi magna sed dui. Fusce aliquam, enim nec tempus scelerisque, lorem');
+    (50, 87, 'false', 'eleifend. Cras sed leo. Cras vehicula aliquet libero. Integer in magna. Phasellus dolor elit, pellentesque a, facilisis non, bibendum sed, est. Nunc laoreet lectus quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in consequat enim diam vel arcu. Curabitur ut odio vel est tempor bibendum. Donec felis orci, adipiscing non, luctus sit amet, faucibus ut, nulla. Cras eu tellus eu augue porttitor interdum. Sed auctor odio a purus. Duis elementum, dui quis accumsan convallis, ante lectus convallis est, vitae sodales nisi magna sed dui. Fusce aliquam, enim nec tempus scelerisque, lorem'),
+    (51, 32, 'false', 'I ');
 
 -- Setting --
 
