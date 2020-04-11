@@ -94,3 +94,51 @@ test('deleting works', async () => {
     expect(deleteResult.rows[0]).toMatchObject(favourite);
     expect(findResult.rowCount).toBe(0);
 });
+
+test('deleting works by individual id', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const insertAddressResult = await addressRepository.insert(address);
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
+    const insertIndividualResult = await individualRepository.insert(individual);
+
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+
+    favourite.eventId = insertEventResult.rows[0].id;
+    favourite.individualId = insertIndividualResult.rows[0].id;
+    await favouriteRepository.insert(favourite);
+
+    const deleteResult = await favouriteRepository.removeByIndividualId(favourite.individualId);
+
+    const findResult = await favouriteRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
+    expect(deleteResult.rows[0]).toMatchObject(favourite);
+    expect(findResult.rowCount).toBe(0);
+});
+
+test('deleting works by creator id', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const insertAddressResult = await addressRepository.insert(address);
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
+    const insertIndividualResult = await individualRepository.insert(individual);
+
+    event.addressId =  insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+
+    favourite.eventId = insertEventResult.rows[0].id;
+    favourite.individualId = insertIndividualResult.rows[0].id;
+    await favouriteRepository.insert(favourite);
+
+    const deleteResult = await favouriteRepository.removeByEventCreatorId(event.userId);
+
+    const findResult = await favouriteRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
+    expect(deleteResult.rows[0]).toMatchObject(favourite);
+    expect(findResult.rowCount).toBe(0);
+});

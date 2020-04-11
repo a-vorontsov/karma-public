@@ -24,7 +24,7 @@ const log = log4js.getLogger();
 
 switch (process.env.NODE_ENV) {
     case "test":
-        log.level = "debug";
+        log.level = "info";
         break;
     case "development":
         log.level = "debug";
