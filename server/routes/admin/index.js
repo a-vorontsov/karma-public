@@ -55,6 +55,49 @@ router.get("/users", authService.requireAuthentication, async (req, res) => {
 });
 
 /**
+ * Endpoint called whenever an admin requests to see all sign-ups to events.<br/>
+ <p><b>Route: </b>/admin/signups (GET)</p>
+ <p><b>Permissions: </b>require admin permissions</p>
+ * @param {string} req.headers.authorization authToken
+ * @returns {Object}
+ *  status: 200, description: All sign-ups to events made on the app.<br/>
+ *  status: 500, description: DB error
+ *<pre>
+ {
+    "message": "Signups fetched successfully.",
+    "data": {
+        "signups": [
+            {
+                "individualId": 1
+                "eventId": 1
+                "confirmed": false
+                "attended": false
+            },
+            {
+                "individualId": 1
+                "eventId": 2
+                "confirmed": true
+                "attended": true
+            }
+        ]
+    }
+ }
+ </pre>
+ *  @name Get all signups
+ *  @function
+ */
+router.get("/signups", authService.requireAuthentication, async (req, res) => {
+    try {
+        log.info("Admin%s: Fetching all signups", (req.query.userId ? ` (user id ${req.query.userId})` : ``));
+        const usersResult = await adminService.getAllSignups();
+        return httpUtil.sendResult(usersResult, res);
+    } catch (e) {
+        log.error("Admin%s: Signups fetching failed: " + e, (req.query.userId ? ` (user id ${req.query.userId})` : ``));
+        return httpUtil.sendGenericError(e, res);
+    }
+});
+
+/**
  * Endpoint called whenever an admin requests to delete all information in database for
  * specific user.<br/>
  <p><b>Route: </b>/admin/user/delete?deleteUserId=2 (POST)</p>

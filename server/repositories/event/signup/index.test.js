@@ -45,6 +45,7 @@ test('inserting and finding works', async () => {
     expect(findResult.rows[0]).toMatchObject(signUp);
     expect(findAllByIndividualIdResult.rows).toMatchObject([signUp]);
     expect(findAllByEventIdResult.rows).toMatchObject([signUp]);
+    expect(findAllResult.rows).toMatchObject([signUp]);
 });
 
 test('updating works', async () => {
