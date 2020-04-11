@@ -7,7 +7,7 @@ export default class CausePicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
+            items: props.selectedCauses ? props.selectedCauses : [],
         };
         this.onPress = this.onPress.bind(this);
     }
