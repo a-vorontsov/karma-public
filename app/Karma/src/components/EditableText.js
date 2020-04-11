@@ -14,7 +14,6 @@ class EditableText extends Component {
                 <TextInput
                     value={text}
                     onChangeText={onChange}
-                    onSubmitEditing={onSubmitEditing}
                     style={style}
                     autoCompleteType="off"
                     autoCorrect={false}

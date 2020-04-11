@@ -657,9 +657,7 @@ class ProfileEditScreen extends Component {
                                     autoCapitalize="none"
                                     onChange={this.onChangeText}
                                     name="username"
-                                    onSubmitEditing={() =>
-                                        Keyboard.dismiss()
-                                    }
+                                    onSubmitEditing={() => Keyboard.dismiss()}
                                 />
                                 {isOrganisation && (
                                     <View>
@@ -715,9 +713,6 @@ class ProfileEditScreen extends Component {
                                                     },
                                                 };
                                             })
-                                        }
-                                        onSubmitEditing={() =>
-                                            Keyboard.dismiss()
                                         }
                                     />
                                 </View>
