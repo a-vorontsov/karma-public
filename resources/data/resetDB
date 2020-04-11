@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ../../server
+npm run db-migrate reset
+npm run db-migrate up

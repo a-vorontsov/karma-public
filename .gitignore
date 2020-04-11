@@ -1,3 +1,4 @@
+node_modules
 # Logs
 logs
 *.log
@@ -105,3 +106,15 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# JetBrains IDE configurations
+.idea
+
+# PKC keys
+*.key
+server/routes/verify/temp/
+
+.vscode
+*.DS_Store
+
+out
