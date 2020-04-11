@@ -80,21 +80,6 @@ test('findAllByUserId works', async () => {
     expect(findAllByUserIdResult.rows).toMatchObject([insertedEvent1, insertedEvent2]);
 });
 
-test('findAllByUserId works', async () => {
-    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
-    userExample1.email = insertRegistrationResult.rows[0].email;
-    const insertAddressResult = await addressRepository.insert(address);
-    const insertUserResult = await userRepository.insert(userExample1);
-    event.addressId =  insertAddressResult.rows[0].id;
-    event.userId = insertUserResult.rows[0].id;
-
-    await eventRepository.insert(event);
-    await eventRepository.insert(event);
-
-    const findAllByUserIdResult = await eventRepository.findAllWithAllData();
-    expect(findAllByUserIdResult.rowCount).toBe(2);
-});
-
 test('findAllByUserIdLastMonth works', async () => {
     const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
     userExample1.email = insertRegistrationResult.rows[0].email;

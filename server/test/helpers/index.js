@@ -170,7 +170,7 @@ const eventWithData = {
     physical: true,
     addInfo: true,
     content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
-    date: "2020-04-08T23:00:00.000Z",
+    date: "2030-04-08T23:00:00.000Z",
     eventCreatorId: 1,
     address1: "uni road",
     address2: "wherever",
