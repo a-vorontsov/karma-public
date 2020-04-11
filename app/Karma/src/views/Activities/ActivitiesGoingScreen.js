@@ -30,6 +30,16 @@ class ActivitiesGoingScreen extends Component {
     }
     async componentDidMount() {
         await this.fetchAllActivities();
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     async fetchAllActivities() {
@@ -150,6 +160,9 @@ class ActivitiesGoingScreen extends Component {
                                         activity={activity}
                                         key={activity.eventId}
                                         signedup={true}
+                                        isOrganisation={
+                                            this.props.isOrganisation
+                                        }
                                     />
                                 );
                             })}
@@ -171,6 +184,9 @@ class ActivitiesGoingScreen extends Component {
                                         activity={activity}
                                         key={activity.eventId}
                                         signedup={true}
+                                        isOrganisation={
+                                            this.props.isOrganisation
+                                        }
                                     />
                                 );
                             })}

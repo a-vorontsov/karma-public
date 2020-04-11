@@ -383,13 +383,13 @@ class ProfileScreen extends Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
-                                            navigate("SettingsMenu", {
+                                            navigate("Settings", {
                                                 user: this.state.user,
                                             })
                                         }>
                                         <Image
                                             onPress={() =>
-                                                navigate("SettingsMenu", {
+                                                navigate("Settings", {
                                                     user: this.state.user,
                                                 })
                                             }

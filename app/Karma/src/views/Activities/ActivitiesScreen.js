@@ -9,6 +9,7 @@ import {
     Image,
     Dimensions,
     ScrollView,
+    Alert,
 } from "react-native";
 import {RegularText} from "../../components/text";
 import Colours from "../../styles/Colours";
@@ -19,6 +20,9 @@ import ActivitiesFavouritesScreen from "./ActivitiesFavouritesScreen";
 import ActivityFilters from "../../components/activities/ActivityFilters";
 import {getCalendarPerms, askCalendarPerms} from "../../util/calendar";
 import Modal, {ModalContent, SlideAnimation} from "react-native-modals";
+import {REACT_APP_API_URL} from "react-native-dotenv";
+import {getAuthToken} from "../../util/credentials";
+const request = require("superagent");
 
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
@@ -35,9 +39,11 @@ class ActivitiesScreen extends Component {
             display: ActivitiesAllScreen,
             modalVisible: false,
             filters: {},
+            isOrganisation: false,
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.onUpdateFilters = this.onUpdateFilters.bind(this);
+        this.child = React.createRef();
     }
 
     onUpdateFilters = async inputState => {
@@ -45,6 +51,7 @@ class ActivitiesScreen extends Component {
         await this.setState({
             filters: inputState.filters,
         });
+        this.child.current.onRefresh();
     };
 
     toggleModal = () => {
@@ -54,10 +61,26 @@ class ActivitiesScreen extends Component {
     };
 
     async componentDidMount() {
+        const authToken = await getAuthToken();
         const perms = await getCalendarPerms();
         if (perms === "undetermined") {
             await askCalendarPerms();
         }
+        await request
+            .get(`${REACT_APP_API_URL}/profile`)
+            .set("authorization", authToken)
+            .then(res => {
+                if (res.body.data.organisation) {
+                    this.setState({isOrganisation: true});
+                    console.log("fetching activities for organisation ");
+                } else {
+                    this.setState({isOrganisation: false});
+                    console.log("fetching activities for individual ");
+                }
+            })
+            .catch(err => {
+                Alert.alert("Unable to load profile", err);
+            });
     }
 
     setScreen(selectedScreen) {
@@ -218,7 +241,12 @@ class ActivitiesScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <this.state.display filters={this.state.filters} />
+                    <this.state.display
+                        filters={this.state.filters}
+                        navigation={this.props.navigation}
+                        ref={this.child}
+                        isOrganisation={this.state.isOrganisation}
+                    />
                 </KeyboardAvoidingView>
             </SafeAreaView>
         );
