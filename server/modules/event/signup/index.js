@@ -128,7 +128,7 @@ const getGoingEvents = async (userId) => {
  */
 const updateSignUp = async (signup) => {
     const oldSignup = await signupRepository.find(signup.individualId, signup.eventId);
-    if (oldSignup.rows[0].attended === false && signup.attended === true) {
+    if (!oldSignup.rows[0].attended && signup.attended === true) {
         await profileRepository.updateKarmaPoints(signup.individualId);
     }
 

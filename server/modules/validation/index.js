@@ -109,7 +109,7 @@ const signupSchema = {
         "individualId": {"type": "number"},
         "eventId": {"type": "number"},
         "confirmed": {"type": ["boolean", "null"]},
-        "attended": {"type": "boolean"},
+        "attended": {"type": ["boolean", "null"]},
     },
     "required": ["individualId", "confirmed", "attended"],
 };
