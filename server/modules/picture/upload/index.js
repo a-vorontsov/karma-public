@@ -44,7 +44,7 @@ const updateAvatar = (req, res) => {
                 const avatarDir = `avatar-${userType}/`;
                 const user = result.rows[0];
 
-                if (process.env.SKIP_S3) {
+                if (process.env.SKIP_S3 == true) {
                     // MOCK RESPONSE
                     log.info("Skipping S3 update and sending mock response for testing");
 

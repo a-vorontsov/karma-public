@@ -58,7 +58,7 @@ const deleteAvatar = (req, res) => {
                         const pictureLocation = picture.pictureLocation;
                         const key = pictureLocation.replace(AWS_REGEX, "");
 
-                        if (process.env.SKIP_S3) {
+                        if (process.env.SKIP_S3 == true) {
                             // MOCK RESPONSE
                             log.info("Skipping S3 update and sending mock response for testing");
                             log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
