@@ -139,13 +139,9 @@ export default class OrgSignUpScreen extends React.Component {
                     },
                     body: this.createFormData(selectedPhoto, {}),
                 },
-            )
-                .then(res => {
-                    const response = res.json();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            ).catch(error => {
+                console.log(error);
+            });
         }
     }
 

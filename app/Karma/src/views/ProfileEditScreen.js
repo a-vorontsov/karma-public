@@ -384,7 +384,6 @@ class ProfileEditScreen extends Component {
             isOrganisation,
             individual,
             organisation,
-            photo,
             photoLoading,
         } = this.state;
         return (
