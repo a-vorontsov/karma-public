@@ -33,7 +33,6 @@ export default class ChangePasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
-        console.log(this.state.valid);
         if (!this.state.valid) {
             return;
         }
@@ -81,7 +80,7 @@ export default class ChangePasswordScreen extends Component {
                 <View style={{alignItems: "center", flex: 1, top: 20}}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View style={{flex: 1}}>
                             <SubTitleText
                                 style={{

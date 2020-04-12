@@ -32,6 +32,16 @@ function compare(a, b) {
     return 0;
 }
 
+/**
+ * @class NotificationsScreen displays the notifications a user receives.
+ *
+ * A user receives a notification when they are:
+ * - accepted for an event
+ * - rejected for an event
+ * - someone has requested to sign up to their event
+ * - someone sends them a message about an event
+ * - an event is cancelled or updated
+ */
 class NotificationsScreen extends Component {
     constructor(props) {
         super(props);
@@ -45,6 +55,11 @@ class NotificationsScreen extends Component {
         };
     }
 
+    /**
+     * Load all the notifications related to that user.
+     * Send a GET request to the server in order to fetch
+     * the notifications from the database.
+     */
     getNotifications = async () => {
         this.setState({refreshing: true});
         const authToken = await getAuthToken();

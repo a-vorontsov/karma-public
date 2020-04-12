@@ -13,6 +13,10 @@ import Toast from "react-native-simple-toast";
 
 const request = require("superagent");
 
+/**
+ *  @class PickCausesScreen allows a user to select their preferred causes.
+ *  Fetches the already selected causes and updates the new causes selected.
+ */
 export default class PickCausesScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -65,7 +69,6 @@ export default class PickCausesScreen extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.message);
                 Toast.showWithGravity(
                     "Causes selected!",
                     Toast.SHORT,
@@ -77,7 +80,7 @@ export default class PickCausesScreen extends React.Component {
                 Alert.alert("Server Error", err.message);
             });
     }
-    //TODO display selected causes already from db
+
     render() {
         const {causes, selectedCauses} = this.state;
         return (

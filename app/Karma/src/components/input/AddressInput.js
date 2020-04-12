@@ -5,6 +5,10 @@ import {Keyboard, View} from "react-native";
 
 const POSTCODE_REGEX = /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s?[0-9][A-Za-z]{2})$/;
 
+/**
+ * @class AddressInput is a component which is used whenever
+ * the user is required to provide an address.
+ */
 export default class AddressInput extends React.Component {
     constructor(props) {
         super(props);
@@ -26,6 +30,11 @@ export default class AddressInput extends React.Component {
             correctPostCode,
         });
     }
+
+    /**
+     * Passes the states of certain flags up to the parent
+     * Container this component is used in.
+     */
     passUpState() {
         const {
             address1,

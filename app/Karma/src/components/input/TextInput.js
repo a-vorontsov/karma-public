@@ -7,6 +7,10 @@ import Colours from "../../styles/Colours";
 import {initialMode} from "react-native-dark-mode";
 const isDarkMode = initialMode === "dark";
 
+/**
+ * @class TextInput component describes the type of
+ * input field used throughout the application.
+ */
 export default class TInput extends Component {
     constructor(props) {
         super(props);

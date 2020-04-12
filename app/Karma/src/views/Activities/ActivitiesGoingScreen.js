@@ -48,7 +48,6 @@ class ActivitiesGoingScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/going`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.message);
                 const activities = result.body.data.events || [];
                 const confirmed = [];
                 const pending = [];

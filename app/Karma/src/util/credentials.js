@@ -10,5 +10,6 @@ export const getAuthToken = async () => {
         }
     } catch (error) {
         console.log("Token couldn't be accessed!", error);
+        return "";
     }
 };

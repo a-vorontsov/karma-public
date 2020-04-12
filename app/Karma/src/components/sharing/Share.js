@@ -7,6 +7,11 @@ import {AppInstalledChecker} from "react-native-check-app-install";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-simple-toast";
 
+/**
+ * @class Share component is used whenever there is a share
+ * button on the screen. It manages the sharing pop-ups and redirection.
+ */
+
 export default class Share extends React.Component {
     constructor(props) {
         super(props);
@@ -14,6 +19,11 @@ export default class Share extends React.Component {
             installedApps: [],
         };
     }
+
+    /**
+     * Logic for which platform to launch depending on the user input
+     * @param {*} linkType
+     */
     async openSharing(linkType) {
         const {title, message} = this.props;
         const shareOptions = {
@@ -48,6 +58,9 @@ export default class Share extends React.Component {
         }
         Sharing.shareSingle(shareOptions);
     }
+    /**
+     * Handle the sharing on Android and iOS
+     */
     async componentDidMount() {
         let installedApps = [];
         const apps = [
@@ -79,6 +92,11 @@ export default class Share extends React.Component {
             installedApps,
         });
     }
+
+    /**
+     * Check whether the user has the app installed before opening it
+     * @param {*} app
+     */
     async isInstalled(app) {
         const installed = await AppInstalledChecker.isAppInstalled(app);
         return installed;

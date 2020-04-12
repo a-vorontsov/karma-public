@@ -6,7 +6,6 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import request from "superagent";
-import {sendNotification} from "../../util/SendNotification";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 
@@ -15,38 +14,35 @@ const icons = {
     cancel: require("../../assets/images/general-logos/cancel.png"),
 };
 
-export default class SignUpRequest extends React.Component {
-    signUserUp = async accept => {
+export default class AttendanceConfirmation extends React.Component {
+    confirmAttendance = async attended => {
         const {user, activity} = this.props;
 
         const body = {
             otherUserId: user.userId,
-            confirmed: accept,
-            attended: false,
+            attended: attended,
+            confirmed: true,
         };
 
         const authToken = await getAuthToken();
 
+        // SEND CONFIRMATION OF ATTENDANCE OR NOT
         await request
             .post(`${REACT_APP_API_URL}/event/${activity.id}/signUp/update`)
             .send(body)
             .set("authorization", authToken)
             .then(res => {
                 this.props.onSubmit();
-                let type = accept
-                    ? "AttendanceConfirmation"
-                    : "AttendanceCancellation";
-                sendNotification(type, `${activity.name}`, [user.userId]);
             })
             .catch(err => {
-                if (accept) {
+                if (attended) {
                     Alert.alert(
-                        "Unable to confirm a user's sign up at this time.",
+                        "Unable to confirm the user's attendance at this time.",
                         err,
                     );
                 } else {
                     Alert.alert(
-                        "Unable to confirm a user's sign up at this time.",
+                        "Unable to confirm the user's absence at this time.",
                         err,
                     );
                 }
@@ -93,7 +89,7 @@ export default class SignUpRequest extends React.Component {
                         {/** APPROVE A USER */}
                         <TouchableOpacity
                             onPress={() => {
-                                this.signUserUp(true);
+                                this.confirmAttendance(true);
                             }}>
                             <Image
                                 source={icons.check}
@@ -108,7 +104,7 @@ export default class SignUpRequest extends React.Component {
                         {/** DISAPPROVE A USER */}
                         <TouchableOpacity
                             onPress={() => {
-                                this.signUserUp(false);
+                                this.confirmAttendance(false);
                             }}>
                             <Image
                                 source={icons.cancel}

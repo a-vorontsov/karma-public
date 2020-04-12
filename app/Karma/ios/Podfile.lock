@@ -42,6 +42,7 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
+  - Mixpanel (3.6.0)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -221,6 +222,9 @@ PODS:
     - React
   - react-native-maps (0.27.0):
     - React
+  - react-native-mixpanel (1.2.0):
+    - Mixpanel (~> 3.6.0)
+    - React
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-simple-toast (1.0.0):
@@ -317,6 +321,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -350,6 +355,7 @@ SPEC REPOS:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - Mixpanel
     - Toast
 
 EXTERNAL SOURCES:
@@ -397,6 +403,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-mixpanel:
+    :path: "../node_modules/react-native-mixpanel"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
@@ -460,6 +468,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
+  Mixpanel: 446b6e7713aa34a9a3516ff7648d56551384fc94
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -476,6 +485,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
   react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
+  react-native-mixpanel: d644efe1ca33d2646d5cba29e24a13ebc9b37209
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-simple-toast: 6c376bd79b1e255a4bee90a72ead6447f96ea10d
   react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
@@ -504,6 +514,6 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
+PODFILE CHECKSUM: 1aef51ba00c8e35f21dfc72e5a7719f6647fa34d
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.1
