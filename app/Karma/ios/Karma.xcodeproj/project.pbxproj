@@ -47,7 +47,7 @@
 		3A7A133D4BBD4D189BBABE89 /* community.png in Resources */ = {isa = PBXBuildFile; fileRef = F961A0732F184A7E8A98C5F7 /* community.png */; };
 		3D1EDCA9DCAA408E95FB2A7B /* id-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 908185F0F3DB403B84DD99C8 /* id-check.png */; };
 		3E6D396DDF0B490C9DA500F1 /* causes-off.png in Resources */ = {isa = PBXBuildFile; fileRef = AE29E61AF7CE425481119FBB /* causes-off.png */; };
-		46976AD5445E4F479C65284A /* (null) in Resources */ = {isa = PBXBuildFile; };
+		46976AD5445E4F479C65284A /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		4847C779C4A849BAB1C27BDD /* guidelines.png in Resources */ = {isa = PBXBuildFile; fileRef = 973D4042727E4537AA28CFD2 /* guidelines.png */; };
 		48BAF0B0D8A74048895FFA62 /* copy-link.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6B3E92FBC842B6BAE81317 /* copy-link.png */; };
 		493F5EDCD47143A3A8EF48A5 /* badges-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E9DA88843F45CBAA2D89C2 /* badges-logo.png */; };
@@ -87,7 +87,7 @@
 		A4D97F3EAC9C461EA6ADC9AF /* triple-dot-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = EF1808FBD34E45069B31888B /* triple-dot-blue.png */; };
 		AA6BEBBBC1634AC792C8ED83 /* linkedin-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BCC6474D9E8E4AD08E51DD19 /* linkedin-logo.png */; };
 		B07BC85F0DFC45A6840062D4 /* homelessness.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CED3B5B0BE64C12B46913E3 /* homelessness.png */; };
-		B4491171494E4FC593901C13 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		B4491171494E4FC593901C13 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		B49C9E60907B41E2BC7739BF /* peace-white.png in Resources */ = {isa = PBXBuildFile; fileRef = D83B20281B894E0188D53868 /* peace-white.png */; };
 		B4EDCED7023444EAA518E514 /* photo-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F7484B5207147C19DE7C778 /* photo-plus.png */; };
 		B8BAD3BA243FDBBC003F2FD3 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8BAD3B9243FDBBC003F2FD3 /* BootSplash.storyboard */; };
@@ -96,7 +96,8 @@
 		BC92903881884D67B5ABDD8D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 0396FACF8E774F55B7036240 /* key.png */; };
 		BD5F0FB277CE449EAB76ABB3 /* poverty-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CEEE27D95D44C7995383CBB /* poverty-white.png */; };
 		C1CD6C41062F41959D63B015 /* energy.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A3DD9C28554D4887FB9EEF /* energy.png */; };
-		C4DB3F15E08F4339A027B189 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		C4DB3F15E08F4339A027B189 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		C57DD13311890722EF36F235 /* libPods-Karma-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EA4728A6C608A1DEBF93526 /* libPods-Karma-tvOS.a */; };
 		C654B844BE6A415F8DA6E186 /* activities-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 99A3EC475C9247BD8E03D4C7 /* activities-on.png */; };
 		C88040D5069E4AF488220052 /* causes-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = F8D01F22EE6246F194F44C6C /* causes-plus.png */; };
 		CD2589BDBFD7465B8A7BF1F6 /* ribbon.png in Resources */ = {isa = PBXBuildFile; fileRef = CB641166F6534F4BA01CFE47 /* ribbon.png */; };
@@ -115,6 +116,7 @@
 		EF1607F697DC4738A800418C /* OpenSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BD226D532F54D04AD05FE13 /* OpenSans-SemiBoldItalic.ttf */; };
 		F1508E5919584552B7DFFD76 /* people-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B4EFA20B68864C70BA345C81 /* people-logo.png */; };
 		F2A1DFC82C9742548B3D848B /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5175CF6D76544695AA6F69F5 /* OpenSans-BoldItalic.ttf */; };
+		F8B31C074ADA65917D7C17B1 /* libPods-Karma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09149961979E67570FDDA7AC /* libPods-Karma.a */; };
 		FA08249441B346ACB93CD0F4 /* community-white.png in Resources */ = {isa = PBXBuildFile; fileRef = BAC83CB3876A4205B217FD55 /* community-white.png */; };
 		FA21863F0D7E42F2A3E94EBF /* homelessness-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C4BE50AEA5DA4907BF49A97E /* homelessness-white.png */; };
 /* End PBXBuildFile section */
@@ -297,7 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8CAFB3C242BFE5A00BBFDD7 /* libGoogle-Maps-iOS-Utils.a in Frameworks */,
-				C3CCEE764B7AC34D1FABDD49 /* libPods-Karma.a in Frameworks */,
+				F8B31C074ADA65917D7C17B1 /* libPods-Karma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +307,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43BFCEE197DD6C6F1EBCBF49 /* libPods-Karma-tvOS.a in Frameworks */,
+				C57DD13311890722EF36F235 /* libPods-Karma-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -770,11 +772,11 @@
 				DFA78B4ADC4E440BAA5809F0 /* report-problem.png in Resources */,
 				E46DC8A95B31419193F9834A /* terms.png in Resources */,
 				E0191A868D684A36877C8A84 /* cancel.png in Resources */,
-				46976AD5445E4F479C65284A /* (null) in Resources */,
+				46976AD5445E4F479C65284A /* BuildFile in Resources */,
 				0E5E9D7ECE2448CEAADAB57F /* green-check.png in Resources */,
-				C4DB3F15E08F4339A027B189 /* (null) in Resources */,
+				C4DB3F15E08F4339A027B189 /* BuildFile in Resources */,
 				7C93D187F6D845108CBB3195 /* mail.png in Resources */,
-				B4491171494E4FC593901C13 /* (null) in Resources */,
+				B4491171494E4FC593901C13 /* BuildFile in Resources */,
 				CD2589BDBFD7465B8A7BF1F6 /* ribbon.png in Resources */,
 				A4D97F3EAC9C461EA6ADC9AF /* triple-dot-blue.png in Resources */,
 				869B59132F134E6A80AA1E4B /* filter.png in Resources */,
