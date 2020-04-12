@@ -14,7 +14,7 @@ const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 /**
  * @class ChangePasswordInput is a component used when the user
- * needs to input a password and confirm it via an additional text field. 
+ * needs to input a password and confirm it via an additional text field.
  * The component contains the two text inputs with their respective 'show'
  * buttons, as well as a description of the password requirements.
  */
@@ -61,7 +61,7 @@ export default class ChangePasswordInput extends Component {
         }
     }
 
-    /** 
+    /**
      * Logic for whether an error message should be displayed.
      */
     showError() {

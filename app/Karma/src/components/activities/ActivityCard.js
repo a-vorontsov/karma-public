@@ -58,9 +58,9 @@ function getMonthName(d, long = false) {
 }
 
 /**
- * @class ActivityCard provides information about an activity 
- * and displays it to the user. It fetches information from 
- * the server based on how a user has previously interacted with 
+ * @class ActivityCard provides information about an activity
+ * and displays it to the user. It fetches information from
+ * the server based on how a user has previously interacted with
  * the activity, and implements those changes based on the server response.
  */
 class ActivityCard extends React.Component {
@@ -95,8 +95,8 @@ class ActivityCard extends React.Component {
     };
 
     /**
-     * ToggleFavourite method sends a POST request to the 
-     * backend server, and changes the favourite indicator 
+     * ToggleFavourite method sends a POST request to the
+     * backend server, and changes the favourite indicator
      * on the display accordingly.
      */
 

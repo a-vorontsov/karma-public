@@ -16,8 +16,8 @@ const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 /**
- * @class ForgotPasswordScreen is used when displaying the 
- * Forgot Password screen. It used the ChangePasswordInput 
+ * @class ForgotPasswordScreen is used when displaying the
+ * Forgot Password screen. It used the ChangePasswordInput
  * component for the user to be able to enter a new password.
  * The screen is only navigated to if the user enters a correct
  * email verification code.

@@ -11,10 +11,10 @@ export default class EmailInput extends React.Component {
         };
     }
 
-    /** 
+    /**
      * Check if email is of a valid format
      */
-    
+
     isValidEmail() {
         const invalidEmail = validate(
             {from: this.state.emailInput},

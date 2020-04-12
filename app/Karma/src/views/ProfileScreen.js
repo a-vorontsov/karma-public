@@ -86,7 +86,7 @@ class ProfileScreen extends Component {
 
     /**
      * Load the profile page if the user is an individual
-     * @param {*} res 
+     * @param {*} res
      */
     setupIndividualProfile(res) {
         const {
@@ -120,7 +120,7 @@ class ProfileScreen extends Component {
 
     /**
      * Load the profile page if the user is an organisation
-     * @param {*} res 
+     * @param {*} res
      */
     setupOrganisationProfile(res) {
         const {

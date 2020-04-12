@@ -29,9 +29,9 @@ const request = require("superagent");
 const {width} = Dimensions.get("window");
 
 /**
- * @class AboutScreen represents the second screen in 
- * the sign up process. This is the user equivalent of the 
- * OrgSignUpScreen class. This is where the user chooses a 
+ * @class AboutScreen represents the second screen in
+ * the sign up process. This is the user equivalent of the
+ * OrgSignUpScreen class. This is where the user chooses a
  * picture, name, and address for themselves.
  */
 class AboutScreen extends React.Component {
@@ -68,7 +68,7 @@ class AboutScreen extends React.Component {
         });
     };
 
-    /** 
+    /**
      * @override
      */
     onChangeText = event => {
@@ -132,10 +132,10 @@ class AboutScreen extends React.Component {
         return data;
     };
 
-   /**
-    * Send the selected photo to the server
-    * @param {*} selectedPhoto 
-    */
+    /**
+     * Send the selected photo to the server
+     * @param {*} selectedPhoto
+     */
     async uploadPhoto(selectedPhoto) {
         const authToken = await getAuthToken();
         const endpointUsertype = "individual";
