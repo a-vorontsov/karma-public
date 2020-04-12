@@ -47,7 +47,7 @@ class SettingsMenuScreen extends Component {
                 </View>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handle">
+                    keyboardShouldPersistTaps="never">
                     <View style={Styles.ph24}>
                         <SettingsButton
                             title="Report A Problem"

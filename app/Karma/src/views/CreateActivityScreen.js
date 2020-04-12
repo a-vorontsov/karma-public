@@ -412,7 +412,7 @@ export default class CreateActivityScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,

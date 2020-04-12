@@ -285,6 +285,12 @@ PODS:
     - React
   - RNShare (3.1.2):
     - React
+  - RNShare (3.1.2):
+    - React
+  - RNShare (3.1.2):
+    - React
+  - RNShare (3.1.2):
+    - React
   - RNVectorIcons (6.6.0):
     - React
   - Toast (4.0.0)
@@ -346,7 +352,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps

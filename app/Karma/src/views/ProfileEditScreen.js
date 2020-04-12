@@ -402,7 +402,16 @@ class ProfileEditScreen extends Component {
                 </View>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handle">
+                    keyboardShouldPersistTaps="never">
+                    <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: Colours.blue,
+                            height: 45,
+                            width: SCREEN_WIDTH,
+                            flexDirection: "row",
+                        }}
+                    />
                     <SafeAreaView style={Styles.safeAreaContainer}>
                         <View
                             style={{

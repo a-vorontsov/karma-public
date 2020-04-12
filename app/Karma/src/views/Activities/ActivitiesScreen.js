@@ -132,6 +132,8 @@ class ActivitiesScreen extends Component {
                         height={SCREEN_HEIGHT * 0.5}
                         width={formWidth}
                         onTouchOutside={this.toggleModal}
+                        propagateSwipe={true}
+                        scrollHorizontal={true}
                         modalAnimation={
                             new SlideAnimation({
                                 slideFrom: "top",
@@ -143,12 +145,16 @@ class ActivitiesScreen extends Component {
                             this.setState({modalVisible: false});
                         }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <ModalContent>
-                                <ActivityFilters
-                                    onUpdateFilters={this.onUpdateFilters}
-                                    filters={this.state.filters}
-                                />
-                            </ModalContent>
+                            <View
+                                style={{flex: 1}}
+                                onStartShouldSetResponder={() => true}>
+                                <ModalContent>
+                                    <ActivityFilters
+                                        onUpdateFilters={this.onUpdateFilters}
+                                        filters={this.state.filters}
+                                    />
+                                </ModalContent>
+                            </View>
                         </ScrollView>
                     </Modal>
                     {/* NAVIGATION TAB */}
