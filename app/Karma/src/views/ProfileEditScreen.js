@@ -665,7 +665,6 @@ class ProfileEditScreen extends Component {
                                     onChange={this.onChangeText}
                                     onSubmitEditing={() => Keyboard.dismiss()}
                                     name="username"
-                                    onSubmitEditing={() => Keyboard.dismiss()}
                                 />
                                 {isOrganisation && (
                                     <View>
