@@ -1,0 +1,1 @@
+ALTER TABLE sign_up ALTER attended SET DEFAULT NULL;
