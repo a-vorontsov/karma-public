@@ -33,6 +33,11 @@ const find = (individualId, eventId) => {
     return db.query(query, params);
 };
 
+const findAll = () => {
+    const query = "SELECT * FROM sign_up";
+    return db.query(query);
+};
+
 const update = (signup) => {
     const query = "UPDATE sign_up SET confirmed = $1, attended = $2 WHERE individual_id = $3 AND event_id = $4 RETURNING *";
     const params = [signup.confirmed, signup.attended, signup.individualId, signup.eventId];
@@ -80,6 +85,7 @@ module.exports = {
     findAllByIndividualId,
     findAllByEventId,
     find,
+    findAll,
     update,
     findUsersSignedUp,
     remove,

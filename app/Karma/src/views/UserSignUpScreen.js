@@ -89,7 +89,6 @@ class SignUpScreen extends React.Component {
             .then(async res => {
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-
                 this.props.navigation.replace("InitSignup");
             })
             .catch(err => {
