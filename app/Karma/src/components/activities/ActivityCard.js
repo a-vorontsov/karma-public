@@ -97,9 +97,9 @@ class ActivityCard extends React.Component {
     };
 
     /**ToggleFavourite method sends a POST request to the backend server,
-     * and changes the favourite indicator on the display accordingly. 
+     * and changes the favourite indicator on the display accordingly.
      * */
-    
+
     async toggleFavourite() {
         const authToken = await getAuthToken();
 

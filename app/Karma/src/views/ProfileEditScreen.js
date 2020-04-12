@@ -49,11 +49,10 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
-/**   
- * The ProfileEditScreen class represents the screen displayed to the user 
+/**
+ * The ProfileEditScreen class represents the screen displayed to the user
  * when they select the 'edit profile' button.
-*/
-
+ */
 
 class ProfileEditScreen extends Component {
     constructor(props) {
