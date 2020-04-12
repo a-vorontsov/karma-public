@@ -22,6 +22,7 @@ class ActivityCauseCarousel extends React.Component {
                         key={item.id}
                         signedup={item.going}
                         favourited={item.favourited}
+                        isOrganisation={this.props.isOrganisation}
                     />
                 </View>
             </View>
@@ -62,6 +63,7 @@ class ActivityCauseCarousel extends React.Component {
                             this.navigation.navigate("CauseAll", {
                                 cause: this.titleCase(this.props.cause),
                                 activities: this.props.activities,
+                                isOrganisation: this.props.isOrganisation,
                             })
                         }>
                         <RegularText style={styles.bioHeaderAlt}>

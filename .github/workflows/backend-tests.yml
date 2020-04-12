@@ -11,7 +11,7 @@ on:
   pull_request:
     branches: # == run tests only on pull request opens/updates to: ==
       - master
-      - dev # dev
+      - dev
     paths:
       - "server/**"
 
@@ -41,12 +41,12 @@ jobs:
         run: npx eslint ./
 
       - name: Generate API documentation
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         run: npm run docs
         working-directory: ./server
 
       - name: Create API documentation artifact
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: docs
@@ -89,6 +89,7 @@ jobs:
       SKIP_ASYNC_KEY_EXCHANGE: 1
       REACT_APP_API_URL: http://localhost:8000
       PRESERVE_SESSIONS_ON_REBOOT: 0
+      SKIP_NEW_TOKEN_TIMEOUT: 0
     runs-on: ubuntu-latest
     steps:
       - name: checkout Github repository
@@ -112,14 +113,14 @@ jobs:
         run: npm test
         working-directory: ./server
       - name: Create test coverage artifact
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: coverage
           path: server/coverage
 
   publish:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/master'
     needs: [build, test]
     runs-on: ubuntu-latest
     steps:

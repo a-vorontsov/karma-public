@@ -14,6 +14,7 @@ class CauseAllActivitiesScreen extends Component {
     }
     render() {
         const activities = this.props.navigation.getParam("activities");
+        const isOrganisation = this.props.navigation.getParam("isOrganisation");
         return (
             <SafeAreaView style={Styles.container}>
                 <View style={{width: FORM_WIDTH, alignSelf: "center"}}>
@@ -30,6 +31,7 @@ class CauseAllActivitiesScreen extends Component {
                         <ActivityDisplayCard
                             activity={item}
                             key={item.eventId}
+                            isOrganisation={isOrganisation}
                         />
                     )}
                     ListEmptyComponent={

@@ -3,17 +3,20 @@ const adminService = require("./");
 
 const userRepository = require("../../repositories/user");
 const individualRepository = require("../../repositories/individual");
+const signupRepository = require("../../repositories/event/signup");
 
 
 jest.mock("../../repositories/user");
 jest.mock("../../repositories/individual");
+jest.mock("../../repositories/event/signup");
 
-let user; let individual; let individual2;
+let user; let individual; let individual2; let signup;
 
 beforeEach(() => {
     user = testHelpers.getUserExample1();
     individual = testHelpers.getIndividual();
     individual2 = testHelpers.getIndividual2();
+    signup = testHelpers.getSignUp();
 });
 
 afterEach(() => {
@@ -31,6 +34,19 @@ test("getting all users works", async () => {
     expect(getAllUsersResult.data.users).toMatchObject([user]);
     expect(getAllUsersResult.status).toBe(200);
 });
+
+test("getting all signups works", async () => {
+    signupRepository.findAll.mockResolvedValue({
+        rows: [signup],
+    });
+
+    const getAllSignupsResult = await adminService.getAllSignups();
+
+    expect(signupRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(getAllSignupsResult.data.signups).toMatchObject([signup]);
+    expect(getAllSignupsResult.status).toBe(200);
+});
+
 
 test("getting all individuals users works", async () => {
     individual.id = 1;

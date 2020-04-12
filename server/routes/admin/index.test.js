@@ -10,13 +10,14 @@ jest.mock("../../modules/admin/");
 jest.mock("../../modules/validation");
 jest.mock("../../modules/deletion");
 
-let user; let individual;
+let user; let individual; let signup;
 
 beforeEach(() => {
     jest.clearAllMocks();
     process.env.NO_AUTH = 1;
     user = testHelpers.getUserExample1();
     individual = testHelpers.getIndividual();
+    signup = testHelpers.getSignUp();
 });
 
 afterEach(() => {
@@ -36,6 +37,21 @@ test("fetching users endpoint works", async () => {
 
     expect(adminService.getAllUsers).toHaveBeenCalledTimes(1);
     expect(response.body.data.users).toMatchObject([user]);
+    expect(response.statusCode).toBe(200);
+});
+
+test("fetching signups endpoint works", async () => {
+    adminService.getAllSignups.mockResolvedValue({
+        message: "Signups fetched successfully",
+        status: 200,
+        data: {signups: [signup]},
+    });
+
+    const response = await request(app)
+        .get("/admin/signups");
+
+    expect(adminService.getAllSignups).toHaveBeenCalledTimes(1);
+    expect(response.body.data.signups).toMatchObject([signup]);
     expect(response.statusCode).toBe(200);
 });
 

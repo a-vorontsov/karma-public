@@ -160,7 +160,10 @@ class AboutScreen extends React.Component {
             phoneNumber: "213123421", // TODO
             address: {
                 addressLine1: this.state.addressLine1,
-                addressLine2: this.state.addressLine2,
+                //use empty string for address line 2 if user does not use it
+                addressLine2: this.state.addressLine2
+                    ? this.state.addressLine2
+                    : "",
                 townCity: this.state.townCity,
                 countryState: this.state.countryState,
                 postCode: this.state.postCode,
@@ -174,14 +177,33 @@ class AboutScreen extends React.Component {
     }
 
     async goToNext() {
-        const {gender, dateSelected, fname, lname, photo} = this.state;
+        const {
+            gender,
+            dateSelected,
+            fname,
+            lname,
+            photo,
+            addressLine1,
+            townCity,
+            countryState,
+            postCode,
+        } = this.state;
 
         if (fname === "" || lname === "") {
             this.setState({
                 firstOpen: false,
             });
         }
-        if (gender && fname !== "" && lname !== "" && dateSelected) {
+        if (
+            gender &&
+            fname !== "" &&
+            lname !== "" &&
+            dateSelected &&
+            addressLine1 &&
+            townCity &&
+            countryState &&
+            postCode
+        ) {
             const authToken = await getAuthToken();
             const individual = this.createIndividual();
 
@@ -195,7 +217,7 @@ class AboutScreen extends React.Component {
                     console.log(res.body);
                     await this.uploadPhoto(photo);
                     await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
-                    this.props.navigation.navigate("PickCauses", {
+                    this.props.navigation.replace("PickCauses", {
                         isSignup: true,
                     });
                     return;
