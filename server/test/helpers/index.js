@@ -424,7 +424,7 @@ const signUp = {
     individualId: -1,
     eventId: 3,
     confirmed: true,
-    attended: false,
+    attended: null,
 };
 
 const getSignUp = () => ({...signUp});
