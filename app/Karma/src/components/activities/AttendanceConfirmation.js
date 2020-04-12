@@ -6,7 +6,6 @@ import Styles from "../../styles/Styles";
 import {RegularText} from "../text";
 import Colours from "../../styles/Colours";
 import request from "superagent";
-import {sendNotification} from "../../util/SendNotification";
 import {getAuthToken} from "../../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 
@@ -123,4 +122,3 @@ export default class AttendanceConfirmation extends React.Component {
         );
     }
 }
-

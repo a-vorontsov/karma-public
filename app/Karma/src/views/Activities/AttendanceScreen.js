@@ -107,4 +107,3 @@ class AttendanceScreen extends Component {
 }
 
 export default AttendanceScreen;
-
