@@ -163,10 +163,7 @@ const ActivityEditable = props => {
                                                 },
                                                 {
                                                     text: "Cancel",
-                                                    onPress: () =>
-                                                        console.log(
-                                                            "Cancelled the deletion of an event",
-                                                        ),
+                                                    onPress: () => {},
                                                 },
                                             ],
                                         );

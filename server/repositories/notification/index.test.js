@@ -34,3 +34,23 @@ test('insert notification and findByUserId work', async () => {
 
     expect(insertNotificationResult.rows[0]).toMatchObject(findNotificationResult.rows[0]);
 });
+
+test('insert notification and removeByUserId work', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+
+    const insertRegistrationRepository2 = await registrationRepository.insert(registrationExample2);
+    userExample2.email = insertRegistrationRepository2.rows[0].email;
+    const insertUserResult2 = await userRepository.insert(userExample2);
+
+    notification.senderId = insertUserResult2.rows[0].id;
+    notification.receiverId = insertUserResult.rows[0].id;
+    await notificationRepository.insert(notification);
+    const findNotificationResult = await notificationRepository.findByUserId(insertUserResult.rows[0].id);
+    const deleteResult = await notificationRepository.removeByUserId(insertUserResult.rows[0].id);
+    const findNotificationAfterDeletionResult = await notificationRepository.findByUserId(insertUserResult.rows[0].id);
+
+    expect(findNotificationResult.rows[0]).toMatchObject(deleteResult.rows[0]);
+    expect(findNotificationAfterDeletionResult.rowCount).toBe(0);
+});

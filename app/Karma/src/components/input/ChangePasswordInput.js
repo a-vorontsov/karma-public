@@ -34,7 +34,6 @@ export default class ChangePasswordInput extends Component {
 
     passUpState() {
         const {confirmPassword, password} = this.state;
-        console.log(confirmPassword, password, this.isValidPassword());
         this.props.onChange({
             confirmPassword,
             password,
@@ -103,7 +102,7 @@ export default class ChangePasswordInput extends Component {
                         onChange={this.onChangeText}
                         showError={showError}
                         errorText={this.whichErrorText()}
-                        inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
+                        inputRef={this.props.inputRef} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
                             this.confirmPassword.focus();
                         }}

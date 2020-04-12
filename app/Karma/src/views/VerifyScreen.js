@@ -64,7 +64,7 @@ class VerifyScreen extends Component {
     render() {
         return (
             <SafeAreaView>
-                <ScrollView keyboardShouldPersistTaps="handle">
+                <ScrollView keyboardShouldPersistTaps="never">
                     <View style={[Styles.ph24]}>
                         <PageHeader
                             title="Sign Up"
@@ -119,10 +119,6 @@ class VerifyScreen extends Component {
                             <PhotoUpload
                                 onPhotoSelect={avatar => {
                                     if (avatar) {
-                                        console.log(
-                                            "Image base64 string: ",
-                                            avatar,
-                                        );
                                         this.setPhoto(avatar);
                                     }
                                 }}>

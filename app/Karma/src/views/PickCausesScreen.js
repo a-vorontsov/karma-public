@@ -9,6 +9,7 @@ import {GradientButton} from "../components/buttons";
 import CausePicker from "../components/causes/CausePicker";
 import {getAuthToken} from "../util/credentials";
 import {REACT_APP_API_URL} from "react-native-dotenv";
+import Toast from "react-native-simple-toast";
 
 const request = require("superagent");
 
@@ -26,6 +27,20 @@ export default class PickCausesScreen extends React.Component {
             let causes = await AsyncStorage.getItem("causes");
             causes = JSON.parse(causes);
             const authToken = await getAuthToken();
+
+            //fetch the causes that the user has already selected and display them as such
+            await request
+                .get(`${REACT_APP_API_URL}/profile/causes`)
+                .set("authorization", authToken)
+                .then(res => {
+                    this.setState({
+                        selectedCauses: res.body.data,
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
             if (causes.length === 0) {
                 const res = await request
                     .get(`${REACT_APP_API_URL}/causes`)
@@ -50,7 +65,11 @@ export default class PickCausesScreen extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.message);
+                Toast.showWithGravity(
+                    "Causes selected!",
+                    Toast.SHORT,
+                    Toast.BOTTOM,
+                );
                 this.props.navigation.navigate("Main");
             })
             .catch(err => {
@@ -59,7 +78,7 @@ export default class PickCausesScreen extends React.Component {
     }
     //TODO display selected causes already from db
     render() {
-        const {causes} = this.state;
+        const {causes, selectedCauses} = this.state;
         return (
             <SafeAreaView style={Styles.container}>
                 <ScrollView
@@ -78,6 +97,7 @@ export default class PickCausesScreen extends React.Component {
                                 onChange={items =>
                                     (this.state.selectedCauses = items)
                                 }
+                                selectedCauses={selectedCauses}
                             />
                         </>
                     </View>

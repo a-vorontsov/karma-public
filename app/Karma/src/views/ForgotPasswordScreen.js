@@ -28,7 +28,6 @@ export default class ForgotPasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
-        console.log(this.state.valid);
         if (!this.state.valid) {
             return;
         }
@@ -82,10 +81,12 @@ export default class ForgotPasswordScreen extends Component {
                             autoCapitalize="none"
                             name="email"
                             onChange={this.onChangeText}
+                            onSubmitEditing={() => this.password.focus()}
                             showError={false}
                             editable={false}
                         />
                         <ChangePasswordInput
+                            inputRef={ref => (this.password = ref)}
                             onChange={this.onInputChange}
                             firstOpen={this.state.isFirstOpened}
                         />

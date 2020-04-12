@@ -19,6 +19,15 @@ test('insert registration and findByEmail registration work', async () => {
     expect(insertRegistrationResult.rows[0]).toMatchObject(findRegistrationResult.rows[0]);
 });
 
+test('insert registration and removeByEmail registration work', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    const findRegistrationResult = await registrationRepository.findByEmail(insertRegistrationResult.rows[0].email);
+    const deleteResult = await registrationRepository.removeByEmail(registrationExample1.email);
+    const findRegistrationResultAfterDelete = await registrationRepository.findByEmail(insertRegistrationResult.rows[0].email);
+    expect(findRegistrationResult.rows[0]).toMatchObject(deleteResult.rows[0]);
+    expect(findRegistrationResultAfterDelete.rowCount).toBe(0);
+});
+
 test('find all registrations', async () => {
     const insertRegistrationResult1 = await registrationRepository.insert(registrationExample1);
     const insertRegistrationResult2 = await registrationRepository.insert(registrationExample2);
@@ -33,7 +42,9 @@ test('registration update works', async () => {
     insertedRegistration.emailFlag = 1;
     insertedRegistration.idFlag = 1;
     insertedRegistration.phoneFlag = 1;
-
     const updateRegistrationResult = await registrationRepository.update(insertedRegistration);
+    const signUpFlagResult = await registrationRepository.updateSignUpFlag(insertedRegistration.email);
     expect(updateRegistrationResult.rows[0]).toMatchObject(insertedRegistration);
+    insertedRegistration.signUpFlag = 1;
+    expect(signUpFlagResult.rows[0]).toMatchObject(insertedRegistration);
 });

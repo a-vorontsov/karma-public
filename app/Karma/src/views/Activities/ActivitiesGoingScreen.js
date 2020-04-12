@@ -30,6 +30,16 @@ class ActivitiesGoingScreen extends Component {
     }
     async componentDidMount() {
         await this.fetchAllActivities();
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     async fetchAllActivities() {
@@ -38,7 +48,6 @@ class ActivitiesGoingScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/going`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.message);
                 const activities = result.body.data.events || [];
                 const confirmed = [];
                 const pending = [];
