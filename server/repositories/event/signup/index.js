@@ -23,7 +23,7 @@ const findAllByEventId = (eventId) => {
 };
 
 const findAllByEventIdConfirmed = (eventId) => {
-    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true RETURNING *";
+    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true";
     return db.query(query, [eventId]);
 };
 

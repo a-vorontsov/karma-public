@@ -26,3 +26,11 @@ test('update works', async () => {
     const updateAddressResult = await addressRepository.update(insertedAddress);
     expect(updateAddressResult.rows[0]).toMatchObject(insertedAddress);
 });
+
+test('remove works', async () => {
+    const insertAddressResult = await addressRepository.insert(address);
+    const insertedAddress = insertAddressResult.rows[0];
+    addressRepository.removeById(insertedAddress.id);
+    const findResult = await addressRepository.findById(insertedAddress.id);
+    expect(findResult.rowCount).toBe(0);
+});

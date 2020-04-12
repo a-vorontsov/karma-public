@@ -236,6 +236,45 @@ test("getting all events works", async () => {
     expect(getEventsResult.status).toBe(200);
 });
 
+test("getting only future events works", async () => {
+
+    eventWithAllData.date = '2000-04-02T21:35:25.844Z';
+    const eventsArray = [{
+        ...eventWithAllData,
+        favourited: [1],
+        id: 1,
+        volunteers:[31,23],
+    },
+        {
+            ...eventWithAllData,
+            favourited: [1],
+            id: 2,
+            volunteers:[31,23],
+        }];
+
+    let futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 1);
+    eventsArray[0].date = futureDate;
+
+    util.checkUser.mockResolvedValue({status: 200});
+    filterer.getWhereClause.mockResolvedValue("");
+    eventRepository.findAllWithAllData.mockResolvedValue({
+        rows: eventsArray,
+    });
+    eventSorter.sortByTimeAndDistance.mockResolvedValue(eventsArray);
+    const getEventsResult = await eventService.getEvents({}, 1);
+
+    expect(util.checkUser).toHaveBeenCalledTimes(1);
+    expect(eventRepository.findAllWithAllData).toHaveBeenCalledTimes(1);
+    expect(filterer.getWhereClause).toHaveBeenCalledWith({});
+    expect(filterer.getWhereClause).toHaveBeenCalledTimes(1);
+    eventsArray[0].favourited = true;
+    eventsArray[1].favourited = true;
+    expect(getEventsResult.data.events.length).toBe(1);
+    expect(getEventsResult.data.events).toMatchObject([eventsArray[0]]);
+    expect(getEventsResult.status).toBe(200);
+});
+
 test("getting all events within a distance works", async () => {
     const eventsArray =[{
         ...eventWithAllData,

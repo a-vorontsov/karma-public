@@ -58,11 +58,12 @@ class ProfileScreen extends Component {
             displayShareModal: false,
             activeSlide: 0,
             name: "",
+            username: "",
             user: {},
             location: "",
             bio: "",
             causes: [],
-            points: 1,
+            points: 0,
             createdEvents: [],
             createdPastEvents: [],
             upcomingEvents: [],
@@ -96,6 +97,7 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             firstName: individual.firstName,
             lastName: individual.lastName,
+            username: individual.username,
             user: user,
             location: individual.address.townCity,
             bio: individual.bio,
@@ -312,7 +314,7 @@ class ProfileScreen extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior="padding"
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
                 <NavigationEvents
                     onWillFocus={() => {
@@ -343,6 +345,7 @@ class ProfileScreen extends Component {
                                     style={{
                                         alignSelf: "center",
                                         alignItems: "flex-start",
+                                        justifyContent: "flex-start",
                                         width: formWidth,
                                         paddingBottom: 16,
                                     }}>
@@ -674,6 +677,7 @@ class ProfileScreen extends Component {
                                             flexDirection: "row",
                                             alignItems: "flex-end",
                                             justifyContent: "flex-end",
+                                            flexWrap: "wrap",
                                         }}>
                                         {this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.container}>
@@ -682,6 +686,7 @@ class ProfileScreen extends Component {
                                                         <CauseItem
                                                             cause={cause}
                                                             key={cause.id}
+                                                            display={true}
                                                             isDisabled={true}
                                                         />
                                                     ),
@@ -697,8 +702,8 @@ class ProfileScreen extends Component {
                                                 <Image
                                                     source={icons.new_cause}
                                                     style={{
-                                                        height: width / 3.6,
-                                                        width: width / 3.6,
+                                                        height: width / 5,
+                                                        width: width / 5,
                                                         borderRadius: 10,
                                                         marginVertical: 4,
                                                         paddingVertical: 16,
@@ -721,6 +726,7 @@ class ProfileScreen extends Component {
                                         flex: 1,
                                         alignItems: "flex-start",
                                         justifyContent: "flex-start",
+                                        marginBottom: 50,
                                     }}>
                                     <View
                                         style={{
@@ -755,10 +761,7 @@ class ProfileScreen extends Component {
                                                         .eventsToggle,
                                                 })
                                             }
-                                            style={{
-                                                alignSelf: "flex-start",
-                                                marginLeft: 80,
-                                            }}>
+                                            style={[styles.editContainer]}>
                                             <RegularText
                                                 style={
                                                     this.state.eventsToggle
@@ -816,7 +819,7 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 25,
+        fontSize: 20,
         color: Colours.white,
         fontWeight: "bold",
     },
