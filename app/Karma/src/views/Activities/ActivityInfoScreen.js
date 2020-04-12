@@ -111,7 +111,6 @@ class ActivityInfoScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.status);
                 if (res.body.data.signup.confirmed === false) {
                     this.setState({signedUp: false});
                 } else {
@@ -245,7 +244,6 @@ class ActivityInfoScreen extends Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: true,
                     });
@@ -262,7 +260,6 @@ class ActivityInfoScreen extends Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: false,
                     });

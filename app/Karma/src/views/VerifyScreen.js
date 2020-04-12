@@ -119,10 +119,6 @@ class VerifyScreen extends Component {
                             <PhotoUpload
                                 onPhotoSelect={avatar => {
                                     if (avatar) {
-                                        console.log(
-                                            "Image base64 string: ",
-                                            avatar,
-                                        );
                                         this.setPhoto(avatar);
                                     }
                                 }}>

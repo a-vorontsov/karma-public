@@ -72,10 +72,8 @@ class ActivitiesScreen extends Component {
             .then(res => {
                 if (res.body.data.organisation) {
                     this.setState({isOrganisation: true});
-                    console.log("fetching activities for organisation ");
                 } else {
                     this.setState({isOrganisation: false});
-                    console.log("fetching activities for individual ");
                 }
             })
             .catch(err => {

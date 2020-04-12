@@ -33,7 +33,6 @@ export default class ChangePasswordScreen extends Component {
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;
         this.setState({isFirstOpened: false});
-        console.log(this.state.valid);
         if (!this.state.valid) {
             return;
         }

@@ -77,7 +77,6 @@ export default class WelcomeScreen extends Component {
             })
             .then(res => {
                 //show code
-                console.log(res.body.message);
                 this.setState({showCode: true});
             })
             .catch(err => {
@@ -136,7 +135,6 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
-                    console.log(res.body.data);
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
                         navigate("UserSignUp", {
@@ -225,7 +223,6 @@ export default class WelcomeScreen extends Component {
             .then(async res => {
                 const authenticationToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authenticationToken);
-                console.log(res.body.message);
                 this.setState({isCodeValid: true});
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,
@@ -255,10 +252,7 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
-                console.log(res.status);
-                console.log(res.body);
                 if (res.status === 200) {
-                    console.log("correct code");
                     this.setState({isCodeValid: true});
                     navigate("UserSignUp", {
                         email: this.state.emailInput,

@@ -129,8 +129,6 @@ export default class OrgSignUpScreen extends React.Component {
         const authToken = await getAuthToken();
         const endpointUsertype = "organisation";
 
-        console.log(selectedPhoto);
-        console.log("Uploading Photo");
         if (selectedPhoto != null) {
             await fetch(
                 `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,
@@ -144,7 +142,6 @@ export default class OrgSignUpScreen extends React.Component {
             )
                 .then(res => {
                     const response = res.json();
-                    console.log(response);
                 })
                 .catch(error => {
                     console.log(error);

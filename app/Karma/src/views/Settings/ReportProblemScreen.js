@@ -58,7 +58,6 @@ class ReportProblemScreen extends Component {
                 },
             })
             .then(res => {
-                console.log(res.body.message);
                 Toast.showWithGravity(
                     "Your report has been sent.",
                     Toast.SHORT,

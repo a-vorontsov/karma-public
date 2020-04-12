@@ -45,7 +45,6 @@ class ActivitiesFavouritesScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/favourites`)
             .set("authorization", authToken)
             .then(result => {
-                console.log(result.body.data.events);
                 this.setState({
                     activities: result.body.data.events,
                 });

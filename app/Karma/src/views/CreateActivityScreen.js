@@ -208,7 +208,6 @@ export default class CreateActivityScreen extends React.Component {
                     `${event.name}`,
                     this.state.volunteers,
                 );
-                console.log(res.body.message);
             })
             .catch(er => {
                 Alert.alert("Server Error", er);
@@ -375,7 +374,6 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.message);
             })
             .catch(er => {
                 console.log(er.message);
