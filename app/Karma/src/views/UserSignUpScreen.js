@@ -38,7 +38,6 @@ class SignUpScreen extends React.Component {
             firstOpen: true,
         };
         this.onChangeText = this.onChangeText.bind(this);
-        Mixpanel.sharedInstanceWithToken(MIXPANEL_TOKEN);
     }
 
     onChangeText = event => {
