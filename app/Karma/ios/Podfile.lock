@@ -490,7 +490,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
-  RNBootSplash: fbf76a4bf1c03e9acd1dd08ce064847f26d6d8bf
+  RNBootSplash: 52a95aa14b7832efb2fdc236ec38665356cd921a
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCClipboard: e8d99575c2917c338e0765d37cf46ff932377d26
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
