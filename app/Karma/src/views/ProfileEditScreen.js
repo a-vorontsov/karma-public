@@ -50,8 +50,11 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
-// The view for the Profile Edit Screen, where the user can change their profile
-// information
+/**
+ * @class ProfileEditScreen represents the screen displayed to the user
+ * when they select the 'edit profile' button.
+ */
+
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
@@ -153,6 +156,7 @@ class ProfileEditScreen extends Component {
                 this.setState({[name]: text});
         }
     };
+
     onInputChange = inputState => {
         this.state.isOrganisation
             ? this.setState(prevState => {
@@ -185,6 +189,10 @@ class ProfileEditScreen extends Component {
               });
     };
 
+    /**
+     * Reload the page when user presses 'update' button
+     * send the changes made to the server via POST request
+     */
     onUpdatePressed = async () => {
         const {navigate} = this.props.navigation;
         const authToken = await getAuthToken();
@@ -235,6 +243,9 @@ class ProfileEditScreen extends Component {
             });
     };
 
+    /**
+     * Load in the current gender
+     */
     getGender = character => {
         if (character === "m") {
             return "male";
@@ -247,6 +258,9 @@ class ProfileEditScreen extends Component {
         }
     };
 
+    /**
+     * Update the gender if the user changes it
+     */
     setGender = selectedGender => {
         const genderCharacter =
             selectedGender === "male"
@@ -305,6 +319,10 @@ class ProfileEditScreen extends Component {
         });
     };
 
+    /**
+     * Uploads the photo the user picks to the server via a POST request
+     * Displays an error to the user if the process fails
+     */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
@@ -336,6 +354,10 @@ class ProfileEditScreen extends Component {
         this.fetchProfilePicture();
     };
 
+    /**
+     * Display the profile picture to a user
+     * Uses a GET request to the server
+     */
     fetchProfilePicture = async () => {
         this.imageLoader.animateTo(0, 0);
 

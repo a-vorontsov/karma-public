@@ -57,6 +57,12 @@ function getMonthName(d, long = false) {
     return name;
 }
 
+/**
+ * @class ActivityCard provides information about an activity
+ * and displays it to the user. It fetches information from
+ * the server based on how a user has previously interacted with
+ * the activity, and implements those changes based on the server response.
+ */
 class ActivityCard extends React.Component {
     constructor(props) {
         super(props);
@@ -83,9 +89,16 @@ class ActivityCard extends React.Component {
             displaySignupModal: !this.state.displaySignupModal,
         });
     };
+
     handleSignupError = (errorTitle, errorMessage) => {
         Alert.alert(errorTitle, errorMessage);
     };
+
+    /**
+     * ToggleFavourite method sends a POST request to the
+     * backend server, and changes the favourite indicator
+     * on the display accordingly.
+     */
 
     async toggleFavourite() {
         const authToken = await getAuthToken();
@@ -125,6 +138,10 @@ class ActivityCard extends React.Component {
         }
     }
 
+    /**
+     * Handles the length of the description of an activity via a 'Read More' button
+     */
+
     _renderTruncatedFooter = handlePress => {
         const {signedup} = this.state;
         const {activity, isOrganisation} = this.props;
@@ -146,6 +163,7 @@ class ActivityCard extends React.Component {
             </TouchableOpacity>
         );
     };
+
     render() {
         const {signedup} = this.state;
         const {activity, isOrganisation} = this.props;

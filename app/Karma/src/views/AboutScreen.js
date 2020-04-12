@@ -28,6 +28,12 @@ import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
 const {width} = Dimensions.get("window");
 
+/**
+ * @class AboutScreen represents the second screen in
+ * the sign up process. This is the user equivalent of the
+ * OrgSignUpScreen class. This is where the user chooses a
+ * picture, name, and address for themselves.
+ */
 class AboutScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -49,6 +55,9 @@ class AboutScreen extends React.Component {
         };
     }
 
+    /**
+     * Pass up the states of the component object it is called on
+     */
     onInputChange = inputState => {
         this.setState({
             addressLine1: inputState.address1,
@@ -59,6 +68,9 @@ class AboutScreen extends React.Component {
         });
     };
 
+    /**
+     * @override
+     */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -81,6 +93,9 @@ class AboutScreen extends React.Component {
         });
     }
 
+    /**
+     * Open the photo library of the user
+     */
     choosePhoto = () => {
         const options = {
             noData: true,
@@ -91,7 +106,9 @@ class AboutScreen extends React.Component {
             }
         });
     };
-
+    /**
+     * Load the information for the text fields and photo
+     */
     createFormData = (photo, body) => {
         const data = new FormData();
 
@@ -115,6 +132,10 @@ class AboutScreen extends React.Component {
         return data;
     };
 
+    /**
+     * Send the selected photo to the server
+     * @param {*} selectedPhoto
+     */
     async uploadPhoto(selectedPhoto) {
         const authToken = await getAuthToken();
         const endpointUsertype = "individual";
@@ -143,6 +164,9 @@ class AboutScreen extends React.Component {
             this.setState({dateSelected: false});
         }
     }
+    /**
+     * Get all the attributes needed for creating a user
+     */
 
     createIndividual() {
         const individual = {
@@ -169,6 +193,11 @@ class AboutScreen extends React.Component {
         this.props.navigation.goBack();
     }
 
+    /**
+     * Called when 'next' button is pressed
+     * Send a POST request to the server sending the information the user filled in
+     * Alert the user if any required fields were not completed
+     */
     async goToNext() {
         const {
             gender,
@@ -383,7 +412,3 @@ const styles = StyleSheet.create({
 });
 
 export default AboutScreen;
-
-// RESOURCES:
-// https://facebook.github.io/react-native/docs/cameraroll.html
-// https://www.npmjs.com/package/react-native-photo-upload
