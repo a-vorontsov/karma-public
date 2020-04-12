@@ -51,6 +51,9 @@ const icons = {
 
 const request = require("superagent");
 
+/**
+ * @class ProfileScreen represents the screen a user sees when they view their profile.
+ */
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -82,6 +85,10 @@ class ProfileScreen extends Component {
         this.toggleShareModal = this.toggleShareModal.bind(this);
     }
 
+    /**
+     * Load the profile page if the user is an individual
+     * @param {*} res
+     */
     setupIndividualProfile(res) {
         const {
             causes,
@@ -113,6 +120,10 @@ class ProfileScreen extends Component {
         this.fetchProfilePicture();
     }
 
+    /**
+     * Load the profile page if the user is an organisation
+     * @param {*} res
+     */
     setupOrganisationProfile(res) {
         const {
             causes,
@@ -165,6 +176,9 @@ class ProfileScreen extends Component {
         this.willFocusListener.remove();
     }
 
+    /**
+     * Get the information about the user's profile from the server using a GET request
+     */
     async fetchProfileInfo() {
         const authToken = await getAuthToken();
         this.imageLoader.animateTo(0, 0);
@@ -192,6 +206,9 @@ class ProfileScreen extends Component {
             });
     }
 
+    /**
+     * Get the user's profile picture from the server using a GET request
+     */
     fetchProfilePicture = async () => {
         const profile = this.props.navigation.getParam("profile");
 
@@ -261,6 +278,10 @@ class ProfileScreen extends Component {
         });
     };
 
+    /**
+     * Uploads the photo the user picks to the server via a POST request
+     * Displays an error to the user if the process fails
+     */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation

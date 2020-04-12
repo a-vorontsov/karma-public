@@ -42,9 +42,11 @@ test('inserting and finding works', async () => {
     const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
     const findAllByIndividualIdResult = await signupRepository.findAllByIndividualId(insertIndividualResult.rows[0].id);
     const findAllByEventIdResult = await signupRepository.findAllByEventId(insertEventResult.rows[0].id);
+    const findAllResult = await signupRepository.findAll();
     expect(findResult.rows[0]).toMatchObject(signUp);
     expect(findAllByIndividualIdResult.rows).toMatchObject([signUp]);
     expect(findAllByEventIdResult.rows).toMatchObject([signUp]);
+    expect(findAllResult.rows).toMatchObject([signUp]);
 });
 
 test('inserting and finding works for confirmed events', async () => {
