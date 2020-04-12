@@ -32,7 +32,6 @@ export default class AttendanceConfirmation extends React.Component {
             .send(body)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
                 this.props.onSubmit();
             })
             .catch(err => {
