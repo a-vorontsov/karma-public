@@ -1,6 +1,7 @@
 const regRepo = require("../../../repositories/registration");
 const util = require("../../../util");
 const log = require("../../../util/log");
+const config = require("../../../config").emailVerification;
 
 /**
  * Verify email address with given token.
@@ -41,6 +42,21 @@ const updateEmailVerificationFlag = async (regResult) => {
     await regRepo.update(regRecord);
 };
 
+/**
+ * Calculate wait time required for requesting a new
+ * verification token. Returns wait time in seconds,
+ * which is <= 0 if no waiting is required.
+ * @param {String} email
+ * @return {Number} wait time in seconds
+ */
+const calculateWaitRequiredForNewToken = async (email) => {
+    const regResult = await regRepo.findByEmail(email);
+    const latestRequestedAt = Date.parse(regResult.rows[0].expiryDate) - 60000 * config.validMinutes;
+    const currentTimeInMs = Date.parse(util.getCurrentTimeInUtcAsString(0));
+    return config.waitSeconds - Math.round((currentTimeInMs - latestRequestedAt) / 1000);
+};
+
 module.exports = {
     verifyEmail,
+    calculateWaitRequiredForNewToken,
 };

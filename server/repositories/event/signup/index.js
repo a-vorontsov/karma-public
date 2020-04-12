@@ -23,7 +23,7 @@ const findAllByEventId = (eventId) => {
 };
 
 const findAllByEventIdConfirmed = (eventId) => {
-    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true RETURNING *";
+    const query = "SELECT * FROM sign_up WHERE event_id=$1 AND confirmed=true";
     return db.query(query, [eventId]);
 };
 
@@ -31,6 +31,11 @@ const find = (individualId, eventId) => {
     const query = "SELECT * FROM sign_up WHERE individual_id = $1 AND event_id=$2";
     const params = [individualId, eventId];
     return db.query(query, params);
+};
+
+const findAll = () => {
+    const query = "SELECT * FROM sign_up";
+    return db.query(query);
 };
 
 const update = (signup) => {
@@ -65,6 +70,11 @@ const removeByEventId = (eventId) => {
     return db.query(query, [eventId]);
 };
 
+const remove = (signup) => {
+    const query = "DELETE FROM sign_up WHERE event_id = $1 AND individual_id = $2 RETURNING *";
+    return db.query(query, [signup.eventId, signup.individualId]);
+};
+
 const removeByEventCreatorId = (eventId) => {
     const query = "DELETE FROM sign_up WHERE event_id IN " +
         "(SELECT id as event_id FROM event WHERE user_id=$1) RETURNING *";
@@ -75,8 +85,10 @@ module.exports = {
     findAllByIndividualId,
     findAllByEventId,
     find,
+    findAll,
     update,
     findUsersSignedUp,
+    remove,
     removeByIndividualId,
     removeByEventCreatorId,
     removeByEventId,

@@ -150,6 +150,9 @@ class ActivitiesGoingScreen extends Component {
                                         activity={activity}
                                         key={activity.eventId}
                                         signedup={true}
+                                        isOrganisation={
+                                            this.props.isOrganisation
+                                        }
                                     />
                                 );
                             })}
@@ -171,6 +174,9 @@ class ActivitiesGoingScreen extends Component {
                                         activity={activity}
                                         key={activity.eventId}
                                         signedup={true}
+                                        isOrganisation={
+                                            this.props.isOrganisation
+                                        }
                                     />
                                 );
                             })}

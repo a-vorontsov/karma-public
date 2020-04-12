@@ -42,9 +42,11 @@ test('inserting and finding works', async () => {
     const findResult = await signupRepository.find(insertIndividualResult.rows[0].id, insertEventResult.rows[0].id);
     const findAllByIndividualIdResult = await signupRepository.findAllByIndividualId(insertIndividualResult.rows[0].id);
     const findAllByEventIdResult = await signupRepository.findAllByEventId(insertEventResult.rows[0].id);
+    const findAllResult = await signupRepository.findAll();
     expect(findResult.rows[0]).toMatchObject(signUp);
     expect(findAllByIndividualIdResult.rows).toMatchObject([signUp]);
     expect(findAllByEventIdResult.rows).toMatchObject([signUp]);
+    expect(findAllResult.rows).toMatchObject([signUp]);
 });
 
 test('updating works', async () => {
@@ -91,3 +93,24 @@ test('inserting and finding users signed up to an event works', async () => {
     const findResult = await signupRepository.findUsersSignedUp(insertEventResult.rows[0].id);
     expect(findResult.rows[0]).toMatchObject(signUp);
 });
+
+test('remove works', async () => {
+    const insertRegistrationRepository = await registrationRepository.insert(registrationExample1);
+    userExample1.email = insertRegistrationRepository.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample1);
+    const insertAddressResult = await addressRepository.insert(address);
+    individual.addressId = insertAddressResult.rows[0].id;
+    individual.userId = insertUserResult.rows[0].id;
+    const insertIndividualResult = await individualRepository.insert(individual);
+
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    const insertEventResult = await eventRepository.insert(event);
+
+    signUp.eventId = insertEventResult.rows[0].id;
+    signUp.individualId = insertIndividualResult.rows[0].id;
+    const insertSignupResult = await signupRepository.insert(signUp);
+
+    const removeResult = await signupRepository.remove({individualId: insertIndividualResult.rows[0].id, eventId: insertEventResult.rows[0].id});
+    expect(removeResult.rows[0]).toMatchObject(signUp);
+})

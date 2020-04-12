@@ -1,5 +1,6 @@
 const userRepository = require("../../repositories/user");
 const individualRepository = require("../../repositories/individual");
+const signupRepository = require("../../repositories/event/signup");
 
 /**
  * This fetches all users signed up to Karma.
@@ -10,6 +11,18 @@ const getAllUsers = async () => {
         message: "Users fetched successfully",
         status: 200,
         data: {users: users.rows},
+    });
+};
+
+/**
+ * This fetches sign-ups to events
+ */
+const getAllSignups = async () => {
+    const signups = await signupRepository.findAll();
+    return ({
+        message: "Signups fetched successfully",
+        status: 200,
+        data: {signups: signups.rows},
     });
 };
 
@@ -35,7 +48,7 @@ const toggleIndividualBan = async (individual) => {
     individual.banned = !individual.banned;
     const individualResult = await individualRepository.update(individual);
     return ({
-        message: "Individual banned successfully",
+        message: "Individual ban toggled successfully",
         status: 200,
         data: {individual: individualResult.rows[0]},
     });
@@ -43,6 +56,7 @@ const toggleIndividualBan = async (individual) => {
 
 module.exports = {
     getAllUsers,
+    getAllSignups,
     getAllIndividuals,
     toggleIndividualBan,
 };

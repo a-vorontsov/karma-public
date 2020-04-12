@@ -84,7 +84,7 @@ router.post('/confirm', authService.requireNoAuthentication, async (req, res) =>
             const tokenSent = result.rows[0].passwordToken;
             const expiryDate = result.rows[0].expiryDate;
 
-            if (tokenSent === tokenReceived && new Date() <= expiryDate) {
+            if (tokenSent === tokenReceived && Date.parse(util.getCurrentTimeInUtcAsString(0)) <= expiryDate) {
                 log.info("'%s': Confirming password reset token successful", req.body.data.email);
                 const authToken = authService.grantResetAccess(checkEmailResult.user.id, req.body.pub);
                 res.status(200).send({

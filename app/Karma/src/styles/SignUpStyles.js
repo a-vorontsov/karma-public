@@ -1,6 +1,5 @@
 import {StyleSheet, Dimensions} from "react-native";
 import Colours from "./Colours";
-
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const SignUpStyles = StyleSheet.create({

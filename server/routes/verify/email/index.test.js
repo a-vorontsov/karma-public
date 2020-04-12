@@ -141,6 +141,7 @@ test("request without token is rejected", async () => {
 });
 
 test("email verification works", async () => {
+    process.env.SKIP_NEW_TOKEN_TIMEOUT=1;
     const response = await request(app)
         .post("/signin/email")
         .set("authorization", null)
@@ -193,4 +194,5 @@ test("email verification works", async () => {
 
     expect(verifyResponse3.body.message).toBe("Email successfully verified. Go to registration screen.");
     expect(verifyResponse3.statusCode).toBe(200);
+    process.env.SKIP_NEW_TOKEN_TIMEOUT=0;
 });
