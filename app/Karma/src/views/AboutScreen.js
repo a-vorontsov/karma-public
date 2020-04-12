@@ -119,8 +119,6 @@ class AboutScreen extends React.Component {
         const authToken = await getAuthToken();
         const endpointUsertype = "individual";
 
-        console.log(selectedPhoto);
-        console.log("Uploading Photo");
         if (selectedPhoto != null) {
             await fetch(
                 `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,
@@ -131,14 +129,9 @@ class AboutScreen extends React.Component {
                     },
                     body: this.createFormData(selectedPhoto, {}),
                 },
-            )
-                .then(res => {
-                    const response = res.json();
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            ).catch(error => {
+                console.log(error);
+            });
         }
     }
 
@@ -214,7 +207,6 @@ class AboutScreen extends React.Component {
                     data: {individual: {...individual}},
                 })
                 .then(async res => {
-                    console.log(res.body);
                     await this.uploadPhoto(photo);
                     await AsyncStorage.setItem("FULLY_SIGNED_UP", "1");
                     this.props.navigation.replace("PickCauses", {

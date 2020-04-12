@@ -99,7 +99,6 @@ class ActivityCard extends React.Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: true,
                     });
@@ -116,7 +115,6 @@ class ActivityCard extends React.Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: false,
                     });

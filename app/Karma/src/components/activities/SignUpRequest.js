@@ -32,7 +32,6 @@ export default class SignUpRequest extends React.Component {
             .send(body)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body.message);
                 this.props.onSubmit();
                 let type = accept
                     ? "AttendanceConfirmation"

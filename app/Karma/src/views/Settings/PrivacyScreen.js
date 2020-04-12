@@ -33,7 +33,6 @@ class PrivacyScreen extends Component {
                     .get(`${REACT_APP_API_URL}/information`)
                     .set("authorization", authToken)
                     .query({type: "privacyPolicy"});
-                console.log(res.body);
                 privacy = res.body.data.information.content;
             }
             this.setState({

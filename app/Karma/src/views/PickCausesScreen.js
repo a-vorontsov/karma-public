@@ -65,7 +65,6 @@ export default class PickCausesScreen extends React.Component {
                 data: {causes: this.state.selectedCauses},
             })
             .then(res => {
-                console.log(res.body.message);
                 Toast.showWithGravity(
                     "Causes selected!",
                     Toast.SHORT,

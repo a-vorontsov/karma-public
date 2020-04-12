@@ -193,7 +193,6 @@ class ActivitiesAllScreen extends Component {
                 ...this.getFiltersObject(),
             })
             .then(async res => {
-                console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
                 this.setState({
                     isRefreshing: false,

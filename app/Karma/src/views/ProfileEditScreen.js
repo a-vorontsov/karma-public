@@ -99,11 +99,9 @@ class ProfileEditScreen extends Component {
                 this.state.photo = null;
             }
         } catch (e) {
-            console.log("caught me");
             console.log(e);
             this.state.photo = null;
         }
-        console.log(this.state.user);
 
         this.toggleModal = this.toggleModal.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
@@ -229,7 +227,6 @@ class ProfileEditScreen extends Component {
                 data: dataChanged,
             })
             .then(async res => {
-                console.log("status: " + res.status + ", " + res.body.message);
                 navigate("Profile");
             })
             .catch(err => {
@@ -325,7 +322,6 @@ class ProfileEditScreen extends Component {
                 this.imageLoader.animateTo(100, 400, Easing.quad);
                 const response = res.json();
                 if (res.status === 200) {
-                    console.log(response.message);
                     Alert.alert("Success", "Profile picture updated!");
                 } else {
                     Alert.alert("Upload Error", response.message);
@@ -353,7 +349,6 @@ class ProfileEditScreen extends Component {
             .get(`${REACT_APP_API_URL}/avatar/${endpointUsertype}`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.body);
                 const imageLocation =
                     res.body.pictureUrl + "?t=" + new Date().getTime(); // cache buster
 
@@ -389,7 +384,6 @@ class ProfileEditScreen extends Component {
             isOrganisation,
             individual,
             organisation,
-            photo,
             photoLoading,
         } = this.state;
         return (
