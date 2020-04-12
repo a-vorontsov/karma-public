@@ -4,11 +4,10 @@ import {RegularText} from "../text";
 import {TouchableOpacity} from "react-native";
 import WelcomeScreenStyles from "../../styles/WelcomeScreenStyles";
 
-/*
-    The PasswordInput class is a component used when the user
-    needs to input a single password on a screen.
-*/
-
+/**
+ * @class PasswordInput is a component used when the user
+ * needs to input a single password on a screen.
+ */
 export default class PasswordInput extends React.Component {
     constructor(props) {
         super(props);

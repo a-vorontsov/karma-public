@@ -51,11 +51,9 @@ const icons = {
 
 const request = require("superagent");
 
-/*
-    The ProfileScreen class represents the screen a user sees
-    when they view their profile.
-*/
-
+/**
+ * @class ProfileScreen represents the screen a user sees when they view their profile.
+ */
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -85,8 +83,10 @@ class ProfileScreen extends Component {
         this.fetchProfileInfo();
         this.toggleShareModal = this.toggleShareModal.bind(this);
     }
-    /*
+
+    /**
      * Load the profile page if the user is an individual
+     * @param {*} res 
      */
     setupIndividualProfile(res) {
         const {
@@ -118,8 +118,9 @@ class ProfileScreen extends Component {
         this.fetchProfilePicture();
     }
 
-    /*
+    /**
      * Load the profile page if the user is an organisation
+     * @param {*} res 
      */
     setupOrganisationProfile(res) {
         const {
@@ -173,7 +174,7 @@ class ProfileScreen extends Component {
         this.willFocusListener.remove();
     }
 
-    /*
+    /**
      * Get the information about the user's profile from the server using a GET request
      */
     async fetchProfileInfo() {
@@ -203,7 +204,7 @@ class ProfileScreen extends Component {
             });
     }
 
-    /*
+    /**
      * Get the user's profile picture from the server using a GET request
      */
     fetchProfilePicture = async () => {
@@ -275,10 +276,10 @@ class ProfileScreen extends Component {
         });
     };
 
-    /*
-    Uploads the photo the user picks to the server via a POST request
-    * Displays an error to the user if the process fails
-    */
+    /**
+     * Uploads the photo the user picks to the server via a POST request
+     * Displays an error to the user if the process fails
+     */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation

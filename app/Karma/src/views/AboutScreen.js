@@ -28,12 +28,12 @@ import ImagePicker from "react-native-image-picker";
 const request = require("superagent");
 const {width} = Dimensions.get("window");
 
-/*
-    The AboutScreen class represents the second screen in the sign up process.
-    This is the user equivalent of the OrgSignUpScreen class.
-    This is where the user chooses a picture, name, and address for themselves.
-*/
-
+/**
+ * @class AboutScreen represents the second screen in 
+ * the sign up process. This is the user equivalent of the 
+ * OrgSignUpScreen class. This is where the user chooses a 
+ * picture, name, and address for themselves.
+ */
 class AboutScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -55,9 +55,9 @@ class AboutScreen extends React.Component {
         };
     }
 
-    /*
-    Pass up the states of the component object it is called on
-    */
+    /**
+     * Pass up the states of the component object it is called on
+     */
     onInputChange = inputState => {
         this.setState({
             addressLine1: inputState.address1,
@@ -68,9 +68,9 @@ class AboutScreen extends React.Component {
         });
     };
 
-    /*
-    Overwrite what the default onChangeText does
-    */
+    /** 
+     * @override
+     */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -93,9 +93,9 @@ class AboutScreen extends React.Component {
         });
     }
 
-    /*
-    Open the photo library of the user
-    */
+    /**
+     * Open the photo library of the user
+     */
     choosePhoto = () => {
         const options = {
             noData: true,
@@ -106,9 +106,9 @@ class AboutScreen extends React.Component {
             }
         });
     };
-    /*
-    Load the information for the text fields and photo
-    */
+    /**
+     * Load the information for the text fields and photo
+     */
     createFormData = (photo, body) => {
         const data = new FormData();
 
@@ -132,8 +132,9 @@ class AboutScreen extends React.Component {
         return data;
     };
 
-    /*
-    Send the selected photo to the server
+   /**
+    * Send the selected photo to the server
+    * @param {*} selectedPhoto 
     */
     async uploadPhoto(selectedPhoto) {
         const authToken = await getAuthToken();
@@ -171,6 +172,7 @@ class AboutScreen extends React.Component {
     /**
      * Get all the attributes needed for creating a user
      */
+
     createIndividual() {
         const individual = {
             firstName: this.state.fname,

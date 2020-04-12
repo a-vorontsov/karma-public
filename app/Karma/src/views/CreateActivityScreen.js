@@ -40,7 +40,7 @@ const icons = {
 };
 
 /**
- * The CreateActivityScreen class provides the ability to create a new
+ * @class CreateActivityScreen provides the ability to create a new
  * event or edit an already existing event.
  */
 export default class CreateActivityScreen extends React.Component {

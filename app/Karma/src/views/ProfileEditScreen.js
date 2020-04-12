@@ -50,10 +50,9 @@ const icons = {
 };
 
 /**
- * The ProfileEditScreen class represents the screen displayed to the user
+ * @class ProfileEditScreen represents the screen displayed to the user
  * when they select the 'edit profile' button.
  */
-
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
@@ -320,7 +319,7 @@ class ProfileEditScreen extends Component {
         });
     };
 
-    /*
+    /**
      * Uploads the photo the user picks to the server via a POST request
      * Displays an error to the user if the process fails
      */
@@ -356,7 +355,7 @@ class ProfileEditScreen extends Component {
         this.fetchProfilePicture();
     };
 
-    /*
+    /**
      * Display the profile picture to a user
      * Uses a GET request to the server
      */

@@ -13,9 +13,8 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
 /**
- *  Class allows a user to select their preferred causes.
- *  Fetches the already selected causes and updates the
- *  new causes selected.
+ *  @class PickCausesScreen allows a user to select their preferred causes.
+ *  Fetches the already selected causes and updates the new causes selected.
  */
 export default class PickCausesScreen extends React.Component {
     constructor(props) {

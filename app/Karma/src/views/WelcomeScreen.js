@@ -20,13 +20,12 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
-/*
-    The WelcomeScreen class represents the first page a user sees
-    when they open the application for the first time.
-
-    It contains the log-in screen and email code input for new users.
-*/
-
+/**
+ * @class WelcomeScreen represents the first page a user sees 
+ * when they open the application for the first time.
+ * 
+ * Contains the log-in screen and email code input for new users.
+ */
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -68,7 +67,7 @@ export default class WelcomeScreen extends Component {
         this.setState({[name]: text});
     };
 
-    /*
+    /**
      * Logic for a user pressing the Forgot Password button
      * Includes POST request to the server in order to
      * Send the user a validation code via email
@@ -97,7 +96,7 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    /*
+    /**
      * Logic for a user pressing the LogIn/Signup button
      */
     onSignUpPressed() {
@@ -117,11 +116,11 @@ export default class WelcomeScreen extends Component {
             this.setState(this.baseState);
         }
     }
-
-    /*
-     * Logic for what happens when a user submits an email
+    
+    /**
+     * Logic for actions after a user submits an email
+     * @param {*} isValid 
      */
-
     async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
         // email is of a valid format
@@ -201,7 +200,7 @@ export default class WelcomeScreen extends Component {
         }
     }
 
-    /*
+    /**
      * Verify password is correct
      */
     async checkPass() {
@@ -229,8 +228,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    /*
+    /**
      * Validate that the forgot password code inputted matches the one sent to the user's email
+     * @param {*} code 
      */
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
@@ -263,8 +263,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
-    /*
+    /**
      * Validate that the sign up code inputted matches the one sent to the user's email
+     * @param {*} code 
      */
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;

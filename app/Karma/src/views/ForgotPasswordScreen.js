@@ -16,9 +16,9 @@ const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
 /**
- * Class is used when displaying the Forgot Password screen.
- * It used the ChangePasswordInput component for the user to
- * be able to enter a new password.
+ * @class ForgotPasswordScreen is used when displaying the 
+ * Forgot Password screen. It used the ChangePasswordInput 
+ * component for the user to be able to enter a new password.
  * The screen is only navigated to if the user enters a correct
  * email verification code.
  */
@@ -33,10 +33,8 @@ export default class ForgotPasswordScreen extends Component {
     }
 
     /**
-     * Send POST request to the server in order to
-     * save the user's new password.
-     * Alerts the user whether the request was
-     * successful or not.
+     * Send POST request to the server in order to save the user's new password.
+     * Alerts the user whether the request was successful or not.
      */
     sendNewPass = async () => {
         const {navigate} = this.props.navigation;

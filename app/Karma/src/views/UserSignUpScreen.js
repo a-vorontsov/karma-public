@@ -16,12 +16,11 @@ import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
-/*
-    The UserSignUpScreen class represents the first screen in the sign up process.
-    This is where the user chooses a username and password for themselves, and also
-    have the chance to view the Privacy Policy of the application.
-*/
-
+/**
+ * @class UserSignUpScreen represents the first screen in the sign up process.
+ * This is where the user chooses a username and password for themselves, and also
+ * have the chance to view the Privacy Policy of the application.
+ */
 class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -39,7 +38,7 @@ class SignUpScreen extends React.Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
 
-    /*
+    /**
      * Overwrite what the default onChangeText does
      */
     onChangeText = event => {
@@ -57,7 +56,7 @@ class SignUpScreen extends React.Component {
         });
     };
 
-    /*
+    /**
      * Get all the attributes needed for creating a user
      */
     createUser() {
@@ -68,7 +67,7 @@ class SignUpScreen extends React.Component {
         };
     }
 
-    /*
+    /**
      * Send POST request to the server in order to authorize sign up
      */
     signUserUp = async () => {

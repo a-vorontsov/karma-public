@@ -13,13 +13,14 @@ const icons = {
     profile: require("../../assets/images/general-logos/globe.png"),
 };
 
-/*
-    The ActivityDisplayCard class acts as a container for the ActivityCard.js.
-    It displays the organizer's name and event's location to the user and holds the ActivityCard's information.
-
-*/
-
+/**
+ * @class ActivityDisplayCard class acts as a container 
+ * for the ActivityCard.js. It displays the organizer's name 
+ * and event's location to the user and holds the ActivityCard's 
+ * information.
+ */
 class ActivityDisplayCard extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {

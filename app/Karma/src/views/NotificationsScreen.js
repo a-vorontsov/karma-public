@@ -33,7 +33,7 @@ function compare(a, b) {
 }
 
 /**
- * This class displays the notifications a user receives.
+ * @class NotificationsScreen displays the notifications a user receives.
  *
  * A user receives a notification when they are:
  * - accepted for an event

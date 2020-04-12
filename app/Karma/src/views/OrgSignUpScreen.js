@@ -32,13 +32,13 @@ const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const TEXT_COLOUR = "#7F7F7F";
 
-/*
-    The OrgSignUpScreen class represents the second screen in the sign up process.
-    This is where the user chooses a picture, name, and address for themselves.
-    Organizations can also choose their registration date, and other more
-    charity-focused filters.
-*/
-
+/** 
+ * @class OrgSignUpScreen represents the second screen 
+ * in the sign up process. This is where the user chooses 
+ * a picture, name, and address for themselves. Organizations 
+ * can also choose their registration date, and other more 
+ * charity-focused filters.
+ */
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
         console.disableYellowBox = true;
@@ -92,7 +92,7 @@ export default class OrgSignUpScreen extends React.Component {
             postCode: inputState.postcode,
         });
     };
-    /*
+    /**
      * Overwrite what the default onChangeText does
      */
     onChangeText = event => {
@@ -134,7 +134,7 @@ export default class OrgSignUpScreen extends React.Component {
         return data;
     };
 
-    /*
+    /**
      * Send the selected photo to the server
      */
     async uploadPhoto(selectedPhoto) {

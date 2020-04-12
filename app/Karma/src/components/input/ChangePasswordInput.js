@@ -12,13 +12,12 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 
-/*
-    The ChangePasswordInput class is a component used when the user
-    needs to input a password and confirm it via an additional text field.
-    The component contains the two text inputs with their respective 'show'
-    buttons, as well as a description of the password requirements.
-*/
-
+/**
+ * @class ChangePasswordInput is a component used when the user
+ * needs to input a password and confirm it via an additional text field. 
+ * The component contains the two text inputs with their respective 'show'
+ * buttons, as well as a description of the password requirements.
+ */
 export default class ChangePasswordInput extends Component {
     constructor(props) {
         super(props);
@@ -40,10 +39,10 @@ export default class ChangePasswordInput extends Component {
         this.passUpState();
     }
 
-    /*
-     Passes the states of certain flags up to the parent
-     container this component is used in.
-    */
+    /**
+     * Passes the states of certain flags up to the parent
+     * container this component is used in.
+     */
     passUpState() {
         const {confirmPassword, password} = this.state;
         console.log(confirmPassword, password, this.isValidPassword());
@@ -62,9 +61,9 @@ export default class ChangePasswordInput extends Component {
         }
     }
 
-    /*
-    Logic for whether an error message should be displayed.
-    */
+    /** 
+     * Logic for whether an error message should be displayed.
+     */
     showError() {
         const {firstOpen} = this.props;
         // it's the first time you open the page
