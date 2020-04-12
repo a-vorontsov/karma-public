@@ -40,7 +40,7 @@ class AttendanceScreen extends Component {
                 const attendees = res.body.data.users || [];
                 this.setState({
                     attendees: attendees.filter(
-                        a => a.confirmed && !a.attended,
+                        a => a.confirmed && a.attended === null,
                     ),
                 });
             })
