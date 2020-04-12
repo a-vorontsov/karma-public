@@ -6,6 +6,7 @@ const individualRepository = require("../individual");
 const organisationRepository = require("../organisation");
 const registrationRepository = require("../registration");
 const addressRepository = require("../address");
+const eventRepository = require("../event");
 
 let pictureExample1;
 let pictureExample2;
@@ -59,7 +60,7 @@ test('delete picture works', async () => {
     expect(findPictureDeleteResult.rowCount).toBe(0);
 });
 
-let registrationExample1, userExample1, address1, individual;
+let registrationExample1, userExample1, address1, individual, event;
 let registrationExample2, userExample2, address2, organisation;
 
 const generateRegisteredIndividual = async () => {
@@ -98,6 +99,22 @@ const generateRegisteredOrganisation = async () => {
     return organisationRepository.findById(insertOrganisationResult.rows[0].id);
 };
 
+const generateEvent = async () => {
+    registrationExample2 = testHelpers.getRegistrationExample1();
+    userExample2 = testHelpers.getUserExample1();
+    address2 = testHelpers.getAddress();
+    event = testHelpers.getEvent();
+    await testHelpers.clearDatabase();
+
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample2);
+    userExample2.email = insertRegistrationResult.rows[0].email;
+    const insertUserResult = await userRepository.insert(userExample2);
+    const insertAddressResult = await addressRepository.insert(address2);
+    event.addressId = insertAddressResult.rows[0].id;
+    event.userId = insertUserResult.rows[0].id;
+    return eventRepository.insert(event);
+};
+
 test('ensure individual avatar is updated & fetched correctly', async () => {
     // generate individual by registering user
     const individualResult = await generateRegisteredIndividual();
@@ -128,4 +145,20 @@ test('ensure organisation avatar is updated & fetched correctly', async () => {
 
     expect(getOrgUpdateResult.rows[0].pictureId).toBe(picture.id);
     expect(getOrgAvatarResult.rows[0].pictureLocation).toBe(picture.pictureLocation);
+});
+
+test('ensure event picture is updated & fetched correctly', async () => {
+    // generate event by registering user and creating event
+    const eventResult = await generateEvent();
+    const event = eventResult.rows[0];
+
+    const insertPictureResult = await pictureRepository.insert(pictureExample2);
+    const picture = insertPictureResult.rows[0];
+
+    // update picture & validate
+    const getEventUpdateResult = await pictureRepository.updateEventPicture(event, picture);
+    const getEventPictureResult = await pictureRepository.getEventPicture(event);
+
+    expect(getEventUpdateResult.rows[0].pictureId).toBe(picture.id);
+    expect(getEventPictureResult.rows[0].pictureLocation).toBe(picture.pictureLocation);
 });

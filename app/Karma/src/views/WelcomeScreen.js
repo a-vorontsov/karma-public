@@ -321,7 +321,8 @@ export default class WelcomeScreen extends Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never"
+                        style={{flex: 1}}>
                         <View
                             style={{
                                 flex: 1,
@@ -340,7 +341,7 @@ export default class WelcomeScreen extends Component {
                                 />
                             )}
 
-                            {/* Passowrd Field*/}
+                            {/* Password Field*/}
                             {this.state.showPassField && (
                                 <PasswordInput
                                     style={[

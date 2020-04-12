@@ -10,7 +10,7 @@ export default class InfoBar extends React.Component {
                 <View style={{alignSelf: "center"}}>
                     <Image
                         source={image}
-                        style={{width: 15, height: 15, resizeMode: "contain"}}
+                        style={{width: 10, height: 10, resizeMode: "contain"}}
                     />
                 </View>
                 <RegularText style={styles.titleStyle}>{title}</RegularText>

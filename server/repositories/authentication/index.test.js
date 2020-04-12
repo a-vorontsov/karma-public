@@ -64,3 +64,22 @@ test('find most recent auth token', async () => {
     expect(findLatestAuthenticationResult.rows[0]).toMatchObject(insertAuthenticationResult2.rows[0]);
     expect(findLatestAuthenticationResult.rowCount).toBe(1);
 });
+
+test('find all authentications by UserId', async () => {
+    const insertRegistrationResult = await registrationRepository.insert(registrationExample1);
+    const insertRegistrationResult2 = await registrationRepository.insert(registrationExample2);
+
+    userExample1.email = insertRegistrationResult.rows[0].email;
+    userExample2.email = insertRegistrationResult2.rows[0].email;
+
+    const insertUserResult1 = await userRepository.insert(userExample1);
+    const insertUserResult2 = await userRepository.insert(userExample2);
+
+    authenticationExample1.userId = insertUserResult1.rows[0].id;
+    authenticationExample2.userId = insertUserResult2.rows[0].id;
+    const insertAuthenticationResult1 = await authenticationRepository.insert(authenticationExample1);
+    const insertAuthenticationResult2 = await authenticationRepository.insert(authenticationExample2);
+    const findAuthenticationResult = await authenticationRepository.findAllByUserID(insertUserResult1.rows[0].id);
+    expect(insertAuthenticationResult1.rows[0]).toMatchObject(findAuthenticationResult.rows[0]);
+    expect(insertAuthenticationResult2.rowCount).toBe(1);
+});

@@ -63,7 +63,7 @@ class ActivityDisplayCard extends React.Component {
                     />
                     <View style={{alignItems: "center"}}>
                         <View
-                            style={{alignItems: "flex-start", marginLeft: 15}}>
+                            style={{alignItems: "flex-start", marginLeft: 30}}>
                             <View
                                 style={{
                                     flexDirection: "row",
@@ -71,6 +71,7 @@ class ActivityDisplayCard extends React.Component {
                                     justifyItems: "flex-start",
                                 }}>
                                 <RegularText
+                                    num={1}
                                     style={{
                                         fontSize: 20,
                                         color: Colours.black,

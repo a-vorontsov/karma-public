@@ -12,6 +12,7 @@ import {
     Text,
     Platform,
     Easing,
+    Keyboard,
 } from "react-native";
 import {RegularText} from "../components/text";
 import {GradientButton} from "../components/buttons";
@@ -35,12 +36,12 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 import ImagePicker from "react-native-image-picker";
 import CarouselStyles from "../styles/CarouselStyles";
 import ActivityCard from "../components/activities/ActivityCard";
+import PageHeader from "../components/PageHeader";
 const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get("window");
 const formWidth = 0.8 * SCREEN_WIDTH;
 const HALF = formWidth / 2;
 
 const icons = {
-    share: require("../assets/images/general-logos/share-logo.png"),
     edit_white: require("../assets/images/general-logos/edit-white.png"),
     calendar: require("../assets/images/general-logos/calendar-dark.png"),
     photo_add: require("../assets/images/general-logos/photo-plus-background.png"),
@@ -49,10 +50,12 @@ const icons = {
     orange_circle: require("../assets/images/general-logos/orange-circle.png"),
 };
 
+
 /**
  * @class ProfileEditScreen represents the screen displayed to the user
  * when they select the 'edit profile' button.
  */
+
 class ProfileEditScreen extends Component {
     constructor(props) {
         super(props);
@@ -414,11 +417,14 @@ class ProfileEditScreen extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior="padding"
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
+                <View style={[Styles.ph24, Styles.pv16]}>
+                    <PageHeader title="Edit Profile" />
+                </View>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handle">
+                    keyboardShouldPersistTaps="never">
                     <View
                         style={{
                             flex: 1,
@@ -456,13 +462,15 @@ class ProfileEditScreen extends Component {
                                 backgroundColor: Colours.blue,
                                 height: HALF,
                                 width: SCREEN_WIDTH,
+                                alignSelf: "center",
                                 alignItems: "center",
-                                justifyContent: "flex-start",
+                                justifyContent: "center",
                                 paddingRight: 30,
                                 paddingLeft: 30,
                                 paddingBottom: 40,
                                 flexDirection: "row",
                             }}>
+                            {/* Profile Picture */}
                             <View>
                                 <TouchableOpacity
                                     onPress={this.handleChoosePhoto}>
@@ -475,7 +483,7 @@ class ProfileEditScreen extends Component {
                                             opacity: photoLoading ? 0.5 : 1,
                                         }}
                                         resizeMode="cover"
-                                        source={photo ? photo : icons.photo_add}
+                                        source={icons.photo_add}
                                     />
                                     <View
                                         style={{
@@ -625,7 +633,7 @@ class ProfileEditScreen extends Component {
                                             name="pocFirstName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.lastName.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                         <RegularText style={styles.bioHeader}>
@@ -639,7 +647,7 @@ class ProfileEditScreen extends Component {
                                             name="pocLastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.username.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                     </View>
@@ -653,7 +661,7 @@ class ProfileEditScreen extends Component {
                                             name="firstName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.lastName.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                         <RegularText style={styles.bioHeader}>
@@ -664,19 +672,20 @@ class ProfileEditScreen extends Component {
                                             name="lastName"
                                             onChange={this.onChangeText}
                                             onSubmitEditing={() =>
-                                                this.username.focus()
+                                                Keyboard.dismiss()
                                             }
                                         />
                                     </View>
                                 )}
                                 <RegularText style={styles.bioHeader}>
-                                    User Name
+                                    Username
                                 </RegularText>
                                 <TextInput
+                                    value={individual.username}
                                     inputRef={ref => (this.username = ref)}
-                                    value={this.state.user.username}
                                     autoCapitalize="none"
                                     onChange={this.onChangeText}
+                                    onSubmitEditing={() => Keyboard.dismiss()}
                                     name="username"
                                 />
                                 {isOrganisation && (
@@ -722,7 +731,11 @@ class ProfileEditScreen extends Component {
                                 </RegularText>
                                 <View style={{flexWrap: "wrap"}}>
                                     <EditableText
-                                        text={this.state.individual.bio}
+                                        text={
+                                            this.state.individual.bio === ""
+                                                ? "Write bio here."
+                                                : this.state.individual.bio
+                                        }
                                         style={styles.contentText}
                                         onChange={val =>
                                             this.setState(prevState => {
@@ -741,6 +754,7 @@ class ProfileEditScreen extends Component {
                                         flexDirection: "column",
                                         alignItems: "flex-start",
                                         justifyContent: "flex-end",
+                                        flexWrap: "wrap",
                                     }}>
                                     <RegularText style={styles.bioHeader}>
                                         Causes
@@ -751,6 +765,7 @@ class ProfileEditScreen extends Component {
                                                 <CauseItem
                                                     cause={cause}
                                                     key={cause.id}
+                                                    display={true}
                                                     isDisabled={true}
                                                 />
                                             );
@@ -760,8 +775,8 @@ class ProfileEditScreen extends Component {
                                             <Image
                                                 source={icons.new_cause}
                                                 style={{
-                                                    height: SCREEN_WIDTH / 3.6,
-                                                    width: SCREEN_WIDTH / 3.6,
+                                                    height: SCREEN_WIDTH / 5,
+                                                    width: SCREEN_WIDTH / 5,
                                                     borderRadius: 10,
                                                     marginVertical: 4,
                                                     paddingVertical: 16,
@@ -813,7 +828,7 @@ class ProfileEditScreen extends Component {
                                 height: 0.08 * SCREEN_HEIGHT,
                                 justifyContent: "flex-end",
                                 alignItems: "center",
-                                marginBottom: 30,
+                                marginBottom: 100,
                                 backgroundColor: Colours.white,
                             }}>
                             <View style={{width: formWidth}}>
@@ -849,7 +864,7 @@ const styles = StyleSheet.create({
         transform: [{scaleX: 0.8}, {scaleY: 0.8}],
     },
     nameText: {
-        fontSize: 30,
+        fontSize: 20,
         color: Colours.white,
         fontWeight: "bold",
     },

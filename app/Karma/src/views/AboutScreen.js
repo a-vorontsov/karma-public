@@ -277,8 +277,8 @@ class AboutScreen extends React.Component {
                     <PageHeader title="About" />
                     <ScrollView
                         style={{marginBottom: 100}}
-                        keyboardShouldPersistTaps="handle"
-                        showsVerticalScrollIndicator={false}>
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="never">
                         <View>
                             <View>
                                 <SubTitleText style={{fontSize: normalise(26)}}>
