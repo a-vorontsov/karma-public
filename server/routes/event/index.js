@@ -33,7 +33,7 @@ router.use("/", eventSelectRoute);
  * @param {Object} req.query.availabilityStart - OPTIONAL: when user is first available filter(inclusive)
  * @param {Object} req.query.availabilityEnd - OPTIONAL: when user is last available filter(inclusive)
  * @returns {Object}
- *  status: 200, description: Array of all event objects sorted by time
+ *  status: 200, description: Array of all future event objects sorted by time
  *  and distance from the user (distance measured in miles), along with pagination information as follows:
  <pre>
 {

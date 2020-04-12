@@ -40,6 +40,16 @@ class ActivitiesAllScreen extends Component {
     async componentDidMount() {
         this.setState({loading: true});
         await this.fetchActivities();
+        this.willFocusListener = this.props.navigation.addListener(
+            "willFocus",
+            async () => {
+                await this.onRefresh();
+            },
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusListener.remove();
     }
 
     getDateString(date) {
@@ -172,7 +182,7 @@ class ActivitiesAllScreen extends Component {
 
     async onRefresh() {
         const authToken = await getAuthToken();
-        this.setState({isRefreshing: true});
+        this.setState({isRefreshing: true, activitiesList: []});
         this.page = 1;
         request
             .get(`${REACT_APP_API_URL}/event?${this.getBooleanFilters()}`)
@@ -183,7 +193,6 @@ class ActivitiesAllScreen extends Component {
                 ...this.getFiltersObject(),
             })
             .then(async res => {
-                console.log(res.body.message);
                 this.page = this.page + 1; //Increasing the offset for the next API call.
                 this.setState({
                     isRefreshing: false,

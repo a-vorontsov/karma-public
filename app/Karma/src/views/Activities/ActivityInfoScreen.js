@@ -111,7 +111,6 @@ class ActivityInfoScreen extends Component {
             .get(`${REACT_APP_API_URL}/event/${eventId}/signUp/status`)
             .set("authorization", authToken)
             .then(res => {
-                console.log(res.status);
                 if (res.body.data.signup.confirmed === false) {
                     this.setState({signedUp: false});
                 } else {
@@ -183,7 +182,8 @@ class ActivityInfoScreen extends Component {
 
         const causes = await this.fetchSelectedCauses(causeIds);
         const full_location = address1 + address2 + eventCity + " " + postcode;
-        const favourited = activity.favourited;
+
+        const favourited = this.props.navigation.getParam("favourited");
 
         this.setState({
             full_location,
@@ -244,7 +244,6 @@ class ActivityInfoScreen extends Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: true,
                     });
@@ -261,7 +260,6 @@ class ActivityInfoScreen extends Component {
                 )
                 .set("authorization", authToken)
                 .then(result => {
-                    console.log(result.body.message);
                     this.setState({
                         favourited: false,
                     });

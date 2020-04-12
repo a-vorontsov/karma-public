@@ -11,6 +11,13 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@
 
 const {width: SCREEN_WIDTH} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
+
+/**
+ * @class ChangePasswordInput is a component used when the user
+ * needs to input a password and confirm it via an additional text field.
+ * The component contains the two text inputs with their respective 'show'
+ * buttons, as well as a description of the password requirements.
+ */
 export default class ChangePasswordInput extends Component {
     constructor(props) {
         super(props);
@@ -32,9 +39,12 @@ export default class ChangePasswordInput extends Component {
         this.passUpState();
     }
 
+    /**
+     * Passes the states of certain flags up to the parent
+     * container this component is used in.
+     */
     passUpState() {
         const {confirmPassword, password} = this.state;
-        console.log(confirmPassword, password, this.isValidPassword());
         this.props.onChange({
             confirmPassword,
             password,
@@ -50,6 +60,9 @@ export default class ChangePasswordInput extends Component {
         }
     }
 
+    /**
+     * Logic for whether an error message should be displayed.
+     */
     showError() {
         const {firstOpen} = this.props;
         // it's the first time you open the page
@@ -103,7 +116,7 @@ export default class ChangePasswordInput extends Component {
                         onChange={this.onChangeText}
                         showError={showError}
                         errorText={this.whichErrorText()}
-                        inputRef={ref => (this.password = ref)} // let other components know what the password field is defined as
+                        inputRef={this.props.inputRef} // let other components know what the password field is defined as
                         onSubmitEditing={() => {
                             this.confirmPassword.focus();
                         }}

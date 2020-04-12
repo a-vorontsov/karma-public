@@ -32,6 +32,13 @@ const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get("window");
 const FORM_WIDTH = 0.8 * SCREEN_WIDTH;
 const TEXT_COLOUR = "#7F7F7F";
 
+/**
+ * @class OrgSignUpScreen represents the second screen
+ * in the sign up process. This is where the user chooses
+ * a picture, name, and address for themselves. Organizations
+ * can also choose their registration date, and other more
+ * charity-focused filters.
+ */
 export default class OrgSignUpScreen extends React.Component {
     constructor(props) {
         console.disableYellowBox = true;
@@ -85,7 +92,9 @@ export default class OrgSignUpScreen extends React.Component {
             postCode: inputState.postcode,
         });
     };
-
+    /**
+     * Overwrite what the default onChangeText does
+     */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -125,12 +134,13 @@ export default class OrgSignUpScreen extends React.Component {
         return data;
     };
 
+    /**
+     * Send the selected photo to the server
+     */
     async uploadPhoto(selectedPhoto) {
         const authToken = await getAuthToken();
         const endpointUsertype = "organisation";
 
-        console.log(selectedPhoto);
-        console.log("Uploading Photo");
         if (selectedPhoto != null) {
             await fetch(
                 `${REACT_APP_API_URL}/avatar/upload/${endpointUsertype}`,
@@ -141,17 +151,15 @@ export default class OrgSignUpScreen extends React.Component {
                     },
                     body: this.createFormData(selectedPhoto, {}),
                 },
-            )
-                .then(res => {
-                    const response = res.json();
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            ).catch(error => {
+                console.log(error);
+            });
         }
     }
 
+    /**
+     * Get all the attributes needed for creating an organisation
+     */
     createOrganisation() {
         const organisation = {
             name: this.state.orgName,
@@ -174,6 +182,10 @@ export default class OrgSignUpScreen extends React.Component {
         return organisation;
     }
 
+    /**
+     * Submit organisation information and
+     * go back to Activities page
+     */
     submit = async () => {
         const {navigate} = this.props.navigation;
         this.setState({submitPressed: true});
@@ -226,7 +238,7 @@ export default class OrgSignUpScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         {/** HEADER */}
                         <View
                             style={{

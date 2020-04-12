@@ -170,7 +170,7 @@ const eventWithData = {
     physical: true,
     addInfo: true,
     content: "nunc sit amet metus. Aliquam erat volutpat. Nulla facili",
-    date: "2020-04-08T23:00:00.000Z",
+    date: "2030-04-08T23:00:00.000Z",
     eventCreatorId: 1,
     address1: "uni road",
     address2: "wherever",
@@ -403,6 +403,22 @@ const cause = {
 };
 
 const getCause = () => ({...cause});
+
+const causeExample1 = {
+    name: "sdfsafewe",
+    description: "description of cause1",
+    title: "teasdfdast",
+};
+
+const getCauseExample1 = () => ({...causeExample1});
+
+const causeExample2 = {
+    name: "adsfdsfa",
+    description: "description of cause1",
+    title: "tesewrfast",
+};
+
+const getCauseExample2 = () => ({...causeExample2});
 
 const signUp = {
     individualId: -1,
@@ -689,4 +705,6 @@ module.exports = {
     getAnimalsEvent,
     getNotificationExample2,
     getEventWithBHAddress,
+    getCauseExample1,
+    getCauseExample2,
 };

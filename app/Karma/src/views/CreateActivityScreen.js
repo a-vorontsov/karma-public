@@ -38,6 +38,11 @@ const CAUSES_WIDTH = 0.9 * width;
 const icons = {
     new_cause: require("../assets/images/general-logos/new_cause.png"),
 };
+
+/**
+ * @class CreateActivityScreen provides the ability to create a new
+ * event or edit an already existing event.
+ */
 export default class CreateActivityScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -138,6 +143,10 @@ export default class CreateActivityScreen extends React.Component {
         Alert.alert(errorTitle, errorMessage);
     };
 
+    /**
+     * Update the 'Activity Causes' with the causes selected in the
+     * editing stage.
+     */
     onUpdateCauses = inputState => {
         const causeIds = [];
         inputState.selectedCauses.forEach(c => {
@@ -150,6 +159,10 @@ export default class CreateActivityScreen extends React.Component {
         this.toggleModal();
     };
 
+    /**
+     * In the editing view, load in the causes which were
+     * selected at a previous stage.
+     */
     fetchSelectedCauses = async causeIds => {
         let causes = await AsyncStorage.getItem("causes");
         causes = JSON.parse(causes);
@@ -172,7 +185,7 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     /**
-     * Updates the user's already created event
+     * Update the user's already created event
      */
     updateEvent = async () => {
         if (
@@ -208,7 +221,6 @@ export default class CreateActivityScreen extends React.Component {
                     `${event.name}`,
                     this.state.volunteers,
                 );
-                console.log(res.body.message);
             })
             .catch(er => {
                 Alert.alert("Server Error", er);
@@ -253,6 +265,7 @@ export default class CreateActivityScreen extends React.Component {
         };
         return event;
     }
+
     uploadPhoto(selectedPhoto) {
         if (selectedPhoto != null) {
             Alert.alert("Success!", "Your new photo has been uploaded.");
@@ -307,6 +320,10 @@ export default class CreateActivityScreen extends React.Component {
         });
     };
 
+    /**
+     * Allow user to set the number of available spots
+     * for an event.
+     */
     onChangeSpotsAvail = event => {
         const {name, text} = event;
         let number = parseInt(text, 2);
@@ -334,8 +351,8 @@ export default class CreateActivityScreen extends React.Component {
     };
 
     /**
-     * Submits activity information and
-     * goes back to Profile page
+     * Submit activity information and
+     * go back to Profile page
      */
     submit = async () => {
         const {navigate} = this.props.navigation;
@@ -375,7 +392,6 @@ export default class CreateActivityScreen extends React.Component {
                 Alert.alert("Successfully created the event!", "", [
                     {text: "OK", onPress: () => navigate("Profile")},
                 ]);
-                console.log(res.body.message);
             })
             .catch(er => {
                 console.log(er.message);
@@ -412,7 +428,7 @@ export default class CreateActivityScreen extends React.Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never">
                         <View
                             style={{
                                 minHeight: SCREEN_HEIGHT,

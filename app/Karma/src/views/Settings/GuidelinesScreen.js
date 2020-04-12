@@ -26,7 +26,6 @@ class GuidelinesScreen extends Component {
         request
             .get(`${REACT_APP_API_URL}/information?type=guidelines`)
             .then(res => {
-                console.log(res.body.message);
                 this.setState({
                     guidelinesText: res.body.data.information.content,
                 });

@@ -56,7 +56,6 @@ class EmailSettingsScreen extends Component {
                 notifications: this.state.notifications,
             })
             .then(res => {
-                console.log(res.body.message);
                 Toast.showWithGravity(
                     "Settings updated successfully.",
                     Toast.SHORT,

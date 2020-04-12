@@ -42,6 +42,7 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
+  - Mixpanel (3.6.0)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -221,6 +222,9 @@ PODS:
     - React
   - react-native-maps (0.27.0):
     - React
+  - react-native-mixpanel (1.2.0):
+    - Mixpanel (~> 3.6.0)
+    - React
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-simple-toast (1.0.0):
@@ -263,9 +267,9 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - RNBootSplash (2.1.0):
-    - React
   - ReactNativeDarkMode (0.2.2):
+    - React
+  - RNBootSplash (2.1.0):
     - React
   - RNCAsyncStorage (1.8.1):
     - React
@@ -282,10 +286,6 @@ PODS:
   - RNReanimated (1.7.0):
     - React
   - RNScreens (2.4.0):
-    - React
-  - RNShare (3.1.2):
-    - React
-  - RNShare (3.1.2):
     - React
   - RNShare (3.1.2):
     - React
@@ -321,6 +321,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -335,8 +336,8 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
@@ -354,6 +355,7 @@ SPEC REPOS:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - Mixpanel
     - Toast
 
 EXTERNAL SOURCES:
@@ -401,6 +403,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-mixpanel:
+    :path: "../node_modules/react-native-mixpanel"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
@@ -427,10 +431,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNBootSplash:
-    :path: "../node_modules/react-native-bootsplash"
   ReactNativeDarkMode:
     :path: "../node_modules/react-native-dark-mode"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCClipboard:
@@ -464,6 +468,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
+  Mixpanel: 446b6e7713aa34a9a3516ff7648d56551384fc94
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -480,6 +485,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
   react-native-image-resizer: efae8dd718cbd47755df95aa45ad859e701ad7d8
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
+  react-native-mixpanel: 60450b4eb64b7763202d823b0569443245e52edb
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-simple-toast: 6c376bd79b1e255a4bee90a72ead6447f96ea10d
   react-native-slider: 3a1cfd00c9c31068251b536822f7192e8d1d6b6f
@@ -493,8 +499,8 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNBootSplash: fbf76a4bf1c03e9acd1dd08ce064847f26d6d8bf
   ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
+  RNBootSplash: 52a95aa14b7832efb2fdc236ec38665356cd921a
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCClipboard: e8d99575c2917c338e0765d37cf46ff932377d26
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
@@ -508,6 +514,6 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 18a87c91536c12a57740593b66b732fc53d15e29
+PODFILE CHECKSUM: 1aef51ba00c8e35f21dfc72e5a7719f6647fa34d
 
 COCOAPODS: 1.9.0

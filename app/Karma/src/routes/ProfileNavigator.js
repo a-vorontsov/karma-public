@@ -11,6 +11,7 @@ import ProfileScreen from "../views/ProfileScreen";
 import ProfileEditScreen from "../views/ProfileEditScreen";
 import PickCausesScreen from "../views/PickCausesScreen";
 import CreateActivityScreen from "../views/CreateActivityScreen";
+import AttendanceScreen from "../views/Activities/AttendanceScreen";
 
 const ProfileNavigator = createStackNavigator(
     {
@@ -22,6 +23,7 @@ const ProfileNavigator = createStackNavigator(
         ViewSignUps: {screen: ViewSignUpsScreen},
         Attendees: {screen: Attendees},
         SignUpRequests: {screen: SignUpRequests},
+        Attendance: {screen: AttendanceScreen},
         CreateActivity: {
             screen: CreateActivityScreen,
         },

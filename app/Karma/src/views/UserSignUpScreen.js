@@ -16,9 +16,15 @@ import ChangePasswordInput from "../components/input/ChangePasswordInput";
 import {REACT_APP_API_URL} from "react-native-dotenv";
 const request = require("superagent");
 
+/**
+ * @class UserSignUpScreen represents the first screen in the sign up process.
+ * This is where the user chooses a username and password for themselves, and also
+ * have the chance to view the Privacy Policy of the application.
+ */
 class SignUpScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.password = React.createRef();
         this.state = {
             email: this.props.navigation.getParam("email"),
             username: "",
@@ -32,6 +38,9 @@ class SignUpScreen extends React.Component {
         this.onChangeText = this.onChangeText.bind(this);
     }
 
+    /**
+     * Overwrite what the default onChangeText does
+     */
     onChangeText = event => {
         const {name, text} = event;
         this.setState({[name]: text});
@@ -47,6 +56,9 @@ class SignUpScreen extends React.Component {
         });
     };
 
+    /**
+     * Get all the attributes needed for creating a user
+     */
     createUser() {
         return {
             email: this.state.email,
@@ -54,11 +66,15 @@ class SignUpScreen extends React.Component {
             password: this.state.confPassword,
         };
     }
+
+    /**
+     * Send POST request to the server in order to authorize sign up
+     */
     signUserUp = async () => {
         const user = this.createUser();
 
         this.setState({firstOpen: false, sendPassUpState: true});
-
+        // don't send the request to the server if any of these occur
         if (
             !this.state.termsChecked ||
             !this.state.email ||
@@ -86,10 +102,8 @@ class SignUpScreen extends React.Component {
                 },
             })
             .then(async res => {
-                console.log(res.body.message);
                 authToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authToken);
-
                 this.props.navigation.replace("InitSignup");
             })
             .catch(err => {
@@ -158,6 +172,7 @@ class SignUpScreen extends React.Component {
 
                                 <View>
                                     <ChangePasswordInput
+                                        inputRef={ref => (this.password = ref)}
                                         onChange={this.onInputChange}
                                         firstOpen={this.state.firstOpen}
                                         sendPassUpState={

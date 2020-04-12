@@ -1,5 +1,4 @@
 import React from "react";
-
 import {Image, TouchableOpacity, View} from "react-native";
 import {RegularText} from "../text";
 import ActivityCard from "./ActivityCard";
@@ -14,6 +13,12 @@ const icons = {
     profile: require("../../assets/images/general-logos/globe.png"),
 };
 
+/**
+ * @class ActivityDisplayCard class acts as a container
+ * for the ActivityCard.js. It displays the organizer's name
+ * and event's location to the user and holds the ActivityCard's
+ * information.
+ */
 class ActivityDisplayCard extends React.Component {
     constructor(props) {
         super(props);
@@ -58,7 +63,7 @@ class ActivityDisplayCard extends React.Component {
                     />
                     <View style={{alignItems: "center"}}>
                         <View
-                            style={{alignItems: "flex-start", marginLeft: 15}}>
+                            style={{alignItems: "flex-start", marginLeft: 30}}>
                             <View
                                 style={{
                                     flexDirection: "row",
@@ -66,6 +71,7 @@ class ActivityDisplayCard extends React.Component {
                                     justifyItems: "flex-start",
                                 }}>
                                 <RegularText
+                                    num={1}
                                     style={{
                                         fontSize: 20,
                                         color: Colours.black,

@@ -20,6 +20,12 @@ import {REACT_APP_API_URL} from "react-native-dotenv";
 
 const request = require("superagent");
 
+/**
+ * @class WelcomeScreen represents the first page a user sees
+ * when they open the application for the first time.
+ *
+ * Contains the log-in screen and email code input for new users.
+ */
 export default class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -61,6 +67,11 @@ export default class WelcomeScreen extends Component {
         this.setState({[name]: text});
     };
 
+    /**
+     * Logic for a user pressing the Forgot Password button
+     * Includes POST request to the server in order to
+     * Send the user a validation code via email
+     */
     async onForgotPassPressed() {
         this.setState({isForgotPassPressed: true});
         // remove the password field
@@ -77,7 +88,6 @@ export default class WelcomeScreen extends Component {
             })
             .then(res => {
                 //show code
-                console.log(res.body.message);
                 this.setState({showCode: true});
             })
             .catch(err => {
@@ -85,6 +95,9 @@ export default class WelcomeScreen extends Component {
             });
     }
 
+    /**
+     * Logic for a user pressing the LogIn/Signup button
+     */
     onSignUpPressed() {
         if (this.state.emailInput === "") {
             this.setState({isSignUpPressed: true});
@@ -103,6 +116,10 @@ export default class WelcomeScreen extends Component {
         }
     }
 
+    /**
+     * Logic for actions after a user submits an email
+     * @param {*} isValid
+     */
     async onSubmitEmail(isValid) {
         const {navigate} = this.props.navigation;
         // email is of a valid format
@@ -136,7 +153,6 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
-                    console.log(res.body.data);
                     if (res.body.data.isEmailVerified) {
                         // if email is verified
                         navigate("UserSignUp", {
@@ -152,9 +168,7 @@ export default class WelcomeScreen extends Component {
                         navigate("InitSignup");
                         return;
                     }
-
                     //if email is not verified, show code field
-
                     this.setState({
                         showPassField: false,
                         showCode: true,
@@ -184,7 +198,9 @@ export default class WelcomeScreen extends Component {
         }
     }
 
-    // verify password is correct
+    /**
+     * Verify password is correct
+     */
     async checkPass() {
         const {navigate} = this.props.navigation;
         let authToken = await getAuthToken();
@@ -210,6 +226,10 @@ export default class WelcomeScreen extends Component {
             });
     }
 
+    /**
+     * Validate that the forgot password code inputted matches the one sent to the user's email
+     * @param {*} code
+     */
     async confirmForgotPasswordCode(code) {
         const authToken = await getAuthToken();
         const {navigate} = this.props.navigation;
@@ -225,7 +245,6 @@ export default class WelcomeScreen extends Component {
             .then(async res => {
                 const authenticationToken = res.body.data.authToken;
                 await AsyncStorage.setItem("ACCESS_TOKEN", authenticationToken);
-                console.log(res.body.message);
                 this.setState({isCodeValid: true});
                 navigate("ForgotPassword", {
                     email: this.state.emailInput,
@@ -241,6 +260,10 @@ export default class WelcomeScreen extends Component {
             });
     }
 
+    /**
+     * Validate that the sign up code inputted matches the one sent to the user's email
+     * @param {*} code
+     */
     async confirmVerifyEmailCode(code) {
         const {navigate} = this.props.navigation;
         //check with register route
@@ -255,10 +278,7 @@ export default class WelcomeScreen extends Component {
                 },
             })
             .then(res => {
-                console.log(res.status);
-                console.log(res.body);
                 if (res.status === 200) {
-                    console.log("correct code");
                     this.setState({isCodeValid: true});
                     navigate("UserSignUp", {
                         email: this.state.emailInput,
@@ -295,7 +315,8 @@ export default class WelcomeScreen extends Component {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handle">
+                        keyboardShouldPersistTaps="never"
+                        style={{flex: 1}}>
                         <View
                             style={{
                                 flex: 1,
@@ -314,7 +335,7 @@ export default class WelcomeScreen extends Component {
                                 />
                             )}
 
-                            {/* Passowrd Field*/}
+                            {/* Password Field*/}
                             {this.state.showPassField && (
                                 <PasswordInput
                                     style={[

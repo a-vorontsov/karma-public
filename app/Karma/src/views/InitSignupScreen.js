@@ -13,6 +13,11 @@ import Colours from "../styles/Colours";
 
 const carouselEntries = [{individual: true}, {individual: false}];
 
+/**
+ * @class InitSignupScreen represents the intermediary signup screen where
+ * the user chooses whether they are an organisation or an individual,
+ * by the means of the Carousel component.
+ */
 export default class InitSignupScreen extends React.Component {
     constructor(props) {
         super(props);

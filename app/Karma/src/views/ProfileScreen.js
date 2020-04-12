@@ -51,6 +51,9 @@ const icons = {
 
 const request = require("superagent");
 
+/**
+ * @class ProfileScreen represents the screen a user sees when they view their profile.
+ */
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -58,11 +61,12 @@ class ProfileScreen extends Component {
             displayShareModal: false,
             activeSlide: 0,
             name: "",
+            username: "",
             user: {},
             location: "",
             bio: "",
             causes: [],
-            points: 1,
+            points: 0,
             createdEvents: [],
             createdPastEvents: [],
             upcomingEvents: [],
@@ -81,6 +85,10 @@ class ProfileScreen extends Component {
         this.toggleShareModal = this.toggleShareModal.bind(this);
     }
 
+    /**
+     * Load the profile page if the user is an individual
+     * @param {*} res
+     */
     setupIndividualProfile(res) {
         const {
             causes,
@@ -96,6 +104,7 @@ class ProfileScreen extends Component {
             isOrganisation: false,
             firstName: individual.firstName,
             lastName: individual.lastName,
+            username: individual.username,
             user: user,
             location: individual.address.townCity,
             bio: individual.bio,
@@ -111,6 +120,10 @@ class ProfileScreen extends Component {
         this.fetchProfilePicture();
     }
 
+    /**
+     * Load the profile page if the user is an organisation
+     * @param {*} res
+     */
     setupOrganisationProfile(res) {
         const {
             causes,
@@ -163,6 +176,9 @@ class ProfileScreen extends Component {
         this.willFocusListener.remove();
     }
 
+    /**
+     * Get the information about the user's profile from the server using a GET request
+     */
     async fetchProfileInfo() {
         const authToken = await getAuthToken();
         this.imageLoader.animateTo(0, 0);
@@ -190,6 +206,9 @@ class ProfileScreen extends Component {
             });
     }
 
+    /**
+     * Get the user's profile picture from the server using a GET request
+     */
     fetchProfilePicture = async () => {
         const profile = this.props.navigation.getParam("profile");
 
@@ -259,6 +278,10 @@ class ProfileScreen extends Component {
         });
     };
 
+    /**
+     * Uploads the photo the user picks to the server via a POST request
+     * Displays an error to the user if the process fails
+     */
     handleUploadPhoto = async () => {
         const authToken = await getAuthToken();
         const endpointUsertype = this.state.isOrganisation
@@ -312,7 +335,7 @@ class ProfileScreen extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior="padding"
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 enabled>
                 <NavigationEvents
                     onWillFocus={() => {
@@ -343,6 +366,7 @@ class ProfileScreen extends Component {
                                     style={{
                                         alignSelf: "center",
                                         alignItems: "flex-start",
+                                        justifyContent: "flex-start",
                                         width: formWidth,
                                         paddingBottom: 16,
                                     }}>
@@ -674,6 +698,7 @@ class ProfileScreen extends Component {
                                             flexDirection: "row",
                                             alignItems: "flex-end",
                                             justifyContent: "flex-end",
+                                            flexWrap: "wrap",
                                         }}>
                                         {this.state.causes.length > 0 ? (
                                             <View style={CauseStyles.container}>
@@ -682,6 +707,7 @@ class ProfileScreen extends Component {
                                                         <CauseItem
                                                             cause={cause}
                                                             key={cause.id}
+                                                            display={true}
                                                             isDisabled={true}
                                                         />
                                                     ),
@@ -697,8 +723,8 @@ class ProfileScreen extends Component {
                                                 <Image
                                                     source={icons.new_cause}
                                                     style={{
-                                                        height: width / 3.6,
-                                                        width: width / 3.6,
+                                                        height: width / 5,
+                                                        width: width / 5,
                                                         borderRadius: 10,
                                                         marginVertical: 4,
                                                         paddingVertical: 16,
@@ -721,6 +747,7 @@ class ProfileScreen extends Component {
                                         flex: 1,
                                         alignItems: "flex-start",
                                         justifyContent: "flex-start",
+                                        marginBottom: 50,
                                     }}>
                                     <View
                                         style={{
@@ -755,10 +782,7 @@ class ProfileScreen extends Component {
                                                         .eventsToggle,
                                                 })
                                             }
-                                            style={{
-                                                alignSelf: "flex-start",
-                                                marginLeft: 80,
-                                            }}>
+                                            style={[styles.editContainer]}>
                                             <RegularText
                                                 style={
                                                     this.state.eventsToggle
@@ -816,7 +840,7 @@ class ProfileScreen extends Component {
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 25,
+        fontSize: 20,
         color: Colours.white,
         fontWeight: "bold",
     },
