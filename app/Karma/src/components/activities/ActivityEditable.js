@@ -151,6 +151,16 @@ const ActivityEditable = props => {
                                     </RegularText>
                                 </MenuOption>
                                 <MenuOption
+                                    onSelect={() =>
+                                        navigation.navigate("Attendance", {
+                                            activity: activity,
+                                        })
+                                    }>
+                                    <RegularText style={styles.settingsText}>
+                                        Attendance
+                                    </RegularText>
+                                </MenuOption>
+                                <MenuOption
                                     onSelect={() => {
                                         Alert.alert(
                                             "Are you sure you want to delete this event?",
