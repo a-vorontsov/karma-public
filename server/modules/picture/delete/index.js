@@ -58,7 +58,7 @@ const deleteAvatar = (req, res) => {
                         const pictureLocation = picture.pictureLocation;
                         const key = pictureLocation.replace(AWS_REGEX, "");
 
-                        if (process.env.SKIP_S3) {
+                        if (process.env.SKIP_S3 == true) {
                             // MOCK RESPONSE
                             log.info("Skipping S3 update and sending mock response for testing");
                             log.info(`Deleted picture for ${userType} with user ID ${req.query.userId}`);
@@ -133,27 +133,37 @@ const deleteEventPicture = (req, res) => {
                                 message: `The image associated with with event ${req.params.eventId} no longer exists`,
                             });
                         } else {
-                            const picture = pictureResult.rows[0];
-                            const pictureLocation = picture.pictureLocation;
-                            const key = pictureLocation.replace(AWS_REGEX, "");
-                            s3.deleteObject({
-                                Bucket: process.env.S3_BUCKET_NAME,
-                                Key: key,
-                            }, (err, data) => {
-                                if (err) {
-                                    log.error(`Failed to delete picture for event with ID ${req.params.eventId}. ` +
-                                        `Error code ${err.code}: ${err.message}`);
-                                    res.status(500).send({
-                                        message: err.message,
-                                    });
-                                } else {
-                                    log.info(`Deleted picture for event with ID ${req.params.eventId}`);
-                                    res.status(200).send({
-                                        message: `Successfully deleted image!`,
-                                        oldLocation: pictureLocation,
-                                    });
-                                }
-                            });
+                            if (process.env.SKIP_S3 == true) {
+                                log.info("Skipping S3 update and sending mock response for testing");
+
+                                log.info(`Deleted picture for event with ID ${req.params.eventId}`);
+                                res.status(200).send({
+                                    message: `Successfully deleted image!`,
+                                    oldLocation: pictureResult.rows[0].pictureLocation,
+                                });
+                            } else {
+                                const picture = pictureResult.rows[0];
+                                const pictureLocation = picture.pictureLocation;
+                                const key = pictureLocation.replace(AWS_REGEX, "");
+                                s3.deleteObject({
+                                    Bucket: process.env.S3_BUCKET_NAME,
+                                    Key: key,
+                                }, (err, data) => {
+                                    if (err) {
+                                        log.error(`Failed to delete picture for event with ID ${req.params.eventId}. ` +
+                                            `Error code ${err.code}: ${err.message}`);
+                                        res.status(500).send({
+                                            message: err.message,
+                                        });
+                                    } else {
+                                        log.info(`Deleted picture for event with ID ${req.params.eventId}`);
+                                        res.status(200).send({
+                                            message: `Successfully deleted image!`,
+                                            oldLocation: pictureLocation,
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }).catch((error) => {
                         res.status(500).send({

@@ -91,3 +91,7 @@ header .header-title {
   font-weight: bold;
 }
 
+.links li {
+  text-align: left;
+}
+

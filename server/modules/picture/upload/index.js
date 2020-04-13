@@ -44,7 +44,7 @@ const updateAvatar = (req, res) => {
                 const avatarDir = `avatar-${userType}/`;
                 const user = result.rows[0];
 
-                if (process.env.SKIP_S3) {
+                if (process.env.SKIP_S3 == true) {
                     // MOCK RESPONSE
                     log.info("Skipping S3 update and sending mock response for testing");
 
@@ -157,57 +157,82 @@ const updateEventPicture = (req, res) => {
                     message: `You do not have permission to modify this event.`,
                 });
             } else {
-                const upload = multer({
-                    storage: s3Storage({
-                        s3: s3,
-                        Bucket: process.env.S3_BUCKET_NAME,
-                        Key: (req, file, cb) => {
-                            const hash = crypto.createHash('md5')
-                                .update(`karma_event_${req.params.eventId}`)
-                                .digest('hex');
-                            const filename = (hash + '.png');
-                            cb(null, filename);
-                        },
-                        resize: {
-                            width: 800, // limit max resolution
-                        },
-                        toFormat: {
-                            type: 'png',
-                        },
-                    }),
-                }).single('picture');
+                if (process.env.SKIP_S3 == true) {
+                    // MOCK RESPONSE
+                    log.info("Skipping S3 update and sending mock response for testing");
 
-                upload(req, res, error => {
-                    if (!req.file) {
-                        res.status(400).send({
-                            message: `No file was given`,
+                    const dummyLocation = `https://fakebucket-amazonaws.com/dummyImage.png`;
+                    imageRepository.insert({
+                        pictureLocation: dummyLocation,
+                    }).then((pictureResult) => {
+                        const picture = pictureResult.rows[0];
+                        imageRepository.updateEventPicture(event, picture).then(() => {
+                            log.info(`Updated picture for event ` +
+                                `with ID ${req.params.eventId} to ${dummyLocation}`);
+                            res.status(200).send({
+                                message: `Image successfully updated for event with ID ${req.params.eventId}`,
+                                pictureUrl: `${dummyLocation}`,
+                            });
+                        }).catch((error) => {
+                            log.info("ERROR!" + error.toString());
+                            res.status(500).send({message: error});
                         });
-                    } else if (!/^image\/((jpe?g)|(png))$/.test(req.file.mimetype)) {
-                        res.status(400).send({
-                            message: `File type must be .png or .jpg'`,
-                        });
-                    } else if (error) {
-                        res.status(500).send({error: error});
-                    } else {
-                        imageRepository.insert({
-                            pictureLocation: req.file.Location,
-                        }).then((pictureResult) => {
-                            const picture = pictureResult.rows[0];
-                            imageRepository.updateEventPicture(event, picture).then(() => {
-                                log.info(`Updated picture for event ` +
-                                    `with ID ${req.params.eventId} to ${req.file.location}`);
-                                res.status(200).send({
-                                    message: `Image successfully updated for event with ID ${req.params.eventId}`,
-                                    pictureUrl: `${req.file.Location}`,
+                    }).catch((error) => {
+                        res.status(500).send({message: error});
+                    });
+                } else {
+                    const upload = multer({
+                        storage: s3Storage({
+                            s3: s3,
+                            Bucket: process.env.S3_BUCKET_NAME,
+                            Key: (req, file, cb) => {
+                                const hash = crypto.createHash('md5')
+                                    .update(`karma_event_${req.params.eventId}`)
+                                    .digest('hex');
+                                const filename = (hash + '.png');
+                                cb(null, filename);
+                            },
+                            resize: {
+                                width: 800, // limit max resolution
+                            },
+                            toFormat: {
+                                type: 'png',
+                            },
+                        }),
+                    }).single('picture');
+
+                    upload(req, res, error => {
+                        if (!req.file) {
+                            res.status(400).send({
+                                message: `No file was given`,
+                            });
+                        } else if (!/^image\/((jpe?g)|(png))$/.test(req.file.mimetype)) {
+                            res.status(400).send({
+                                message: `File type must be .png or .jpg'`,
+                            });
+                        } else if (error) {
+                            res.status(500).send({error: error});
+                        } else {
+                            imageRepository.insert({
+                                pictureLocation: req.file.Location,
+                            }).then((pictureResult) => {
+                                const picture = pictureResult.rows[0];
+                                imageRepository.updateEventPicture(event, picture).then(() => {
+                                    log.info(`Updated picture for event ` +
+                                        `with ID ${req.params.eventId} to ${req.file.location}`);
+                                    res.status(200).send({
+                                        message: `Image successfully updated for event with ID ${req.params.eventId}`,
+                                        pictureUrl: `${req.file.Location}`,
+                                    });
+                                }).catch((error) => {
+                                    res.status(500).send({message: error});
                                 });
                             }).catch((error) => {
                                 res.status(500).send({message: error});
                             });
-                        }).catch((error) => {
-                            res.status(500).send({message: error});
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
     }).catch((error) => {
