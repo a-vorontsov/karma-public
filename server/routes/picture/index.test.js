@@ -151,6 +151,11 @@ test("fetching event with picture passes", async () => {
     expect(pictureResponse.body.pictureUrl).toContain("myTestLocation");
 });
 
+test("fetching default image works", async () => {
+    const errResult = await request(app).get(`/picture/default/404`);
+    expect(errResult.statusCode).toBe(200);
+});
+
 //
 // // == Test updating a profile picture == //
 //
@@ -194,6 +199,38 @@ test("updating a picture for an event as an authenticated user works", async () 
         // validate successful type conversion / preservation
         expect(pictureResponse.type).toBe("png");
     }
+});
+
+test("updating a picture for an event as an authenticated user works mocked", async () => {
+    await regRepo.insert(registration);
+
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+
+    const addressResult = await addressRepo.insert(address);
+
+    event.addressId = addressResult.rows[0].id;
+    event.userId = userId;
+    const eventResult = await eventRepo.insert(event);
+    const eventId = eventResult.rows[0].id;
+
+    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+
+    process.env.SKIP_S3 = "1";
+
+    const avatarResponse = await request(app)
+        .post(`/picture/upload/event/${eventId}?userId=${userId}`)
+        .attach('picture', testImage);
+
+    expect(avatarResponse.statusCode).toBe(200);
+
+    expect(avatarResponse.body.message).toBe(
+        `Image successfully updated for event with ID ${eventId}`,
+    );
+
+    expect(avatarResponse.body.pictureUrl).toContain(
+        "amazonaws.com/",
+    );
 });
 
 test("updating an event picture for an unauthenticated user fails", async () => {
@@ -366,211 +403,40 @@ test("deleting a picture for an nonexistent event as an authenticated user fails
     expect(deletionResponse.body.message).toContain("There is no event with ID");
 });
 
-//
-// test("deleting a profile picture for an authenticated individual works", async () => {
-//     // SETUP & INSERTION
-//
-//     await regRepo.insert(registration);
-//
-//     const insertUserResult = await userRepo.insert(user);
-//     const userId = insertUserResult.rows[0].id;
-//
-//     const addressResult = await addressRepo.insert(address);
-//
-//     individual.addressId = addressResult.rows[0].id;
-//     individual.userId = userId;
-//
-//     const insertIndividualResult = await individualRepo.insert(individual);
-//
-//     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
-//
-//     const avatarResponse = await request(app)
-//         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
-//         .attach('picture', individualTestImage);
-//
-//     expect(avatarResponse.statusCode).toBe(200);
-//
-//     expect(avatarResponse.body.message).toBe(
-//         `Avatar successfully updated for individual with ID ${userId}`,
-//     );
-//
-//     expect(avatarResponse.body.pictureUrl).toContain(
-//         "amazonaws.com/avatar-individual",
-//     );
-//
-//     if ( process.env.SKIP_S3 ) {
-//         log.log("Skipping S3 image download for testing (SKIP_S3)");
-//     } else {
-//         const pictureUrl = avatarResponse.body.pictureUrl;
-//         const pictureResponse = await reqExt.get(pictureUrl);
-//
-//         expect(pictureResponse.statusCode).toBe(200);
-//
-//         // validate successful type conversion / preservation
-//         expect(pictureResponse.type).toBe("png");
-//
-//         // DELETION
-//
-//         const deletionResponse = await request(app)
-//             .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
-//
-//         expect(deletionResponse.statusCode).toBe(200);
-//         expect(deletionResponse.body.message).toBe(`Successfully deleted image!`);
-//         expect(deletionResponse.body.oldLocation).toBe(`${pictureUrl}`);
-//     }
-// });
-//
-// test("deleting without specifying user type fails", async () => {
-//     const deletionResponse = await request(app)
-//         .post(`/avatar/delete/FAKE?userId=10`);
-//
-//     expect(deletionResponse.statusCode).toBe(400);
-//     expect(deletionResponse.body.message).toContain(
-//         `User type not specified, specify one of:`,
-//     );
-// });
-//
-// test("deleting a profile picture for a user without one is handled", async () => {
-//     // SETUP & INSERTION
-//
-//     await regRepo.insert(registration);
-//
-//     const insertUserResult = await userRepo.insert(user);
-//     const userId = insertUserResult.rows[0].id;
-//
-//     const addressResult = await addressRepo.insert(address);
-//
-//     individual.addressId = addressResult.rows[0].id;
-//     individual.userId = userId;
-//
-//     const insertIndividualResult = await individualRepo.insert(individual);
-//
-//     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
-//
-//     const deletionResponse = await request(app)
-//         .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
-//
-//     expect(deletionResponse.statusCode).toBe(200);
-//     expect(deletionResponse.body.message).toBe(`The individual with user ID ${insertIndividualResult.rows[0].userId} has no image`);
-// });
-//
-// test("deleting a profile picture for an authenticated fails for an invalid bucket", async () => {
-//     // SETUP & INSERTION
-//
-//     await regRepo.insert(registration);
-//
-//     const insertUserResult = await userRepo.insert(user);
-//     const userId = insertUserResult.rows[0].id;
-//
-//     const addressResult = await addressRepo.insert(address);
-//
-//     individual.addressId = addressResult.rows[0].id;
-//     individual.userId = userId;
-//
-//     const insertIndividualResult = await individualRepo.insert(individual);
-//
-//     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
-//
-//     const avatarResponse = await request(app)
-//         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
-//         .attach('picture', individualTestImage);
-//
-//     expect(avatarResponse.statusCode).toBe(200);
-//
-//     expect(avatarResponse.body.message).toBe(
-//         `Avatar successfully updated for individual with ID ${userId}`,
-//     );
-//
-//     expect(avatarResponse.body.pictureUrl).toContain(
-//         "amazonaws.com/avatar-individual",
-//     );
-//
-//     if ( process.env.SKIP_S3 ) {
-//         log.log("Skipping S3 image download for testing (SKIP_S3)");
-//     } else {
-//         const pictureUrl = avatarResponse.body.pictureUrl;
-//         const pictureResponse = await reqExt.get(pictureUrl);
-//
-//         expect(pictureResponse.statusCode).toBe(200);
-//
-//         // validate successful type conversion / preservation
-//         expect(pictureResponse.type).toBe("png");
-//
-//         // DELETION
-//         process.env.S3_BUCKET_NAME = "MYfakeBUCKET";
-//         log.log(process.env.S3_BUCKET_NAME);
-//
-//         const deletionResponse = await request(app)
-//             .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
-//
-//         expect(deletionResponse.statusCode).toBe(500);
-//     }
-// });
-//
-// test("deleting a profile picture for an authenticated individual works when mocking S3", async () => {
-//     // SETUP & INSERTION
-//     await regRepo.insert(registration);
-//
-//     const insertUserResult = await userRepo.insert(user);
-//     const userId = insertUserResult.rows[0].id;
-//
-//     const addressResult = await addressRepo.insert(address);
-//
-//     individual.addressId = addressResult.rows[0].id;
-//     individual.userId = userId;
-//
-//     const insertIndividualResult = await individualRepo.insert(individual);
-//
-//     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
-//
-//     const avatarResponse = await request(app)
-//         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
-//         .attach('picture', individualTestImage);
-//
-//     expect(avatarResponse.statusCode).toBe(200);
-//
-//     expect(avatarResponse.body.message).toBe(
-//         `Avatar successfully updated for individual with ID ${userId}`,
-//     );
-//
-//     expect(avatarResponse.body.pictureUrl).toContain(
-//         "amazonaws.com/avatar-individual",
-//     );
-//
-//     process.env.SKIP_S3 = true;
-//
-//     const deletionResponse = await request(app)
-//         .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
-//
-//     expect(deletionResponse.statusCode).toBe(200);
-//     expect(deletionResponse.body.message).toBe(`Successfully deleted image!`);
-// });
-//
-// test("deleting a profile picture for non-existent user fails", async () => {
-//     // SETUP & INSERTION
-//     await regRepo.insert(registration);
-//
-//     const insertUserResult = await userRepo.insert(user);
-//     const userId = insertUserResult.rows[0].id;
-//
-//     const addressResult = await addressRepo.insert(address);
-//
-//     individual.addressId = addressResult.rows[0].id;
-//     individual.userId = userId;
-//
-//     const insertIndividualResult = await individualRepo.insert(individual);
-//
-//     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
-//
-//     const invalidId = insertIndividualResult.rows[0].userId + 10;
-//
-//     const avatarResponse = await request(app)
-//         .post(`/avatar/delete/individual?userId=${invalidId}`)
-//         .attach('picture', individualTestImage);
-//
-//     expect(avatarResponse.statusCode).toBe(404);
-//
-//     expect(avatarResponse.body.message).toBe(
-//         `There is no individual with ID ${invalidId}`,
-//     );
-// });
+test("deleting a picture for an event as an authenticated user works mocked", async () => {
+    await regRepo.insert(registration);
+
+    const insertUserResult = await userRepo.insert(user);
+    const userId = insertUserResult.rows[0].id;
+
+    const addressResult = await addressRepo.insert(address);
+
+    event.addressId = addressResult.rows[0].id;
+    event.userId = userId;
+    const eventResult = await eventRepo.insert(event);
+    const eventId = eventResult.rows[0].id;
+
+    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+
+    process.env.SKIP_S3 = "1";
+
+    const avatarResponse = await request(app)
+        .post(`/picture/upload/event/${eventId}?userId=${userId}`)
+        .attach('picture', testImage);
+
+    expect(avatarResponse.statusCode).toBe(200);
+
+    expect(avatarResponse.body.message).toBe(
+        `Image successfully updated for event with ID ${eventId}`,
+    );
+
+    expect(avatarResponse.body.pictureUrl).toContain(
+        "amazonaws.com/",
+    );
+
+    const deletionResponse = await request(app)
+        .post(`/picture/delete/event/${eventId}?userId=${userId}`);
+
+    expect(deletionResponse.statusCode).toBe(200);
+    expect(deletionResponse.body.message).toContain("Successfully deleted image!");
+});
