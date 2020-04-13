@@ -154,7 +154,7 @@ test("updating a profile picture for an authenticated individual works", async (
 
 
         if ( process.env.SKIP_S3 == true ) {
-            log.log("Skipping S3 image download for testing (SKIP_S3)");
+            console.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
             const pictureResponse = await reqExt.get(pictureUrl);
@@ -196,7 +196,7 @@ test("updating a profile picture for an authenticated organisation works", async
         expect(avatarResponse.statusCode).toBe(200);
 
         if ( process.env.SKIP_S3 == true ) {
-            log.log("Skipping S3 image download for testing (SKIP_S3)");
+            console.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
             const pictureResponse = await reqExt.get(pictureUrl);
@@ -354,7 +354,7 @@ test("deleting a profile picture for an authenticated individual works", async (
         );
 
         if ( process.env.SKIP_S3 == true ) {
-            log.log("Skipping S3 image download for testing (SKIP_S3)");
+            console.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
             const pictureResponse = await reqExt.get(pictureUrl);
@@ -481,7 +481,7 @@ test("deleting a profile picture for an authenticated fails for an invalid bucke
     expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
-        log.log("Skipping S3 image download for testing (SKIP_S3)");
+        console.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
         const pictureResponse = await reqExt.get(pictureUrl);
@@ -493,7 +493,7 @@ test("deleting a profile picture for an authenticated fails for an invalid bucke
 
         // DELETION
         process.env.S3_BUCKET_NAME = "MYfakeBUCKET";
-        log.log(process.env.S3_BUCKET_NAME);
+        console.log(process.env.S3_BUCKET_NAME);
 
         const deletionResponse = await request(app)
             .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);

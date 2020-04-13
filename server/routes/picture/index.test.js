@@ -190,7 +190,7 @@ test("updating a picture for an event as an authenticated user works", async () 
     expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
-        log.log("Skipping S3 image download for testing (SKIP_S3)");
+        console.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
         const pictureResponse = await reqExt.get(pictureUrl);
@@ -320,7 +320,7 @@ test("deleting a picture for an event as an authenticated user works", async () 
     expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
-        log.log("Skipping S3 image download for testing (SKIP_S3)");
+        console.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
         const pictureResponse = await reqExt.get(pictureUrl);
@@ -367,7 +367,7 @@ test("deleting a picture for an event as an unauthenticated user fails", async (
     expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
-        log.log("Skipping S3 image download for testing (SKIP_S3)");
+        console.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
         const pictureResponse = await reqExt.get(pictureUrl);
