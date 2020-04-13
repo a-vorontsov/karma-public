@@ -248,11 +248,12 @@ test("updating a profile picture for an authenticated organisation works while m
     expect(avatarResponse.body.message).toBe(
         `Avatar successfully updated for organisation with ID ${userId}`,
     );
-    expect(avatarResponse.statusCode).toBe(200);
 
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/avatar-organisation",
     );
+
+    expect(avatarResponse.statusCode).toBe(200);
 });
 
 test("updating a profile picture for an unauthenticated user fails", async () => {

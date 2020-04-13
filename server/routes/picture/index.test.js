@@ -178,8 +178,6 @@ test("updating a picture for an event as an authenticated user works", async () 
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
@@ -187,6 +185,8 @@ test("updating a picture for an event as an authenticated user works", async () 
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/",
     );
+
+    expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
@@ -419,19 +419,19 @@ test("deleting a picture for an event as an authenticated user works mocked", as
 
     process.env.SKIP_S3 = "1";
 
-    const avatarResponse = await request(app)
+    const pictureResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.body.message).toBe(
+    expect(pictureResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
 
-    expect(avatarResponse.body.pictureUrl).toContain(
+    expect(pictureResponse.body.pictureUrl).toContain(
         "amazonaws.com/",
     );
 
-    expect(avatarResponse.statusCode).toBe(200);
+    expect(pictureResponse.statusCode).toBe(200);
 
     const deletionResponse = await request(app)
         .post(`/picture/delete/event/${eventId}?userId=${userId}`);
