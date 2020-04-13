@@ -183,7 +183,7 @@ test("updating a picture for an event as an authenticated user works", async () 
         "amazonaws.com/",
     );
 
-    if ( process.env.SKIP_S3 ) {
+    if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
@@ -281,7 +281,7 @@ test("deleting a picture for an event as an authenticated user works", async () 
         "amazonaws.com/",
     );
 
-    if ( process.env.SKIP_S3 ) {
+    if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
@@ -296,6 +296,7 @@ test("deleting a picture for an event as an authenticated user works", async () 
             .post(`/picture/delete/event/${eventId}?userId=${userId}`);
 
         expect(deletionResponse.statusCode).toBe(200);
+        expect(deletionResponse.body.message).toContain("Successfully deleted image!");
     }
 });
 
@@ -328,7 +329,7 @@ test("deleting a picture for an event as an unauthenticated user fails", async (
         "amazonaws.com/",
     );
 
-    if ( process.env.SKIP_S3 ) {
+    if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;

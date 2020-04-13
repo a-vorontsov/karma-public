@@ -148,7 +148,7 @@ test("updating a profile picture for an authenticated individual works", async (
             "amazonaws.com/avatar-individual",
         );
 
-        if ( process.env.SKIP_S3 ) {
+        if ( process.env.SKIP_S3 == true ) {
             log.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
@@ -190,7 +190,7 @@ test("updating a profile picture for an authenticated organisation works", async
             "amazonaws.com/avatar-organisation",
         );
 
-        if ( process.env.SKIP_S3 ) {
+        if ( process.env.SKIP_S3 == true ) {
             log.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
@@ -286,7 +286,7 @@ test("deleting a profile picture for an authenticated individual works", async (
             "amazonaws.com/avatar-individual",
         );
 
-        if ( process.env.SKIP_S3 ) {
+        if ( process.env.SKIP_S3 == true ) {
             log.log("Skipping S3 image download for testing (SKIP_S3)");
         } else {
             const pictureUrl = avatarResponse.body.pictureUrl;
@@ -373,7 +373,7 @@ test("deleting a profile picture for an authenticated fails for an invalid bucke
         "amazonaws.com/avatar-individual",
     );
 
-    if ( process.env.SKIP_S3 ) {
+    if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
