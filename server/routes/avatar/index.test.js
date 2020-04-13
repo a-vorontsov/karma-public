@@ -50,14 +50,13 @@ test("fetching default individual avatar works", async () => {
     const avatarResponse = await request(app)
         .get(`/avatar/individual?userId=${insertIndividualResult.rows[0].userId}`);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         "Fetched image for user!",
     );
     expect(avatarResponse.body.pictureUrl).toContain(
         "/default/individual",
     );
+    expect(avatarResponse.statusCode).toBe(200);
 });
 
 test("fetching default avatars works", async () => {
@@ -83,14 +82,13 @@ test("fetching default organisation avatar works", async () => {
     const avatarResponse = await request(app)
         .get(`/avatar/organisation?userId=${insertOrganisationResult.rows[0].userId}`);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         "Fetched image for user!",
     );
     expect(avatarResponse.body.pictureUrl).toContain(
         "/default/organisation",
     );
+    expect(avatarResponse.statusCode).toBe(200);
 });
 
 // == Test missing user ID fetching == //
@@ -101,13 +99,13 @@ test("fetching non-existent individual avatar results in error", async () => {
     const avatarResponse = await request(app)
         .get(`/avatar/individual?userId=${fakeId}`);
 
-    expect(avatarResponse.statusCode).toBe(404);
-
     expect(avatarResponse.body.message).toBe(
         `There is no individual with user ID ${fakeId}`,
     );
 
     expect(avatarResponse.body.pictureUrl).toBe(undefined);
+
+    expect(avatarResponse.statusCode).toBe(404);
 });
 
 test("fetching non-existent organisation avatar results in error", async () => {
@@ -116,13 +114,12 @@ test("fetching non-existent organisation avatar results in error", async () => {
     const avatarResponse = await request(app)
         .get(`/avatar/organisation?userId=${fakeId}`);
 
-    expect(avatarResponse.statusCode).toBe(404);
-
     expect(avatarResponse.body.message).toBe(
         `There is no organisation with user ID ${fakeId}`,
     );
 
     expect(avatarResponse.body.pictureUrl).toBe(undefined);
+    expect(avatarResponse.statusCode).toBe(404);
 });
 
 // == Test updating a profile picture == //
@@ -146,8 +143,6 @@ test("updating a profile picture for an authenticated individual works", async (
             .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
             .attach('picture', individualTestImage);
 
-        expect(avatarResponse.statusCode).toBe(200);
-
         expect(avatarResponse.body.message).toBe(
             `Avatar successfully updated for individual with ID ${userId}`,
         );
@@ -155,6 +150,8 @@ test("updating a profile picture for an authenticated individual works", async (
         expect(avatarResponse.body.pictureUrl).toContain(
             "amazonaws.com/avatar-individual",
         );
+        expect(avatarResponse.statusCode).toBe(200);
+
 
         if ( process.env.SKIP_S3 == true ) {
             log.log("Skipping S3 image download for testing (SKIP_S3)");
@@ -188,8 +185,6 @@ test("updating a profile picture for an authenticated organisation works", async
             .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`)
             .attach('picture', organisationTestImage);
 
-        expect(avatarResponse.statusCode).toBe(200);
-
         expect(avatarResponse.body.message).toBe(
             `Avatar successfully updated for organisation with ID ${userId}`,
         );
@@ -197,6 +192,7 @@ test("updating a profile picture for an authenticated organisation works", async
         expect(avatarResponse.body.pictureUrl).toContain(
             "amazonaws.com/avatar-organisation",
         );
+        expect(avatarResponse.statusCode).toBe(200);
 
         if ( process.env.SKIP_S3 == true ) {
             log.log("Skipping S3 image download for testing (SKIP_S3)");
@@ -251,11 +247,10 @@ test("updating a profile picture for an authenticated organisation works while m
         .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`)
         .attach('picture', organisationTestImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Avatar successfully updated for organisation with ID ${userId}`,
     );
+    expect(avatarResponse.statusCode).toBe(200);
 
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/avatar-organisation",
@@ -305,11 +300,10 @@ test("uploading a profile picture for non-existent user fails", async () => {
         .post(`/avatar/upload/individual?userId=${invalidId}`)
         .attach('picture', individualTestImage);
 
-    expect(avatarResponse.statusCode).toBe(404);
-
     expect(avatarResponse.body.message).toBe(
         `There is no individual with user ID ${invalidId}`,
     );
+    expect(avatarResponse.statusCode).toBe(404);
 });
 
 test("uploading without specifying user type fails", async () => {
@@ -349,11 +343,11 @@ test("deleting a profile picture for an authenticated individual works", async (
             .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
             .attach('picture', individualTestImage);
 
-        expect(avatarResponse.statusCode).toBe(200);
-
         expect(avatarResponse.body.message).toBe(
             `Avatar successfully updated for individual with ID ${userId}`,
         );
+
+        expect(avatarResponse.statusCode).toBe(200);
 
         expect(avatarResponse.body.pictureUrl).toContain(
             "amazonaws.com/avatar-individual",
@@ -375,8 +369,8 @@ test("deleting a profile picture for an authenticated individual works", async (
             const deletionResponse = await request(app)
                 .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
 
-            expect(deletionResponse.statusCode).toBe(200);
             expect(deletionResponse.body.message).toBe(`Successfully deleted image!`);
+            expect(deletionResponse.statusCode).toBe(200);
             expect(deletionResponse.body.oldLocation).toBe(`${pictureUrl}`);
         }
 });
@@ -404,8 +398,6 @@ test("deleting a profile picture for an authenticated individual works mocked", 
         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
         .attach('picture', individualTestImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Avatar successfully updated for individual with ID ${userId}`,
     );
@@ -413,6 +405,8 @@ test("deleting a profile picture for an authenticated individual works mocked", 
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/avatar-individual",
     );
+
+    expect(avatarResponse.statusCode).toBe(200);
 
     // DELETION
 
@@ -426,10 +420,10 @@ test("deleting without specifying user type fails", async () => {
     const deletionResponse = await request(app)
         .post(`/avatar/delete/FAKE?userId=10`);
 
-    expect(deletionResponse.statusCode).toBe(400);
     expect(deletionResponse.body.message).toContain(
         `User type not specified, specify one of:`,
     );
+    expect(deletionResponse.statusCode).toBe(400);
 });
 
 test("deleting a profile picture for a user without one is handled", async () => {
@@ -452,8 +446,8 @@ test("deleting a profile picture for a user without one is handled", async () =>
     const deletionResponse = await request(app)
         .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
 
-    expect(deletionResponse.statusCode).toBe(200);
     expect(deletionResponse.body.message).toBe(`The individual with user ID ${insertIndividualResult.rows[0].userId} has no image`);
+    expect(deletionResponse.statusCode).toBe(200);
 });
 
 test("deleting a profile picture for an authenticated fails for an invalid bucket", async () => {
@@ -477,8 +471,6 @@ test("deleting a profile picture for an authenticated fails for an invalid bucke
         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
         .attach('picture', individualTestImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Avatar successfully updated for individual with ID ${userId}`,
     );
@@ -486,6 +478,7 @@ test("deleting a profile picture for an authenticated fails for an invalid bucke
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/avatar-individual",
     );
+    expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
@@ -525,11 +518,11 @@ test("deleting a profile picture for an authenticated individual works when mock
 
     const individualTestImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
 
+    process.env.SKIP_S3 = "1";
+
     const avatarResponse = await request(app)
         .post(`/avatar/upload/individual?userId=${insertIndividualResult.rows[0].userId}`)
         .attach('picture', individualTestImage);
-
-    expect(avatarResponse.statusCode).toBe(200);
 
     expect(avatarResponse.body.message).toBe(
         `Avatar successfully updated for individual with ID ${userId}`,
@@ -538,14 +531,13 @@ test("deleting a profile picture for an authenticated individual works when mock
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/avatar-individual",
     );
-
-    process.env.SKIP_S3 = "1";
+    expect(avatarResponse.statusCode).toBe(200);
 
     const deletionResponse = await request(app)
         .post(`/avatar/delete/individual?userId=${insertIndividualResult.rows[0].userId}`);
 
-    expect(deletionResponse.statusCode).toBe(200);
     expect(deletionResponse.body.message).toBe(`Successfully deleted image!`);
+    expect(deletionResponse.statusCode).toBe(200);
 });
 
 test("deleting a profile picture for non-existent user fails", async () => {
@@ -570,9 +562,8 @@ test("deleting a profile picture for non-existent user fails", async () => {
         .post(`/avatar/delete/individual?userId=${invalidId}`)
         .attach('picture', individualTestImage);
 
-    expect(avatarResponse.statusCode).toBe(404);
-
     expect(avatarResponse.body.message).toBe(
         `There is no individual with ID ${invalidId}`,
     );
+    expect(avatarResponse.statusCode).toBe(404);
 });

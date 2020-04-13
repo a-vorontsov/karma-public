@@ -222,8 +222,6 @@ test("updating a picture for an event as an authenticated user works mocked", as
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
@@ -231,6 +229,8 @@ test("updating a picture for an event as an authenticated user works mocked", as
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/",
     );
+
+    expect(avatarResponse.statusCode).toBe(200);
 });
 
 test("updating an event picture for an unauthenticated user fails", async () => {
@@ -308,8 +308,6 @@ test("deleting a picture for an event as an authenticated user works", async () 
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
@@ -318,22 +316,23 @@ test("deleting a picture for an event as an authenticated user works", async () 
         "amazonaws.com/",
     );
 
+    expect(avatarResponse.statusCode).toBe(200);
+
     if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
     } else {
         const pictureUrl = avatarResponse.body.pictureUrl;
         const pictureResponse = await reqExt.get(pictureUrl);
 
-        expect(pictureResponse.statusCode).toBe(200);
-
         // validate successful type conversion / preservation
         expect(pictureResponse.type).toBe("png");
+        expect(pictureResponse.statusCode).toBe(200);
 
         const deletionResponse = await request(app)
             .post(`/picture/delete/event/${eventId}?userId=${userId}`);
 
-        expect(deletionResponse.statusCode).toBe(200);
         expect(deletionResponse.body.message).toContain("Successfully deleted image!");
+        expect(deletionResponse.statusCode).toBe(200);
     }
 });
 
@@ -356,8 +355,6 @@ test("deleting a picture for an event as an unauthenticated user fails", async (
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
@@ -365,6 +362,8 @@ test("deleting a picture for an event as an unauthenticated user fails", async (
     expect(avatarResponse.body.pictureUrl).toContain(
         "amazonaws.com/",
     );
+
+    expect(avatarResponse.statusCode).toBe(200);
 
     if ( process.env.SKIP_S3 == true ) {
         log.log("Skipping S3 image download for testing (SKIP_S3)");
@@ -424,8 +423,6 @@ test("deleting a picture for an event as an authenticated user works mocked", as
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
         .attach('picture', testImage);
 
-    expect(avatarResponse.statusCode).toBe(200);
-
     expect(avatarResponse.body.message).toBe(
         `Image successfully updated for event with ID ${eventId}`,
     );
@@ -434,9 +431,11 @@ test("deleting a picture for an event as an authenticated user works mocked", as
         "amazonaws.com/",
     );
 
+    expect(avatarResponse.statusCode).toBe(200);
+
     const deletionResponse = await request(app)
         .post(`/picture/delete/event/${eventId}?userId=${userId}`);
 
-    expect(deletionResponse.statusCode).toBe(200);
     expect(deletionResponse.body.message).toContain("Successfully deleted image!");
+    expect(deletionResponse.statusCode).toBe(200);
 });
