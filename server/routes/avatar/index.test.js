@@ -180,6 +180,7 @@ test("updating a profile picture for an authenticated organisation works", async
         const insertOrganisationResult = await organisationRepo.insert(organisation);
 
         const organisationTestImage = "./modules/picture/resources/organisationTest.png";
+        console.log(organisationTestImage);
 
         const avatarResponse = await request(app)
             .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`)

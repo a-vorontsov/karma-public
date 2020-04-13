@@ -173,6 +173,7 @@ test("updating a picture for an event as an authenticated user works", async () 
     const eventId = eventResult.rows[0].id;
 
     const testImage = "./modules/picture/resources/individualTest.jpeg";
+    console.log(testImage);
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
