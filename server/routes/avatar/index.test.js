@@ -211,7 +211,7 @@ test("updating a profile picture for an authenticated organisation works", async
         }
 });
 
-test("updating a profile picture for an without a file fails", async () => {
+test("updating a profile picture without a file fails", async () => {
     await regRepo.insert(registration);
 
     const insertUserResult = await userRepo.insert(user);
@@ -225,7 +225,7 @@ test("updating a profile picture for an without a file fails", async () => {
     const insertOrganisationResult = await organisationRepo.insert(organisation);
 
     const avatarResponse = await request(app)
-        .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`)
+        .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`).attach();
 
     expect(avatarResponse.statusCode).toBe(400);
 });
