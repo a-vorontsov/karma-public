@@ -172,7 +172,7 @@ test("updating a picture for an event as an authenticated user works", async () 
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
@@ -214,7 +214,7 @@ test("updating a picture for an event as an authenticated user works mocked", as
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     process.env.SKIP_S3 = "1";
 
@@ -234,7 +234,7 @@ test("updating a picture for an event as an authenticated user works mocked", as
 });
 
 test("updating an event picture for an unauthenticated user fails", async () => {
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/avatar/upload/individual`)
@@ -256,7 +256,7 @@ test("updating a picture for an event as the wrong user fails", async () => {
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId + 999}`)
@@ -278,7 +278,7 @@ test("updating a picture for a non-existent event fails", async () => {
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId + 999}?userId=${userId}`)
@@ -302,7 +302,7 @@ test("deleting a picture for an event as an authenticated user works", async () 
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
@@ -349,7 +349,7 @@ test("deleting a picture for an event as an unauthenticated user fails", async (
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     const avatarResponse = await request(app)
         .post(`/picture/upload/event/${eventId}?userId=${userId}`)
@@ -415,7 +415,7 @@ test("deleting a picture for an event as an authenticated user works mocked", as
     const eventResult = await eventRepo.insert(event);
     const eventId = eventResult.rows[0].id;
 
-    const testImage = path.join(__dirname, "../../modules/picture/resources/individualTest.jpeg");
+    const testImage = "./modules/picture/resources/individualTest.jpeg";
 
     process.env.SKIP_S3 = "1";
 

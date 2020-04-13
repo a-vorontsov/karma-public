@@ -179,7 +179,7 @@ test("updating a profile picture for an authenticated organisation works", async
 
         const insertOrganisationResult = await organisationRepo.insert(organisation);
 
-        const organisationTestImage = path.join(__dirname, "../../modules/picture/resources/organisationTest.png");
+        const organisationTestImage = "./modules/picture/resources/organisationTest.png";
 
         const avatarResponse = await request(app)
             .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`)
@@ -237,7 +237,7 @@ test("updating a profile picture for an authenticated organisation works while m
 
     const insertOrganisationResult = await organisationRepo.insert(organisation);
 
-    const organisationTestImage = path.join(__dirname, "../../modules/picture/resources/organisationTest.png");
+    const organisationTestImage = "./modules/picture/resources/organisationTest.png";
 
     process.env.SKIP_S3 = "1";
 
