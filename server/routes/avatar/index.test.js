@@ -225,7 +225,7 @@ test("updating a profile picture without a file fails", async () => {
     const insertOrganisationResult = await organisationRepo.insert(organisation);
 
     const avatarResponse = await request(app)
-        .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`).attach();
+        .post(`/avatar/upload/organisation?userId=${insertOrganisationResult.rows[0].userId}`).attach('FAKE', '');
 
     expect(avatarResponse.statusCode).toBe(400);
 });
